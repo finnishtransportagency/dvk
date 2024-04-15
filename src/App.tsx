@@ -49,6 +49,7 @@ import {
 } from './components/AisFeatureLoader';
 import { usePilotRouteLayer } from './components/PilotRouteFeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
+import { register as registerSwiper } from 'swiper/element/bundle';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -152,6 +153,9 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+// Register Swiper custom elements globally
+registerSwiper();
 
 const DvkIonApp: React.FC = () => {
   const { t, i18n } = useTranslation();

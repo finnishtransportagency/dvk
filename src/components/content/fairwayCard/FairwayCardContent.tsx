@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonLabel, IonSegment, IonSegmentButton, IonText } from '@ionic/react';
+import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
@@ -27,6 +27,7 @@ import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
 import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
+import { TabSwiper } from './TabSwiper';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -121,15 +122,8 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               />
             </div>
           )}
-          <IonSegment className="tabs" onIonChange={(e) => setTab((e.detail.value as number) ?? 1)} value={tab} data-testid="tabChange">
-            {[1, 2, 3].map((tabId) => (
-              <IonSegmentButton key={tabId} value={tabId}>
-                <IonLabel>
-                  <h3>{getTabLabel(t, tabId)}</h3>
-                </IonLabel>
-              </IonSegmentButton>
-            ))}
-          </IonSegment>
+
+          <TabSwiper tab={tab} setTab={setTab} widePane={widePane} />
 
           <div className={getTabClassName(1)}>
             <IonText className="no-margin-top">

@@ -1,17 +1,17 @@
-import { IonText, IonSegment, IonSegmentButton, IonLabel } from '@ionic/react';
-import React, { useEffect } from 'react';
+import { IonText } from '@ionic/react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHarborPreviewData } from '../../utils/dataLoader';
 import Breadcrumb from './Breadcrumb';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { HarbourInfo } from './fairwayCard/HarbourInfo';
 import { InfoParagraph } from './Paragraph';
-import { getTabLabel } from '../../utils/fairwayCardUtils';
 import PendingPlaceholder from './fairwayCard/PendingPlaceholder';
 import { FairwayCardHeader } from './fairwayCard/FairwayCardHeader';
 import { setSelectedHarborPreview, unsetSelectedHarborPreview } from '../layers';
 import { useHarborLayer } from '../FeatureLoader';
 import { HarborPreviewAlert } from './HarborPreviewAlert';
+import { TabSwiper } from './fairwayCard/TabSwiper';
 
 interface HarborPreviewProps {
   widePane?: boolean;
@@ -20,6 +20,7 @@ interface HarborPreviewProps {
 const HarborPreview: React.FC<HarborPreviewProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { state } = useDvkContext();
+  const [tab, setTab] = useState(2);
   const { data, isPending, isFetching } = useHarborPreviewData(state.harborId);
   const { ready: layerReady } = useHarborLayer();
 
@@ -50,15 +51,7 @@ const HarborPreview: React.FC<HarborPreviewProps> = ({ widePane }) => {
             printDisabled
           />
 
-          <IonSegment className="tabs" value={2}>
-            {[1, 2, 3].map((tabId) => (
-              <IonSegmentButton key={tabId} value={tabId} disabled={tabId !== 2}>
-                <IonLabel>
-                  <h3>{getTabLabel(t, tabId)}</h3>
-                </IonLabel>
-              </IonSegmentButton>
-            ))}
-          </IonSegment>
+          <TabSwiper tab={tab} setTab={setTab} widePane={widePane} disabled />
 
           <div className={'tabContent tab2 active' + (widePane ? ' wide' : '')}>
             {data?.harborPreview ? (
