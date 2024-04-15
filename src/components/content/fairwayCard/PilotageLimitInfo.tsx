@@ -61,7 +61,7 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
                     goToFeature(limit.fid, 'selectedfairwaycard');
                   }}
                 >
-                  {coordinatesToStringHDM(firstCoord).replace('N ', 'N / ')} - {' ' + coordinatesToStringHDM(lastCoord).replace('N ', 'N / ')}
+                  {coordinatesToStringHDM(firstCoord)} - {coordinatesToStringHDM(lastCoord)}
                 </Link>
               </u>
               <br />

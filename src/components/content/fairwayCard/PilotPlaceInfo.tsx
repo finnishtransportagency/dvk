@@ -51,7 +51,7 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
                           goToFeature(place.id, 'selectedfairwaycard');
                         }}
                       >
-                        {coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]]).replaceAll('N ', 'N / ')}
+                        {coordinatesToStringHDM([place.geometry?.coordinates[0], place.geometry.coordinates[1]])}
                       </Link>
                     </u>
                   )}
