@@ -32,7 +32,8 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ fairways, data }) => {
   const [pilotageLimits, setPilotageLimits] = useState<PilotageLimit[]>([]);
 
   useEffect(() => {
-    setPilotageLimits(getPilotageLimitsByFairways(fairways));
+    const limits = getPilotageLimitsByFairways(fairways);
+    setPilotageLimits(limits.toSorted((a, b) => a.numero - b.numero));
   }, [fairways]);
 
   return (
