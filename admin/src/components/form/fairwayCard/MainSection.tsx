@@ -23,10 +23,11 @@ interface MainSectionProps {
   setValidity: (actionType: ActionType, val: boolean) => void;
   isLoadingFairways: boolean;
   isLoadingHarbours: boolean;
+  isLoadingPilotRoutes?: boolean;
   fairwayOptions?: SelectOption[];
   harbourOptions?: SelectOption[];
   fairwaySelection?: SelectOption[];
-  pilotRouteOptions?: FeatureCollection | undefined;
+  pilotRouteOptions?: FeatureCollection;
 }
 
 const MainSection: React.FC<MainSectionProps> = ({
@@ -36,6 +37,7 @@ const MainSection: React.FC<MainSectionProps> = ({
   setValidity,
   isLoadingFairways,
   isLoadingHarbours,
+  isLoadingPilotRoutes,
   fairwayOptions,
   harbourOptions,
   fairwaySelection,
@@ -163,7 +165,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             setSelected={updateState}
             actionType="pilotRoutes"
             disabled={state.status === Status.Removed || import.meta.env.VITE_APP_ENV === 'prod'}
-            isLoading={!pilotRouteOptions}
+            isLoading={isLoadingPilotRoutes}
           />
         </IonCol>
       </IonRow>

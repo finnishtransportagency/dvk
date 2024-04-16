@@ -4,13 +4,14 @@ import { log } from '../../logger';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, getPilotRoutes, mapFairwayCardDBModelToGraphqlType } from '../../db/modelMapper';
 import { getOptionalCurrentUser } from '../../api/login';
+import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, FairwayCard | undefined> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs>
 ): Promise<FairwayCard | undefined> => {
   log.info(`fairwayCard(${event.arguments.id})`);
   const pilotMap = await getPilotPlaceMap();
-  const pilotRoutes = await getPilotRoutes();
+  const pilotRoutes = (await getPilotRoutes()) as FeatureCollection<Geometry, GeoJsonProperties>;
   const dbModel = await FairwayCardDBModel.get(event.arguments.id);
   if (dbModel) {
     const user = await getOptionalCurrentUser(event);
