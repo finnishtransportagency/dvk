@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { IonCol, IonGrid, IonRow, IonSkeletonText, IonText } from '@ionic/react';
+import { IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from './Breadcrumb';
 import { useFeatureData } from '../../utils/dataLoader';
@@ -7,14 +7,10 @@ import { FeatureDataLayerId, OFFLINE_STORAGE } from '../../utils/constants';
 import PageHeader from './PageHeader';
 import { PilotRouteFeatureProperties } from '../features';
 import { Feature, Geometry } from 'geojson';
-import './PilotRoutes.css';
 import dvkMap from '../DvkMap';
 import { useDvkContext } from '../../hooks/dvkContext';
-import { Link } from 'react-router-dom';
-import { setSelectedPilotRoute } from '../layers';
 import VectorSource from 'ol/source/Vector';
-import { goToFeature } from '../../utils/common';
-import { RtzFileDownload } from '../RtzFileDownload';
+import PilotRouteList from './PilotRouteList';
 
 interface PilotRoutesProps {
   widePane?: boolean;
@@ -75,43 +71,7 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
         {isPending ? (
           <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>
         ) : (
-          <IonGrid className="route-table ion-no-padding">
-            {pilotRoutes.map((pilotRoute) => {
-              const properties = pilotRoute.properties as PilotRouteFeatureProperties;
-              return (
-                <IonGrid
-                  key={properties.id}
-                  className="group inlineHoverText ion-no-padding"
-                  onMouseEnter={() => setSelectedPilotRoute(properties.id, true)}
-                  onFocus={() => setSelectedPilotRoute(properties.id, true)}
-                  onMouseLeave={() => setSelectedPilotRoute(properties.id, false)}
-                  onBlur={() => setSelectedPilotRoute(properties.id, false)}
-                >
-                  <IonRow className="header">
-                    <IonCol>
-                      <Link
-                        to="/luotsausreitit/"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          goToFeature(properties.id, layerId, state.layers);
-                        }}
-                      >
-                        {t('routes.route')} {properties.name}
-                      </Link>
-                    </IonCol>
-                  </IonRow>
-                  {properties.rtz && (
-                    <IonRow>
-                      <IonCol>
-                        <IonText className="header">{`${t('routes.rtz')}: `}</IonText>
-                        <RtzFileDownload name={properties.name} rtz={properties.rtz} />
-                      </IonCol>
-                    </IonRow>
-                  )}
-                </IonGrid>
-              );
-            })}
-          </IonGrid>
+          <PilotRouteList featureLink={'/luotsausreitit/'} pilotRoutes={pilotRoutes} layerId={layerId} layers={state.layers} />
         )}
       </div>
     </>

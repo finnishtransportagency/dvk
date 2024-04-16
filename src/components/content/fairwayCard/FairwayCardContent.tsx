@@ -28,6 +28,7 @@ import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
 import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
 import { TabSwiper } from './TabSwiper';
+import PilotRouteList from '../PilotRouteList';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -210,6 +211,11 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             </IonText>
             <AreaInfo data={fairwayCard?.fairways} />
           </div>
+
+          <div className={getTabClassName(4)}>
+            <PilotRouteList featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
+          </div>
+
           {!isMobile() && (
             <>
               <div className="pagebreak" />
