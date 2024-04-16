@@ -10,6 +10,7 @@ import LabelField from './LabelField';
 import RadioSelectField from './RadioSelectField';
 import SquatHeader from './SquatHeader';
 import { isEmbedded } from '../pages/Home';
+import { removeSoftHyphen } from '../utils/helpers';
 
 const zero = 0;
 
@@ -291,14 +292,17 @@ const Environment: React.FC = () => {
                         .sort((a, b) => {
                           return a.id === 1 || b.id === 1 ? a.id - b.id : b.id - a.id;
                         })
-                        .map((option) => (
-                          <IonCol key={option.id} className="align-center">
-                            <IonImg src={option.img} />
-                            <p>
-                              {getFairwayFormOrderForId(option.id)}. {tRoot(option.name).toString()}
-                            </p>
-                          </IonCol>
-                        ))}
+                        .map((option) => {
+                          const optionName = tRoot(option.name).toString();
+                          return (
+                            <IonCol key={option.id} className="align-center">
+                              <IonImg src={option.img} alt={removeSoftHyphen(optionName)} />
+                              <p>
+                                {getFairwayFormOrderForId(option.id)}. {optionName}
+                              </p>
+                            </IonCol>
+                          );
+                        })}
                     </IonRow>
                   </IonGrid>
                 </>
