@@ -11,7 +11,7 @@ import { PilotageLimitInfo } from './PilotageLimitInfo';
 import { Geometry } from 'ol/geom';
 
 type PilotInfoProps = {
-  fairways: Fairway[];
+  fairways?: Fairway[];
   data?: Pilot | null;
 };
 
@@ -32,8 +32,10 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ fairways, data }) => {
   const [pilotageLimits, setPilotageLimits] = useState<PilotageLimit[]>([]);
 
   useEffect(() => {
-    const limits = getPilotageLimitsByFairways(fairways);
-    setPilotageLimits(limits.toSorted((a, b) => a.numero - b.numero));
+    if (fairways) {
+      const limits = getPilotageLimitsByFairways(fairways);
+      setPilotageLimits(limits.toSorted((a, b) => a.numero - b.numero));
+    }
   }, [fairways]);
 
   return (
