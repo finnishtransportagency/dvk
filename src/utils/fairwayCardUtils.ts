@@ -1,10 +1,12 @@
 import { TFunction } from 'i18next';
-import { Fairway, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, SafetyEquipmentFault } from '../graphql/generated';
+import { Fairway, FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, SafetyEquipmentFault } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
 import { MAP } from './constants';
-import { Geometry, LineString, SimpleGeometry } from 'ol/geom';
-import { Feature } from 'ol';
+import { Geometry as olGeometry, LineString, SimpleGeometry } from 'ol/geom';
+import { Feature as olFeature } from 'ol';
 import { PilotageLimit } from '../components/content/fairwayCard/PilotInfo';
+import { Feature, Geometry } from 'geojson';
+import { PilotRouteFeatureProperties } from '../components/features';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -77,7 +79,7 @@ export const handleSafetyEquipmentLayerChange = () => {
   if (selectedFairwayCardSource.getFeatures().length > 0) {
     for (const f of selectedFairwayCardSource.getFeatures()) {
       if (f.getProperties().featureType == 'safetyequipment') {
-        const feature = safetyEquipmentFaultSource.getFeatureById(f.getProperties().id) as Feature<Geometry>;
+        const feature = safetyEquipmentFaultSource.getFeatureById(f.getProperties().id) as olFeature<olGeometry>;
         safetyEquipmentFaultSource.removeFeature(feature);
       }
     }
@@ -88,7 +90,7 @@ export const handleSafetyEquipmentLayerChange = () => {
 // returns features since actual pilot objects are not needed anywhere else (yet?)
 export function getPilotPlacesByFairwayCardId(id: string) {
   const pilotPlaceSource = dvkMap.getVectorSource('pilot');
-  const pilotPlaces: Feature<Geometry>[] = [];
+  const pilotPlaces: olFeature<olGeometry>[] = [];
 
   pilotPlaceSource.getFeatures().forEach((f) => {
     const props = f.getProperties();
@@ -111,7 +113,7 @@ export function getPilotageLimitsByFairways(fairways: Fairway[], getOnlyNumber?:
   fairways.forEach((fairway) => {
     pilotageLimitFeatures.forEach((pilotageLimit) => {
       const limitProperties = pilotageLimit.getProperties();
-      const limitGeometry = pilotageLimit.getGeometry() as Geometry;
+      const limitGeometry = pilotageLimit.getGeometry() as olGeometry;
       // related fairways are in one string where commas separate different ids
       const relatedIds = limitProperties.liittyyVayliin.split(',');
       if (relatedIds.includes(String(fairway.id))) {
@@ -137,4 +139,12 @@ export function getPilotageLimitsByFairways(fairways: Fairway[], getOnlyNumber?:
     });
   });
   return pilotageLimits;
+}
+
+export function getFairwayCardPilotRoutes(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  const pilotRoutes = features.filter((f) => {
+    const properties = f.properties as PilotRouteFeatureProperties;
+    return fairwayCard.pilotRoutes?.find((pr) => properties.id === pr.id);
+  });
+  return pilotRoutes?.toSorted((a, b) => a?.properties?.name.localeCompare(b?.properties?.name, 'fi', { ignorePunctuation: true }));
 }

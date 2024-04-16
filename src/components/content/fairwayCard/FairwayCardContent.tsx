@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
 import { setSelectedFairwayCard } from '../../layers';
-import { Lang } from '../../../utils/constants';
+import { Lang, OFFLINE_STORAGE } from '../../../utils/constants';
 import PrintMap from '../../PrintMap';
 import Breadcrumb from '../Breadcrumb';
 import Paragraph, { InfoParagraph } from '../Paragraph';
@@ -21,14 +21,15 @@ import { PilotInfo } from './PilotInfo';
 import { TugInfo } from './TugInfo';
 import { HarbourInfo } from './HarbourInfo';
 import { Alert } from './Alert';
-import { getSafetyEquipmentFaultsByFairwayCardId, getTabLabel } from '../../../utils/fairwayCardUtils';
+import { getFairwayCardPilotRoutes, getSafetyEquipmentFaultsByFairwayCardId, getTabLabel } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
-import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
+import { useFeatureData, useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
 import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
 import { TabSwiper } from './TabSwiper';
 import PilotRouteList from '../PilotRouteList';
+import { Feature, Geometry } from 'geojson';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -52,6 +53,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { state } = useDvkContext();
   const [tab, setTab] = useState<number>(1);
   const [safetyEquipmentFaults, setSafetyEquipmentFaults] = useState<SafetyEquipmentFault[]>([]);
+  const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
 
   const {
     dataUpdatedAt: faultDataUpdatedAt,
@@ -60,11 +62,33 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const { ready } = useSafetyEquipmentAndFaultLayer();
 
+  const { data: pilotRouteData, isSuccess: pilotRoutesSuccess } = useFeatureData(
+    'pilotroute',
+    true,
+    60 * 60 * 1000,
+    true,
+    OFFLINE_STORAGE.staleTime,
+    OFFLINE_STORAGE.cacheTime
+  );
+
   useEffect(() => {
     if (ready) {
       setSafetyEquipmentFaults(getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId));
     }
   }, [fairwayCardId, ready]);
+
+  useEffect(() => {
+    if (
+      fairwayCard?.pilotRoutes &&
+      fairwayCard.pilotRoutes.length > 0 &&
+      pilotRoutesSuccess &&
+      pilotRouteData?.features &&
+      pilotRouteData.features.length > 0
+    ) {
+      const features = pilotRouteData.features as Feature<Geometry>[];
+      setPilotRoutes(getFairwayCardPilotRoutes(fairwayCard, features));
+    }
+  }, [fairwayCard, pilotRouteData, pilotRoutesSuccess]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
@@ -213,7 +237,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           </div>
 
           <div className={getTabClassName(4)}>
-            <PilotRouteList featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
+            <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
           </div>
 
           {!isMobile() && (

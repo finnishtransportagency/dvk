@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MAP } from '../utils/constants';
+import { MAP, OFFLINE_STORAGE } from '../utils/constants';
 import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
@@ -12,7 +12,7 @@ function usePilotRouteFeatures() {
   const [ready, setReady] = useState(false);
   const [enabled, setEnabled] = useState(state.layers.includes('pilotroute'));
   const [pilotRouteFeatures, setPilotRouteFeatures] = useState<Feature<Geometry>[]>([]);
-  const pilotRouteQuery = useFeatureData('pilotroute', true, 60 * 60 * 1000, enabled, 2 * 60 * 60 * 1000, 2 * 60 * 60 * 1000);
+  const pilotRouteQuery = useFeatureData('pilotroute', true, 60 * 60 * 1000, enabled, OFFLINE_STORAGE.staleTime, OFFLINE_STORAGE.cacheTime);
   const dataUpdatedAt = pilotRouteQuery.dataUpdatedAt;
   const errorUpdatedAt = pilotRouteQuery.errorUpdatedAt;
   const isPaused = pilotRouteQuery.isPaused;

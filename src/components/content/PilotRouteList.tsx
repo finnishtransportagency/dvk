@@ -11,9 +11,9 @@ import { RtzFileDownload } from '../RtzFileDownload';
 import './PilotRoutesList.css';
 
 interface PilotRouteListProps {
+  pilotRoutes: Feature<Geometry>[];
   featureLink: string;
   layerId: FeatureLayerId;
-  pilotRoutes?: Feature<Geometry>[];
   layers?: string[];
 }
 

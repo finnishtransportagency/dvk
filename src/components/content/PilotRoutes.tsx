@@ -27,13 +27,13 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
     60 * 60 * 1000,
     true,
     OFFLINE_STORAGE.staleTime,
-    OFFLINE_STORAGE.staleTime
+    OFFLINE_STORAGE.cacheTime
   );
   const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
   const path = [{ title: t('routes.title') }];
 
   useEffect(() => {
-    if (isSuccess && data?.features?.length > 0) {
+    if (isSuccess && data?.features && data?.features.length > 0) {
       const features = (data.features as Feature<Geometry>[]).toSorted((a, b) => {
         const aProps = a.properties as PilotRouteFeatureProperties;
         const bProps = b.properties as PilotRouteFeatureProperties;
