@@ -28,6 +28,7 @@ import * as fs from 'fs';
 import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { SSMParameterReader } from './ssm-parameter-reader';
 import { getNewStaticBucketName } from './lambda/environment';
+import { FEATURE_CACHE_DURATION } from './lambda/graphql/cache';
 
 interface SquatSiteProps {
   domainName: string;
@@ -374,15 +375,33 @@ export class SquatSite extends Construct {
       ? this.createProxyBehavior(config.getStringParameter('DMZProxyEndpoint'), authFunction, true, false, strictTransportSecurityResponsePolicy)
       : undefined;
     const apiProxyBehavior = proxyBehavior ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
+    // add type and vaylaluokka as cache keys
+    // set default ttl to same as current s3 cache, feature handler does not return cache-control header as of yet
+    const featureLoaderQueryStringCachePolicy = this.createApiCachePolicy('DvkFeatureCachePolicy-' + props.env, ['type', 'vaylaluokka'], {
+      defaultTtl: Duration.seconds(FEATURE_CACHE_DURATION),
+      minTtl: Duration.seconds(0),
+      maxTtl: Duration.seconds(FEATURE_CACHE_DURATION),
+    });
+    const featureLoaderProxyBehavior = proxyBehavior
+      ? proxyBehavior
+      : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false, false, undefined, undefined, featureLoaderQueryStringCachePolicy);
+    const aisCachePolicy = this.createApiCachePolicy('DvkAisCachePolicy-' + props.env);
+    const aisProxyBehavior = proxyBehavior
+      ? proxyBehavior
+      : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false, false, undefined, undefined, aisCachePolicy);
     const graphqlProxyBehavior = proxyBehavior
       ? proxyBehavior
       : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, true, corsResponsePolicy, {
           'x-api-key': importedAppSyncAPIKey,
         });
+
+    // separate behaviors for featureloader and ais api paths so they can have different cache policies
     const additionalBehaviors: Record<string, BehaviorOptions> = {
       'squat*': squatBehavior,
       's3static/*': staticBehavior,
       '/graphql': graphqlProxyBehavior,
+      '/api/featureloader*': featureLoaderProxyBehavior,
+      '/api/ais*': aisProxyBehavior,
       '/api/*': apiProxyBehavior,
       'mml/*': vectorMapBehavior,
       'fmi/*': iceMapBehavior,
@@ -447,7 +466,8 @@ export class SquatSite extends Construct {
     useSSL = true,
     useCORS = false,
     responsePolicy: ResponseHeadersPolicy | undefined = undefined,
-    customHeaders: Record<string, string> | undefined = undefined
+    customHeaders: Record<string, string> | undefined = undefined,
+    cachePolicy = CachePolicy.CACHING_DISABLED
   ) {
     const dmzBehavior: BehaviorOptions = {
       compress: true,
@@ -456,7 +476,7 @@ export class SquatSite extends Construct {
         protocolPolicy: useSSL ? OriginProtocolPolicy.HTTPS_ONLY : OriginProtocolPolicy.HTTP_ONLY,
         customHeaders,
       }),
-      cachePolicy: CachePolicy.CACHING_DISABLED,
+      cachePolicy,
       originRequestPolicy: useCORS ? OriginRequestPolicy.CORS_CUSTOM_ORIGIN : OriginRequestPolicy.ALL_VIEWER,
       allowedMethods: AllowedMethods.ALLOW_ALL,
       viewerProtocolPolicy: ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -472,4 +492,26 @@ export class SquatSite extends Construct {
     };
     return dmzBehavior;
   }
+
+  private createApiCachePolicy(name: string, queryStrings?: string[], ttlSettings?: ttlSettings): cloudfront.ICachePolicy {
+    return new CachePolicy(this, name, {
+      cachePolicyName: name,
+      queryStringBehavior: queryStrings ? cloudfront.CacheQueryStringBehavior.allowList(...queryStrings) : undefined,
+      headerBehavior: cloudfront.CacheHeaderBehavior.none(),
+      cookieBehavior: cloudfront.CacheCookieBehavior.none(),
+      defaultTtl: ttlSettings?.defaultTtl ? ttlSettings.defaultTtl : Duration.seconds(0), // default to no cache in absence of cache-control: max-age
+      minTtl: ttlSettings?.minTtl ? ttlSettings.minTtl : Duration.seconds(0), 
+      maxTtl: ttlSettings?.maxTtl ? ttlSettings.maxTtl : Duration.seconds(3600),
+      enableAcceptEncodingBrotli: true,
+      enableAcceptEncodingGzip: true,
+    });
+  }
 }
+
+// check below link for more information on how cache-control header and cloudfront cache ttls work together
+// https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Expiration.html#ExpirationDownloadDist
+type ttlSettings = {
+  defaultTtl: Duration;
+  minTtl: Duration;
+  maxTtl: Duration;
+};
