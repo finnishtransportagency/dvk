@@ -14,6 +14,7 @@ import { auditLog, log } from '../../logger';
 import FairwayCardDBModel, { Picture } from '../../db/fairwayCardDBModel';
 import {
   getPilotPlaceMap,
+  getPilotRoutes,
   mapEmail,
   mapEmails,
   mapFairwayCardDBModelToGraphqlType,
@@ -34,6 +35,7 @@ import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { getExpires, getNewStaticBucketName } from '../../environment';
 import { PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
 import { deleteCacheObjects } from '../cache';
+import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 // Feature cache s3 objects related to fairway card
 const CACHE_KEYS = [
@@ -124,6 +126,10 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
       card.harbors?.map((id) => {
         return { id };
       }) ?? null,
+    pilotRoutes:
+      card.pilotRoutes?.map((id) => {
+        return { id };
+      }) ?? null,
     fairwayIds: mapIds(card.fairwayIds),
     expires: card.status === Status.Removed ? getExpires() : null,
     pictures:
@@ -201,5 +207,6 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
     auditLog.info({ card: newModel, user: user.uid }, 'FairwayCard added');
   }
   const pilotMap = await getPilotPlaceMap();
-  return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user);
+  const pilotRoutes = (await getPilotRoutes()) as FeatureCollection<Geometry, GeoJsonProperties>;
+  return mapFairwayCardDBModelToGraphqlType(newModel, pilotMap, user, pilotRoutes);
 };

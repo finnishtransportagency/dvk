@@ -32,6 +32,7 @@ exports[`should get card by id from the DynamoDB 1`] = `
   },
   "navigationCondition": undefined,
   "pictures": undefined,
+  "pilotRoutes": [],
   "seaLevel": undefined,
   "speedLimit": undefined,
   "status": "PUBLIC",
@@ -45,17 +46,14 @@ exports[`should get card by id from the DynamoDB 1`] = `
       "places": [
         {
           "geometry": {
-            "coordinates": [
-              26.42267,
-              60.23833,
-            ],
+            "coordinates": [],
             "type": "Point",
           },
           "id": 681017200,
           "name": {
-            "en": "Orrengrund",
-            "fi": "Orrengrund",
-            "sv": "Orrengrund",
+            "en": "",
+            "fi": "",
+            "sv": "",
           },
           "pilotJourney": undefined,
         },
@@ -103,6 +101,7 @@ exports[`should get card by id from the DynamoDB when cache expired 1`] = `
   },
   "navigationCondition": undefined,
   "pictures": undefined,
+  "pilotRoutes": [],
   "seaLevel": undefined,
   "speedLimit": undefined,
   "status": "DRAFT",

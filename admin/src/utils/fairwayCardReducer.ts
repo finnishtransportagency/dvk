@@ -85,6 +85,9 @@ export const fairwayCardReducer = (
     case 'harbours':
       newState = { ...state, harbors: value as string[] };
       break;
+    case 'pilotRoutes':
+      newState = { ...state, pilotRoutes: value as number[] };
+      break;
     case 'referenceLevel':
       newState = { ...state, n2000HeightSystem: !!value, harbors: [] };
       break;

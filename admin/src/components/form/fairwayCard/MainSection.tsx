@@ -7,6 +7,8 @@ import TextInput from '../TextInput';
 import SelectInput from '../SelectInput';
 import SelectWithFilter from '../SelectWithFilter';
 import TextInputRow from '../TextInputRow';
+import { FeatureCollection } from 'geojson';
+import { featureCollectionToSelectOptions } from '../../../utils/common';
 
 interface MainSectionProps {
   state: FairwayCardInput;
@@ -21,9 +23,11 @@ interface MainSectionProps {
   setValidity: (actionType: ActionType, val: boolean) => void;
   isLoadingFairways: boolean;
   isLoadingHarbours: boolean;
+  isLoadingPilotRoutes?: boolean;
   fairwayOptions?: SelectOption[];
   harbourOptions?: SelectOption[];
   fairwaySelection?: SelectOption[];
+  pilotRouteOptions?: FeatureCollection;
 }
 
 const MainSection: React.FC<MainSectionProps> = ({
@@ -33,9 +37,11 @@ const MainSection: React.FC<MainSectionProps> = ({
   setValidity,
   isLoadingFairways,
   isLoadingHarbours,
+  isLoadingPilotRoutes,
   fairwayOptions,
   harbourOptions,
   fairwaySelection,
+  pilotRouteOptions,
 }) => {
   const { t } = useTranslation();
 
@@ -151,7 +157,17 @@ const MainSection: React.FC<MainSectionProps> = ({
             disabled={state.status === Status.Removed}
           />
         </IonCol>
-        <IonCol sizeMd="3"></IonCol>
+        <IonCol sizeMd="3">
+          <SelectWithFilter
+            label={t('fairwaycard.linked-pilot-routes')}
+            options={featureCollectionToSelectOptions(pilotRouteOptions) ?? []}
+            selected={state.pilotRoutes ?? []}
+            setSelected={updateState}
+            actionType="pilotRoutes"
+            disabled={state.status === Status.Removed || import.meta.env.VITE_APP_ENV === 'prod'}
+            isLoading={isLoadingPilotRoutes}
+          />
+        </IonCol>
       </IonRow>
     </IonGrid>
   );

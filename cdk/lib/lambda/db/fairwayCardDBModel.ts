@@ -78,6 +78,10 @@ export type Picture = {
   legendPosition?: Maybe<string>;
 };
 
+export type PilotRoute = {
+  id: number;
+};
+
 class FairwayCardDBModel {
   id: string;
 
@@ -136,6 +140,8 @@ class FairwayCardDBModel {
   expires?: Maybe<number>;
 
   pictures?: Maybe<Picture[]>;
+
+  pilotRoutes?: Maybe<PilotRoute[]>;
 
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id } }));

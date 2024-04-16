@@ -80,6 +80,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     status: Status.Draft,
     operation: Operation.Create,
     pictures: [],
+    pilotRoutes: [],
   };
 
   return (
