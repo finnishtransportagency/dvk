@@ -17,16 +17,16 @@ import { ProhibitionInfo } from './ProhibitionInfo';
 import { DimensionInfo } from './DimensionInfo';
 import { LiningInfo } from './LiningInfo';
 import { AreaInfo } from './AreaInfo';
-import { PilotInfo } from './PilotInfo';
+import { PilotInfo, PilotageLimit } from './PilotInfo';
 import { TugInfo } from './TugInfo';
 import { HarbourInfo } from './HarbourInfo';
 import { Alert } from './Alert';
-import { getSafetyEquipmentFaultsByFairwayCardId, getTabLabel } from '../../../utils/fairwayCardUtils';
+import { getPilotageLimitsByFairways, getSafetyEquipmentFaultsByFairwayCardId, getTabLabel } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
-import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
+import { usePilotageLimitLayer, useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
 import { TabSwiper } from './TabSwiper';
 
 interface FairwayCardContentProps {
@@ -51,19 +51,28 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { state } = useDvkContext();
   const [tab, setTab] = useState<number>(1);
   const [safetyEquipmentFaults, setSafetyEquipmentFaults] = useState<SafetyEquipmentFault[]>([]);
+  const [pilotageLimits, setPilotageLimits] = useState<PilotageLimit[]>([]);
 
   const {
     dataUpdatedAt: faultDataUpdatedAt,
     isPending: faultIsPending,
     isFetching: faultIsFetching,
   } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
-  const { ready } = useSafetyEquipmentAndFaultLayer();
+  const { ready: safetyEquipmentLayerReady } = useSafetyEquipmentAndFaultLayer();
+  const { ready: pilotageLayerReady } = usePilotageLimitLayer();
 
   useEffect(() => {
-    if (ready) {
+    if (safetyEquipmentLayerReady) {
       setSafetyEquipmentFaults(getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId));
     }
-  }, [fairwayCardId, ready]);
+  }, [fairwayCardId, safetyEquipmentLayerReady]);
+
+  useEffect(() => {
+    if (pilotageLayerReady) {
+      const limits = getPilotageLimitsByFairways(fairwayCard?.fairways);
+      setPilotageLimits(limits.toSorted((a, b) => a.numero - b.numero));
+    }
+  }, [fairwayCard?.fairways, pilotageLayerReady]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
@@ -175,7 +184,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                 <strong>{t('trafficServices')}</strong>
               </h4>
             </IonText>
-            <PilotInfo fairways={fairwayCard?.fairways} data={fairwayCard?.trafficService?.pilot} />
+            <PilotInfo pilotageLimits={pilotageLimits} pilot={fairwayCard?.trafficService?.pilot} />
             <VTSInfo data={fairwayCard?.trafficService?.vts} />
             <TugInfo data={fairwayCard?.trafficService?.tugs} />
           </div>
