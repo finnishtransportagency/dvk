@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Lang, N2000_URLS } from '../../../utils/constants';
 import { useDvkContext } from '../../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
-import { Fairway, Text } from '../../../graphql/generated';
+import { Fairway, SizingVessel, Text } from '../../../graphql/generated';
 
 export type DimensionInfoProps = {
   data?: Fairway[] | null;
@@ -16,6 +16,17 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
+
+  function getFairwayName(fairway: Fairway, lang: Lang): string {
+    if (fairway.name) {
+      return fairway.name[lang] ?? fairway.name.fi ?? '';
+    }
+    return '';
+  }
+
+  function getFairwaySizingVessels(fairway: Fairway): SizingVessel[] {
+    return fairway.sizingVessels ?? [];
+  }
 
   const sizingVessels =
     data
@@ -50,23 +61,34 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
         <IonText>
           <p>
             <strong>{t('fairwayDesignVessel', { count: sizingVessels.length || 1 })}: </strong>
-            {sizingVessels.map((vessel, idx) => {
-              const uuid = uniqueId('vessel_');
+            {data.map((fairway) => {
+              const uuid = uniqueId('fairway_');
+              const sizingVessels = getFairwaySizingVessels(fairway);
               return (
                 <span key={uuid}>
-                  {vessel && (
+                  <br />
+                  {getFairwayName(fairway, lang)}:
+                  {sizingVessels.map((vessel) => {
+                    const uuid = uniqueId('vessel_');
+                    return (
+                      <span key={uuid}>
+                        <br />
+                        {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
+                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</dd>, b = {vessel.width}&nbsp;
+                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</dd>, t = {vessel.draft}&nbsp;
+                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.
+                      </span>
+                    );
+                  })}
+                  {sizingVessels.length < 1 && (
                     <>
                       <br />
-                      {t('designVessel')} {idx + 1}: {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
-                      <dd aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</dd>, b = {vessel.width}&nbsp;
-                      <dd aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</dd>, t = {vessel.draft}&nbsp;
-                      <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.
+                      {t('noDataSet')}
                     </>
                   )}
                 </span>
               );
             })}
-            {sizingVessels.length < 1 && t('noDataSet')}
           </p>
           <p>
             <strong>{t('fairwayDimensions')}: </strong>
