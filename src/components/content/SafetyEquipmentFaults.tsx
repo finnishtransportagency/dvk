@@ -100,7 +100,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
                       >
                         {faultArray[0].geometry?.coordinates[0] &&
                           faultArray[0].geometry?.coordinates[1] &&
-                          coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]]).replace('N', 'N /')}
+                          coordinatesToStringHDM([faultArray[0].geometry?.coordinates[0], faultArray[0].geometry.coordinates[1]])}
                       </Link>
                     </em>
                   )}

@@ -31,7 +31,7 @@ const degreesToStringHDM = (hemispheres: string, degrees: number, opt_fractionDi
 
 export const coordinatesToStringHDM = (coords: number[] | undefined): string => {
   if (coords) {
-    return degreesToStringHDM('NS', coords[1], 2) + ' ' + degreesToStringHDM('EW', coords[0], 2);
+    return degreesToStringHDM('NS', coords[1], 2) + ' / ' + degreesToStringHDM('EW', coords[0], 2);
   } else {
     return '';
   }
