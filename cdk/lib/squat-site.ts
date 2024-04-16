@@ -500,7 +500,7 @@ export class SquatSite extends Construct {
       headerBehavior: cloudfront.CacheHeaderBehavior.none(),
       cookieBehavior: cloudfront.CacheCookieBehavior.none(),
       defaultTtl: ttlSettings?.defaultTtl ? ttlSettings.defaultTtl : Duration.seconds(0), // default to no cache in absence of cache-control: max-age
-      minTtl: ttlSettings?.minTtl ? ttlSettings.minTtl : Duration.seconds(0), 
+      minTtl: ttlSettings?.minTtl ? ttlSettings.minTtl : Duration.seconds(0), // otherwise respect the header: cache-control: max-age
       maxTtl: ttlSettings?.maxTtl ? ttlSettings.maxTtl : Duration.seconds(3600),
       enableAcceptEncodingBrotli: true,
       enableAcceptEncodingGzip: true,
