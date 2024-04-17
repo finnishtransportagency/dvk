@@ -105,12 +105,12 @@ export function getPilotPlacesByFairwayCardId(id: string) {
   return pilotPlaces;
 }
 
-export function getPilotageLimitsByFairways(fairways: Fairway[], getOnlyNumber?: boolean) {
+export function getPilotageLimitsByFairways(fairways: Fairway[] | undefined, getOnlyNumber?: boolean) {
   const source = dvkMap.getVectorSource('pilotagelimit');
   const pilotageLimitFeatures = source.getFeatures();
   const pilotageLimits: PilotageLimit[] = [];
 
-  fairways.forEach((fairway) => {
+  fairways?.forEach((fairway) => {
     pilotageLimitFeatures.forEach((pilotageLimit) => {
       const limitProperties = pilotageLimit.getProperties();
       const limitGeometry = pilotageLimit.getGeometry() as olGeometry;
