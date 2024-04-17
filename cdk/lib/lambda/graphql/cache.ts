@@ -15,7 +15,8 @@ const AIS_VESSEL_CACHE = {
   STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 300, // 5 minutes (do not return vessel data more than 10 minutes old)
 };
-const FEATURE_CACHE_DURATION = 7200; // 2 hours
+
+export const FEATURE_CACHE_DURATION = 7200; // 2 hours
 
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;

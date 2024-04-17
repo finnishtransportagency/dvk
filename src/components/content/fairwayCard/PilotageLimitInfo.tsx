@@ -40,7 +40,6 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
         return (
           <p key={limit.fid}>
             <IonLabel
-              key={limit.fid}
               className="hoverText"
               onMouseEnter={() => highlightPilotageLimit(limit.fid)}
               onFocus={() => highlightPilotageLimit(limit.fid)}
