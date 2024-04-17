@@ -237,7 +237,9 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           </div>
 
           <div className={getTabClassName(4)}>
-            <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
+            {import.meta.env.VITE_APP_ENV !== 'prod' && (
+              <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
+            )}
           </div>
 
           {!isMobile() && (
