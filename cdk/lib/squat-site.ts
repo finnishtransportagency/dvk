@@ -374,7 +374,7 @@ export class SquatSite extends Construct {
     const proxyBehavior = this.useProxy()
       ? this.createProxyBehavior(config.getStringParameter('DMZProxyEndpoint'), authFunction, true, false, strictTransportSecurityResponsePolicy)
       : undefined;
-    const apiProxyBehavior = proxyBehavior ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
+    const apiProxyBehavior = proxyBehavior || this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
     // add type and vaylaluokka as cache keys
     // set default ttl to same as current s3 cache, feature handler does not return cache-control header as of yet
     const featureLoaderQueryStringCachePolicy = this.createApiCachePolicy('DvkFeatureCachePolicy-' + props.env, ['type', 'vaylaluokka'], {
@@ -382,16 +382,30 @@ export class SquatSite extends Construct {
       minTtl: Duration.seconds(0),
       maxTtl: Duration.seconds(FEATURE_CACHE_DURATION),
     });
-    const featureLoaderProxyBehavior = proxyBehavior
-      ? proxyBehavior
+    const featureLoaderProxyBehavior = this.useProxy()
+      ? this.createProxyBehavior(
+          config.getStringParameter('DMZProxyEndpoint'),
+          authFunction,
+          true,
+          false,
+          strictTransportSecurityResponsePolicy,
+          undefined,
+          featureLoaderQueryStringCachePolicy
+        )
       : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false, false, undefined, undefined, featureLoaderQueryStringCachePolicy);
     const aisCachePolicy = this.createApiCachePolicy('DvkAisCachePolicy-' + props.env);
-    const aisProxyBehavior = proxyBehavior
-      ? proxyBehavior
+    const aisProxyBehavior = this.useProxy()
+      ? this.createProxyBehavior(
+          config.getStringParameter('DMZProxyEndpoint'),
+          authFunction,
+          true,
+          false,
+          strictTransportSecurityResponsePolicy,
+          undefined,
+          aisCachePolicy
+        )
       : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false, false, undefined, undefined, aisCachePolicy);
-    const graphqlProxyBehavior = proxyBehavior
-      ? proxyBehavior
-      : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, true, corsResponsePolicy, {
+    const graphqlProxyBehavior = proxyBehavior || this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, true, corsResponsePolicy, {
           'x-api-key': importedAppSyncAPIKey,
         });
 
