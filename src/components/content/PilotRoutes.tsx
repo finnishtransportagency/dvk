@@ -72,7 +72,7 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
     <>
       <Breadcrumb path={path} />
       <PageHeader title={t('routes.title')} layerId={layerId} isPending={isPending} isFetching={isFetching} dataUpdatedAt={dataUpdatedAt} />
-      <Alert title={t('routes.info')} icon={infoIcon} className="top-margin info" />
+      {import.meta.env.VITE_APP_ENV !== 'prod' && <Alert title={t('routes.info')} icon={infoIcon} className="top-margin info" />}
       <div id="pilotRouteList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="pilotRouteList">
         {isPending ? (
           <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>
