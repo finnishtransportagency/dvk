@@ -5,6 +5,7 @@ import { Lang, N2000_URLS } from '../../../utils/constants';
 import { useDvkContext } from '../../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
 import { Fairway, SizingVessel, Text } from '../../../graphql/generated';
+import { metresToNauticalMiles } from '../../../utils/conversions';
 
 export type DimensionInfoProps = {
   data?: Fairway[] | null;
@@ -17,6 +18,8 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
 
+  const numberOfFairways = data ? data.length : 0;
+
   function getFairwayName(fairway: Fairway, lang: Lang): string {
     if (fairway.name) {
       return fairway.name[lang] ?? fairway.name.fi ?? '';
@@ -28,51 +31,69 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
     return fairway.sizingVessels ?? [];
   }
 
-  const sizingVessels =
-    data
-      ?.flatMap((fairway) => (fairway.sizingVessels ? fairway.sizingVessels : []))
-      .filter((value, index, self) => self.findIndex((inner) => inner.type === value.type) === index) ?? [];
-  const minimumWidths = [...Array.from(new Set(data?.flatMap((fairway) => fairway.sizing?.minimumWidth).filter((val) => val)))];
-  const minimumTurningCircles = [...Array.from(new Set(data?.flatMap((fairway) => fairway.sizing?.minimumTurningCircle).filter((val) => val)))];
-  const additionalTexts = [...Array.from(new Set(data?.flatMap((fairway) => fairway.sizing?.additionalInformation).filter((val) => val)))];
+  const numberOfSizingVessels = data ? data.map((fairway) => getFairwaySizingVessels(fairway)).flat().length : 0;
 
-  const designDraftValues = [
-    ...Array.from(
-      new Set(
-        data
-          ?.flatMap((fairway) => fairway.areas?.map((area) => (isN2000HeightSystem ? area.n2000draft : area.draft)?.toLocaleString()))
-          .filter((val) => val !== undefined && val !== '0')
-      )
-    ),
-  ];
-  const sweptDepthValues = [
-    ...Array.from(
-      new Set(
-        data
-          ?.flatMap((fairway) => fairway.areas?.map((area) => (isN2000HeightSystem ? area.n2000depth : area.depth)?.toLocaleString()))
-          .filter((val) => val !== undefined)
-      )
-    ),
-  ];
+  function getFairwayDesignDraftValues(fairway: Fairway): string[] {
+    const designDraftValues: Array<string> = [];
+    if (fairway.areas) {
+      for (const area of fairway.areas) {
+        const str = (isN2000HeightSystem ? area.n2000draft : area.draft)?.toLocaleString();
+        if (str !== undefined && str !== '0' && !designDraftValues.includes(str)) {
+          designDraftValues.push(str);
+        }
+      }
+    }
+    return designDraftValues;
+  }
+
+  function getFairwaySweptDepthValues(fairway: Fairway): string[] {
+    const sweptDepthValues: Array<string> = [];
+    if (fairway.areas) {
+      for (const area of fairway.areas) {
+        const str = (isN2000HeightSystem ? area.n2000depth : area.depth)?.toLocaleString();
+        if (str !== undefined && str !== '0' && !sweptDepthValues.includes(str)) {
+          sweptDepthValues.push(str);
+        }
+      }
+    }
+    return sweptDepthValues;
+  }
+
+  // Calculate the sum of navigation lines excluding theoretical curves (typeCode '4')
+  function getFairwayTotalLength(fairway: Fairway): number {
+    let length = 0;
+    if (fairway.navigationLines) {
+      for (const line of fairway.navigationLines) {
+        if (line.typeCode !== '4' && line.length) {
+          length += line.length;
+        }
+      }
+    }
+    return length;
+  }
 
   return (
     <>
       {data && (
         <IonText>
           <p>
-            <strong>{t('fairwayDesignVessel', { count: sizingVessels.length || 1 })}: </strong>
+            <strong>{t('fairwayDesignVessel', { count: numberOfSizingVessels || 1 })}: </strong>
             {data.map((fairway) => {
               const uuid = uniqueId('fairway_');
               const sizingVessels = getFairwaySizingVessels(fairway);
               return (
                 <span key={uuid}>
                   <br />
-                  {getFairwayName(fairway, lang)}:
+                  {numberOfFairways > 1 && (
+                    <>
+                      {getFairwayName(fairway, lang)}:
+                      <br />
+                    </>
+                  )}
                   {sizingVessels.map((vessel) => {
                     const uuid = uniqueId('vessel_');
                     return (
                       <span key={uuid}>
-                        <br />
                         {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
                         <dd aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</dd>, b = {vessel.width}&nbsp;
                         <dd aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</dd>, t = {vessel.draft}&nbsp;
@@ -80,43 +101,77 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                       </span>
                     );
                   })}
-                  {sizingVessels.length < 1 && (
-                    <>
-                      <br />
-                      {t('noDataSet')}
-                    </>
-                  )}
+                  {sizingVessels.length < 1 && <>{t('noDataSet')}</>}
                 </span>
               );
             })}
           </p>
           <p>
-            <strong>{t('fairwayDimensions')}: </strong>
-            {t('designDraft', { count: designDraftValues.length })}: {designDraftValues.join(' / ')}&nbsp;
-            <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>. {t('sweptDepth', { count: sweptDepthValues.length })}:{' '}
-            {sweptDepthValues.join(' / ')}&nbsp;
-            <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
-            {minimumWidths.length > 0 && (
+            <strong>{t('fairwayDimensions')}:</strong>
+            <br />
+            {data.map((fairway) => {
+              const uuid = uniqueId('fairway_');
+              const designDraftValues2 = getFairwayDesignDraftValues(fairway);
+              const sweptDepthValues2 = getFairwaySweptDepthValues(fairway);
+              const minimumWidth = fairway.sizing?.minimumWidth;
+              const minimumTurningCircle = fairway.sizing?.minimumTurningCircle;
+              const additionalText = fairway.sizing?.additionalInformation;
+              const totalLength = getFairwayTotalLength(fairway);
+              return (
+                <span key={uuid}>
+                  {numberOfFairways > 1 && (
+                    <>
+                      {getFairwayName(fairway, lang)}:
+                      <br />
+                    </>
+                  )}
+                  {t('designDraft', { count: designDraftValues2.length })}: {designDraftValues2.join(' / ')}
+                  <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>. {t('sweptDepth', { count: sweptDepthValues2.length })}:{' '}
+                  {sweptDepthValues2.join(' / ')}
+                  <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>.&nbsp;
+                  {minimumWidth && (
+                    <>
+                      {t('minimumWidth', { count: 1 })}: {minimumWidth}&nbsp;
+                      <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
+                    </>
+                  )}
+                  {minimumTurningCircle && (
+                    <>
+                      {minimumWidth ? (
+                        <>
+                          {t('and')}
+                          {t('minimumTurningCircle', { count: 1 }).toLocaleLowerCase()}
+                        </>
+                      ) : (
+                        <>{t('minimumTurningCircle', { count: 1 })}</>
+                      )}
+                      : {minimumTurningCircle}&nbsp;
+                      <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
+                    </>
+                  )}
+                  {minimumWidth && minimumTurningCircle && <>.&nbsp;</>}
+                  {t('length')}: {((totalLength ?? 0) / 1000).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
+                  <dd aria-label={t('unit.kmDesc', { count: 3 })}>km</dd> /{' '}
+                  {metresToNauticalMiles(totalLength).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
+                  <dd aria-label={t('unit.nmDesc', { count: 2 })}>{t('unit.nm')}</dd>
+                  .&nbsp;
+                  <br />
+                  {additionalText && (
+                    <>
+                      {additionalText}
+                      <br />
+                    </>
+                  )}
+                  <br />
+                </span>
+              );
+            })}
+            {designSpeedText && (
               <>
-                . {t('minimumWidth', { count: minimumWidths.length })}: {minimumWidths.join(' / ')}&nbsp;
-                <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
+                {designSpeedText[lang]}
+                <br />
               </>
             )}
-            {minimumTurningCircles.length > 0 && (
-              <>
-                {minimumWidths.length > 0 ? (
-                  <>
-                    {t('and')}
-                    {t('minimumTurningCircle', { count: minimumTurningCircles.length }).toLocaleLowerCase()}
-                  </>
-                ) : (
-                  <>. {t('minimumTurningCircle', { count: minimumTurningCircles.length })}</>
-                )}
-                : {minimumTurningCircles.join(' / ')}&nbsp;
-                <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
-              </>
-            )}
-            . {designSpeedText?.[lang]}
             {isN2000HeightSystem && (
               <>
                 <br />
@@ -126,12 +181,6 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                   {N2000_URLS[lang]}
                   <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                 </a>
-              </>
-            )}
-            {additionalTexts.length > 0 && (
-              <>
-                <br />
-                {additionalTexts.join(' ')}
               </>
             )}
           </p>
