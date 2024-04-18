@@ -54,7 +54,7 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
-import { Feature as GeoJsonFeature, Geometry as GeoJsonGeometry } from 'geojson';
+import { Geometry as GeoGeometry } from 'geojson';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -1198,9 +1198,11 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       const pilotRouteFeatures = pilotRouteSource.getFeatures().map((f) => {
         return {
           properties: f.getProperties() as PilotRouteFeatureProperties,
-          geometry: f.getGeometry(),
+          // geometry is not used in getFairwayCardPilotRoutes function, but required so unknown is justified
+          geometry: f.getGeometry() as unknown as GeoGeometry,
+          type: f.getProperties().type,
         };
-      }) as unknown as GeoJsonFeature<GeoJsonGeometry>[];
+      });
       const pilotRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
       for (const route of pilotRoutes) {
         const feature = pilotRouteSource.getFeatureById(route?.properties?.id) as Feature<Geometry>;
