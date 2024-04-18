@@ -1192,19 +1192,22 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
         }
       }
     }
-    // create correct type objects for getFairwayCardPilotRoutes function
-    const pilotRouteFeatures = pilotRouteSource.getFeatures().map((f) => {
-      return {
-        properties: f.getProperties() as PilotRouteFeatureProperties,
-        geometry: f.getGeometry(),
-      };
-    }) as unknown as GeoJsonFeature<GeoJsonGeometry>[];
-    const pilotRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
-    for (const route of pilotRoutes) {
-      const feature = pilotRouteSource.getFeatureById(route?.properties?.id) as Feature<Geometry>;
-      if (feature) {
-        pilotRouteSource.removeFeature(feature);
-        fairwayFeatures.push(feature);
+
+    if (import.meta.env.VITE_APP_ENV !== 'prod') {
+      // create correct type objects for getFairwayCardPilotRoutes function
+      const pilotRouteFeatures = pilotRouteSource.getFeatures().map((f) => {
+        return {
+          properties: f.getProperties() as PilotRouteFeatureProperties,
+          geometry: f.getGeometry(),
+        };
+      }) as unknown as GeoJsonFeature<GeoJsonGeometry>[];
+      const pilotRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
+      for (const route of pilotRoutes) {
+        const feature = pilotRouteSource.getFeatureById(route?.properties?.id) as Feature<Geometry>;
+        if (feature) {
+          pilotRouteSource.removeFeature(feature);
+          fairwayFeatures.push(feature);
+        }
       }
     }
 
