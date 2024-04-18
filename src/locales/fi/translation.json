@@ -264,6 +264,7 @@
     "width": "Leveys"
   },
   "routes": {
+    "info": "info",
     "title": "Luotsausreitit",
     "route": "Reitti",
     "rtz": "Reitin rtz tiedosto"

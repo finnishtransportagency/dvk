@@ -264,6 +264,7 @@
     "width": "Width"
   },
   "routes": {
+    "info": "[en] info",
     "title": "Pilot routes",
     "route": "Route",
     "rtz": "[en] Reitin rtz tiedosto"

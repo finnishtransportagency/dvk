@@ -264,6 +264,7 @@
     "width": "Bredd"
   },
   "routes": {
+    "info": "[sv] info",
     "title": "Lotsningsrutter",
     "route": "Rutt",
     "rtz": "[sv] Reitin rtz tiedosto"
