@@ -266,7 +266,8 @@
   "routes": {
     "title": "Luotsausreitit",
     "route": "Reitti",
-    "rtz": "Reitin rtz tiedosto"
+    "rtz": "Reitin RTZ-tiedosto",
+    "linkedFairwayCards": "Luotsausreittiin liittyvät väyläkortit"
   },
   "faults": {
     "title": "Turvalaiteviat",
