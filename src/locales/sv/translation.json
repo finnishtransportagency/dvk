@@ -266,7 +266,8 @@
   "routes": {
     "title": "Lotsningsrutter",
     "route": "Rutt",
-    "rtz": "[sv] Reitin rtz tiedosto"
+    "rtz": "Ruttfil i RTZ-format",
+    "linkedFairwayCards": "Farledskort angående lotsningsrutt"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",

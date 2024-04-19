@@ -266,7 +266,8 @@
   "routes": {
     "title": "Pilot routes",
     "route": "Route",
-    "rtz": "[en] Reitin rtz tiedosto"
+    "rtz": "Route file in RTZ-format",
+    "linkedFairwayCards": "Fairway cards for the pilot route"
   },
   "faults": {
     "title": "Defective navigation aids",
