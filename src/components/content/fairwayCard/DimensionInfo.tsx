@@ -125,9 +125,9 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                       <br />
                     </>
                   )}
-                  {t('designDraft', { count: designDraftValues2.length })}: {designDraftValues2.join(' / ')}
+                  {t('designDraft', { count: designDraftValues2.length })}: {designDraftValues2.join(' / ')}&nbsp;
                   <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>. {t('sweptDepth', { count: sweptDepthValues2.length })}:{' '}
-                  {sweptDepthValues2.join(' / ')}
+                  {sweptDepthValues2.join(' / ')}&nbsp;
                   <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>.&nbsp;
                   {minimumWidth && (
                     <>
