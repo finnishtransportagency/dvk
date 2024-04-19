@@ -247,6 +247,11 @@ ion-text .h5 {
   text-transform: none;
   break-after: avoid;
 }
+
+.fairwayAreasFairwayName {
+  margin-bottom: 0;
+}
+
 ion-text .info svg {
   color: var(--ion-color-primary);
   width: 16px;
