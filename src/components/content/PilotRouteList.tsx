@@ -47,10 +47,15 @@ const PilotRouteList: React.FC<PilotRouteListProps> = ({ pilotRoutes, featureLin
               </IonCol>
             </IonRow>
             {properties.rtz && (
-              <IonRow>
+              <IonRow className="pilotRouteProperties">
                 <IonCol>
-                  <IonText className="header">{`${t('routes.rtz')}: `}</IonText>
-                  <RtzFileDownload name={properties.name} rtz={properties.rtz} />
+                  <IonRow>
+                    <IonText className="header">{`${t('routes.rtz')}:`}</IonText>&nbsp;
+                    <RtzFileDownload name={properties.name} rtz={properties.rtz} />
+                  </IonRow>
+                  <IonRow>
+                    <IonText className="header">{`${t('routes.linkedFairwayCards')}: `}</IonText>
+                  </IonRow>
                 </IonCol>
               </IonRow>
             )}

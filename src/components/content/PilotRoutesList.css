@@ -9,10 +9,11 @@
 
   ion-grid.group {
     padding-top: 5px;
+    border-bottom: 1px solid var(--ion-color-light);
   }
 
-  ion-grid.group ion-row:last-child {
-    border-bottom: 1px solid var(--ion-color-light);
+  ion-grid.group:last-child {
+    border-bottom: none;
   }
 
   ion-grid.inlineHoverText:hover {
