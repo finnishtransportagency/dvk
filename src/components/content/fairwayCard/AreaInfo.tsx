@@ -39,22 +39,17 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
   return (
     <>
       {fairways.map((fairway) => {
-        const uuid = uniqueId('fairway_');
         const fairwayAreas = getFairwayAreas(fairway);
         startIndex += fairwayAreas.length;
         return (
-          <>
+          <div key={uniqueId()}>
             {numberOfFairways > 1 && (
               <IonText>
-                <h5 key={uuid} className="fairwayAreasFairwayName">
-                  {getFairwayName(fairway, lang)}:
-                </h5>
+                <h5 className="fairwayAreasFairwayName">{getFairwayName(fairway, lang)}:</h5>
               </IonText>
             )}
             <ol start={startIndex - fairwayAreas.length}>
               {fairwayAreas.map((area) => {
-                const uuid = uniqueId('area_');
-
                 const sizingSpeeds = [
                   ...Array.from(
                     new Set(
@@ -67,7 +62,7 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
                 const isDraftAvailable = ((isN2000HeightSystem ? area?.n2000draft : area?.draft) ?? 0) > 0;
                 return (
                   <IonText
-                    key={uuid}
+                    key={uniqueId()}
                     onMouseEnter={() => highlightArea(area?.id)}
                     onFocus={() => highlightArea(area?.id)}
                     onMouseLeave={() => highlightArea(0)}
@@ -100,7 +95,7 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
                 );
               })}
             </ol>
-          </>
+          </div>
         );
       })}
     </>
