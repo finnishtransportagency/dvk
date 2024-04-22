@@ -13,6 +13,7 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import WarningsFilter from './WarningsFilter';
 import { WarningList } from './WarningList';
 import PageHeader from './PageHeader';
+import VectorSource from 'ol/source/Vector';
 
 type MarineWarningsProps = {
   widePane?: boolean;
@@ -28,13 +29,6 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
 
   const path = [{ title: t('warnings.title') }];
-
-  useEffect(() => {
-    return () => {
-      // Cleanup: remove feature(s) from temporary layer
-      dvkMap.getVectorSource('selectedfairwaycard').clear();
-    };
-  }, []);
 
   const filterDataByAreaAndType = useCallback(() => {
     const filteredData = data?.marineWarnings.filter((w) => {
@@ -60,15 +54,32 @@ const MarineWarnings: React.FC<MarineWarningsProps> = ({ widePane }) => {
   }, [areaFilter, typeFilter, data?.marineWarnings, lang, t]);
 
   useEffect(() => {
-    const source = dvkMap.getVectorSource('selectedfairwaycard');
-    const features = source.getFeatures();
-    // Check if corresponding layer is now visible and remove feature(s) from temp layer
-    if (features.length > 0) {
+    return () => {
+      // Cleanup: remove feature(s) from temporary layer
+      const fairwayCardLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
+      (fairwayCardLayer.getSource() as VectorSource).clear();
+      fairwayCardLayer.setVisible(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fairwayCardLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
+    const fairwayCardSource = fairwayCardLayer?.getSource() as VectorSource;
+    const features = fairwayCardSource?.getFeatures();
+
+    if (['coastalwarning', 'localwarning', 'boaterwarning'].every((l) => state.layers.includes(l))) {
+      fairwayCardLayer?.setVisible(false);
+    } else {
+      fairwayCardLayer?.setVisible(true);
+    }
+
+    if (features && features.length > 0) {
+      // Check if corresponding layer is now visible and remove feature(s) from temp layer
       features.forEach((f) => {
         const featureProperties = f.getProperties() as MarineWarningFeatureProperties;
         const layerDataId = getMarineWarningDataLayerId(featureProperties.type);
         if (state.layers.includes(layerDataId)) {
-          source.removeFeature(f);
+          fairwayCardSource.removeFeature(f);
         }
       });
     }
