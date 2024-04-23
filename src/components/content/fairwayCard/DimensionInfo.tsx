@@ -97,11 +97,12 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                         {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
                         <dd aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</dd>, b = {vessel.width}&nbsp;
                         <dd aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</dd>, t = {vessel.draft}&nbsp;
-                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.
+                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.&nbsp;
                       </span>
                     );
                   })}
                   {sizingVessels.length < 1 && <>{t('noDataSet')}</>}
+                  <br />
                 </span>
               );
             })}
@@ -109,6 +110,15 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
           <p>
             <strong>{t('fairwayDimensions')}:</strong>
             <br />
+            {designSpeedText && (
+              <>
+                {t('designSpeed')}:
+                <br />
+                {designSpeedText[lang]}
+                <br />
+                <br />
+              </>
+            )}
             {data.map((fairway) => {
               const uuid = uniqueId('fairway_');
               const designDraftValues2 = getFairwayDesignDraftValues(fairway);
@@ -166,12 +176,6 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                 </span>
               );
             })}
-            {designSpeedText && (
-              <>
-                {designSpeedText[lang]}
-                <br />
-              </>
-            )}
             {isN2000HeightSystem && (
               <>
                 <br />
