@@ -24,7 +24,8 @@ export const TugInfo: React.FC<TugInfoProps> = ({ data }) => {
               const uuid = uniqueId('tug_');
               return (
                 <span key={uuid}>
-                  <br />
+                  {(tug?.email || tug?.phoneNumber || tug?.fax) && <br />}
+                  {!tug?.email && !tug?.phoneNumber && !tug?.fax && <>&nbsp;</>}
                   {tug?.name?.[lang]}
                   <br />
                   {(tug?.email || tug?.phoneNumber || tug?.fax) && (
