@@ -25,7 +25,7 @@ export const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
               return (
                 <span key={(vts?.name?.fi ?? '') + uuid}>
                   <br />
-                  {vts?.name && vts.name[lang]}
+                  {vts?.name?.[lang]}
                   {vts?.vhf && vts.vhf.length > 0 && (
                     <>
                       , {t('vhf')} {vts?.vhf?.map((v) => (v?.name ? v.channel + ' (' + v?.name[lang] + ')' : v?.channel)).join(', ')}
