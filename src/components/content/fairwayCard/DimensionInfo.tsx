@@ -119,7 +119,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                 <br />
               </>
             )}
-            {data.map((fairway) => {
+            {data.map((fairway, idx) => {
               const uuid = uniqueId('fairway_');
               const designDraftValues2 = getFairwayDesignDraftValues(fairway);
               const sweptDepthValues2 = getFairwaySweptDepthValues(fairway);
@@ -131,6 +131,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                 <span key={uuid}>
                   {numberOfFairways > 1 && (
                     <>
+                      {idx > 0 && <br />}
                       {getFairwayName(fairway, lang)}:
                       <br />
                     </>
@@ -172,7 +173,6 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                       <br />
                     </>
                   )}
-                  <br />
                 </span>
               );
             })}
