@@ -285,3 +285,7 @@ dd {
   display: inline;
   margin: 0;
 }
+
+.primaryColorLink {
+  color: var(--ion-color-primary);
+}
