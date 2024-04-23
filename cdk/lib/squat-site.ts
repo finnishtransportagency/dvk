@@ -405,9 +405,11 @@ export class SquatSite extends Construct {
           aisCachePolicy
         )
       : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false, false, undefined, undefined, aisCachePolicy);
-    const graphqlProxyBehavior = proxyBehavior || this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, true, corsResponsePolicy, {
-          'x-api-key': importedAppSyncAPIKey,
-        });
+    const graphqlProxyBehavior =
+      proxyBehavior ||
+      this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, true, corsResponsePolicy, {
+        'x-api-key': importedAppSyncAPIKey,
+      });
 
     // separate behaviors for featureloader and ais api paths so they can have different cache policies
     const additionalBehaviors: Record<string, BehaviorOptions> = {
@@ -430,6 +432,18 @@ export class SquatSite extends Construct {
       '/oauth2/*': apiProxyBehavior,
       '/sso/*': apiProxyBehavior,
     };
+    // github webhook for cicd pipelines only in 'dev'
+    if (Config.getEnvironment() === 'dev') {
+      // has to be routed through 'vaylapilvi' proxies to a dedicated internal alb
+      // no basic authentication
+      additionalBehaviors['/webhook*'] = this.createProxyBehavior(
+        config.getStringParameter('DMZProxyEndpoint'),
+        undefined,
+        true,
+        false,
+        strictTransportSecurityResponsePolicy
+      );
+    }
 
     // CloudFront webacl reader and id
     const customSSMParameterReader = new SSMParameterReader(this, 'DVKWebAclReader' + Config.getEnvironment(), {
