@@ -631,18 +631,6 @@ export function addAPILayers(map: Map) {
     declutter: true,
     zIndex: 302,
   });
-  // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureVectorLayer({
-    map: map,
-    id: 'selectedfairwaycard',
-    maxResolution: undefined,
-    renderBuffer: 100,
-    style: getSelectedFairwayCardStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: true,
-    zIndex: 303,
-  });
   addFeatureVectorLayer({
     map: map,
     id: 'circle',
@@ -908,6 +896,18 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: false,
     zIndex: 104,
+  });
+  // Valitun väyläkortin featuret (jätetään aina ylimmäksi)
+  addFeatureVectorLayer({
+    map: map,
+    id: 'selectedfairwaycard',
+    maxResolution: undefined,
+    renderBuffer: 100,
+    style: getSelectedFairwayCardStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: true,
+    zIndex: 326,
   });
 }
 

@@ -9,6 +9,7 @@ import { setSelectedPilotRoute } from '../layers';
 import { goToFeature } from '../../utils/common';
 import { RtzFileDownload } from '../RtzFileDownload';
 import './PilotRoutesList.css';
+import InfoIcon from '../../theme/img/info.svg?react';
 
 interface PilotRouteListProps {
   pilotRoutes: Feature<Geometry>[];
@@ -47,18 +48,22 @@ const PilotRouteList: React.FC<PilotRouteListProps> = ({ pilotRoutes, featureLin
               </IonCol>
             </IonRow>
             {properties.rtz && (
-              <IonRow className="pilotRouteProperties">
+              <IonRow>
                 <IonCol>
                   <IonRow>
                     <IonText className="header">{`${t('routes.rtz')}:`}</IonText>&nbsp;
                     <RtzFileDownload name={properties.name} rtz={properties.rtz} />
                   </IonRow>
-                  <IonRow>
-                    <IonText className="header">{`${t('routes.linkedFairwayCards')}: `}</IonText>
-                  </IonRow>
                 </IonCol>
               </IonRow>
             )}
+            <IonRow style={{ padding: '0px 0px 4px 0px' }}>
+              <IonText className="header">{`${t('routes.linkedFairwayCards')}:`}</IonText>&nbsp;
+              <div className="info">
+                <InfoIcon />
+                {t('common.noDataSet')}
+              </div>
+            </IonRow>
           </IonGrid>
         );
       })}
