@@ -97,11 +97,12 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                         {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
                         <dd aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</dd>, b = {vessel.width}&nbsp;
                         <dd aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</dd>, t = {vessel.draft}&nbsp;
-                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.
+                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.&nbsp;
                       </span>
                     );
                   })}
                   {sizingVessels.length < 1 && <>{t('noDataSet')}</>}
+                  <br />
                 </span>
               );
             })}
@@ -109,7 +110,15 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
           <p>
             <strong>{t('fairwayDimensions')}:</strong>
             <br />
-            {data.map((fairway) => {
+            {designSpeedText && (
+              <>
+                {t('designSpeed')}:&nbsp;
+                {designSpeedText[lang]}
+                <br />
+                <br />
+              </>
+            )}
+            {data.map((fairway, idx) => {
               const uuid = uniqueId('fairway_');
               const designDraftValues2 = getFairwayDesignDraftValues(fairway);
               const sweptDepthValues2 = getFairwaySweptDepthValues(fairway);
@@ -121,6 +130,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                 <span key={uuid}>
                   {numberOfFairways > 1 && (
                     <>
+                      {idx > 0 && <br />}
                       {getFairwayName(fairway, lang)}:
                       <br />
                     </>
@@ -162,17 +172,9 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                       <br />
                     </>
                   )}
-                  <br />
                 </span>
               );
             })}
-            {designSpeedText && (
-              <>
-                {t('designSpeed')}:&nbsp;
-                {designSpeedText[lang]}
-                <br />
-              </>
-            )}
             {isN2000HeightSystem && (
               <>
                 <br />
