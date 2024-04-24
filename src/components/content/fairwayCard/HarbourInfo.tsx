@@ -43,7 +43,7 @@ export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
             <div className="printGrid">{(data.quays && <QuayInfo data={data?.quays} />) || <InfoParagraph />}</div>
           </IonText>
           <IonText>
-            <h5>{t('cargo')}</h5>
+            <h5 style={{ margin: '0px' }}>{t('cargo')}</h5>
             {(data.cargo && <p>{data.cargo[lang]}</p>) || <InfoParagraph />}
           </IonText>
           <IonText>

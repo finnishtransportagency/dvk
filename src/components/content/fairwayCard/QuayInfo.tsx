@@ -19,45 +19,48 @@ export const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
       {data?.map((quay) => {
         const uuid = uniqueId('quay_');
         return (
-          <IonText
-            key={uuid}
-            onMouseEnter={() => setSelectedQuay(quay)}
-            onFocus={() => setSelectedQuay(quay)}
-            onMouseLeave={() => setSelectedQuay(null)}
-            onBlur={() => setSelectedQuay(null)}
-          >
-            <p className="inlineHoverText">
-              {quay?.name?.[lang]?.charAt(0).toLocaleUpperCase()}
-              {quay?.name?.[lang]?.slice(1)}
-              {!quay?.name && t('quay')}
-              {quay?.length && (
-                <>
-                  {' - '}
-                  <em>
-                    {t('length')} {quay?.length?.toLocaleString()}&nbsp;
-                    <dd aria-label={t('unit.mDesc', { count: Number(quay?.length) })}>m</dd>
-                  </em>
-                </>
-              )}
-              {quay?.sections?.map((section) => {
-                const sectionUuid = uniqueId('section_');
-                return (
-                  <span key={sectionUuid}>
+          <>
+            <IonText
+              key={uuid}
+              onMouseEnter={() => setSelectedQuay(quay)}
+              onFocus={() => setSelectedQuay(quay)}
+              onMouseLeave={() => setSelectedQuay(null)}
+              onBlur={() => setSelectedQuay(null)}
+            >
+              <p className="inlineHoverText">
+                {quay?.name?.[lang]?.charAt(0).toLocaleUpperCase()}
+                {quay?.name?.[lang]?.slice(1)}
+                {!quay?.name && t('quay')}
+                {quay?.length && (
+                  <>
+                    {' - '}
+                    <em>
+                      {t('length')} {quay?.length?.toLocaleString()}&nbsp;
+                      <dd aria-label={t('unit.mDesc', { count: Number(quay?.length) })}>m</dd>
+                    </em>
+                  </>
+                )}
+                {quay?.sections?.map((section) => {
+                  const sectionUuid = uniqueId('section_');
+                  return (
+                    <span key={sectionUuid}>
+                      <br />
+                      {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.depth?.toLocaleString()}&nbsp;
+                      <dd aria-label={t('unit.mDesc', { count: Number(section?.depth) })}>m</dd>
+                    </span>
+                  );
+                })}
+                {quay?.extraInfo && (
+                  <>
                     <br />
-                    {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.depth?.toLocaleString()}&nbsp;
-                    <dd aria-label={t('unit.mDesc', { count: Number(section?.depth) })}>m</dd>
-                  </span>
-                );
-              })}
-              {quay?.extraInfo && (
-                <>
-                  <br />
-                  {quay.extraInfo[lang]?.charAt(0).toLocaleUpperCase()}
-                  {quay.extraInfo[lang]?.slice(1)}.
-                </>
-              )}
-            </p>
-          </IonText>
+                    {quay.extraInfo[lang]?.charAt(0).toLocaleUpperCase()}
+                    {quay.extraInfo[lang]?.slice(1)}.
+                  </>
+                )}
+              </p>
+            </IonText>
+            <div className="quayInfoPadding" />
+          </>
         );
       })}
     </>
