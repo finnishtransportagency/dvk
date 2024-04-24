@@ -512,7 +512,3 @@ ion-text.previewText > * {
   pointer-events: none;
   opacity: 50%;
 }
-
-.quayInfoPadding {
-  padding-bottom: 5px;
-}

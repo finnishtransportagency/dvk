@@ -30,7 +30,6 @@ export const ProhibitionInfo: React.FC<ProhibitionInfoProps> = ({ data, inlineLa
                   {MASTERSGUIDE_URLS[lang]}
                   <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                 </a>
-                {' .'}
               </span>
             )}
             {prohibitionAreas?.length < 1 && t('noDataSet')}
