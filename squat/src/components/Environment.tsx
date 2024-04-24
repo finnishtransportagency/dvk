@@ -296,8 +296,8 @@ const Environment: React.FC = () => {
                           const optionName = tRoot(option.name).toString();
                           return (
                             <IonCol key={option.id} className="align-center">
-                              <IonImg src={option.img} alt={removeSoftHyphen(optionName)} />
-                              <p>
+                              <IonImg src={option.img} aria-hidden={true} />
+                              <p aria-hidden={true}>
                                 {getFairwayFormOrderForId(option.id)}. {optionName}
                               </p>
                             </IonCol>
