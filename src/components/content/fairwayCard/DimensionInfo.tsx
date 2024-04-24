@@ -168,6 +168,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
             })}
             {designSpeedText && (
               <>
+                {t('designSpeed')}:&nbsp;
                 {designSpeedText[lang]}
                 <br />
               </>
