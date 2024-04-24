@@ -10,7 +10,6 @@ import LabelField from './LabelField';
 import RadioSelectField from './RadioSelectField';
 import SquatHeader from './SquatHeader';
 import { isEmbedded } from '../pages/Home';
-import { removeSoftHyphen } from '../utils/helpers';
 
 const zero = 0;
 
