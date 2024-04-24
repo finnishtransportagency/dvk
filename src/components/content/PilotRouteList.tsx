@@ -1,7 +1,7 @@
 import React from 'react';
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { FeatureLayerId } from '../../utils/constants';
+import { FeatureLayerId, Lang } from '../../utils/constants';
 import { PilotRouteFeatureProperties } from '../features';
 import { Feature, Geometry } from 'geojson';
 import { Link } from 'react-router-dom';
@@ -19,7 +19,8 @@ interface PilotRouteListProps {
 }
 
 const PilotRouteList: React.FC<PilotRouteListProps> = ({ pilotRoutes, featureLink, layerId, layers }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as Lang;
 
   return (
     <IonGrid className="route-table ion-no-padding">
@@ -57,12 +58,25 @@ const PilotRouteList: React.FC<PilotRouteListProps> = ({ pilotRoutes, featureLin
                 </IonCol>
               </IonRow>
             )}
-            <IonRow style={{ padding: '0px 0px 4px 0px' }}>
-              <IonText className="header">{`${t('routes.linkedFairwayCards')}:`}</IonText>&nbsp;
-              <div className="info">
-                <InfoIcon />
-                {t('common.noDataSet')}
-              </div>
+            <IonRow>
+              <IonCol>
+                <div className="use-flex">
+                  <IonText className="header">{`${t('routes.linkedFairwayCards')}:`}</IonText>&nbsp;
+                  {properties.fairwayCards.length > 0 ? (
+                    properties.fairwayCards.map((card, idx) => (
+                      <span key={card.id}>
+                        <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
+                        {idx < properties.fairwayCards.length - 1 ? ', ' : ''}
+                      </span>
+                    ))
+                  ) : (
+                    <div className="info use-flex ion-align-items-center">
+                      <InfoIcon />
+                      {t('common.noDataSet')}
+                    </div>
+                  )}
+                </div>
+              </IonCol>
             </IonRow>
           </IonGrid>
         );
