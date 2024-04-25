@@ -191,7 +191,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <IonText>
               <h4>
                 <strong>
-                  {t('recommendations')} <span>({t('fairwayAndHarbour')})</span>
+                  {t('recommendations')} <span>({t('fairwayAndHarbour').toLocaleLowerCase()})</span>
                 </strong>
               </h4>
               <Paragraph title={t('windRecommendation')} bodyText={fairwayCard?.windRecommendation ?? undefined} showNoData />

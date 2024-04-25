@@ -25,7 +25,7 @@ export const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
               return (
                 <span key={(vts?.name?.fi ?? '') + uuid}>
                   <br />
-                  {vts?.name && vts.name[lang]}
+                  {vts?.name?.[lang]}
                   {vts?.vhf && vts.vhf.length > 0 && (
                     <>
                       , {t('vhf')} {vts?.vhf?.map((v) => (v?.name ? v.channel + ' (' + v?.name[lang] + ')' : v?.channel)).join(', ')}
@@ -38,7 +38,9 @@ export const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
                       {vts.email?.map((email, idx2) => {
                         return (
                           <span key={email}>
-                            <a href={'mailto:' + email}>{email}</a>
+                            <a href={'mailto:' + email} className="primaryColorLink">
+                              {email}
+                            </a>
                             {Number(vts?.email?.length) > idx2 + 1 ? ', ' : ''}
                           </span>
                         );
@@ -47,7 +49,7 @@ export const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
                       <br />
                     </>
                   )}
-                  <PhoneNumber title={t('phone')} showEmpty number={vts?.phoneNumber} />
+                  <PhoneNumber title={t('phone')} showEmpty number={vts?.phoneNumber} primaryColorLink={true} />
                   <br />
                 </span>
               );

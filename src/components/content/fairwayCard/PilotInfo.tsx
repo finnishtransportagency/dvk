@@ -36,7 +36,12 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ pilotageLimits, pilot }) =
           <p>
             <strong>{t('pilotOrder')}:</strong>
             <br />
-            {t('email')}: {pilot.email && <a href={'mailto:' + pilot.email}>{pilot.email}</a>}
+            {t('email')}:&nbsp;
+            {pilot.email && (
+              <a href={'mailto:' + pilot.email} className="primaryColorLink">
+                {pilot.email}
+              </a>
+            )}
             {!pilot.email && '-'}
             <br />
             {t('orderFrom')}:{' '}
@@ -45,7 +50,7 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ pilotageLimits, pilot }) =
               <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
             </a>
             <br />
-            <PhoneNumber title={t('phone')} showEmpty number={pilot.phoneNumber} />
+            <PhoneNumber title={t('phone')} showEmpty number={pilot.phoneNumber} primaryColorLink={true} />
             <br />
             <PhoneNumber title={t('fax')} showEmpty number={pilot.fax} />
             {pilot.extraInfo && (
