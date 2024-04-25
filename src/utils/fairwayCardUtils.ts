@@ -5,7 +5,7 @@ import { MAP } from './constants';
 import { Geometry, LineString, SimpleGeometry } from 'ol/geom';
 import { Feature } from 'ol';
 import { PilotageLimit } from '../components/content/fairwayCard/PilotInfo';
-import { PilotRouteFeatureProperties } from '../components/features';
+import { PilotRouteFeatureProperties, PilotageLimitFeatureProperties } from '../components/features';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -108,34 +108,34 @@ export function getPilotageLimitsByFairways(fairways: Fairway[] | undefined, get
   const source = dvkMap.getVectorSource('pilotagelimit');
   const pilotageLimitFeatures = source.getFeatures();
   const pilotageLimits: PilotageLimit[] = [];
+  const fairwayIds = fairways?.map((fairway) => String(fairway.id)) ?? [];
 
-  fairways?.forEach((fairway) => {
-    pilotageLimitFeatures.forEach((pilotageLimit) => {
-      const limitProperties = pilotageLimit.getProperties();
-      const limitGeometry = pilotageLimit.getGeometry() as Geometry;
-      // related fairways are in one string where commas separate different ids
-      const relatedIds = limitProperties.liittyyVayliin.split(',');
-      if (relatedIds.includes(String(fairway.id))) {
-        let pilotageLimitObject;
-        // added to avoid unnecessary heavy transforming function when only numero is needed
-        if (getOnlyNumber) {
-          pilotageLimitObject = {
-            numero: limitProperties.numero,
-          };
-        } else {
-          pilotageLimitObject = {
-            fid: limitProperties.fid,
-            numero: limitProperties.numero,
-            liittyyVayliin: limitProperties.liittyyVayliin,
-            raja_fi: limitProperties.raja_fi,
-            raja_sv: limitProperties.raja_sv,
-            raja_en: limitProperties.raja_en,
-            koordinaatit: limitGeometry.clone().transform(MAP.EPSG, 'EPSG:4326') as LineString,
-          };
-        }
-        pilotageLimits.push(pilotageLimitObject);
+  pilotageLimitFeatures.forEach((pilotageLimit) => {
+    const limitProperties = pilotageLimit.getProperties() as PilotageLimitFeatureProperties;
+    const limitGeometry = pilotageLimit.getGeometry() as Geometry;
+
+    // related fairways are in one string where commas separate different ids
+    const relatedIds = limitProperties.liittyyVayliin.split(',');
+    if (relatedIds.some((id) => fairwayIds.includes(id))) {
+      let pilotageLimitObject;
+      // added to avoid unnecessary heavy transforming function when only numero is needed
+      if (getOnlyNumber) {
+        pilotageLimitObject = {
+          numero: limitProperties.numero,
+        };
+      } else {
+        pilotageLimitObject = {
+          fid: limitProperties.fid,
+          numero: limitProperties.numero,
+          liittyyVayliin: limitProperties.liittyyVayliin,
+          raja_fi: limitProperties.raja_fi,
+          raja_sv: limitProperties.raja_sv,
+          raja_en: limitProperties.raja_en,
+          koordinaatit: limitGeometry.clone().transform(MAP.EPSG, 'EPSG:4326') as LineString,
+        };
       }
-    });
+      pilotageLimits.push(pilotageLimitObject);
+    }
   });
   return pilotageLimits;
 }
