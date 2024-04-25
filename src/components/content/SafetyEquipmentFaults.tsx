@@ -21,17 +21,20 @@ import { symbol2Icon } from '../layerStyles/safetyEquipmentStyles';
 import CustomSelectDropdown from './CustomSelectDropdown';
 import sortArrow from '../../theme/img/back_arrow-1.svg';
 import PageHeader from './PageHeader';
+import VectorSource from 'ol/source/Vector';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
   loading?: boolean;
   selectedFairwayCard: boolean;
   sortNewFirst?: boolean;
+  layers?: string[];
 };
 
-export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard, sortNewFirst }) => {
+export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard, sortNewFirst, layers }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const layerId = selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault';
 
   // Sort faults by recordTime (desc) if only one fault or
   // safety equipment fault page
@@ -51,7 +54,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
     const isEquipmentUsed = groupedFaults.filter((item) => item.length > 0 && item[0].equipmentId === value.equipmentId).length !== 0;
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
-  const equipmentSource = getMap().getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
+  const equipmentSource = getMap().getVectorSource(layerId);
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
@@ -95,7 +98,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
                         to="/turvalaiteviat/"
                         onClick={(e) => {
                           e.preventDefault();
-                          goToFeature(faultArray[0].equipmentId, selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
+                          goToFeature(faultArray[0].equipmentId, layerId, layers);
                         }}
                       >
                         {faultArray[0].geometry?.coordinates[0] &&
@@ -198,6 +201,15 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   }, [areaPolygons, data?.safetyEquipmentFaults, areaFilter]);
 
   useEffect(() => {
+    return () => {
+      // Cleanup: remove feature(s) from temporary layer
+      const fairwayCardLayer = getMap().getFeatureLayer('selectedfairwaycard');
+      (fairwayCardLayer.getSource() as VectorSource).clear();
+      fairwayCardLayer.setVisible(false);
+    };
+  }, []);
+
+  useEffect(() => {
     if (!state.layers.includes('safetyequipmentfault') && !isPending && !isFetching && ready) {
       const updatedLayers = [...state.layers, 'safetyequipmentfault'];
       dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
@@ -205,6 +217,15 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
     // disable because of unnecessary callbacks
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isFetching, isPending, ready]);
+
+  useEffect(() => {
+    // If fault layer is not visible, show selected safety equipment on fairway card layer
+    const fairwayCardLayer = getMap().getFeatureLayer('selectedfairwaycard');
+    if (fairwayCardLayer) {
+      (fairwayCardLayer.getSource() as VectorSource).clear();
+      fairwayCardLayer.setVisible(!state.layers.includes('safetyequipmentfault'));
+    }
+  }, [state.layers]);
 
   return (
     <>
@@ -243,7 +264,13 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         className={'tabContent active show-print' + (widePane ? ' wide' : '')}
         data-testid="safetyEquipmentFaultList"
       >
-        <FaultGroup loading={isPending} data={filterDataByArea() ?? []} selectedFairwayCard={false} sortNewFirst={sortNewFirst} />
+        <FaultGroup
+          loading={isPending}
+          data={filterDataByArea() ?? []}
+          selectedFairwayCard={false}
+          sortNewFirst={sortNewFirst}
+          layers={state.layers}
+        />
       </div>
     </>
   );
