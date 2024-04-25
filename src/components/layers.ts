@@ -14,7 +14,7 @@ import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } from '../graphql/generated';
 import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../utils/constants';
-import { HarborFeatureProperties, QuayFeatureProperties } from './features';
+import { HarborFeatureProperties, PilotRouteFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
@@ -44,11 +44,17 @@ import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
-import { getPilotPlacesByFairwayCardId, getPilotageLimitsByFairways, getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
+import {
+  getFairwayCardPilotRoutes,
+  getPilotPlacesByFairwayCardId,
+  getPilotageLimitsByFairways,
+  getSafetyEquipmentFaultsByFairwayCardId,
+} from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
+import { Geometry as GeoGeometry } from 'geojson';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -625,18 +631,6 @@ export function addAPILayers(map: Map) {
     declutter: true,
     zIndex: 302,
   });
-  // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureVectorLayer({
-    map: map,
-    id: 'selectedfairwaycard',
-    maxResolution: undefined,
-    renderBuffer: 100,
-    style: getSelectedFairwayCardStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: true,
-    zIndex: 303,
-  });
   addFeatureVectorLayer({
     map: map,
     id: 'circle',
@@ -903,6 +897,18 @@ export function addAPILayers(map: Map) {
     declutter: false,
     zIndex: 104,
   });
+  // Valitun väyläkortin featuret (jätetään aina ylimmäksi)
+  addFeatureVectorLayer({
+    map: map,
+    id: 'selectedfairwaycard',
+    maxResolution: undefined,
+    renderBuffer: 100,
+    style: getSelectedFairwayCardStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: true,
+    zIndex: 326,
+  });
 }
 
 export function unsetSelectedFairwayCard() {
@@ -922,6 +928,7 @@ export function unsetSelectedFairwayCard() {
   const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
   const pilotPlaceSource = dvkMap.getVectorSource('pilot');
   const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
+  const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
   for (const feature of oldSelectedFeatures) {
     switch (feature.getProperties().dataSource) {
@@ -965,6 +972,9 @@ export function unsetSelectedFairwayCard() {
         break;
       case 'pilotagelimit':
         pilotageLimitSource.addFeature(feature);
+        break;
+      case 'pilotroute':
+        pilotRouteSource.addFeature(feature);
         break;
     }
   }
@@ -1071,6 +1081,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const pilotPlaceSource = dvkMap.getVectorSource('pilot');
     const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
     const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
+    const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
     unsetSelectedFairwayCard();
 
     const fairwayFeatures: Feature[] = [];
@@ -1178,6 +1189,26 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
         if (limit.numero === pilotageNumber) {
           pilotageLimitSource.removeFeature(f);
           fairwayFeatures.push(f);
+        }
+      }
+    }
+
+    if (import.meta.env.VITE_APP_ENV !== 'prod') {
+      // create correct type objects for getFairwayCardPilotRoutes function
+      const pilotRouteFeatures = pilotRouteSource.getFeatures().map((f) => {
+        return {
+          properties: f.getProperties() as PilotRouteFeatureProperties,
+          // geometry is not used in getFairwayCardPilotRoutes function, but required so unknown is justified
+          geometry: f.getGeometry() as unknown as GeoGeometry,
+          type: f.getProperties().type,
+        };
+      });
+      const pilotRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
+      for (const route of pilotRoutes) {
+        const feature = pilotRouteSource.getFeatureById(route?.properties?.id) as Feature<Geometry>;
+        if (feature) {
+          pilotRouteSource.removeFeature(feature);
+          fairwayFeatures.push(feature);
         }
       }
     }
