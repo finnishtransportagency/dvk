@@ -286,4 +286,8 @@ fragment FairwayCardParts on FairwayCard {
   harbors {
     ...HarborParts
   }
+  pilotRoutes {
+    id
+    name
+  }
 }

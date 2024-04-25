@@ -210,7 +210,8 @@
     "toggle-sequence": "[en] Aseta järjestysnumero",
     "fairway-additional-info": "Additional information",
     "fairway-additional-info-notification-header": "[en] Lisätietojen lisääminen väyläkortille",
-    "fairway-additional-info-notification-body": "[en] Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista."
+    "fairway-additional-info-notification-body": "[en] Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
+    "linked-pilot-routes": "[en] Linkitetyt luotsausreitit"
   },
   "harbour": {
     "primary-id": "Harbour ID",

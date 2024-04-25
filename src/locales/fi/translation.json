@@ -5,6 +5,7 @@
       "closeMenu": "Sulje",
       "title": "Digitaalinen väyläkortti",
       "fairway-cards": "Väyläkortit",
+      "pilot-routes": "Luotsausreitit",
       "safety-equipment-faults": "Turvalaiteviat",
       "marine-warnings": "Merivaroitukset",
       "squat": "Squat-laskuri",
@@ -137,6 +138,7 @@
     "gulfOfBothnia": "Pohjanlahden alue",
     "harboursTitle": "Väylän satamat",
     "areasTitle": "Väylän alueet",
+    "routesTitle": "Luotsausreitit",
     "information": "Väylätiedot",
     "liningAndMarking": "Linjaus ja merkintä",
     "starts": "Alkaa",
@@ -260,6 +262,12 @@
     "pilotageLimitMaxDimensions": "Alusten enimmäismitat joita linja koskee",
     "draught": "Syväys",
     "width": "Leveys"
+  },
+  "routes": {
+    "title": "Luotsausreitit",
+    "route": "Reitti",
+    "rtz": "Reitin RTZ-tiedosto",
+    "linkedFairwayCards": "Luotsausreittiin liittyvät väyläkortit"
   },
   "faults": {
     "title": "Turvalaiteviat",
@@ -512,6 +520,7 @@
     "dataUpToDate": "Palvelun tiedot ovat ajan tasalla",
     "dataUpdateFailedAt": "Tietojen päivitys epäonnistui",
     "latestDataUpdateAt": "Tietoja päivitetty viimeksi",
+    "modified": "Päivitetty",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Turvalaiteviat",
     "marine-warnings": "Merivaroitukset",
@@ -550,5 +559,11 @@
     "saimaaCanal": "Saimaan kanava",
     "gulfOfBothnia": "Pohjanlahti",
     "inlandAreas": "Sisävesistöt"
+  },
+  "fileSize": {
+    "bytes": "tavua",
+    "KB": "kilotavua",
+    "MB": "megatavua",
+    "GB": "gigatavua"
   }
 }

@@ -3,7 +3,6 @@ import 'source-map-support/register';
 import * as cdk from 'aws-cdk-lib';
 import { DvkBuildImageStack } from '../lib/dvk-build-image-stack';
 import { App, StackProps } from 'aws-cdk-lib';
-import { PipelineLambda } from '../lib/pipeline-lambda';
 import Config from '../lib/config';
 import { DvkPipeline } from '../lib/dvk-pipeline';
 import { DvkBackendStack } from '../lib/dvk-backend';

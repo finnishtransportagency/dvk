@@ -186,6 +186,11 @@ export function getPathPredictorGeometry(feature: Feature, startFromBow: boolean
     if (rotation !== undefined) {
       point.rotate(-rotation, coordinates);
     }
+  } else {
+    const vesselGeom = getVesselGeometry(feature);
+    if (vesselGeom) {
+      point = vesselGeom.getInteriorPoint();
+    }
   }
 
   const pathCoords: Array<Coordinate> = [];

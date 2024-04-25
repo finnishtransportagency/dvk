@@ -1,6 +1,7 @@
 import { TFunction } from 'i18next';
 import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, Text } from '../graphql/generated';
 import { ActionType, ItemType, Lang, SelectOption } from './constants';
+import { FeatureCollection } from 'geojson';
 
 const sortByString = (a: Maybe<string> | undefined, b: Maybe<string> | undefined, sortDescending: boolean) => {
   const valA = a ?? '';
@@ -178,4 +179,22 @@ export function sortPictures(pictures: PictureInput[]) {
       return 1;
     }
   });
+}
+
+export function featureCollectionToSelectOptions(collection: FeatureCollection | undefined) {
+  const propertyArray: SelectOption[] = [];
+  collection?.features?.map((route) => {
+    const properties = route.properties;
+    const selectOption = {
+      id: properties?.id,
+      // name declared like this because of constructing label logic
+      // related to SelectWithFilter
+      name: {
+        fi: properties?.name,
+      },
+    };
+    propertyArray.push(selectOption);
+  });
+
+  return propertyArray;
 }

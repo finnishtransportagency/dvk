@@ -1,7 +1,6 @@
 import React from 'react';
 import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { metresToNauticalMiles } from '../../../utils/conversions';
 import { Lang } from '../../../utils/constants';
 import { Fairway, Text } from '../../../graphql/generated';
 
@@ -16,19 +15,6 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
 
   const primaryFairway = data?.find((fairway) => fairway.primary);
   const secondaryFairway = data?.find((fairway) => fairway.secondary) ?? primaryFairway;
-
-  // Calculate the sum of navigation lines excluding theoretical curves (typeCode '4')
-  const extractNavigationLinesLength = () => {
-    const totalLength = data?.reduce((sum, card) => {
-      return (
-        sum +
-        (card.navigationLines?.reduce((acc, line) => {
-          return acc + ((line.typeCode !== '4' && line.length) || 0);
-        }, 0) ?? 0)
-      );
-    }, 0);
-    return totalLength;
-  };
 
   const extractLightingInfo = () => {
     switch (primaryFairway?.lightingCode) {
@@ -67,11 +53,7 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
           <p>
             <strong>{t('liningAndMarking')}: </strong>
             {t('starts')}: {formatSentence(primaryFairway?.startText)}, {t('ends')}: {formatSentence(secondaryFairway?.endText, true)}{' '}
-            {lineText && formatSentence(lineText[lang], true)} {t('length')}:{' '}
-            {((extractNavigationLinesLength() ?? 0) / 1000).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
-            <dd aria-label={t('unit.kmDesc', { count: 3 })}>km</dd> /{' '}
-            {metresToNauticalMiles(extractNavigationLinesLength()).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
-            <dd aria-label={t('unit.nmDesc', { count: 2 })}>{t('unit.nm')}</dd>. {extractLightingInfo()}. {extractNotationInfo()}.
+            {lineText && formatSentence(lineText[lang], true)} {extractLightingInfo()}. {extractNotationInfo()}.
           </p>
         </IonText>
       )}

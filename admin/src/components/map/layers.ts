@@ -36,6 +36,8 @@ import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAre
 import { Geometry } from 'ol/geom';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
+import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
+import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -312,8 +314,9 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const highlighted = !!feature.get('hoverStyle');
   switch (ds) {
     case 'line12':
+      return getNavigationLine12Style(feature, resolution, true);
     case 'line3456':
-      return getLineStyle('#0000FF', 2);
+      return getNavigationLine3456Style(true);
     case 'area12':
       return resolution <= 100 ? getAreaStyleBySource('area12', highlighted) : undefined;
     case 'area12Borderline':
@@ -425,7 +428,7 @@ export function addAPILayers(map: Map) {
     id: 'line12',
     maxResolution: undefined,
     renderBuffer: 1,
-    style: getLineStyle('#0000FF', 1),
+    style: (feature, resolution) => getNavigationLine12Style(feature, resolution, false),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -448,7 +451,7 @@ export function addAPILayers(map: Map) {
     id: 'line3456',
     maxResolution: 75,
     renderBuffer: 1,
-    style: getLineStyle('#0000FF', 1),
+    style: getNavigationLine3456Style(false),
     minResolution: undefined,
     opacity: 1,
     declutter: false,

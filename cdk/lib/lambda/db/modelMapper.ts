@@ -1,3 +1,4 @@
+import { FeatureCollection } from 'geojson';
 import {
   Fairway,
   FairwayCard,
@@ -14,8 +15,11 @@ import { CurrentUser } from '../api/login';
 import { fetchPilotPoints } from '../api/traficom';
 import { getFromCache, cacheResponse, CacheResponse } from '../graphql/cache';
 import { log } from '../logger';
-import FairwayCardDBModel, { FairwayDBModel, TrafficServiceDBModel } from './fairwayCardDBModel';
+import FairwayCardDBModel, { FairwayDBModel, PilotRoute, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
+import { fetchPilotRouteData } from '../api/pilotRoutes';
+import { saveResponseToS3 } from '../util';
+import zlib from 'zlib';
 
 const MAX_TEXT_LENGTH = 2000;
 const MAX_NUMBER_LENGTH = 10;
@@ -242,7 +246,12 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pi
   };
 }
 
-export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, pilotMap: Map<number, PilotPlace>, user: CurrentUser | undefined) {
+export function mapFairwayCardDBModelToGraphqlType(
+  dbModel: FairwayCardDBModel,
+  pilotMap: Map<number, PilotPlace>,
+  user: CurrentUser | undefined,
+  pilotRoutes: FeatureCollection
+) {
   const card: FairwayCard = {
     id: dbModel.id,
     name: {
@@ -274,6 +283,7 @@ export function mapFairwayCardDBModelToGraphqlType(dbModel: FairwayCardDBModel, 
     vesselRecommendation: dbModel.vesselRecommendation,
     trafficService: mapTrafficService(dbModel.trafficService, pilotMap),
     harbors: dbModel.harbors,
+    pilotRoutes: mapPilotRoutes(dbModel.pilotRoutes ?? [], pilotRoutes),
     fairwayIds: mapFairwayIds(dbModel),
     pictures: dbModel.pictures,
   };
@@ -304,4 +314,53 @@ export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: Curr
     quays: dbModel.quays,
     status: dbModel.status,
   };
+}
+
+const pilotRoutesCacheKey = 'pilotroutes';
+
+export async function getPilotRoutes() {
+  // get data (from cache or api)
+  let response: CacheResponse | undefined;
+  let data: FeatureCollection | undefined;
+  try {
+    response = await getFromCache(pilotRoutesCacheKey);
+    console.log(response)
+    if (response.expired) {
+      log.debug('fetching pilot routes from api');
+      data = await fetchPilotRouteData();
+      await saveResponseToS3(data, pilotRoutesCacheKey);
+    } else if (response.data) {
+      log.debug('parsing pilot routes from cache');
+      //data is compressed, so decompress before can be put in json form
+      const decompressedData = zlib.unzipSync(Buffer.from(response.data, 'base64')).toString('utf-8');
+      data = JSON.parse(decompressedData) as FeatureCollection;
+    }
+  } catch (e) {
+    if (!data && response?.data) {
+      log.warn('parsing expired pilot routes from cache');
+      //data is compressed, so decompress before can be put in json form
+      const decompressedData = zlib.unzipSync(Buffer.from(response.data, 'base64')).toString('utf-8');
+      data = JSON.parse(decompressedData) as FeatureCollection;
+    }
+  }
+
+  return data ?? [];
+}
+
+// map the routes to fit the db model
+function mapPilotRoutes(pilotRoutes: PilotRoute[], features: FeatureCollection) {
+  const filteredRoutes: PilotRoute[] = [];
+
+  pilotRoutes.forEach((route) => {
+    const foundFeature = features?.features?.find((f) => f.id === route.id);
+    if (foundFeature) {
+      filteredRoutes.push({
+        id: route.id,
+        name: foundFeature?.properties?.name,
+      } as PilotRoute);
+    }
+  });
+  // if empty array is returned, it means that routes are not found
+  // from api or cache
+  return filteredRoutes ?? [];
 }

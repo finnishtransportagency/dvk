@@ -14,7 +14,7 @@ import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } from '../graphql/generated';
 import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../utils/constants';
-import { HarborFeatureProperties, QuayFeatureProperties } from './features';
+import { HarborFeatureProperties, PilotRouteFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
@@ -44,9 +44,17 @@ import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
-import { getSafetyEquipmentFaultsByFairwayCardId } from '../utils/fairwayCardUtils';
+import {
+  getFairwayCardPilotRoutes,
+  getPilotPlacesByFairwayCardId,
+  getPilotageLimitsByFairways,
+  getSafetyEquipmentFaultsByFairwayCardId,
+} from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
+import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
+import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
+import { Geometry as GeoGeometry } from 'geojson';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -313,8 +321,9 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
   const highlighted = !!feature.get('hoverStyle');
   switch (ds) {
     case 'line12':
+      return getNavigationLine12Style(feature, resolution, true);
     case 'line3456':
-      return getLineStyle('#0000FF', 2);
+      return getNavigationLine3456Style(true);
     case 'area12':
       return resolution <= 100 ? getAreaStyleBySource('area12', highlighted, highlighted) : undefined;
     case 'area12Borderline':
@@ -336,6 +345,12 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getHarborStyle(feature, resolution, highlighted, minResolutionHarbor);
     case 'circle':
       return getCircleStyle(feature, resolution);
+    case 'pilot':
+      return getPilotStyle(highlighted);
+    case 'pilotagelimit':
+      return getPilotageLimitStyle(feature, resolution, highlighted);
+    case 'pilotroute':
+      return getPilotRouteStyle(feature, resolution, highlighted);
     default:
       return undefined;
   }
@@ -550,7 +565,7 @@ export function addAPILayers(map: Map) {
     id: 'line12',
     maxResolution: undefined,
     renderBuffer: 1,
-    style: (feature) => getLineStyle('#0000FF', feature.get('hoverStyle') ? 2 : 1),
+    style: (feature, resolution) => getNavigationLine12Style(feature, resolution, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -573,7 +588,7 @@ export function addAPILayers(map: Map) {
     id: 'line3456',
     maxResolution: 75,
     renderBuffer: 1,
-    style: (feature) => getLineStyle('#0000FF', feature.get('hoverStyle') ? 2 : 1),
+    style: (feature) => getNavigationLine3456Style(!!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: false,
@@ -615,18 +630,6 @@ export function addAPILayers(map: Map) {
     opacity: 1,
     declutter: true,
     zIndex: 302,
-  });
-  // Valitun väyläkortin navigointilinjat ja väyläalueet
-  addFeatureVectorLayer({
-    map: map,
-    id: 'selectedfairwaycard',
-    maxResolution: undefined,
-    renderBuffer: 100,
-    style: getSelectedFairwayCardStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: true,
-    zIndex: 303,
   });
   addFeatureVectorLayer({
     map: map,
@@ -894,6 +897,18 @@ export function addAPILayers(map: Map) {
     declutter: false,
     zIndex: 104,
   });
+  // Valitun väyläkortin featuret (jätetään aina ylimmäksi)
+  addFeatureVectorLayer({
+    map: map,
+    id: 'selectedfairwaycard',
+    maxResolution: undefined,
+    renderBuffer: 100,
+    style: getSelectedFairwayCardStyle,
+    minResolution: undefined,
+    opacity: 1,
+    declutter: true,
+    zIndex: 326,
+  });
 }
 
 export function unsetSelectedFairwayCard() {
@@ -911,6 +926,9 @@ export function unsetSelectedFairwayCard() {
   const harborSource = dvkMap.getVectorSource('harbor');
   const circleSource = dvkMap.getVectorSource('circle');
   const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
+  const pilotPlaceSource = dvkMap.getVectorSource('pilot');
+  const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
+  const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
   const oldSelectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
   for (const feature of oldSelectedFeatures) {
     switch (feature.getProperties().dataSource) {
@@ -948,6 +966,15 @@ export function unsetSelectedFairwayCard() {
         break;
       case 'safetyequipmentfault':
         safetyEquipmentFaultSource.addFeature(feature);
+        break;
+      case 'pilot':
+        pilotPlaceSource.addFeature(feature);
+        break;
+      case 'pilotagelimit':
+        pilotageLimitSource.addFeature(feature);
+        break;
+      case 'pilotroute':
+        pilotRouteSource.addFeature(feature);
         break;
     }
   }
@@ -1051,7 +1078,10 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const boardLine12Source = dvkMap.getVectorSource('boardline12');
     const harborSource = dvkMap.getVectorSource('harbor');
     const circleSource = dvkMap.getVectorSource('circle');
+    const pilotPlaceSource = dvkMap.getVectorSource('pilot');
+    const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
     const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
+    const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
     unsetSelectedFairwayCard();
 
     const fairwayFeatures: Feature[] = [];
@@ -1145,6 +1175,44 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
     }
 
+    const pilotPlaces = getPilotPlacesByFairwayCardId(String(fairwayCard.name.fi));
+    for (const feature of pilotPlaces) {
+      pilotPlaceSource.removeFeature(feature);
+      fairwayFeatures.push(feature);
+    }
+
+    // no feature id set for pilotage limits, so has to be done this way around
+    const pilotageLimits = getPilotageLimitsByFairways(fairwayCard.fairways, true);
+    for (const f of pilotageLimitSource.getFeatures()) {
+      const pilotageNumber = f.getProperties().numero;
+      for (const limit of pilotageLimits) {
+        if (limit.numero === pilotageNumber) {
+          pilotageLimitSource.removeFeature(f);
+          fairwayFeatures.push(f);
+        }
+      }
+    }
+
+    if (import.meta.env.VITE_APP_ENV !== 'prod') {
+      // create correct type objects for getFairwayCardPilotRoutes function
+      const pilotRouteFeatures = pilotRouteSource.getFeatures().map((f) => {
+        return {
+          properties: f.getProperties() as PilotRouteFeatureProperties,
+          // geometry is not used in getFairwayCardPilotRoutes function, but required so unknown is justified
+          geometry: f.getGeometry() as unknown as GeoGeometry,
+          type: f.getProperties().type,
+        };
+      });
+      const pilotRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
+      for (const route of pilotRoutes) {
+        const feature = pilotRouteSource.getFeatureById(route?.properties?.id) as Feature<Geometry>;
+        if (feature) {
+          pilotRouteSource.removeFeature(feature);
+          fairwayFeatures.push(feature);
+        }
+      }
+    }
+
     fairwayFeatures.forEach((f) => f.set('selected', true, true));
     selectedFairwayCardSource.addFeatures(fairwayFeatures);
 
@@ -1164,12 +1232,22 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
 
 export function setSelectedPilotPlace(id?: number | string) {
   const dvkMap = getMap();
-  const pilotSource = dvkMap.getVectorSource('pilot');
+  const pilotSource = dvkMap.getVectorSource('selectedfairwaycard');
 
   for (const f of pilotSource.getFeatures()) {
     f.set('hoverStyle', id && f.getId() === id);
   }
   pilotSource.dispatchEvent('change');
+}
+
+export function setSelectedPilotageLimit(id?: number | string) {
+  const dvkMap = getMap();
+  const pilotageLimitSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  for (const f of pilotageLimitSource.getFeatures()) {
+    f.set('hoverStyle', id && f.getId() === id);
+  }
+  pilotageLimitSource.dispatchEvent('change');
 }
 
 export function setSelectedFairwayArea(id?: number | string) {
@@ -1235,6 +1313,15 @@ export function setSelectedSafetyEquipment(id: number, selected: boolean) {
 
   highlightFeatures(faultSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
   highlightFeatures(fairwayCardSource, ['safetyequipment', 'safetyequipmentfault'], id, 'id', selected);
+}
+
+export function setSelectedPilotRoute(id: number, selected: boolean) {
+  const dvkMap = getMap();
+  const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
+  const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  highlightFeatures(pilotRouteSource, ['pilotroute'], id, 'id', selected);
+  highlightFeatures(fairwayCardSource, ['pilotroute'], id, 'id', selected);
 }
 
 export function setSelectedHarborPreview(harbor: HarborPartsFragment) {

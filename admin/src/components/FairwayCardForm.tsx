@@ -26,6 +26,7 @@ import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
 import { openPreview } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
+import { useFeatureData } from '../utils/dataLoader';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -55,6 +56,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
   const { data: pilotPlaceList, isLoading: isLoadingPilotPlaces } = usePilotPlacesQueryData();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
+  // these are derived straight from featureData unlike others through graphQL
+  // the graphQL approach's motives are a bit unclear so possible refactor in the future
+  const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
@@ -279,6 +283,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               fairwayOptions={fairwayList?.fairways}
               fairwaySelection={fairwaySelection}
               harbourOptions={harbourOptions}
+              isLoadingPilotRoutes={isLoadingPilotRoutes}
+              pilotRouteOptions={pilotRouteList}
             />
             <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} />
             <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} />
