@@ -324,6 +324,7 @@ export async function getPilotRoutes() {
   let data: FeatureCollection | undefined;
   try {
     response = await getFromCache(pilotRoutesCacheKey);
+    console.log(response)
     if (response.expired) {
       log.debug('fetching pilot routes from api');
       data = await fetchPilotRouteData();

@@ -11,7 +11,6 @@ import transformTranslate from '@turf/transform-translate';
 import lineIntersect from '@turf/line-intersect';
 import nearestPointOnLine from '@turf/nearest-point-on-line';
 import lineArc from '@turf/line-arc';
-import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
 
 type TurningDirection = 'left' | 'right';
 
@@ -122,8 +121,6 @@ function getRouteLine(rtz: RtzData) {
 
 export async function fetchPilotRouteData(): Promise<FeatureCollection> {
   const data: RtzData[] = await fetchPilotRoutesApi();
-  const cards = await FairwayCardDBModel.getAllPublic();
-
   const features: Feature<Geometry, GeoJsonProperties>[] = data
     ?.filter((entry) => entry.tila === 1)
     .map((entry) => {
@@ -131,12 +128,6 @@ export async function fetchPilotRouteData(): Promise<FeatureCollection> {
         type: 'LineString',
         coordinates: getRouteLine(entry),
       };
-
-      const fairwayCards: FairwayCardIdName[] = cards
-        ?.filter((card) => card.pilotRoutes?.some((pr) => pr.id === entry.tunnus))
-        ?.map((c) => {
-          return { id: c.id, name: c.name };
-        });
 
       return {
         type: 'Feature',
@@ -149,7 +140,6 @@ export async function fetchPilotRouteData(): Promise<FeatureCollection> {
           name: entry.nimi,
           status: entry.tila,
           rtz: entry.rtz,
-          fairwayCards: fairwayCards ?? [],
         },
       };
     });
