@@ -332,7 +332,8 @@
       "fairways": "Fairway cards for the compulsory pilotage limit"
     },
     "pilotRoute": {
-      "header": "ROUTE: {{val}}"
+      "header": "ROUTE: {{val}}",
+      "fairwayCards": "Pilot route is part of the fairway card"
     },
     "quay": {
       "length": "Length of the quay",
