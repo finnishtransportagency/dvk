@@ -59,26 +59,26 @@ const PilotRouteList: React.FC<PilotRouteListProps> = ({ pilotRoutes, featureLin
                 </IonCol>
               </IonRow>
             )}
-            <IonRow>
-              <IonCol>
-                <div className="use-flex">
+            {layerId !== 'selectedfairwaycard' && (
+              <IonRow>
+                <IonCol className="fairwayCardLink">
                   <IonText className="header">{`${t('routes.linkedFairwayCards')}:`}</IonText>&nbsp;
                   {properties.fairwayCards.length > 0 ? (
                     properties.fairwayCards.map((card, idx) => (
-                      <span key={card.id}>
+                      <div key={card.id}>
                         <Link to={`/kortit/${card.id}`}>{card.name[lang]}</Link>
                         {idx < properties.fairwayCards.length - 1 ? ', ' : ''}
-                      </span>
+                      </div>
                     ))
                   ) : (
-                    <div className="info use-flex ion-align-items-center">
+                    <div className="info">
                       <InfoIcon />
                       {t('common.noDataSet')}
                     </div>
                   )}
-                </div>
-              </IonCol>
-            </IonRow>
+                </IonCol>
+              </IonRow>
+            )}
           </IonGrid>
         );
       })}

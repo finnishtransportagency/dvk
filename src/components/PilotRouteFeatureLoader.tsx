@@ -15,7 +15,7 @@ function addFairwayCardData(features: Feature<Geometry>[], cards: FairwayCardPar
       ?.map((c) => {
         return { id: c.id, name: c.name };
       });
-    f.setProperties({ fairwayCards: fairwayCards ?? [] }, true);
+    f.set('fairwayCards', fairwayCards ?? [], true);
   });
 }
 
