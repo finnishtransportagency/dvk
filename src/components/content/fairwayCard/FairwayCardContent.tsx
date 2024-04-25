@@ -238,8 +238,16 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           </div>
 
           <div className={getTabClassName(4)}>
-            {import.meta.env.VITE_APP_ENV !== 'prod' && (
-              <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
+            {import.meta.env.VITE_APP_ENV !== 'prod' && pilotRoutesReady && (
+              <>
+                {pilotRoutes.length > 0 ? (
+                  <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
+                ) : (
+                  <IonText className="no-print">
+                    <InfoParagraph />
+                  </IonText>
+                )}
+              </>
             )}
           </div>
 
