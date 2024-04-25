@@ -1,6 +1,6 @@
 .dataTableGrid {
   flex-wrap: nowrap;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: hidden;
 }
 
