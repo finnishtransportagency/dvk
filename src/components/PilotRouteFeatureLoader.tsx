@@ -6,7 +6,7 @@ import { Geometry } from 'ol/geom';
 import dvkMap from './DvkMap';
 import { useFeatureData } from '../utils/dataLoader';
 
-function usePilotRouteFeatures() {
+export function usePilotRouteFeatures() {
   const [ready, setReady] = useState(false);
   const [pilotRouteFeatures, setPilotRouteFeatures] = useState<Feature<Geometry>[]>([]);
   const pilotRouteQuery = useFeatureData('pilotroute', true, 60 * 60 * 1000, true, OFFLINE_STORAGE.staleTime, OFFLINE_STORAGE.cacheTime);
@@ -14,6 +14,8 @@ function usePilotRouteFeatures() {
   const errorUpdatedAt = pilotRouteQuery.errorUpdatedAt;
   const isPaused = pilotRouteQuery.isPaused;
   const isError = pilotRouteQuery.isError;
+  const isPending = pilotRouteQuery.isPending;
+  const isFetching = pilotRouteQuery.isFetching;
 
   useEffect(() => {
     const pilotRouteData = pilotRouteQuery.data;
@@ -27,7 +29,7 @@ function usePilotRouteFeatures() {
       setReady(true);
     }
   }, [pilotRouteQuery.data]);
-  return { ready, pilotRouteFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return { ready, pilotRouteFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching };
 }
 
 export function usePilotRouteLayer() {

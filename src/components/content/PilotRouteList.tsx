@@ -3,13 +3,14 @@ import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FeatureLayerId, Lang } from '../../utils/constants';
 import { PilotRouteFeatureProperties } from '../features';
-import { Feature, Geometry } from 'geojson';
 import { Link } from 'react-router-dom';
 import { setSelectedPilotRoute } from '../layers';
 import { goToFeature } from '../../utils/common';
 import { RtzFileDownload } from '../RtzFileDownload';
 import './PilotRoutesList.css';
 import InfoIcon from '../../theme/img/info.svg?react';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
 interface PilotRouteListProps {
   pilotRoutes: Feature<Geometry>[];
@@ -25,7 +26,7 @@ const PilotRouteList: React.FC<PilotRouteListProps> = ({ pilotRoutes, featureLin
   return (
     <IonGrid className="route-table ion-no-padding">
       {pilotRoutes?.map((pilotRoute) => {
-        const properties = pilotRoute.properties as PilotRouteFeatureProperties;
+        const properties = pilotRoute.getProperties() as PilotRouteFeatureProperties;
         return (
           <IonGrid
             key={properties.id}
