@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
 import { setSelectedFairwayCard } from '../../layers';
-import { Lang, OFFLINE_STORAGE } from '../../../utils/constants';
+import { Lang } from '../../../utils/constants';
 import PrintMap from '../../PrintMap';
 import Breadcrumb from '../Breadcrumb';
 import Paragraph, { InfoParagraph } from '../Paragraph';
@@ -30,11 +30,13 @@ import {
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
-import { useFeatureData, useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
+import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
 import { usePilotageLimitLayer, useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
 import { TabSwiper } from './TabSwiper';
 import PilotRouteList from '../PilotRouteList';
-import { Feature, Geometry } from 'geojson';
+import { usePilotRouteFeatures } from '../../PilotRouteFeatureLoader';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -68,15 +70,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const { ready: safetyEquipmentLayerReady } = useSafetyEquipmentAndFaultLayer();
   const { ready: pilotageLayerReady } = usePilotageLimitLayer();
-
-  const { data: pilotRouteData, isSuccess: pilotRoutesSuccess } = useFeatureData(
-    'pilotroute',
-    true,
-    60 * 60 * 1000,
-    true,
-    OFFLINE_STORAGE.staleTime,
-    OFFLINE_STORAGE.cacheTime
-  );
+  const { pilotRouteFeatures, ready: pilotRoutesReady } = usePilotRouteFeatures();
 
   useEffect(() => {
     if (safetyEquipmentLayerReady) {
@@ -92,17 +86,10 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   }, [fairwayCard?.fairways, pilotageLayerReady]);
 
   useEffect(() => {
-    if (
-      fairwayCard?.pilotRoutes &&
-      fairwayCard.pilotRoutes.length > 0 &&
-      pilotRoutesSuccess &&
-      pilotRouteData?.features &&
-      pilotRouteData.features.length > 0
-    ) {
-      const features = pilotRouteData.features as Feature<Geometry>[];
-      setPilotRoutes(getFairwayCardPilotRoutes(fairwayCard, features));
+    if (fairwayCard?.pilotRoutes && fairwayCard.pilotRoutes.length > 0 && pilotRoutesReady && pilotRouteFeatures && pilotRouteFeatures.length > 0) {
+      setPilotRoutes(getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures));
     }
-  }, [fairwayCard, pilotRouteData, pilotRoutesSuccess]);
+  }, [fairwayCard, pilotRouteFeatures, pilotRoutesReady]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
@@ -251,8 +238,16 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           </div>
 
           <div className={getTabClassName(4)}>
-            {import.meta.env.VITE_APP_ENV !== 'prod' && (
-              <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
+            {import.meta.env.VITE_APP_ENV !== 'prod' && pilotRoutesReady && (
+              <>
+                {pilotRoutes.length > 0 ? (
+                  <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
+                ) : (
+                  <IonText className="no-print">
+                    <InfoParagraph />
+                  </IonText>
+                )}
+              </>
             )}
           </div>
 

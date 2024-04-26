@@ -14,7 +14,7 @@ import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } from '../graphql/generated';
 import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../utils/constants';
-import { HarborFeatureProperties, PilotRouteFeatureProperties, QuayFeatureProperties } from './features';
+import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
 import anchorage from '../theme/img/ankkurointialue.svg';
 import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
@@ -54,7 +54,6 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
-import { Geometry as GeoGeometry } from 'geojson';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -1194,18 +1193,10 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     }
 
     if (import.meta.env.VITE_APP_ENV !== 'prod') {
-      // create correct type objects for getFairwayCardPilotRoutes function
-      const pilotRouteFeatures = pilotRouteSource.getFeatures().map((f) => {
-        return {
-          properties: f.getProperties() as PilotRouteFeatureProperties,
-          // geometry is not used in getFairwayCardPilotRoutes function, but required so unknown is justified
-          geometry: f.getGeometry() as unknown as GeoGeometry,
-          type: f.getProperties().type,
-        };
-      });
-      const pilotRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
-      for (const route of pilotRoutes) {
-        const feature = pilotRouteSource.getFeatureById(route?.properties?.id) as Feature<Geometry>;
+      const pilotRouteFeatures = pilotRouteSource.getFeatures();
+      const cardRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
+      for (const cardRoute of cardRoutes) {
+        const feature = pilotRouteSource.getFeatureById(cardRoute.getProperties()?.id) as Feature<Geometry>;
         if (feature) {
           pilotRouteSource.removeFeature(feature);
           fairwayFeatures.push(feature);

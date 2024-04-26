@@ -332,7 +332,8 @@
       "fairways": "Farledskort angående lotspliktslinje"
     },
     "pilotRoute": {
-      "header": "RUTT: {{val}}"
+      "header": "RUTT: {{val}}",
+      "fairwayCards": "Lotsningsrutten är en del av farledskortet"
     },
     "quay": {
       "length": "Kajens längd",

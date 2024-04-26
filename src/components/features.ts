@@ -44,6 +44,7 @@ export type PilotRouteFeatureProperties = {
   name: string;
   status: number;
   rtz: string;
+  fairwayCards: Card[];
 };
 
 export type PilotageLimitFeatureProperties = {

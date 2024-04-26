@@ -332,7 +332,8 @@
       "fairways": "Linjaan liittyvät väyläkortit"
     },
     "pilotRoute": {
-      "header": "REITTI: {{val}}"
+      "header": "REITTI: {{val}}",
+      "fairwayCards": "Luotsausreitti on osa väyläkorttia"
     },
     "quay": {
       "length": "Laiturin pituus",
