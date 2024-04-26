@@ -1,7 +1,7 @@
 import { FeatureCollection, Geometry, Position } from 'geojson';
 import { gzip } from 'zlib';
 import { log } from './logger';
-import { CacheResponse, cacheResponse, getCacheControlHeaders, getFromCache } from './graphql/cache';
+import { CacheResponse, cacheResponse, getCacheControlHeaders } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
 import { Vessel } from './api/apiModels';
 import { getHeaders } from './environment';
@@ -126,7 +126,7 @@ export async function handleAisCall(
     log.debug('ais data: %d', Array.isArray(aisData) ? aisData.length : aisData.features.length);
     base64Response = await toBase64Response(aisData);
   } catch (e) {
-    base64Response = '';
+    base64Response = undefined;
     statusCode = 503;
   }
 
