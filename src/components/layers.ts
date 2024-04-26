@@ -1217,11 +1217,12 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     selectedFairwayCardSource.addFeatures(fairwayFeatures);
 
     const extent = olExtent.createEmpty();
-    const dataSourceKeywords = ['line', 'area', 'harbor'];
+    // pilot excludes pilot, pilotagelimit and pilotroute
+    const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot'];
     for (const feature of fairwayFeatures) {
       const dataSource = feature.getProperties().dataSource;
-      const isRightDataSource = dataSourceKeywords.some((keyword) => dataSource.includes(keyword));
-      if (isRightDataSource) {
+      const isWrongDataSource = excludedDatasources.some((source) => dataSource.includes(source));
+      if (!isWrongDataSource) {
         const geom = feature.getGeometry();
         if (geom) {
           olExtent.extend(extent, geom.getExtent());
