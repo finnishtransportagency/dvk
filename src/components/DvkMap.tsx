@@ -38,6 +38,7 @@ import { Icon, Stroke } from 'ol/style';
 import locationIcon from '../theme/img/user_location_indicator.svg';
 import { Dispatch } from 'react';
 import { Action } from '../hooks/dvkReducer';
+import { FeatureLike } from 'ol/Feature';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -195,20 +196,6 @@ class DvkMap {
     });
     this.olMap.addLayer(bgMmlmeriLayer);
 
-    const bgMmlmerirantaviivaLayer = new VectorImageLayer({
-      properties: { id: 'mml_meri_rantaviiva' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
-      maxResolution: 32,
-      zIndex: 3,
-      renderOrder: undefined,
-      renderBuffer: 1,
-      imageRatio: 3,
-    });
-    this.olMap.addLayer(bgMmlmerirantaviivaLayer);
-
     const bgMmljarviLayer = new VectorImageLayer({
       properties: { id: 'mml_jarvi' },
       source: new VectorSource({
@@ -221,20 +208,6 @@ class DvkMap {
       imageRatio: 3,
     });
     this.olMap.addLayer(bgMmljarviLayer);
-
-    const bgMmljarvirantaviivaLayer = new VectorImageLayer({
-      properties: { id: 'mml_jarvi_rantaviiva' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
-      maxResolution: 32,
-      zIndex: 5,
-      renderOrder: undefined,
-      renderBuffer: 1,
-      imageRatio: 3,
-    });
-    this.olMap.addLayer(bgMmljarvirantaviivaLayer);
 
     const bgBalticseaLayer = new VectorImageLayer({
       properties: { id: 'balticsea' },
@@ -404,43 +377,34 @@ class DvkMap {
       })
     );
 
-    const bgMmlmeriLayer = this.getFeatureLayer('mml_meri') as VectorLayer<VectorSource>;
-    bgMmlmeriLayer.setStyle(
-      new Style({
-        fill: new Fill({
-          color: waterColor,
-        }),
-      })
-    );
+    const mmlWaterAreaStyle = new Style({
+      fill: new Fill({
+        color: waterColor,
+      }),
+      stroke: new Stroke({
+        color: waterColor,
+        width: 0.5,
+      }),
+      zIndex: 2,
+    });
 
-    const bgMmlmerirantaviivaLayer = this.getFeatureLayer('mml_meri_rantaviiva') as VectorLayer<VectorSource>;
-    bgMmlmerirantaviivaLayer.setStyle(
-      new Style({
-        stroke: new Stroke({
-          color: '#222222',
-          width: 0.5,
-        }),
-      })
-    );
+    const mmlShorelineStyle = new Style({
+      stroke: new Stroke({
+        color: '#222222',
+        width: 1.5,
+      }),
+      zIndex: 1,
+    });
+
+    function getMmlWaterStyle(feature: FeatureLike, resolution: number) {
+      return resolution < 32 ? [mmlShorelineStyle, mmlWaterAreaStyle] : mmlWaterAreaStyle;
+    }
+
+    const bgMmlmeriLayer = this.getFeatureLayer('mml_meri') as VectorLayer<VectorSource>;
+    bgMmlmeriLayer.setStyle(getMmlWaterStyle);
 
     const bgMmljarviLayer = this.getFeatureLayer('mml_jarvi') as VectorLayer<VectorSource>;
-    bgMmljarviLayer.setStyle(
-      new Style({
-        fill: new Fill({
-          color: waterColor,
-        }),
-      })
-    );
-
-    const bgMmljarvirantaviivaLayer = this.getFeatureLayer('mml_jarvi_rantaviiva') as VectorLayer<VectorSource>;
-    bgMmljarvirantaviivaLayer.setStyle(
-      new Style({
-        stroke: new Stroke({
-          color: '#222222',
-          width: 0.5,
-        }),
-      })
-    );
+    bgMmljarviLayer.setStyle(getMmlWaterStyle);
 
     const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer<VectorSource>;
     bgBsLayer.setStyle(
@@ -515,12 +479,7 @@ class DvkMap {
             (layer as Layer).getSource()?.refresh();
           }
           layer.setVisible(!isOffline);
-        } else if (
-          layer.get('id') === 'mml_meri' ||
-          layer.get('id') === 'mml_meri_rantaviiva' ||
-          layer.get('id') === 'mml_jarvi' ||
-          layer.get('id') === 'mml_jarvi_rantaviiva'
-        ) {
+        } else if (layer.get('id') === 'mml_meri' || layer.get('id') === 'mml_jarvi') {
           layer.setMinResolution(isOffline ? 0.5 : 4);
         }
       });

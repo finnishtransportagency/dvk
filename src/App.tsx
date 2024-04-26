@@ -127,6 +127,12 @@ idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["vtspoint"]');
 idbAsyncStorage.removeItem('name');
 idbAsyncStorage.removeItem('name-buster');
 
+/* Remove old static MML shoreline related items - changed to use water area polygon data to render shoreline */
+idbAsyncStorage.removeItem('mml_meri_rantaviiva');
+idbAsyncStorage.removeItem('mml_meri_rantaviiva-buster');
+idbAsyncStorage.removeItem('mml_jarvi_rantaviiva');
+idbAsyncStorage.removeItem('mml_jarvi_rantaviiva-buster');
+
 const queryFilter = (query: Query) => {
   // Defaults to true. Do not persist only if meta.persist === false
   return !(query.meta && query.meta.persist === false);
@@ -172,9 +178,7 @@ const DvkIonApp: React.FC = () => {
   const boardLine12Layer = useBoardLine12Layer();
   const bgFinlandLayer = useInitStaticDataLayer('finland', 'finland');
   const bgMmlmeriLayer = useInitStaticDataLayer('mml_meri', 'mml_meri');
-  const bgMmlmerirantaviivaLayer = useInitStaticDataLayer('mml_meri_rantaviiva', 'mml_meri_rantaviiva');
   const bgMmljarviLayer = useInitStaticDataLayer('mml_jarvi', 'mml_jarvi');
-  const bgMmljarvirantaviivaLayer = useInitStaticDataLayer('mml_jarvi_rantaviiva', 'mml_jarvi_rantaviiva');
   const circleLayer = useCircleLayer();
   /* Start initializing other layers */
   useDepth12Layer();
@@ -249,9 +253,7 @@ const DvkIonApp: React.FC = () => {
     boardLine12Layer,
     bgFinlandLayer,
     bgMmlmeriLayer,
-    bgMmlmerirantaviivaLayer,
     bgMmljarviLayer,
-    bgMmljarvirantaviivaLayer,
     circleLayer,
     specialArea2Layer,
     specialArea15Layer,

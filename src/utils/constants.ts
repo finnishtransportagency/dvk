@@ -32,25 +32,9 @@ export const accessibilityUrl = {
   en: 'https://vayla.fi/en/about/contact-information/accessibility/digital-fairway-card',
 };
 
-export type BackgroundLayerId =
-  | 'finland'
-  | 'mml_meri'
-  | 'mml_meri_rantaviiva'
-  | 'mml_jarvi'
-  | 'mml_jarvi_rantaviiva'
-  | 'mml_satamat'
-  | 'mml_laiturit'
-  | 'balticsea';
+export type BackgroundLayerId = 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit' | 'balticsea';
 
-export type StaticFeatureDataId =
-  | 'balticsea'
-  | 'finland'
-  | 'mml_meri'
-  | 'mml_meri_rantaviiva'
-  | 'mml_jarvi'
-  | 'mml_jarvi_rantaviiva'
-  | 'mml_satamat'
-  | 'mml_laiturit';
+export type StaticFeatureDataId = 'balticsea' | 'finland' | 'mml_meri' | 'mml_jarvi' | 'mml_satamat' | 'mml_laiturit';
 
 export type FeatureDataId =
   | 'area12'
@@ -88,9 +72,7 @@ export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
   { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20231213.json.gz') },
-  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20231213.json.gz') },
   { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20231219.json.gz') },
-  { id: 'mml_jarvi_rantaviiva', url: new URL(staticUrl + '/mml-jarvi-rantaviiva-20231219.json.gz') },
   { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20230712.json.gz') },
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
 ];
