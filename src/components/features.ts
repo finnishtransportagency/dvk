@@ -2,6 +2,11 @@ import { Point } from 'ol/geom';
 import { Text } from '../graphql/generated';
 import { EquipmentFault } from './FeatureLoader';
 
+export type Card = {
+  id: string;
+  name: Text;
+};
+
 export type HarborFeatureProperties = {
   featureType: string;
   name?: Text;
@@ -28,14 +33,8 @@ export type QuayFeatureProperties = {
   internet?: string;
 };
 
-export type Card = {
-  id: string;
-  name: Text;
-};
-
 export type PilotFeatureProperties = {
   name: Text;
-  fairwayCards: Card[];
 };
 
 export type PilotRouteFeatureProperties = {

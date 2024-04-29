@@ -15,7 +15,6 @@ import {
   AlueAPIModel,
   KaantoympyraAPIModel,
   NavigointiLinjaAPIModel,
-  PilotPlace,
   RajoitusAlueAPIModel,
   TaululinjaAPIModel,
   TurvalaiteAPIModel,
@@ -69,18 +68,8 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
 }
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const placeMap = new Map<number, PilotPlace>();
-  const cards = await FairwayCardDBModel.getAllPublic();
-  const pilots = await fetchPilotPoints();
-  for (const pilot of pilots) {
-    placeMap.set(pilot.id, { ...pilot, fairwayCards: [] });
-  }
-  for (const card of cards) {
-    for (const place of card.trafficService?.pilot?.places ?? []) {
-      placeMap.get(place.id)?.fairwayCards.push({ id: card.id, name: card.name });
-    }
-  }
-  for (const place of placeMap.values()) {
+  const pilotPlaces = await fetchPilotPoints();
+  for (const place of pilotPlaces) {
     features.push({
       type: 'Feature',
       geometry: place.geometry as Geometry,
@@ -88,7 +77,6 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
       properties: {
         featureType: 'pilot',
         name: place.name,
-        fairwayCards: place.fairwayCards,
       },
     });
   }

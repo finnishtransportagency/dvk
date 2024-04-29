@@ -6,6 +6,8 @@ import { Geometry, LineString, SimpleGeometry } from 'ol/geom';
 import { Feature } from 'ol';
 import { PilotageLimit } from '../components/content/fairwayCard/PilotInfo';
 import { PilotRouteFeatureProperties, PilotageLimitFeatureProperties } from '../components/features';
+import { PilotProperties } from '../components/popup/PilotPopupContent';
+import { PilotageLimitProperties } from '../components/popup/PilotageLimitPopupContent';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -86,21 +88,16 @@ export const handleSafetyEquipmentLayerChange = () => {
   }
 };
 
-// returns features since actual pilot objects are not needed anywhere else (yet?)
-export function getPilotPlacesByFairwayCardId(id: string) {
+export function getPilotPlacesByFairwayCard(fairwayCard: FairwayCardPartsFragment) {
   const pilotPlaceSource = dvkMap.getVectorSource('pilot');
   const pilotPlaces: Feature<Geometry>[] = [];
+  const placeIds: number[] = fairwayCard.trafficService?.pilot?.places?.map((place) => place.id) ?? [];
 
   pilotPlaceSource.getFeatures().forEach((f) => {
-    const props = f.getProperties();
-    const fairwayCards = props.fairwayCards;
-    for (const fairwayCard of fairwayCards) {
-      if (fairwayCard.name.fi === id) {
-        pilotPlaces.push(f);
-      }
+    if (placeIds.includes(f.getId() as number)) {
+      pilotPlaces.push(f);
     }
   });
-
   return pilotPlaces;
 }
 
@@ -146,4 +143,23 @@ export function getFairwayCardPilotRoutes(fairwayCard: FairwayCardPartsFragment,
     return fairwayCard.pilotRoutes?.find((pr) => properties?.id === pr?.id);
   });
   return pilotRoutes?.toSorted((a, b) => a?.getProperties()?.name.localeCompare(b?.getProperties()?.name, 'fi', { ignorePunctuation: true }));
+}
+
+export function getPilotPlaceFairwayCards(pilotPlace: PilotProperties, fairwayCards: FairwayCardPartsFragment[]) {
+  return fairwayCards.filter((card) => {
+    return card.trafficService?.pilot?.places?.some((place) => place.id === pilotPlace.id) ?? false;
+  });
+}
+
+export function getPilotageLimitFairwayCards(pilotageLimit: PilotageLimitProperties, fairwayCards: FairwayCardPartsFragment[]) {
+  const fairwayIds = pilotageLimit.properties.liittyyVayliin.split(',');
+  return fairwayCards.filter((fc) => {
+    const fcIds = fc.fairways.map((f) => f.id);
+    for (const element of fcIds) {
+      if (fairwayIds.includes('' + element)) {
+        return true;
+      }
+    }
+    return false;
+  });
 }
