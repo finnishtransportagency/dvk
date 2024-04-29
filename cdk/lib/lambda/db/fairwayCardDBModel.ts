@@ -82,6 +82,10 @@ export type PilotRoute = {
   id: number;
 };
 
+export type TemporaryNotification = {
+  content?: Maybe<Text>;
+}
+
 class FairwayCardDBModel {
   id: string;
 
@@ -142,6 +146,8 @@ class FairwayCardDBModel {
   pictures?: Maybe<Picture[]>;
 
   pilotRoutes?: Maybe<PilotRoute[]>;
+
+  temporaryNotifications?: Maybe<TemporaryNotification[]>;
 
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id } }));

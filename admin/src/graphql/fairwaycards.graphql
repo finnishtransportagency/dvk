@@ -290,4 +290,11 @@ fragment FairwayCardParts on FairwayCard {
     id
     name
   }
+  temporaryNotifications {
+    content {
+      fi
+      sv
+      en
+    }
+  }
 }

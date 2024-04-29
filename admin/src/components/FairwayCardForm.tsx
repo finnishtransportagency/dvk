@@ -27,6 +27,7 @@ import Header from './form/Header';
 import { openPreview } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
+import NotificationSection from './form/fairwayCard/NotificationSection';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -286,6 +287,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               isLoadingPilotRoutes={isLoadingPilotRoutes}
               pilotRouteOptions={pilotRouteList}
             />
+            <NotificationSection state={state} updateState={updateState} validationErrors={validationErrors} />
             <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} />
             <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} />
             <RecommendationsSection state={state} updateState={updateState} validationErrors={validationErrors} />

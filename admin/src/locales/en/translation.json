@@ -211,7 +211,11 @@
     "fairway-additional-info": "Additional information",
     "fairway-additional-info-notification-header": "[en] Lisätietojen lisääminen väyläkortille",
     "fairway-additional-info-notification-body": "[en] Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
-    "linked-pilot-routes": "[en] Linkitetyt luotsausreitit"
+    "linked-pilot-routes": "[en] Linkitetyt luotsausreitit",
+    "temporary-notification-title": "[en] Väliaikaisen huomion lisääminen väyläkortille",
+    "temporary-notification": "[en] Huomio",
+    "temporary-notification-start": "[en] Huomion voimaantulopäivä",
+    "temporary-notification-end": "[en] Huomion päättymispäivämäärä"
   },
   "harbour": {
     "primary-id": "Harbour ID",

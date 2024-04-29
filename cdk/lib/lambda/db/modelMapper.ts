@@ -15,7 +15,7 @@ import { CurrentUser } from '../api/login';
 import { fetchPilotPoints } from '../api/traficom';
 import { getFromCache, cacheResponse, CacheResponse } from '../graphql/cache';
 import { log } from '../logger';
-import FairwayCardDBModel, { FairwayDBModel, PilotRoute, TrafficServiceDBModel } from './fairwayCardDBModel';
+import FairwayCardDBModel, { FairwayDBModel, PilotRoute, TemporaryNotification, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
 import { fetchPilotRouteData } from '../api/pilotRoutes';
 import { saveResponseToS3 } from '../util';
@@ -286,7 +286,9 @@ export function mapFairwayCardDBModelToGraphqlType(
     pilotRoutes: mapPilotRoutes(dbModel.pilotRoutes ?? [], pilotRoutes),
     fairwayIds: mapFairwayIds(dbModel),
     pictures: dbModel.pictures,
+    temporaryNotifications: dbModel.temporaryNotifications ?? [],
   };
+
   for (const fairway of dbModel.fairways || []) {
     card.fairways.push(mapFairwayDBModelToFairway(fairway));
   }

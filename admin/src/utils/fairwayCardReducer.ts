@@ -583,6 +583,25 @@ export const fairwayCardReducer = (
         pictures: state.pictures?.map((pic) => (pic.groupId === actionTarget ? { ...pic, legendPosition: value as string } : pic)),
       };
       break;
+    case 'temporaryNotifications':
+      newState = {
+        ...state,
+        temporaryNotifications: {
+          ...state.temporaryNotifications,
+          content: state.temporaryNotifications?.map((notification, idx) =>
+            idx === actionTarget
+              ? {
+                  ...notification,
+                  content: {
+                    ...(notification?.content ?? { fi: '', sv: '', en: '' }),
+                    [actionLang as string]: value as string,
+                  },
+                }
+              : notification
+          ),
+        },
+      };
+      break;
     default:
       console.warn(`Unknown action type, state not updated.`);
       return state;

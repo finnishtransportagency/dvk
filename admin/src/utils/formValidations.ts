@@ -93,6 +93,21 @@ function validatePictures(state: FairwayCardInput, requiredMsg: string) {
   return pictureTextErrors;
 }
 
+function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: string) {
+  const temporaryNotificationErrors =
+    state.temporaryNotifications
+      ?.flatMap((notification, i) => (requiredError(notification.content) ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'temporaryNotification-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+
+  return { temporaryNotificationErrors };
+}
+
 export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
   const manualValidations = [
     { id: 'name', msg: requiredError(state.name) ? requiredMsg : '' },
@@ -154,9 +169,11 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
   ];
 
   const { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors } = validateVtsAndTug(state, requiredMsg);
+  const { temporaryNotificationErrors } = validateTemporaryNotifications(state, requiredMsg);
+  console.log(temporaryNotificationErrors);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
-  return manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors, pictureTextErrors);
+  return manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors, pictureTextErrors, temporaryNotificationErrors);
 }
 
 function validateQuay(state: HarborInput, requiredMsg: string) {

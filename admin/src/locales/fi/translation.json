@@ -215,7 +215,11 @@
     "fairway-additional-info": "Lisätiedot",
     "fairway-additional-info-notification-header": "Lisätietojen lisääminen väyläkortille",
     "fairway-additional-info-notification-body": "Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
-    "linked-pilot-routes": "Linkitetyt luotsausreitit"
+    "linked-pilot-routes": "Linkitetyt luotsausreitit",
+    "temporary-notification-title": "Väliaikaisen huomion lisääminen väyläkortille",
+    "temporary-notification": "Huomio",
+    "temporary-notification-start": "Huomion voimaantulopäivä",
+    "temporary-notification-end": "Huomion päättymispäivämäärä"
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
