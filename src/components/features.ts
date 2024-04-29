@@ -82,7 +82,6 @@ export type AreaFairway = {
 export type LineFairway = {
   fairwayId: number;
   name: Text;
-  fairwayCards?: Card[];
 };
 
 export type LineFeatureProperties = {

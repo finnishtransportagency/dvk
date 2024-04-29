@@ -11,7 +11,7 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
-import { getAreaFairwayCards } from '../../utils/fairwayCardUtils';
+import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 
 type AreaPopupContentProps = {
@@ -45,7 +45,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
   ).sort((a, b) => a - b);
   const showN2000HeightSystem = isShowN2000HeightSystem(area.properties);
 
-  const fairwayCards = data ? getAreaFairwayCards(area.properties, data.fairwayCards) : [];
+  const fairwayCards = data ? getFairwayListFairwayCards(area.properties.fairways ?? [], data.fairwayCards) : [];
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});

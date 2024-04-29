@@ -250,7 +250,6 @@ async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonPropertie
 
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
-  const cardMap = await getCardMap();
   log.debug('lines: %d', lines.length);
   for (const line of lines) {
     features.push({
@@ -277,7 +276,6 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
-            fairwayCards: cardMap.get(v.jnro),
             status: v.status,
             line: v.linjaus,
           };

@@ -5,7 +5,7 @@ import { MAP } from './constants';
 import { Geometry, LineString, SimpleGeometry } from 'ol/geom';
 import { Feature } from 'ol';
 import { PilotageLimit } from '../components/content/fairwayCard/PilotInfo';
-import { AreaFeatureProperties, PilotRouteFeatureProperties, PilotageLimitFeatureProperties } from '../components/features';
+import { AreaFairway, LineFairway, PilotRouteFeatureProperties, PilotageLimitFeatureProperties } from '../components/features';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -160,7 +160,7 @@ export function getPilotageLimitFairwayCards(pilotageLimitProperties: PilotageLi
   });
 }
 
-export function getAreaFairwayCards(areaProperties: AreaFeatureProperties, fairwayCards: FairwayCardPartsFragment[]) {
-  const fairwayIds = areaProperties?.fairways?.map((fairway) => fairway.fairwayId) ?? [];
+export function getFairwayListFairwayCards(fairways: AreaFairway[] | LineFairway[], fairwayCards: FairwayCardPartsFragment[]) {
+  const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
   return fairwayCards.filter((card) => card.fairways.some((fairway) => fairwayIds.includes(fairway.id)));
 }
