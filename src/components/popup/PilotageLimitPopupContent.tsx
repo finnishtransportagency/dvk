@@ -49,7 +49,7 @@ const PilotageLimitPopupContent: React.FC<PilotageLimitPopupContentProps> = ({ p
   }
 
   const { data } = useFairwayCardListData();
-  const fairwayCards = data ? getPilotageLimitFairwayCards(pilotagelimit, data.fairwayCards) : [];
+  const fairwayCards = data ? getPilotageLimitFairwayCards(pilotagelimit.properties, data.fairwayCards) : [];
 
   return (
     <IonGrid className="ion-no-padding">

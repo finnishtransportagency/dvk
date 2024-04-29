@@ -5,9 +5,7 @@ import { MAP } from './constants';
 import { Geometry, LineString, SimpleGeometry } from 'ol/geom';
 import { Feature } from 'ol';
 import { PilotageLimit } from '../components/content/fairwayCard/PilotInfo';
-import { PilotRouteFeatureProperties, PilotageLimitFeatureProperties } from '../components/features';
-import { PilotProperties } from '../components/popup/PilotPopupContent';
-import { PilotageLimitProperties } from '../components/popup/PilotageLimitPopupContent';
+import { AreaFeatureProperties, PilotRouteFeatureProperties, PilotageLimitFeatureProperties } from '../components/features';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -92,11 +90,9 @@ export function getPilotPlacesByFairwayCard(fairwayCard: FairwayCardPartsFragmen
   const pilotPlaceSource = dvkMap.getVectorSource('pilot');
   const pilotPlaces: Feature<Geometry>[] = [];
   const placeIds: number[] = fairwayCard.trafficService?.pilot?.places?.map((place) => place.id) ?? [];
-
-  pilotPlaceSource.getFeatures().forEach((f) => {
-    if (placeIds.includes(f.getId() as number)) {
-      pilotPlaces.push(f);
-    }
+  placeIds.forEach((id) => {
+    const feature = pilotPlaceSource.getFeatureById(id) as Feature<Geometry>;
+    if (feature) pilotPlaces.push(feature);
   });
   return pilotPlaces;
 }
@@ -145,14 +141,14 @@ export function getFairwayCardPilotRoutes(fairwayCard: FairwayCardPartsFragment,
   return pilotRoutes?.toSorted((a, b) => a?.getProperties()?.name.localeCompare(b?.getProperties()?.name, 'fi', { ignorePunctuation: true }));
 }
 
-export function getPilotPlaceFairwayCards(pilotPlace: PilotProperties, fairwayCards: FairwayCardPartsFragment[]) {
+export function getPilotPlaceFairwayCards(pilotPlaceId: number, fairwayCards: FairwayCardPartsFragment[]) {
   return fairwayCards.filter((card) => {
-    return card.trafficService?.pilot?.places?.some((place) => place.id === pilotPlace.id) ?? false;
+    return card.trafficService?.pilot?.places?.some((place) => place.id === pilotPlaceId) ?? false;
   });
 }
 
-export function getPilotageLimitFairwayCards(pilotageLimit: PilotageLimitProperties, fairwayCards: FairwayCardPartsFragment[]) {
-  const fairwayIds = pilotageLimit.properties.liittyyVayliin.split(',');
+export function getPilotageLimitFairwayCards(pilotageLimitProperties: PilotageLimitFeatureProperties, fairwayCards: FairwayCardPartsFragment[]) {
+  const fairwayIds = pilotageLimitProperties.liittyyVayliin.split(',');
   return fairwayCards.filter((fc) => {
     const fcIds = fc.fairways.map((f) => f.id);
     for (const element of fcIds) {
@@ -162,4 +158,9 @@ export function getPilotageLimitFairwayCards(pilotageLimit: PilotageLimitPropert
     }
     return false;
   });
+}
+
+export function getAreaFairwayCards(areaProperties: AreaFeatureProperties, fairwayCards: FairwayCardPartsFragment[]) {
+  const fairwayIds = areaProperties?.fairways?.map((fairway) => fairway.fairwayId) ?? [];
+  return fairwayCards.filter((card) => card.fairways.some((fairway) => fairwayIds.includes(fairway.id)));
 }

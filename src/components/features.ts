@@ -77,7 +77,6 @@ export type AreaFairway = {
   name: Text;
   sizingSpeed?: number;
   sizingSpeed2?: number;
-  fairwayCards?: Card[];
 };
 
 export type LineFairway = {

@@ -36,7 +36,7 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
     clearClickSelectionFeatures();
   };
 
-  const fairwayCards = data ? getPilotPlaceFairwayCards(pilot, data.fairwayCards) : [];
+  const fairwayCards = data ? getPilotPlaceFairwayCards(pilot.id, data.fairwayCards) : [];
 
   return (
     <IonGrid className="ion-no-padding">

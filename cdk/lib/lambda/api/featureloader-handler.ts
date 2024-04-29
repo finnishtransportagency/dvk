@@ -146,7 +146,6 @@ async function addAreaFeatures(
   featureType: string,
   areaFilter: (a: AlueAPIModel) => boolean
 ) {
-  const cardMap = await getCardMap();
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
 
@@ -175,7 +174,6 @@ async function addAreaFeatures(
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
-            fairwayCards: cardMap.get(v.jnro),
             status: v.status,
             line: v.linjaus,
             sizingSpeed: v.mitoitusNopeus,
@@ -226,7 +224,6 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
 
 async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<TaululinjaAPIModel>('taululinjat', event);
-  const cardMap = await getCardMap();
   log.debug('board lines: %d', lines.length);
   for (const line of lines) {
     features.push({
@@ -244,7 +241,6 @@ async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonPropertie
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
-            fairwayCards: cardMap.get(v.jnro),
           };
         }),
       },
