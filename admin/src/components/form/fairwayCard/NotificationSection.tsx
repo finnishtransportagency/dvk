@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import TextInputRow from '../TextInputRow';
 import HelpIcon from '../../../theme/img/help_icon.svg?react';
 import NotificationModal from '../../NotificationModal';
+import SectionHeader from '../SectionHeader';
+import uniqueId from 'lodash/uniqueId';
 
 interface NotificationSectionProps {
   state: FairwayCardInput;
@@ -37,10 +39,13 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
 
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
   const [focused, setFocused] = useState<boolean>(false);
-  console.log(focused);
-
   const showInfoModal = () => {
     setInfoModalOpen(true);
+  };
+
+  const toggleSection = (position: number) => {
+    const opened = openSections.map((s, idx) => (idx === position ? !s : s));
+    setOpenSections(opened);
   };
 
   const addSection = () => {
@@ -57,10 +62,11 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
     }, 150);
   };
 
-  /*const deleteSection = (idx: number) => {
+  const deleteSection = (idx: number) => {
     updateState(false, sectionType, undefined, idx, actionOuterTarget);
-    setOpenSections(openSections.filter((s, i) => idx !== i));
-  };*/
+    setOpenSections(openSections.filter((_, i) => idx !== i));
+  };
+
   useEffect(() => {
     if (openSections.length !== sections?.length) {
       setOpenSections(new Array(sections?.length).fill(true));
@@ -84,32 +90,46 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
         </h2>
       </IonText>
       {sections?.map((section, idx) => {
+        const uuid = uniqueId('section_');
+        const sectionOpen = !!openSections[idx];
+        const isFocused = idx === sections.length - 1 ? focused : undefined;
+        const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
         return (
-          <>
-            <IonGrid className="formGrid">
-              <TextInputRow
-                labelKey="fairwaycard.temporary-notification"
-                value={section.content}
-                updateState={updateState}
-                actionType="temporaryNotificationContent"
-                actionTarget={idx}
-                required={!!section.content?.fi || !!section.content?.sv || !!section.content?.en}
-                disabled={state.status === Status.Removed}
-                error={validationErrors.find((error) => error.id === 'temporaryNotifications')?.msg}
-                inputType="textarea"
-              />
-            </IonGrid>
-            <NotificationModal
-              isOpen={infoModalOpen}
-              closeAction={() => setInfoModalOpen(false)}
-              closeTitle={t('general.close')}
-              header={''}
-              message={''}
+          <div key={uuid}>
+            <SectionHeader
+              title={t('fairwaycard.temporary-notification')}
+              idx={idx}
+              deleteSection={deleteSection}
+              toggleSection={toggleSection}
+              open={sectionOpen}
             />
-          </>
+            <div className={sectionClassName}>
+              <IonGrid className="formGrid">
+                <TextInputRow
+                  labelKey="fairwaycard.temporary-notification"
+                  value={section.content}
+                  updateState={updateState}
+                  actionType="temporaryNotificationContent"
+                  actionTarget={idx}
+                  focused={isFocused}
+                  required={!!section.content?.fi || !!section.content?.sv || !!section.content?.en}
+                  disabled={state.status === Status.Removed}
+                  error={validationErrors.find((error) => error.id === 'temporaryNotifications')?.msg}
+                  inputType="textarea"
+                />
+              </IonGrid>
+            </div>
+          </div>
         );
       })}
 
+      <NotificationModal
+        isOpen={infoModalOpen}
+        closeAction={() => setInfoModalOpen(false)}
+        closeTitle={t('general.close')}
+        header={''}
+        message={''}
+      />
       <IonGrid>
         <IonRow className="ion-justify-content-end">
           <IonCol size="auto">
