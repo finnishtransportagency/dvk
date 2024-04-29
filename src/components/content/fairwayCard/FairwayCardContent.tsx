@@ -37,6 +37,9 @@ import PilotRouteList from '../PilotRouteList';
 import { usePilotRouteFeatures } from '../../PilotRouteFeatureLoader';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
+import NotificationAlert from '../../Alert';
+import infoIcon from '../../../theme/img/info.svg';
+import uniqueId from 'lodash/uniqueId';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -122,7 +125,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
       title: getTabLabel(t, tab),
     },
   ];
-
+  console.log(fairwayCard?.temporaryNotifications);
   return (
     <>
       {isPending && <PendingPlaceholder widePane={widePane} />}
@@ -138,6 +141,13 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             isFetching={isFetching}
             printDisabled={printDisabled}
           />
+          {fairwayCard?.temporaryNotifications?.map((notification) => {
+            const content = notification?.content?.[lang];
+            const uuid = uniqueId('notification_');
+            if (content) {
+              return <NotificationAlert key={uuid} title={content} icon={infoIcon} className="top-margin info" />;
+            }
+          })}
           {safetyEquipmentFaults.length > 0 && !faultIsPending && !faultIsFetching && (
             <div className="no-print">
               <SafetyEquipmentFaultAlert
