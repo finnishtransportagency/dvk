@@ -2,7 +2,16 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
-import { ContentType, FairwayCardByIdFragment, FairwayCardInput, Operation, Status, TugInput, VtsInput } from '../graphql/generated';
+import {
+  ContentType,
+  FairwayCardByIdFragment,
+  FairwayCardInput,
+  Operation,
+  Status,
+  TemporaryNotificationInput,
+  TugInput,
+  VtsInput,
+} from '../graphql/generated';
 import {
   useFairwayCardsAndHarborsQueryData,
   useFairwaysQueryData,
@@ -287,7 +296,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               isLoadingPilotRoutes={isLoadingPilotRoutes}
               pilotRouteOptions={pilotRouteList}
             />
-            <NotificationSection state={state} updateState={updateState} validationErrors={validationErrors} />
+            <NotificationSection
+              state={state}
+              sections={state.temporaryNotifications as TemporaryNotificationInput[]}
+              updateState={updateState}
+              sectionType="temporaryNotifications"
+              validationErrors={validationErrors}
+            />
             <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} />
             <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} />
             <RecommendationsSection state={state} updateState={updateState} validationErrors={validationErrors} />

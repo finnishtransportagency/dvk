@@ -80,6 +80,7 @@
     "add-section-tug": "Add tug",
     "add-section-quay": "Add quay",
     "add-section-section": "[en] Lisää laituripaikka",
+    "add-section-notification": "[en] Lisää huomio",
     "environment-local": "Local development environment",
     "environment-dev": "Development environment",
     "environment-test": "Test environment",

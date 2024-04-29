@@ -286,7 +286,7 @@ export function mapFairwayCardDBModelToGraphqlType(
     pilotRoutes: mapPilotRoutes(dbModel.pilotRoutes ?? [], pilotRoutes),
     fairwayIds: mapFairwayIds(dbModel),
     pictures: dbModel.pictures,
-    temporaryNotifications: dbModel.temporaryNotifications ?? [],
+    temporaryNotifications: dbModel.temporaryNotifications ?? [{ content: { fi: '', sv: '', en: '' }}],
   };
 
   for (const fairway of dbModel.fairways || []) {

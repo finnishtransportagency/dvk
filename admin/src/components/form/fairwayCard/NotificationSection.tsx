@@ -16,7 +16,7 @@ interface NotificationSectionProps {
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => void;
-  sectionType: 'vts' | 'tug' | 'vhf' | 'quay' | 'section';
+  sectionType: 'temporaryNotifications';
   validationErrors: ValidationType[];
   sections?: TemporaryNotificationInput[];
   actionOuterTarget?: string | number;
@@ -37,6 +37,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
 
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
   const [focused, setFocused] = useState<boolean>(false);
+  console.log(focused);
 
   const showInfoModal = () => {
     setInfoModalOpen(true);
@@ -56,11 +57,10 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
     }, 150);
   };
 
-  const deleteSection = (idx: number) => {
+  /*const deleteSection = (idx: number) => {
     updateState(false, sectionType, undefined, idx, actionOuterTarget);
     setOpenSections(openSections.filter((s, i) => idx !== i));
-  };
-  console.log(deleteSection);
+  };*/
   useEffect(() => {
     if (openSections.length !== sections?.length) {
       setOpenSections(new Array(sections?.length).fill(true));
@@ -84,10 +84,6 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
         </h2>
       </IonText>
       {sections?.map((section, idx) => {
-        const sectionOpen = !!openSections[idx];
-        const isFocused = idx === sections.length - 1 ? focused : undefined;
-        console.log(sectionOpen);
-        console.log(isFocused);
         return (
           <>
             <IonGrid className="formGrid">
@@ -95,10 +91,11 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
                 labelKey="fairwaycard.temporary-notification"
                 value={section.content}
                 updateState={updateState}
-                actionType="additionalInfo"
-                required={!!state.additionalInfo?.fi || !!state.additionalInfo?.sv || !!state.additionalInfo?.en}
+                actionType="temporaryNotificationContent"
+                actionTarget={idx}
+                required={!!section.content?.fi || !!section.content?.sv || !!section.content?.en}
                 disabled={state.status === Status.Removed}
-                error={validationErrors.find((error) => error.id === 'additionalInfo')?.msg}
+                error={validationErrors.find((error) => error.id === 'temporaryNotifications')?.msg}
                 inputType="textarea"
               />
             </IonGrid>
@@ -109,18 +106,19 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
               header={''}
               message={''}
             />
-            <IonGrid>
-              <IonRow className="ion-justify-content-end">
-                <IonCol size="auto">
-                  <IonButton shape="round" onClick={() => addSection()} disabled={disabled}>
-                    {t('general.add-section-' + sectionType)}
-                  </IonButton>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
           </>
         );
       })}
+
+      <IonGrid>
+        <IonRow className="ion-justify-content-end">
+          <IonCol size="auto">
+            <IonButton shape="round" onClick={() => addSection()} disabled={disabled}>
+              {t('general.add-section-temporary-notification')}
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
     </>
   );
 };

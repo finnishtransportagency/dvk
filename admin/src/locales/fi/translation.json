@@ -80,6 +80,7 @@
     "add-section-tug": "Lisää hinaaja",
     "add-section-quay": "Lisää laituri",
     "add-section-section": "Lisää laituripaikka",
+    "add-section-temporary-notification": "Lisää huomio",
     "environment-local": "Paikallinen kehitysympäristö",
     "environment-dev": "Kehitysympäristö",
     "environment-test": "Testiympäristö",

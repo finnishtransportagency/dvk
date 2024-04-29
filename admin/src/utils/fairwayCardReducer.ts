@@ -584,22 +584,35 @@ export const fairwayCardReducer = (
       };
       break;
     case 'temporaryNotifications':
+      // Add and delete
+      if (value && !actionTarget) {
+        newState = {
+          ...state,
+          temporaryNotifications: state.temporaryNotifications?.concat({
+            content: { fi: '', sv: '', en: '' },
+          }),
+        };
+      } else {
+        newState = {
+          ...state,
+          temporaryNotifications: state.temporaryNotifications?.filter((_, idx) => idx !== actionTarget),
+        };
+      }
+      break;
+    case 'temporaryNotificationContent':
       newState = {
         ...state,
-        temporaryNotifications: {
-          ...state.temporaryNotifications,
-          content: state.temporaryNotifications?.map((notification, idx) =>
-            idx === actionTarget
-              ? {
-                  ...notification,
-                  content: {
-                    ...(notification?.content ?? { fi: '', sv: '', en: '' }),
-                    [actionLang as string]: value as string,
-                  },
-                }
-              : notification
-          ),
-        },
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget
+            ? {
+                ...notification,
+                content: {
+                  ...(notification?.content ?? { fi: '', sv: '', en: '' }),
+                  [actionLang as string]: value as string,
+                },
+              }
+            : notification
+        ),
       };
       break;
     default:

@@ -170,7 +170,6 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
 
   const { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors } = validateVtsAndTug(state, requiredMsg);
   const { temporaryNotificationErrors } = validateTemporaryNotifications(state, requiredMsg);
-  console.log(temporaryNotificationErrors);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
   return manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors, pictureTextErrors, temporaryNotificationErrors);
