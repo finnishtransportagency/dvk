@@ -125,7 +125,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
       title: getTabLabel(t, tab),
     },
   ];
-  console.log(fairwayCard?.temporaryNotifications);
+
   return (
     <>
       {isPending && <PendingPlaceholder widePane={widePane} />}

@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { FairwayCardInput, Status, TemporaryNotificationInput } from '../../../graphql/generated';
+import { FairwayCardInput, TemporaryNotificationInput } from '../../../graphql/generated';
 import { ValueType, ActionType, Lang, ValidationType } from '../../../utils/constants';
 import { IonButton, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import TextInputRow from '../TextInputRow';
 import HelpIcon from '../../../theme/img/help_icon.svg?react';
 import NotificationModal from '../../NotificationModal';
-import SectionHeader from '../SectionHeader';
 import uniqueId from 'lodash/uniqueId';
+import NotificationInput from '../NotificationInput';
+import SectionHeader from '../SectionHeader';
 
 interface NotificationSectionProps {
   state: FairwayCardInput;
@@ -38,7 +38,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
-  const [focused, setFocused] = useState<boolean>(false);
+
   const showInfoModal = () => {
     setInfoModalOpen(true);
   };
@@ -55,11 +55,6 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
       updateState(true, sectionType, undefined, undefined, actionOuterTarget);
     }
     setOpenSections(openSections.concat(true));
-    // Trigger setting focus on last section's first input
-    setFocused(true);
-    setTimeout(() => {
-      setFocused(false);
-    }, 150);
   };
 
   const deleteSection = (idx: number) => {
@@ -92,7 +87,6 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
       {sections?.map((section, idx) => {
         const uuid = uniqueId('section_');
         const sectionOpen = !!openSections[idx];
-        const isFocused = idx === sections.length - 1 ? focused : undefined;
         const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
         return (
           <div key={uuid}>
@@ -104,20 +98,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
               open={sectionOpen}
             />
             <div className={sectionClassName}>
-              <IonGrid className="formGrid">
-                <TextInputRow
-                  labelKey="fairwaycard.temporary-notification"
-                  value={section.content}
-                  updateState={updateState}
-                  actionType="temporaryNotificationContent"
-                  actionTarget={idx}
-                  focused={isFocused}
-                  required={!!section.content?.fi || !!section.content?.sv || !!section.content?.en}
-                  disabled={state.status === Status.Removed}
-                  error={validationErrors.find((error) => error.id === 'temporaryNotifications')?.msg}
-                  inputType="textarea"
-                />
-              </IonGrid>
+              <NotificationInput idx={idx} section={section} updateState={updateState} state={state} validationErrors={validationErrors} />
             </div>
           </div>
         );
