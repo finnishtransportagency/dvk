@@ -1,6 +1,5 @@
 import { Point } from 'ol/geom';
 import { Text } from '../graphql/generated';
-import { EquipmentFault } from './FeatureLoader';
 
 export type Card = {
   id: string;
@@ -101,10 +100,16 @@ export type LineFeatureProperties = {
   fairways?: LineFairway[];
 };
 
-type EquipmentFairway = {
+export type EquipmentFairway = {
   fairwayId: number;
   primary: boolean;
-  fairwayCards?: Card[];
+};
+
+export type EquipmentFault = {
+  faultId: number;
+  faultType: Text;
+  faultTypeCode: number;
+  recordTime: number;
 };
 
 type EquipmentDistance = {
@@ -119,7 +124,7 @@ export type EquipmentFeatureProperties = {
   navigationCode?: string;
   name?: Text;
   symbol?: string;
-  typeCode?: string;
+  typeCode?: number;
   typeName?: Text;
   lightning: boolean;
   aisType?: number;
@@ -127,6 +132,7 @@ export type EquipmentFeatureProperties = {
   fairways?: EquipmentFairway[];
   faults?: EquipmentFault[];
   distances?: EquipmentDistance[];
+  fairwayCards?: Card[];
 };
 
 export type MarineWarningFeatureProperties = {

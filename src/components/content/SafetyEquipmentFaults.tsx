@@ -7,7 +7,7 @@ import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../ut
 import { coordinatesToStringHDM, filterFeaturesInPolygonByArea, sortByAlign } from '../../utils/coordinateUtils';
 import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
-import { Card, EquipmentFeatureProperties } from '../features';
+import { EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
 import { goToFeature } from '../../utils/common';
 import './SafetyEquipmentFaults.css';
@@ -64,15 +64,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
         // check if symbol is not undefined and key in symbol2Icon structure
         // seems to be safe enough to justify disabling eslint and using symbol2Icon from safetyEquipmentStyles
         const symbol = equipment?.symbol !== undefined && equipment?.symbol in symbol2Icon ? equipment?.symbol : '?';
-        const cardMap: Map<string, Card> = new Map();
-        equipment?.fairways?.forEach((f) => {
-          if (f.fairwayCards) {
-            for (const card of f.fairwayCards) {
-              cardMap.set(card.id, card);
-            }
-          }
-        });
-        const cards = Array.from(cardMap.values());
+        const cards = equipment?.fairwayCards ?? [];
         return (
           <IonGrid
             className="table light group ion-no-padding inlineHoverText"

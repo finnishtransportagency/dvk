@@ -5,7 +5,14 @@ import { MAP } from './constants';
 import { Geometry, LineString, SimpleGeometry } from 'ol/geom';
 import { Feature } from 'ol';
 import { PilotageLimit } from '../components/content/fairwayCard/PilotInfo';
-import { AreaFairway, LineFairway, PilotRouteFeatureProperties, PilotageLimitFeatureProperties } from '../components/features';
+import {
+  AreaFairway,
+  EquipmentFairway,
+  EquipmentFeatureProperties,
+  LineFairway,
+  PilotRouteFeatureProperties,
+  PilotageLimitFeatureProperties,
+} from '../components/features';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -39,32 +46,24 @@ export function getSafetyEquipmentFaultsByFairwayCardId(id: string): SafetyEquip
   const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
   const equipmentFaults: SafetyEquipmentFault[] = [];
 
-  faultSource.getFeatures().forEach((f) => {
-    const props = f.getProperties();
-    const fairways = props.fairways;
-    // check if fault is part of any fairwaycard, if true push fault to array
-    for (const fairway of fairways) {
-      const fairwayCards = fairway.fairwayCards;
-      if (fairwayCards) {
-        for (const fairwaycard of fairwayCards) {
-          if (fairwaycard.id === id) {
-            const faults = props.faults;
-            // create new safetyequipmentfault objects
-            for (const fault of faults) {
-              const convertedGeometry = f.getGeometry()?.clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-              const faultObject: SafetyEquipmentFault = {
-                equipmentId: Number(f.getId()),
-                geometry: { type: 'Point', coordinates: convertedGeometry.getFlatCoordinates() },
-                id: fault.faultId,
-                name: props.name,
-                recordTime: fault.recordTime,
-                type: fault.faultType,
-                typeCode: fault.faultTypeCode,
-              };
-              equipmentFaults.push(faultObject);
-            }
-          }
-        }
+  faultSource.forEachFeature((f) => {
+    const props = f.getProperties() as EquipmentFeatureProperties;
+    const fairwayCards = props.fairwayCards ?? [];
+    if (fairwayCards.some((fc) => fc.id === id)) {
+      const faults = props.faults ?? [];
+      // create new safetyequipmentfault objects
+      for (const fault of faults) {
+        const convertedGeometry = f.getGeometry()?.clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
+        const faultObject: SafetyEquipmentFault = {
+          equipmentId: Number(f.getId()),
+          geometry: { type: 'Point', coordinates: convertedGeometry.getFlatCoordinates() },
+          id: fault.faultId,
+          name: props.name,
+          recordTime: fault.recordTime,
+          type: fault.faultType,
+          typeCode: fault.faultTypeCode,
+        };
+        equipmentFaults.push(faultObject);
       }
     }
   });
@@ -160,7 +159,7 @@ export function getPilotageLimitFairwayCards(pilotageLimitProperties: PilotageLi
   });
 }
 
-export function getFairwayListFairwayCards(fairways: AreaFairway[] | LineFairway[], fairwayCards: FairwayCardPartsFragment[]) {
+export function getFairwayListFairwayCards(fairways: AreaFairway[] | LineFairway[] | EquipmentFairway[], fairwayCards: FairwayCardPartsFragment[]) {
   const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
   return fairwayCards.filter((card) => card.fairways.some((fairway) => fairwayIds.includes(fairway.id)));
 }

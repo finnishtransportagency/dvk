@@ -1,5 +1,4 @@
 import { Text } from '../../graphql/generated';
-import { EquipmentFault } from './FeatureLoader';
 
 export type HarborFeatureProperties = {
   featureType: string;
@@ -91,6 +90,13 @@ type EquipmentFairway = {
   fairwayCards?: Card[];
 };
 
+type EquipmentFault = {
+  faultId: number;
+  faultType: Text;
+  faultTypeCode: number;
+  recordTime: number;
+};
+
 type EquipmentDistance = {
   areaId: number;
   distance: number;
@@ -103,7 +109,7 @@ export type EquipmentFeatureProperties = {
   navigationCode?: string;
   name?: Text;
   symbol?: string;
-  typeCode?: string;
+  typeCode?: number;
   typeName?: Text;
   lightning: boolean;
   aisType?: number;
