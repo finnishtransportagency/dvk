@@ -1,17 +1,19 @@
 import { IonButton, IonCol, IonDatetime, IonDatetimeButton, IonIcon, IonInput, IonItem, IonLabel, IonModal, IonRow, IonText } from '@ionic/react';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { ActionType, Lang } from '../../utils/constants';
 import './CalendarInputStyles.css';
 import Icon from '../../theme/img/calendar_icon.svg';
+import { useTranslation } from 'react-i18next';
 
 interface CalendarInputProps {
   idx: number;
-  label: string;
-  disabled?: boolean;
   setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number, actionOuterTarget?: string | number) => void;
+  disabled?: boolean;
 }
 
-const CalendarInput: React.FC<CalendarInputProps> = ({ idx, label, disabled, setValue }) => {
+const CalendarInput: React.FC<CalendarInputProps> = ({ idx, setValue, disabled }) => {
+  const { t } = useTranslation();
+
   const [startDate, setStartDate] = useState<string | null>(new Date().toISOString());
   const [endDate, setEndDate] = useState<string | null>(null);
 
@@ -44,27 +46,31 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ idx, label, disabled, set
           presentation="date"
           locale="fi"
           onIonChange={(event) => setStartDate(String(event.detail?.value))}
-        />
+        >
+          <span slot="title">{t('fairwaycard.temporary-notification-start')}</span>
+        </IonDatetime>
       </IonModal>
 
       <IonDatetimeButton ref={endDateButtonRef} datetime={'endDate' + idx} className="hiddenDateButton" />
       <IonModal keepContentsMounted={true}>
         <IonDatetime
           ref={endDateRef}
-          value={endDate}
+          value={endDate ?? ''}
           id={'endDate' + idx}
           showDefaultButtons={true}
           multiple={false}
           presentation="date"
           locale="fi"
           onIonChange={(event) => setEndDate(String(event.detail?.value))}
-        />
+        >
+          <span slot="title">{t('fairwaycard.temporary-notification-end')}</span>
+        </IonDatetime>
       </IonModal>
 
       <IonRow className="bordered">
         <IonCol sizeMd="4">
           <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')}>
-            <IonText>{label}</IonText>
+            <IonText>{t('fairwaycard.temporary-notification-start')}</IonText>
           </IonLabel>
           <div className="dateItemWrapper">
             <IonItem className="dateItem">
@@ -77,7 +83,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ idx, label, disabled, set
         </IonCol>
         <IonCol size="3.9">
           <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')}>
-            <IonText>{label}</IonText>
+            <IonText>{t('fairwaycard.temporary-notification-end')}</IonText>
           </IonLabel>
           <div className="dateItemWrapper">
             <IonItem className="dateItem">
