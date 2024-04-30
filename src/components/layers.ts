@@ -16,12 +16,6 @@ import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } f
 import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../utils/constants';
 import { HarborFeatureProperties, QuayFeatureProperties } from './features';
 import * as olExtent from 'ol/extent';
-import anchorage from '../theme/img/ankkurointialue.svg';
-import meet from '../theme/img/kohtaamiskielto_ikoni.svg';
-import specialarea from '../theme/img/erityisalue_tausta.svg';
-import specialareaSelected from '../theme/img/erityisalue_tausta_active.svg';
-import specialareaSelected2 from '../theme/img/erityisalue_tausta_active2.svg';
-import Polygon from 'ol/geom/Polygon';
 import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
 import { getFairwayArea3456Style } from './layerStyles/fairwayArea3456Styles';
 import { getPilotStyle } from './layerStyles/pilotStyles';
@@ -54,48 +48,9 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
+import { getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
 
-const specialAreaImage = new Image();
-specialAreaImage.src = specialarea;
-const specialAreaSelectedImage = new Image();
-specialAreaSelectedImage.src = specialareaSelected;
-const specialAreaSelectedImage2 = new Image();
-specialAreaSelectedImage2.src = specialareaSelected2;
 const minResolutionHarbor = 3;
-
-export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number, selected: boolean, selected2 = false) {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-  let gradient;
-  if (selected2) {
-    gradient = context.createPattern(specialAreaSelectedImage2, 'repeat');
-  } else {
-    gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
-  }
-  return [
-    new Style({
-      image: new Icon({
-        src: feature.getProperties().typeCode === 2 ? anchorage : meet,
-        opacity: 1,
-      }),
-      zIndex: 100,
-      geometry: function (feat) {
-        const geometry = feat.getGeometry() as Polygon;
-        return geometry.getInteriorPoint();
-      },
-    }),
-    new Style({
-      stroke: new Stroke({
-        color,
-        width,
-      }),
-      zIndex: 99,
-      fill: new Fill({
-        color: gradient,
-      }),
-    }),
-  ];
-}
 
 function getAreaStyle(color: string, width: number, fillColor: string, resolution?: number) {
   let strokeWidth = width;
@@ -331,7 +286,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return resolution <= 100 ? getAreaStyleBySource('area3456', highlighted, highlighted) : undefined;
     case 'specialarea2':
     case 'specialarea15':
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, highlighted);
+      return getSpecialAreaStyle(feature, true, highlighted);
     case 'boardline12':
       return getBoardLineStyle('#000000', 1);
     case 'safetyequipmentfault':
@@ -612,7 +567,7 @@ export function addAPILayers(map: Map) {
     id: 'specialarea2',
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, !!feature.get('hoverStyle')),
+    style: (feature) => getSpecialAreaStyle(feature, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
@@ -624,7 +579,7 @@ export function addAPILayers(map: Map) {
     id: 'specialarea15',
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, !!feature.get('hoverStyle')),
+    style: (feature) => getSpecialAreaStyle(feature, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
     declutter: true,
