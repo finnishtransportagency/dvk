@@ -299,6 +299,8 @@ fragment FairwayCardParts on FairwayCard {
       sv
       en
     }
+    startDate
+    endDate
   }
 }
 

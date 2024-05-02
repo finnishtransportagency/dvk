@@ -87,7 +87,9 @@ export type FairwayCardActionType =
   | 'additionalInfo'
   | 'pilotRoutes'
   | 'temporaryNotifications'
-  | 'temporaryNotificationContent';
+  | 'temporaryNotificationContent'
+  | 'temporaryNotificationStartDate'
+  | 'temporaryNotificationEndDate';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'

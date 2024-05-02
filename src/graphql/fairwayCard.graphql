@@ -204,6 +204,8 @@ query findFairwayCardById($id: String!) {
         sv
         en
       }
+      startDate
+      endDate
     }
   }
 }

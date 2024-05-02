@@ -84,6 +84,8 @@ export type PilotRoute = {
 
 export type TemporaryNotification = {
   content?: Maybe<Text>;
+  startDate?: Maybe<string>;
+  endDate?: Maybe<string>;
 }
 
 class FairwayCardDBModel {

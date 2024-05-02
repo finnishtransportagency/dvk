@@ -150,7 +150,11 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
       }) ?? null,
     temporaryNotifications:
       card.temporaryNotifications?.map((notification) => {
-        return { content: mapText(notification.content) };
+        return {
+          content: mapText(notification.content),
+          startDate: mapString(notification.startDate),
+          endDate: mapString(notification.endDate),
+        };
       }) ?? null,
   };
 }

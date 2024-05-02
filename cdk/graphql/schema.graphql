@@ -187,6 +187,8 @@ input SectionInput {
 
 input TemporaryNotificationInput {
   content: TextInput
+  startDate: String
+  endDate: String
 }
 
 type FairwayCardOrHarbor {
@@ -552,4 +554,6 @@ type PilotRoute {
 
 type TemporaryNotification {
   content: Text
+  startDate: String
+  endDate: String
 }

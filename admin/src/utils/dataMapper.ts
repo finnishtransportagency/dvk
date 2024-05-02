@@ -148,6 +148,8 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
           sv: stringValueOrDefault(notification.content?.sv),
           en: stringValueOrDefault(notification.content?.en),
         },
+        startDate: stringValueOrDefault(notification.startDate),
+        endDate: stringValueOrDefault(notification.endDate),
       };
     }),
   };
