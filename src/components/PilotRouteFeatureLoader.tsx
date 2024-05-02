@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { MAP, OFFLINE_STORAGE } from '../utils/constants';
+import { MAP } from '../utils/constants';
 import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
@@ -22,14 +22,7 @@ function addFairwayCardData(features: Feature<Geometry>[], cards: FairwayCardPar
 export function usePilotRouteFeatures() {
   const [ready, setReady] = useState(false);
   const [pilotRouteFeatures, setPilotRouteFeatures] = useState<Feature<Geometry>[]>([]);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching } = useFeatureData(
-    'pilotroute',
-    true,
-    60 * 60 * 1000,
-    true,
-    OFFLINE_STORAGE.staleTime,
-    OFFLINE_STORAGE.cacheTime
-  );
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching } = useFeatureData('pilotroute', true, 60 * 60 * 1000);
   const { data: fairwayCardData } = useFairwayCardListData();
 
   useEffect(() => {

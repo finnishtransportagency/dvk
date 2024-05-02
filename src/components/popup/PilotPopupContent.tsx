@@ -11,6 +11,8 @@ import { InfoParagraph } from '../content/Paragraph';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
+import { useFairwayCardListData } from '../../utils/dataLoader';
+import { getPilotPlaceFairwayCards } from '../../utils/fairwayCardUtils';
 
 type PilotPopupContentProps = {
   pilot: PilotProperties;
@@ -18,6 +20,7 @@ type PilotPopupContentProps = {
 };
 
 export type PilotProperties = {
+  id: number;
   coordinates: number[];
   properties: PilotFeatureProperties;
 };
@@ -26,11 +29,14 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
+  const { data } = useFairwayCardListData();
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
   };
+
+  const fairwayCards = data ? getPilotPlaceFairwayCards(pilot.id, data.fairwayCards) : [];
 
   return (
     <IonGrid className="ion-no-padding">
@@ -48,12 +54,12 @@ const PilotPopupContent: React.FC<PilotPopupContentProps> = ({ pilot, setPopupPr
       <IonRow>
         <IonCol>{coordinatesToStringHDM(pilot?.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
       </IonRow>
-      {pilot.properties.fairwayCards && pilot.properties.fairwayCards.length > 0 && (
+      {fairwayCards.length > 0 && (
         <>
           <IonRow>
             <IonCol className="header">{t('popup.pilotPlace.fairways')}</IonCol>
           </IonRow>
-          {pilot.properties.fairwayCards.map((card) => {
+          {fairwayCards.map((card) => {
             return (
               <IonRow key={card.id}>
                 <IonCol>

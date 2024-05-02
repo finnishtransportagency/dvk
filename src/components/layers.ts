@@ -40,8 +40,8 @@ import { initialState } from '../hooks/dvkReducer';
 import { Geometry, Point } from 'ol/geom';
 import {
   getFairwayCardPilotRoutes,
-  getPilotPlacesByFairwayCardId,
-  getPilotageLimitsByFairways,
+  getFairwayCardPilotageLimits,
+  getFairwayCardPilotPlaces,
   getSafetyEquipmentFaultsByFairwayCardId,
 } from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
@@ -1129,21 +1129,18 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
     }
 
-    const pilotPlaces = getPilotPlacesByFairwayCardId(String(fairwayCard.name.fi));
+    const pilotPlaces = getFairwayCardPilotPlaces(fairwayCard);
     for (const feature of pilotPlaces) {
       pilotPlaceSource.removeFeature(feature);
       fairwayFeatures.push(feature);
     }
 
-    // no feature id set for pilotage limits, so has to be done this way around
-    const pilotageLimits = getPilotageLimitsByFairways(fairwayCard.fairways, true);
-    for (const f of pilotageLimitSource.getFeatures()) {
-      const pilotageNumber = f.getProperties().numero;
-      for (const limit of pilotageLimits) {
-        if (limit.numero === pilotageNumber) {
-          pilotageLimitSource.removeFeature(f);
-          fairwayFeatures.push(f);
-        }
+    const pilotageLimits = getFairwayCardPilotageLimits(fairwayCard, pilotageLimitSource.getFeatures());
+    for (const pilotageLimit of pilotageLimits) {
+      const feature = pilotageLimitSource.getFeatureById(pilotageLimit.getId() as number) as Feature<Geometry>;
+      if (feature) {
+        pilotageLimitSource.removeFeature(feature);
+        fairwayFeatures.push(feature);
       }
     }
 

@@ -8,7 +8,6 @@ import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
 import { useFeatureData, useStaticFeatureData } from '../../utils/dataLoader';
 import { useEffect, useState } from 'react';
-import { Text } from '../../graphql/generated';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../../speedlimitworker/SpeedlimitUtils';
 import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
@@ -291,13 +290,6 @@ export function usePilotLayer() {
 export function useHarborLayer() {
   return useDataLayer('harbor', 'harbor');
 }
-
-export type EquipmentFault = {
-  faultId: number;
-  faultType: Text;
-  faultTypeCode: string;
-  recordTime: number;
-};
 
 export function useSafetyEquipmentLayer(): DvkLayerState {
   return useDataLayer('safetyequipment', 'safetyequipment');

@@ -5,12 +5,12 @@ import './popup.css';
 import { Link } from 'react-router-dom';
 import { Lang } from '../../utils/constants';
 import { EquipmentFeatureProperties } from '../features';
-import { Text } from '../../graphql/generated';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
+import InfoIcon from '../../theme/img/info.svg?react';
 
 type EquipmentPopupContentProps = {
   equipment: EquipmentProperties;
@@ -22,23 +22,12 @@ export type EquipmentProperties = {
   properties: EquipmentFeatureProperties;
 };
 
-type FairwayCardIdName = {
-  id: string;
-  name: Text;
-};
-
 const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
 
-  let fairwayCards: FairwayCardIdName[] = [];
-  equipment.properties?.fairways?.forEach((f) => {
-    if (f.fairwayCards) {
-      fairwayCards.push(...f.fairwayCards);
-    }
-  });
-  fairwayCards = [...new Map(fairwayCards.map((item) => [item.id, item])).values()];
+  const fairwayCards = equipment.properties.fairwayCards ?? [];
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
@@ -139,22 +128,31 @@ const EquipmentPopupContent: React.FC<EquipmentPopupContentProps> = ({ equipment
           </IonRow>
         </>
       )}
-      {fairwayCards.length > 0 && (
+      <IonRow>
+        <IonCol className="header">{t('popup.equipment.fairways')}</IonCol>
+      </IonRow>
+      {fairwayCards.length > 0 ? (
+        fairwayCards.map((card) => {
+          return (
+            <IonRow key={card.id}>
+              <IonCol>
+                <Link to={`/kortit/${card.id}`} className={state.preview ? 'disableLink' : ''}>
+                  {card.name[lang]}
+                </Link>
+              </IonCol>
+            </IonRow>
+          );
+        })
+      ) : (
         <IonRow>
-          <IonCol className="header">{t('popup.equipment.fairways')}</IonCol>
+          <IonCol>
+            <p className="info use-flex ion-align-items-center">
+              <InfoIcon />
+              {t('popup.common.noFairwayCards')}
+            </p>
+          </IonCol>
         </IonRow>
       )}
-      {fairwayCards.map((card) => {
-        return (
-          <IonRow key={card.id}>
-            <IonCol>
-              <Link to={`/kortit/${card.id}`} className={state.preview ? 'disableLink' : ''}>
-                {card.name[lang]}
-              </Link>
-            </IonCol>
-          </IonRow>
-        );
-      })}
     </IonGrid>
   );
 };

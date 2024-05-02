@@ -110,6 +110,7 @@ export function showFeaturePopup(
     }
     setPopupProperties({
       [selectedFeature.getProperties().featureType]: {
+        id: selectedFeature.getId(),
         coordinates: geom.getCoordinates() as number[],
         properties: selectedFeature.getProperties(),
         width: fairwayWidth,
@@ -118,6 +119,7 @@ export function showFeaturePopup(
   } else {
     setPopupProperties({
       [selectedFeature.getProperties().featureType]: {
+        id: selectedFeature.getId(),
         coordinates: geom.getCoordinates() as number[],
         geometry: geom,
         properties: selectedFeature.getProperties(),

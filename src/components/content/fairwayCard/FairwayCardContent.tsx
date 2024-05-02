@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
 import { setSelectedFairwayCard } from '../../layers';
-import { Lang } from '../../../utils/constants';
+import { Lang, MAP } from '../../../utils/constants';
 import PrintMap from '../../PrintMap';
 import Breadcrumb from '../Breadcrumb';
 import Paragraph, { InfoParagraph } from '../Paragraph';
@@ -17,26 +17,27 @@ import { ProhibitionInfo } from './ProhibitionInfo';
 import { DimensionInfo } from './DimensionInfo';
 import { LiningInfo } from './LiningInfo';
 import { AreaInfo } from './AreaInfo';
-import { PilotInfo, PilotageLimit } from './PilotInfo';
+import { PilotInfo } from './PilotInfo';
 import { TugInfo } from './TugInfo';
 import { HarbourInfo } from './HarbourInfo';
 import { Alert } from './Alert';
 import {
-  getPilotageLimitsByFairways,
   getFairwayCardPilotRoutes,
   getSafetyEquipmentFaultsByFairwayCardId,
   getTabLabel,
+  getFairwayCardPilotageLimits,
 } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
-import { usePilotageLimitLayer, useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
+import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
 import { TabSwiper } from './TabSwiper';
 import PilotRouteList from '../PilotRouteList';
 import { usePilotRouteFeatures } from '../../PilotRouteFeatureLoader';
 import { Feature } from 'ol';
-import { Geometry } from 'ol/geom';
+import { Geometry, LineString } from 'ol/geom';
+import { usePilotageLimitFeatures } from '../../PilotageLimitFeatureLoader';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -60,7 +61,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { state } = useDvkContext();
   const [tab, setTab] = useState<number>(1);
   const [safetyEquipmentFaults, setSafetyEquipmentFaults] = useState<SafetyEquipmentFault[]>([]);
-  const [pilotageLimits, setPilotageLimits] = useState<PilotageLimit[]>([]);
+  const [pilotageLimits, setPilotageLimits] = useState<Feature<Geometry>[]>([]);
   const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
 
   const {
@@ -69,7 +70,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
     isFetching: faultIsFetching,
   } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const { ready: safetyEquipmentLayerReady } = useSafetyEquipmentAndFaultLayer();
-  const { ready: pilotageLayerReady } = usePilotageLimitLayer();
+  const { pilotageLimitFeatures, ready: pilotageLimitsReady } = usePilotageLimitFeatures();
   const { pilotRouteFeatures, ready: pilotRoutesReady } = usePilotRouteFeatures();
 
   useEffect(() => {
@@ -79,14 +80,24 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   }, [fairwayCardId, safetyEquipmentLayerReady]);
 
   useEffect(() => {
-    if (pilotageLayerReady) {
-      const limits = getPilotageLimitsByFairways(fairwayCard?.fairways);
-      setPilotageLimits(limits.toSorted((a, b) => a.numero - b.numero));
+    if (fairwayCard && pilotageLimitsReady) {
+      const features = getFairwayCardPilotageLimits(fairwayCard, pilotageLimitFeatures);
+      const limits: Feature<Geometry>[] = features
+        .map((l) => {
+          // Feature.clone(): Feature geometry is cloned, but properties and style are original. Id is not set.
+          const f = l.clone();
+          const geometry = f.getGeometry() as Geometry;
+          f.setGeometry(geometry.transform(MAP.EPSG, 'EPSG:4326') as LineString);
+          f.setId(l.getId());
+          return f;
+        })
+        .sort((a, b) => a.getProperties().numero - b.getProperties().numero);
+      setPilotageLimits(limits);
     }
-  }, [fairwayCard?.fairways, pilotageLayerReady]);
+  }, [pilotageLimitsReady, pilotageLimitFeatures, fairwayCard]);
 
   useEffect(() => {
-    if (fairwayCard?.pilotRoutes && fairwayCard.pilotRoutes.length > 0 && pilotRoutesReady && pilotRouteFeatures && pilotRouteFeatures.length > 0) {
+    if (fairwayCard && pilotRoutesReady) {
       setPilotRoutes(getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures));
     }
   }, [fairwayCard, pilotRouteFeatures, pilotRoutesReady]);
