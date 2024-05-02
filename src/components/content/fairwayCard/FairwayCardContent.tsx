@@ -31,13 +31,13 @@ import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
-import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
 import { TabSwiper } from './TabSwiper';
 import PilotRouteList from '../PilotRouteList';
 import { usePilotRouteFeatures } from '../../PilotRouteFeatureLoader';
 import { Feature } from 'ol';
 import { Geometry, LineString } from 'ol/geom';
 import { usePilotageLimitFeatures } from '../../PilotageLimitFeatureLoader';
+import { useSafetyEquipmentAndFaultLayer } from '../../SafetyEquipmentFeatureLoader';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;

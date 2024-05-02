@@ -18,7 +18,6 @@ import {
   useSpeedLimitLayer,
   usePilotLayer,
   useHarborLayer,
-  useSafetyEquipmentAndFaultLayer,
   useCoastalWarningLayer,
   useLocalWarningLayer,
   useBoaterWarningLayer,
@@ -48,6 +47,7 @@ import {
 } from './components/AisFeatureLoader';
 import { usePilotageLimitLayer } from './components/PilotageLimitFeatureLoader';
 import { usePilotRouteLayer } from './components/PilotRouteFeatureLoader';
+import { useSafetyEquipmentAndFaultLayer } from './components/SafetyEquipmentFeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 import { register as registerSwiper } from 'swiper/element/bundle';
 

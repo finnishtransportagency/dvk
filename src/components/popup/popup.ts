@@ -313,7 +313,6 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
     case 'quay':
       return { header: [(props as QuayFeatureProperties).quay?.[lang] ?? ''], featureType: t('featureList.featureType.quay'), className: type };
     case 'safetyequipment':
-      return getSafetyEquipmentDetails(t, lang, feature);
     case 'safetyequipmentfault':
       return getSafetyEquipmentDetails(t, lang, feature);
     case 'section':

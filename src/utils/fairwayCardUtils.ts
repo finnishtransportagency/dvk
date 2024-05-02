@@ -69,20 +69,12 @@ export function getSafetyEquipmentFaultsByFairwayCardId(id: string): SafetyEquip
   return equipmentFaults;
 }
 
-export const handleSafetyEquipmentLayerChange = () => {
-  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
-
-  if (selectedFairwayCardSource.getFeatures().length > 0) {
-    for (const f of selectedFairwayCardSource.getFeatures()) {
-      if (f.getProperties().featureType == 'safetyequipment') {
-        const feature = safetyEquipmentFaultSource.getFeatureById(f.getProperties().id) as Feature<Geometry>;
-        safetyEquipmentFaultSource.removeFeature(feature);
-      }
-    }
-    safetyEquipmentFaultSource.dispatchEvent('change');
-  }
-};
+export function getFairwayCardSafetyEquipmentFaults(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  return features.filter((f) => {
+    const fairwayCards = (f.getProperties() as EquipmentFeatureProperties).fairwayCards ?? [];
+    return fairwayCards.some((card) => card.id === fairwayCard.id);
+  });
+}
 
 export function getFairwayCardPilotPlaces(fairwayCard: FairwayCardPartsFragment) {
   const pilotPlaceSource = dvkMap.getVectorSource('pilot');
