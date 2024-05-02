@@ -84,7 +84,7 @@ export const handleSafetyEquipmentLayerChange = () => {
   }
 };
 
-export function getPilotPlacesByFairwayCard(fairwayCard: FairwayCardPartsFragment) {
+export function getFairwayCardPilotPlaces(fairwayCard: FairwayCardPartsFragment) {
   const pilotPlaceSource = dvkMap.getVectorSource('pilot');
   const pilotPlaces: Feature<Geometry>[] = [];
   const placeIds: number[] = fairwayCard.trafficService?.pilot?.places?.map((place) => place.id) ?? [];

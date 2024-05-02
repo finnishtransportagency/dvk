@@ -47,7 +47,7 @@ import { Geometry, Point } from 'ol/geom';
 import {
   getFairwayCardPilotRoutes,
   getFairwayCardPilotageLimits,
-  getPilotPlacesByFairwayCard,
+  getFairwayCardPilotPlaces,
   getSafetyEquipmentFaultsByFairwayCardId,
 } from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
@@ -1174,7 +1174,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
     }
 
-    const pilotPlaces = getPilotPlacesByFairwayCard(fairwayCard);
+    const pilotPlaces = getFairwayCardPilotPlaces(fairwayCard);
     for (const feature of pilotPlaces) {
       pilotPlaceSource.removeFeature(feature);
       fairwayFeatures.push(feature);
