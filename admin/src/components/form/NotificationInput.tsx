@@ -3,7 +3,7 @@ import { FairwayCardInput, Status, TemporaryNotificationInput } from '../../grap
 import { ActionType, Lang, ValidationType, ValueType } from '../../utils/constants';
 import { IonGrid } from '@ionic/react';
 import TextInputRow from './TextInputRow';
-import CalendarInput from './CalendarInput';
+import CalendarInputRow from './CalendarInputRow';
 
 interface NotificationInputProps {
   idx: number;
@@ -33,7 +33,7 @@ const NotificationInput: React.FC<NotificationInputProps> = ({ idx, section, upd
         error={validationErrors.find((error) => error.id === 'temporaryNotifications')?.msg}
         inputType="textarea"
       />
-      <CalendarInput idx={idx} setValue={updateState} />
+      <CalendarInputRow idx={idx} section={section} setValue={updateState} />
     </IonGrid>
   );
 };
