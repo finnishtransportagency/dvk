@@ -86,7 +86,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   }, [fairwayCard?.fairways, pilotageLayerReady]);
 
   useEffect(() => {
-    if (fairwayCard?.pilotRoutes && fairwayCard.pilotRoutes.length > 0 && pilotRoutesReady && pilotRouteFeatures && pilotRouteFeatures.length > 0) {
+    if (fairwayCard && pilotRoutesReady) {
       setPilotRoutes(getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures));
     }
   }, [fairwayCard, pilotRouteFeatures, pilotRoutesReady]);
