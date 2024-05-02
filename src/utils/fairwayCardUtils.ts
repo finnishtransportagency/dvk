@@ -143,7 +143,7 @@ export function getPilotageLimitsByFairways(fairways: Fairway[] | undefined, get
 export function getFairwayCardPilotRoutes(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
   const pilotRoutes = features.filter((f) => {
     const properties = f.getProperties() as PilotRouteFeatureProperties;
-    return fairwayCard.pilotRoutes?.find((pr) => properties?.id === pr?.id);
+    return fairwayCard.pilotRoutes?.find((pr) => properties?.id === pr?.id) ?? false;
   });
-  return pilotRoutes?.toSorted((a, b) => a?.getProperties()?.name.localeCompare(b?.getProperties()?.name, 'fi', { ignorePunctuation: true }));
+  return pilotRoutes?.toSorted((a, b) => a?.getProperties()?.name.localeCompare(b?.getProperties()?.name, 'fi', { ignorePunctuation: true })) ?? [];
 }
