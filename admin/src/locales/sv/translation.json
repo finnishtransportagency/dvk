@@ -210,7 +210,8 @@
     "toggle-sequence": "[sv] Aseta järjestysnumero",
     "fairway-additional-info": "Ytterligare information",
     "fairway-additional-info-notification-header": "[sv] Lisätietojen lisääminen väyläkortille",
-    "fairway-additional-info-notification-body": "[sv] Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista."
+    "fairway-additional-info-notification-body": "[sv] Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
+    "linked-pilot-routes": "[sv] Linkitetyt luotsausreitit"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",

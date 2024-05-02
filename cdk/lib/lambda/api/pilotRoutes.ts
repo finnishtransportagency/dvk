@@ -110,7 +110,7 @@ function getRouteLine(rtz: RtzData) {
     reittipisteet.push(rp);
   });
   reittipisteet.sort((a, b) => {
-     return a.jarjestys - b.jarjestys;
+    return a.jarjestys - b.jarjestys;
   });
   reittipisteet.forEach((rp) => {
     waypoints.push({ coordinate: rp.geometria.coordinates, turnRadius: rp.kaarresade * 1852 });
@@ -119,28 +119,30 @@ function getRouteLine(rtz: RtzData) {
   return coordinates;
 }
 
-async function fetchPilotRouteData(): Promise<FeatureCollection> {
+export async function fetchPilotRouteData(): Promise<FeatureCollection> {
   const data: RtzData[] = await fetchPilotRoutesApi();
-  const features: Feature<Geometry, GeoJsonProperties>[] = data?.filter((entry) => entry.tila === 1).map((entry) => {
-    const geometry: LineString = {
-      type: 'LineString',
-      coordinates: getRouteLine(entry),
-    };
+  const features: Feature<Geometry, GeoJsonProperties>[] = data
+    ?.filter((entry) => entry.tila === 1)
+    .map((entry) => {
+      const geometry: LineString = {
+        type: 'LineString',
+        coordinates: getRouteLine(entry),
+      };
 
-    return {
-      type: 'Feature',
-      id: entry.tunnus,
-      geometry: roundGeometry(geometry, 5) as LineString,
-      properties: {
-        featureType: 'pilotroute',
+      return {
+        type: 'Feature',
         id: entry.tunnus,
-        identifier: entry.tunniste,
-        name: entry.nimi,
-        status: entry.tila,
-        rtz: entry.rtz,
-      },
-    };
-  });
+        geometry: roundGeometry(geometry, 5) as LineString,
+        properties: {
+          featureType: 'pilotroute',
+          id: entry.tunnus,
+          identifier: entry.tunniste,
+          name: entry.nimi,
+          status: entry.tila,
+          rtz: entry.rtz,
+        },
+      };
+    });
 
   return {
     type: 'FeatureCollection',

@@ -1,6 +1,6 @@
 .dataTableGrid {
   flex-wrap: nowrap;
-  overflow-x: hidden;
+  overflow-x: auto;
   overflow-y: hidden;
 }
 
@@ -46,4 +46,66 @@ div.squatSquare {
   width: 0px;
   height: 0px;
   outline: solid 1px black;
+}
+
+div.froudeSquareSmall {
+  border: solid 4px #f5ffef;
+  width: 0px;
+  height: 0px;
+  outline: solid 1px black;
+}
+
+div.squatSquareSmall {
+  border: solid 4px #fdf6f6;
+  width: 0px;
+  height: 0px;
+  margin-left: 1px;
+  outline: solid 1px black;
+}
+
+.titleRow {
+  font-size: 12px;
+  min-height: 55px;
+}
+.dataRow {
+  font-size: 12px;
+  height: 27px;
+  padding-left: 10px;
+  padding-top: 7px;
+  border-top: 1px solid lightgray;
+}
+.cellRightBorder {
+  border-right: 1px solid lightgray;
+}
+
+.titleRow ion-label {
+  font-weight: bold;
+  padding: 5px;
+}
+
+.dataTableCol {
+  flex-wrap: nowrap;
+  padding: 0px;
+}
+
+.legendCol {
+  font-size: 12px;
+  padding: 5px;
+}
+
+@media (max-width: 576px) {
+  .squatDataGrid {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .squatDataRow {
+    width: 100%;
+  }
+}
+
+.squatDataGridNoScroll {
+  flex-wrap: nowrap;
+  overflow-x: hidden;
+  overflow-y: hidden;
 }

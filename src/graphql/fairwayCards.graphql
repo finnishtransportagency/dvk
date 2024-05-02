@@ -289,6 +289,10 @@ fragment FairwayCardParts on FairwayCard {
   pictures {
     ...PictureParts
   }
+  pilotRoutes {
+    id
+    name
+  }
 }
 
 query findAllFairwayCards($status: [Status!]) {

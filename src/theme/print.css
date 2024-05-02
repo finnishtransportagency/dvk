@@ -54,7 +54,8 @@
   #splitPane .togglePane {
     display: none;
   }
-  .ion-page, ion-router-outlet {
+  .ion-page,
+  ion-router-outlet {
     position: static !important;
     contain: unset !important;
     overflow: visible !important;
@@ -98,7 +99,7 @@
     line-height: 1rem;
     text-transform: uppercase;
   }
-  ion-segment.tabs {
+  div.tabs {
     display: none;
   }
 
@@ -162,10 +163,14 @@
     vertical-align: middle;
   }
   @media (orientation: portrait) {
-    .mapExport img {max-height: calc(100vh - 2.5px) !important;}
+    .mapExport img {
+      max-height: calc(100vh - 2.5px) !important;
+    }
   }
   @media (orientation: landscape) {
-    .mapExport img {max-height: calc(100vh - 2.5px) !important;}
+    .mapExport img {
+      max-height: calc(100vh - 2.5px) !important;
+    }
   }
 
   .mapLegend {
@@ -194,13 +199,21 @@
     font-size: 16px;
     line-height: 1.5rem;
     font-weight: bold;
-    text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+    text-shadow:
+      -1px -1px 0 var(--ion-color-primary-contrast),
+      -1px 1px 0 var(--ion-color-primary-contrast),
+      1px -1px 0 var(--ion-color-primary-contrast),
+      1px 1px 0 var(--ion-color-primary-contrast);
   }
   .mapLegend .cardInfo em {
     font-size: 12px;
     line-height: 1rem;
     display: block;
-    text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+    text-shadow:
+      -1px -1px 0 var(--ion-color-primary-contrast),
+      -1px 1px 0 var(--ion-color-primary-contrast),
+      1px -1px 0 var(--ion-color-primary-contrast),
+      1px 1px 0 var(--ion-color-primary-contrast);
   }
   .mapLegend .cardInfo em.danger {
     color: var(--ion-color-danger);
@@ -213,7 +226,11 @@
     line-height: 1rem;
     text-align: center;
     margin: 6px auto 0 0;
-    text-shadow: -1px -1px 0 var(--ion-color-primary-contrast), -1px 1px 0 var(--ion-color-primary-contrast), 1px -1px 0 var(--ion-color-primary-contrast), 1px 1px 0 var(--ion-color-primary-contrast);
+    text-shadow:
+      -1px -1px 0 var(--ion-color-primary-contrast),
+      -1px 1px 0 var(--ion-color-primary-contrast),
+      1px -1px 0 var(--ion-color-primary-contrast),
+      1px 1px 0 var(--ion-color-primary-contrast);
     transition: all 0.25s;
   }
   .topRight {
@@ -244,13 +261,20 @@
     display: none !important;
   }
 
-  .pagebreak { page-break-after: always; break-after: page; }
+  .pagebreak {
+    page-break-after: always;
+    break-after: page;
+  }
 
   @media (orientation: portrait) {
-    .hide-portrait {display: none !important;}
+    .hide-portrait {
+      display: none !important;
+    }
   }
   @media (orientation: landscape) {
-    .hide-landscape {display: none !important;}
+    .hide-landscape {
+      display: none !important;
+    }
 
     .tabContent {
       column-count: 2 !important;

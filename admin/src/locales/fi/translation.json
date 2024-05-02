@@ -214,7 +214,8 @@
     "toggle-sequence": "Aseta järjestysnumero",
     "fairway-additional-info": "Lisätiedot",
     "fairway-additional-info-notification-header": "Lisätietojen lisääminen väyläkortille",
-    "fairway-additional-info-notification-body": "Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista."
+    "fairway-additional-info-notification-body": "Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
+    "linked-pilot-routes": "Linkitetyt luotsausreitit"
   },
   "harbour": {
     "primary-id": "Sataman tunniste",

@@ -1,49 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Fairway, Pilot } from '../../../graphql/generated';
+import { Pilot } from '../../../graphql/generated';
 import { Lang, PILOTORDER_URL } from '../../../utils/constants';
 import PhoneNumber from './PhoneNumber';
 import { useDvkContext } from '../../../hooks/dvkContext';
 import { PilotPlaceInfo } from './PilotPlaceInfo';
-import { getPilotageLimitsByFairways } from '../../../utils/fairwayCardUtils';
 import { PilotageLimitInfo } from './PilotageLimitInfo';
 import { Geometry } from 'ol/geom';
 
 type PilotInfoProps = {
-  fairways: Fairway[];
-  data?: Pilot | null;
+  pilotageLimits?: PilotageLimit[];
+  pilot?: Pilot | null;
 };
 
 export type PilotageLimit = {
-  fid: number;
   numero: number;
-  liittyyVayliin: string;
-  raja_fi: string;
-  raja_sv: string;
-  raja_en: string;
-  koordinaatit: Geometry;
+  fid?: number;
+  liittyyVayliin?: string;
+  raja_fi?: string;
+  raja_sv?: string;
+  raja_en?: string;
+  koordinaatit?: Geometry;
 };
 
-export const PilotInfo: React.FC<PilotInfoProps> = ({ fairways, data }) => {
+export const PilotInfo: React.FC<PilotInfoProps> = ({ pilotageLimits, pilot }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
-  const [pilotageLimits, setPilotageLimits] = useState<PilotageLimit[]>([]);
-
-  useEffect(() => {
-    setPilotageLimits(getPilotageLimitsByFairways(fairways));
-  }, [fairways]);
 
   return (
     <>
-      {data && (
+      {pilot && (
         <IonText>
           <p>
             <strong>{t('pilotOrder')}:</strong>
             <br />
-            {t('email')}: {data.email && <a href={'mailto:' + data.email}>{data.email}</a>}
-            {!data.email && '-'}
+            {t('email')}: {pilot.email && <a href={'mailto:' + pilot.email}>{pilot.email}</a>}
+            {!pilot.email && '-'}
             <br />
             {t('orderFrom')}:{' '}
             <a href={'//' + PILOTORDER_URL} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
@@ -51,18 +45,18 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ fairways, data }) => {
               <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
             </a>
             <br />
-            <PhoneNumber title={t('phone')} showEmpty number={data.phoneNumber} />
+            <PhoneNumber title={t('phone')} showEmpty number={pilot.phoneNumber} />
             <br />
-            <PhoneNumber title={t('fax')} showEmpty number={data.fax} />
-            {data.extraInfo && (
+            <PhoneNumber title={t('fax')} showEmpty number={pilot.fax} />
+            {pilot.extraInfo && (
               <>
                 <br />
-                {data.extraInfo[lang]}
+                {pilot.extraInfo[lang]}
               </>
             )}
           </p>
-          <PilotPlaceInfo pilotPlaces={data.places} />
-          <PilotageLimitInfo pilotLimits={pilotageLimits} />
+          <PilotPlaceInfo pilotPlaces={pilot.places} />
+          <PilotageLimitInfo pilotLimits={pilotageLimits ?? []} />
         </IonText>
       )}
     </>

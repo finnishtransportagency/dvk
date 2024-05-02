@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { IonLabel, IonSegment, IonSegmentButton, IonText } from '@ionic/react';
+import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
 import { setSelectedFairwayCard } from '../../layers';
-import { Lang } from '../../../utils/constants';
+import { Lang, OFFLINE_STORAGE } from '../../../utils/constants';
 import PrintMap from '../../PrintMap';
 import Breadcrumb from '../Breadcrumb';
 import Paragraph, { InfoParagraph } from '../Paragraph';
@@ -17,16 +17,24 @@ import { ProhibitionInfo } from './ProhibitionInfo';
 import { DimensionInfo } from './DimensionInfo';
 import { LiningInfo } from './LiningInfo';
 import { AreaInfo } from './AreaInfo';
-import { PilotInfo } from './PilotInfo';
+import { PilotInfo, PilotageLimit } from './PilotInfo';
 import { TugInfo } from './TugInfo';
 import { HarbourInfo } from './HarbourInfo';
 import { Alert } from './Alert';
-import { getSafetyEquipmentFaultsByFairwayCardId, getTabLabel } from '../../../utils/fairwayCardUtils';
+import {
+  getPilotageLimitsByFairways,
+  getFairwayCardPilotRoutes,
+  getSafetyEquipmentFaultsByFairwayCardId,
+  getTabLabel,
+} from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
-import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
-import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
+import { useFeatureData, useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
+import { usePilotageLimitLayer, useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
+import { TabSwiper } from './TabSwiper';
+import PilotRouteList from '../PilotRouteList';
+import { Feature, Geometry } from 'geojson';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -50,19 +58,51 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { state } = useDvkContext();
   const [tab, setTab] = useState<number>(1);
   const [safetyEquipmentFaults, setSafetyEquipmentFaults] = useState<SafetyEquipmentFault[]>([]);
+  const [pilotageLimits, setPilotageLimits] = useState<PilotageLimit[]>([]);
+  const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
 
   const {
     dataUpdatedAt: faultDataUpdatedAt,
     isPending: faultIsPending,
     isFetching: faultIsFetching,
   } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
-  const { ready } = useSafetyEquipmentAndFaultLayer();
+  const { ready: safetyEquipmentLayerReady } = useSafetyEquipmentAndFaultLayer();
+  const { ready: pilotageLayerReady } = usePilotageLimitLayer();
+
+  const { data: pilotRouteData, isSuccess: pilotRoutesSuccess } = useFeatureData(
+    'pilotroute',
+    true,
+    60 * 60 * 1000,
+    true,
+    OFFLINE_STORAGE.staleTime,
+    OFFLINE_STORAGE.cacheTime
+  );
 
   useEffect(() => {
-    if (ready) {
+    if (safetyEquipmentLayerReady) {
       setSafetyEquipmentFaults(getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId));
     }
-  }, [fairwayCardId, ready]);
+  }, [fairwayCardId, safetyEquipmentLayerReady]);
+
+  useEffect(() => {
+    if (pilotageLayerReady) {
+      const limits = getPilotageLimitsByFairways(fairwayCard?.fairways);
+      setPilotageLimits(limits.toSorted((a, b) => a.numero - b.numero));
+    }
+  }, [fairwayCard?.fairways, pilotageLayerReady]);
+
+  useEffect(() => {
+    if (
+      fairwayCard?.pilotRoutes &&
+      fairwayCard.pilotRoutes.length > 0 &&
+      pilotRoutesSuccess &&
+      pilotRouteData?.features &&
+      pilotRouteData.features.length > 0
+    ) {
+      const features = pilotRouteData.features as Feature<Geometry>[];
+      setPilotRoutes(getFairwayCardPilotRoutes(fairwayCard, features));
+    }
+  }, [fairwayCard, pilotRouteData, pilotRoutesSuccess]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
@@ -121,15 +161,8 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               />
             </div>
           )}
-          <IonSegment className="tabs" onIonChange={(e) => setTab((e.detail.value as number) ?? 1)} value={tab} data-testid="tabChange">
-            {[1, 2, 3].map((tabId) => (
-              <IonSegmentButton key={tabId} value={tabId}>
-                <IonLabel>
-                  <h3>{getTabLabel(t, tabId)}</h3>
-                </IonLabel>
-              </IonSegmentButton>
-            ))}
-          </IonSegment>
+
+          <TabSwiper tab={tab} setTab={setTab} widePane={widePane} />
 
           <div className={getTabClassName(1)}>
             <IonText className="no-margin-top">
@@ -181,7 +214,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                 <strong>{t('trafficServices')}</strong>
               </h4>
             </IonText>
-            <PilotInfo fairways={fairwayCard.fairways} data={fairwayCard?.trafficService?.pilot} />
+            <PilotInfo pilotageLimits={pilotageLimits} pilot={fairwayCard?.trafficService?.pilot} />
             <VTSInfo data={fairwayCard?.trafficService?.vts} />
             <TugInfo data={fairwayCard?.trafficService?.tugs} />
           </div>
@@ -198,26 +231,31 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           </div>
 
           <div className={getTabClassName(3)}>
-            <>
-              <IonText className="no-margin-top">
-                <h5>{t('commonInformation')}</h5>
-                <GeneralInfo data={fairwayCard?.fairways} />
-                <ProhibitionInfo data={fairwayCard?.fairways} />
-              </IonText>
-              <IonText>
-                <h5>{t('speedLimit')}</h5>
-                <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} />
-              </IonText>
-              <IonText>
-                <h5>{t('anchorage')}</h5>
-                <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
-              </IonText>
-              <IonText>
-                <h5>{t('fairwayAreas')}</h5>
-              </IonText>
-              <AreaInfo data={fairwayCard?.fairways} />
-            </>
+            <IonText className="no-margin-top">
+              <h5>{t('commonInformation')}</h5>
+              <GeneralInfo data={fairwayCard?.fairways} />
+              <ProhibitionInfo data={fairwayCard?.fairways} />
+            </IonText>
+            <IonText>
+              <h5>{t('speedLimit')}</h5>
+              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} />
+            </IonText>
+            <IonText>
+              <h5>{t('anchorage')}</h5>
+              <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
+            </IonText>
+            <IonText>
+              <h5>{t('fairwayAreas')}</h5>
+            </IonText>
+            <AreaInfo data={fairwayCard?.fairways} />
           </div>
+
+          <div className={getTabClassName(4)}>
+            {import.meta.env.VITE_APP_ENV !== 'prod' && (
+              <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
+            )}
+          </div>
+
           {!isMobile() && (
             <>
               <div className="pagebreak" />

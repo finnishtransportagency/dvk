@@ -122,7 +122,17 @@ it('should get card by id from the DynamoDB', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
+  s3Mock.on(GetObjectCommand, {
+    Key: 'test',
+  }).resolves({ Body: stream, ExpiresString: expires.toString() });
+
+  const stream2 = sdkStreamMixin(createReadStream('./test/data/pilotroutes.json'));
+  const expires2 = new Date();
+  expires2.setTime(expires2.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand, {
+    Key: 'test',
+  }).resolves({ Body: stream2, ExpiresString: expires2.toString() });
+
   const response = await handler(mockQueryByIdEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
@@ -141,7 +151,17 @@ it('should get card by id from the DynamoDB when cache expired', async () => {
   const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
+  s3Mock.on(GetObjectCommand, {
+    Key: 'test',
+  }).resolves({ Body: stream, ExpiresString: expires.toString() });
+
+  const stream2 = sdkStreamMixin(createReadStream('./test/data/pilotroutes.json'));
+  const expires2 = new Date();
+  expires2.setTime(expires2.getTime() + 1 * 60 * 60 * 1000);
+  s3Mock.on(GetObjectCommand, {
+    Key: 'test',
+  }).resolves({ Body: stream2, ExpiresString: expires2.toString() });
+
   const response = await handler(mockQueryByIdEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),

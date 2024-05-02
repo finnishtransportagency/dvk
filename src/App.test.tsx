@@ -326,10 +326,10 @@ it('should find key elements in fairway card for "vuosaari"', () => {
     const cardPane = screen.getByTestId('cardPane');
     expect(cardPane).toBeInTheDocument();
 
-    // tabChange
-    const tabChange = screen.getByTestId('tabChange');
-    expect(tabChange).toBeInTheDocument();
-    fireEvent.ionChange(tabChange, '2');
+    // tabButton
+    const tabButton = screen.getByTestId('tabButton-2');
+    expect(tabButton).toBeInTheDocument();
+    fireEvent.click(tabButton);
   });
 });
 
@@ -342,10 +342,10 @@ it('should change to third tab successfully', () => {
   expect(baseElement).toBeDefined();
 
   act(() => {
-    // tabChange
-    const tabChange = screen.getByTestId('tabChange');
-    expect(tabChange).toBeInTheDocument();
-    fireEvent.ionChange(tabChange, '3');
+    // tabButton
+    const tabButton = screen.getByTestId('tabButton-3');
+    expect(tabButton).toBeInTheDocument();
+    fireEvent.click(tabButton);
   });
 });
 

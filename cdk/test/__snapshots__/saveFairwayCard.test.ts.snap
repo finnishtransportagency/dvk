@@ -65,6 +65,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "sv": "navigationConditionsv",
   },
   "pictures": null,
+  "pilotRoutes": null,
   "seaLevel": {
     "en": "seaLevelen",
     "fi": "seaLevel",
@@ -188,6 +189,7 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   },
   "navigationCondition": null,
   "pictures": null,
+  "pilotRoutes": null,
   "seaLevel": null,
   "speedLimit": null,
   "status": "DRAFT",

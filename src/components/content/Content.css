@@ -247,6 +247,11 @@ ion-text .h5 {
   text-transform: none;
   break-after: avoid;
 }
+
+.fairwayAreasFairwayName {
+  margin-bottom: 0;
+}
+
 ion-text .info svg {
   color: var(--ion-color-primary);
   width: 16px;
@@ -382,38 +387,6 @@ ion-app:not(.mobile) .breadcrumbs .closeButton {
 }
 
 /* Tabs */
-ion-segment.tabs {
-  border: 1px solid var(--ion-color-light);
-  border-width: 1px 0;
-  margin-top: 20px;
-}
-ion-segment.tabs ion-segment-button {
-  --padding-start: 6px;
-  --padding-end: 6px;
-}
-ion-segment.tabs ion-segment-button::part(native) {
-  font-size: 12px;
-  letter-spacing: normal;
-  color: var(--ion-color-dark);
-}
-ion-segment.tabs ion-segment-button::part(indicator) {
-  left: calc(50% - 20px);
-  width: 40px;
-  right: unset;
-  bottom: 8px;
-}
-ion-segment.tabs ion-segment-button.segment-button-checked::part(native) {
-  font-weight: bold;
-}
-ion-segment.tabs ion-label {
-  padding: 0;
-  margin: 0;
-}
-ion-segment.tabs ion-label h3 {
-  margin: 0;
-  font-size: 12px;
-  font-weight: inherit;
-}
 .tabContent {
   margin-top: 16px;
   display: none;

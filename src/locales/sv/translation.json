@@ -5,6 +5,7 @@
       "closeMenu": "Stäng",
       "title": "Digital farledskort",
       "fairway-cards": "Farledskort",
+      "pilot-routes": "Lotsningsrutter",
       "safety-equipment-faults": "Säkerhetsanordningsfelen",
       "marine-warnings": "Navigationsvarningar",
       "squat": "Squat beräkning",
@@ -137,6 +138,7 @@
     "gulfOfBothnia": "Bottniska vikens område",
     "harboursTitle": "Farledens hamnar",
     "areasTitle": "Farledsområden",
+    "routesTitle": "Lotsningsrutter",
     "information": "Farledsdata",
     "liningAndMarking": "Farledsdragning och utmärkning",
     "starts": "Börjar",
@@ -260,6 +262,12 @@
     "pilotageLimitMaxDimensions": "Gäller för fartyg med maximala mått",
     "draught": "Djupgående",
     "width": "Bredd"
+  },
+  "routes": {
+    "title": "Lotsningsrutter",
+    "route": "Rutt",
+    "rtz": "Ruttfil i RTZ-format",
+    "linkedFairwayCards": "Farledskort angående lotsningsrutt"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
@@ -512,6 +520,7 @@
     "dataUpToDate": "Tjänstens iuppgifter är uppdaterad",
     "dataUpdateFailedAt": "Misslyckad uppdatering av data",
     "latestDataUpdateAt": "Senaste uppdateringen av data",
+    "modified": "Uppdaterat",
     "datetimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "safety-equipment-faults": "Säkerhetsanordningsfelen",
     "marine-warnings": "Navigationsvarningar",
@@ -550,5 +559,11 @@
     "saimaaCanal": "Saima kanal",
     "gulfOfBothnia": "Bottenvik",
     "inlandAreas": "Inlandsfarvatten"
+  },
+  "fileSize": {
+    "bytes": "byte",
+    "KB": "kilobyte",
+    "MB": "megabyte",
+    "GB": "gigabyte"
   }
 }
