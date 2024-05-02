@@ -80,7 +80,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   }, [fairwayCardId, safetyEquipmentLayerReady]);
 
   useEffect(() => {
-    if (fairwayCard && pilotageLimitsReady && pilotageLimitFeatures) {
+    if (fairwayCard && pilotageLimitsReady) {
       const features = getFairwayCardPilotageLimits(fairwayCard, pilotageLimitFeatures);
       const limits: Feature<Geometry>[] = features
         .map((l) => {
