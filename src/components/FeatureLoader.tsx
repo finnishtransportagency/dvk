@@ -6,17 +6,18 @@ import { Polygon as turf_Polygon } from 'geojson';
 import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, StaticFeatureDataSources, MAP, StaticFeatureDataId } from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
-import { useFeatureData } from '../utils/dataLoader';
+import { useFairwayCardListData, useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
-import { Text } from '../graphql/generated';
+import { FairwayCardPartsFragment } from '../graphql/generated';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
 import { filterMarineWarnings } from '../utils/common';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
-import { handleSafetyEquipmentLayerChange } from '../utils/fairwayCardUtils';
+import { getFairwayListFairwayCards, handleSafetyEquipmentLayerChange } from '../utils/fairwayCardUtils';
 import RenderFeature from 'ol/render/Feature';
+import { Card, EquipmentFairway, EquipmentFault, EquipmentFeatureProperties } from './features';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -430,27 +431,35 @@ export function useBoaterWarningLayer() {
   return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, true, filterMarineWarnings('boaterwarning'));
 }
 
-export type EquipmentFault = {
-  faultId: number;
-  faultType: Text;
-  faultTypeCode: string;
-  recordTime: number;
-};
+function addSafetyEquipmentFairwayCards(feature: Feature<Geometry>, fairwayCards: FairwayCardPartsFragment[]) {
+  const fairways: EquipmentFairway[] = (feature.getProperties() as EquipmentFeatureProperties)?.fairways ?? [];
+  const cardList = getFairwayListFairwayCards(fairways, fairwayCards);
+  const cards: Card[] = cardList.map((c) => {
+    return { id: c.id, name: c.name };
+  });
+  feature.set('fairwayCards', cards, true);
+}
 
 export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const eQuery = useFeatureData('safetyequipment');
-  const fQuery = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
-  const eDataUpdatedAt = eQuery.dataUpdatedAt;
-  const fDataUpdatedAt = fQuery.dataUpdatedAt;
-  const eErrorUpdatedAt = eQuery.errorUpdatedAt;
-  const fErrorUpdatedAt = fQuery.errorUpdatedAt;
-  const isPaused = eQuery.isPaused || fQuery.isPaused;
-  const isError = eQuery.isError || fQuery.isError;
+  const {
+    data: eData,
+    dataUpdatedAt: eDataUpdatedAt,
+    errorUpdatedAt: eErrorUpdatedAt,
+    isPaused: eIsPaused,
+    isError: eIsError,
+  } = useFeatureData('safetyequipment');
+  const {
+    data: fData,
+    dataUpdatedAt: fDataUpdatedAt,
+    errorUpdatedAt: fErrorUpdatedAt,
+    isPaused: fIsPaused,
+    isError: fIsError,
+  } = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
+  const { data: fairwayCardData } = useFairwayCardListData();
+
   useEffect(() => {
-    const eData = eQuery.data;
-    const fData = fQuery.data;
-    if (eData && fData) {
+    if (eData && fData && fairwayCardData) {
       const layer = dvkMap.getFeatureLayer('safetyequipment');
       const faultLayer = dvkMap.getFeatureLayer('safetyequipmentfault');
       if (layer.get('dataUpdatedAt') !== eDataUpdatedAt || faultLayer.get('dataUpdatedAt') !== fDataUpdatedAt) {
@@ -458,7 +467,9 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
         const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         efs.forEach((f) => {
           f.set('dataSource', 'safetyequipment', true);
+          addSafetyEquipmentFairwayCards(f, fairwayCardData.fairwayCards);
         });
+
         const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
         const equipmentSource = dvkMap.getVectorSource('safetyequipment');
         equipmentSource.clear();
@@ -503,10 +514,11 @@ export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
       handleSafetyEquipmentLayerChange();
       setReady(true);
     }
-  }, [eQuery.data, fQuery.data, eDataUpdatedAt, fDataUpdatedAt, eErrorUpdatedAt, fErrorUpdatedAt]);
+  }, [eData, fData, fairwayCardData, eDataUpdatedAt, fDataUpdatedAt, eErrorUpdatedAt, fErrorUpdatedAt]);
+
   const dataUpdatedAt = Math.max(eDataUpdatedAt, fDataUpdatedAt);
   const errorUpdatedAt = Math.max(eErrorUpdatedAt, fErrorUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused: eIsPaused || fIsPaused, isError: eIsError || fIsError };
 }
 
 export function useVaylaWaterAreaData() {

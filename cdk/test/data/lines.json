@@ -29,16 +29,6 @@
               "fi": "Helsingin Länsisataman väylä",
               "sv": "Farleden till Västhamn"
             },
-            "fairwayCards": [
-              {
-                "id": "lansisatama",
-                "name": {
-                  "en": "Helsinki West Harbour channel",
-                  "fi": "Helsingin Länsisataman väylä",
-                  "sv": "Farleden till Västra hamnen i Helsingfors"
-                }
-              }
-            ],
             "status": 1,
             "line": 1
           }

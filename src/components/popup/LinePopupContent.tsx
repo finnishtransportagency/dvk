@@ -5,7 +5,6 @@ import './popup.css';
 import { Link } from 'react-router-dom';
 import { Lang } from '../../utils/constants';
 import { LineFeatureProperties } from '../features';
-import { Text } from '../../graphql/generated';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
@@ -14,6 +13,8 @@ import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { padNumber } from 'ol/string';
+import { useFairwayCardListData } from '../../utils/dataLoader';
+import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
 
 type LinePopupContentProps = {
   line: LineProperties;
@@ -26,22 +27,12 @@ export type LineProperties = {
   width: number | undefined;
 };
 
-type FairwayCardIdName = {
-  id: string;
-  name: Text;
-};
-
 const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
+  const { data } = useFairwayCardListData();
 
-  const fairwayCards: FairwayCardIdName[] = [];
-  line.properties?.fairways?.forEach((f) => {
-    if (f.fairwayCards) {
-      fairwayCards.push(...f.fairwayCards);
-    }
-  });
   const showN2000HeightSystem = isShowN2000HeightSystem(line.properties);
 
   const closePopup = () => {
@@ -65,6 +56,8 @@ const LinePopupContent: React.FC<LinePopupContentProps> = ({ line, setPopupPrope
   const lineDepth = getValue(line.properties.n2000depth, line.properties.depth) as number;
   const lineDraft = getValue(line.properties.n2000draft, line.properties.draft) as number;
   const lineReferenceLevel = getValue(line.properties.n2000ReferenceLevel, line.properties.referenceLevel) as string;
+
+  const fairwayCards = data ? getFairwayListFairwayCards(line.properties.fairways ?? [], data.fairwayCards) : [];
 
   return (
     <IonGrid className="ion-no-padding">
