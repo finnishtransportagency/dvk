@@ -76,7 +76,7 @@ function useStaticDataLayer(
         const format = new GeoJSON({ featureClass: RenderFeature });
         const source = layer.getSource() as VectorSource;
         source.clear();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
         source.addFeatures(features);
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }

@@ -32,8 +32,6 @@ async function saveToS3(filename: string, data: Buffer) {
 
 async function main() {
   const featureLoaderUrl = 'http://localhost:8080/api/featureloader';
-  const aisVesselsUrl = 'http://localhost:8080/api/aisvessels';
-  const aisLocationsUrl = 'http://localhost:8080/api/aislocations';
   const pilotRoutesUrl = 'http://localhost:8080/api/pilotroutes';
   const sources = [
     { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2') },
@@ -57,8 +55,6 @@ async function main() {
     { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline') },
     { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint') },
     { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle') },
-    { id: 'aisvessels', url: new URL(aisVesselsUrl) },
-    { id: 'aislocations', url: new URL(aisLocationsUrl) },
     { id: 'pilotroutes', url: new URL(pilotRoutesUrl) },
   ];
   for (const source of sources) {
