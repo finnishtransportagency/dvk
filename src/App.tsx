@@ -35,7 +35,6 @@ import {
   useInitStaticDataLayer,
   useVaylaWaterAreaData,
   useNameLayer,
-  usePilotageLimitLayer,
   usePilotageAreaBorderLayer,
 } from './components/FeatureLoader';
 import {
@@ -47,6 +46,7 @@ import {
   useAisVesselPleasureCraftLayer,
   useAisUnspecifiedLayer,
 } from './components/AisFeatureLoader';
+import { usePilotageLimitLayer } from './components/PilotageLimitFeatureLoader';
 import { usePilotRouteLayer } from './components/PilotRouteFeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 import { register as registerSwiper } from 'swiper/element/bundle';

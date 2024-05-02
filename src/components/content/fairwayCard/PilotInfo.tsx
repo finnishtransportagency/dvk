@@ -8,20 +8,11 @@ import { useDvkContext } from '../../../hooks/dvkContext';
 import { PilotPlaceInfo } from './PilotPlaceInfo';
 import { PilotageLimitInfo } from './PilotageLimitInfo';
 import { Geometry } from 'ol/geom';
+import { Feature } from 'ol';
 
 type PilotInfoProps = {
-  pilotageLimits?: PilotageLimit[];
+  pilotageLimits?: Feature<Geometry>[];
   pilot?: Pilot | null;
-};
-
-export type PilotageLimit = {
-  numero: number;
-  fid?: number;
-  liittyyVayliin?: string;
-  raja_fi?: string;
-  raja_sv?: string;
-  raja_en?: string;
-  koordinaatit?: Geometry;
 };
 
 export const PilotInfo: React.FC<PilotInfoProps> = ({ pilotageLimits, pilot }) => {

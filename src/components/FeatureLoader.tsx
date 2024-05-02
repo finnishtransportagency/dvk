@@ -528,14 +528,3 @@ export function useVaylaWaterAreaData() {
 export function usePilotageAreaBorderLayer() {
   return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
 }
-
-export function usePilotageLimitLayer() {
-  const rv = useDataLayer('pilotagelimit', 'pilotagelimit', 'EPSG:3067');
-  const source = dvkMap.getVectorSource('pilotagelimit');
-  source.forEachFeature((f) => {
-    f.set('featureType', 'pilotagelimit');
-    // set id so getByFeatureId can be used
-    f.setId(f.getProperties().fid);
-  });
-  return rv;
-}
