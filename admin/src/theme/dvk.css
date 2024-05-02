@@ -523,6 +523,15 @@ ion-label.formLabel.disabled,
   font-style: italic;
 }
 
+.formGrid .formInput .input-wrapper.sc-ion-input-md {
+  max-height: 43px;
+}
+
+.dateIcon {
+  width: 24px;
+  height: 24px;
+}
+
 ion-item.invalid {
   --background: var(--ion-color-danger);
 }

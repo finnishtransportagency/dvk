@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonButton, IonInput, IonLabel, IonText } from '@ionic/react';
+import { IonButton, IonIcon, IonInput, IonLabel, IonText } from '@ionic/react';
 import { ActionType, Lang, INPUT_MAXLENGTH } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { checkInputValidity, getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../../utils/common';
 import HelpIcon from '../../theme/img/help_icon.svg?react';
 import NotificationModal from '../NotificationModal';
+import CalendarIcon from '../../theme/img/calendar_icon.svg';
 
 interface TextInputProps {
   label: string;
@@ -30,6 +31,7 @@ interface TextInputProps {
   maxCharLength?: number;
   infoTitle?: string;
   infoDescription?: string;
+  setModalOpen?: (open: boolean) => void;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -56,6 +58,7 @@ const TextInput: React.FC<TextInputProps> = ({
   maxCharLength,
   infoTitle,
   infoDescription,
+  setModalOpen,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const inputRef = useRef<HTMLIonInputElement>(null);
@@ -214,7 +217,13 @@ const TextInput: React.FC<TextInputProps> = ({
         step={inputType === 'number' ? getStep() : undefined}
         type={getInputType()}
         value={val}
-      />
+      >
+        {actionType.includes('temporaryNotification') && (
+          <IonButton className="ion-no-padding" fill="clear" slot="end" onClick={() => setModalOpen && setModalOpen(true)}>
+            <IonIcon icon={CalendarIcon} className="dateIcon" />
+          </IonButton>
+        )}
+      </IonInput>
       <NotificationModal
         isOpen={infoModalOpen}
         closeAction={() => setInfoModalOpen(false)}
