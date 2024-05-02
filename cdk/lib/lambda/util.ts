@@ -89,7 +89,7 @@ async function toBase64Response(features: FeatureCollection | Vessel[]): Promise
   return base64Response;
 }
 
-export async function saveResponseToS3(features: FeatureCollection | Vessel[], key: string): Promise<string> {
+export async function saveResponseToS3(features: FeatureCollection, key: string): Promise<string> {
   const base64Response = toBase64Response(features);
   await cacheResponse(key, base64Response);
   return base64Response;
