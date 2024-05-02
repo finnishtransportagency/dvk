@@ -29,11 +29,18 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
     }
     return a.dateTime > b.dateTime ? 1 : -1;
   });
+  const equipmentSource = dvkMap.getVectorSource('safetyequipment');
+  const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
 
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {sortedWarnings.map((warning) => {
+        const equipmentFeature = warning.equipmentId
+          ? (equipmentSource.getFeatureById(warning.equipmentId) as Feature<Geometry>) ??
+            (faultSource.getFeatureById(warning.equipmentId) as Feature<Geometry>)
+          : undefined;
+
         return (
           <IonGrid className="table light group ion-no-padding" key={warning.id}>
             <IonRow className="header">
@@ -97,11 +104,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                     <p>
                       {warning.equipmentId && (
                         <>
-                          {(dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId) as Feature<Geometry>)?.getProperties().name[
-                            lang
-                          ] ||
-                            (dvkMap.getVectorSource('safetyequipment').getFeatureById(warning.equipmentId) as Feature<Geometry>)?.getProperties().name
-                              .fi}
+                          {equipmentFeature?.getProperties().name[lang] || equipmentFeature?.getProperties().name.fi}
                           {' - '}
                           {warning.equipmentId}
                         </>
