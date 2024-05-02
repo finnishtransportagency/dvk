@@ -145,7 +145,7 @@ export function useInitStaticDataLayer(
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       const source = layer.getSource() as VectorSource;
       const format = new GeoJSON({ featureClass: RenderFeature });
-      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
       source.clear(true);
       source.addFeatures(features);
       setDataUpdatedAt(Date.now());
