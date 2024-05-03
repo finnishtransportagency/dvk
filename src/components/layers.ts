@@ -20,7 +20,7 @@ import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
 import { getFairwayArea3456Style } from './layerStyles/fairwayArea3456Styles';
 import { getPilotStyle } from './layerStyles/pilotStyles';
 import { getDepthContourStyle, getDepthStyle, getSoundingPointStyle } from './layerStyles/depthStyles';
-import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
+import { getSpeedLimitIconStyle, getSpeedLimitPolygonStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
 import { getMarineWarningStyle } from './layerStyles/marineWarningStyles';
@@ -313,29 +313,31 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
 interface FeatureVectorLayerProps {
   map: Map;
   id: FeatureLayerId;
-  maxResolution: number | undefined;
+  maxResolution?: number;
   renderBuffer: number;
   style: StyleLike;
-  minResolution: number | undefined; //= undefined
-  opacity: number; // = 1
-  declutter: boolean; // = false
+  minResolution?: number;
+  opacity?: number;
+  declutter?: boolean;
   zIndex: number | undefined; //= undefined
+  source?: VectorSource;
 }
 
 function addFeatureVectorLayer({
   map,
   id,
-  maxResolution,
+  maxResolution = undefined,
   renderBuffer,
   style,
   minResolution = undefined,
   opacity = 1,
   declutter = false,
   zIndex = undefined,
+  source = undefined,
 }: FeatureVectorLayerProps) {
   map.addLayer(
     new VectorLayer({
-      source: new VectorSource(),
+      source: source || new VectorSource(),
       declutter,
       style,
       properties: { id },
@@ -522,7 +524,7 @@ export function addAPILayers(map: Map) {
     style: (feature, resolution) => getNavigationLine12Style(feature, resolution, !!feature.get('hoverStyle')),
     minResolution: undefined,
     opacity: 1,
-    declutter: false,
+    declutter: true,
     zIndex: 203,
   });
   // Muu vesiliikenne
@@ -550,17 +552,27 @@ export function addAPILayers(map: Map) {
   });
 
   // Nopeusrajoitus
+  const speedLimitSource = new VectorSource({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'speedlimit',
+    source: speedLimitSource,
     maxResolution: 15,
     renderBuffer: 2,
-    style: getSpeedLimitStyle,
-    minResolution: undefined,
-    opacity: 1,
+    style: getSpeedLimitPolygonStyle,
+    zIndex: 201,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'speedlimit',
+    source: speedLimitSource,
+    maxResolution: 15,
+    renderBuffer: 2,
+    style: getSpeedLimitIconStyle,
     declutter: true,
     zIndex: 301,
   });
+
   // Ankkurointialue
   addFeatureVectorLayer({
     map: map,
