@@ -10,6 +10,7 @@ import * as ec2 from 'aws-cdk-lib/aws-ec2';
 import * as logs from 'aws-cdk-lib/aws-logs';
 import * as s3 from 'aws-cdk-lib/aws-s3';
 import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import * as efs from 'aws-cdk-lib/aws-efs';
 
 export class DvkAnalyticsStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps, env: string) {
@@ -25,6 +26,7 @@ export class DvkAnalyticsStack extends Stack {
       blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
       encryption: BucketEncryption.S3_MANAGED,
       removalPolicy: cdk.RemovalPolicy.DESTROY,
+      enforceSSL: true,
     });
 
     const vpc = Vpc.fromLookup(this, 'DvkVPC', { vpcName: this.getVPCName(env) });
@@ -69,6 +71,27 @@ export class DvkAnalyticsStack extends Stack {
       })
     );
 
+    const efsFileSystem = new efs.FileSystem(this, 'EfsFileSystem', {
+      vpc,
+      encrypted: true,
+      lifecyclePolicy: efs.LifecyclePolicy.AFTER_7_DAYS, // Optional
+      performanceMode: efs.PerformanceMode.GENERAL_PURPOSE, // Optional
+      throughputMode: efs.ThroughputMode.BURSTING, // Optional
+    });
+
+    const efsAccessPoint = efsFileSystem.addAccessPoint('EfsAccessPoint', {
+      createAcl: {
+        ownerGid: '1000',
+        ownerUid: '1000',
+        permissions: '0755',
+      },
+      path: '/analytics',
+      posixUser: {
+        gid: '1000',
+        uid: '1000',
+      },
+    });
+
     const cluster = new ecs.Cluster(this, 'ECSCluster', {
       vpc: vpc,
     });
@@ -78,6 +101,20 @@ export class DvkAnalyticsStack extends Stack {
       memoryLimitMiB: 2048,
       cpu: 1024,
       taskRole,
+      volumes: [
+        {
+          name: 'efs-volume-' + env,
+          efsVolumeConfiguration: {
+            fileSystemId: efsFileSystem.fileSystemId,
+            rootDirectory: '/',
+            transitEncryption: 'ENABLED',
+            authorizationConfig: {
+              accessPointId: efsAccessPoint.accessPointId,
+              iam: 'ENABLED',
+            },
+          },
+        },
+      ],
     });
 
     // Degine log group for the Fargate task definition
@@ -87,8 +124,8 @@ export class DvkAnalyticsStack extends Stack {
     });
 
     // Define your container image and task definition details
-    taskDefinition.addContainer('DvkAnalyticsContainer' + env, {
-      image: ecs.ContainerImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkAnalyticsImage', 'dvk-analyticsimage'), '1.0.2'),
+    const container = taskDefinition.addContainer('DvkAnalyticsContainer' + env, {
+      image: ecs.ContainerImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkAnalyticsImage', 'dvk-analyticsimage'), '1.0.3'),
       environment: {
         REPORT_BUCKET: reportBucket.bucketName,
         LOG_BUCKET: importedLogBucket,
@@ -98,6 +135,13 @@ export class DvkAnalyticsStack extends Stack {
         logGroup: logGroup,
         streamPrefix: 'AnalyticsContainer',
       }),
+      readonlyRootFilesystem: true,
+    });
+
+    container.addMountPoints({
+      sourceVolume: 'efs-volume-' + env,
+      containerPath: '/analytics',
+      readOnly: false,
     });
 
     // Define the ECS service
