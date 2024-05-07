@@ -65,7 +65,7 @@ export function useSafetyEquipmentAndFaultFeatures() {
       const equipmentFeatures: Feature<Geometry>[] = [];
       const faultFeatures: Feature<Geometry>[] = [];
 
-      // Add safety equipment faults to safety equipment features
+      // Map safety equipment faults
       for (const ff of ffs) {
         const id = ff.getProperties().equipmentId as number;
         const feature = efs.find((ef) => ef.getId() === id);
