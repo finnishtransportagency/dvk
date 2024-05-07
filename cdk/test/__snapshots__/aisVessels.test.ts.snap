@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should get vessels from api when cache expired 1`] = `
+exports[`should get locations from api 1`] = `
 [
   {
     "callSign": "MC001",
@@ -49,80 +49,6 @@ exports[`should get vessels from api when cache expired 1`] = `
     "referencePointD": 5,
     "shipType": 52,
     "timestamp": "2022-08-03T05:11:33.045Z",
-  },
-]
-`;
-
-exports[`should get vessels from cache 1`] = `
-[
-  {
-    "callSign": "TS0001",
-    "destination": "HANKO",
-    "draught": 3.1,
-    "eta": "10-24 13:00",
-    "imo": 1234567,
-    "mmsi": 11122233000,
-    "name": "TEST1",
-    "posType": 1,
-    "referencePointA": 19,
-    "referencePointB": 12,
-    "referencePointC": 2,
-    "referencePointD": 5,
-    "shipType": 90,
-    "timestamp": "2023-1009T14:06:20.027Z",
-  },
-  {
-    "callSign": "TS0002",
-    "destination": "HAMINA",
-    "draught": 10.9,
-    "eta": "00-00 24:60",
-    "imo": 9876543,
-    "mmsi": 99988877000,
-    "name": "TEST2",
-    "posType": 1,
-    "referencePointA": 148,
-    "referencePointB": 36,
-    "referencePointC": 17,
-    "referencePointD": 10,
-    "shipType": 80,
-    "timestamp": "2023-03-03T22:32:22.428Z",
-  },
-]
-`;
-
-exports[`should get vessels from cache when api call fails 1`] = `
-[
-  {
-    "callSign": "TS0001",
-    "destination": "HANKO",
-    "draught": 3.1,
-    "eta": "10-24 13:00",
-    "imo": 1234567,
-    "mmsi": 11122233000,
-    "name": "TEST1",
-    "posType": 1,
-    "referencePointA": 19,
-    "referencePointB": 12,
-    "referencePointC": 2,
-    "referencePointD": 5,
-    "shipType": 90,
-    "timestamp": "2023-1009T14:06:20.027Z",
-  },
-  {
-    "callSign": "TS0002",
-    "destination": "HAMINA",
-    "draught": 10.9,
-    "eta": "00-00 24:60",
-    "imo": 9876543,
-    "mmsi": 99988877000,
-    "name": "TEST2",
-    "posType": 1,
-    "referencePointA": 148,
-    "referencePointB": 36,
-    "referencePointC": 17,
-    "referencePointD": 10,
-    "shipType": 80,
-    "timestamp": "2023-03-03T22:32:22.428Z",
   },
 ]
 `;
