@@ -34,12 +34,12 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, acti
           ref={dateRef}
           value={value}
           id={id}
+          defaultValue={new Date().toISOString()}
           showDefaultButtons={true}
           multiple={false}
           presentation="date"
           locale="fi"
           onIonChange={(event) => handleChange(String(event.detail?.value))}
-          min={new Date().toISOString()}
         >
           <span slot="title">{t('fairwaycard.temporary-notification-start')}</span>
         </IonDatetime>
@@ -54,6 +54,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, acti
         setModalOpen={setModalOpen}
         disabled={disabled}
         required={required}
+        inputType="date"
       />
     </>
   );

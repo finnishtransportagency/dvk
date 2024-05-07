@@ -2,7 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { IonButton, IonIcon, IonInput, IonLabel, IonText } from '@ionic/react';
 import { ActionType, Lang, INPUT_MAXLENGTH } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { checkInputValidity, getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../../utils/common';
+import {
+  checkIfValidAndChangeFormatToISO,
+  checkInputValidity,
+  getCombinedErrorAndHelperText,
+  getInputCounterText,
+  isInputOk,
+} from '../../utils/common';
 import HelpIcon from '../../theme/img/help_icon.svg?react';
 import NotificationModal from '../NotificationModal';
 import CalendarIcon from '../../theme/img/calendar_icon.svg';
@@ -19,7 +25,7 @@ interface TextInputProps {
   disabled?: boolean;
   error?: string;
   helperText?: string | null;
-  inputType?: 'text' | 'number' | 'tel' | 'email' | 'latitude' | 'longitude';
+  inputType?: 'text' | 'number' | 'tel' | 'email' | 'latitude' | 'longitude' | 'date';
   multiple?: boolean;
   unit?: string;
   min?: number;
@@ -80,6 +86,9 @@ const TextInput: React.FC<TextInputProps> = ({
     if (!newVal) {
       newVal = '';
     }
+    if (inputType === 'date') {
+      newVal = checkIfValidAndChangeFormatToISO(newVal as string);
+    }
     setValue(newVal as string, actionType, actionLang, actionTarget, actionOuterTarget);
   };
 
@@ -117,7 +126,7 @@ const TextInput: React.FC<TextInputProps> = ({
   };
 
   const getInputType = () => {
-    if (inputType && (inputType === 'latitude' || inputType === 'longitude')) return 'text';
+    if (inputType && (inputType === 'latitude' || inputType === 'longitude' || inputType === 'date')) return 'text';
     if (inputType) return inputType;
     return 'text';
   };
@@ -125,7 +134,7 @@ const TextInput: React.FC<TextInputProps> = ({
   const getInputMode = () => {
     if (multiple) return 'text';
     if (inputType && inputType === 'number') return 'decimal';
-    if (inputType && (inputType === 'latitude' || inputType === 'longitude')) return 'text';
+    if (inputType && (inputType === 'latitude' || inputType === 'longitude' || inputType === 'date')) return 'text';
     if (inputType) return inputType;
     return 'text';
   };
@@ -139,6 +148,8 @@ const TextInput: React.FC<TextInputProps> = ({
         return '(1[789]|2\\d|3[01]){1}(\\.\\d{1,5})?'; // lon range 17-32
       case 'tel':
         return multiple ? '(^$)|(([+]?\\d(\\s?\\d){4,19}){1}(,[+]?\\d(\\s?\\d){4,19}){0,9})' : '[+]?\\d(\\s?\\d){4,19}';
+      case 'date':
+        return '\\d{2}\\.\\d{2}\\.\\d{4}';
       default:
         return undefined;
     }
