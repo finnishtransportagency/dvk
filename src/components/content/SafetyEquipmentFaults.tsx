@@ -179,7 +179,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation();
   // both data fetched for the sake of same data on list and map
   const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
-  const { ready } = useSafetyEquipmentAndFaultLayer();
+  const { ready: layerReady } = useSafetyEquipmentAndFaultLayer();
   const path = [{ title: t('faults.title') }];
   const { dispatch, state } = useDvkContext();
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
@@ -203,13 +203,13 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   }, []);
 
   useEffect(() => {
-    if (!state.layers.includes('safetyequipmentfault') && !isPending && !isFetching && ready) {
+    if (!state.layers.includes('safetyequipmentfault') && !isPending && !isFetching && layerReady) {
       const updatedLayers = [...state.layers, 'safetyequipmentfault'];
       dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     }
     // disable because of unnecessary callbacks
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetching, isPending, ready]);
+  }, [isFetching, isPending, layerReady]);
 
   useEffect(() => {
     // If fault layer is not visible, show selected safety equipment on fairway card layer

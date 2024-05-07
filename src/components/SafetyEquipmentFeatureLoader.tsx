@@ -95,7 +95,7 @@ export function useSafetyEquipmentAndFaultFeatures() {
           faultFeatures.push(feature);
         } else {
           feature.set('dataSource', 'safetyequipment', true);
-          feature.set('faultListStyle', true, true);
+          feature.set('faultListStyle', false, true);
           equipmentFeatures.push(feature);
         }
         addFairwayCardData(feature, fairwayCardData.fairwayCards);

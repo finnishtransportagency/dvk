@@ -1,8 +1,7 @@
 import { TFunction } from 'i18next';
-import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, SafetyEquipmentFault } from '../graphql/generated';
+import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
-import { MAP } from './constants';
-import { Geometry, SimpleGeometry } from 'ol/geom';
+import { Geometry } from 'ol/geom';
 import { Feature } from 'ol';
 import {
   AreaFairway,
@@ -39,34 +38,6 @@ export function getTabLabel(t: TFunction, tabId: number): string {
     default:
       return '-';
   }
-}
-
-export function getSafetyEquipmentFaultsByFairwayCardId(id: string): SafetyEquipmentFault[] {
-  const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
-  const equipmentFaults: SafetyEquipmentFault[] = [];
-
-  faultSource.forEachFeature((f) => {
-    const props = f.getProperties() as EquipmentFeatureProperties;
-    const fairwayCards = props.fairwayCards ?? [];
-    if (fairwayCards.some((fc) => fc.id === id)) {
-      const faults = props.faults ?? [];
-      // create new safetyequipmentfault objects
-      for (const fault of faults) {
-        const convertedGeometry = f.getGeometry()?.clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-        const faultObject: SafetyEquipmentFault = {
-          equipmentId: Number(f.getId()),
-          geometry: { type: 'Point', coordinates: convertedGeometry.getFlatCoordinates() },
-          id: fault.faultId,
-          name: props.name,
-          recordTime: fault.recordTime,
-          type: fault.faultType,
-          typeCode: fault.faultTypeCode,
-        };
-        equipmentFaults.push(faultObject);
-      }
-    }
-  });
-  return equipmentFaults;
 }
 
 export function getFairwayCardSafetyEquipmentFaults(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
