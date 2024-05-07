@@ -47,3 +47,35 @@ export function getSpecialAreaStyle(feature: FeatureLike, selected: boolean, sel
     }),
   ];
 }
+
+export function getSpecialAreaPolygonStyle(feature: FeatureLike, selected: boolean, selected2 = false) {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+  let gradient;
+  if (selected2) {
+    gradient = context.createPattern(specialAreaSelectedImage2, 'repeat');
+  } else {
+    gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
+  }
+  return new Style({
+    stroke: new Stroke({
+      color: '#C57A11',
+      width: 2,
+    }),
+    zIndex: 99,
+    fill: new Fill({
+      color: gradient,
+    }),
+  });
+}
+
+export const anchorageAreaIconStyle = new Style({
+  image: new Icon({
+    src: anchorage,
+    opacity: 1,
+  }),
+  geometry: function (feat) {
+    const geometry = feat.getGeometry() as Polygon;
+    return geometry.getInteriorPoint();
+  },
+});

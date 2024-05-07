@@ -48,7 +48,7 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
-import { getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
+import { anchorageAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
 
 const minResolutionHarbor = 3;
 
@@ -574,17 +574,28 @@ export function addAPILayers(map: Map) {
   });
 
   // Ankkurointialue
+  const anchorageSource = new VectorSource({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea2',
+    source: anchorageSource,
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
+    style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
+    declutter: true,
+    zIndex: 201,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea2',
+    source: anchorageSource,
+    maxResolution: 75,
+    renderBuffer: 2,
+    style: anchorageAreaIconStyle,
     declutter: true,
     zIndex: 302,
   });
+
   // Kohtaamis- ja ohittamiskieltoalue
   addFeatureVectorLayer({
     map: map,
