@@ -2,6 +2,7 @@ import { TFunction } from 'i18next';
 import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, Text } from '../graphql/generated';
 import { ActionType, ItemType, Lang, SelectOption } from './constants';
 import { FeatureCollection } from 'geojson';
+import { format, isValid, parseISO } from 'date-fns';
 
 const sortByString = (a: Maybe<string> | undefined, b: Maybe<string> | undefined, sortDescending: boolean) => {
   const valA = a ?? '';
@@ -197,4 +198,16 @@ export function featureCollectionToSelectOptions(collection: FeatureCollection |
   });
 
   return propertyArray;
+}
+
+export function checkIfValidAndChangeFormatToLocal(value: string | undefined | null) {
+  if (value) {
+    const date = value.split('T')[0];
+    const parsedDate = parseISO(date);
+    if (isValid(parsedDate)) {
+      return format(parsedDate, 'dd.MM.yyyy');
+    }
+  }
+
+  return '';
 }

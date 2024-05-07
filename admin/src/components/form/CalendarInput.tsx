@@ -1,9 +1,9 @@
 import { IonDatetime, IonModal } from '@ionic/react';
 import React, { useRef, useState } from 'react';
-import { format, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang } from '../../utils/constants';
 import TextInput from './TextInput';
+import { checkIfValidAndChangeFormatToLocal } from '../../utils/common';
 
 interface CalendarInputProps {
   id: string;
@@ -23,12 +23,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, acti
 
   const dateRef = useRef<null | HTMLIonDatetimeElement>(null);
 
-  const handleDateChange = (value: string) => {
-    const formattedDate = format(parseISO(value), 'dd.MM.yyyy');
-    handleChange(formattedDate);
-  };
-
-  const handleChange = (newValue: string | number | null | undefined) => {
+  const handleChange = (newValue: string | null | undefined) => {
     setValue(newValue as string, actionType, undefined, actionTarget);
   };
 
@@ -43,7 +38,8 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, acti
           multiple={false}
           presentation="date"
           locale="fi"
-          onIonChange={(event) => handleDateChange(String(event.detail?.value))}
+          onIonChange={(event) => handleChange(String(event.detail?.value))}
+          min={new Date().toISOString()}
         >
           <span slot="title">{t('fairwaycard.temporary-notification-start')}</span>
         </IonDatetime>
@@ -51,7 +47,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, acti
 
       <TextInput
         label={label}
-        val={value}
+        val={checkIfValidAndChangeFormatToLocal(value)}
         setValue={setValue}
         actionType={actionType}
         actionTarget={actionTarget}
