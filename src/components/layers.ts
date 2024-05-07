@@ -48,7 +48,7 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
-import { anchorageAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
+import { anchorageAreaIconStyle, meetAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
 
 const minResolutionHarbor = 3;
 
@@ -582,7 +582,6 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 2,
     style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
     zIndex: 201,
   });
   addFeatureVectorLayer({
@@ -597,17 +596,27 @@ export function addAPILayers(map: Map) {
   });
 
   // Kohtaamis- ja ohittamiskieltoalue
+  const meetSource = new VectorSource({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea15',
+    source: meetSource,
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
+    style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
+    zIndex: 201,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea15',
+    source: meetSource,
+    maxResolution: 75,
+    renderBuffer: 2,
+    style: meetAreaIconStyle,
     declutter: true,
     zIndex: 302,
   });
+
   addFeatureVectorLayer({
     map: map,
     id: 'circle',
