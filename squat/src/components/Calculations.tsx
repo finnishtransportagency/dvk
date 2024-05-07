@@ -54,7 +54,8 @@ const Calculations: React.FC = () => {
       state.environment.attribute.airDensity,
       state.environment.weather.windSpeed,
       state.vessel.detailed.windSurface,
-      apparentWindAngleDrift
+      apparentWindAngleDrift,
+      state.environment.attribute.safetyMarginWindForce
     );
 
     // 1.3 Wave Force
@@ -124,6 +125,7 @@ const Calculations: React.FC = () => {
     state.environment.vessel.vesselCourse,
     state.environment.attribute.airDensity,
     state.environment.attribute.waterDensity,
+    state.environment.attribute.safetyMarginWindForce,
     dispatch,
   ]);
 

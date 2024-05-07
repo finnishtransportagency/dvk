@@ -188,7 +188,7 @@ export const fieldParams: Record<string, FieldParam> = {
   airDensity: { default: 1.3, min: 1, max: 1.5, unit: 'kg/m\u00B3', unitId: 'kg/m3', step: '0.1' },
   waterDensity: { default: 1005, min: 1000, max: 1025, unit: 'kg/m\u00B3', unitId: 'kg/m3' },
   requiredUKC: { default: 0.5, min: 0.5, max: 5, unit: 'm', step: '0.01' },
-  safetyMarginWindForce: { default: 25, min: 0, max: 25, unit: '%', step: '0.01' },
+  safetyMarginWindForce: { default: 0, min: 0, max: 25, unit: '%', step: '0.01' },
   motionClearance: { default: 0.3, min: 0, max: 3, unit: 'm', step: '0.01' },
 };
 
