@@ -13,9 +13,10 @@ interface CalendarInputProps {
   actionType: ActionType;
   label: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
-const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, actionTarget, actionType, label, disabled }) => {
+const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, actionTarget, actionType, label, disabled, required }) => {
   const { t } = useTranslation();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -28,11 +29,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, acti
   };
 
   const handleChange = (newValue: string | number | null | undefined) => {
-    console.log(setValue);
-    console.log(actionTarget);
-    console.log(newValue);
-    console.log(id);
-    console.log(disabled);
+    setValue(newValue as string, actionType, undefined, actionTarget);
   };
 
   return (
@@ -52,7 +49,16 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, acti
         </IonDatetime>
       </IonModal>
 
-      <TextInput label={label} val={value} setValue={setValue} actionType={actionType} setModalOpen={setModalOpen} />
+      <TextInput
+        label={label}
+        val={value}
+        setValue={setValue}
+        actionType={actionType}
+        actionTarget={actionTarget}
+        setModalOpen={setModalOpen}
+        disabled={disabled}
+        required={required}
+      />
     </>
   );
 };

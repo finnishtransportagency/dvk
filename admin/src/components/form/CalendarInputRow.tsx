@@ -9,9 +9,10 @@ interface CalendarInputRowProps {
   idx: number;
   section: TemporaryNotificationInput;
   setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number, actionOuterTarget?: string | number) => void;
+  disabled?: boolean;
 }
 
-const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setValue }) => {
+const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setValue, disabled }) => {
   const { t } = useTranslation();
 
   return (
@@ -24,6 +25,8 @@ const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setVa
           setValue={setValue}
           actionTarget={idx}
           actionType="temporaryNotificationStartDate"
+          disabled={disabled}
+          required={true}
         />
       </IonCol>
       <IonCol size="3.9">
@@ -34,6 +37,7 @@ const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setVa
           setValue={setValue}
           actionTarget={idx}
           actionType="temporaryNotificationEndDate"
+          disabled={disabled}
         />
       </IonCol>
     </IonRow>

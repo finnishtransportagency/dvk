@@ -33,7 +33,12 @@ const NotificationInput: React.FC<NotificationInputProps> = ({ idx, section, upd
         error={validationErrors.find((error) => error.id === 'temporaryNotifications')?.msg}
         inputType="textarea"
       />
-      <CalendarInputRow idx={idx} section={section} setValue={updateState} />
+      <CalendarInputRow
+        idx={idx}
+        section={section}
+        setValue={updateState}
+        disabled={state.status === Status.Removed || section.content?.fi == '' || section.content?.sv == '' || section.content?.en == ''}
+      />
     </IonGrid>
   );
 };
