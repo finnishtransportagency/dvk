@@ -527,6 +527,11 @@ ion-label.formLabel.disabled,
   max-height: 43px;
 }
 
+ion-modal.datetimeModal::part(content) {
+  height: fit-content;
+  width: fit-content;
+}
+
 .dateIcon {
   width: 24px;
   height: 24px;

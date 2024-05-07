@@ -1,7 +1,6 @@
 import { IonCol, IonRow } from '@ionic/react';
 import React from 'react';
 import { ActionType, Lang } from '../../utils/constants';
-import './CalendarInputStyles.css';
 import { TemporaryNotificationInput } from '../../graphql/generated';
 import CalendarInput from './CalendarInput';
 import { useTranslation } from 'react-i18next';

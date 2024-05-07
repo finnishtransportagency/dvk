@@ -2,7 +2,6 @@ import { IonDatetime, IonModal } from '@ionic/react';
 import React, { useRef, useState } from 'react';
 import { format, parseISO } from 'date-fns';
 import { useTranslation } from 'react-i18next';
-import './CalendarInputStyles.css';
 import { ActionType, Lang } from '../../utils/constants';
 import TextInput from './TextInput';
 
@@ -38,7 +37,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, acti
 
   return (
     <>
-      <IonModal keepContentsMounted={true} isOpen={modalOpen} onDidDismiss={() => setModalOpen(false)}>
+      <IonModal className="datetimeModal" keepContentsMounted={true} isOpen={modalOpen} onDidDismiss={() => setModalOpen(false)}>
         <IonDatetime
           ref={dateRef}
           value={value}
