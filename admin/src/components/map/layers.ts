@@ -20,7 +20,7 @@ import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
 import { getFairwayArea3456Style } from './layerStyles/fairwayArea3456Styles';
 import { getPilotStyle } from './layerStyles/pilotStyles';
 import { getDepthStyle } from './layerStyles/depthStyles';
-import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
+import { getSpeedLimitIconStyle, getSpeedLimitPolygonStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
 import { GeoJSON } from 'ol/format';
@@ -32,7 +32,7 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
-import { getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
+import { anchorageAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle, meetAreaIconStyle } from './layerStyles/specialAreaStyles';
 
 export function getAreaStyle(color: string, width: number, fillColor: string, resolution?: number) {
   let strokeWidth = width;
@@ -302,29 +302,31 @@ function getSelectedStyle(feature: FeatureLike, resolution: number) {
 interface FeatureVectorLayerProps {
   map: Map;
   id: FeatureLayerId;
-  maxResolution: number | undefined;
+  maxResolution?: number;
   renderBuffer: number;
   style: StyleLike;
-  minResolution: number | undefined; //= undefined
-  opacity: number; // = 1
-  declutter: boolean; // = false
+  minResolution?: number;
+  opacity?: number;
+  declutter?: boolean;
   zIndex: number | undefined; //= undefined
+  source?: VectorSource;
 }
 
 function addFeatureVectorLayer({
   map,
   id,
-  maxResolution,
+  maxResolution = undefined,
   renderBuffer,
   style,
   minResolution = undefined,
   opacity = 1,
   declutter = false,
   zIndex = undefined,
+  source = undefined,
 }: FeatureVectorLayerProps) {
   map.addLayer(
     new VectorLayer({
-      source: new VectorSource(),
+      source: source || new VectorSource(),
       declutter,
       style,
       properties: { id },
@@ -385,7 +387,7 @@ export function addAPILayers(map: Map) {
     style: (feature, resolution) => getNavigationLine12Style(feature, resolution, false),
     minResolution: undefined,
     opacity: 1,
-    declutter: false,
+    declutter: true,
     zIndex: 203,
   });
   // Muu vesiliikenne
@@ -413,41 +415,71 @@ export function addAPILayers(map: Map) {
   });
 
   // Nopeusrajoitus
+  const speedLimitSource = new VectorSource({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'speedlimit',
+    source: speedLimitSource,
     maxResolution: 15,
     renderBuffer: 2,
-    style: getSpeedLimitStyle,
-    minResolution: undefined,
-    opacity: 1,
+    style: getSpeedLimitPolygonStyle,
+    zIndex: 201,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'speedlimit',
+    source: speedLimitSource,
+    maxResolution: 15,
+    renderBuffer: 2,
+    style: getSpeedLimitIconStyle,
     declutter: true,
     zIndex: 301,
   });
+
   // Ankkurointialue
+  const anchorageSource = new VectorSource({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea2',
+    source: anchorageSource,
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, false),
-    minResolution: undefined,
-    opacity: 1,
+    style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
+    zIndex: 201,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea2',
+    source: anchorageSource,
+    maxResolution: 75,
+    renderBuffer: 2,
+    style: anchorageAreaIconStyle,
     declutter: true,
     zIndex: 302,
   });
+
   // Kohtaamis- ja ohittamiskieltoalue
+  const meetSource = new VectorSource({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea15',
+    source: meetSource,
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, false),
-    minResolution: undefined,
-    opacity: 1,
+    style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
+    zIndex: 201,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea15',
+    source: meetSource,
+    maxResolution: 75,
+    renderBuffer: 2,
+    style: meetAreaIconStyle,
     declutter: true,
     zIndex: 302,
   });
+
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureVectorLayer({
     map: map,

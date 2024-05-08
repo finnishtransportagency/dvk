@@ -14,7 +14,7 @@ specialAreaSelectedImage.src = specialareaSelected;
 const specialAreaSelectedImage2 = new Image();
 specialAreaSelectedImage2.src = specialareaSelected2;
 
-export function getSpecialAreaStyle(feature: FeatureLike, selected: boolean, selected2 = false) {
+export function getSpecialAreaPolygonStyle(feature: FeatureLike, selected: boolean, selected2 = false) {
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
   let gradient;
@@ -23,27 +23,41 @@ export function getSpecialAreaStyle(feature: FeatureLike, selected: boolean, sel
   } else {
     gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
   }
-  return [
-    new Style({
-      image: new Icon({
-        src: feature.getProperties().typeCode === 2 ? anchorage : meet,
-        opacity: 1,
-      }),
-      zIndex: 100,
-      geometry: function (feat) {
-        const geometry = feat.getGeometry() as Polygon;
-        return geometry.getInteriorPoint();
-      },
+  return new Style({
+    stroke: new Stroke({
+      color: '#C57A11',
+      width: 2,
     }),
-    new Style({
-      stroke: new Stroke({
-        color: '#C57A11',
-        width: 2,
-      }),
-      zIndex: 99,
-      fill: new Fill({
-        color: gradient,
-      }),
+    fill: new Fill({
+      color: gradient,
     }),
-  ];
+  });
+}
+
+export const anchorageAreaIconStyle = new Style({
+  image: new Icon({
+    src: anchorage,
+    opacity: 1,
+  }),
+  geometry: function (feat) {
+    const geometry = feat.getGeometry() as Polygon;
+    return geometry.getInteriorPoint();
+  },
+});
+
+export const meetAreaIconStyle = new Style({
+  image: new Icon({
+    src: meet,
+    opacity: 1,
+  }),
+  geometry: function (feat) {
+    const geometry = feat.getGeometry() as Polygon;
+    return geometry.getInteriorPoint();
+  },
+});
+
+export function getSpecialAreaStyle(feature: FeatureLike, selected: boolean, selected2 = false) {
+  const polygonStyle = getSpecialAreaPolygonStyle(feature, selected, selected2);
+  const iconStyle = feature.getProperties().typeCode === 2 ? anchorageAreaIconStyle : meetAreaIconStyle;
+  return [polygonStyle, iconStyle];
 }
