@@ -26,6 +26,25 @@ function dateError(date?: string | null): boolean {
   return true;
 }
 
+function endDateError(startDate?: string | null, endDate?: string | null): boolean {
+  if (!endDate) {
+    return false;
+  }
+  if (dateError(endDate)) {
+    return true;
+  }
+  endDate = endDate?.split('T')[0];
+  if (startDate) {
+    const startDateToCompare = new Date(startDate);
+    const endDateToCompare = new Date(endDate);
+    if (startDateToCompare <= endDateToCompare) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
 function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
   const vtsNameErrors =
     state.trafficService?.vts
@@ -126,7 +145,17 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
           msg: requiredMsg,
         };
       }) ?? [];
-  return { temporaryNotificationContentErrors, temporaryNotificationStartDateErrors };
+  const temporaryNotificationEndDateErrors =
+    state.temporaryNotifications
+      ?.flatMap((notification, i) => (endDateError(notification.startDate, notification.endDate) ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'temporaryNotificationEndDate-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  return { temporaryNotificationContentErrors, temporaryNotificationStartDateErrors, temporaryNotificationEndDateErrors };
 }
 
 export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
@@ -190,7 +219,8 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
   ];
 
   const { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors } = validateVtsAndTug(state, requiredMsg);
-  const { temporaryNotificationContentErrors, temporaryNotificationStartDateErrors } = validateTemporaryNotifications(state, requiredMsg);
+  const { temporaryNotificationContentErrors, temporaryNotificationStartDateErrors, temporaryNotificationEndDateErrors } =
+    validateTemporaryNotifications(state, requiredMsg);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
   return manualValidations.concat(
@@ -200,7 +230,8 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
     tugNameErrors,
     pictureTextErrors,
     temporaryNotificationContentErrors,
-    temporaryNotificationStartDateErrors
+    temporaryNotificationStartDateErrors,
+    temporaryNotificationEndDateErrors
   );
 }
 
