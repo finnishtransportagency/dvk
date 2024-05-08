@@ -222,3 +222,30 @@ export function checkIfValidAndChangeFormatToISO(value: string | undefined | nul
 
   return value;
 }
+
+export function dateError(date?: string | null): boolean {
+  // might return time as well, so split just in case
+  date = date?.split('T')[0];
+  if (date?.match('\\d{2}\\.\\d{2}\\.\\d{4}')) {
+    return !isValid(parse(date, 'dd.MM.yyyy', new Date()));
+  } else if (date?.match('\\d{4}\\-\\d{2}\\-\\d{2}')) {
+    return !isValid(parse(date, 'yyyy-MM-dd', new Date()));
+  }
+  return true;
+}
+
+export function checkEndDateError(startDate: string, endDate: string): boolean {
+  if (!startDate) {
+    return false;
+  }
+  endDate = endDate?.split('T')[0];
+  if (startDate) {
+    const startDateToCompare = new Date(startDate);
+    const endDateToCompare = new Date(endDate);
+    if (startDateToCompare <= endDateToCompare) {
+      return false;
+    }
+  }
+
+  return true;
+}

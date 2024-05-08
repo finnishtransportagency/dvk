@@ -230,7 +230,17 @@ const TextInput: React.FC<TextInputProps> = ({
         value={val}
       >
         {actionType.includes('temporaryNotification') && (
-          <IonButton className="ion-no-padding" fill="clear" slot="end" onClick={() => setModalOpen && setModalOpen(true)} disabled={disabled}>
+          <IonButton
+            className="ion-no-padding"
+            fill="clear"
+            slot="end"
+            onClick={() => {
+              setIsTouched(true);
+              focusInput();
+              setModalOpen && setModalOpen(true);
+            }}
+            disabled={disabled}
+          >
             <IonIcon icon={CalendarIcon} className="dateIcon" />
           </IonButton>
         )}

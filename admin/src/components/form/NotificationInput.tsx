@@ -37,6 +37,7 @@ const NotificationInput: React.FC<NotificationInputProps> = ({ idx, section, upd
         idx={idx}
         section={section}
         setValue={updateState}
+        validationErrors={validationErrors}
         disabled={state.status === Status.Removed || section.content?.fi == '' || section.content?.sv == '' || section.content?.en == ''}
       />
     </IonGrid>

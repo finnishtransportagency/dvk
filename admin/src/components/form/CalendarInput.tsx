@@ -12,11 +12,24 @@ interface CalendarInputProps {
   actionTarget: number;
   actionType: ActionType;
   label: string;
+  helperText?: string;
+  error?: string;
   disabled?: boolean;
   required?: boolean;
 }
 
-const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, actionTarget, actionType, label, disabled, required }) => {
+const CalendarInput: React.FC<CalendarInputProps> = ({
+  id,
+  value,
+  setValue,
+  actionTarget,
+  actionType,
+  label,
+  helperText,
+  error,
+  disabled,
+  required,
+}) => {
   const { t } = useTranslation();
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -52,6 +65,8 @@ const CalendarInput: React.FC<CalendarInputProps> = ({ id, value, setValue, acti
         actionType={actionType}
         actionTarget={actionTarget}
         setModalOpen={setModalOpen}
+        helperText={helperText}
+        error={error}
         disabled={disabled}
         required={required}
         inputType="date"
