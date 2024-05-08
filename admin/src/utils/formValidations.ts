@@ -1,6 +1,7 @@
 import { diff } from 'deep-object-diff';
 import { FairwayCardInput, GeometryInput, HarborInput, TextInput } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
+import { isValid, parse } from 'date-fns';
 
 function requiredError(input?: TextInput | null): boolean {
   return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
@@ -12,6 +13,37 @@ function translationError(input?: TextInput | null): boolean {
 
 function geometryError(input?: GeometryInput | null): boolean {
   return (!!input?.lat.trim() || !!input?.lon.trim()) && (!input?.lat.trim() || !input.lon.trim());
+}
+
+function dateError(date?: string | null): boolean {
+  // might return time as well, so split just in case
+  console.log(date);
+  date = date?.split('T')[0];
+  if (date?.match('\\d{2}\\.\\d{2}\\.\\d{4}')) {
+    return !isValid(parse(date, 'dd.MM.yyyy', new Date()));
+  } else if (date?.match('\\d{4}\\-\\d{2}\\-\\d{2}')) {
+    return !isValid(parse(date, 'yyyy-MM-dd', new Date()));
+  }
+  return true;
+}
+
+function endDateError(startDate?: string | null, endDate?: string | null): boolean {
+  if (!endDate) {
+    return false;
+  }
+  if (dateError(endDate)) {
+    return true;
+  }
+  endDate = endDate?.split('T')[0];
+  if (startDate) {
+    const startDateToCompare = new Date(startDate);
+    const endDateToCompare = new Date(endDate);
+    if (startDateToCompare <= endDateToCompare) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
@@ -94,18 +126,37 @@ function validatePictures(state: FairwayCardInput, requiredMsg: string) {
 }
 
 function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: string) {
-  const temporaryNotificationErrors =
+  const temporaryNotificationContentErrors =
     state.temporaryNotifications
       ?.flatMap((notification, i) => (requiredError(notification.content) ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {
-          id: 'temporaryNotification-' + vIndex,
+          id: 'temporaryNotificationContent-' + vIndex,
           msg: requiredMsg,
         };
       }) ?? [];
-
-  return { temporaryNotificationErrors };
+  const temporaryNotificationStartDateErrors =
+    state.temporaryNotifications
+      ?.flatMap((notification, i) => (dateError(notification.startDate) ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'temporaryNotificationStartDate-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const temporaryNotificationEndDateErrors =
+    state.temporaryNotifications
+      ?.flatMap((notification, i) => (endDateError(notification.startDate, notification.endDate) ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'temporaryNotificationEndDate-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  return { temporaryNotificationContentErrors, temporaryNotificationStartDateErrors, temporaryNotificationEndDateErrors };
 }
 
 export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
@@ -169,10 +220,20 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
   ];
 
   const { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors } = validateVtsAndTug(state, requiredMsg);
-  const { temporaryNotificationErrors } = validateTemporaryNotifications(state, requiredMsg);
+  const { temporaryNotificationContentErrors, temporaryNotificationStartDateErrors, temporaryNotificationEndDateErrors } =
+    validateTemporaryNotifications(state, requiredMsg);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
-  return manualValidations.concat(vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors, pictureTextErrors, temporaryNotificationErrors);
+  return manualValidations.concat(
+    vtsNameErrors,
+    vhfNameErrors,
+    vhfChannelErrors,
+    tugNameErrors,
+    pictureTextErrors,
+    temporaryNotificationContentErrors,
+    temporaryNotificationStartDateErrors,
+    temporaryNotificationEndDateErrors
+  );
 }
 
 function validateQuay(state: HarborInput, requiredMsg: string) {
