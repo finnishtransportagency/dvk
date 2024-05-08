@@ -463,12 +463,8 @@ function addAisVesselLayer(map: Map, id: FeatureDataLayerId, style: StyleLike, z
   addFeatureVectorLayer({
     map: map,
     id: id,
-    maxResolution: undefined,
     renderBuffer: 5,
     style: style,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: zIndex,
   });
 }
@@ -484,11 +480,8 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'name',
-    maxResolution: undefined,
     renderBuffer: 1,
     style: getNameStyle,
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 102,
   });
@@ -500,9 +493,6 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 1,
     style: (feature, resolution) => getFairwayArea12Style(feature, resolution, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 201,
   });
   addFeatureVectorLayer({
@@ -511,19 +501,13 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 1,
     style: getBoardLineStyle('#000000', 0.5),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 202,
   });
   addFeatureVectorLayer({
     map: map,
     id: 'line12',
-    maxResolution: undefined,
     renderBuffer: 1,
     style: (feature, resolution) => getNavigationLine12Style(feature, resolution, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 203,
   });
@@ -534,9 +518,6 @@ export function addAPILayers(map: Map) {
     maxResolution: 30,
     renderBuffer: 1,
     style: (feature, resolution) => getFairwayArea3456Style(feature, resolution, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 204,
   });
   addFeatureVectorLayer({
@@ -545,9 +526,6 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 1,
     style: (feature) => getNavigationLine3456Style(!!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 205,
   });
 
@@ -623,9 +601,6 @@ export function addAPILayers(map: Map) {
     maxResolution: 30,
     renderBuffer: 2,
     style: getCircleStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 303,
   });
   // Haraussyvyydet
@@ -635,21 +610,14 @@ export function addAPILayers(map: Map) {
     maxResolution: 10,
     renderBuffer: 50,
     style: getDepthStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 304,
   });
   // Laiturit
   addFeatureVectorLayer({
     map: map,
     id: 'quay',
-    maxResolution: undefined,
     renderBuffer: 100,
     style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 304,
   });
   // Satamat
@@ -659,8 +627,6 @@ export function addAPILayers(map: Map) {
     maxResolution: 300,
     renderBuffer: 100,
     style: (feature, resolution) => getHarborStyle(feature, resolution, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 305,
   });
@@ -668,45 +634,32 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'safetyequipment',
-    maxResolution: undefined,
     renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), feature.get('faultListStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 306,
   });
   // Olosuhteet
   addFeatureVectorLayer({
     map: map,
     id: 'buoy',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: (feature) => getBuoyStyle(!!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 307,
   });
   addFeatureVectorLayer({
     map: map,
     id: 'observation',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: (feature) => getObservationStyle(!!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 308,
   });
   addFeatureVectorLayer({
     map: map,
     id: 'mareograph',
-    maxResolution: undefined,
     renderBuffer: 91,
     style: (feature, resolution) => getMareographStyle(feature, !!feature.get('hoverStyle'), resolution),
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 309,
   });
@@ -714,33 +667,24 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'coastalwarning',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 310,
   });
   addFeatureVectorLayer({
     map: map,
     id: 'localwarning',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 310,
   });
   addFeatureVectorLayer({
     map: map,
     id: 'boaterwarning',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 310,
   });
@@ -748,12 +692,8 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'vtsline',
-    maxResolution: undefined,
     renderBuffer: 2,
     style: (feature) => getVtsStyle(feature, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 311,
   });
   addFeatureVectorLayer({
@@ -762,21 +702,14 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 50,
     style: (feature) => getVtsStyle(feature, !!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 312,
   });
   // Luotsipaikat
   addFeatureVectorLayer({
     map: map,
     id: 'pilot',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: (feature) => getPilotStyle(!!feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 313,
   });
   addFeatureVectorLayer({
@@ -785,8 +718,6 @@ export function addAPILayers(map: Map) {
     maxResolution: 30,
     renderBuffer: 20,
     style: getFairwayWidthStyle,
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 314,
   });
@@ -794,12 +725,8 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'safetyequipmentfault',
-    maxResolution: undefined,
     renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), true),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 315,
   });
 
@@ -851,47 +778,32 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'pilotroute',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: (feature, resolution) => getPilotRouteStyle(feature, resolution, feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 325,
   });
   // Luotsinkäyttölinjat
   addFeatureVectorLayer({
     map: map,
     id: 'pilotagelimit',
-    maxResolution: undefined,
     renderBuffer: 15,
     style: (feature, resolution) => getPilotageLimitStyle(feature, resolution, feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 304,
   });
   // Luotsauskäyttöalueen ulkorajat
   addFeatureVectorLayer({
     map: map,
     id: 'pilotageareaborder',
-    maxResolution: undefined,
     renderBuffer: 2,
     style: getLineStyle('#FE7C00', 4),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 104,
   });
   // Valitun väyläkortin featuret (jätetään aina ylimmäksi)
   addFeatureVectorLayer({
     map: map,
     id: 'selectedfairwaycard',
-    maxResolution: undefined,
     renderBuffer: 100,
     style: getSelectedFairwayCardStyle,
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 326,
   });
