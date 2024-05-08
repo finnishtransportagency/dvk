@@ -5,7 +5,6 @@ import { IonButton, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import HelpIcon from '../../../theme/img/help_icon.svg?react';
 import NotificationModal from '../../NotificationModal';
-import uniqueId from 'lodash/uniqueId';
 import NotificationInput from '../NotificationInput';
 import SectionHeader from '../SectionHeader';
 
@@ -85,11 +84,10 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
         </h2>
       </IonText>
       {sections?.map((section, idx) => {
-        const uuid = uniqueId('section_');
         const sectionOpen = !!openSections[idx];
         const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
         return (
-          <div key={uuid}>
+          <div key={'notification' + idx}>
             <SectionHeader
               title={t('fairwaycard.temporary-notification')}
               idx={idx}
@@ -97,7 +95,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
               toggleSection={toggleSection}
               open={sectionOpen}
             />
-            <div className={sectionClassName}>
+            <div className={sectionClassName} key={'notification' + idx}>
               <NotificationInput idx={idx} section={section} updateState={updateState} state={state} validationErrors={validationErrors} />
             </div>
           </div>
