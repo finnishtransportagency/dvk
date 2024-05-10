@@ -214,7 +214,7 @@
     "fairway-additional-info-notification-body": "[sv] Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
     "linked-pilot-routes": "[sv] Linkitetyt luotsausreitit",
     "temporary-notification-title": "[sv] Väliaikaisen huomion lisääminen väyläkortille",
-    "temporary-notification": "[sv] Huomio",
+    "temporary-notification": "Uppmärksamhet",
     "temporary-notification-start": "[sv] Huomion voimaantulopäivä",
     "temporary-notification-end": "[sv] Huomion päättymispäivämäärä"
   },
