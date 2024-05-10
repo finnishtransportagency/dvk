@@ -645,6 +645,10 @@ class DvkMap {
     return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
   }
 
+  public getFeatureLayers(layerId: FeatureLayerId | BackgroundLayerId) {
+    return this.olMap?.getAllLayers().filter((layerObj) => layerId === layerObj.getProperties().id) as Layer[];
+  }
+
   public getVectorSource(layerId: FeatureLayerId | BackgroundLayerId) {
     const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
     return layer.getSource() as VectorSource;

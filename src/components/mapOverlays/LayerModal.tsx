@@ -142,8 +142,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     setMarineWarningNotificationLayer(layers.includes('coastalwarning') || layers.includes('localwarning') || layers.includes('boaterwarning'));
 
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
-      const featureLayer = dvkMap.getFeatureLayer(dataLayer.id);
-      featureLayer?.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
+      const featureLayers = dvkMap.getFeatureLayers(dataLayer.id);
+      featureLayers.forEach((featureLayer) => {
+        featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
+      });
     });
     setTimeout(refreshPrintableMap, 100);
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
