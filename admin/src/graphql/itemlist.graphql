@@ -10,5 +10,14 @@ query fairwayCardsAndHarbors {
     creator
     modifier
     modificationTimestamp
+    temporaryNotifications {
+      content {
+        fi
+        sv
+        en
+      }
+      startDate
+      endDate
+    }
   }
 }

@@ -96,7 +96,9 @@
     },
     "noDataSet": "Tietoa ei ole asetettu.",
     "end-date-error": "Päättymispäivämäärä ei voi olla ennen alkamispäivämäärää",
-    "date-helper-text": "Päivämäärä on annettava muodossa pp.kk.vvvv"
+    "date-helper-text": "Päivämäärä on annettava muodossa pp.kk.vvvv",
+    "temporary-notification": "Huomio",
+    "temporary-notification-found": "Huomioita"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",

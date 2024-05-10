@@ -94,7 +94,9 @@
       "mDesc_one": "meter",
       "mDesc_other": "meter"
     },
-    "noDataSet": "Uppgifter finns inte."
+    "noDataSet": "Uppgifter finns inte.",
+    "temporary-notification": "[sv] Huomio",
+    "temporary-notification-found": "[sv] Huomioita"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",

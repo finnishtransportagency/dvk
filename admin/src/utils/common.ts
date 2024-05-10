@@ -57,6 +57,8 @@ export const filterItemList = (
           case 'modified':
             // should be newest first when arrow down hence "!sortDescending"
             return sortByNumber(Number(a.modificationTimestamp), Number(b.modificationTimestamp), !sortDescending);
+          case 'notice':
+            return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sortDescending);
           default:
             return 1;
         }

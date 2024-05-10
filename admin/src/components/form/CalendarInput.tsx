@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang } from '../../utils/constants';
 import TextInput from './TextInput';
-import { checkIfValidAndChangeFormatToLocal, dateError } from '../../utils/common';
+import { checkIfValidAndChangeFormatToISO, checkIfValidAndChangeFormatToLocal, dateError } from '../../utils/common';
 
 interface CalendarInputProps {
   id: string;
@@ -36,7 +36,8 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
 
   const dateRef = useRef<null | HTMLIonDatetimeElement>(null);
 
-  const handleChange = (newValue: string | null | undefined) => {
+  const handleChange = (value: string | null | undefined) => {
+    const newValue = checkIfValidAndChangeFormatToISO(value as string);
     setValue(newValue as string, actionType, undefined, actionTarget);
   };
 

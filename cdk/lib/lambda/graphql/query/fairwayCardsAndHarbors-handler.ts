@@ -24,6 +24,7 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairwa
       creator: card.creator,
       modifier: card.modifier,
       modificationTimestamp: card.modificationTimestamp,
+      temporaryNotifications: card.temporaryNotifications,
     };
   });
   const harbors: FairwayCardOrHarbor[] = harborModels.map((harbor) => {

@@ -202,6 +202,7 @@ type FairwayCardOrHarbor {
   creator: String
   modifier: String
   modificationTimestamp: Float
+  temporaryNotifications: [TemporaryNotification]
 }
 
 enum ContentType {
