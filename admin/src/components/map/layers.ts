@@ -350,7 +350,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 1,
     style: getNameStyle,
     declutter: true,
-    zIndex: 102,
+    zIndex: 106,
   });
 
   // Kauppamerenkulku
@@ -360,7 +360,7 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 1,
     style: getFairwayArea12Style,
-    zIndex: 201,
+    zIndex: 202,
   });
   addFeatureVectorLayer({
     map: map,
@@ -368,7 +368,7 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 1,
     style: getBoardLineStyle('#000000', 0.5),
-    zIndex: 202,
+    zIndex: 204,
   });
   addFeatureVectorLayer({
     map: map,
@@ -376,7 +376,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 1,
     style: (feature, resolution) => getNavigationLine12Style(feature, resolution, false),
     declutter: true,
-    zIndex: 203,
+    zIndex: 205,
   });
   // Muu vesiliikenne
   addFeatureVectorLayer({
@@ -385,7 +385,7 @@ export function addAPILayers(map: Map) {
     maxResolution: 30,
     renderBuffer: 1,
     style: getFairwayArea3456Style,
-    zIndex: 204,
+    zIndex: 201,
   });
   addFeatureVectorLayer({
     map: map,
@@ -393,7 +393,7 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 1,
     style: getNavigationLine3456Style(false),
-    zIndex: 205,
+    zIndex: 203,
   });
 
   // Nopeusrajoitus
@@ -405,7 +405,7 @@ export function addAPILayers(map: Map) {
     maxResolution: 15,
     renderBuffer: 2,
     style: getSpeedLimitPolygonStyle,
-    zIndex: 201,
+    zIndex: 202,
   });
   addFeatureVectorLayer({
     map: map,
@@ -415,7 +415,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 2,
     style: getSpeedLimitIconStyle,
     declutter: true,
-    zIndex: 301,
+    zIndex: 305,
   });
 
   // Ankkurointialue
@@ -427,7 +427,7 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 2,
     style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
-    zIndex: 201,
+    zIndex: 202,
   });
   addFeatureVectorLayer({
     map: map,
@@ -437,7 +437,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 2,
     style: anchorageAreaIconStyle,
     declutter: true,
-    zIndex: 302,
+    zIndex: 305,
   });
 
   // Kohtaamis- ja ohittamiskieltoalue
@@ -449,7 +449,7 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 2,
     style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
-    zIndex: 201,
+    zIndex: 202,
   });
   addFeatureVectorLayer({
     map: map,
@@ -459,7 +459,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 2,
     style: meetAreaIconStyle,
     declutter: true,
-    zIndex: 302,
+    zIndex: 305,
   });
 
   // Valitun väyläkortin navigointilinjat ja väyläalueet
@@ -487,6 +487,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 50,
     style: getDepthStyle,
     zIndex: 304,
+    declutter: true,
   });
   // Laiturit
   addFeatureVectorLayer({
@@ -546,7 +547,7 @@ export function addAPILayers(map: Map) {
     id: 'pilotroute',
     renderBuffer: 50,
     style: getPilotRouteStyle,
-    zIndex: 314,
+    zIndex: 303,
   });
   // Luotsinkäyttölinjat
   addFeatureVectorLayer({
