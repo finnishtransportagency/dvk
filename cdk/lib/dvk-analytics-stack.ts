@@ -79,6 +79,18 @@ export class DvkAnalyticsStack extends Stack {
       throughputMode: efs.ThroughputMode.BURSTING, // Optional
     });
 
+    efsFileSystem.addToResourcePolicy(
+      new iam.PolicyStatement({
+        actions: ['elasticfilesystem:ClientMount', 'elasticfilesystem:ClientWrite', 'elasticfilesystem:ClientRootAccess'],
+        principals: [new iam.AnyPrincipal()],
+        conditions: {
+          Bool: {
+            'elasticfilesystem:AccessedViaMountTarget': 'true',
+          },
+        },
+      })
+    );
+
     const efsAccessPoint = efsFileSystem.addAccessPoint('EfsAccessPoint', {
       createAcl: {
         ownerGid: '1000',
@@ -145,12 +157,15 @@ export class DvkAnalyticsStack extends Stack {
     });
 
     // Define the ECS service
-    new ecs.FargateService(this, 'DvkFargateScheduled' + env, {
+    const fargateService = new ecs.FargateService(this, 'DvkFargateScheduled' + env, {
       cluster,
       taskDefinition,
       securityGroups: [ecsSecurityGroup],
       desiredCount: 0,
     });
+
+    efsFileSystem.grantRootAccess(fargateService.taskDefinition.taskRole.grantPrincipal);
+    efsFileSystem.connections.allowDefaultPortFrom(fargateService.connections);
 
     // TODO: using this or ecsPatterns.ScheduledFargateTask end up in error due to wrong type of subnets
     // but doing it manually from the console does not so it is used for now to finish the job
