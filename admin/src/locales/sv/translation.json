@@ -143,7 +143,7 @@
     "help-description-section": "[sv] Syöttämällä laituripaikalle sen sijaintitiedot, piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle, ja haraussyvyystieto siirretään laituri-ikonin nimen yhteyteen.",
     "picture-upload-failed": "[sv] Tiedoston lataus epäonnistui",
     "picture-errors": "[sv] Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt.",
-    "temporary-notification-add": "[sv] Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erillliseen elementtiin. Huomiolle tulee aina lisätä vähintään voimaantulopäivä. Jos huomiolle ei merkitä päättymispäivämäärää on huomio voimassa toistaiseksi.",
+    "temporary-notification-add": "[sv] Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erillliseen elementtiin. Huomiolle tulee aina lisätä vähintään <strong>voimaantulopäivä</strong>. Jos huomiolle ei merkitä <strong>päättymispäivämäärää</strong> on huomio voimassa toistaiseksi.",
     "temporary-notification-in-effect-content": "[sv] Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa ja huomio tulee poistaa näkyvistä käsin.",
     "temporary-notification-in-effect-title": "[sv] Väliaikaisen huomion voimassaoloaika" 
   },
