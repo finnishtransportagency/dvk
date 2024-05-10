@@ -70,6 +70,8 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
         disabled={disabled}
         required={required}
         inputType="date"
+        infoTitle={id.includes('startDate') ? t('modal.temporary-notification-in-effect-title') : ''}
+        infoDescription={t('modal.temporary-notification-in-effect-content')}
       />
     </>
   );

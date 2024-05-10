@@ -140,7 +140,10 @@
     "help-title-section": "[en] Laituripaikan sijainnin syöttö",
     "help-description-section": "[en] Syöttämällä laituripaikalle sen sijaintitiedot, piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle, ja haraussyvyystieto siirretään laituri-ikonin nimen yhteyteen.",
     "picture-upload-failed": "[en] Tiedoston lataus epäonnistui",
-    "picture-errors": "[en] Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt."
+    "picture-errors": "[en] Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt.",
+    "temporary-notification-add": "[en] Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erillliseen elementtiin. Huomiolle tulee aina lisätä vähintään voimaantulopäivä. Jos huomiolle ei merkitä päättymispäivämäärää on huomio voimassa toistaiseksi.",
+    "temporary-notification-in-effect-content": "[en] Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa ja huomio tulee poistaa näkyvistä käsin.",
+    "temporary-notification-in-effect-title": "[en] Väliaikaisen huomion voimassaoloaika" 
   },
   "fairwaycard": {
     "name": "Fairway card name",

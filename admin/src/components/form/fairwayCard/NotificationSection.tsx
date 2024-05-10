@@ -106,8 +106,8 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
         isOpen={infoModalOpen}
         closeAction={() => setInfoModalOpen(false)}
         closeTitle={t('general.close')}
-        header={''}
-        message={''}
+        header={t('fairwaycard.temporary-notification-title')}
+        message={t('modal.temporary-notification-add')}
       />
       <IonGrid>
         <IonRow className="ion-justify-content-end">
