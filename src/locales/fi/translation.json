@@ -261,7 +261,8 @@
     "pilotageLimitLocation": "Linjan sijainti",
     "pilotageLimitMaxDimensions": "Alusten enimmäismitat joita linja koskee",
     "draught": "Syväys",
-    "width": "Leveys"
+    "width": "Leveys",
+    "inEffect": "Voimassa"
   },
   "routes": {
     "title": "Luotsausreitit",

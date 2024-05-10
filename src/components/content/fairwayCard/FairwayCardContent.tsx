@@ -109,6 +109,17 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
     return 'tabContent tab' + tabId + (widePane ? ' wide' : '') + (tab === tabId ? ' active' : '');
   };
 
+  const isExpired = (date: string | null | undefined): boolean => {
+    if (!date) {
+      return false;
+    }
+    // compare only day, month and year
+    const endDate = new Date(date).setHours(0, 0, 0, 0);
+    const currentDate = new Date().setHours(0, 0, 0, 0);
+
+    return currentDate > endDate;
+  };
+
   const path = [
     {
       title: t('title', { count: 0 }),
@@ -144,8 +155,17 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           {fairwayCard?.temporaryNotifications?.map((notification) => {
             const content = notification?.content?.[lang];
             const uuid = uniqueId('notification_');
-            if (content) {
-              return <NotificationAlert key={uuid} title={content} icon={infoIcon} className="top-margin info" />;
+            if (content && !isExpired(notification.endDate)) {
+              return (
+                <NotificationAlert
+                  key={uuid}
+                  title={content}
+                  icon={infoIcon}
+                  className="top-margin info"
+                  startDate={notification.startDate}
+                  endDate={notification.endDate ?? ''}
+                />
+              );
             }
           })}
           {safetyEquipmentFaults.length > 0 && !faultIsPending && !faultIsFetching && (

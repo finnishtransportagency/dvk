@@ -261,7 +261,8 @@
     "pilotageLimitLocation": "Linjens läge",
     "pilotageLimitMaxDimensions": "Gäller för fartyg med maximala mått",
     "draught": "Djupgående",
-    "width": "Bredd"
+    "width": "Bredd",
+    "inEffect": "[sv] Voimassa"
   },
   "routes": {
     "title": "Lotsningsrutter",

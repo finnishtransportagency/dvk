@@ -261,7 +261,8 @@
     "pilotageLimitLocation": "Limit location",
     "pilotageLimitMaxDimensions": "Maximum dimensions of vessels the limit applies to",
     "draught": "Draught",
-    "width": "Width"
+    "width": "Width",
+    "inEffect": "[en] Voimassa"
   },
   "routes": {
     "title": "Pilot routes",

@@ -243,9 +243,10 @@ export function checkEndDateError(startDate: string, endDate: string): boolean {
   }
   endDate = endDate?.split('T')[0];
   if (startDate) {
-    const startDateToCompare = new Date(startDate);
-    const endDateToCompare = new Date(endDate);
-    if (startDateToCompare.getDate() <= endDateToCompare.getDate()) {
+    // compare only day, month and year
+    const startDateToCompare = new Date(startDate).setHours(0, 0, 0, 0);
+    const endDateToCompare = new Date(endDate).setHours(0, 0, 0, 0);
+    if (startDateToCompare <= endDateToCompare) {
       return false;
     }
   }
