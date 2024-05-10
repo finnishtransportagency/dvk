@@ -3,7 +3,7 @@ import React, { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang } from '../../utils/constants';
 import TextInput from './TextInput';
-import { checkIfValidAndChangeFormatToLocal } from '../../utils/common';
+import { checkIfValidAndChangeFormatToLocal, dateError } from '../../utils/common';
 
 interface CalendarInputProps {
   id: string;
@@ -45,7 +45,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
       <IonModal className="datetimeModal" keepContentsMounted={true} isOpen={modalOpen} onDidDismiss={() => setModalOpen(false)}>
         <IonDatetime
           ref={dateRef}
-          value={value}
+          value={dateError(value) ? undefined : value}
           id={id}
           defaultValue={new Date().toISOString()}
           showDefaultButtons={true}

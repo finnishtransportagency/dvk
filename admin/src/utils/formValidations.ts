@@ -1,7 +1,7 @@
 import { diff } from 'deep-object-diff';
 import { FairwayCardInput, GeometryInput, HarborInput, TextInput } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
-import { isValid, parse } from 'date-fns';
+import { checkEndDateError, dateError } from './common';
 
 function requiredError(input?: TextInput | null): boolean {
   return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
@@ -13,36 +13,6 @@ function translationError(input?: TextInput | null): boolean {
 
 function geometryError(input?: GeometryInput | null): boolean {
   return (!!input?.lat.trim() || !!input?.lon.trim()) && (!input?.lat.trim() || !input.lon.trim());
-}
-
-function dateError(date?: string | null): boolean {
-  // might return time as well, so split just in case
-  date = date?.split('T')[0];
-  if (date?.match('\\d{2}\\.\\d{2}\\.\\d{4}')) {
-    return !isValid(parse(date, 'dd.MM.yyyy', new Date()));
-  } else if (date?.match('\\d{4}\\-\\d{2}\\-\\d{2}')) {
-    return !isValid(parse(date, 'yyyy-MM-dd', new Date()));
-  }
-  return true;
-}
-
-function endDateError(startDate?: string | null, endDate?: string | null): boolean {
-  if (!endDate) {
-    return false;
-  }
-  if (dateError(endDate)) {
-    return true;
-  }
-  endDate = endDate?.split('T')[0];
-  if (startDate) {
-    const startDateToCompare = new Date(startDate);
-    const endDateToCompare = new Date(endDate);
-    if (startDateToCompare <= endDateToCompare) {
-      return false;
-    }
-  }
-
-  return true;
 }
 
 function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
@@ -145,9 +115,10 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
           msg: requiredMsg,
         };
       }) ?? [];
+  // right place for this might be in reducer, but it works and I don't dare to touch this for now
   const temporaryNotificationEndDateErrors =
     state.temporaryNotifications
-      ?.flatMap((notification, i) => (endDateError(notification.startDate, notification.endDate) ? i : null))
+      ?.flatMap((notification, i) => (checkEndDateError(notification.startDate ?? '', notification.endDate ?? '') ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {

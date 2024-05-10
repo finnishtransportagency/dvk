@@ -42,7 +42,7 @@ const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setVa
           actionTarget={idx}
           helperText={t('general.date-helper-text')}
           actionType="temporaryNotificationEndDate"
-          error={checkEndDateError(section?.startDate ?? '', section.endDate ?? '') ? t('general.end-date-error') : undefined}
+          error={section.endDate && checkEndDateError(section?.startDate ?? '', section.endDate ?? '') ? t('general.end-date-error') : undefined}
           disabled={disabled}
         />
       </IonCol>

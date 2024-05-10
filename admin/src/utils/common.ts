@@ -235,14 +235,17 @@ export function dateError(date?: string | null): boolean {
 }
 
 export function checkEndDateError(startDate: string, endDate: string): boolean {
-  if (!startDate) {
+  if (!startDate || !endDate) {
     return false;
+  }
+  if (dateError(endDate)) {
+    return true;
   }
   endDate = endDate?.split('T')[0];
   if (startDate) {
     const startDateToCompare = new Date(startDate);
     const endDateToCompare = new Date(endDate);
-    if (startDateToCompare <= endDateToCompare) {
+    if (startDateToCompare.getDate() <= endDateToCompare.getDate()) {
       return false;
     }
   }
