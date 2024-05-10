@@ -22,7 +22,7 @@ function usePilotRouteFeatures() {
       const pilotRouteFeatures = format.readFeatures(pilotRouteData, {
         dataProjection: 'EPSG:4326',
         featureProjection: MAP.EPSG,
-      }) as Feature<Geometry>[];
+      });
       setPilotRouteFeatures(pilotRouteFeatures);
       setReady(true);
     }

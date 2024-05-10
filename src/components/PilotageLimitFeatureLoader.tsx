@@ -18,7 +18,7 @@ export function usePilotageLimitFeatures() {
       const plFeatures = format.readFeatures(data, {
         dataProjection: 'EPSG:3067',
         featureProjection: MAP.EPSG,
-      }) as Feature<Geometry>[];
+      });
       setPilotageLimitFeatures(plFeatures);
       setReady(true);
     }
