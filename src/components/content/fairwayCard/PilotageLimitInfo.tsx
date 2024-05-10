@@ -68,9 +68,9 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
                 </Link>
               </u>
               <br />
-              {t('pilotageLimitMaxDimensions')}:
+              {t('pilotageLimitLimit')}:
               <br />
-              {t('length').toLocaleLowerCase()} / {t('width').toLocaleLowerCase()} / {t('draught').toLocaleLowerCase()} (m)
+              {t('pilotageLimitDimensions')}
               <br />
               {limitInfoByLang(idx)?.replaceAll('/', ' / ')}
             </IonLabel>
