@@ -260,7 +260,7 @@
     "pilotageLimit": "Luotsinkäyttölinja",
     "pilotageLimitLocation": "Linjan sijainti",
     "pilotageLimitLimit": "Luotsinkäyttövelvollisuuden raja väylällä, kun jokin seuraavista ylittyy",
-    "pilotageLimitDimensions": "pituus / leveys / syväys (m)"
+    "pilotageLimitDimensions": "Pituus / leveys / syväys (m)"
   },
   "routes": {
     "title": "Luotsausreitit",
@@ -328,7 +328,7 @@
       "header": "Luotsinkäyttölinja {{val}}",
       "location": "Linjan sijainti",
       "limit": "Luotsinkäyttövelvollisuuden raja väylällä, kun jokin seuraavista ylittyy",
-      "dimensions": "pituus / leveys / syväys (m)",
+      "dimensions": "Pituus / leveys / syväys (m)",
       "fairways": "Linjaan liittyvät väyläkortit"
     },
     "pilotRoute": {

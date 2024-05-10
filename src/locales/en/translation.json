@@ -260,7 +260,7 @@
     "pilotageLimit": "Compulsory pilotage limit",
     "pilotageLimitLocation": "Limit location",
     "pilotageLimitLimit": "Limit of compulsory pilotage in fairways when one of the following is exceeded",
-    "pilotageLimitDimensions": "length / breadth / draught (m)"
+    "pilotageLimitDimensions": "Length / breadth / draught (m)"
   },
   "routes": {
     "title": "Pilot routes",
@@ -328,7 +328,7 @@
       "header": "Compulsory pilotage limit {{val}}",
       "location": "Limit location",
       "limit": "Limit of compulsory pilotage in fairways when one of the following is exceeded",
-      "dimensions": "length / breadth / draught (m)",
+      "dimensions": "Length / breadth / draught (m)",
       "fairways": "Fairway cards for the compulsory pilotage limit"
     },
     "pilotRoute": {

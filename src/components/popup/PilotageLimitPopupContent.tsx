@@ -71,14 +71,14 @@ const PilotageLimitPopupContent: React.FC<PilotageLimitPopupContentProps> = ({ p
         <IonCol>{coordinatesToStringHDM(eastCoord)}</IonCol>
       </IonRow>
       <IonRow>
-        <IonCol className="header">
-          {t('popup.pilotageLimit.limit')}
-          <br />
-          {t('popup.pilotageLimit.dimensions')}
-        </IonCol>
+        <IonCol className="header">{t('popup.pilotageLimit.limit')}</IonCol>
       </IonRow>
       <IonRow>
-        <IonCol>{limit.replaceAll('/', ' / ')}</IonCol>
+        <IonCol>
+          {t('popup.pilotageLimit.dimensions')}
+          <br />
+          {limit.replaceAll('/', ' / ')}
+        </IonCol>
       </IonRow>
       <IonRow>
         <IonCol className="header">{t('popup.pilotageLimit.fairways')}</IonCol>
