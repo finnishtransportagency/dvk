@@ -62,7 +62,11 @@ test('calculates correct apparent wind properties', () => {
 });
 
 test('calculates correct wind force', () => {
-  expect(Number(calculateWindForce(1, 15, 1000, 62.78).toFixed(2))).toEqual(11.63);
+  expect(Number(calculateWindForce(1, 15, 1000, 0, 62.78).toFixed(2))).toEqual(11.63);
+});
+
+test('calculates correct wind force with safety margin', () => {
+  expect(Number(calculateWindForce(1, 15, 1000, 25, 62.78).toFixed(2))).toEqual(14.54);
 });
 
 test('calculates correct wave force', () => {

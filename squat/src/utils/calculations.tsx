@@ -67,11 +67,19 @@ export function calculateApparentWindProperties(vesselSpeed: number, vesselCours
   return [apparentWindVelocityDrift, apparentWindAngleDrift];
 }
 
-export function calculateWindForce(airDensity: number, windSpeed: number, windSurface: number, apparentWindAngleDrift: number) {
+export function calculateWindForce(
+  airDensity: number,
+  windSpeed: number,
+  windSurface: number,
+  safetyMarginWindForce: number,
+  apparentWindAngleDrift: number
+) {
   // 0.5*Set_Density_Air/10*Set_Wind_Speed*Set_Wind_Speed*Abs(Total_Lateral_Surface_Area)/9.80665*1.14/1000*Sin(Radians(Apparent_Wind_Angle_Deg))
+  const safetyMargin = 1 + safetyMarginWindForce / 100;
   return (
     ((((0.5 * airDensity * Math.pow(windSpeed, 2) * Math.abs(windSurface)) / GRAVITATIONAL_ACCELERATION) * DRAG_COEFFICIENT) / 1000) *
-    Math.sin(toRad(apparentWindAngleDrift))
+    Math.sin(toRad(apparentWindAngleDrift)) *
+    safetyMargin
   );
 }
 
