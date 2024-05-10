@@ -185,7 +185,10 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     map.forEachFeatureAtPixel(
       evt.pixel,
       function (f) {
-        if (types.includes(f.getProperties().featureType)) {
+        if (
+          types.includes(f.getProperties().featureType) &&
+          features.findIndex((feat) => feat.get('featureType') === f.get('featureType') && feat.getId() == f.getId()) < 0
+        ) {
           features.push(f);
         }
       },
