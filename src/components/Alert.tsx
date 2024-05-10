@@ -27,7 +27,8 @@ const Alert: React.FC<AlertProps> = (props) => {
       case 'en':
         return format(parseISO(date), 'MM/dd/yyyy');
       default:
-        return date;
+        // exclude time, tho time shouldn't be coming from backend, needs a bit investigation
+        return date.split('T')[0];
     }
   };
 

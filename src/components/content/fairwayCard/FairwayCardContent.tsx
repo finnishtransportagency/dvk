@@ -162,7 +162,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                   title={content}
                   icon={infoIcon}
                   className="top-margin info"
-                  startDate={notification.startDate}
+                  startDate={notification.startDate ?? ''}
                   endDate={notification.endDate ?? ''}
                 />
               );
