@@ -74,7 +74,11 @@ const PilotageLimitPopupContent: React.FC<PilotageLimitPopupContentProps> = ({ p
         <IonCol className="header">{t('popup.pilotageLimit.limit')}</IonCol>
       </IonRow>
       <IonRow>
-        <IonCol>{limit}</IonCol>
+        <IonCol>
+          {t('popup.pilotageLimit.dimensions')}
+          <br />
+          {limit.replaceAll('/', ' / ')}
+        </IonCol>
       </IonRow>
       <IonRow>
         <IonCol className="header">{t('popup.pilotageLimit.fairways')}</IonCol>
