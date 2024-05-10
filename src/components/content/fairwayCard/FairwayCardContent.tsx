@@ -23,21 +23,21 @@ import { HarbourInfo } from './HarbourInfo';
 import { Alert } from './Alert';
 import {
   getFairwayCardPilotRoutes,
-  getSafetyEquipmentFaultsByFairwayCardId,
   getTabLabel,
   getFairwayCardPilotageLimits,
+  getFairwayCardSafetyEquipmentFaults,
 } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
 import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
-import { useSafetyEquipmentAndFaultLayer } from '../../FeatureLoader';
 import { TabSwiper } from './TabSwiper';
 import PilotRouteList from '../PilotRouteList';
 import { usePilotRouteFeatures } from '../../PilotRouteFeatureLoader';
 import { Feature } from 'ol';
 import { Geometry, LineString } from 'ol/geom';
 import { usePilotageLimitFeatures } from '../../PilotageLimitFeatureLoader';
+import { useSafetyEquipmentAndFaultFeatures } from '../../SafetyEquipmentFeatureLoader';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -65,19 +65,23 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
 
   const {
+    data: safetyEquipmentData,
     dataUpdatedAt: faultDataUpdatedAt,
     isPending: faultIsPending,
     isFetching: faultIsFetching,
   } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
-  const { ready: safetyEquipmentLayerReady } = useSafetyEquipmentAndFaultLayer();
+  const { safetyEquipmentFaultFeatures, ready: safetyEquipmentsReady } = useSafetyEquipmentAndFaultFeatures();
   const { pilotageLimitFeatures, ready: pilotageLimitsReady } = usePilotageLimitFeatures();
   const { pilotRouteFeatures, ready: pilotRoutesReady } = usePilotRouteFeatures();
 
   useEffect(() => {
-    if (safetyEquipmentLayerReady) {
-      setSafetyEquipmentFaults(getSafetyEquipmentFaultsByFairwayCardId(fairwayCardId));
+    if (fairwayCard && safetyEquipmentsReady && !faultIsPending && !faultIsFetching) {
+      const features = getFairwayCardSafetyEquipmentFaults(fairwayCard, safetyEquipmentFaultFeatures);
+      const faultIds = features.map((f) => f.getId() as number);
+      const equipmentFaults = safetyEquipmentData?.safetyEquipmentFaults?.filter((eq) => faultIds.includes(eq.equipmentId)) ?? [];
+      setSafetyEquipmentFaults(equipmentFaults);
     }
-  }, [fairwayCardId, safetyEquipmentLayerReady]);
+  }, [fairwayCard, safetyEquipmentsReady, safetyEquipmentFaultFeatures, safetyEquipmentData, faultIsPending, faultIsFetching]);
 
   useEffect(() => {
     if (fairwayCard && pilotageLimitsReady) {

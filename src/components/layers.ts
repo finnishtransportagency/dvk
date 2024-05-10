@@ -42,7 +42,7 @@ import {
   getFairwayCardPilotRoutes,
   getFairwayCardPilotageLimits,
   getFairwayCardPilotPlaces,
-  getSafetyEquipmentFaultsByFairwayCardId,
+  getFairwayCardSafetyEquipmentFaults,
 } from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
@@ -1064,9 +1064,9 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       fairwayFeatures.push(f);
     });
 
-    const safetyEquipmentFaults = getSafetyEquipmentFaultsByFairwayCardId(fairwayCard.id);
+    const safetyEquipmentFaults = getFairwayCardSafetyEquipmentFaults(fairwayCard, safetyEquipmentFaultSource.getFeatures());
     for (const fault of safetyEquipmentFaults) {
-      const feature = safetyEquipmentFaultSource.getFeatureById(fault.equipmentId) as Feature<Geometry>;
+      const feature = safetyEquipmentFaultSource.getFeatureById(fault.getId() as number) as Feature<Geometry>;
       if (feature) {
         safetyEquipmentFaultSource.removeFeature(feature);
         fairwayFeatures.push(feature);

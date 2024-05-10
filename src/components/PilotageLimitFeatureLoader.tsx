@@ -32,15 +32,18 @@ export function usePilotageLimitLayer() {
 
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(layerId);
-    const source = dvkMap.getVectorSource(layerId);
-    source.clear();
-    pilotageLimitFeatures.forEach((f) => {
-      f.setId((f.getProperties() as PilotageLimitFeatureProperties).fid);
-      f.set('dataSource', layerId, true);
-      f.set('featureType', layerId, true);
-    });
-    source.addFeatures(pilotageLimitFeatures);
-    layer.set('dataUpdatedAt', dataUpdatedAt);
+    if (ready && layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      const source = dvkMap.getVectorSource(layerId);
+      source.clear();
+      pilotageLimitFeatures.forEach((f) => {
+        f.setId((f.getProperties() as PilotageLimitFeatureProperties).fid);
+        f.set('dataSource', layerId, true);
+        f.set('featureType', layerId, true);
+      });
+      source.addFeatures(pilotageLimitFeatures);
+      layer.set('dataUpdatedAt', dataUpdatedAt);
+    }
+    layer.set('errorUpdatedAt', errorUpdatedAt, true);
   }, [ready, pilotageLimitFeatures, dataUpdatedAt, errorUpdatedAt, layerId]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
