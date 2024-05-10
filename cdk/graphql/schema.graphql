@@ -186,7 +186,7 @@ input SectionInput {
 }
 
 input TemporaryNotificationInput {
-  content: TextInput
+  content: TextInput!
   startDate: String!
   endDate: String
 }
@@ -554,6 +554,6 @@ type PilotRoute {
 
 type TemporaryNotification {
   content: Text
-  startDate: String!
+  startDate: String
   endDate: String
 }

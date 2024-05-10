@@ -77,6 +77,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "sv": "speedLimitsv",
   },
   "status": "PUBLIC",
+  "temporaryNotifications": null,
   "trafficService": {
     "pilot": {
       "email": "i@fi",
@@ -193,6 +194,7 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "seaLevel": null,
   "speedLimit": null,
   "status": "DRAFT",
+  "temporaryNotifications": null,
   "trafficService": {
     "pilot": {
       "email": null,
