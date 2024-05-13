@@ -26,6 +26,8 @@ export class DvkBuildImageStack extends Stack {
     });
     const pipeline = new codepipeline.Pipeline(this, 'BuildImagePipeline', {
       crossAccountKeys: false,
+      pipelineType: codepipeline.PipelineType.V1,
+      executionMode: codepipeline.ExecutionMode.SUPERSEDED,
     });
     const sourceOutput = new codepipeline.Artifact();
     const sourceAction = new cdk.aws_codepipeline_actions.GitHubSourceAction({
