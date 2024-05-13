@@ -87,7 +87,7 @@ export class DvkBuildImageStack extends Stack {
         },
       ],
     });
-    const analyticsBuildProject = this.buildProject(account, analyticsImageRepoName, '1.0.2', 'cdk/fargate', 'AnalyticsImageBuild');
+    const analyticsBuildProject = this.buildProject(account, analyticsImageRepoName, '1.0.3', 'cdk/fargate', 'AnalyticsImageBuild');
     actions.push(
       new cdk.aws_codepipeline_actions.CodeBuildAction({
         actionName: 'BuildAnalyticsImage',
