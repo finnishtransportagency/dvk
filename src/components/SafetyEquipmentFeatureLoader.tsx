@@ -59,8 +59,8 @@ export function useSafetyEquipmentAndFaultFeatures() {
   useEffect(() => {
     if (eData && fData && fairwayCardData) {
       const format = new GeoJSON();
-      const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
-      const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+      const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
       const faultMap = new Map<number, EquipmentFault[]>();
       const equipmentFeatures: Feature<Geometry>[] = [];
       const faultFeatures: Feature<Geometry>[] = [];

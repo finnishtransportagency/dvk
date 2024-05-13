@@ -31,7 +31,7 @@ export function usePilotRouteFeatures() {
       const pilotRouteFeatures = format.readFeatures(data, {
         dataProjection: 'EPSG:4326',
         featureProjection: MAP.EPSG,
-      }) as Feature<Geometry>[];
+      });
       addFairwayCardData(pilotRouteFeatures, fairwayCardData.fairwayCards);
       setPilotRouteFeatures(pilotRouteFeatures);
       setReady(true);
