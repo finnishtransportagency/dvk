@@ -8,14 +8,12 @@ import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
 import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
-import { Text } from '../graphql/generated';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
 import { filterMarineWarnings } from '../utils/common';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
-import { handleSafetyEquipmentLayerChange } from '../utils/fairwayCardUtils';
 import RenderFeature from 'ol/render/Feature';
 
 export type DvkLayerState = {
@@ -42,7 +40,7 @@ function useDataLayer(
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);
         source.clear();
         features.forEach((f) => f.set('dataSource', featureLayerId, true));
@@ -145,7 +143,7 @@ export function useInitStaticDataLayer(
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       const source = layer.getSource() as VectorSource;
       const format = new GeoJSON({ featureClass: RenderFeature });
-      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+      const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
       source.clear(true);
       source.addFeatures(features);
       setDataUpdatedAt(Date.now());
@@ -289,8 +287,8 @@ export function useArea12Layer(): DvkLayerState {
       const layer = dvkMap.getFeatureLayer('area12');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
-        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
         addSpeedLimits(afs, rafs);
         afs.forEach((f) => f.set('dataSource', 'area12', true));
         const source = dvkMap.getVectorSource('area12');
@@ -300,7 +298,7 @@ export function useArea12Layer(): DvkLayerState {
         if (window.Worker) {
           const faWorker: Worker = new Worker(new URL('../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
           faWorker.onmessage = (e) => {
-            const borderlineFeatures = format.readFeatures(e.data as string) as Feature<Geometry>[];
+            const borderlineFeatures = format.readFeatures(e.data as string);
             borderlineFeatures.forEach((f) => f.set('dataSource', 'area12Borderline', true));
             source.addFeatures(borderlineFeatures);
           };
@@ -331,7 +329,7 @@ export function useArea3456Layer() {
       const layer = dvkMap.getFeatureLayer('area3456');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
         afs.forEach((f) => f.set('dataSource', 'area3456', true));
         const source = dvkMap.getVectorSource('area3456');
         source.clear();
@@ -340,7 +338,7 @@ export function useArea3456Layer() {
         if (window.Worker) {
           const faWorker: Worker = new Worker(new URL('../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
           faWorker.onmessage = (e) => {
-            const borderlineFeatures = format.readFeatures(e.data as string) as Feature<Geometry>[];
+            const borderlineFeatures = format.readFeatures(e.data as string);
             borderlineFeatures.forEach((f) => f.set('dataSource', 'area3456Borderline', true));
             source.addFeatures(borderlineFeatures);
           };
@@ -381,15 +379,15 @@ export function useSpeedLimitLayer(): DvkLayerState {
         if (window.Worker) {
           const slWorker: Worker = new Worker(new URL('../speedlimitworker/SpeedlimitWorker.ts', import.meta.url), { type: 'module' });
           slWorker.onmessage = (e) => {
-            const features = format.readFeatures(e.data as string) as Feature<Geometry>[];
+            const features = format.readFeatures(e.data as string);
             const source = dvkMap.getVectorSource('speedlimit');
             source.clear();
             source.addFeatures(features);
           };
           slWorker.postMessage({ raData: JSON.stringify(raData), aData: JSON.stringify(aData) });
         } else {
-          const afs = format.readFeatures(aData) as Feature<Geometry>[];
-          const rafs = format.readFeatures(raData) as Feature<Geometry>[];
+          const afs = format.readFeatures(aData);
+          const rafs = format.readFeatures(raData);
           const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
           const source = dvkMap.getVectorSource('speedlimit');
           source.clear();
@@ -430,100 +428,10 @@ export function useBoaterWarningLayer() {
   return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, true, filterMarineWarnings('boaterwarning'));
 }
 
-export type EquipmentFault = {
-  faultId: number;
-  faultType: Text;
-  faultTypeCode: string;
-  recordTime: number;
-};
-
-export function useSafetyEquipmentAndFaultLayer(): DvkLayerState {
-  const [ready, setReady] = useState(false);
-  const eQuery = useFeatureData('safetyequipment');
-  const fQuery = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
-  const eDataUpdatedAt = eQuery.dataUpdatedAt;
-  const fDataUpdatedAt = fQuery.dataUpdatedAt;
-  const eErrorUpdatedAt = eQuery.errorUpdatedAt;
-  const fErrorUpdatedAt = fQuery.errorUpdatedAt;
-  const isPaused = eQuery.isPaused || fQuery.isPaused;
-  const isError = eQuery.isError || fQuery.isError;
-  useEffect(() => {
-    const eData = eQuery.data;
-    const fData = fQuery.data;
-    if (eData && fData) {
-      const layer = dvkMap.getFeatureLayer('safetyequipment');
-      const faultLayer = dvkMap.getFeatureLayer('safetyequipmentfault');
-      if (layer.get('dataUpdatedAt') !== eDataUpdatedAt || faultLayer.get('dataUpdatedAt') !== fDataUpdatedAt) {
-        const format = new GeoJSON();
-        const efs = format.readFeatures(eData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
-        efs.forEach((f) => {
-          f.set('dataSource', 'safetyequipment', true);
-        });
-        const ffs = format.readFeatures(fData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
-        const equipmentSource = dvkMap.getVectorSource('safetyequipment');
-        equipmentSource.clear();
-        equipmentSource.addFeatures(efs);
-        const faultMap = new Map<number, EquipmentFault[]>();
-        for (const ff of ffs) {
-          const id = ff.getProperties().equipmentId as number;
-          const feature = equipmentSource.getFeatureById(id);
-          if (feature) {
-            const fault: EquipmentFault = {
-              faultId: ff.getId() as number,
-              faultType: ff.getProperties().type,
-              faultTypeCode: ff.getProperties().typeCode,
-              recordTime: ff.getProperties().recordTime,
-            };
-            if (!faultMap.has(id)) {
-              faultMap.set(id, []);
-            }
-            faultMap.get(id)?.push(fault);
-          }
-        }
-        const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
-        faultSource.clear();
-        faultMap.forEach((faults, equipmentId) => {
-          const feature = equipmentSource.getFeatureById(equipmentId) as Feature<Geometry>;
-          if (feature) {
-            faults.sort((a, b) => b.recordTime - a.recordTime);
-            feature.set('faults', faults, true);
-            feature.set('faultListStyle', !!feature.get('faults'), true);
-            feature.set('dataSource', 'safetyequipmentfault', true);
-            // add to safetyequipmentfault layer and remove from safetyequipment layer
-            faultSource.addFeature(feature);
-            equipmentSource.removeFeature(feature);
-          }
-        });
-        layer.set('dataUpdatedAt', eDataUpdatedAt);
-        layer.set('errorUpdatedAt', eErrorUpdatedAt);
-        faultLayer.set('dataUpdatedAt', fDataUpdatedAt);
-        faultLayer.set('errorUpdatedAt', fErrorUpdatedAt);
-      }
-      // in case there's selected fairway card containing safety equipment faults (to avoid duplicates)
-      handleSafetyEquipmentLayerChange();
-      setReady(true);
-    }
-  }, [eQuery.data, fQuery.data, eDataUpdatedAt, fDataUpdatedAt, eErrorUpdatedAt, fErrorUpdatedAt]);
-  const dataUpdatedAt = Math.max(eDataUpdatedAt, fDataUpdatedAt);
-  const errorUpdatedAt = Math.max(eErrorUpdatedAt, fErrorUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
-}
-
 export function useVaylaWaterAreaData() {
   return useFeatureData('vayla_water_area');
 }
 
 export function usePilotageAreaBorderLayer() {
   return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
-}
-
-export function usePilotageLimitLayer() {
-  const rv = useDataLayer('pilotagelimit', 'pilotagelimit', 'EPSG:3067');
-  const source = dvkMap.getVectorSource('pilotagelimit');
-  source.forEachFeature((f) => {
-    f.set('featureType', 'pilotagelimit');
-    // set id so getByFeatureId can be used
-    f.setId(f.getProperties().fid);
-  });
-  return rv;
 }

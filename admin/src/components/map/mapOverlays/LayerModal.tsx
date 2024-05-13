@@ -82,8 +82,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
 
   useEffect(() => {
     MAP.FEATURE_DATA_LAYERS.forEach((dataLayer) => {
-      const layer = dvkMap.getFeatureLayer(dataLayer.id);
-      layer.setVisible(layers.includes(dataLayer.id));
+      const featureLayers = dvkMap.getFeatureLayers(dataLayer.id);
+      featureLayers.forEach((featureLayer) => {
+        featureLayer.setVisible(layers.includes(dataLayer.id));
+      });
     });
   }, [layers, dvkMap]);
 

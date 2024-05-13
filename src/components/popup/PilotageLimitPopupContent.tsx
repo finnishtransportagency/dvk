@@ -10,10 +10,10 @@ import { Geometry, LineString } from 'ol/geom';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { Lang } from '../../utils/constants';
 import { useFairwayCardListData } from '../../utils/dataLoader';
-import { FairwayCard } from '../../graphql/generated';
 import { Link } from 'react-router-dom';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { useDvkContext } from '../../hooks/dvkContext';
+import { getPilotageLimitFairwayCards } from '../../utils/fairwayCardUtils';
 
 type PilotageLimitPopupContentProps = {
   pilotagelimit: PilotageLimitProperties;
@@ -48,24 +48,8 @@ const PilotageLimitPopupContent: React.FC<PilotageLimitPopupContentProps> = ({ p
     limit = pilotagelimit.properties.raja_en;
   }
 
-  const fairwayIds = pilotagelimit.properties.liittyyVayliin.split(',');
-
   const { data } = useFairwayCardListData();
-
-  function getCards(fairwayCards: Array<FairwayCard>) {
-    const cards = fairwayCards.filter((fc) => {
-      const fcIds = fc.fairways.map((f) => f.id);
-      for (let i = 0; i < fcIds.length; i++) {
-        if (fairwayIds.includes('' + fcIds[i])) {
-          return true;
-        }
-      }
-      return false;
-    });
-    return cards;
-  }
-
-  const fairwayCards = data ? getCards(data.fairwayCards) : [];
+  const fairwayCards = data ? getPilotageLimitFairwayCards(pilotagelimit.properties, data.fairwayCards) : [];
 
   return (
     <IonGrid className="ion-no-padding">
@@ -90,7 +74,11 @@ const PilotageLimitPopupContent: React.FC<PilotageLimitPopupContentProps> = ({ p
         <IonCol className="header">{t('popup.pilotageLimit.limit')}</IonCol>
       </IonRow>
       <IonRow>
-        <IonCol>{limit}</IonCol>
+        <IonCol>
+          {t('popup.pilotageLimit.dimensions')}
+          <br />
+          {limit.replaceAll('/', ' / ')}
+        </IonCol>
       </IonRow>
       <IonRow>
         <IonCol className="header">{t('popup.pilotageLimit.fairways')}</IonCol>

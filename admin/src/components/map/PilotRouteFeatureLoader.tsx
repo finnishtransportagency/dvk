@@ -22,7 +22,7 @@ function usePilotRouteFeatures() {
       const pilotRouteFeatures = format.readFeatures(pilotRouteData, {
         dataProjection: 'EPSG:4326',
         featureProjection: MAP.EPSG,
-      }) as Feature<Geometry>[];
+      });
       setPilotRouteFeatures(pilotRouteFeatures);
       setReady(true);
     }
@@ -36,11 +36,14 @@ export function usePilotRouteLayer() {
 
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(layerId);
-    const source = dvkMap.getVectorSource(layerId);
-    source.clear();
-    pilotRouteFeatures.forEach((f) => f.set('dataSource', layerId, true));
-    source.addFeatures(pilotRouteFeatures);
-    layer.set('dataUpdatedAt', dataUpdatedAt);
+    if (ready && layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      const source = dvkMap.getVectorSource(layerId);
+      source.clear();
+      pilotRouteFeatures.forEach((f) => f.set('dataSource', layerId, true));
+      source.addFeatures(pilotRouteFeatures);
+      layer.set('dataUpdatedAt', dataUpdatedAt);
+    }
+    layer.set('errorUpdatedAt', errorUpdatedAt, true);
   }, [ready, pilotRouteFeatures, dataUpdatedAt, errorUpdatedAt, layerId]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };

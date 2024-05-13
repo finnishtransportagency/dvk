@@ -110,6 +110,7 @@ export function showFeaturePopup(
     }
     setPopupProperties({
       [selectedFeature.getProperties().featureType]: {
+        id: selectedFeature.getId(),
         coordinates: geom.getCoordinates() as number[],
         properties: selectedFeature.getProperties(),
         width: fairwayWidth,
@@ -118,6 +119,7 @@ export function showFeaturePopup(
   } else {
     setPopupProperties({
       [selectedFeature.getProperties().featureType]: {
+        id: selectedFeature.getId(),
         coordinates: geom.getCoordinates() as number[],
         geometry: geom,
         properties: selectedFeature.getProperties(),
@@ -183,7 +185,10 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     map.forEachFeatureAtPixel(
       evt.pixel,
       function (f) {
-        if (types.includes(f.getProperties().featureType)) {
+        if (
+          types.includes(f.getProperties().featureType) &&
+          features.findIndex((feat) => feat.get('featureType') === f.get('featureType') && feat.getId() == f.getId()) < 0
+        ) {
           features.push(f);
         }
       },
@@ -311,7 +316,6 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
     case 'quay':
       return { header: [(props as QuayFeatureProperties).quay?.[lang] ?? ''], featureType: t('featureList.featureType.quay'), className: type };
     case 'safetyequipment':
-      return getSafetyEquipmentDetails(t, lang, feature);
     case 'safetyequipmentfault':
       return getSafetyEquipmentDetails(t, lang, feature);
     case 'section':

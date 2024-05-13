@@ -130,7 +130,7 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
       const feat = format.readFeature(union.geometry, {
         dataProjection: 'EPSG:4326',
         featureProjection: MAP.EPSG,
-      }) as Feature<Geometry>;
+      });
       feat.setProperties({ speedLimits: slg.speedLimits });
       speedLimitFeatures.push(feat);
     }

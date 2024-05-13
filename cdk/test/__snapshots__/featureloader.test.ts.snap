@@ -547,16 +547,6 @@ exports[`should get navigation lines from api when cache expired 1`] = `
         "draft": 1.8,
         "fairways": [
           {
-            "fairwayCards": [
-              {
-                "id": "test",
-                "name": {
-                  "en": "Testen",
-                  "fi": "Testfi",
-                  "sv": "Testsv",
-                },
-              },
-            ],
             "fairwayId": 4710,
             "line": 1,
             "name": {
@@ -608,16 +598,6 @@ exports[`should get navigation lines from cache 1`] = `
         "draft": 11,
         "fairways": [
           {
-            "fairwayCards": [
-              {
-                "id": "lansisatama",
-                "name": {
-                  "en": "Helsinki West Harbour channel",
-                  "fi": "Helsingin Länsisataman väylä",
-                  "sv": "Farleden till Västra hamnen i Helsingfors",
-                },
-              },
-            ],
             "fairwayId": 4710,
             "line": 1,
             "name": {
@@ -712,16 +692,6 @@ exports[`should get navigation lines from cache when api call fails 1`] = `
         "draft": 11,
         "fairways": [
           {
-            "fairwayCards": [
-              {
-                "id": "lansisatama",
-                "name": {
-                  "en": "Helsinki West Harbour channel",
-                  "fi": "Helsingin Länsisataman väylä",
-                  "sv": "Farleden till Västra hamnen i Helsingfors",
-                },
-              },
-            ],
             "fairwayId": 4710,
             "line": 1,
             "name": {

@@ -43,7 +43,7 @@ export function getCacheControlHeaders(key: string): Record<string, string[]> {
           AIS_LOCATION_CACHE.STALE_WHILE_REVALIDATE +
           ', ' +
           'stale-if-error=' +
-          AIS_LOCATION_CACHE.STALE_WHILE_REVALIDATE,
+          AIS_LOCATION_CACHE.STALE_IF_ERROR,
       ],
     };
   } else if (key === 'aisvessels') {
@@ -56,7 +56,7 @@ export function getCacheControlHeaders(key: string): Record<string, string[]> {
           AIS_VESSEL_CACHE.STALE_WHILE_REVALIDATE +
           ', ' +
           'stale-if-error=' +
-          AIS_VESSEL_CACHE.STALE_WHILE_REVALIDATE,
+          AIS_VESSEL_CACHE.STALE_IF_ERROR,
       ],
     };
   } else {

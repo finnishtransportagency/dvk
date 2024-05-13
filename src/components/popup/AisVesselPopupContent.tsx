@@ -54,7 +54,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const properties = vessel.properties;
   const timestamp = reformatAisVesselDataUpdatedTime(properties.timestampExternal);
   const aisPoint = properties.aisPoint as Point;
-  const wgs84Point = aisPoint.clone().transform(MAP.EPSG, 'EPSG:4326') as Point;
+  const wgs84Point = aisPoint.clone().transform(MAP.EPSG, 'EPSG:4326');
   const coordinates = coordinatesToStringHDM(wgs84Point.getCoordinates());
   const navState = getNavState(t, properties.navStat);
   //check for unavailable properties (unavailable values: speed==102.3 and course===360)

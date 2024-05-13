@@ -2,7 +2,7 @@ import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import { FeatureLayerId } from '../../utils/constants';
 import { never, pointerMove } from 'ol/events/condition';
-import { getQuayStyle, getSpecialAreaStyle, getBoardLineStyle, getHarborStyle, getAreaStyleBySource } from '../layers';
+import { getQuayStyle, getBoardLineStyle, getHarborStyle, getAreaStyleBySource } from '../layers';
 import dvkMap from '../DvkMap';
 import { getPilotStyle } from '../layerStyles/pilotStyles';
 import { getSafetyEquipmentStyle } from '../layerStyles/safetyEquipmentStyles';
@@ -19,6 +19,7 @@ import { getPilotRouteStyle } from '../layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from '../layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from '../layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from '../layerStyles/navigationLine3456Styles';
+import { getSpecialAreaStyle } from '../layerStyles/specialAreaStyles';
 
 function getLayers() {
   return [
@@ -75,7 +76,7 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
       return getAreaStyleBySource(dataSource, true, selectedFairwayCard);
     case 'specialarea2':
     case 'specialarea15':
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, selectedFairwayCard);
+      return getSpecialAreaStyle(feature, true, selectedFairwayCard);
     case 'line':
       if (feature.getProperties().dataSource === 'line12') {
         return getNavigationLine12Style(feature, resolution, true);

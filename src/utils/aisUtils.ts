@@ -114,7 +114,7 @@ export function getVesselHeading(aisHeading?: number, aisCog?: number): number |
 /* Translate point to heading direction distance meters */
 export function translatePoint(point: Point, heading: number, distance: number) {
   const geom = point.clone();
-  const wgs84Point = geom.transform(MAP.EPSG, 'EPSG:4326') as Point;
+  const wgs84Point = geom.transform(MAP.EPSG, 'EPSG:4326');
   const turfPoint = turf_point(wgs84Point.getCoordinates());
   // Transform given point 1km to headng direction
   const turfPoint2 = transformTranslate(turfPoint, distance / 1000, heading);

@@ -15,7 +15,6 @@ import {
   AlueAPIModel,
   KaantoympyraAPIModel,
   NavigointiLinjaAPIModel,
-  PilotPlace,
   RajoitusAlueAPIModel,
   TaululinjaAPIModel,
   TurvalaiteAPIModel,
@@ -69,18 +68,8 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
 }
 
 async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const placeMap = new Map<number, PilotPlace>();
-  const cards = await FairwayCardDBModel.getAllPublic();
-  const pilots = await fetchPilotPoints();
-  for (const pilot of pilots) {
-    placeMap.set(pilot.id, { ...pilot, fairwayCards: [] });
-  }
-  for (const card of cards) {
-    for (const place of card.trafficService?.pilot?.places ?? []) {
-      placeMap.get(place.id)?.fairwayCards.push({ id: card.id, name: card.name });
-    }
-  }
-  for (const place of placeMap.values()) {
+  const pilotPlaces = await fetchPilotPoints();
+  for (const place of pilotPlaces) {
     features.push({
       type: 'Feature',
       geometry: place.geometry as Geometry,
@@ -88,24 +77,9 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
       properties: {
         featureType: 'pilot',
         name: place.name,
-        fairwayCards: place.fairwayCards,
       },
     });
   }
-}
-
-async function getCardMap() {
-  const cardMap = new Map<number, FairwayCardIdName[]>();
-  const cards = await FairwayCardDBModel.getAllPublic();
-  for (const card of cards) {
-    for (const id of card.fairways.map((f) => f.id)) {
-      if (!cardMap.has(id)) {
-        cardMap.set(id, []);
-      }
-      cardMap.get(id)?.push({ id: card.id, name: card.name });
-    }
-  }
-  return cardMap;
 }
 
 async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
@@ -158,7 +132,6 @@ async function addAreaFeatures(
   featureType: string,
   areaFilter: (a: AlueAPIModel) => boolean
 ) {
-  const cardMap = await getCardMap();
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
 
@@ -187,7 +160,6 @@ async function addAreaFeatures(
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
-            fairwayCards: cardMap.get(v.jnro),
             status: v.status,
             line: v.linjaus,
             sizingSpeed: v.mitoitusNopeus,
@@ -238,7 +210,6 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
 
 async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<TaululinjaAPIModel>('taululinjat', event);
-  const cardMap = await getCardMap();
   log.debug('board lines: %d', lines.length);
   for (const line of lines) {
     features.push({
@@ -256,7 +227,6 @@ async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonPropertie
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
-            fairwayCards: cardMap.get(v.jnro),
           };
         }),
       },
@@ -266,7 +236,6 @@ async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonPropertie
 
 async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
-  const cardMap = await getCardMap();
   log.debug('lines: %d', lines.length);
   for (const line of lines) {
     features.push({
@@ -293,7 +262,6 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
-            fairwayCards: cardMap.get(v.jnro),
             status: v.status,
             line: v.linjaus,
           };
@@ -305,7 +273,6 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
 
 async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
   const equipments = await fetchVATUByFairwayClass<TurvalaiteAPIModel>('turvalaitteet', event);
-  const cardMap = await getCardMap();
   log.debug('equipments: %d', equipments.length);
   for (const equipment of equipments) {
     features.push({
@@ -325,7 +292,7 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
         aisType: equipment.AISTyyppi,
         remoteControl: equipment.kaukohallinta,
         fairways: equipment.vayla?.map((v) => {
-          return { fairwayId: v.jnro, primary: v.paavayla === 'P', fairwayCards: cardMap.get(v.jnro) };
+          return { fairwayId: v.jnro, primary: v.paavayla === 'P' };
         }),
         distances: equipment.reunaetaisyys?.map((v) => {
           return { areaId: v.vaylaalueID, distance: v.etaisyys };
