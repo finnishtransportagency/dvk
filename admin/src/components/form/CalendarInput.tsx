@@ -37,7 +37,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
   const dateRef = useRef<null | HTMLIonDatetimeElement>(null);
 
   const handleChange = (value: string | null | undefined) => {
-    const newValue = checkIfValidAndChangeFormatToISO(value as string);
+    const newValue = value !== 'undefined' ? checkIfValidAndChangeFormatToISO(value as string) : '';
     setValue(newValue as string, actionType, undefined, actionTarget);
   };
 
@@ -54,6 +54,9 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
           presentation="date"
           locale="fi"
           onIonChange={(event) => handleChange(String(event.detail?.value))}
+          cancelText={t('general.cancel')}
+          doneText={t('general.button-ok')}
+          preferWheel={false}
         >
           <span slot="title">{t('fairwaycard.temporary-notification-start')}</span>
         </IonDatetime>

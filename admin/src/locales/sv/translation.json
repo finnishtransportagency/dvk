@@ -96,7 +96,9 @@
     },
     "noDataSet": "Uppgifter finns inte.",
     "temporary-notification": "[sv] Huomio",
-    "temporary-notification-found": "[sv] Huomioita"
+    "temporary-notification-found": "[sv] Huomioita",
+    "notice-ends": "[sv] Päättyy",
+    "temporary-in-force": "[sv] Toistaiseksi voimassa"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",

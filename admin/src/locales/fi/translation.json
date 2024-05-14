@@ -98,7 +98,9 @@
     "end-date-error": "Päättymispäivämäärä ei voi olla ennen alkamispäivämäärää",
     "date-helper-text": "Päivämäärä on annettava muodossa pp.kk.vvvv",
     "temporary-notification": "Huomio",
-    "temporary-notification-found": "Huomioita"
+    "temporary-notification-found": "Huomioita",
+    "notice-ends": "Päättyy",
+    "temporary-in-force": "Toistaiseksi voimassa"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
@@ -226,7 +228,7 @@
     "linked-pilot-routes": "Linkitetyt luotsausreitit",
     "temporary-notification-title": "Väliaikaisen huomion lisääminen väyläkortille",
     "temporary-notification": "Huomio",
-    "temporary-notification-start": "Huomion voimaantulopäivä",
+    "temporary-notification-start": "Huomion voimaantulopäivämäärä",
     "temporary-notification-end": "Huomion päättymispäivämäärä"
   },
   "harbour": {

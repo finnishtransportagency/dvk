@@ -17,12 +17,13 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 import { ItemType, Lang } from '../utils/constants';
-import { filterItemList } from '../utils/common';
+import { checkIfValidAndChangeFormatToLocal, filterItemList, getFirstNoticeToEndString } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
 import ClearSearchButton from '../components/ClearSearchButton';
 import { getMap } from '../components/map/DvkMap';
+import { TemporaryNotification } from '../graphql/generated';
 
 type HeaderButtonProps = {
   headername: string;
@@ -102,6 +103,15 @@ const MainPage: React.FC = () => {
   const selectTypeRef = useRef<HTMLIonSelectElement>(null);
   const focusTypeSelect = () => {
     selectTypeRef.current?.click();
+  };
+
+  const getEndingDateString = (temporaryNotifications: TemporaryNotification[]) => {
+    if (!temporaryNotifications) {
+      return '-';
+    }
+    const noticeToEndDate = getFirstNoticeToEndString(temporaryNotifications);
+
+    return noticeToEndDate ? t('notice-ends') + ' ' + checkIfValidAndChangeFormatToLocal(noticeToEndDate) : t('temporary-in-force');
   };
 
   const searchHasInput = searchQuery.length > 0;
@@ -273,7 +283,7 @@ const MainPage: React.FC = () => {
                   <IonCol size="1.25">{item.creator}</IonCol>
                   <IonCol size="1.25">{item.modifier}</IonCol>
                   <IonCol size="1.25">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
-                  <IonCol size="1.25">{item.temporaryNotifications?.[0]?.content?.[lang] ? t('temporary-notification-found') : '-'}</IonCol>
+                  <IonCol size="1.25">{getEndingDateString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
                 </IonRow>
               );
             })}

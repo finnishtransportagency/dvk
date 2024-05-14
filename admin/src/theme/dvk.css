@@ -533,6 +533,11 @@ ion-modal.datetimeModal::part(content) {
   width: fit-content;
 }
 
+ion-datetime::part(month-year-button) {
+  pointer-events: none;
+  opacity: 0;
+}
+
 .dateIcon {
   width: 24px;
   height: 24px;
