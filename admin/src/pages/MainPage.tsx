@@ -17,12 +17,13 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 import { ItemType, Lang } from '../utils/constants';
-import { filterItemList } from '../utils/common';
+import { checkIfValidAndChangeFormatToLocal, filterItemList, getFirstNoticeToEndString } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
 import ClearSearchButton from '../components/ClearSearchButton';
 import { getMap } from '../components/map/DvkMap';
+import { TemporaryNotification } from '../graphql/generated';
 
 type HeaderButtonProps = {
   headername: string;
@@ -104,6 +105,15 @@ const MainPage: React.FC = () => {
     selectTypeRef.current?.click();
   };
 
+  const getEndingDateString = (temporaryNotifications: TemporaryNotification[]) => {
+    if (!temporaryNotifications) {
+      return '-';
+    }
+    const noticeToEndDate = getFirstNoticeToEndString(temporaryNotifications);
+
+    return noticeToEndDate ? t('notice-ends') + ' ' + checkIfValidAndChangeFormatToLocal(noticeToEndDate) : t('temporary-in-force');
+  };
+
   const searchHasInput = searchQuery.length > 0;
 
   return (
@@ -164,7 +174,7 @@ const MainPage: React.FC = () => {
       <IonContent className="mainContent ion-no-padding" data-testid="mainPageContent">
         <IonGrid className="itemList">
           <IonRow className="header ion-align-items-stretch">
-            <IonCol size="2.5">
+            <IonCol size="2">
               <HeaderButton
                 headername="name"
                 text="item-name"
@@ -209,7 +219,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.5">
+            <IonCol size="1.25">
               <HeaderButton
                 headername="creator"
                 text="item-creator"
@@ -218,7 +228,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.5">
+            <IonCol size="1.25">
               <HeaderButton
                 headername="modifier"
                 text="item-modifier"
@@ -227,10 +237,19 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.5">
+            <IonCol size="1.25">
               <HeaderButton
                 headername="modified"
                 text="item-modified"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
+            </IonCol>
+            <IonCol size="1.25">
+              <HeaderButton
+                headername="notice"
+                text="temporary-notification"
                 sortBy={sortBy}
                 headerButtonClassName={headerButtonClassName}
                 sortItemsBy={sortItemsBy}
@@ -254,16 +273,17 @@ const MainPage: React.FC = () => {
                   onClick={() => selectItem(item.id, item.type)}
                   onKeyDown={(e) => keyDownAction(e, item.id, item.type)}
                 >
-                  <IonCol size="2.5">{item.name[lang] ?? item.name.fi}</IonCol>
+                  <IonCol size="2">{item.name[lang] ?? item.name.fi}</IonCol>
                   <IonCol size="1.5">{t('item-type-' + item.type)}</IonCol>
                   <IonCol size="1.5">{groups[Number(item.group ?? 0)]}</IonCol>
                   <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
                   <IonCol size="1" className={'item-status-' + item.status}>
                     {t('item-status-' + item.status)}
                   </IonCol>
-                  <IonCol size="1.5">{item.creator}</IonCol>
-                  <IonCol size="1.5">{item.modifier}</IonCol>
-                  <IonCol size="1.5">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
+                  <IonCol size="1.25">{item.creator}</IonCol>
+                  <IonCol size="1.25">{item.modifier}</IonCol>
+                  <IonCol size="1.25">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
+                  <IonCol size="1.25">{getEndingDateString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
                 </IonRow>
               );
             })}

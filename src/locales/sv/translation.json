@@ -260,7 +260,8 @@
     "pilotageLimit": "Lotspliktslinje",
     "pilotageLimitLocation": "Linjens läge",
     "pilotageLimitLimit": "Gränsen för lotsplikt i farleden när något av följande överskrids",
-    "pilotageLimitDimensions": "Längd / bredd / djup (m)"
+    "pilotageLimitDimensions": "Längd / bredd / djup (m)",
+    "inForce": "Gällande"
   },
   "routes": {
     "title": "Lotsningsrutter",

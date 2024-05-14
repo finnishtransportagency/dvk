@@ -141,6 +141,17 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
             };
           }) ?? []
         ),
+    temporaryNotifications: data?.fairwayCard?.temporaryNotifications?.map((notification) => {
+      return {
+        content: {
+          fi: stringValueOrDefault(notification.content?.fi),
+          sv: stringValueOrDefault(notification.content?.sv),
+          en: stringValueOrDefault(notification.content?.en),
+        },
+        startDate: stringValueOrDefault(notification.startDate),
+        endDate: stringValueOrDefault(notification.endDate),
+      };
+    }),
   };
 }
 

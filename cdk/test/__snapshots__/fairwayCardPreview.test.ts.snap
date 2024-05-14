@@ -36,6 +36,17 @@ exports[`should get draft card from the DynamoDB 1`] = `
   "seaLevel": undefined,
   "speedLimit": undefined,
   "status": "DRAFT",
+  "temporaryNotifications": [
+    {
+      "content": {
+        "en": "",
+        "fi": "",
+        "sv": "",
+      },
+      "endDate": "",
+      "startDate": "",
+    },
+  ],
   "trafficService": {
     "pilot": {
       "email": undefined,
@@ -91,6 +102,17 @@ exports[`should get public card from the DynamoDB 1`] = `
   "seaLevel": undefined,
   "speedLimit": undefined,
   "status": "PUBLIC",
+  "temporaryNotifications": [
+    {
+      "content": {
+        "en": "",
+        "fi": "",
+        "sv": "",
+      },
+      "endDate": "",
+      "startDate": "",
+    },
+  ],
   "trafficService": {
     "pilot": {
       "email": undefined,

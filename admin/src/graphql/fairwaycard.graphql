@@ -168,6 +168,15 @@ fragment FairwayCardById on FairwayCard {
       id
       name 
     }
+    temporaryNotifications {
+      content {
+        fi
+        sv
+        en
+      }
+      startDate
+      endDate
+    }
 }
 
 query fairwayCardById($id: String!) {

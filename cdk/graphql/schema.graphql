@@ -75,6 +75,7 @@ input FairwayCardInput {
   harbors: [String!]
   pictures: [PictureInput!]
   pilotRoutes: [Int!]
+  temporaryNotifications: [TemporaryNotificationInput!]
 }
 
 input PictureInput {
@@ -184,6 +185,12 @@ input SectionInput {
   geometry: GeometryInput
 }
 
+input TemporaryNotificationInput {
+  content: TextInput!
+  startDate: String!
+  endDate: String
+}
+
 type FairwayCardOrHarbor {
   id: String!
   type: ContentType!
@@ -195,6 +202,7 @@ type FairwayCardOrHarbor {
   creator: String
   modifier: String
   modificationTimestamp: Float
+  temporaryNotifications: [TemporaryNotification]
 }
 
 enum ContentType {
@@ -238,6 +246,7 @@ type FairwayCard {
   harbors: [Harbor!]
   pictures: [Picture!]
   pilotRoutes: [PilotRoute!]
+  temporaryNotifications: [TemporaryNotification!]
 }
 
 type Picture {
@@ -542,4 +551,10 @@ type MarineWarning {
 type PilotRoute {
   id: Int!
   name: String
+}
+
+type TemporaryNotification {
+  content: Text
+  startDate: String
+  endDate: String
 }

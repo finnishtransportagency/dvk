@@ -15,7 +15,7 @@ import { CurrentUser } from '../api/login';
 import { fetchPilotPoints } from '../api/traficom';
 import { getFromCache, cacheResponse, CacheResponse } from '../graphql/cache';
 import { log } from '../logger';
-import FairwayCardDBModel, { FairwayDBModel, PilotRoute, TrafficServiceDBModel } from './fairwayCardDBModel';
+import FairwayCardDBModel, { FairwayDBModel, PilotRoute, TemporaryNotification, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
 import { fetchPilotRouteData } from '../api/pilotRoutes';
 import { saveResponseToS3 } from '../util';
@@ -286,7 +286,9 @@ export function mapFairwayCardDBModelToGraphqlType(
     pilotRoutes: mapPilotRoutes(dbModel.pilotRoutes ?? [], pilotRoutes),
     fairwayIds: mapFairwayIds(dbModel),
     pictures: dbModel.pictures,
+    temporaryNotifications: mapTemporaryNotifications(dbModel.temporaryNotifications ?? []),
   };
+
   for (const fairway of dbModel.fairways || []) {
     card.fairways.push(mapFairwayDBModelToFairway(fairway));
   }
@@ -363,4 +365,17 @@ function mapPilotRoutes(pilotRoutes: PilotRoute[], features: FeatureCollection) 
   // if empty array is returned, it means that routes are not found
   // from api or cache
   return filteredRoutes ?? [];
+}
+
+function mapTemporaryNotifications(notifications: TemporaryNotification[]) {
+  if (notifications.length < 1) {
+    return [{ content: { fi: '', sv: '', en: '' }, startDate: '', endDate: '' }];
+  }
+  return notifications.map((notification) => {
+    return {
+      content: notification.content,
+      startDate: notification.startDate,
+      endDate: notification.endDate,
+    }
+  })
 }

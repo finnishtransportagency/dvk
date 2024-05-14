@@ -293,6 +293,15 @@ fragment FairwayCardParts on FairwayCard {
     id
     name
   }
+  temporaryNotifications {
+    content {
+      fi
+      sv
+      en
+    }
+    startDate
+    endDate
+  }
 }
 
 query findAllFairwayCards($status: [Status!]) {

@@ -80,6 +80,7 @@
     "add-section-tug": "Lisää hinaaja",
     "add-section-quay": "Lisää laituri",
     "add-section-section": "Lisää laituripaikka",
+    "add-section-temporary-notification": "Lisää huomio",
     "environment-local": "Paikallinen kehitysympäristö",
     "environment-dev": "Kehitysympäristö",
     "environment-test": "Testiympäristö",
@@ -93,7 +94,13 @@
       "mDesc_one": "metri",
       "mDesc_other": "metriä"
     },
-    "noDataSet": "Tietoa ei ole asetettu."
+    "noDataSet": "Tietoa ei ole asetettu.",
+    "end-date-error": "Päättymispäivämäärä ei voi olla ennen alkamispäivämäärää",
+    "date-helper-text": "Päivämäärä on annettava muodossa pp.kk.vvvv",
+    "temporary-notification": "Huomio",
+    "temporary-notification-found": "Huomioita",
+    "notice-ends": "Päättyy",
+    "temporary-in-force": "Toistaiseksi voimassa"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
@@ -143,7 +150,10 @@
     "help-title-section": "Laituripaikan sijainnin syöttö",
     "help-description-section": "Syöttämällä laituripaikalle sen sijaintitiedot, piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle, ja haraussyvyystieto siirretään laituri-ikonin nimen yhteyteen.",
     "picture-upload-failed": "Tiedoston lataus epäonnistui",
-    "picture-errors": "Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt."
+    "picture-errors": "Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt.",
+    "temporary-notification-add": "Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erilliseen elementtiin. Huomiolle tulee aina lisätä vähintään <strong>voimaantulopäivämäärä</strong>. Jos huomiolle ei merkitä <strong>päättymispäivämäärää</strong>, on huomio voimassa toistaiseksi.",
+    "temporary-notification-in-effect-content": "Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa, ja huomio tulee poistaa näkyvistä käsin.",
+    "temporary-notification-in-effect-title": "Väliaikaisen huomion voimassaoloaika"
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",
@@ -214,8 +224,12 @@
     "toggle-sequence": "Aseta järjestysnumero",
     "fairway-additional-info": "Lisätiedot",
     "fairway-additional-info-notification-header": "Lisätietojen lisääminen väyläkortille",
-    "fairway-additional-info-notification-body": "Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
-    "linked-pilot-routes": "Linkitetyt luotsausreitit"
+    "fairway-additional-info-notification-body": "Väyläkortille on mahdollista lisätä lisätietoja, esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
+    "linked-pilot-routes": "Linkitetyt luotsausreitit",
+    "temporary-notification-title": "Väliaikaisen huomion lisääminen väyläkortille",
+    "temporary-notification": "Huomio",
+    "temporary-notification-start": "Huomion voimaantulopäivämäärä",
+    "temporary-notification-end": "Huomion päättymispäivämäärä"
   },
   "harbour": {
     "primary-id": "Sataman tunniste",

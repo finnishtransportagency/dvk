@@ -38,6 +38,9 @@ import { Feature } from 'ol';
 import { Geometry, LineString } from 'ol/geom';
 import { usePilotageLimitFeatures } from '../../PilotageLimitFeatureLoader';
 import { useSafetyEquipmentAndFaultFeatures } from '../../SafetyEquipmentFeatureLoader';
+import NotificationAlert from '../../Alert';
+import infoIcon from '../../../theme/img/info.svg';
+import { compareAsc, constructNow } from 'date-fns';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -121,6 +124,26 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
     return 'tabContent tab' + tabId + (widePane ? ' wide' : '') + (tab === tabId ? ' active' : '');
   };
 
+  // if notice is expired or start date after current date, return false
+  const isValidToDisplay = (startDate: string | null | undefined, endDate: string | null | undefined): boolean => {
+    if (!startDate) {
+      return false;
+    }
+    // from date-fns documentation:
+    // Compare the two dates and return 1 if the first date is after the second, -1 if the first date is before the second or 0 if dates are equal.
+    endDate = endDate?.split('T')[0];
+    startDate = startDate?.split('T')[0];
+    const currentDate = constructNow(new Date().setHours(0, 0, 0, 0));
+    const startDateCompare = compareAsc(startDate, currentDate);
+    const endDateCompare = endDate ? compareAsc(currentDate, endDate) : -1;
+
+    if (startDateCompare < 1 && endDateCompare < 1) {
+      return true;
+    }
+
+    return false;
+  };
+
   const path = [
     {
       title: t('title', { count: 0 }),
@@ -153,6 +176,21 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             isFetching={isFetching}
             printDisabled={printDisabled}
           />
+          {fairwayCard?.temporaryNotifications?.map((notification, idx) => {
+            const content = notification?.content?.[lang];
+            if (content && isValidToDisplay(notification.startDate, notification.endDate)) {
+              return (
+                <NotificationAlert
+                  key={'notification' + idx}
+                  title={content}
+                  icon={infoIcon}
+                  className="top-margin info"
+                  startDate={notification.startDate ?? ''}
+                  endDate={notification.endDate ?? ''}
+                />
+              );
+            }
+          })}
           {safetyEquipmentFaults.length > 0 && !faultIsPending && !faultIsFetching && (
             <div className="no-print">
               <SafetyEquipmentFaultAlert

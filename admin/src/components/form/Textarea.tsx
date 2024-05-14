@@ -7,9 +7,10 @@ import { getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '.
 interface TextareaProps {
   label: string;
   val: string;
-  setValue: (val: string, actionType: ActionType, actionLang?: Lang) => void;
+  setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number) => void;
   actionType: ActionType;
   actionLang?: Lang;
+  actionTarget?: string | number;
   required?: boolean;
   disabled?: boolean;
   error?: string;
@@ -17,7 +18,19 @@ interface TextareaProps {
   name?: string;
 }
 
-const Textarea: React.FC<TextareaProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText, name }) => {
+const Textarea: React.FC<TextareaProps> = ({
+  label,
+  val,
+  setValue,
+  actionType,
+  actionLang,
+  required,
+  disabled,
+  error,
+  helperText,
+  name,
+  actionTarget,
+}) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
@@ -45,7 +58,7 @@ const Textarea: React.FC<TextareaProps> = ({ label, val, setValue, actionType, a
   };
   const handleChange = (newVal: string | null | undefined) => {
     if (isTouched) checkValidity();
-    setValue(newVal as string, actionType, actionLang);
+    setValue(newVal as string, actionType, actionLang, actionTarget);
   };
 
   const getErrorText = () => {
