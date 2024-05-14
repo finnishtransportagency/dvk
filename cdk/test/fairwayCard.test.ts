@@ -3,14 +3,11 @@ import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/graphql/query/fairwayCard-handler';
 import { Status } from '../graphql/generated';
 import { mockContext, mockQueryByIdEvent } from './mocks';
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@smithy/util-stream';
-import { createReadStream } from 'fs';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
+import { RtzData } from '../lib/lambda/api/apiModels';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
-const s3Mock = mockClient(S3Client);
 
 const card: FairwayCardDBModel = {
   id: 'test',
@@ -34,7 +31,9 @@ const card: FairwayCardDBModel = {
       ],
     },
   },
+  pilotRoutes: [{ id: 1 }],
 };
+
 const card2: FairwayCardDBModel = {
   id: 'test',
   name: {
@@ -57,7 +56,9 @@ const card2: FairwayCardDBModel = {
       ],
     },
   },
+  pilotRoutes: [{ id: 2 }],
 };
+
 const points = {
   features: [
     {
@@ -94,6 +95,75 @@ const points = {
   ],
 };
 
+const routes: RtzData[] = [
+  {
+    tunnus: 1,
+    tila: 1,
+    nimi: 'Reitti 1',
+    tunniste: 'a',
+    rtz: 'xml',
+    reittipisteet: [
+      {
+        tunnus: 10,
+        nimi: 'A',
+        rtzTunniste: 10,
+        reittitunnus: 10,
+        kaarresade: 0.1,
+        geometria: {
+          type: 'Point',
+          coordinates: [26.9, 60.4],
+        },
+        leveysVasen: 0.01,
+        leveysOikea: 0.01,
+        geometriaTyyppi: 'Loxodrome',
+        muutosaikaleima: '2024-01-01T01:01:01.000000+02:00',
+        jarjestys: 1,
+      },
+    ],
+  },
+  {
+    tunnus: 2,
+    tila: 1,
+    nimi: 'Reitti 2',
+    tunniste: 'b',
+    rtz: 'xml',
+    reittipisteet: [
+      {
+        tunnus: 20,
+        nimi: 'B',
+        rtzTunniste: 20,
+        reittitunnus: 20,
+        kaarresade: 0.2,
+        geometria: {
+          type: 'Point',
+          coordinates: [26.9, 60.4],
+        },
+        leveysVasen: 0.02,
+        leveysOikea: 0.02,
+        geometriaTyyppi: 'Loxodrome',
+        muutosaikaleima: '2024-02-02T02:02:02.000000+02:00',
+        jarjestys: 1,
+      },
+      {
+        tunnus: 21,
+        nimi: 'BB',
+        rtzTunniste: 21,
+        reittitunnus: 21,
+        kaarresade: 0.2,
+        geometria: {
+          type: 'Point',
+          coordinates: [26.91, 60.41],
+        },
+        leveysVasen: 0.02,
+        leveysOikea: 0.02,
+        geometriaTyyppi: 'Loxodrome',
+        muutosaikaleima: '2024-02-02T02:02:02.000000+02:00',
+        jarjestys: 2,
+      },
+    ],
+  },
+];
+
 jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
@@ -102,12 +172,19 @@ jest.mock('../lib/lambda/environment', () => ({
 
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchTraficomApi: () => points,
+  fetchPilotRoutesApi: () => routes,
+}));
+
+jest.mock('../lib/lambda/graphql/cache', () => ({
+  getFromCache: () => {
+    return { expired: true };
+  },
+  cacheResponse: () => Promise.resolve(),
 }));
 
 beforeEach(() => {
   jest.resetAllMocks();
   ddbMock.reset();
-  s3Mock.reset();
   pilotPlaceMap.clear();
 });
 
@@ -119,24 +196,6 @@ it('should get card by id from the DynamoDB', async () => {
     .resolves({
       Item: card,
     });
-  const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock
-    .on(GetObjectCommand, {
-      Key: 'test',
-    })
-    .resolves({ Body: stream, ExpiresString: expires.toString() });
-
-  const stream2 = sdkStreamMixin(createReadStream('./test/data/pilotroutes.json'));
-  const expires2 = new Date();
-  expires2.setTime(expires2.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock
-    .on(GetObjectCommand, {
-      Key: 'test',
-    })
-    .resolves({ Body: stream2, ExpiresString: expires2.toString() });
-
   const response = await handler(mockQueryByIdEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
@@ -152,24 +211,6 @@ it('should get card by id from the DynamoDB when cache expired', async () => {
     .resolves({
       Item: card2,
     });
-  const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
-  const expires = new Date();
-  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock
-    .on(GetObjectCommand, {
-      Key: 'test',
-    })
-    .resolves({ Body: stream, ExpiresString: expires.toString() });
-
-  const stream2 = sdkStreamMixin(createReadStream('./test/data/pilotroutes.json'));
-  const expires2 = new Date();
-  expires2.setTime(expires2.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock
-    .on(GetObjectCommand, {
-      Key: 'test',
-    })
-    .resolves({ Body: stream2, ExpiresString: expires2.toString() });
-
   const response = await handler(mockQueryByIdEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
