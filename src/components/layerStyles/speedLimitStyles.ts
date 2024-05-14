@@ -1,5 +1,5 @@
 import { Fill, Icon, Style, Text } from 'ol/style';
-import Feature, { FeatureLike } from 'ol/Feature';
+import { FeatureLike } from 'ol/Feature';
 import { getMap } from '../DvkMap';
 import speedLimitIcon from '../../theme/img/rajoitus_pohja.svg';
 import speedLimitMultiIcon from '../../theme/img/rajoitus_multi_pohja.svg';
@@ -61,7 +61,7 @@ const multiLabelStyle = new Style({
   }),
 });
 
-function getFillStyle(feature: FeatureLike) {
+export function getSpeedLimitPolygonStyle(feature: FeatureLike) {
   const speedLimits = feature.get('speedLimits');
   if (speedLimits.length === 1) {
     labelStyle.getText()?.setText('' + speedLimits[0]);
@@ -95,7 +95,7 @@ function getFillStyle(feature: FeatureLike) {
   return fillStyle;
 }
 
-export function getSpeedLimitStyle(feature: FeatureLike) {
+export function getSpeedLimitIconStyle(feature: FeatureLike) {
   const speedLimits = feature.get('speedLimits');
   const dvkMap = getMap();
   const bbox = dvkMap.olMap?.getView().calculateExtent();
@@ -119,13 +119,13 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
       const flattened = flatten(intersected);
       const multiPolygon = new MultiPolygon([]);
       for (const fg of flattened.features) {
-        const geom = (format.readFeature(fg) as Feature<Geometry>).getGeometry() as Polygon;
+        const geom = format.readFeature(fg).getGeometry() as Polygon;
         multiPolygon.appendPolygon(geom);
       }
       if (speedLimits.length === 1) {
         labelStyle.setGeometry(multiPolygon.getInteriorPoints());
         labelStyle.getText()?.setText('' + speedLimits[0]);
-        return [getFillStyle(feature), labelStyle];
+        return labelStyle;
       } else {
         multiLabelStyle.setGeometry(multiPolygon.getInteriorPoints());
         multiLabelStyle.getText()?.setText(
@@ -136,9 +136,9 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
               })
               .join(' / ')
         );
-        return [getFillStyle(feature), multiLabelStyle];
+        return multiLabelStyle;
       }
     }
   }
-  return [getFillStyle(feature)];
+  return undefined;
 }

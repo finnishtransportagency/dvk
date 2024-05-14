@@ -1,5 +1,9 @@
 import { Text } from '../../graphql/generated';
-import { EquipmentFault } from './FeatureLoader';
+
+type Card = {
+  id: string;
+  name: Text;
+};
 
 export type HarborFeatureProperties = {
   featureType: string;
@@ -27,16 +31,6 @@ export type QuayFeatureProperties = {
   internet?: string;
 };
 
-export type Card = {
-  id: string;
-  name: Text;
-};
-
-export type PilotFeatureProperties = {
-  name: Text;
-  fairwayCards: Card[];
-};
-
 export type AreaFeatureProperties = {
   id: number;
   typeCode: number;
@@ -54,18 +48,16 @@ export type AreaFeatureProperties = {
   fairways?: AreaFairway[];
 };
 
-export type AreaFairway = {
+type AreaFairway = {
   fairwayId: number;
   name: Text;
   sizingSpeed?: number;
   sizingSpeed2?: number;
-  fairwayCards?: Card[];
 };
 
-export type LineFairway = {
+type LineFairway = {
   fairwayId: number;
   name: Text;
-  fairwayCards?: Card[];
 };
 
 export type LineFeatureProperties = {
@@ -88,7 +80,13 @@ export type LineFeatureProperties = {
 type EquipmentFairway = {
   fairwayId: number;
   primary: boolean;
-  fairwayCards?: Card[];
+};
+
+type EquipmentFault = {
+  faultId: number;
+  faultType: Text;
+  faultTypeCode: number;
+  recordTime: number;
 };
 
 type EquipmentDistance = {
@@ -103,7 +101,7 @@ export type EquipmentFeatureProperties = {
   navigationCode?: string;
   name?: Text;
   symbol?: string;
-  typeCode?: string;
+  typeCode?: number;
   typeName?: Text;
   lightning: boolean;
   aisType?: number;
@@ -111,50 +109,6 @@ export type EquipmentFeatureProperties = {
   fairways?: EquipmentFairway[];
   faults?: EquipmentFault[];
   distances?: EquipmentDistance[];
-};
-
-export type MarineWarningFeatureProperties = {
-  number?: number;
-  area?: Text;
-  type?: Text;
-  location?: Text;
-  description?: Text;
-  startDateTime?: number;
-  endDateTime?: number;
-  dateTime?: number;
-  notifier?: string;
-  equipmentText?: string;
-  equipmentId?: number;
-  lineText?: string;
-  lineId?: number;
-  areaText?: string;
-  areaId?: number;
-};
-
-export type MareographFeatureProperties = {
-  name: string;
-  waterLevel: number;
-  n2000WaterLevel: number;
-  dateTime: number;
-  calculated: boolean;
-};
-
-export type ObservationFeatureProperties = {
-  name: string;
-  temperature: number;
-  windSpeedAvg: number;
-  windSpeedMax: number;
-  windDirection: number;
-  visibility: number | null;
-  dateTime: number;
-};
-
-export type BuoyFeatureProperties = {
-  name: string;
-  dateTime: number;
-  temperature: number | null;
-  waveDirection: number | null;
-  waveHeight: number | null;
 };
 
 export type VtsFeatureProperties = {

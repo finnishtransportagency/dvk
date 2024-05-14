@@ -41,6 +41,7 @@ export type PopupProperties = {
   specialarea15?: AreaProperties;
   line?: LineProperties;
   safetyequipment?: EquipmentProperties;
+  safetyequipmentfault?: EquipmentProperties;
   marinewarning?: MarineWarningProperties;
   mareograph?: MareographProperties;
   observation?: ObservationProperties;
@@ -158,6 +159,9 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.line && <LinePopupContent line={popupProperties.line} setPopupProperties={setPopupProperties} />}
         {popupProperties?.safetyequipment && (
           <EquipmentPopupContent equipment={popupProperties.safetyequipment} setPopupProperties={setPopupProperties} />
+        )}
+        {popupProperties?.safetyequipmentfault && (
+          <EquipmentPopupContent equipment={popupProperties.safetyequipmentfault} setPopupProperties={setPopupProperties} />
         )}
         {popupProperties?.marinewarning && (
           <MarineWarningPopupContent marine={popupProperties.marinewarning} setPopupProperties={setPopupProperties} />

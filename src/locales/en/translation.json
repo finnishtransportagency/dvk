@@ -259,9 +259,8 @@
     "pilotPlaceLocation": "Location of pilotage boarding position",
     "pilotageLimit": "Compulsory pilotage limit",
     "pilotageLimitLocation": "Limit location",
-    "pilotageLimitMaxDimensions": "Maximum dimensions of vessels the limit applies to",
-    "draught": "Draught",
-    "width": "Width",
+    "pilotageLimitLimit": "Limit of compulsory pilotage in fairways when one of the following is exceeded",
+    "pilotageLimitDimensions": "Length / breadth / draught (m)",
     "inForce": "In force"
   },
   "routes": {
@@ -329,7 +328,8 @@
     "pilotageLimit": {
       "header": "Compulsory pilotage limit {{val}}",
       "location": "Limit location",
-      "limit": "Maximum dimensions of vessels the limit applies to length / width / draught (m)",
+      "limit": "Limit of compulsory pilotage in fairways when one of the following is exceeded",
+      "dimensions": "Length / breadth / draught (m)",
       "fairways": "Fairway cards for the compulsory pilotage limit"
     },
     "pilotRoute": {

@@ -97,7 +97,6 @@
     "noDataSet": "Data is not set.",
     "temporary-notification": "[en] Huomio",
     "temporary-notification-found": "[en] Huomioita"
-
   },
   "modal": {
     "title-new-CARD": "New fairway card",
@@ -144,9 +143,9 @@
     "help-description-section": "[en] Syöttämällä laituripaikalle sen sijaintitiedot, piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle, ja haraussyvyystieto siirretään laituri-ikonin nimen yhteyteen.",
     "picture-upload-failed": "[en] Tiedoston lataus epäonnistui",
     "picture-errors": "[en] Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt.",
-    "temporary-notification-add": "[en] Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erillliseen elementtiin. Huomiolle tulee aina lisätä vähintään <strong>voimaantulopäivä</strong>. Jos huomiolle ei merkitä <strong>päättymispäivämäärää</strong> on huomio voimassa toistaiseksi.",
-    "temporary-notification-in-effect-content": "[en] Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa ja huomio tulee poistaa näkyvistä käsin.",
-    "temporary-notification-in-effect-title": "[en] Väliaikaisen huomion voimassaoloaika" 
+    "temporary-notification-add": "[en] Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erilliseen elementtiin. Huomiolle tulee aina lisätä vähintään <strong>voimaantulopäivämäärä</strong>. Jos huomiolle ei merkitä <strong>päättymispäivämäärää</strong>, on huomio voimassa toistaiseksi.",
+    "temporary-notification-in-effect-content": "[en] Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa, ja huomio tulee poistaa näkyvistä käsin.",
+    "temporary-notification-in-effect-title": "[en] Väliaikaisen huomion voimassaoloaika"
   },
   "fairwaycard": {
     "name": "Fairway card name",
@@ -217,7 +216,7 @@
     "toggle-sequence": "[en] Aseta järjestysnumero",
     "fairway-additional-info": "Additional information",
     "fairway-additional-info-notification-header": "[en] Lisätietojen lisääminen väyläkortille",
-    "fairway-additional-info-notification-body": "[en] Väyläkortille on mahdollista lisätä lisätietoja. Esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
+    "fairway-additional-info-notification-body": "[en] Väyläkortille on mahdollista lisätä lisätietoja, esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
     "linked-pilot-routes": "[en] Linkitetyt luotsausreitit",
     "temporary-notification-title": "[en] Väliaikaisen huomion lisääminen väyläkortille",
     "temporary-notification": "Notice",
