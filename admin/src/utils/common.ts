@@ -2,7 +2,7 @@ import { TFunction } from 'i18next';
 import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, Text } from '../graphql/generated';
 import { ActionType, ItemType, Lang, SelectOption } from './constants';
 import { FeatureCollection } from 'geojson';
-import { format, isValid, parse, parseISO } from 'date-fns';
+import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
 const sortByString = (a: Maybe<string> | undefined, b: Maybe<string> | undefined, sortDescending: boolean) => {
   const valA = a ?? '';
@@ -244,13 +244,11 @@ export function checkEndDateError(startDate: string, endDate: string): boolean {
     return true;
   }
   endDate = endDate?.split('T')[0];
-  if (startDate) {
-    // compare only day, month and year
-    const startDateToCompare = new Date(startDate).setHours(0, 0, 0, 0);
-    const endDateToCompare = new Date(endDate).setHours(0, 0, 0, 0);
-    if (startDateToCompare <= endDateToCompare) {
-      return false;
-    }
+  startDate = startDate?.split('T')[0];
+  const result = compareAsc(startDate, endDate);
+  // result = -1 startDate is before endDate, result = 0 equal dates, result = 1 startDate is after endDate
+  if (result === -1 || result === 0) {
+    return false;
   }
 
   return true;

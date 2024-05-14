@@ -22,13 +22,13 @@ const Alert: React.FC<AlertProps> = (props) => {
 
   const getLocaleDateFormat = (date: string) => {
     switch (lang) {
-      case 'fi':
-        return format(parseISO(date), 'dd.MM.yyyy');
+      case 'sv':
+        // backend shouldnt return time, but split as a precaution
+        return date.split('T')[0];
       case 'en':
         return format(parseISO(date), 'MM/dd/yyyy');
       default:
-        // exclude time, tho time shouldn't be coming from backend, needs a bit investigation
-        return date.split('T')[0];
+        return format(parseISO(date), 'dd.MM.yyyy');
     }
   };
 
@@ -46,7 +46,7 @@ const Alert: React.FC<AlertProps> = (props) => {
               <br />
               <IonText>
                 <em className="no-print">
-                  {t('inEffect')} {getLocaleDateFormat(props.startDate)} - {props.endDate && getLocaleDateFormat(props.endDate)}
+                  {t('inForce')} {getLocaleDateFormat(props.startDate)} - {props.endDate && getLocaleDateFormat(props.endDate)}
                 </em>
               </IonText>
             </>

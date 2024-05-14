@@ -39,7 +39,7 @@ import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import NotificationAlert from '../../Alert';
 import infoIcon from '../../../theme/img/info.svg';
-import uniqueId from 'lodash/uniqueId';
+import { compareAsc, constructNow } from 'date-fns';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -109,15 +109,24 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
     return 'tabContent tab' + tabId + (widePane ? ' wide' : '') + (tab === tabId ? ' active' : '');
   };
 
-  const isExpired = (date: string | null | undefined): boolean => {
-    if (!date) {
+  // if notice is expired or start date after current date, return false
+  const isValidToDisplay = (startDate: string | null | undefined, endDate: string | null | undefined): boolean => {
+    if (!startDate) {
       return false;
     }
-    // compare only day, month and year
-    const endDate = new Date(date).setHours(0, 0, 0, 0);
-    const currentDate = new Date().setHours(0, 0, 0, 0);
+    // from date-fns documentation:
+    // Compare the two dates and return 1 if the first date is after the second, -1 if the first date is before the second or 0 if dates are equal.
+    endDate = endDate?.split('T')[0];
+    startDate = startDate?.split('T')[0];
+    const currentDate = constructNow(new Date().setHours(0, 0, 0, 0));
+    const startDateCompare = compareAsc(startDate, currentDate);
+    const endDateCompare = endDate ? compareAsc(currentDate, endDate) : -1;
 
-    return currentDate > endDate;
+    if (startDateCompare < 1 && endDateCompare < 1) {
+      return true;
+    }
+
+    return false;
   };
 
   const path = [
@@ -152,13 +161,12 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             isFetching={isFetching}
             printDisabled={printDisabled}
           />
-          {fairwayCard?.temporaryNotifications?.map((notification) => {
+          {fairwayCard?.temporaryNotifications?.map((notification, idx) => {
             const content = notification?.content?.[lang];
-            const uuid = uniqueId('notification_');
-            if (content && !isExpired(notification.endDate)) {
+            if (content && isValidToDisplay(notification.startDate, notification.endDate)) {
               return (
                 <NotificationAlert
-                  key={uuid}
+                  key={'notification' + idx}
                   title={content}
                   icon={infoIcon}
                   className="top-margin info"

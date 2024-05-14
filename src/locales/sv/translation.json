@@ -262,7 +262,7 @@
     "pilotageLimitMaxDimensions": "Gäller för fartyg med maximala mått",
     "draught": "Djupgående",
     "width": "Bredd",
-    "inEffect": "[sv] Voimassa"
+    "inForce": "Gällande"
   },
   "routes": {
     "title": "Lotsningsrutter",

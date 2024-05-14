@@ -262,7 +262,7 @@
     "pilotageLimitMaxDimensions": "Maximum dimensions of vessels the limit applies to",
     "draught": "Draught",
     "width": "Width",
-    "inEffect": "[en] Voimassa"
+    "inForce": "In force"
   },
   "routes": {
     "title": "Pilot routes",
