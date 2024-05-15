@@ -2,7 +2,7 @@ import { TFunction } from 'i18next';
 import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
 import { ActionType, ItemType, Lang, SelectOption } from './constants';
 import { FeatureCollection } from 'geojson';
-import { compareAsc, constructNow, format, isValid, parse, parseISO } from 'date-fns';
+import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
 const sortByString = (a: Maybe<string> | undefined, b: Maybe<string> | undefined, sortDescending: boolean) => {
   const valA = a ?? '';
@@ -254,13 +254,13 @@ export function checkEndDateError(startDate: string, endDate: string): boolean {
   return true;
 }
 
-export function getFirstNoticeToEndString(notifications: TemporaryNotification[] | undefined | null) {
-  const currentDate = constructNow(new Date().setHours(0, 0, 0, 0));
+export function getFirstNoticeToEnd(notifications: TemporaryNotification[] | undefined | null) {
+  const currentDate = new Date().setHours(0, 0, 0, 0);
   // filter notifications that are not null and not before current date and
   // -1 comes from that if there's no date, then we can filter it out by giving value -1 which is always before current date
-  const filteredNotifications = notifications?.filter(
-    (notification) => notification.endDate !== null && compareAsc(currentDate, notification?.endDate ?? -1) <= 0
-  );
+  const filteredNotifications = notifications?.filter((notification) => {
+    return notification.endDate !== null && compareAsc(currentDate, new Date(notification?.endDate ?? -1).setHours(0, 0, 0, 0)) <= 0;
+  });
   const sortedNotifications = filteredNotifications?.sort((a, b) => compareAsc(a.endDate ?? '', b.endDate ?? ''));
 
   return sortedNotifications && sortedNotifications?.length > 0 ? sortedNotifications[0].endDate?.split('T')[0] : undefined;
