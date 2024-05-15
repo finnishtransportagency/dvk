@@ -40,7 +40,7 @@ import { usePilotageLimitFeatures } from '../../PilotageLimitFeatureLoader';
 import { useSafetyEquipmentAndFaultFeatures } from '../../SafetyEquipmentFeatureLoader';
 import NotificationAlert from '../../Alert';
 import infoIcon from '../../../theme/img/info.svg';
-import { compareAsc, constructNow } from 'date-fns';
+import { compareAsc } from 'date-fns';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -133,9 +133,9 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
     // Compare the two dates and return 1 if the first date is after the second, -1 if the first date is before the second or 0 if dates are equal.
     endDate = endDate?.split('T')[0];
     startDate = startDate?.split('T')[0];
-    const currentDate = constructNow(new Date().setHours(0, 0, 0, 0));
-    const startDateCompare = compareAsc(startDate, currentDate);
-    const endDateCompare = endDate ? compareAsc(currentDate, endDate) : -1;
+    const currentDate = new Date().setHours(0, 0, 0, 0);
+    const startDateCompare = compareAsc(new Date(startDate).setHours(0, 0, 0, 0), currentDate);
+    const endDateCompare = endDate ? compareAsc(currentDate, new Date(endDate).setHours(0, 0, 0, 0)) : -1;
 
     if (startDateCompare < 1 && endDateCompare < 1) {
       return true;
