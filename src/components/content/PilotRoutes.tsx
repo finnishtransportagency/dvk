@@ -2,15 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import Breadcrumb from './Breadcrumb';
-import { useFeatureData } from '../../utils/dataLoader';
-import { FeatureDataLayerId, OFFLINE_STORAGE } from '../../utils/constants';
+import { FeatureDataLayerId } from '../../utils/constants';
 import PageHeader from './PageHeader';
 import { PilotRouteFeatureProperties } from '../features';
-import { Feature, Geometry } from 'geojson';
 import dvkMap from '../DvkMap';
 import { useDvkContext } from '../../hooks/dvkContext';
 import VectorSource from 'ol/source/Vector';
 import PilotRouteList from './PilotRouteList';
+import { usePilotRouteFeatures } from '../PilotRouteFeatureLoader';
+import { Feature } from 'ol';
+import { Geometry } from 'ol/geom';
 
 interface PilotRoutesProps {
   widePane?: boolean;
@@ -21,27 +22,21 @@ const layerId: FeatureDataLayerId = 'pilotroute';
 const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
   const { t } = useTranslation();
   const { state } = useDvkContext();
-  const { data, dataUpdatedAt, isPending, isFetching, isSuccess } = useFeatureData(
-    layerId,
-    true,
-    60 * 60 * 1000,
-    true,
-    OFFLINE_STORAGE.staleTime,
-    OFFLINE_STORAGE.cacheTime
-  );
+  const { pilotRouteFeatures, ready: pilotRoutesReady, dataUpdatedAt, isPending, isFetching } = usePilotRouteFeatures();
+
   const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
   const path = [{ title: t('routes.title') }];
 
   useEffect(() => {
-    if (isSuccess && data?.features && data?.features.length > 0) {
-      const features = (data.features as Feature<Geometry>[]).toSorted((a, b) => {
-        const aProps = a.properties as PilotRouteFeatureProperties;
-        const bProps = b.properties as PilotRouteFeatureProperties;
+    if (pilotRoutesReady && pilotRouteFeatures && pilotRouteFeatures.length > 0) {
+      const features = pilotRouteFeatures.toSorted((a, b) => {
+        const aProps = a.getProperties() as PilotRouteFeatureProperties;
+        const bProps = b.getProperties() as PilotRouteFeatureProperties;
         return aProps.name.localeCompare(bProps.name, 'fi', { ignorePunctuation: true });
       });
       setPilotRoutes(features);
     }
-  }, [data, isSuccess]);
+  }, [pilotRouteFeatures, pilotRoutesReady]);
 
   useEffect(() => {
     return () => {
@@ -68,10 +63,10 @@ const PilotRoutes: React.FC<PilotRoutesProps> = ({ widePane }) => {
       <PageHeader title={t('routes.title')} layerId={layerId} isPending={isPending} isFetching={isFetching} dataUpdatedAt={dataUpdatedAt} />
 
       <div id="pilotRouteList" className={'tabContent active show-print' + (widePane ? ' wide' : '')} data-testid="pilotRouteList">
-        {isPending ? (
-          <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>
-        ) : (
+        {pilotRoutesReady ? (
           <PilotRouteList featureLink={'/luotsausreitit/'} pilotRoutes={pilotRoutes} layerId={layerId} layers={state.layers} />
+        ) : (
+          <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>
         )}
       </div>
     </>

@@ -5,13 +5,14 @@ import './popup.css';
 import { Link } from 'react-router-dom';
 import { Lang, MASTERSGUIDE_URLS } from '../../utils/constants';
 import { AreaFeatureProperties } from '../features';
-import { Text } from '../../graphql/generated';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
+import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
+import { useFairwayCardListData } from '../../utils/dataLoader';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
@@ -24,23 +25,11 @@ export type AreaProperties = {
   properties: AreaFeatureProperties;
 };
 
-type FairwayCardIdName = {
-  id: string;
-  name: Text;
-};
-
 const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties, isOffline }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
-
-  let fairwayCards: FairwayCardIdName[] = [];
-  area.properties?.fairways?.forEach((f) => {
-    if (f.fairwayCards) {
-      fairwayCards.push(...f.fairwayCards);
-    }
-  });
-  fairwayCards = fairwayCards.filter((card, index, self) => self.findIndex((inner) => inner?.id === card?.id) === index);
+  const { data } = useFairwayCardListData();
 
   const sizingSpeeds = [
     ...Array.from(
@@ -55,6 +44,8 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
     new Set((Array.isArray(area.properties.speedLimit) ? area.properties.speedLimit : [area.properties.speedLimit ?? 0]).filter((val) => val > 0))
   ).sort((a, b) => a - b);
   const showN2000HeightSystem = isShowN2000HeightSystem(area.properties);
+
+  const fairwayCards = data ? getFairwayListFairwayCards(area.properties.fairways ?? [], data.fairwayCards) : [];
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});

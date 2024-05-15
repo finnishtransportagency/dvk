@@ -8,20 +8,11 @@ import { useDvkContext } from '../../../hooks/dvkContext';
 import { PilotPlaceInfo } from './PilotPlaceInfo';
 import { PilotageLimitInfo } from './PilotageLimitInfo';
 import { Geometry } from 'ol/geom';
+import { Feature } from 'ol';
 
 type PilotInfoProps = {
-  pilotageLimits?: PilotageLimit[];
+  pilotageLimits?: Feature<Geometry>[];
   pilot?: Pilot | null;
-};
-
-export type PilotageLimit = {
-  numero: number;
-  fid?: number;
-  liittyyVayliin?: string;
-  raja_fi?: string;
-  raja_sv?: string;
-  raja_en?: string;
-  koordinaatit?: Geometry;
 };
 
 export const PilotInfo: React.FC<PilotInfoProps> = ({ pilotageLimits, pilot }) => {
@@ -36,7 +27,12 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ pilotageLimits, pilot }) =
           <p>
             <strong>{t('pilotOrder')}:</strong>
             <br />
-            {t('email')}: {pilot.email && <a href={'mailto:' + pilot.email}>{pilot.email}</a>}
+            {t('email')}:&nbsp;
+            {pilot.email && (
+              <a href={'mailto:' + pilot.email} className="primaryColorLink">
+                {pilot.email}
+              </a>
+            )}
             {!pilot.email && '-'}
             <br />
             {t('orderFrom')}:{' '}
@@ -45,9 +41,9 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ pilotageLimits, pilot }) =
               <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
             </a>
             <br />
-            <PhoneNumber title={t('phone')} showEmpty number={pilot.phoneNumber} />
+            <PhoneNumber title={t('phone')} showEmpty number={pilot.phoneNumber} primaryColorLink={true} />
             <br />
-            <PhoneNumber title={t('fax')} showEmpty number={pilot.fax} />
+            {t('fax')}: {pilot.fax || '-'}
             {pilot.extraInfo && (
               <>
                 <br />

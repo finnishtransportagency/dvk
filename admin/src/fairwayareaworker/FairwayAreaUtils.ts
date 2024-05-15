@@ -19,7 +19,7 @@ function createFeature(featCoords: Array<turf_Position>, area1Properties: object
   const feat = format.readFeature(lineString(featCoords), {
     dataProjection: 'EPSG:4326',
     featureProjection: MAP.EPSG,
-  }) as Feature<Geometry>;
+  });
   feat.setProperties({ area1Properties: area1Properties }, true);
   feat.setProperties({ area2Properties: area2Properties }, true);
   return feat;

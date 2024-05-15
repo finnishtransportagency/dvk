@@ -148,6 +148,14 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
           legendPosition: p.legendPosition ?? null,
         };
       }) ?? null,
+    temporaryNotifications:
+      card.temporaryNotifications?.map((notification) => {
+        return {
+          content: mapText(notification.content),
+          startDate: mapString(notification.startDate),
+          endDate: mapString(notification.endDate),
+        };
+      }) ?? null,
   };
 }
 

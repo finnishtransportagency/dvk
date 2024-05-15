@@ -20,6 +20,8 @@ export class SquatPipeline extends Construct {
 
     const pipeline = new codepipeline.Pipeline(this, 'SquatPipeline', {
       crossAccountKeys: false,
+      pipelineType: codepipeline.PipelineType.V1,
+      executionMode: codepipeline.ExecutionMode.SUPERSEDED,
     });
     const sourceOutput = new codepipeline.Artifact();
     const sourceAction = new cdk.aws_codepipeline_actions.GitHubSourceAction({

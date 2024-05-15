@@ -1,6 +1,6 @@
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 
 interface ModalProps {
@@ -9,11 +9,23 @@ interface ModalProps {
   closeTitle: string;
   header: string;
   subHeader?: string;
-  message: string;
+  message?: string;
   itemList?: string[];
+  useTransElement?: boolean;
+  i18nkey?: string;
 }
 
-const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTitle, header, subHeader, message, itemList }) => {
+const NotificationModal: React.FC<ModalProps> = ({
+  isOpen,
+  closeAction,
+  closeTitle,
+  header,
+  subHeader,
+  message,
+  itemList,
+  useTransElement,
+  i18nkey,
+}) => {
   const { t } = useTranslation();
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -48,17 +60,22 @@ const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTit
       <IonGrid>
         <IonRow className="content">
           <IonCol>
-            <IonText>
-              {header && subHeader && <p>{subHeader}</p>}
-              <p>{message}</p>
-              {itemList && (
-                <ul>
-                  {itemList.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              )}
-            </IonText>
+            {!useTransElement ? (
+              <IonText>
+                {header && subHeader && <p>{subHeader}</p>}
+                <p>{message}</p>
+                {itemList && (
+                  <ul>
+                    {itemList.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                )}
+              </IonText>
+            ) : (
+              /*Changed because of bold text needed for notices modal, but components part can be refactored if more diverse need arises*/
+              <Trans t={t} i18nKey={i18nkey} components={{ strong: <strong /> }} />
+            )}
           </IonCol>
         </IonRow>
       </IonGrid>

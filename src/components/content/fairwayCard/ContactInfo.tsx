@@ -26,6 +26,15 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({ data, noMargin }) => {
               <br />
             </>
           )}
+          {t('email')}:&nbsp;
+          {data.email ? (
+            <a href={'mailto:' + data.email} className="primaryColorLink">
+              {data.email}
+            </a>
+          ) : (
+            '-'
+          )}
+          <br />
           {data.internet && (
             <>
               <a href={data.internet} target="_blank" rel="noreferrer" tabIndex={state.isOffline ? -1 : undefined}>
@@ -40,7 +49,7 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({ data, noMargin }) => {
             const uuid = uniqueId('phone_');
             return (
               <span key={uuid}>
-                <PhoneNumber number={phone} />
+                <PhoneNumber number={phone} primaryColorLink={true} />
                 {Number(data.phoneNumber?.length) > idx + 1 ? ', ' : ''}
               </span>
             );
@@ -48,11 +57,10 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({ data, noMargin }) => {
           {data.fax && (
             <>
               <br />
-              {t('fax')}: <PhoneNumber number={data.fax} />
+              {t('fax')}: {data.fax}
             </>
           )}
           <br />
-          {t('email')}: {data.email ? <a href={'mailto:' + data.email}>{data.email}</a> : '-'}
         </p>
       )}
     </>

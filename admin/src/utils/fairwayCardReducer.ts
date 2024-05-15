@@ -583,6 +583,56 @@ export const fairwayCardReducer = (
         pictures: state.pictures?.map((pic) => (pic.groupId === actionTarget ? { ...pic, legendPosition: value as string } : pic)),
       };
       break;
+    case 'temporaryNotifications':
+      // Add and delete
+      if (value && !actionTarget) {
+        newState = {
+          ...state,
+          temporaryNotifications: state.temporaryNotifications?.concat({
+            content: { fi: '', sv: '', en: '' },
+            startDate: '',
+            endDate: '',
+          }),
+        };
+      } else {
+        newState = {
+          ...state,
+          temporaryNotifications: state.temporaryNotifications?.filter((_, idx) => idx !== actionTarget),
+        };
+      }
+      break;
+    case 'temporaryNotificationContent':
+      newState = {
+        ...state,
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget
+            ? {
+                ...notification,
+                content: {
+                  ...(notification?.content ?? { fi: '', sv: '', en: '' }),
+                  [actionLang as string]: value as string,
+                },
+              }
+            : notification
+        ),
+      };
+      break;
+    case 'temporaryNotificationStartDate':
+      newState = {
+        ...state,
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget ? { ...notification, startDate: value as string } : notification
+        ),
+      };
+      break;
+    case 'temporaryNotificationEndDate':
+      newState = {
+        ...state,
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget ? { ...notification, endDate: value as string } : notification
+        ),
+      };
+      break;
     default:
       console.warn(`Unknown action type, state not updated.`);
       return state;

@@ -1,33 +1,43 @@
 import { useEffect, useState } from 'react';
-import { MAP, OFFLINE_STORAGE } from '../utils/constants';
+import { MAP } from '../utils/constants';
 import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import dvkMap from './DvkMap';
-import { useFeatureData } from '../utils/dataLoader';
+import { useFairwayCardListData, useFeatureData } from '../utils/dataLoader';
+import { FairwayCardPartsFragment } from '../graphql/generated';
+import { Card } from './features';
 
-function usePilotRouteFeatures() {
+function addFairwayCardData(features: Feature<Geometry>[], cards: FairwayCardPartsFragment[]) {
+  features.forEach((f) => {
+    const fairwayCards: Card[] = cards
+      ?.filter((card) => card.pilotRoutes?.some((pr) => pr.id === f.getId()))
+      ?.map((c) => {
+        return { id: c.id, name: c.name };
+      });
+    f.set('fairwayCards', fairwayCards ?? [], true);
+  });
+}
+
+export function usePilotRouteFeatures() {
   const [ready, setReady] = useState(false);
   const [pilotRouteFeatures, setPilotRouteFeatures] = useState<Feature<Geometry>[]>([]);
-  const pilotRouteQuery = useFeatureData('pilotroute', true, 60 * 60 * 1000, true, OFFLINE_STORAGE.staleTime, OFFLINE_STORAGE.cacheTime);
-  const dataUpdatedAt = pilotRouteQuery.dataUpdatedAt;
-  const errorUpdatedAt = pilotRouteQuery.errorUpdatedAt;
-  const isPaused = pilotRouteQuery.isPaused;
-  const isError = pilotRouteQuery.isError;
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching } = useFeatureData('pilotroute', true, 60 * 60 * 1000);
+  const { data: fairwayCardData } = useFairwayCardListData();
 
   useEffect(() => {
-    const pilotRouteData = pilotRouteQuery.data;
-    if (pilotRouteData) {
+    if (data && fairwayCardData) {
       const format = new GeoJSON();
-      const pilotRouteFeatures = format.readFeatures(pilotRouteData, {
+      const pilotRouteFeatures = format.readFeatures(data, {
         dataProjection: 'EPSG:4326',
         featureProjection: MAP.EPSG,
-      }) as Feature<Geometry>[];
+      });
+      addFairwayCardData(pilotRouteFeatures, fairwayCardData.fairwayCards);
       setPilotRouteFeatures(pilotRouteFeatures);
       setReady(true);
     }
-  }, [pilotRouteQuery.data]);
-  return { ready, pilotRouteFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+  }, [data, fairwayCardData]);
+  return { ready, pilotRouteFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching };
 }
 
 export function usePilotRouteLayer() {
@@ -36,11 +46,14 @@ export function usePilotRouteLayer() {
 
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(layerId);
-    const source = dvkMap.getVectorSource(layerId);
-    source.clear();
-    pilotRouteFeatures.forEach((f) => f.set('dataSource', layerId, true));
-    source.addFeatures(pilotRouteFeatures);
-    layer.set('dataUpdatedAt', dataUpdatedAt);
+    if (ready && layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      const source = dvkMap.getVectorSource(layerId);
+      source.clear();
+      pilotRouteFeatures.forEach((f) => f.set('dataSource', layerId, true));
+      source.addFeatures(pilotRouteFeatures);
+      layer.set('dataUpdatedAt', dataUpdatedAt);
+    }
+    layer.set('errorUpdatedAt', errorUpdatedAt, true);
   }, [ready, pilotRouteFeatures, dataUpdatedAt, errorUpdatedAt, layerId]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };

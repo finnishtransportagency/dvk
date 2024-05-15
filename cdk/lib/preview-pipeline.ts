@@ -20,6 +20,8 @@ export class PreviewPipeline extends Construct {
 
     const pipeline = new codepipeline.Pipeline(this, 'PreviewPipeline', {
       crossAccountKeys: false,
+      pipelineType: codepipeline.PipelineType.V1,
+      executionMode: codepipeline.ExecutionMode.SUPERSEDED,
     });
     const sourceOutput = new codepipeline.Artifact();
     const sourceAction = new cdk.aws_codepipeline_actions.GitHubSourceAction({
@@ -91,7 +93,7 @@ export class PreviewPipeline extends Construct {
     // Create the build project that will invalidate the cache
     const invalidateBuildProject = new codebuild.PipelineProject(this, 'InvalidateProject', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'InvalidateBuildImage', 'dvk-buildimage'), '1.0.5'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'InvalidateBuildImage', 'dvk-buildimage'), '1.0.6'),
         computeType: ComputeType.SMALL,
       },
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -125,7 +127,7 @@ export class PreviewPipeline extends Construct {
     // Create the build project that will delete files from s3 before deploy
     const emptyS3BuildProject = new codebuild.PipelineProject(this, 'EmptyS3Project', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'S3BuildImage', 'dvk-buildimage'), '1.0.5'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'S3BuildImage', 'dvk-buildimage'), '1.0.6'),
         computeType: ComputeType.SMALL,
       },
       buildSpec: codebuild.BuildSpec.fromObject({

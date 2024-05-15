@@ -399,7 +399,8 @@ ion-popover.multiSelect::part(content) {
   overflow-y: auto;
 }
 
-ion-popover.multiSelect.fairwayIds::part(content) {
+ion-popover.multiSelect.fairwayIds::part(content),
+ion-popover.multiSelect.pilotRoutes::part(content) {
   bottom: 0;
 }
 
@@ -521,6 +522,25 @@ ion-label.formLabel.disabled,
 
 .formGrid .formInput.invalid .helper-text {
   font-style: italic;
+}
+
+.formGrid .formInput .input-wrapper.sc-ion-input-md {
+  max-height: 43px;
+}
+
+ion-modal.datetimeModal::part(content) {
+  height: fit-content;
+  width: fit-content;
+}
+
+ion-datetime::part(month-year-button) {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.dateIcon {
+  width: 24px;
+  height: 24px;
 }
 
 ion-item.invalid {

@@ -259,9 +259,9 @@
     "pilotPlaceLocation": "Luotsipaikan sijainti",
     "pilotageLimit": "Luotsinkäyttölinja",
     "pilotageLimitLocation": "Linjan sijainti",
-    "pilotageLimitMaxDimensions": "Alusten enimmäismitat joita linja koskee",
-    "draught": "Syväys",
-    "width": "Leveys"
+    "pilotageLimitLimit": "Luotsinkäyttövelvollisuuden raja väylällä, kun jokin seuraavista ylittyy",
+    "pilotageLimitDimensions": "Pituus / leveys / syväys (m)",
+    "inForce": "Voimassa"
   },
   "routes": {
     "title": "Luotsausreitit",
@@ -328,11 +328,13 @@
     "pilotageLimit": {
       "header": "Luotsinkäyttölinja {{val}}",
       "location": "Linjan sijainti",
-      "limit": "Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)",
+      "limit": "Luotsinkäyttövelvollisuuden raja väylällä, kun jokin seuraavista ylittyy",
+      "dimensions": "Pituus / leveys / syväys (m)",
       "fairways": "Linjaan liittyvät väyläkortit"
     },
     "pilotRoute": {
-      "header": "REITTI: {{val}}"
+      "header": "REITTI: {{val}}",
+      "fairwayCards": "Luotsausreitti on osa väyläkorttia"
     },
     "quay": {
       "length": "Laiturin pituus",

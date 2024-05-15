@@ -94,7 +94,7 @@ export function filterFeaturesInPolygonByArea(polygons: FeatureCollection, featu
     return [];
   }
   const format = new GeoJSON();
-  const polygonFeatures = format.readFeatures(polygons) as Feature<Geometry>[];
+  const polygonFeatures = format.readFeatures(polygons);
 
   const lowerCaseAreaFilter = areaFilter.map((a) => a.toLocaleLowerCase());
   const filteredArray = features.filter((f) => {

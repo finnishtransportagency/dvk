@@ -24,7 +24,7 @@ export const SpeedLimitInfo: React.FC<SpeedLimitInfoProps> = ({ data, speedLimit
 
   return (
     <>
-      <p>
+      <p style={speedLimitText ? {} : { margin: '0px' }}>
         {inlineLabel && speedLimits.length > 0 && <strong>{t('speedLimit')}: </strong>}
         {speedLimits.map((area, idx) => (
           <span key={'limit-' + area?.id}>
