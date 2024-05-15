@@ -45,7 +45,7 @@ export const TugInfo: React.FC<TugInfoProps> = ({ data }) => {
                       })}
                       {(!tug?.phoneNumber || (tug?.phoneNumber && tug?.phoneNumber.length < 1)) && '-'}
                       <br />
-                      <PhoneNumber title={t('fax')} showEmpty number={tug?.fax} />
+                      {t('fax')}: {tug?.fax || '-'}
                       <br />
                     </>
                   )}
