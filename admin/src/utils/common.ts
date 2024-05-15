@@ -254,14 +254,36 @@ export function checkEndDateError(startDate: string, endDate: string): boolean {
   return true;
 }
 
-export function getFirstNoticeToEnd(notifications: TemporaryNotification[] | undefined | null) {
-  const currentDate = new Date().setHours(0, 0, 0, 0);
-  // filter notifications that are not null and not before current date and
-  // -1 comes from that if there's no date, then we can filter it out by giving value -1 which is always before current date
-  const filteredNotifications = notifications?.filter((notification) => {
-    return notification.endDate !== null && compareAsc(currentDate, new Date(notification?.endDate ?? -1).setHours(0, 0, 0, 0)) <= 0;
-  });
-  const sortedNotifications = filteredNotifications?.sort((a, b) => compareAsc(a.endDate ?? '', b.endDate ?? ''));
+export type NoticeListingTypes = {
+  active: boolean;
+  incoming: boolean;
+};
 
-  return sortedNotifications && sortedNotifications?.length > 0 ? sortedNotifications[0].endDate?.split('T')[0] : undefined;
+export function getNotificationListingTypes(notifications: TemporaryNotification[]): NoticeListingTypes {
+  const currentDate = new Date().setHours(0, 0, 0, 0);
+
+  const active = notifications?.some((notification) => {
+    if (!notification.startDate) {
+      return false;
+    }
+    const startDate = new Date(notification?.startDate).setHours(0, 0, 0, 0);
+    // if not endDate, give it a current date so it's counted as an active
+    const endDate = new Date(notification?.endDate ?? currentDate).setHours(0, 0, 0, 0);
+
+    return compareAsc(currentDate, startDate) >= 0 && compareAsc(endDate, currentDate) >= 0;
+  });
+
+  const incoming = notifications?.some((notification) => {
+    if (!notification.startDate) {
+      return false;
+    }
+    const startDate = new Date(notification?.startDate).setHours(0, 0, 0, 0);
+
+    return compareAsc(currentDate, startDate) === -1;
+  });
+
+  return {
+    active: active,
+    incoming: incoming,
+  };
 }

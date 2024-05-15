@@ -17,7 +17,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 import { ItemType, Lang } from '../utils/constants';
-import { checkIfValidAndChangeFormatToLocal, filterItemList, getFirstNoticeToEnd } from '../utils/common';
+import { filterItemList, getNotificationListingTypes } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
@@ -105,13 +105,24 @@ const MainPage: React.FC = () => {
     selectTypeRef.current?.click();
   };
 
-  const getEndingDateString = (temporaryNotifications: TemporaryNotification[]) => {
+  const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[]) => {
     if (!temporaryNotifications) {
       return '-';
     }
-    const noticeToEndDate = getFirstNoticeToEnd(temporaryNotifications);
+    const listingTypes = getNotificationListingTypes(temporaryNotifications);
 
-    return noticeToEndDate ? t('notice-ends') + ' ' + checkIfValidAndChangeFormatToLocal(noticeToEndDate) : t('temporary-in-force');
+    let typesString;
+
+    if (listingTypes.active) {
+      typesString = t('active');
+    }
+    if (listingTypes.incoming) {
+      typesString = typesString ? typesString + ', ' + t('incoming') : t('incoming');
+    }
+
+    typesString = typesString?.toLocaleLowerCase();
+
+    return typesString ? typesString.charAt(0).toLocaleUpperCase() + typesString.slice(1) : '-';
   };
 
   const searchHasInput = searchQuery.length > 0;
@@ -283,7 +294,7 @@ const MainPage: React.FC = () => {
                   <IonCol size="1.25">{item.creator}</IonCol>
                   <IonCol size="1.25">{item.modifier}</IonCol>
                   <IonCol size="1.25">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
-                  <IonCol size="1.25">{getEndingDateString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
+                  <IonCol size="1.25">{getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
                 </IonRow>
               );
             })}
