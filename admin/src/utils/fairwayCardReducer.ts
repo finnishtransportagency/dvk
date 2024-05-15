@@ -591,6 +591,7 @@ export const fairwayCardReducer = (
           temporaryNotifications: state.temporaryNotifications?.concat({
             content: { fi: '', sv: '', en: '' },
             startDate: '',
+            endDate: '',
           }),
         };
       } else {
