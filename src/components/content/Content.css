@@ -233,6 +233,7 @@ ion-text .h4 {
   margin-top: 24px;
   line-height: 1.5rem;
   break-after: avoid;
+  margin-bottom: 0.5rem;
 }
 ion-text h4 span,
 ion-text .h4 span {
