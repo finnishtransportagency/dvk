@@ -57,7 +57,7 @@ export const ContactInfo: React.FC<ContactInfoProps> = ({ data, noMargin }) => {
           {data.fax && (
             <>
               <br />
-              {t('fax')}: <PhoneNumber number={data.fax} />
+              {t('fax')}: {data.fax}
             </>
           )}
           <br />
