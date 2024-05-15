@@ -100,7 +100,9 @@
     "temporary-notification": "Huomio",
     "temporary-notification-found": "Huomioita",
     "notice-ends": "Päättyy",
-    "temporary-in-force": "Toistaiseksi voimassa"
+    "temporary-in-force": "Toistaiseksi voimassa",
+    "active": "Aktiivisia",
+    "incoming": "Tulossa"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
