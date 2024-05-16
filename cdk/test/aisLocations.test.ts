@@ -127,4 +127,4 @@ it('should return right cache headers', async () => {
   assert(response.body);
   const headers = getCacheControlHeaders('aislocations')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
-})
+});

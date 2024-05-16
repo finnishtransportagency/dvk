@@ -375,6 +375,6 @@ function mapTemporaryNotifications(notifications: TemporaryNotification[]) {
       content: notification.content,
       startDate: notification.startDate,
       endDate: notification.endDate,
-    }
-  })
+    };
+  });
 }
