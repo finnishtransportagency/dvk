@@ -620,7 +620,7 @@ export function addAPILayers(map: Map) {
     id: 'quay',
     renderBuffer: 100,
     style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle')),
-    zIndex: 351,
+    zIndex: 304,
   });
   // Satamat
   addFeatureVectorLayer({
@@ -630,7 +630,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 100,
     style: (feature, resolution) => getHarborStyle(feature, resolution, !!feature.get('hoverStyle')),
     declutter: true,
-    zIndex: 352,
+    zIndex: 305,
   });
   // Turvalaitteet
   addFeatureVectorLayer({
@@ -638,7 +638,7 @@ export function addAPILayers(map: Map) {
     id: 'safetyequipment',
     renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), feature.get('faultListStyle')),
-    zIndex: 353,
+    zIndex: 306,
   });
 
   // VTS linjat ja ilmoituspisteet
@@ -680,7 +680,7 @@ export function addAPILayers(map: Map) {
     id: 'safetyequipmentfault',
     renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), true),
-    zIndex: 354,
+    zIndex: 315,
   });
 
   // Luotsausreitit
