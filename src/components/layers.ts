@@ -320,7 +320,7 @@ interface FeatureVectorLayerProps {
   opacity?: number;
   declutter?: boolean;
   zIndex: number | undefined; //= undefined
-  source?: VectorSource;
+  source?: VectorSource<FeatureLike>;
 }
 
 function addFeatureVectorLayer({
@@ -337,7 +337,7 @@ function addFeatureVectorLayer({
 }: FeatureVectorLayerProps) {
   map.addLayer(
     new VectorLayer({
-      source: source || new VectorSource(),
+      source: source || new VectorSource<FeatureLike>(),
       declutter,
       style,
       properties: { id },
@@ -414,7 +414,7 @@ function addDepthAreaLayer(map: Map) {
 }
 
 function addDepthContourLayer(map: Map) {
-  const vectorSource = new VectorSource({
+  const vectorSource = new VectorSource<FeatureLike>({
     format: new GeoJSON(),
     url: function (extent) {
       return (
@@ -437,7 +437,7 @@ function addDepthContourLayer(map: Map) {
 }
 
 function addSoundingPointLayer(map: Map) {
-  const vectorSource = new VectorSource({
+  const vectorSource = new VectorSource<FeatureLike>({
     format: new GeoJSON(),
     url: function (extent) {
       return (
@@ -531,7 +531,7 @@ export function addAPILayers(map: Map) {
   });
 
   // Nopeusrajoitus
-  const speedLimitSource = new VectorSource({ overlaps: false });
+  const speedLimitSource = new VectorSource<FeatureLike>({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'speedlimit',
@@ -553,7 +553,7 @@ export function addAPILayers(map: Map) {
   });
 
   // Ankkurointialue
-  const anchorageSource = new VectorSource({ overlaps: false });
+  const anchorageSource = new VectorSource<FeatureLike>({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea2',
@@ -575,7 +575,7 @@ export function addAPILayers(map: Map) {
   });
 
   // Kohtaamis- ja ohittamiskieltoalue
-  const meetSource = new VectorSource({ overlaps: false });
+  const meetSource = new VectorSource<FeatureLike>({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea15',
@@ -620,7 +620,7 @@ export function addAPILayers(map: Map) {
     id: 'quay',
     renderBuffer: 100,
     style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle')),
-    zIndex: 304,
+    zIndex: 351,
   });
   // Satamat
   addFeatureVectorLayer({
@@ -630,7 +630,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 100,
     style: (feature, resolution) => getHarborStyle(feature, resolution, !!feature.get('hoverStyle')),
     declutter: true,
-    zIndex: 305,
+    zIndex: 352,
   });
   // Turvalaitteet
   addFeatureVectorLayer({
@@ -638,7 +638,7 @@ export function addAPILayers(map: Map) {
     id: 'safetyequipment',
     renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), feature.get('faultListStyle')),
-    zIndex: 306,
+    zIndex: 353,
   });
 
   // VTS linjat ja ilmoituspisteet
@@ -680,7 +680,7 @@ export function addAPILayers(map: Map) {
     id: 'safetyequipmentfault',
     renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), true),
-    zIndex: 315,
+    zIndex: 354,
   });
 
   // Luotsausreitit
