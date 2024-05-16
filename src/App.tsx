@@ -17,7 +17,6 @@ import {
   useDepth12Layer,
   useSpeedLimitLayer,
   usePilotLayer,
-  useHarborLayer,
   useCoastalWarningLayer,
   useLocalWarningLayer,
   useBoaterWarningLayer,
@@ -86,6 +85,7 @@ import { ContentModal } from './components/content/MainContentWithModal';
 import SquatCalculatorPage from './pages/SquatCalculatorPage';
 import HarborPreviewPage from './pages/HarborPreviewPage';
 import PilotRoutePage from './pages/PilotRoutePage';
+import { useHarborLayer } from './components/HarborFeatureLoader';
 
 setupIonicReact({
   mode: 'md',

@@ -9,9 +9,9 @@ import { InfoParagraph } from './Paragraph';
 import PendingPlaceholder from './fairwayCard/PendingPlaceholder';
 import { FairwayCardHeader } from './fairwayCard/FairwayCardHeader';
 import { setSelectedHarborPreview, unsetSelectedHarborPreview } from '../layers';
-import { useHarborLayer } from '../FeatureLoader';
 import { HarborPreviewAlert } from './HarborPreviewAlert';
 import { TabSwiper } from './fairwayCard/TabSwiper';
+import { useHarborLayer } from '../HarborFeatureLoader';
 
 interface HarborPreviewProps {
   widePane?: boolean;

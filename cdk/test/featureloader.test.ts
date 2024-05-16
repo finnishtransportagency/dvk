@@ -651,10 +651,6 @@ it('should get harbors from DynamoDB', async () => {
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(harborsCollection)), ExpiresString: expires.toString() });
   ddbMock
-    .on(ScanCommand, { TableName: 'FairwayCard-mock' })
-    .resolves({
-      Items: [card, card2],
-    })
     .on(ScanCommand, { TableName: 'Harbor-mock' })
     .resolves({
       Items: [harbor, harbor2],
@@ -662,7 +658,7 @@ it('should get harbors from DynamoDB', async () => {
   const response = await handler(mockALBEvent('harbor'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
-  expect(responseObj.features.length).toBe(1);
+  expect(responseObj.features.length).toBe(2);
   expect(responseObj).toMatchSnapshot();
 });
 
@@ -671,10 +667,6 @@ it('should get harbors from cache when DynamoDB api call fails', async () => {
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(harborsCollection)), ExpiresString: expires.toString() });
   ddbMock
-    .on(ScanCommand, { TableName: 'FairwayCard-mock' })
-    .resolves({
-      Items: [card, card2],
-    })
     .on(ScanCommand, { TableName: 'Harbor-mock' })
     .rejects();
   const response = await handler(mockALBEvent('harbor'));
