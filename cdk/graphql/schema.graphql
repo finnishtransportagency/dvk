@@ -16,6 +16,7 @@ type Query {
   harborPreview(id: String!): Harbor
   fairways: [Fairway!]!
   fairwayCardsAndHarbors: [FairwayCardOrHarbor!]!
+  mareographs: [Mareograph!]
 }
 
 type Mutation {
@@ -557,4 +558,13 @@ type TemporaryNotification {
   content: Text
   startDate: String
   endDate: String
+}
+
+type Mareograph {
+  id: Int!
+  name: String!
+  dateTime: Float
+  waterLevel: Float
+  n2000WaterLevel: Float
+  calculated: Boolean
 }
