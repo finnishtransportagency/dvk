@@ -16,7 +16,7 @@ type Query {
   harborPreview(id: String!): Harbor
   fairways: [Fairway!]!
   fairwayCardsAndHarbors: [FairwayCardOrHarbor!]!
-  mareographs: [Mareograph!]
+  mareographs: [Mareograph!]!
 }
 
 type Mutation {

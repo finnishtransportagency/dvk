@@ -2,8 +2,5 @@ query mareographs {
   mareographs {
     id
     name
-    dateTime
-    waterLevel
-    n2000WaterLevel
   }
 }

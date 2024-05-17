@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonGrid, IonText } from '@ionic/react';
-import { ActionType, Lang, ValidationType, ValueType } from '../../../utils/constants';
+import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../../../utils/constants';
 import { FairwayCardInput, Status } from '../../../graphql/generated';
 import TextInputRow from '../TextInputRow';
 import { useTranslation } from 'react-i18next';
@@ -15,11 +15,20 @@ interface RecommendationsSectionProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors: ValidationType[];
+  isLoadingMareographs?: boolean;
+  mareographOptions?: SelectOption[];
 }
 
-const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({ state, updateState, validationErrors }) => {
+const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
+  state,
+  updateState,
+  validationErrors,
+  isLoadingMareographs,
+  mareographOptions,
+}) => {
   const { t } = useTranslation();
-
+  console.log(isLoadingMareographs);
+  console.log(mareographOptions);
   return (
     <>
       <IonText>

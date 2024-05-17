@@ -105,7 +105,7 @@ export type ActionType = HarbourActionType | FairwayCardActionType | FairwayCard
 
 export type SelectOption = {
   id: number | string | boolean;
-  name?: Text | null;
+  name?: Text | string | null;
   geometry?: GeometryPoint | null;
 };
 
