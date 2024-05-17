@@ -9,6 +9,7 @@ import assert from 'assert';
 import pilotRoutesJson from './data/pilotroutes.json';
 import { FeatureCollection } from 'geojson';
 import { RtzData } from '../lib/lambda/api/apiModels';
+import { StreamingBlobPayloadOutputTypes } from '@smithy/types';
 
 const s3Mock = mockClient(S3Client);
 const path = 'pilotroutes';
@@ -384,7 +385,10 @@ beforeEach(() => {
 it('should get pilotroutes from cache', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)), ExpiresString: expires.toString() });
+  s3Mock.on(GetObjectCommand).resolves({
+    Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)) as StreamingBlobPayloadOutputTypes,
+    ExpiresString: expires.toString(),
+  });
   const response = await handler(mockPilotRoutesALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -395,7 +399,10 @@ it('should get pilotroutes from cache', async () => {
 it('should get pilotroutes from api when cache expired', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)), ExpiresString: expires.toString() });
+  s3Mock.on(GetObjectCommand).resolves({
+    Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)) as StreamingBlobPayloadOutputTypes,
+    ExpiresString: expires.toString(),
+  });
   const response = await handler(mockPilotRoutesALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -406,7 +413,10 @@ it('should get pilotroutes from api when cache expired', async () => {
 it('should get pilotroutes from cache when api call fails', async () => {
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)), ExpiresString: expires.toString() });
+  s3Mock.on(GetObjectCommand).resolves({
+    Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)) as StreamingBlobPayloadOutputTypes,
+    ExpiresString: expires.toString(),
+  });
   throwError = true;
   const response = await handler(mockPilotRoutesALBEvent(path));
   assert(response.body);

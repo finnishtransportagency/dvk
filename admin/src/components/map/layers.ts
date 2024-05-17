@@ -309,7 +309,7 @@ interface FeatureVectorLayerProps {
   opacity?: number;
   declutter?: boolean;
   zIndex: number | undefined; //= undefined
-  source?: VectorSource;
+  source?: VectorSource<FeatureLike>;
 }
 
 function addFeatureVectorLayer({
@@ -326,7 +326,7 @@ function addFeatureVectorLayer({
 }: FeatureVectorLayerProps) {
   map.addLayer(
     new VectorLayer({
-      source: source || new VectorSource(),
+      source: source || new VectorSource<FeatureLike>(),
       declutter,
       style,
       properties: { id },
@@ -397,7 +397,7 @@ export function addAPILayers(map: Map) {
   });
 
   // Nopeusrajoitus
-  const speedLimitSource = new VectorSource({ overlaps: false });
+  const speedLimitSource = new VectorSource<FeatureLike>({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'speedlimit',
@@ -419,7 +419,7 @@ export function addAPILayers(map: Map) {
   });
 
   // Ankkurointialue
-  const anchorageSource = new VectorSource({ overlaps: false });
+  const anchorageSource = new VectorSource<FeatureLike>({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea2',
@@ -441,7 +441,7 @@ export function addAPILayers(map: Map) {
   });
 
   // Kohtaamis- ja ohittamiskieltoalue
-  const meetSource = new VectorSource({ overlaps: false });
+  const meetSource = new VectorSource<FeatureLike>({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea15',

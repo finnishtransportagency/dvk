@@ -4,6 +4,7 @@ import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { sdkStreamMixin } from '@smithy/util-stream';
 import { createReadStream } from 'fs';
 import { mockVoidEvent } from './mocks';
+import { StreamingBlobPayloadOutputTypes } from '@smithy/types';
 
 const s3Mock = mockClient(S3Client);
 
@@ -45,7 +46,7 @@ beforeEach(() => {
 });
 
 it('should get faults from api', async () => {
-  const stream = sdkStreamMixin(createReadStream('./test/data/faults.json'));
+  const stream = sdkStreamMixin(createReadStream('./test/data/faults.json')) as StreamingBlobPayloadOutputTypes;
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
@@ -55,7 +56,7 @@ it('should get faults from api', async () => {
 });
 
 it('should get faults from cache when api call fails', async () => {
-  const stream = sdkStreamMixin(createReadStream('./test/data/faults.json'));
+  const stream = sdkStreamMixin(createReadStream('./test/data/faults.json')) as StreamingBlobPayloadOutputTypes;
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });

@@ -86,7 +86,7 @@ export type TemporaryNotification = {
   content?: Maybe<Text>;
   startDate?: Maybe<string>;
   endDate?: Maybe<string>;
-}
+};
 
 class FairwayCardDBModel {
   id: string;

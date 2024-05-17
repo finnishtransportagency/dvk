@@ -59,5 +59,6 @@ export const meetAreaIconStyle = new Style({
 export function getSpecialAreaStyle(feature: FeatureLike, selected: boolean, selected2 = false) {
   const polygonStyle = getSpecialAreaPolygonStyle(feature, selected, selected2);
   const iconStyle = feature.getProperties().typeCode === 2 ? anchorageAreaIconStyle : meetAreaIconStyle;
+  iconStyle.setZIndex(1000);
   return [polygonStyle, iconStyle];
 }
