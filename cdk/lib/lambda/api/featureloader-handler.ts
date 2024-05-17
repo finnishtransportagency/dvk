@@ -2,7 +2,6 @@ import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aw
 import { getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
 import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
@@ -23,20 +22,16 @@ import {
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const harbors = await HarborDBModel.getAllPublic();
-  const harborMap = new Map<string, HarborDBModel & { fairwayCards: FairwayCardIdName[] }>();
+  const harborMap = new Map<string, HarborDBModel>();
+
   for (const harbor of harbors) {
-    harborMap.set(harbor.id, { ...harbor, fairwayCards: [] });
+    harborMap.set(harbor.id, { ...harbor });
   }
-  const cards = await FairwayCardDBModel.getAllPublic();
-  for (const card of cards) {
-    for (const h of card.harbors ?? []) {
-      harborMap.get(h.id)?.fairwayCards.push({ id: card.id, name: card.name });
-    }
-  }
+
   const ids: string[] = [];
   for (const harbor of harborMap.values()) {
     const cardHarbor = harborMap.get(harbor.id);
-    if (harbor?.geometry?.coordinates?.length === 2 && cardHarbor && cardHarbor.fairwayCards.length > 0) {
+    if (harbor?.geometry?.coordinates?.length === 2 && cardHarbor) {
       const id = harbor.geometry.coordinates.join(';');
       // MW/N2000 Harbors should have same location
       if (!ids.includes(id)) {
@@ -55,13 +50,9 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
             fax: harbor.fax,
             internet: harbor.internet,
             quays: harbor.quays?.length ?? 0,
-            fairwayCards: harbor.fairwayCards,
             extraInfo: harbor.extraInfo,
           },
         });
-      } else {
-        const harborFeature = features.find((feature) => feature.id === id);
-        harborFeature?.properties?.fairwayCards.push(...harbor.fairwayCards);
       }
     }
   }
