@@ -398,31 +398,6 @@ const card: FairwayCardDBModel = {
   harbors: [{ id: 'test1' }],
 };
 
-const card2: FairwayCardDBModel = {
-  id: 'test2',
-  name: {
-    fi: 'Testfi2',
-    sv: 'Testsv2',
-    en: 'Testen2',
-  },
-  creator: 'test',
-  creationTimestamp: Date.now(),
-  modifier: 'test2',
-  modificationTimestamp: Date.now(),
-  status: Status.Public,
-  fairways: [{ id: 4710, primary: true, secondary: false }],
-  trafficService: {
-    pilot: {
-      places: [
-        {
-          id: 681017200,
-        },
-      ],
-    },
-  },
-  harbors: [{ id: 'kaskinen' }, { id: 'test1' }],
-};
-
 const harbor: HarborDBModel = {
   id: 'test1',
   name: { fi: 'Harborfi', sv: 'Harborsv', en: 'Harboren' },
@@ -684,11 +659,7 @@ it('should get harbors from DynamoDB', async () => {
     Body: sdkStreamMixin(await createCacheResponse(harborsCollection)) as StreamingBlobPayloadOutputTypes,
     ExpiresString: expires.toString(),
   });
-  ddbMock
-    .on(ScanCommand, { TableName: 'Harbor-mock' })
-    .resolves({
-      Items: [harbor, harbor2],
-    });
+  ddbMock.on(ScanCommand, { TableName: 'Harbor-mock' }).resolves({ Items: [harbor, harbor2] });
   const response = await handler(mockALBEvent('harbor'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -703,9 +674,7 @@ it('should get harbors from cache when DynamoDB api call fails', async () => {
     Body: sdkStreamMixin(await createCacheResponse(harborsCollection)) as StreamingBlobPayloadOutputTypes,
     ExpiresString: expires.toString(),
   });
-  ddbMock
-    .on(ScanCommand, { TableName: 'Harbor-mock' })
-    .rejects();
+  ddbMock.on(ScanCommand, { TableName: 'Harbor-mock' }).rejects();
   const response = await handler(mockALBEvent('harbor'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
