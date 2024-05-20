@@ -32,10 +32,26 @@ exports[`should get card by id from the DynamoDB 1`] = `
   },
   "navigationCondition": undefined,
   "pictures": undefined,
-  "pilotRoutes": [],
+  "pilotRoutes": [
+    {
+      "id": 1,
+      "name": "Reitti 1",
+    },
+  ],
   "seaLevel": undefined,
   "speedLimit": undefined,
   "status": "PUBLIC",
+  "temporaryNotifications": [
+    {
+      "content": {
+        "en": "",
+        "fi": "",
+        "sv": "",
+      },
+      "endDate": "",
+      "startDate": "",
+    },
+  ],
   "trafficService": {
     "pilot": {
       "email": undefined,
@@ -101,10 +117,26 @@ exports[`should get card by id from the DynamoDB when cache expired 1`] = `
   },
   "navigationCondition": undefined,
   "pictures": undefined,
-  "pilotRoutes": [],
+  "pilotRoutes": [
+    {
+      "id": 2,
+      "name": "Reitti 2",
+    },
+  ],
   "seaLevel": undefined,
   "speedLimit": undefined,
   "status": "DRAFT",
+  "temporaryNotifications": [
+    {
+      "content": {
+        "en": "",
+        "fi": "",
+        "sv": "",
+      },
+      "endDate": "",
+      "startDate": "",
+    },
+  ],
   "trafficService": {
     "pilot": {
       "email": undefined,

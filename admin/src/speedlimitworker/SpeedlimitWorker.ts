@@ -3,8 +3,6 @@ import { MAP } from '../utils/constants';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { getSpeedLimitFeatures } from './SpeedlimitUtils';
-import { Feature } from 'ol';
-import { Geometry } from 'ol/geom';
 
 function initOLProj4() {
   proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
@@ -17,10 +15,7 @@ onmessage = (e: MessageEvent<{ raData: string; aData: string }>) => {
   const raData = JSON.parse(e.data.raData);
   const aData = JSON.parse(e.data.aData);
   const format = new GeoJSON();
-  const speedLimitFeatures = getSpeedLimitFeatures(
-    format.readFeatures(raData) as Feature<Geometry>[],
-    format.readFeatures(aData) as Feature<Geometry>[]
-  );
+  const speedLimitFeatures = getSpeedLimitFeatures(format.readFeatures(raData), format.readFeatures(aData));
   postMessage(format.writeFeatures(speedLimitFeatures));
 };
 

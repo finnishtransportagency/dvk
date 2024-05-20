@@ -2,6 +2,9 @@ import React, { ReactElement, useEffect } from 'react';
 import { IonCol, IonGrid, IonIcon, IonItem, IonRow, IonText } from '@ionic/react';
 import { useDvkContext } from '../hooks/dvkContext';
 import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
+import { Lang } from '../utils/constants';
+import { format, parseISO } from 'date-fns';
 
 interface AlertProps {
   title: string | ReactElement;
@@ -9,9 +12,26 @@ interface AlertProps {
   color?: string;
   className?: string;
   mainLegendOpen?: boolean;
+  startDate?: string;
+  endDate?: string;
 }
 
 const Alert: React.FC<AlertProps> = (props) => {
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as Lang;
+
+  const getLocaleDateFormat = (date: string) => {
+    switch (lang) {
+      case 'sv':
+        // backend shouldnt return time, but split as a precaution
+        return date.split('T')[0];
+      case 'en':
+        return format(parseISO(date), 'MM/dd/yyyy');
+      default:
+        return format(parseISO(date), 'dd.MM.yyyy');
+    }
+  };
+
   return (
     <IonGrid className={props.className ? props.className : undefined}>
       <IonRow className="ion-align-items-center">
@@ -20,6 +40,17 @@ const Alert: React.FC<AlertProps> = (props) => {
         </IonCol>
         <IonCol>
           <IonText>{props.title}</IonText>
+          {props.startDate && (
+            <>
+              <br />
+              <br />
+              <IonText>
+                <em className="no-print">
+                  {t('inForce')} {getLocaleDateFormat(props.startDate)} - {props.endDate && getLocaleDateFormat(props.endDate)}
+                </em>
+              </IonText>
+            </>
+          )}
         </IonCol>
       </IonRow>
     </IonGrid>

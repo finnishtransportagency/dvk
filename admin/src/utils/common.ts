@@ -1,7 +1,8 @@
 import { TFunction } from 'i18next';
-import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, Text } from '../graphql/generated';
+import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
 import { ActionType, ItemType, Lang, SelectOption } from './constants';
 import { FeatureCollection } from 'geojson';
+import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
 const sortByString = (a: Maybe<string> | undefined, b: Maybe<string> | undefined, sortDescending: boolean) => {
   const valA = a ?? '';
@@ -56,6 +57,8 @@ export const filterItemList = (
           case 'modified':
             // should be newest first when arrow down hence "!sortDescending"
             return sortByNumber(Number(a.modificationTimestamp), Number(b.modificationTimestamp), !sortDescending);
+          case 'notice':
+            return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sortDescending);
           default:
             return 1;
         }
@@ -197,4 +200,90 @@ export function featureCollectionToSelectOptions(collection: FeatureCollection |
   });
 
   return propertyArray;
+}
+
+export function checkIfValidAndChangeFormatToLocal(value: string | undefined | null) {
+  if (value) {
+    const date = value.split('T')[0];
+    const parsedDate = parseISO(date);
+    if (isValid(parsedDate)) {
+      return format(parsedDate, 'dd.MM.yyyy');
+    }
+  }
+
+  return value;
+}
+
+export function checkIfValidAndChangeFormatToISO(value: string | undefined | null) {
+  if (value) {
+    const parsedDate = parse(value, 'dd.MM.yyyy', new Date());
+    if (isValid(parsedDate)) {
+      return format(parsedDate, 'yyyy-MM-dd');
+    }
+  }
+
+  return value;
+}
+
+export function dateError(date?: string | null): boolean {
+  // might return time as well, so split just in case
+  date = date?.split('T')[0];
+  if (date?.match('\\d{2}\\.\\d{2}\\.\\d{4}')) {
+    return !isValid(parse(date, 'dd.MM.yyyy', new Date()));
+  } else if (date?.match('\\d{4}\\-\\d{2}\\-\\d{2}')) {
+    return !isValid(parse(date, 'yyyy-MM-dd', new Date()));
+  }
+  return true;
+}
+
+export function checkEndDateError(startDate: string, endDate: string): boolean {
+  if (!startDate || !endDate) {
+    return false;
+  }
+  if (dateError(endDate)) {
+    return true;
+  }
+  endDate = endDate?.split('T')[0];
+  startDate = startDate?.split('T')[0];
+  const result = compareAsc(startDate, endDate);
+  // result = -1 startDate is before endDate, result = 0 equal dates, result = 1 startDate is after endDate
+  if (result === -1 || result === 0) {
+    return false;
+  }
+
+  return true;
+}
+
+export type NoticeListingTypes = {
+  active: boolean;
+  incoming: boolean;
+};
+
+export function getNotificationListingTypes(notifications: TemporaryNotification[]): NoticeListingTypes {
+  const currentDate = new Date().setHours(0, 0, 0, 0);
+
+  const active = notifications?.some((notification) => {
+    if (!notification.startDate) {
+      return false;
+    }
+    const startDate = new Date(notification?.startDate).setHours(0, 0, 0, 0);
+    // if not endDate, give it a current date so it's counted as an active
+    const endDate = new Date(notification?.endDate ?? currentDate).setHours(0, 0, 0, 0);
+
+    return compareAsc(currentDate, startDate) >= 0 && compareAsc(endDate, currentDate) >= 0;
+  });
+
+  const incoming = notifications?.some((notification) => {
+    if (!notification.startDate) {
+      return false;
+    }
+    const startDate = new Date(notification?.startDate).setHours(0, 0, 0, 0);
+
+    return compareAsc(currentDate, startDate) === -1;
+  });
+
+  return {
+    active: active,
+    incoming: incoming,
+  };
 }

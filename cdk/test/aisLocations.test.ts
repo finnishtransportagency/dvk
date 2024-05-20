@@ -1,16 +1,11 @@
-import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/api/aislocations-handler';
 import { mockAISALBEvent } from './mocks';
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@smithy/util-stream';
-import locationsJson from './data/aislocations.json';
-import { Readable } from 'stream';
-import { gunzip, gzip } from 'zlib';
+import { gunzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import { VesselLocationFeatureCollection } from '../lib/lambda/api/apiModels';
+import { getCacheControlHeaders } from '../lib/lambda/graphql/cache';
 
-const s3Mock = mockClient(S3Client);
 const path = 'aislocations';
 
 jest.mock('../lib/lambda/environment', () => ({
@@ -98,22 +93,6 @@ async function parseResponse(body: string): Promise<FeatureCollection> {
   return JSON.parse((await response).toString()) as FeatureCollection;
 }
 
-async function createCacheResponse(collectionJson: object) {
-  const collection = JSON.stringify(collectionJson);
-  const zippedString = new Promise<Error | Buffer>((resolve, reject) =>
-    gzip(Buffer.from(collection), (err, data) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(data);
-    })
-  );
-  const body = new Readable();
-  body.push((await zippedString).toString('base64'));
-  body.push(null);
-  return body;
-}
-
 let throwError = false;
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchAISFeatureCollection: () => {
@@ -126,25 +105,10 @@ jest.mock('../lib/lambda/api/axios', () => ({
 
 beforeEach(() => {
   jest.resetAllMocks();
-  s3Mock.reset();
   throwError = false;
 });
 
-it('should get locations from cache', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), ExpiresString: expires.toString() });
-  const response = await handler(mockAISALBEvent(path));
-  assert(response.body);
-  const responseObj = await parseResponse(response.body);
-  expect(responseObj.features.length).toBe(4);
-  expect(responseObj).toMatchSnapshot();
-});
-
-it('should get locations from api when cache expired', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), ExpiresString: expires.toString() });
+it('should get locations from api', async () => {
   const response = await handler(mockAISALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -152,20 +116,15 @@ it('should get locations from api when cache expired', async () => {
   expect(responseObj).toMatchSnapshot();
 });
 
-it('should get locations from cache when api call fails', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(locationsJson)), ExpiresString: expires.toString() });
-  throwError = true;
-  const response = await handler(mockAISALBEvent(path));
-  assert(response.body);
-  const responseObj = await parseResponse(response.body);
-  expect(responseObj.features.length).toBe(4);
-  expect(responseObj).toMatchSnapshot();
-});
-
-it('should get internal server error when api call fails and no cached response', async () => {
+it('should get internal server error when api call fails', async () => {
   throwError = true;
   const response = await handler(mockAISALBEvent(path));
   expect(response.statusCode).toBe(503);
 });
+
+it('should return right cache headers', async () => {
+  const response = await handler(mockAISALBEvent(path));
+  assert(response.body);
+  const headers = getCacheControlHeaders('aislocations')?.['Cache-Control'];
+  expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
+})

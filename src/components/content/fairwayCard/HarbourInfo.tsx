@@ -25,14 +25,14 @@ export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
     <>
       {data && (
         <>
-          <IonText className="no-margin-top">
-            <h4
-              className="inlineHoverText"
-              onMouseEnter={() => highlightHarbor(data.id, true)}
-              onFocus={() => highlightHarbor(data.id, true)}
-              onMouseLeave={() => highlightHarbor(data.id, false)}
-              onBlur={() => highlightHarbor(data.id, false)}
-            >
+          <IonText
+            className="no-margin-top"
+            onMouseEnter={() => highlightHarbor(data.id, true)}
+            onFocus={() => highlightHarbor(data.id, true)}
+            onMouseLeave={() => highlightHarbor(data.id, false)}
+            onBlur={() => highlightHarbor(data.id, false)}
+          >
+            <h4>
               <strong>{data.name?.[lang]}</strong>
             </h4>
             <h5>{t('restrictions')}</h5>

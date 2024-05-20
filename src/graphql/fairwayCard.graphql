@@ -198,5 +198,14 @@ query findFairwayCardById($id: String!) {
       id
       name
     }
+    temporaryNotifications {
+      content {
+        fi
+        sv
+        en
+      }
+      startDate
+      endDate
+    }
   }
 }

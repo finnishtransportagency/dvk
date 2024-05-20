@@ -85,7 +85,11 @@ export type FairwayCardActionType =
   | 'pictureLegendPosition'
   | 'getState'
   | 'additionalInfo'
-  | 'pilotRoutes';
+  | 'pilotRoutes'
+  | 'temporaryNotifications'
+  | 'temporaryNotificationContent'
+  | 'temporaryNotificationStartDate'
+  | 'temporaryNotificationEndDate';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'

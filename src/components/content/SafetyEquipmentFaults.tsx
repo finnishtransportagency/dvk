@@ -7,7 +7,7 @@ import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../ut
 import { coordinatesToStringHDM, filterFeaturesInPolygonByArea, sortByAlign } from '../../utils/coordinateUtils';
 import Breadcrumb from './Breadcrumb';
 import { getMap } from '../DvkMap';
-import { Card, EquipmentFeatureProperties } from '../features';
+import { EquipmentFeatureProperties } from '../features';
 import { Link } from 'react-router-dom';
 import { goToFeature } from '../../utils/common';
 import './SafetyEquipmentFaults.css';
@@ -15,23 +15,27 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import { setSelectedSafetyEquipment } from '../layers';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
-import { useSafetyEquipmentAndFaultLayer, useVaylaWaterAreaData } from '../FeatureLoader';
+import { useVaylaWaterAreaData } from '../FeatureLoader';
 import { InfoParagraph } from './Paragraph';
 import { symbol2Icon } from '../layerStyles/safetyEquipmentStyles';
 import CustomSelectDropdown from './CustomSelectDropdown';
 import sortArrow from '../../theme/img/back_arrow-1.svg';
 import PageHeader from './PageHeader';
+import VectorSource from 'ol/source/Vector';
+import { useSafetyEquipmentAndFaultLayer } from '../SafetyEquipmentFeatureLoader';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
   loading?: boolean;
   selectedFairwayCard: boolean;
   sortNewFirst?: boolean;
+  layers?: string[];
 };
 
-export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard, sortNewFirst }) => {
+export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedFairwayCard, sortNewFirst, layers }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const layerId = selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault';
 
   // Sort faults by recordTime (desc) if only one fault or
   // safety equipment fault page
@@ -51,7 +55,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
     const isEquipmentUsed = groupedFaults.filter((item) => item.length > 0 && item[0].equipmentId === value.equipmentId).length !== 0;
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
-  const equipmentSource = getMap().getVectorSource(selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
+  const equipmentSource = getMap().getVectorSource(layerId);
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
@@ -61,15 +65,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
         // check if symbol is not undefined and key in symbol2Icon structure
         // seems to be safe enough to justify disabling eslint and using symbol2Icon from safetyEquipmentStyles
         const symbol = equipment?.symbol !== undefined && equipment?.symbol in symbol2Icon ? equipment?.symbol : '?';
-        const cardMap: Map<string, Card> = new Map();
-        equipment?.fairways?.forEach((f) => {
-          if (f.fairwayCards) {
-            for (const card of f.fairwayCards) {
-              cardMap.set(card.id, card);
-            }
-          }
-        });
-        const cards = Array.from(cardMap.values());
+        const cards = equipment?.fairwayCards ?? [];
         return (
           <IonGrid
             className="table light group ion-no-padding inlineHoverText"
@@ -95,7 +91,7 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
                         to="/turvalaiteviat/"
                         onClick={(e) => {
                           e.preventDefault();
-                          goToFeature(faultArray[0].equipmentId, selectedFairwayCard ? 'selectedfairwaycard' : 'safetyequipmentfault');
+                          goToFeature(faultArray[0].equipmentId, layerId, layers);
                         }}
                       >
                         {faultArray[0].geometry?.coordinates[0] &&
@@ -183,7 +179,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation();
   // both data fetched for the sake of same data on list and map
   const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
-  const { ready } = useSafetyEquipmentAndFaultLayer();
+  const { ready: layerReady } = useSafetyEquipmentAndFaultLayer();
   const path = [{ title: t('faults.title') }];
   const { dispatch, state } = useDvkContext();
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
@@ -198,13 +194,31 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   }, [areaPolygons, data?.safetyEquipmentFaults, areaFilter]);
 
   useEffect(() => {
-    if (!state.layers.includes('safetyequipmentfault') && !isPending && !isFetching && ready) {
+    return () => {
+      // Cleanup: remove feature(s) from temporary layer
+      const fairwayCardLayer = getMap().getFeatureLayer('selectedfairwaycard');
+      (fairwayCardLayer.getSource() as VectorSource).clear();
+      fairwayCardLayer.setVisible(false);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!state.layers.includes('safetyequipmentfault') && !isPending && !isFetching && layerReady) {
       const updatedLayers = [...state.layers, 'safetyequipmentfault'];
       dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     }
     // disable because of unnecessary callbacks
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetching, isPending, ready]);
+  }, [isFetching, isPending, layerReady]);
+
+  useEffect(() => {
+    // If fault layer is not visible, show selected safety equipment on fairway card layer
+    const fairwayCardLayer = getMap().getFeatureLayer('selectedfairwaycard');
+    if (fairwayCardLayer) {
+      (fairwayCardLayer.getSource() as VectorSource).clear();
+      fairwayCardLayer.setVisible(!state.layers.includes('safetyequipmentfault'));
+    }
+  }, [state.layers]);
 
   return (
     <>
@@ -243,7 +257,13 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
         className={'tabContent active show-print' + (widePane ? ' wide' : '')}
         data-testid="safetyEquipmentFaultList"
       >
-        <FaultGroup loading={isPending} data={filterDataByArea() ?? []} selectedFairwayCard={false} sortNewFirst={sortNewFirst} />
+        <FaultGroup
+          loading={isPending}
+          data={filterDataByArea() ?? []}
+          selectedFairwayCard={false}
+          sortNewFirst={sortNewFirst}
+          layers={state.layers}
+        />
       </div>
     </>
   );

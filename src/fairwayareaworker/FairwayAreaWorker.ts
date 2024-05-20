@@ -3,8 +3,6 @@ import { MAP } from '../utils/constants';
 import proj4 from 'proj4';
 import { register } from 'ol/proj/proj4';
 import { getFairwayAreaBorderFeatures } from './FairwayAreaUtils';
-import { Feature } from 'ol';
-import { Geometry } from 'ol/geom';
 
 function initOLProj4() {
   proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs');
@@ -16,9 +14,7 @@ onmessage = (e: MessageEvent<{ faData: string }>) => {
   initOLProj4();
   const faData = JSON.parse(e.data.faData);
   const format = new GeoJSON();
-  const borderLineFeatures = getFairwayAreaBorderFeatures(
-    format.readFeatures(faData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[]
-  );
+  const borderLineFeatures = getFairwayAreaBorderFeatures(format.readFeatures(faData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }));
   postMessage(format.writeFeatures(borderLineFeatures));
 };
 

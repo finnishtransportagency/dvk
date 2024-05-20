@@ -2,15 +2,16 @@ import React from 'react';
 import { Lang } from '../../../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { IonLabel } from '@ionic/react';
-import { PilotageLimit } from './PilotInfo';
 import { coordinatesToStringHDM } from '../../../utils/coordinateUtils';
-import { LineString } from 'ol/geom';
+import { Geometry, LineString } from 'ol/geom';
 import { setSelectedPilotageLimit } from '../../layers';
 import { Link } from 'react-router-dom';
 import { goToFeature } from '../../../utils/common';
+import { Feature } from 'ol';
+import { PilotageLimitFeatureProperties } from '../../features';
 
 interface PilotageLimitInfoProps {
-  pilotLimits: PilotageLimit[];
+  pilotLimits: Feature<Geometry>[];
 }
 
 export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimits }) => {
@@ -20,11 +21,11 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
   const limitInfoByLang = (idx: number) => {
     switch (lang) {
       case 'fi':
-        return pilotLimits[idx].raja_fi;
+        return pilotLimits[idx].getProperties().raja_fi;
       case 'sv':
-        return pilotLimits[idx].raja_sv;
+        return pilotLimits[idx].getProperties().raja_sv;
       default:
-        return pilotLimits[idx].raja_en;
+        return pilotLimits[idx].getProperties().raja_en;
     }
   };
 
@@ -35,20 +36,23 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
   return (
     <div>
       {pilotLimits?.map((limit, idx) => {
-        const firstCoord = (limit.koordinaatit as LineString).getFirstCoordinate();
-        const lastCoord = (limit.koordinaatit as LineString).getLastCoordinate();
+        const properties = limit.getProperties() as PilotageLimitFeatureProperties;
+        const geometry = limit.getGeometry() as LineString;
+
+        const firstCoord = geometry.getFirstCoordinate();
+        const lastCoord = geometry.getLastCoordinate();
         return (
-          <p key={limit.fid}>
+          <p key={properties.fid}>
             <IonLabel
               className="hoverText"
-              onMouseEnter={() => highlightPilotageLimit(limit.fid)}
-              onFocus={() => highlightPilotageLimit(limit.fid)}
+              onMouseEnter={() => highlightPilotageLimit(properties.fid)}
+              onFocus={() => highlightPilotageLimit(properties.fid)}
               onMouseLeave={() => highlightPilotageLimit(0)}
               onBlur={() => highlightPilotageLimit(0)}
               tabIndex={0}
             >
               <strong>
-                {t('pilotageLimit')} {limit.numero}
+                {t('pilotageLimit')} {properties.numero}
               </strong>
               <br />
               {t('pilotageLimitLocation')}:{' '}
@@ -57,16 +61,16 @@ export const PilotageLimitInfo: React.FC<PilotageLimitInfoProps> = ({ pilotLimit
                   to={window.location.pathname}
                   onClick={(e) => {
                     e.preventDefault();
-                    goToFeature(limit.fid, 'selectedfairwaycard');
+                    goToFeature(properties.fid, 'selectedfairwaycard');
                   }}
                 >
                   {coordinatesToStringHDM(firstCoord)} - {coordinatesToStringHDM(lastCoord)}
                 </Link>
               </u>
               <br />
-              {t('pilotageLimitMaxDimensions')}:
+              {t('pilotageLimitLimit')}:
               <br />
-              {t('length').toLocaleLowerCase()} / {t('width').toLocaleLowerCase()} / {t('draught').toLocaleLowerCase()} (m)
+              {t('pilotageLimitDimensions')}
               <br />
               {limitInfoByLang(idx)?.replaceAll('/', ' / ')}
             </IonLabel>
