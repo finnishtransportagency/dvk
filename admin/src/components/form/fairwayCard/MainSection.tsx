@@ -44,7 +44,7 @@ const MainSection: React.FC<MainSectionProps> = ({
   pilotRouteOptions,
 }) => {
   const { t } = useTranslation();
-
+  console.log(pilotRouteOptions);
   return (
     <IonGrid className="formGrid">
       <TextInputRow

@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
+import { FairwayCardOrHarbor, Mareograph, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
 import { ActionType, ItemType, Lang, SelectOption } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
@@ -286,4 +286,20 @@ export function getNotificationListingTypes(notifications: TemporaryNotification
     active: active,
     incoming: incoming,
   };
+}
+
+// when api returns language versions this can be deleted (db changes necessary too)
+export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefined) {
+  if (!mareographs) {
+    return [];
+  }
+
+  return mareographs.map((mareograph) => {
+    return {
+      id: mareograph.id,
+      name: {
+        fi: mareograph.name,
+      },
+    };
+  });
 }

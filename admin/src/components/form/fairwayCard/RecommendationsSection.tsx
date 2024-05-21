@@ -1,10 +1,11 @@
 import React from 'react';
 import { IonGrid, IonText } from '@ionic/react';
-import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../../../utils/constants';
-import { FairwayCardInput, Status } from '../../../graphql/generated';
+import { ActionType, Lang, ValidationType, ValueType } from '../../../utils/constants';
+import { FairwayCardInput, Mareograph, Status } from '../../../graphql/generated';
 import TextInputRow from '../TextInputRow';
 import { useTranslation } from 'react-i18next';
 import SelectWithFilter from '../SelectWithFilter';
+import { mareographsToSelectOptionList } from '../../../utils/common';
 
 interface RecommendationsSectionProps {
   state: FairwayCardInput;
@@ -17,7 +18,7 @@ interface RecommendationsSectionProps {
   ) => void;
   validationErrors: ValidationType[];
   isLoadingMareographs?: boolean;
-  mareographOptions?: SelectOption[];
+  mareographOptions?: Mareograph[];
 }
 
 const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
@@ -28,8 +29,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
   mareographOptions,
 }) => {
   const { t } = useTranslation();
-  console.log(isLoadingMareographs);
-  console.log(mareographOptions);
+
   return (
     <>
       <IonText>
@@ -78,7 +78,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
         />
         <SelectWithFilter
           label={t('fairwaycard.linked-mareographs')}
-          options={mareographOptions ?? []}
+          options={mareographsToSelectOptionList(mareographOptions)}
           selected={state.mareographs ?? []}
           setSelected={updateState}
           actionType="mareographs"

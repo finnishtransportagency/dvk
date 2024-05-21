@@ -71,7 +71,6 @@ input FairwayCardInput {
   windGauge: TextInput
   vesselRecommendation: TextInput
   mareographs: [Int!]
-  seaLevel: TextInput
   windRecommendation: TextInput
   trafficService: TrafficServiceInput
   harbors: [String!]
@@ -242,6 +241,7 @@ type FairwayCard {
   visibility: Text
   windGauge: Text
   vesselRecommendation: Text
+  seaLevel: Text
   mareographs: [Mareograph!]
   windRecommendation: Text
   trafficService: TrafficService
