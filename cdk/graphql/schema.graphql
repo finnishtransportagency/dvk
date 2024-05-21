@@ -242,7 +242,7 @@ type FairwayCard {
   visibility: Text
   windGauge: Text
   vesselRecommendation: Text
-  mareographs: [Int!]
+  mareographs: [Mareograph!]
   windRecommendation: Text
   trafficService: TrafficService
   harbors: [Harbor!]

@@ -4,6 +4,7 @@ import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../..
 import { FairwayCardInput, Status } from '../../../graphql/generated';
 import TextInputRow from '../TextInputRow';
 import { useTranslation } from 'react-i18next';
+import SelectWithFilter from '../SelectWithFilter';
 
 interface RecommendationsSectionProps {
   state: FairwayCardInput;
@@ -74,6 +75,15 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
           disabled={state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'windGauge')?.msg}
           inputType="textarea"
+        />
+        <SelectWithFilter
+          label={t('fairwaycard.linked-mareographs')}
+          options={mareographOptions ?? []}
+          selected={state.mareographs ?? []}
+          setSelected={updateState}
+          actionType="mareographs"
+          disabled={state.status === Status.Removed}
+          isLoading={isLoadingMareographs}
         />
       </IonGrid>
     </>
