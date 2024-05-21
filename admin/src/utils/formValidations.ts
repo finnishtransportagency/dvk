@@ -180,10 +180,6 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
       msg: translationError(state.windGauge) ? requiredMsg : '',
     },
     {
-      id: 'seaLevel',
-      msg: translationError(state.seaLevel) ? requiredMsg : '',
-    },
-    {
       id: 'pilotExtraInfo',
       msg: translationError(state.trafficService?.pilot?.extraInfo) ? requiredMsg : '',
     },
