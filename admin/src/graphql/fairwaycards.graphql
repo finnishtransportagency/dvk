@@ -223,7 +223,6 @@ fragment FairwayCardParts on FairwayCard {
   }
   mareographs {
     id
-    name
   }
   windRecommendation {
     fi

@@ -81,9 +81,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     windGauge: mapText(card.windGauge),
     visibility: mapText(card.visibility),
     mareographs: card.mareographs?.map((id) => {
-      return {
-        id: id,
-      };
+      return { id };
     }),
     speedLimit: mapText(card.speedLimit),
     vesselRecommendation: mapText(card.vesselRecommendation),
