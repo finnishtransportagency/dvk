@@ -412,10 +412,6 @@ export function usePilotLayer() {
   return useDataLayer('pilot', 'pilot', 'EPSG:4258');
 }
 
-export function useHarborLayer() {
-  return useDataLayer('harbor', 'harbor');
-}
-
 export function useCoastalWarningLayer() {
   return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, true, filterMarineWarnings('coastalwarning'));
 }

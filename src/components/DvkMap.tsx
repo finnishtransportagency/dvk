@@ -358,7 +358,7 @@ class DvkMap {
       });
     };
 
-    const backLayers: Array<VectorTileLayer<VectorTileSource>> = [];
+    const backLayers: Array<VectorTileLayer<FeatureLike>> = [];
 
     const buckets: Array<{ source: string; layers: Array<string> }> = [];
 
@@ -405,7 +405,7 @@ class DvkMap {
       backLayers.push(layer);
     });
 
-    const bgFiLayer = this.getFeatureLayer('finland') as VectorLayer<VectorSource<FeatureLike>>;
+    const bgFiLayer = this.getFeatureLayer('finland') as VectorLayer<Feature<Geometry>>;
     bgFiLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -414,7 +414,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlmeriLayer = this.getFeatureLayer('mml_meri') as VectorLayer<VectorSource<FeatureLike>>;
+    const bgMmlmeriLayer = this.getFeatureLayer('mml_meri') as VectorLayer<Feature<Geometry>>;
     bgMmlmeriLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -423,7 +423,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlmerirantaviivaLayer = this.getFeatureLayer('mml_meri_rantaviiva') as VectorLayer<VectorSource<FeatureLike>>;
+    const bgMmlmerirantaviivaLayer = this.getFeatureLayer('mml_meri_rantaviiva') as VectorLayer<Feature<Geometry>>;
     bgMmlmerirantaviivaLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -433,7 +433,7 @@ class DvkMap {
       })
     );
 
-    const bgMmljarviLayer = this.getFeatureLayer('mml_jarvi') as VectorLayer<VectorSource<FeatureLike>>;
+    const bgMmljarviLayer = this.getFeatureLayer('mml_jarvi') as VectorLayer<Feature<Geometry>>;
     bgMmljarviLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -442,7 +442,7 @@ class DvkMap {
       })
     );
 
-    const bgMmljarvirantaviivaLayer = this.getFeatureLayer('mml_jarvi_rantaviiva') as VectorLayer<VectorSource<FeatureLike>>;
+    const bgMmljarvirantaviivaLayer = this.getFeatureLayer('mml_jarvi_rantaviiva') as VectorLayer<Feature<Geometry>>;
     bgMmljarvirantaviivaLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -452,7 +452,7 @@ class DvkMap {
       })
     );
 
-    const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer<VectorSource<FeatureLike>>;
+    const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer<Feature<Geometry>>;
     bgBsLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -461,7 +461,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer<VectorSource<FeatureLike>>;
+    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer<Feature<Geometry>>;
     bgMmlsatamatLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -474,7 +474,7 @@ class DvkMap {
       })
     );
 
-    const bgMmllaituritLayer = this.getFeatureLayer('mml_laiturit') as VectorLayer<VectorSource<FeatureLike>>;
+    const bgMmllaituritLayer = this.getFeatureLayer('mml_laiturit') as VectorLayer<Feature<Geometry>>;
     bgMmllaituritLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -484,7 +484,7 @@ class DvkMap {
       })
     );
 
-    const userLocationLayer = this.getFeatureLayer('userlocation') as VectorLayer<VectorSource<FeatureLike>>;
+    const userLocationLayer = this.getFeatureLayer('userlocation') as VectorLayer<Feature<Geometry>>;
     userLocationLayer.setStyle(
       new Style({
         image: new Icon({

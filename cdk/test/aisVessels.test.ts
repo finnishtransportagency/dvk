@@ -1,4 +1,3 @@
-import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/api/aisvessels-handler';
 import { mockAISALBEvent } from './mocks';
 import { gunzip } from 'zlib';
@@ -111,4 +110,4 @@ it('should return right cache headers', async () => {
   assert(response.body);
   const headers = getCacheControlHeaders('aisvessels')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
-})
+});

@@ -343,24 +343,6 @@ exports[`should get harbors from DynamoDB 1`] = `
       },
       "id": "1;2",
       "properties": {
-        "fairwayCards": [
-          {
-            "id": "test",
-            "name": {
-              "en": "Testen",
-              "fi": "Testfi",
-              "sv": "Testsv",
-            },
-          },
-          {
-            "id": "test2",
-            "name": {
-              "en": "Testen2",
-              "fi": "Testfi2",
-              "sv": "Testsv2",
-            },
-          },
-        ],
         "featureType": "harbor",
         "harborId": "test1",
         "id": "1;2",
@@ -368,6 +350,27 @@ exports[`should get harbors from DynamoDB 1`] = `
           "en": "Harboren",
           "fi": "Harborfi",
           "sv": "Harborsv",
+        },
+        "quays": 0,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          3,
+          4,
+        ],
+      },
+      "id": "3;4",
+      "properties": {
+        "featureType": "harbor",
+        "harborId": "test2",
+        "id": "3;4",
+        "name": {
+          "en": "Harboren2",
+          "fi": "Harborfi2",
+          "sv": "Harborsv2",
         },
         "quays": 0,
       },
@@ -391,16 +394,6 @@ exports[`should get harbors from cache when DynamoDB api call fails 1`] = `
       },
       "id": "21.21676;62.35417",
       "properties": {
-        "fairwayCards": [
-          {
-            "id": "kaskinen",
-            "name": {
-              "en": "Kaskinen channel",
-              "fi": "Kaskisten väylä",
-              "sv": "Kasköleden",
-            },
-          },
-        ],
         "fax": "+35862207300",
         "featureType": "harbor",
         "harborId": "kaskinen",
