@@ -75,16 +75,6 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
           error={validationErrors.find((error) => error.id === 'windGauge')?.msg}
           inputType="textarea"
         />
-        <TextInputRow
-          labelKey="fairwaycard.sea-level"
-          value={state.seaLevel}
-          updateState={updateState}
-          actionType="seaLevel"
-          required={!!state.seaLevel?.fi || !!state.seaLevel?.sv || !!state.seaLevel?.en}
-          disabled={state.status === Status.Removed}
-          error={validationErrors.find((error) => error.id === 'seaLevel')?.msg}
-          inputType="textarea"
-        />
       </IonGrid>
     </>
   );

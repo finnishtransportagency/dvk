@@ -70,6 +70,7 @@ input FairwayCardInput {
   visibility: TextInput
   windGauge: TextInput
   vesselRecommendation: TextInput
+  mareographs: [Int!]
   seaLevel: TextInput
   windRecommendation: TextInput
   trafficService: TrafficServiceInput
@@ -241,7 +242,7 @@ type FairwayCard {
   visibility: Text
   windGauge: Text
   vesselRecommendation: Text
-  seaLevel: Text
+  mareographs: [Int!]
   windRecommendation: Text
   trafficService: TrafficService
   harbors: [Harbor!]
@@ -562,7 +563,7 @@ type TemporaryNotification {
 
 type Mareograph {
   id: Int!
-  name: String!
+  name: String
   dateTime: Float
   waterLevel: Float
   n2000WaterLevel: Float
