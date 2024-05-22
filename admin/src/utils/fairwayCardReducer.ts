@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
-import { checkEndDateError, dateError, sortPictures } from './common';
+import { dateError, endDateError, sortPictures } from './common';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -931,7 +931,7 @@ export const fairwayCardReducer = (
       notification?.endDate &&
       notification?.startDate &&
       !dateError(notification?.startDate) &&
-      checkEndDateError(notification?.startDate ?? '', notification?.endDate ?? '')
+      endDateError(notification?.startDate ?? '', notification?.endDate ?? '')
     ) {
       errorMsg = t(ErrorMessageKeys?.endDateError);
     }

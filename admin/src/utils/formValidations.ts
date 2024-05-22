@@ -1,6 +1,7 @@
 import { diff } from 'deep-object-diff';
 import { FairwayCardInput, GeometryInput, HarborInput, TextInput } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
+import { dateError, endDateError } from './common';
 
 function requiredError(input?: TextInput | null): boolean {
   return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
@@ -93,7 +94,7 @@ function validatePictures(state: FairwayCardInput, requiredMsg: string) {
   return pictureTextErrors;
 }
 
-function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: string) {
+function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: string, invalidErrorMsg: string, endDateErrorMsg: string) {
   const temporaryNotificationContentErrors =
     state.temporaryNotifications
       ?.flatMap((notification, i) => (requiredError(notification.content) ? i : null))
@@ -104,9 +105,9 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
           msg: requiredMsg,
         };
       }) ?? [];
-  /*const temporaryNotificationStartDateErrors =
+  const temporaryNotificationStartDateErrors =
     state.temporaryNotifications
-      ?.flatMap((notification, i) => (dateError(notification.startDate) ? i : null))
+      ?.flatMap((notification, i) => (!notification.startDate ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {
@@ -114,21 +115,42 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
           msg: requiredMsg,
         };
       }) ?? [];
-  // right place for this might be in reducer, but it works and I don't dare to touch this for now
-  const temporaryNotificationEndDateErrors =
+  const temporaryNotificationEndDateInputErrors =
     state.temporaryNotifications
-      ?.flatMap((notification, i) => (checkEndDateError(notification.startDate ?? '', notification.endDate ?? '') ? i : null))
+      ?.flatMap((notification, i) => (dateError(notification.endDate) ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {
           id: 'temporaryNotificationEndDate-' + vIndex,
-          msg: requiredMsg,
+          msg: invalidErrorMsg,
         };
-      }) ?? [];*/
-  return { temporaryNotificationContentErrors };
+      }) ?? [];
+  const temporaryNotificationEndDateErrors =
+    state.temporaryNotifications
+      ?.flatMap((notification, i) => (endDateError(notification.startDate, notification.endDate ?? '') ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'temporaryNotificationEndDate-' + vIndex,
+          msg: endDateErrorMsg,
+        };
+      }) ?? [];
+  return {
+    temporaryNotificationContentErrors,
+    temporaryNotificationStartDateErrors,
+    temporaryNotificationEndDateInputErrors,
+    temporaryNotificationEndDateErrors,
+  };
 }
 
-export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
+// invalidErrorMsg and dateErrorMsg are only for temporaryNotifications, since they're bit of a special case
+export function validateFairwayCardForm(
+  state: FairwayCardInput,
+  requiredMsg: string,
+  primaryIdErrorMsg: string,
+  invalidErrorMsg: string,
+  endDateErrorMsg: string
+): ValidationType[] {
   const manualValidations = [
     { id: 'name', msg: requiredError(state.name) ? requiredMsg : '' },
     { id: 'primaryId', msg: primaryIdErrorMsg },
@@ -189,7 +211,12 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
   ];
 
   const { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors } = validateVtsAndTug(state, requiredMsg);
-  const { temporaryNotificationContentErrors } = validateTemporaryNotifications(state, requiredMsg);
+  const {
+    temporaryNotificationContentErrors,
+    temporaryNotificationStartDateErrors,
+    temporaryNotificationEndDateInputErrors,
+    temporaryNotificationEndDateErrors,
+  } = validateTemporaryNotifications(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
   return manualValidations.concat(
@@ -198,7 +225,10 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
     vhfChannelErrors,
     tugNameErrors,
     pictureTextErrors,
-    temporaryNotificationContentErrors
+    temporaryNotificationContentErrors,
+    temporaryNotificationStartDateErrors,
+    temporaryNotificationEndDateInputErrors,
+    temporaryNotificationEndDateErrors
   );
 }
 

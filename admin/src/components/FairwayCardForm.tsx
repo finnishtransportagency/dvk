@@ -179,7 +179,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
       if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
     }
-    const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg);
+    const invalidErrorMsg = t(ErrorMessageKeys?.invalid);
+    const endDateErrorMsg = t(ErrorMessageKeys.endDateError);
+    const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg, invalidErrorMsg, endDateErrorMsg);
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };

@@ -203,7 +203,7 @@ export function featureCollectionToSelectOptions(collection: FeatureCollection |
 }
 
 export function checkIfValidAndChangeFormatToLocal(value: string | undefined | null) {
-  if (value) {
+  if (value && !dateError(value)) {
     const date = value.split('T')[0];
     const parsedDate = parseISO(date);
     if (isValid(parsedDate)) {
@@ -236,12 +236,9 @@ export function dateError(date?: string | null): boolean {
   return true;
 }
 
-export function checkEndDateError(startDate: string, endDate: string): boolean {
+export function endDateError(startDate: string, endDate: string): boolean {
   if (!startDate || !endDate) {
     return false;
-  }
-  if (dateError(endDate)) {
-    return true;
   }
   endDate = endDate?.split('T')[0];
   startDate = startDate?.split('T')[0];
