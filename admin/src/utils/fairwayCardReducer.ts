@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
-import { sortPictures } from './common';
+import { checkEndDateError, dateError, sortPictures } from './common';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -897,6 +897,50 @@ export const fairwayCardReducer = (
         .concat({
           id: 'tugName-' + actionTarget,
           msg: currentTug?.name?.fi.trim() || currentTug?.name?.sv.trim() || currentTug?.name?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  }
+
+  // manual validations for temporary notifications
+  if (actionType === 'temporaryNotificationStartDate' && actionTarget !== undefined) {
+    const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
+    let errorMsg = '';
+
+    if (!notification?.startDate) {
+      errorMsg = t(ErrorMessageKeys?.required);
+    } else if (dateError(notification?.startDate)) {
+      errorMsg = t(ErrorMessageKeys?.invalid);
+    }
+
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'temporaryNotificationStartDate-' + actionTarget)
+        .concat({
+          id: 'temporaryNotificationStartDate-' + actionTarget,
+          msg: errorMsg,
+        })
+    );
+  } else if (actionType === 'temporaryNotificationEndDate' && actionTarget !== undefined) {
+    const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
+    let errorMsg = '';
+
+    if (notification?.endDate && dateError(notification?.endDate)) {
+      errorMsg = t(ErrorMessageKeys?.invalid);
+      // only if there's valid start date check if end date is same/after start date
+    } else if (
+      notification?.endDate &&
+      notification?.startDate &&
+      !dateError(notification?.startDate) &&
+      checkEndDateError(notification?.startDate ?? '', notification?.endDate ?? '')
+    ) {
+      errorMsg = t(ErrorMessageKeys?.endDateError);
+    }
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'temporaryNotificationEndDate-' + actionTarget)
+        .concat({
+          id: 'temporaryNotificationEndDate-' + actionTarget,
+          msg: errorMsg,
         })
     );
   }

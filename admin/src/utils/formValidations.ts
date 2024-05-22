@@ -1,7 +1,6 @@
 import { diff } from 'deep-object-diff';
 import { FairwayCardInput, GeometryInput, HarborInput, TextInput } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
-import { checkEndDateError, dateError } from './common';
 
 function requiredError(input?: TextInput | null): boolean {
   return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
@@ -105,7 +104,7 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
           msg: requiredMsg,
         };
       }) ?? [];
-  const temporaryNotificationStartDateErrors =
+  /*const temporaryNotificationStartDateErrors =
     state.temporaryNotifications
       ?.flatMap((notification, i) => (dateError(notification.startDate) ? i : null))
       .filter((val) => Number.isInteger(val))
@@ -125,8 +124,8 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
           id: 'temporaryNotificationEndDate-' + vIndex,
           msg: requiredMsg,
         };
-      }) ?? [];
-  return { temporaryNotificationContentErrors, temporaryNotificationStartDateErrors, temporaryNotificationEndDateErrors };
+      }) ?? [];*/
+  return { temporaryNotificationContentErrors };
 }
 
 export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
@@ -190,8 +189,7 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
   ];
 
   const { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors } = validateVtsAndTug(state, requiredMsg);
-  const { temporaryNotificationContentErrors, temporaryNotificationStartDateErrors, temporaryNotificationEndDateErrors } =
-    validateTemporaryNotifications(state, requiredMsg);
+  const { temporaryNotificationContentErrors } = validateTemporaryNotifications(state, requiredMsg);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
   return manualValidations.concat(
@@ -200,9 +198,7 @@ export function validateFairwayCardForm(state: FairwayCardInput, requiredMsg: st
     vhfChannelErrors,
     tugNameErrors,
     pictureTextErrors,
-    temporaryNotificationContentErrors,
-    temporaryNotificationStartDateErrors,
-    temporaryNotificationEndDateErrors
+    temporaryNotificationContentErrors
   );
 }
 
