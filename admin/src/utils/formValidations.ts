@@ -117,7 +117,7 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
       }) ?? [];
   const temporaryNotificationEndDateInputErrors =
     state.temporaryNotifications
-      ?.flatMap((notification, i) => (dateError(notification.endDate) ? i : null))
+      ?.flatMap((notification, i) => (notification.endDate && dateError(notification.endDate) ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {
@@ -127,7 +127,7 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
       }) ?? [];
   const temporaryNotificationEndDateErrors =
     state.temporaryNotifications
-      ?.flatMap((notification, i) => (endDateError(notification.startDate, notification.endDate ?? '') ? i : null))
+      ?.flatMap((notification, i) => (notification.endDate && endDateError(notification.startDate, notification.endDate ?? '') ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {

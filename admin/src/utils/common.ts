@@ -215,7 +215,7 @@ export function checkIfValidAndChangeFormatToLocal(value: string | undefined | n
 }
 
 export function checkIfValidAndChangeFormatToISO(value: string | undefined | null) {
-  if (value) {
+  if (value && !dateError(value)) {
     const parsedDate = parse(value, 'dd.MM.yyyy', new Date());
     if (isValid(parsedDate)) {
       return format(parsedDate, 'yyyy-MM-dd');

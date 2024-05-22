@@ -901,7 +901,7 @@ export const fairwayCardReducer = (
     );
   }
 
-  // manual validations for temporary notifications
+  // manual validations for temporary notifications (errors that shows before trying to save the whole card)
   if (actionType === 'temporaryNotificationStartDate' && actionTarget !== undefined) {
     const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
     let errorMsg = '';
