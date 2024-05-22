@@ -1,7 +1,7 @@
 import { TFunction } from 'i18next';
 import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
-import { Geometry } from 'ol/geom';
+import { Geometry, Point, Polygon } from 'ol/geom';
 import { Feature } from 'ol';
 import {
   AreaFairway,
@@ -11,6 +11,7 @@ import {
   PilotRouteFeatureProperties,
   PilotageLimitFeatureProperties,
 } from '../components/features';
+import * as olExtent from 'ol/extent';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -75,6 +76,60 @@ export function getFairwayCardPilotRoutes(fairwayCard: FairwayCardPartsFragment,
     return fairwayCard.pilotRoutes?.find((pr) => properties?.id === pr?.id) ?? false;
   });
   return pilotRoutes?.toSorted((a, b) => a?.getProperties()?.name.localeCompare(b?.getProperties()?.name, 'fi', { ignorePunctuation: true })) ?? [];
+}
+
+function getFairwayCardFairwayAreas(fairwayCard: FairwayCardPartsFragment) {
+  const area12Source = dvkMap.getVectorSource('area12');
+  const fairwayAreas: Feature<Geometry>[] = [];
+  for (const fairway of fairwayCard?.fairways || []) {
+    for (const area of fairway.areas ?? []) {
+      if (fairwayAreas.findIndex((f) => f.getId() === area.id) === -1) {
+        const feature = area12Source.getFeatureById(area.id) as Feature<Geometry>;
+        if (feature) {
+          fairwayAreas.push(feature);
+        }
+      }
+    }
+  }
+  return fairwayAreas;
+}
+
+export function getFairwayCardObservations(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  const fairwayAreas: Feature<Geometry>[] = getFairwayCardFairwayAreas(fairwayCard);
+  const maxDist = 10000;
+
+  const extent = olExtent.createEmpty();
+  for (const fa of fairwayAreas) {
+    const geom = fa.getGeometry();
+    if (geom) {
+      olExtent.extend(extent, geom.getExtent());
+    }
+  }
+  if (!olExtent.isEmpty(extent)) {
+    olExtent.buffer(extent, maxDist + 1, extent);
+    return features.filter((f) => {
+      const point = f.getGeometry() as Point;
+      const coord = point.getCoordinates();
+      if (olExtent.containsCoordinate(extent, point.getCoordinates())) {
+        let dist = maxDist + 1;
+        for (const fa of fairwayAreas) {
+          const area = fa.getGeometry() as Polygon;
+          const closestCoord = area.getClosestPoint(coord);
+          const pointDistance = Math.sqrt(Math.pow(coord[0] - closestCoord[0], 2) + Math.pow(coord[1] - closestCoord[1], 2));
+          dist = Math.min(pointDistance, dist);
+        }
+        if (dist <= maxDist) {
+          console.log(f.get('name') + ': ' + Math.round(dist));
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    });
+  }
+  return [];
 }
 
 export function getPilotPlaceFairwayCards(pilotPlaceId: number, fairwayCards: FairwayCardPartsFragment[]) {

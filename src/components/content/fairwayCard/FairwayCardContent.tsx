@@ -26,6 +26,7 @@ import {
   getTabLabel,
   getFairwayCardPilotageLimits,
   getFairwayCardSafetyEquipmentFaults,
+  getFairwayCardObservations,
 } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
@@ -41,6 +42,8 @@ import { useSafetyEquipmentAndFaultFeatures } from '../../SafetyEquipmentFeature
 import NotificationAlert from '../../Alert';
 import infoIcon from '../../../theme/img/info.svg';
 import { compareAsc } from 'date-fns';
+import { useObservationFeatures } from '../../ObservationFeatureLoader';
+import { ObservationInfo } from './ObservationInfo';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -66,6 +69,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const [safetyEquipmentFaults, setSafetyEquipmentFaults] = useState<SafetyEquipmentFault[]>([]);
   const [pilotageLimits, setPilotageLimits] = useState<Feature<Geometry>[]>([]);
   const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
+  const [observations, setObservations] = useState<Feature<Geometry>[]>([]);
 
   const {
     data: safetyEquipmentData,
@@ -76,6 +80,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { safetyEquipmentFaultFeatures, ready: safetyEquipmentsReady } = useSafetyEquipmentAndFaultFeatures();
   const { pilotageLimitFeatures, ready: pilotageLimitsReady } = usePilotageLimitFeatures();
   const { pilotRouteFeatures, ready: pilotRoutesReady } = usePilotRouteFeatures();
+  const { observationFeatures, ready: observationsReady } = useObservationFeatures();
 
   useEffect(() => {
     if (fairwayCard && safetyEquipmentsReady && !faultIsPending && !faultIsFetching) {
@@ -108,6 +113,12 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
       setPilotRoutes(getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures));
     }
   }, [fairwayCard, pilotRouteFeatures, pilotRoutesReady]);
+
+  useEffect(() => {
+    if (fairwayCard && observationsReady) {
+      setObservations(getFairwayCardObservations(fairwayCard, observationFeatures));
+    }
+  }, [observationsReady, observationFeatures, fairwayCard]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
@@ -237,7 +248,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <Paragraph title={t('windRecommendation')} bodyText={fairwayCard?.windRecommendation ?? undefined} showNoData />
               <Paragraph title={t('vesselRecommendation')} bodyText={fairwayCard?.vesselRecommendation ?? undefined} showNoData />
               <Paragraph title={t('visibilityRecommendation')} bodyText={fairwayCard?.visibility ?? undefined} showNoData />
-              <Paragraph title={t('windGauge')} bodyText={fairwayCard?.windGauge ?? undefined} showNoData />
+              <ObservationInfo observations={observations} />
               <Paragraph title={t('seaLevel')} bodyText={fairwayCard?.seaLevel ?? undefined} showNoData />
             </IonText>
 
