@@ -129,6 +129,9 @@ query findFairwayCardById($id: String!) {
       sv
       en
     }
+    mareographs {
+      id
+    }
     seaLevel {
       fi
       sv

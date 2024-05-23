@@ -13,6 +13,7 @@ import {
   useFairwaysQuery,
   useHarborsQuery,
   useHarbourByIdQuery,
+  useMareographsQuery,
   usePilotPlacesQuery,
   useSaveFairwayCardMutation,
   useSaveHarborMutation,
@@ -59,6 +60,10 @@ export function useHarbourByIdQueryData(id: string, refetchOnWindowFocus?: boole
 
 export function usePilotPlacesQueryData() {
   return usePilotPlacesQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
+}
+
+export function useMareographQueryData() {
+  return useMareographsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useSaveFairwayCardMutationQuery<TError = unknown, TContext = unknown>(

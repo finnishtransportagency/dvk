@@ -204,15 +204,8 @@ export const fairwayCardReducer = (
         },
       };
       break;
-    case 'seaLevel':
-      if (!actionLang) return state;
-      newState = {
-        ...state,
-        seaLevel: {
-          ...(state.seaLevel ?? { fi: '', sv: '', en: '' }),
-          [actionLang as string]: value as string,
-        },
-      };
+    case 'mareographs':
+      newState = { ...state, mareographs: value as number[] };
       break;
     case 'pilotEmail':
       newState = {
@@ -755,16 +748,6 @@ export const fairwayCardReducer = (
             newState.windGauge?.fi.trim() || newState.windGauge?.sv.trim() || newState.windGauge?.en.trim()
               ? t(ErrorMessageKeys?.required) || ''
               : '',
-        })
-    );
-  } else if (actionType === 'seaLevel' && validationErrors.find((error) => error.id === 'seaLevel')?.msg) {
-    setValidationErrors(
-      validationErrors
-        .filter((error) => error.id !== 'seaLevel')
-        .concat({
-          id: 'seaLevel',
-          msg:
-            newState.seaLevel?.fi.trim() || newState.seaLevel?.sv.trim() || newState.seaLevel?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
         })
     );
   } else if (actionType === 'pilotExtraInfo' && validationErrors.find((error) => error.id === 'pilotExtraInfo')?.msg) {

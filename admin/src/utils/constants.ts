@@ -64,7 +64,7 @@ export type FairwayCardActionType =
   | 'vesselRecommendation'
   | 'visibility'
   | 'windGauge'
-  | 'seaLevel'
+  | 'mareographs'
   | 'pilotEmail'
   | 'pilotExtraInfo'
   | 'pilotPhone'
