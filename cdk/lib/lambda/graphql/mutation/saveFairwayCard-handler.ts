@@ -80,6 +80,8 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     windRecommendation: mapText(card.windRecommendation),
     windGauge: mapText(card.windGauge),
     visibility: mapText(card.visibility),
+    //keep already saved seaLevel-values for now even though other changes can occur
+    seaLevel: old?.seaLevel,
     mareographs: card.mareographs?.map((id) => {
       return { id };
     }),
