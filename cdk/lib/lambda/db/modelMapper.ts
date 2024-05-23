@@ -367,9 +367,6 @@ function mapPilotRoutes(pilotRoutes: PilotRoute[], features: FeatureCollection) 
 }
 
 function mapTemporaryNotifications(notifications: TemporaryNotification[]) {
-  if (notifications.length < 1) {
-    return [{ content: { fi: '', sv: '', en: '' }, startDate: '', endDate: '' }];
-  }
   return notifications.map((notification) => {
     return {
       content: notification.content,

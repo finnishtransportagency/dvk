@@ -41,17 +41,7 @@ exports[`should get card by id from the DynamoDB 1`] = `
   "seaLevel": undefined,
   "speedLimit": undefined,
   "status": "PUBLIC",
-  "temporaryNotifications": [
-    {
-      "content": {
-        "en": "",
-        "fi": "",
-        "sv": "",
-      },
-      "endDate": "",
-      "startDate": "",
-    },
-  ],
+  "temporaryNotifications": [],
   "trafficService": {
     "pilot": {
       "email": undefined,
@@ -126,17 +116,7 @@ exports[`should get card by id from the DynamoDB when cache expired 1`] = `
   "seaLevel": undefined,
   "speedLimit": undefined,
   "status": "DRAFT",
-  "temporaryNotifications": [
-    {
-      "content": {
-        "en": "",
-        "fi": "",
-        "sv": "",
-      },
-      "endDate": "",
-      "startDate": "",
-    },
-  ],
+  "temporaryNotifications": [],
   "trafficService": {
     "pilot": {
       "email": undefined,
