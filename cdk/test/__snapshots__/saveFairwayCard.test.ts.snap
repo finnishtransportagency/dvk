@@ -80,6 +80,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
   },
   "pictures": null,
   "pilotRoutes": null,
+  "seaLevel": undefined,
   "speedLimit": {
     "en": "speedLimiten",
     "fi": "speedLimit",
@@ -201,6 +202,7 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "navigationCondition": null,
   "pictures": null,
   "pilotRoutes": null,
+  "seaLevel": undefined,
   "speedLimit": null,
   "status": "DRAFT",
   "temporaryNotifications": null,
