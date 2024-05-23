@@ -5,11 +5,22 @@ import { Area, Fairway } from '../../../graphql/generated';
 import { IonText } from '@ionic/react';
 import { Lang } from '../../../utils/constants';
 import uniqueId from 'lodash/uniqueId';
+import { TFunction } from 'i18next';
 
 type AreaInfoProps = {
   data?: Fairway[] | null;
   isN2000HeightSystem?: boolean;
 };
+
+export function getAreaName(area: Area, t: TFunction) {
+  const name = area.name;
+  const type = t('areaType' + area.typeCode);
+  // ankkurointialueet pitkässä muodossa esim. osa 'c' -> 'ankkurointialue c'
+  if (area.typeCode == 2) {
+    return name ? type + ' ' + name : type;
+  }
+  return name ?? type;
+}
 
 export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
@@ -69,7 +80,7 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
                     onBlur={() => highlightArea(0)}
                   >
                     <li className="group inlineHoverText">
-                      <em>{area?.name ?? <>{t('areaType' + area?.typeCode)}</>}</em>
+                      <em>{getAreaName(area, t)}</em>
                       {isDraftAvailable && (
                         <>
                           <br />
