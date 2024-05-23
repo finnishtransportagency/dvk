@@ -4,7 +4,6 @@ import { ActionType, Lang, ValidationType } from '../../utils/constants';
 import { TemporaryNotificationInput } from '../../graphql/generated';
 import CalendarInput from './CalendarInput';
 import { useTranslation } from 'react-i18next';
-import { checkEndDateError } from '../../utils/common';
 
 interface CalendarInputRowProps {
   idx: number;
@@ -42,7 +41,7 @@ const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setVa
           actionTarget={idx}
           helperText={t('general.date-helper-text')}
           actionType="temporaryNotificationEndDate"
-          error={section.endDate && checkEndDateError(section?.startDate ?? '', section.endDate ?? '') ? t('general.end-date-error') : undefined}
+          error={validationErrors.find((error) => error.id === 'temporaryNotificationEndDate-' + idx)?.msg}
           disabled={disabled}
         />
       </IonCol>

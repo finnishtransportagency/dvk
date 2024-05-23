@@ -1,5 +1,5 @@
 import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { Maybe, Status, Operation, Orientation } from '../../../graphql/generated';
+import { Maybe, Status, Operation, Orientation, Mareograph } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { getFairwayCardTableName } from '../environment';
@@ -134,6 +134,8 @@ class FairwayCardDBModel {
   vesselRecommendation?: Maybe<Text>;
 
   seaLevel?: Maybe<Text>;
+
+  mareographs?: Maybe<Mareograph[]>;
 
   windRecommendation?: Maybe<Text>;
 

@@ -1,0 +1,6 @@
+query mareographs {
+  mareographs {
+    id
+    name
+  }
+}

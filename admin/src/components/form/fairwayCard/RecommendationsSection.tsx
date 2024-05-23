@@ -1,9 +1,11 @@
 import React from 'react';
-import { IonGrid, IonText } from '@ionic/react';
+import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import { ActionType, Lang, ValidationType, ValueType } from '../../../utils/constants';
-import { FairwayCardInput, Status } from '../../../graphql/generated';
+import { FairwayCardInput, Mareograph, Status } from '../../../graphql/generated';
 import TextInputRow from '../TextInputRow';
 import { useTranslation } from 'react-i18next';
+import SelectWithFilter from '../SelectWithFilter';
+import { mareographsToSelectOptionList } from '../../../utils/common';
 
 interface RecommendationsSectionProps {
   state: FairwayCardInput;
@@ -15,9 +17,17 @@ interface RecommendationsSectionProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors: ValidationType[];
+  isLoadingMareographs?: boolean;
+  mareographOptions?: Mareograph[];
 }
 
-const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({ state, updateState, validationErrors }) => {
+const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
+  state,
+  updateState,
+  validationErrors,
+  isLoadingMareographs,
+  mareographOptions,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -66,16 +76,19 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({ state, 
           error={validationErrors.find((error) => error.id === 'windGauge')?.msg}
           inputType="textarea"
         />
-        <TextInputRow
-          labelKey="fairwaycard.sea-level"
-          value={state.seaLevel}
-          updateState={updateState}
-          actionType="seaLevel"
-          required={!!state.seaLevel?.fi || !!state.seaLevel?.sv || !!state.seaLevel?.en}
-          disabled={state.status === Status.Removed}
-          error={validationErrors.find((error) => error.id === 'seaLevel')?.msg}
-          inputType="textarea"
-        />
+        <IonRow>
+          <IonCol size="3.95">
+            <SelectWithFilter
+              label={t('fairwaycard.linked-mareographs')}
+              options={mareographsToSelectOptionList(mareographOptions)}
+              selected={state.mareographs ?? []}
+              setSelected={updateState}
+              actionType="mareographs"
+              disabled={state.status === Status.Removed}
+              isLoading={isLoadingMareographs}
+            />
+          </IonCol>
+        </IonRow>
       </IonGrid>
     </>
   );

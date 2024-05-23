@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
+import { FairwayCardOrHarbor, Mareograph, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
 import { ActionType, ItemType, Lang, SelectOption } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
@@ -203,7 +203,7 @@ export function featureCollectionToSelectOptions(collection: FeatureCollection |
 }
 
 export function checkIfValidAndChangeFormatToLocal(value: string | undefined | null) {
-  if (value) {
+  if (value && !dateError(value)) {
     const date = value.split('T')[0];
     const parsedDate = parseISO(date);
     if (isValid(parsedDate)) {
@@ -215,7 +215,7 @@ export function checkIfValidAndChangeFormatToLocal(value: string | undefined | n
 }
 
 export function checkIfValidAndChangeFormatToISO(value: string | undefined | null) {
-  if (value) {
+  if (value && !dateError(value)) {
     const parsedDate = parse(value, 'dd.MM.yyyy', new Date());
     if (isValid(parsedDate)) {
       return format(parsedDate, 'yyyy-MM-dd');
@@ -236,12 +236,9 @@ export function dateError(date?: string | null): boolean {
   return true;
 }
 
-export function checkEndDateError(startDate: string, endDate: string): boolean {
+export function endDateError(startDate: string, endDate: string): boolean {
   if (!startDate || !endDate) {
     return false;
-  }
-  if (dateError(endDate)) {
-    return true;
   }
   endDate = endDate?.split('T')[0];
   startDate = startDate?.split('T')[0];
@@ -255,14 +252,14 @@ export function checkEndDateError(startDate: string, endDate: string): boolean {
 }
 
 export type NoticeListingTypes = {
-  active: boolean;
-  incoming: boolean;
+  active: number;
+  incoming: number;
 };
 
-export function getNotificationListingTypes(notifications: TemporaryNotification[]): NoticeListingTypes {
+export function getNotificationListingTypesCount(notifications: TemporaryNotification[]): NoticeListingTypes {
   const currentDate = new Date().setHours(0, 0, 0, 0);
 
-  const active = notifications?.some((notification) => {
+  const active = notifications?.filter((notification) => {
     if (!notification.startDate) {
       return false;
     }
@@ -273,7 +270,7 @@ export function getNotificationListingTypes(notifications: TemporaryNotification
     return compareAsc(currentDate, startDate) >= 0 && compareAsc(endDate, currentDate) >= 0;
   });
 
-  const incoming = notifications?.some((notification) => {
+  const incoming = notifications?.filter((notification) => {
     if (!notification.startDate) {
       return false;
     }
@@ -283,7 +280,23 @@ export function getNotificationListingTypes(notifications: TemporaryNotification
   });
 
   return {
-    active: active,
-    incoming: incoming,
+    active: active.length,
+    incoming: incoming.length,
   };
+}
+
+// when api returns language versions this can be deleted (db changes necessary too)
+export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefined) {
+  if (!mareographs) {
+    return [];
+  }
+
+  return mareographs.map((mareograph) => {
+    return {
+      id: mareograph.id,
+      name: {
+        fi: mareograph.name,
+      },
+    };
+  });
 }

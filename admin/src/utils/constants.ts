@@ -15,11 +15,13 @@ export type ErrorMessageType = {
   required: string;
   invalid: string;
   duplicateId: string;
+  endDateError: string;
 };
 export const ErrorMessageKeys: ErrorMessageType = {
   required: 'general.required-field',
   invalid: 'general.check-input',
   duplicateId: 'fairwaycard.error-duplicate-id',
+  endDateError: 'general.end-date-error',
 };
 
 export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput[];
@@ -62,7 +64,7 @@ export type FairwayCardActionType =
   | 'vesselRecommendation'
   | 'visibility'
   | 'windGauge'
-  | 'seaLevel'
+  | 'mareographs'
   | 'pilotEmail'
   | 'pilotExtraInfo'
   | 'pilotPhone'
