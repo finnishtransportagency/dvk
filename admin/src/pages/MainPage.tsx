@@ -113,11 +113,12 @@ const MainPage: React.FC = () => {
 
     let typesString;
 
-    if (listingTypes.active) {
-      typesString = t('active');
+    if (listingTypes.active > 0) {
+      typesString = t('active') + ` (${listingTypes.active})`;
     }
     if (listingTypes.incoming) {
       typesString = typesString ? typesString + ', ' + t('incoming') : t('incoming');
+      typesString = typesString + ` (${listingTypes.incoming})`;
     }
 
     typesString = typesString?.toLocaleLowerCase();

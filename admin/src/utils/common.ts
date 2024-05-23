@@ -255,14 +255,14 @@ export function checkEndDateError(startDate: string, endDate: string): boolean {
 }
 
 export type NoticeListingTypes = {
-  active: boolean;
-  incoming: boolean;
+  active: number;
+  incoming: number;
 };
 
 export function getNotificationListingTypes(notifications: TemporaryNotification[]): NoticeListingTypes {
   const currentDate = new Date().setHours(0, 0, 0, 0);
 
-  const active = notifications?.some((notification) => {
+  const active = notifications?.filter((notification) => {
     if (!notification.startDate) {
       return false;
     }
@@ -273,7 +273,7 @@ export function getNotificationListingTypes(notifications: TemporaryNotification
     return compareAsc(currentDate, startDate) >= 0 && compareAsc(endDate, currentDate) >= 0;
   });
 
-  const incoming = notifications?.some((notification) => {
+  const incoming = notifications?.filter((notification) => {
     if (!notification.startDate) {
       return false;
     }
@@ -283,7 +283,7 @@ export function getNotificationListingTypes(notifications: TemporaryNotification
   });
 
   return {
-    active: active,
-    incoming: incoming,
+    active: active.length,
+    incoming: incoming.length,
   };
 }
