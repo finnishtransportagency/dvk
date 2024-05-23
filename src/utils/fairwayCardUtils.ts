@@ -107,27 +107,29 @@ export function getFairwayCardObservations(fairwayCard: FairwayCardPartsFragment
   }
   if (!olExtent.isEmpty(extent)) {
     olExtent.buffer(extent, maxDist + 1, extent);
-    return features.filter((f) => {
+    const featuresInExtent = features.filter((f) => {
+      const point = f.getGeometry() as Point;
+      return olExtent.containsCoordinate(extent, point.getCoordinates());
+    });
+
+    const closestFeatures: Array<{ feat: Feature<Geometry>; dist: number }> = [];
+
+    for (const f of featuresInExtent) {
       const point = f.getGeometry() as Point;
       const coord = point.getCoordinates();
-      if (olExtent.containsCoordinate(extent, point.getCoordinates())) {
-        let dist = maxDist + 1;
-        for (const fa of fairwayAreas) {
-          const area = fa.getGeometry() as Polygon;
-          const closestCoord = area.getClosestPoint(coord);
-          const pointDistance = Math.sqrt(Math.pow(coord[0] - closestCoord[0], 2) + Math.pow(coord[1] - closestCoord[1], 2));
-          dist = Math.min(pointDistance, dist);
-        }
-        if (dist <= maxDist) {
-          console.log(f.get('name') + ': ' + Math.round(dist));
-          return true;
-        } else {
-          return false;
-        }
-      } else {
-        return false;
+      let dist = maxDist + 1;
+      for (const fa of fairwayAreas) {
+        const area = fa.getGeometry() as Polygon;
+        const closestCoord = area.getClosestPoint(coord);
+        const pointDistance = Math.sqrt(Math.pow(coord[0] - closestCoord[0], 2) + Math.pow(coord[1] - closestCoord[1], 2));
+        dist = Math.min(pointDistance, dist);
       }
-    });
+      if (dist <= maxDist) {
+        closestFeatures.push({ feat: f, dist: dist });
+      }
+    }
+    closestFeatures.sort((a, b) => a.dist - b.dist);
+    return closestFeatures.map((cf) => cf.feat);
   }
   return [];
 }
