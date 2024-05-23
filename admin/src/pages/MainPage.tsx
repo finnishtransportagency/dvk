@@ -17,7 +17,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 import { ItemType, Lang } from '../utils/constants';
-import { filterItemList, getNotificationListingTypes } from '../utils/common';
+import { filterItemList, getNotificationListingTypesCount } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
@@ -109,15 +109,16 @@ const MainPage: React.FC = () => {
     if (!temporaryNotifications) {
       return '-';
     }
-    const listingTypes = getNotificationListingTypes(temporaryNotifications);
+    const listingTypes = getNotificationListingTypesCount(temporaryNotifications);
 
     let typesString;
 
-    if (listingTypes.active) {
-      typesString = t('active');
+    if (listingTypes.active > 0) {
+      typesString = t('active') + ` (${listingTypes.active})`;
     }
     if (listingTypes.incoming) {
       typesString = typesString ? typesString + ', ' + t('incoming') : t('incoming');
+      typesString = typesString + ` (${listingTypes.incoming})`;
     }
 
     typesString = typesString?.toLocaleLowerCase();
