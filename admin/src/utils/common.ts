@@ -259,7 +259,7 @@ export type NoticeListingTypes = {
   incoming: number;
 };
 
-export function getNotificationListingTypes(notifications: TemporaryNotification[]): NoticeListingTypes {
+export function getNotificationListingTypesCount(notifications: TemporaryNotification[]): NoticeListingTypes {
   const currentDate = new Date().setHours(0, 0, 0, 0);
 
   const active = notifications?.filter((notification) => {
