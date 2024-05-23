@@ -96,7 +96,7 @@ function getFairwayCardFairwayAreas(fairwayCard: FairwayCardPartsFragment) {
 
 export function getFairwayCardObservations(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
   const fairwayAreas: Feature<Geometry>[] = getFairwayCardFairwayAreas(fairwayCard);
-  const maxDist = 10000;
+  const maxDist = 21000; // 21km
 
   const extent = olExtent.createEmpty();
   for (const fa of fairwayAreas) {
