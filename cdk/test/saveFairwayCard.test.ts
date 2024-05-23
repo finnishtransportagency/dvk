@@ -66,11 +66,7 @@ test('test mapFairwayCardToModel all', () => {
       en: 'navigationConditionen',
     },
     primaryFairwayId: 1,
-    seaLevel: {
-      fi: 'seaLevel',
-      sv: 'seaLevelsv',
-      en: 'seaLevelen',
-    },
+    mareographs: [1, 2, 3, 4],
     secondaryFairwayId: 1,
     speedLimit: {
       fi: 'speedLimit',

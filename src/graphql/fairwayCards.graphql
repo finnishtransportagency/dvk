@@ -221,6 +221,9 @@ fragment FairwayCardParts on FairwayCard {
     sv
     en
   }
+  mareographs {
+    id
+  }
   seaLevel {
     fi
     sv
