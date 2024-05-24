@@ -37,6 +37,11 @@ class Config {
     throw new Error(Config.errorMessage('ENVIRONMENT'));
   }
 
+  // the new table with sort keys for versioning
+  static getFairwayCardWithVersionsTableName(): string {
+    return `FairwayCardWithVersions-${Config.getEnvironment()}`;
+  }
+
   static getFairwayCardTableName(): string {
     return `FairwayCard-${Config.getEnvironment()}`;
   }

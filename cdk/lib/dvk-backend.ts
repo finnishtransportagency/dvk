@@ -64,7 +64,9 @@ export class DvkBackendStack extends Stack {
         console.log('WAF config failed: %s', e);
       }
     }
-    const fairwayCardTable = this.createFairwayCardTable();
+    // called so data migration can be made from old table to new table, otherwise old table is deleted
+    this.createFairwayCardTable();
+    const fairwayCardWithVersionsTable = this.createFairwayCardWithVersionsTable();
     const harborTable = this.createHarborTable();
 
     const layer = LayerVersion.fromLayerVersionArn(
@@ -93,7 +95,7 @@ export class DvkBackendStack extends Stack {
     });
 
     dbStreamHandler.addEventSource(
-      new DynamoEventSource(fairwayCardTable, {
+      new DynamoEventSource(fairwayCardWithVersionsTable, {
         startingPosition: lambda.StartingPosition.LATEST,
       })
     );
@@ -124,7 +126,7 @@ export class DvkBackendStack extends Stack {
         layers: [layer],
         vpc: lambdaFunc.useVpc ? vpc : undefined,
         environment: {
-          FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
+          FAIRWAY_CARD_TABLE: Config.getFairwayCardWithVersionsTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
           ENVIRONMENT: Config.getEnvironment(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
@@ -151,12 +153,12 @@ export class DvkBackendStack extends Stack {
         fieldName: fieldName,
       });
       if (typeName === 'Mutation') {
-        fairwayCardTable.grantReadWriteData(backendLambda);
+        fairwayCardWithVersionsTable.grantReadWriteData(backendLambda);
         harborTable.grantReadWriteData(backendLambda);
         staticBucket.grantPut(backendLambda);
         cacheBucket.grantDelete(backendLambda);
       } else {
-        fairwayCardTable.grantReadData(backendLambda);
+        fairwayCardWithVersionsTable.grantReadData(backendLambda);
         harborTable.grantReadData(backendLambda);
       }
       cacheBucket.grantPut(backendLambda);
@@ -164,9 +166,9 @@ export class DvkBackendStack extends Stack {
       staticBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
-    Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
+    Tags.of(fairwayCardWithVersionsTable).add('Backups-' + Config.getEnvironment(), 'true');
     Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const alb = this.createALB(env, fairwayCardTable, harborTable, cacheBucket, staticBucket, layer, vpc);
+    const alb = this.createALB(env, fairwayCardWithVersionsTable, harborTable, cacheBucket, staticBucket, layer, vpc);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
@@ -243,6 +245,32 @@ export class DvkBackendStack extends Stack {
       tableName: Config.getFairwayCardTableName(),
       partitionKey: {
         name: 'id',
+        type: AttributeType.STRING,
+      },
+      pointInTimeRecovery: true,
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      stream: StreamViewType.NEW_AND_OLD_IMAGES,
+      timeToLiveAttribute: 'expires',
+    });
+    table.addGlobalSecondaryIndex({
+      indexName: 'FairwayCardByFairwayIdIndex',
+      partitionKey: { name: 'id', type: AttributeType.STRING },
+      projectionType: ProjectionType.KEYS_ONLY,
+      sortKey: { name: 'fairwayIds', type: AttributeType.STRING },
+    });
+    return table;
+  }
+
+  private createFairwayCardWithVersionsTable(): Table {
+    const table = new Table(this, 'FairwayCardTableWithVersions', {
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      tableName: Config.getFairwayCardWithVersionsTableName(),
+      partitionKey: {
+        name: 'id',
+        type: AttributeType.STRING,
+      },
+      sortKey: {
+        name: 'version',
         type: AttributeType.STRING,
       },
       pointInTimeRecovery: true,
@@ -391,7 +419,7 @@ export class DvkBackendStack extends Stack {
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),
-          FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
+          FAIRWAY_CARD_TABLE: Config.getFairwayCardWithVersionsTableName(),
           HARBOR_TABLE: Config.getHarborTableName(),
           TZ: 'Europe/Helsinki',
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
