@@ -2,7 +2,7 @@ import Map from 'ol/Map';
 import Select from 'ol/interaction/Select';
 import { FeatureLayerId } from '../../utils/constants';
 import { never, pointerMove } from 'ol/events/condition';
-import { getBoardLineStyle, getAreaStyleBySource } from '../layers';
+import { getAreaStyleBySource } from '../layers';
 import dvkMap from '../DvkMap';
 import { getPilotStyle } from '../layerStyles/pilotStyles';
 import { getSafetyEquipmentStyle } from '../layerStyles/safetyEquipmentStyles';
@@ -91,8 +91,6 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
       return getSafetyEquipmentStyle(feature, resolution, true, true);
     case 'marinewarning':
       return getMarineWarningStyle(feature, true);
-    case 'boardline':
-      return getBoardLineStyle('#000000', 1);
     case 'mareograph':
       return getMareographStyle(feature, true, resolution);
     case 'observation':

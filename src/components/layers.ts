@@ -44,6 +44,7 @@ import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styl
 import { anchorageAreaIconStyle, meetAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
 import { getQuayStyle } from './layerStyles/quayStyles';
 import { getHarborStyle } from './layerStyles/harborStyles';
+import { getBoardLineStyle } from './layerStyles/boardLineStyles';
 
 const minResolutionHarbor = 3;
 
@@ -81,17 +82,6 @@ export function getLineStyle(color: string, width: number) {
   });
 }
 
-export function getBoardLineStyle(color: string, width: number) {
-  return new Style({
-    stroke: new Stroke({
-      color,
-      width,
-      lineDash: [15, 10],
-    }),
-    zIndex: 202,
-  });
-}
-
 function getArea12BorderLineStyle(feature: FeatureLike) {
   const props = feature.getProperties();
   const a1Props = props.area1Properties;
@@ -123,7 +113,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'specialarea15':
       return getSpecialAreaStyle(feature, true, highlighted);
     case 'boardline12':
-      return getBoardLineStyle('#000000', 1);
+      return getBoardLineStyle(true);
     case 'safetyequipmentfault':
       return getSafetyEquipmentStyle(feature, resolution, highlighted, true);
     case 'coastalwarning':
@@ -336,7 +326,7 @@ export function addAPILayers(map: Map) {
     id: 'boardline12',
     maxResolution: 75,
     renderBuffer: 1,
-    style: getBoardLineStyle('#000000', 0.5),
+    style: getBoardLineStyle(false),
     zIndex: 204,
   });
   addFeatureVectorLayer({
