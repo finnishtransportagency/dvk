@@ -439,14 +439,6 @@ export function addAPILayers(map: Map) {
     zIndex: 304,
     declutter: true,
   });
-  // Laiturit
-  addFeatureVectorLayer({
-    map: map,
-    id: 'quay',
-    renderBuffer: 100,
-    style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle')),
-    zIndex: 304,
-  });
   // Satamat
   addFeatureVectorLayer({
     map: map,
@@ -541,6 +533,15 @@ export function addAPILayers(map: Map) {
     style: getSelectedFairwayCardStyle,
     declutter: true,
     zIndex: 326,
+  });
+
+  // Laiturit
+  addFeatureVectorLayer({
+    map: map,
+    id: 'quay',
+    renderBuffer: 100,
+    style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle')),
+    zIndex: 330,
   });
 
   // Merivaroitukset
