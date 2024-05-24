@@ -106,7 +106,7 @@ export function getFairwayCardObservations(fairwayCard: FairwayCardPartsFragment
     }
   }
   if (!olExtent.isEmpty(extent)) {
-    olExtent.buffer(extent, maxDist + 1, extent);
+    olExtent.buffer(extent, maxDist, extent);
     const featuresInExtent = features.filter((f) => {
       const point = f.getGeometry() as Point;
       return olExtent.containsCoordinate(extent, point.getCoordinates());
@@ -117,7 +117,7 @@ export function getFairwayCardObservations(fairwayCard: FairwayCardPartsFragment
     for (const f of featuresInExtent) {
       const point = f.getGeometry() as Point;
       const coord = point.getCoordinates();
-      let dist = maxDist + 1;
+      let dist = maxDist;
       for (const fa of fairwayAreas) {
         const area = fa.getGeometry() as Polygon;
         const closestCoord = area.getClosestPoint(coord);
