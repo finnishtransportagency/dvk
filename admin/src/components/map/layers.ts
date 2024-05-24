@@ -2,19 +2,12 @@ import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import Style, { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
-import { Fill, Icon } from 'ol/style';
+import { Fill } from 'ol/style';
 import Map from 'ol/Map';
-import quayIcon from '../../theme/img/dock_icon.svg';
-import quayIconActive from '../../theme/img/dock_icon_active.svg';
-import quaySectionIcon from '../../theme/img/quay_section.svg';
-import quaySectionIconActive from '../../theme/img/quay_section_active.svg';
-import CircleStyle from 'ol/style/Circle';
-import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { FairwayCardPartsFragment, HarborPartsFragment, Orientation, Quay, Section } from '../../graphql/generated';
-import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../../utils/constants';
-import { HarborFeatureProperties, QuayFeatureProperties } from './features';
+import { FeatureDataLayerId, FeatureLayerId, MAP } from '../../utils/constants';
 import * as olExtent from 'ol/extent';
 import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
 import { getFairwayArea3456Style } from './layerStyles/fairwayArea3456Styles';
@@ -33,6 +26,8 @@ import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
 import { anchorageAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle, meetAreaIconStyle } from './layerStyles/specialAreaStyles';
+import { getHarborStyle } from './layerStyles/harborStyles';
+import { getQuayStyle } from './layerStyles/quayStyles';
 
 export function getAreaStyle(color: string, width: number, fillColor: string, resolution?: number) {
   let strokeWidth = width;
@@ -79,177 +74,6 @@ export function getBoardLineStyle(color: string, width: number) {
   });
 }
 
-function getSectionStyle(selected: boolean, props: QuayFeatureProperties) {
-  const color = selected ? '#0064AF' : '#000000';
-  const depth = props.depth ? `${props.depth[0]} m` : '';
-  const image = new Icon({
-    src: quaySectionIcon,
-    anchor: [0.5, 19],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const activeImage = new Icon({
-    src: quaySectionIconActive,
-    anchor: [0.5, 19],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-
-  return new Style({
-    image: selected ? activeImage : image,
-    text: new Text({
-      font: '14px "Exo2"',
-      placement: 'line',
-      offsetY: -29,
-      text: depth,
-      fill: new Fill({
-        color: color,
-      }),
-      stroke: new Stroke({
-        width: 2,
-        color: '#ffffff',
-      }),
-    }),
-  });
-}
-
-export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
-  if (resolution > 3) {
-    return undefined;
-  }
-  if (feature.get('hoverStyle')) {
-    selected = true;
-  }
-
-  const featureType = feature.get('featureType');
-  const props = feature.getProperties() as QuayFeatureProperties;
-  if (featureType === 'section') {
-    return getSectionStyle(selected, props);
-  }
-
-  const dvkMap = getMap();
-  const lang = (dvkMap.getMapLanguage() || dvkMap.i18n.resolvedLanguage) as Lang;
-  const quayName = props.quay?.[lang] ?? '';
-  const depthText =
-    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('homePage.map.numberFormat', { val: d })).join(' m / ')} m` : '';
-
-  const image = new Icon({
-    src: quayIcon,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const activeImage = new Icon({
-    src: quayIconActive,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const labelFill = new Fill({
-    color: selected ? '#0064AF' : '#000000',
-  });
-  const labelStroke = new Stroke({
-    width: 3,
-    color: '#ffffff',
-  });
-  const labelZIndex = selected ? 10 : 1;
-
-  const quayStyle = [
-    new Style({
-      image: selected ? activeImage : image,
-      text: new Text({
-        font: 'bold 18px "Exo2"',
-        placement: 'line',
-        offsetY: props.showDepth ? -72 : -55,
-        text: quayName,
-        fill: labelFill,
-        stroke: labelStroke,
-      }),
-      zIndex: labelZIndex,
-    }),
-    new Style({
-      image: new CircleStyle({
-        radius: 20,
-        displacement: [0, 20],
-        fill: new Fill({
-          color: 'rgba(0,0,0,0)',
-        }),
-      }),
-      zIndex: selected ? 11 : 2,
-    }),
-  ];
-
-  if (props.showDepth) {
-    quayStyle.push(
-      new Style({
-        text: new Text({
-          font: '12px "Exo2"',
-          placement: 'line',
-          offsetY: -53,
-          text: depthText,
-          fill: labelFill,
-          stroke: labelStroke,
-        }),
-        zIndex: labelZIndex,
-      })
-    );
-  }
-
-  return quayStyle;
-}
-
-export function getHarborStyle(feature: FeatureLike, resolution: number, minResolution = 0, selected = false) {
-  if (minResolution && resolution < minResolution) {
-    return undefined;
-  }
-
-  if (feature.get('hoverStyle')) {
-    selected = true;
-  }
-
-  const image = new Icon({
-    src: quayIcon,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const activeImage = new Icon({
-    src: quayIconActive,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const props = feature.getProperties() as HarborFeatureProperties;
-  let text;
-  const dvkMap = getMap();
-  if (props.name) {
-    if (dvkMap.getMapLanguage()) {
-      text = props.name[dvkMap.getMapLanguage() as Lang] as string;
-    } else {
-      text = props.name[dvkMap.i18n.resolvedLanguage as Lang] as string;
-    }
-  } else {
-    text = '';
-  }
-  return new Style({
-    image: selected ? activeImage : image,
-    text: new Text({
-      font: `bold ${resolution < 50 ? '18' : '13'}px "Exo2"`,
-      placement: 'line',
-      offsetY: -55,
-      text,
-      fill: new Fill({
-        color: selected ? '#0064AF' : '#000000',
-      }),
-      stroke: new Stroke({
-        width: 3,
-        color: '#ffffff',
-      }),
-    }),
-    zIndex: selected ? 10 : 1,
-  });
-}
-
 function getArea12BorderLineStyle(feature: FeatureLike) {
   const props = feature.getProperties();
   const a1Props = props.area1Properties;
@@ -285,7 +109,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'safetyequipment':
       return getSafetyEquipmentStyle(feature, 1, false);
     case 'harbor':
-      return getHarborStyle(feature, resolution, 3);
+      return getHarborStyle(feature, resolution, false, 3);
     case 'circle':
       return getCircleStyle(feature, resolution);
     default:
