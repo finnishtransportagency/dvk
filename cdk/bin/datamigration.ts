@@ -1,6 +1,6 @@
-import { PutCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
-import { getDynamoDBDocumentClient } from "../lib/lambda/db/dynamoClient";
-import Config from "../lib/config";
+import { PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { getDynamoDBDocumentClient } from '../lib/lambda/db/dynamoClient';
+import Config from '../lib/config';
 
 // migrate data from old table to new table and add first version to new items (v0 being always the latest version)
 
@@ -15,12 +15,12 @@ async function main() {
     const latestVersionItem = {
       ...item,
       version: 'v0',
-      latest: 1
-    }
+      latest: 1,
+    };
     const newItem = {
       ...item,
       version: 'v1',
-    }
+    };
 
     await client.send(new PutCommand({ TableName: Config.getFairwayCardWithVersionsTableName(), Item: latestVersionItem }));
     await client.send(new PutCommand({ TableName: Config.getFairwayCardWithVersionsTableName(), Item: newItem }));
@@ -30,4 +30,4 @@ async function main() {
 main().catch((e) => {
   console.log(e);
   process.exit(1);
-})
+});

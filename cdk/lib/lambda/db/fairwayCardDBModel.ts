@@ -154,14 +154,22 @@ class FairwayCardDBModel {
   temporaryNotifications?: Maybe<TemporaryNotification[]>;
 
   static async get(id: string): Promise<FairwayCardDBModel | undefined> {
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id } }));
+    // v0 always the latest
+    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: 'v0' } }));
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
 
   static async getAll(): Promise<FairwayCardDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: getFairwayCardTableName() }));
+    const response = await getDynamoDBDocumentClient().send(
+      new ScanCommand({
+        TableName: getFairwayCardTableName(),
+        FilterExpression: '#version = :vVersion',
+        ExpressionAttributeNames: { '#version': 'version' },
+        ExpressionAttributeValues: { ':vVersion': 'v0' },
+      })
+    );
     const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
     if (fairwayCards) {
       log.debug('%d fairway card(s) found', fairwayCards.length);
@@ -175,9 +183,9 @@ class FairwayCardDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
         TableName: getFairwayCardTableName(),
-        FilterExpression: '#status = :vStatus',
-        ExpressionAttributeNames: { '#status': 'status' },
-        ExpressionAttributeValues: { ':vStatus': Status.Public },
+        FilterExpression: '#status = :vStatus AND #version = :vVersion',
+        ExpressionAttributeNames: { '#status': 'status', '#version': 'version' },
+        ExpressionAttributeValues: { ':vStatus': Status.Public, ':vVersion': 'v0' },
       })
     );
     const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
