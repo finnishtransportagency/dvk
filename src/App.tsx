@@ -86,6 +86,7 @@ import SquatCalculatorPage from './pages/SquatCalculatorPage';
 import HarborPreviewPage from './pages/HarborPreviewPage';
 import PilotRoutePage from './pages/PilotRoutePage';
 import { useHarborLayer } from './components/HarborFeatureLoader';
+import { useObservationFeatures } from './components/ObservationFeatureLoader';
 
 setupIonicReact({
   mode: 'md',
@@ -205,6 +206,8 @@ const DvkIonApp: React.FC = () => {
   useVaylaWaterAreaData();
   usePilotageLimitLayer();
   usePilotageAreaBorderLayer();
+  /* Initialize observation data for offline use, needed in fairway cards */
+  useObservationFeatures();
 
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
