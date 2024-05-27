@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import TextInputRow from '../TextInputRow';
 import HelpIcon from '../../../theme/img/help_icon.svg?react';
 import NotificationModal from '../../NotificationModal';
+import MarkdownInputRow from '../MarkdownInputRow';
 
 interface AdditionalInfoSectionProps {
   state: FairwayCardInput;
@@ -53,6 +54,15 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
           disabled={state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'additionalInfo')?.msg}
           inputType="textarea"
+        />
+        <MarkdownInputRow
+          labelKey="fairwaycard.fairway-additional-info"
+          value={state.additionalInfo}
+          updateState={updateState}
+          actionType="additionalInfo"
+          required={!!state.additionalInfo?.fi || !!state.additionalInfo?.sv || !!state.additionalInfo?.en}
+          disabled={state.status === Status.Removed}
+          error={validationErrors.find((error) => error.id === 'additionalInfo')?.msg}
         />
       </IonGrid>
       <NotificationModal
