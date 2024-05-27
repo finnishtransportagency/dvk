@@ -1,0 +1,19 @@
+.md-editor-container {
+  .w-md-editor {
+    border-radius: 0;
+    padding-bottom: 0;
+    color: var(--ion-color-dark);
+    --md-editor-font-family: 'Exo2', sans-serif;
+    --md-editor-box-shadow-color: var(--ion-color-dark);
+  }
+
+  .w-md-editor.error {
+    --md-editor-box-shadow-color: var(--ion-color-danger);
+  }
+
+  .wmde-markdown {
+    font-family: 'Exo2', sans-serif;
+    font-size: 14px;
+    color: var(--ion-color-dark);
+  }
+}
