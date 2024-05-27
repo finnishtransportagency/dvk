@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import MDEditor, { ICommand, bold, codeEdit, codeLive, codePreview, italic, link } from '@uiw/react-md-editor';
 import rehypeSanitize from 'rehype-sanitize';
 import { IonLabel } from '@ionic/react';
@@ -14,19 +15,21 @@ interface MarkdownInputProps {
   required?: boolean;
   disabled?: boolean;
   error?: string;
+  helperText?: string;
 }
 
-const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error }) => {
+function getTextareaElement(editorRef: React.RefObject<HTMLDivElement>) {
+  // div "container" > div "w-md-editor" > div "w-md-editor-content" > div "w-md-editor-area" > div "w-md-editor-text" > textarea
+  const textareaNode = editorRef.current?.firstChild?.childNodes[1]?.firstChild?.firstChild?.lastChild;
+  return textareaNode ? (textareaNode as HTMLTextAreaElement) : null;
+}
+
+const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText }) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'general' });
   const editorRef = useRef<HTMLDivElement>(null);
 
-  const getTextareaElement = () => {
-    // div "container" > div "w-md-editor" > div "w-md-editor-content" > div "w-md-editor-area" > div "w-md-editor-text" > textarea
-    const textareaNode = editorRef.current?.firstChild?.childNodes[1]?.firstChild?.firstChild?.lastChild;
-    return textareaNode ? (textareaNode as HTMLTextAreaElement) : null;
-  };
-
   const focusInput = () => {
-    const element = getTextareaElement();
+    const element = getTextareaElement(editorRef);
     element?.focus();
   };
 
@@ -37,13 +40,12 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, act
     if (error) {
       setIsValid(false);
     } else {
-      const element = getTextareaElement();
+      const element = getTextareaElement(editorRef);
       if (element) {
-        setIsValid(element?.checkValidity());
+        setIsValid(element.checkValidity());
       }
     }
     setIsTouched(true);
-    console.log(isValid);
   };
 
   const handleChange = (newVal: string | null | undefined) => {
@@ -51,11 +53,19 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, act
     setValue(newVal as string, actionType, actionLang);
   };
 
+  const getErrorText = () => {
+    if (error) return error;
+    if (!isValid) return t('required-field');
+    return '';
+  };
+
   useEffect(() => {
     if (isTouched) {
-      const element = getTextareaElement();
       if (error) setIsValid(false);
-      if (element) setIsValid(element?.checkValidity());
+      const element = getTextareaElement(editorRef);
+      if (element) {
+        setIsValid(element.checkValidity());
+      }
       setIsTouched(false);
     } else if (!required && !val.trim() && !error) {
       setIsValid(true);
@@ -113,6 +123,10 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, act
           commands={[boldCommand, italicCommand, linkCommand]}
           extraCommands={[editViewCommand, liveViewCommand, previewCommand]}
         />
+        <div className="textarea-helper">
+          {!error && isValid && helperText && <div className="helper-text"></div>}
+          {(error || !isValid) && <div className="error-text">{getErrorText()}</div>}
+        </div>
       </div>
     </>
   );
