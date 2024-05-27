@@ -34,19 +34,19 @@ function getSizingVesselsText(sizingVessels: SizingVessel[], t: TFunction) {
   );
 }
 
+export function getFairwayName(fairway: Fairway, lang: Lang): string {
+  if (fairway.name) {
+    return fairway.name[lang] ?? fairway.name.fi ?? '';
+  }
+  return '';
+}
+
 export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedText, isN2000HeightSystem }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
 
   const numberOfFairways = data ? data.length : 0;
-
-  function getFairwayName(fairway: Fairway, lang: Lang): string {
-    if (fairway.name) {
-      return fairway.name[lang] ?? fairway.name.fi ?? '';
-    }
-    return '';
-  }
 
   function getFairwaySizingVessels(fairway: Fairway): SizingVessel[] {
     return fairway.sizingVessels ?? [];
