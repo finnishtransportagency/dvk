@@ -309,7 +309,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 1,
     style: getNameStyle,
     declutter: true,
-    zIndex: 106,
+    zIndex: 205,
   });
 
   // Kauppamerenkulku
