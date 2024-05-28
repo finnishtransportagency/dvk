@@ -44,6 +44,7 @@ import infoIcon from '../../../theme/img/info.svg';
 import { compareAsc } from 'date-fns';
 import { useObservationFeatures } from '../../ObservationFeatureLoader';
 import { ObservationInfo } from './ObservationInfo';
+import { SpecialAreaInfo } from './SpecialAreaInfo';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -294,6 +295,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <IonText>
               <h5>{t('anchorage')}</h5>
               <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
+              <SpecialAreaInfo data={fairwayCard?.fairways} />
             </IonText>
             <IonText>
               <h5>{t('fairwayAreas')}</h5>
