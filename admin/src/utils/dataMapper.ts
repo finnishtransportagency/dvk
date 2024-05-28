@@ -9,6 +9,7 @@ const stringValueOrDefault = (value: string | null | undefined): string => {
 export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined) {
   return {
     id: origin ? '' : stringValueOrDefault(data?.fairwayCard?.id),
+    version: data?.fairwayCard?.version ?? 'v1',
     group: stringValueOrDefault(data?.fairwayCard?.group),
     name: {
       fi: stringValueOrDefault(data?.fairwayCard?.name?.fi),

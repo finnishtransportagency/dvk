@@ -1,5 +1,6 @@
 fragment HarborById on Harbor {
   id
+  version
   name {
     fi
     sv

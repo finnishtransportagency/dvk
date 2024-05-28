@@ -375,6 +375,7 @@ const buoys = [
 
 const card: FairwayCardDBModel = {
   id: 'test',
+  version: 'v0',
   name: {
     fi: 'Testfi',
     sv: 'Testsv',

@@ -254,6 +254,7 @@ export function mapFairwayCardDBModelToGraphqlType(
 ) {
   const card: FairwayCard = {
     id: dbModel.id,
+    version: dbModel.version,
     name: {
       fi: dbModel.name?.fi,
       sv: dbModel.name?.sv,
@@ -299,6 +300,7 @@ export function mapFairwayCardDBModelToGraphqlType(
 export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: CurrentUser | undefined): Harbor {
   return {
     id: dbModel.id,
+    version: dbModel.version,
     cargo: dbModel.cargo,
     company: dbModel.company,
     creator: user ? dbModel.creator : null,

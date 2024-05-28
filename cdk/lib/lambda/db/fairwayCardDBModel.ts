@@ -91,6 +91,8 @@ export type TemporaryNotification = {
 class FairwayCardDBModel {
   id: string;
 
+  version: string;
+
   name: Text;
 
   status: Status;
@@ -153,9 +155,9 @@ class FairwayCardDBModel {
 
   temporaryNotifications?: Maybe<TemporaryNotification[]>;
 
-  static async get(id: string): Promise<FairwayCardDBModel | undefined> {
+  static async get(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
     // v0 always the latest
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: 'v0' } }));
+    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } }));
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
@@ -167,7 +169,7 @@ class FairwayCardDBModel {
         TableName: getFairwayCardTableName(),
         FilterExpression: '#version = :vVersion',
         ExpressionAttributeNames: { '#version': 'version' },
-        ExpressionAttributeValues: { ':vVersion': 'v0' },
+        ExpressionAttributeValues: { ':vVersion': 'v0_latest' },
       })
     );
     const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
@@ -185,7 +187,7 @@ class FairwayCardDBModel {
         TableName: getFairwayCardTableName(),
         FilterExpression: '#status = :vStatus AND #version = :vVersion',
         ExpressionAttributeNames: { '#status': 'status', '#version': 'version' },
-        ExpressionAttributeValues: { ':vStatus': Status.Public, ':vVersion': 'v0' },
+        ExpressionAttributeValues: { ':vStatus': Status.Public, ':vVersion': 'v0_latest' },
       })
     );
     const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;

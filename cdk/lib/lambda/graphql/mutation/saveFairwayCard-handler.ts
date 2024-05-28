@@ -54,6 +54,7 @@ const CACHE_KEYS = [
 export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
     id: mapId(card.id),
+    version: mapId(card.version),
     name: mapMandatoryText(card.name),
     status: card.status,
     n2000HeightSystem: !!card.n2000HeightSystem,
@@ -196,7 +197,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
 ): Promise<FairwayCard> => {
   const user = await getCurrentUser(event);
   log.info(`saveFairwayCard(${event.arguments.card.id}, ${user.uid})`);
-  const dbModel = await FairwayCardDBModel.get(event.arguments.card.id);
+  const dbModel = await FairwayCardDBModel.get(event.arguments.card.id, event.arguments.card.version);
   const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
   log.debug('card: %o', newModel);
   await tagPictures(event.arguments.card.id, event.arguments.card.pictures, dbModel?.pictures);

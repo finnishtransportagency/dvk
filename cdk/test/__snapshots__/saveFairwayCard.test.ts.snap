@@ -144,6 +144,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
       },
     ],
   },
+  "version": "v0",
   "vesselRecommendation": {
     "en": "vesselRecommendationen",
     "fi": "vesselRecommendation",
@@ -218,6 +219,7 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
     "tugs": null,
     "vts": null,
   },
+  "version": "v0",
   "vesselRecommendation": null,
   "visibility": null,
   "windGauge": null,

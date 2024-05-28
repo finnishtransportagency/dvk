@@ -5,8 +5,8 @@ schema {
 
 type Query {
   fairwayCards(status: [Status!]): [FairwayCard!]!
-  fairwayCard(id: String!): FairwayCard
-  fairwayCardPreview(id: String!): FairwayCard
+  fairwayCard(id: String!, version: String!): FairwayCard
+  fairwayCardPreview(id: String!, version: String!): FairwayCard
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
   marineWarnings: [MarineWarning!]!
   currentUser: CurrentUser
@@ -50,6 +50,7 @@ enum OperationError {
 
 input FairwayCardInput {
   id: String!
+  version: String!
   operation: Operation!
   name: TextInput!
   n2000HeightSystem: Boolean!
@@ -139,6 +140,7 @@ input PilotPlaceInput {
 
 input HarborInput {
   id: String!
+  version: String!
   n2000HeightSystem: Boolean!
   operation: Operation!
   status: Status!
@@ -194,6 +196,7 @@ input TemporaryNotificationInput {
 
 type FairwayCardOrHarbor {
   id: String!
+  version: String!
   type: ContentType!
   name: Text!
   group: String
@@ -219,6 +222,7 @@ type CurrentUser {
 
 type FairwayCard {
   id: String!
+  version: String!
   name: Text!
   n2000HeightSystem: Boolean!
   group: String
@@ -308,6 +312,7 @@ type PilotPlace {
 
 type Harbor {
   id: String!
+  version: String
   status: Status
   n2000HeightSystem: Boolean
   creator: String

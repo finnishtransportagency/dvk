@@ -38,8 +38,8 @@ export function useFairwayCardsAndHarborsQueryData() {
   return useFairwayCardsAndHarborsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
-export function useFairwayCardByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
-  return useFairwayCardByIdQuery(datasourceClient, { id }, { refetchOnWindowFocus: refetchOnWindowFocus });
+export function useFairwayCardByIdQueryData(id: string, version: string = 'v0_latest', refetchOnWindowFocus?: boolean) {
+  return useFairwayCardByIdQuery(datasourceClient, { id, version }, { refetchOnWindowFocus: refetchOnWindowFocus });
 }
 
 export function useFairwaysQueryData() {

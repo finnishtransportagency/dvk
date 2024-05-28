@@ -22,6 +22,8 @@ export type Section = {
 class HarborDBModel {
   id: string;
 
+  version: string;
+
   status?: Maybe<Status>;
 
   n2000HeightSystem?: Maybe<boolean>;
