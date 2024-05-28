@@ -81,7 +81,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     operation: Operation.Create,
     pictures: [],
     pilotRoutes: [],
-    temporaryNotifications: [{ content: { fi: '', sv: '', en: '' }, startDate: '', endDate: '' }],
+    temporaryNotifications: [],
   };
 
   return (
