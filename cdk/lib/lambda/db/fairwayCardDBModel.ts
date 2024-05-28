@@ -185,9 +185,9 @@ class FairwayCardDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
         TableName: getFairwayCardTableName(),
-        FilterExpression: '#status = :vStatus AND #version = :vVersion',
-        ExpressionAttributeNames: { '#status': 'status', '#version': 'version' },
-        ExpressionAttributeValues: { ':vStatus': Status.Public, ':vVersion': 'v0_latest' },
+        FilterExpression: '#version = :vVersion',
+        ExpressionAttributeNames: { '#version': 'version' },
+        ExpressionAttributeValues: { ':vVersion': 'v0_public' },
       })
     );
     const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;

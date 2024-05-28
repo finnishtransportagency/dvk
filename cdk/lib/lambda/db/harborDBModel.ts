@@ -60,15 +60,22 @@ class HarborDBModel {
 
   expires?: Maybe<number>;
 
-  static async get(id: string): Promise<HarborDBModel | undefined> {
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id } }));
+  static async get(id: string, version: string = 'v0_latest'): Promise<HarborDBModel | undefined> {
+    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
     const harbor = response.Item as HarborDBModel | undefined;
     log.debug('Harbor name: %s', harbor?.name?.fi);
     return harbor;
   }
 
   static async getAll(): Promise<HarborDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: getHarborTableName() }));
+    const response = await getDynamoDBDocumentClient().send(
+      new ScanCommand({
+        TableName: getHarborTableName(),
+        FilterExpression: '#version = :vVersion',
+        ExpressionAttributeNames: { '#version': 'version' },
+        ExpressionAttributeValues: { ':vVersion': 'v0_latest' },
+      })
+    );
     const harbors = response.Items as HarborDBModel[] | undefined;
     if (harbors) {
       log.debug('%d harbor(s) found', harbors.length);
@@ -82,9 +89,9 @@ class HarborDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
         TableName: getHarborTableName(),
-        FilterExpression: '#status = :vStatus',
-        ExpressionAttributeNames: { '#status': 'status' },
-        ExpressionAttributeValues: { ':vStatus': Status.Public },
+        FilterExpression: '#version = :vVersion',
+        ExpressionAttributeNames: { '#version': 'version' },
+        ExpressionAttributeValues: { ':vVersion': 'v0_public' },
       })
     );
     const harbors = response.Items as HarborDBModel[] | undefined;
