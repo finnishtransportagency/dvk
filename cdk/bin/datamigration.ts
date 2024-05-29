@@ -5,10 +5,11 @@ import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { Status } from '../graphql/generated';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
 
-// migrate data from old table to new table and add first version to new items (v0 being always the latest version)
 
 const client = getDynamoDBDocumentClient();
 
+// migrate data from old table to new table and add first version to new items 
+// (v0_latest being the latest any version and v0_currentPublic being the latest public version)
 async function migrateData(oldTableName: string, newTableName: string, fairwayCards: boolean) {
   const oldTable = await client.send(new ScanCommand({ TableName: oldTableName }));
 
