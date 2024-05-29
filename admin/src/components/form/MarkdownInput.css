@@ -39,10 +39,6 @@
     color: var(--ion-color-dark);
   }
 
-  .w-md-editor-content {
-    min-height: 80px;
-  }
-
   .error-text,
   .helper-text,
   .counter {

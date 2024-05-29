@@ -127,9 +127,6 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, act
           }}
           commands={[boldCommand, italicCommand, linkCommand]}
           extraCommands={[editViewCommand, liveViewCommand, previewCommand]}
-          minHeight={80}
-          height="100%"
-          visibleDragbar={false}
           defaultTabEnable
         />
         <div className="textarea-helper">
