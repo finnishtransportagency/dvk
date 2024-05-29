@@ -39,20 +39,35 @@
     color: var(--ion-color-dark);
   }
 
-  .error-text {
+  .w-md-editor-content {
+    min-height: 80px;
+  }
+
+  .error-text,
+  .helper-text,
+  .counter {
     display: block;
+    font-size: 12px;
+  }
+
+  .error-text {
     background: url('../../theme/img/error_icon.svg') no-repeat 1px center;
     background-size: 14px;
     padding-left: 18px;
     color: var(--ion-color-danger);
-    font-size: 12px;
+  }
+
+  .helper-text,
+  .counter {
+    line-height: 1rem;
+    color: var(--ion-color-medium);
   }
 
   .helper-text {
-    display: block;
     font-style: italic;
-    font-size: 12px;
-    line-height: 1rem;
-    color: var(--ion-color-medium);
+  }
+
+  .counter {
+    text-align: right;
   }
 }

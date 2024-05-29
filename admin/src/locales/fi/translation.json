@@ -102,7 +102,15 @@
     "notice-ends": "Päättyy",
     "temporary-in-force": "Toistaiseksi voimassa",
     "active": "Aktiivisia",
-    "incoming": "Tulossa"
+    "incoming": "Tulossa",
+    "markdown": {
+      "bold": "Lihavoitu",
+      "italic": "Kursivoitu",
+      "hyperlink": "Aseta linkki",
+      "edit-view": "Muokkaa",
+      "live-view": "Jaettu näkymä",
+      "preview": "Esikatsele"
+    }
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
