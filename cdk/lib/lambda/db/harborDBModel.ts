@@ -61,6 +61,7 @@ class HarborDBModel {
 
   expires?: Maybe<number>;
 
+  // at the moment this gives any latest version, should be separate function for latest public
   static async get(id: string, version: string = 'v0_latest'): Promise<HarborDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
     const harbor = response.Item as HarborDBModel | undefined;
@@ -90,8 +91,8 @@ class HarborDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
         TableName: getHarborTableName(),
-        FilterExpression: '#version = :vVersion',
-        ExpressionAttributeNames: { '#version': 'version' },
+        FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
+        ExpressionAttributeNames: { '#version': 'version', '#currentPublic' : 'currentPublic' },
         ExpressionAttributeValues: { ':vVersion': 'v0_public' },
       })
     );

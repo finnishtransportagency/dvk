@@ -156,6 +156,7 @@ class FairwayCardDBModel {
 
   temporaryNotifications?: Maybe<TemporaryNotification[]>;
 
+  // at the moment this gives any latest version, should be separate function for latest public
   static async get(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
     // v0 always the latest
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } }));
@@ -186,8 +187,8 @@ class FairwayCardDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
         TableName: getFairwayCardTableName(),
-        FilterExpression: '#version = :vVersion',
-        ExpressionAttributeNames: { '#version': 'version' },
+        FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
+        ExpressionAttributeNames: { '#version': 'version', '#currentPublic' : 'currentPublic' },
         ExpressionAttributeValues: { ':vVersion': 'v0_public' },
       })
     );
