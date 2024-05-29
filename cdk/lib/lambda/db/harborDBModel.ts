@@ -1,4 +1,4 @@
-import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { GeometryPoint, Maybe, Operation, Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
@@ -92,7 +92,7 @@ class HarborDBModel {
       new ScanCommand({
         TableName: getHarborTableName(),
         FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
-        ExpressionAttributeNames: { '#version': 'version', '#currentPublic' : 'currentPublic' },
+        ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
         ExpressionAttributeValues: { ':vVersion': 'v0_public' },
       })
     );

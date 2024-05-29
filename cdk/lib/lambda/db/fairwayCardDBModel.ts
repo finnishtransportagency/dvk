@@ -1,4 +1,4 @@
-import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { Maybe, Status, Operation, Orientation, Mareograph } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
@@ -159,7 +159,9 @@ class FairwayCardDBModel {
   // at the moment this gives any latest version, should be separate function for latest public
   static async get(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
     // v0 always the latest
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } }));
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
+    );
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
@@ -188,7 +190,7 @@ class FairwayCardDBModel {
       new ScanCommand({
         TableName: getFairwayCardTableName(),
         FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
-        ExpressionAttributeNames: { '#version': 'version', '#currentPublic' : 'currentPublic' },
+        ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
         ExpressionAttributeValues: { ':vVersion': 'v0_public' },
       })
     );

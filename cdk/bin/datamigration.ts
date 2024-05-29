@@ -12,7 +12,7 @@ const client = getDynamoDBDocumentClient();
 async function migrateData(oldTableName: string, newTableName: string, fairwayCards: boolean) {
   const oldTable = await client.send(new ScanCommand({ TableName: oldTableName }));
 
-  const items = fairwayCards ? oldTable.Items as FairwayCardDBModel[] : oldTable.Items as HarborDBModel[];
+  const items = fairwayCards ? (oldTable.Items as FairwayCardDBModel[]) : (oldTable.Items as HarborDBModel[]);
 
   for (const item of items) {
     // three different objects for one item:
@@ -31,13 +31,11 @@ async function migrateData(oldTableName: string, newTableName: string, fairwayCa
             version: 'v0_public',
             currentPublic: 1,
           }
-        : 
-          {
+        : {
             id: item.id,
             version: 'v0_public',
             currentPublic: null,
-          }
-        ;
+          };
     const newItem = {
       ...item,
       version: 'v1',
@@ -53,7 +51,6 @@ async function main() {
   console.time('Fairway card data migrated in');
   await migrateData(Config.getFairwayCardTableName(), Config.getFairwayCardWithVersionsTableName(), true);
   console.timeEnd('Fairway card data migrated in');
-  console.log('-------------------------------')
   console.time('Harbor data migrated in');
   await migrateData(Config.getHarborTableName(), Config.getHarborWithVersionsTableName(), false);
   console.timeEnd('Harbor data migrated in');

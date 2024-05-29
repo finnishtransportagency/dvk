@@ -152,46 +152,58 @@ export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableNa
   // creating a new item
   if (operation === Operation.Create) {
     // latest item
-    updateCommands.push(new PutCommand({
-      TableName: tableName,
-      Item: { ...data, version: 'v0_latest', latest: 1 },
-      ConditionExpression: 'attribute_not_exists(id)'
-    }));
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v0_latest', latest: 1 },
+        ConditionExpression: 'attribute_not_exists(id)',
+      })
+    );
     // set currentPublic to null and no data except id if not public
-    updateCommands.push(new PutCommand({
-      TableName: tableName,
-      Item: data.status === Status.Public ? 
-        { ...data, version: 'v0_public', currentPublic: 1 }
-      : 
-        { id: data.id, version: 'v0_public', currentPublic: null },
-      ConditionExpression: 'attribute_not_exists(id)'
-    }))
-    updateCommands.push(new PutCommand({
-      TableName: tableName,
-      Item: { ...data, version: 'v1' },
-      ConditionExpression: 'attribute_not_exists(id)'
-    }))
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item:
+          data.status === Status.Public
+            ? { ...data, version: 'v0_public', currentPublic: 1 }
+            : { id: data.id, version: 'v0_public', currentPublic: null },
+        ConditionExpression: 'attribute_not_exists(id)',
+      })
+    );
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v1' },
+        ConditionExpression: 'attribute_not_exists(id)',
+      })
+    );
   } else if (operation === Operation.Update) {
     // updating existing item
-    updateCommands.push(new PutCommand({
-      TableName: tableName,
-      // when versioning is used properly, increment latest by version number
-      Item: { ...data, version: 'v0_latest', latest: 1},
-      ConditionExpression: 'attribute_exists(id)'
-    }));
-    updateCommands.push(new PutCommand({
-      TableName: tableName,
-      Item: data.status === Status.Public ?
-        { ...data, version: 'v0_public', currentPublic: 1 }
-      :
-        { id: data.id, version: 'v0_public', currenPublic: null },
-      ConditionExpression: 'attribute_exists(id)'
-    }));
-    updateCommands.push(new PutCommand({
-      TableName: tableName,
-      Item: { ...data, version: 'v1' },
-      ConditionExpression: 'attribute_exists(id)'
-    }));
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        // when versioning is used properly, increment latest by version number
+        Item: { ...data, version: 'v0_latest', latest: 1 },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item:
+          data.status === Status.Public
+            ? { ...data, version: 'v0_public', currentPublic: 1 }
+            : { id: data.id, version: 'v0_public', currenPublic: null },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v1' },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
   }
 
   return updateCommands;
