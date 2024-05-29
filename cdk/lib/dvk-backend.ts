@@ -67,7 +67,8 @@ export class DvkBackendStack extends Stack {
     // called so data migration can be made from old table to new table, otherwise old table is deleted
     this.createFairwayCardTable();
     const fairwayCardWithVersionsTable = this.createFairwayCardWithVersionsTable();
-    const harborTable = this.createHarborTable();
+    this.createHarborTable();
+    const harborWithVersionsTable = this.createHarborWithVersionsTable();
 
     const layer = LayerVersion.fromLayerVersionArn(
       this,
@@ -100,7 +101,7 @@ export class DvkBackendStack extends Stack {
       })
     );
     dbStreamHandler.addEventSource(
-      new DynamoEventSource(harborTable, {
+      new DynamoEventSource(harborWithVersionsTable, {
         startingPosition: lambda.StartingPosition.LATEST,
       })
     );
@@ -127,7 +128,7 @@ export class DvkBackendStack extends Stack {
         vpc: lambdaFunc.useVpc ? vpc : undefined,
         environment: {
           FAIRWAY_CARD_TABLE: Config.getFairwayCardWithVersionsTableName(),
-          HARBOR_TABLE: Config.getHarborTableName(),
+          HARBOR_TABLE: Config.getHarborWithVersionsTableName(),
           ENVIRONMENT: Config.getEnvironment(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           TZ: 'Europe/Helsinki',
@@ -154,12 +155,12 @@ export class DvkBackendStack extends Stack {
       });
       if (typeName === 'Mutation') {
         fairwayCardWithVersionsTable.grantReadWriteData(backendLambda);
-        harborTable.grantReadWriteData(backendLambda);
+        harborWithVersionsTable.grantReadWriteData(backendLambda);
         staticBucket.grantPut(backendLambda);
         cacheBucket.grantDelete(backendLambda);
       } else {
         fairwayCardWithVersionsTable.grantReadData(backendLambda);
-        harborTable.grantReadData(backendLambda);
+        harborWithVersionsTable.grantReadData(backendLambda);
       }
       cacheBucket.grantPut(backendLambda);
       cacheBucket.grantRead(backendLambda);
@@ -167,8 +168,8 @@ export class DvkBackendStack extends Stack {
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
     Tags.of(fairwayCardWithVersionsTable).add('Backups-' + Config.getEnvironment(), 'true');
-    Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const alb = this.createALB(env, fairwayCardWithVersionsTable, harborTable, cacheBucket, staticBucket, layer, vpc);
+    Tags.of(harborWithVersionsTable).add('Backups-' + Config.getEnvironment(), 'true');
+    const alb = this.createALB(env, fairwayCardWithVersionsTable, harborWithVersionsTable, cacheBucket, staticBucket, layer, vpc);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
@@ -302,6 +303,25 @@ export class DvkBackendStack extends Stack {
     });
   }
 
+  private createHarborWithVersionsTable(): Table {
+    return new Table(this, 'HarborTableWithVersions', {
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      tableName: Config.getHarborWithVersionsTableName(),
+      partitionKey: {
+        name: 'id',
+        type: AttributeType.STRING,
+      },
+      sortKey: {
+        name: 'version',
+        type: AttributeType.STRING,
+      },
+      pointInTimeRecovery: true,
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      stream: StreamViewType.NEW_AND_OLD_IMAGES,
+      timeToLiveAttribute: 'expires',
+    });
+  }
+
   private createApiKeyExpiration() {
     const now = new Date();
     now.setDate(now.getDate() + 365);
@@ -420,7 +440,7 @@ export class DvkBackendStack extends Stack {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),
           FAIRWAY_CARD_TABLE: Config.getFairwayCardWithVersionsTableName(),
-          HARBOR_TABLE: Config.getHarborTableName(),
+          HARBOR_TABLE: Config.getHarborWithVersionsTableName(),
           TZ: 'Europe/Helsinki',
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
           PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',

@@ -156,6 +156,7 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
   const coordinates = data?.harbor?.geometry?.coordinates ?? ['', ''];
   return {
     id: origin ? '' : stringValueOrDefault(data?.harbor?.id),
+    version: data?.harbor?.version ?? 'v1',
     name: {
       fi: stringValueOrDefault(data?.harbor?.name?.fi),
       sv: stringValueOrDefault(data?.harbor?.name?.sv),

@@ -3,15 +3,16 @@ import { getDynamoDBDocumentClient } from '../lib/lambda/db/dynamoClient';
 import Config from '../lib/config';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { Status } from '../graphql/generated';
+import HarborDBModel from '../lib/lambda/db/harborDBModel';
 
 // migrate data from old table to new table and add first version to new items (v0 being always the latest version)
 
 const client = getDynamoDBDocumentClient();
 
-async function main() {
-  const oldTable = await client.send(new ScanCommand({ TableName: Config.getFairwayCardTableName() }));
+async function migrateData(oldTableName: string, newTableName: string, fairwayCards: boolean) {
+  const oldTable = await client.send(new ScanCommand({ TableName: oldTableName }));
 
-  const items = oldTable.Items as FairwayCardDBModel[];
+  const items = fairwayCards ? oldTable.Items as FairwayCardDBModel[] : oldTable.Items as HarborDBModel[];
 
   for (const item of items) {
     // three different objects for one item:
@@ -30,16 +31,32 @@ async function main() {
             version: 'v0_public',
             currentPublic: 1,
           }
-        : undefined;
+        : 
+          {
+            ...item,
+            version: 'v0_public',
+            currentPublic: null,
+          }
+        ;
     const newItem = {
       ...item,
       version: 'v1',
     };
-
-    await client.send(new PutCommand({ TableName: Config.getFairwayCardWithVersionsTableName(), Item: latestVersionItem }));
-    await client.send(new PutCommand({ TableName: Config.getFairwayCardWithVersionsTableName(), Item: currentPublicItem }));
-    await client.send(new PutCommand({ TableName: Config.getFairwayCardWithVersionsTableName(), Item: newItem }));
+    await client.send(new PutCommand({ TableName: newTableName, Item: latestVersionItem }));
+    await client.send(new PutCommand({ TableName: newTableName, Item: currentPublicItem }));
+    await client.send(new PutCommand({ TableName: newTableName, Item: newItem }));
   }
+}
+
+async function main() {
+  // migrate fairway card data
+  console.time('Fairway card data migrated in');
+  await migrateData(Config.getFairwayCardTableName(), Config.getFairwayCardWithVersionsTableName(), true);
+  console.timeEnd('Fairway card data migrated in');
+  console.log('-------------------------------')
+  console.time('Harbor data migrated in');
+  await migrateData(Config.getHarborTableName(), Config.getHarborWithVersionsTableName(), false);
+  console.timeEnd('Harbor data migrated in');
 }
 
 main().catch((e) => {

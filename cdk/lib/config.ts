@@ -46,6 +46,10 @@ class Config {
     return `FairwayCard-${Config.getEnvironment()}`;
   }
 
+  static getHarborWithVersionsTableName(): string {
+    return `HarborWithVersions-${Config.getEnvironment()}`;
+  }
+
   static getHarborTableName(): string {
     return `Harbor-${Config.getEnvironment()}`;
   }

@@ -64,8 +64,8 @@ fragment HarborById on Harbor {
   }
 }
 
-query harbourById($id: String!) {
-  harbor(id: $id) {
+query harbourById($id: String!, $version: String!) {
+  harbor(id: $id, version: $version) {
     ...HarborById
   }
 }
