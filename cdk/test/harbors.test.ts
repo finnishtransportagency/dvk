@@ -21,6 +21,7 @@ it('should get harbors from the DynamoDB', async () => {
   const harbors: HarborDBModel[] = [
     {
       id: '1',
+      version: 'v1',
       name: {
         fi: 'Harbor1fi',
         sv: 'Harbor1sv',
@@ -83,6 +84,7 @@ it('should get harbors from the DynamoDB', async () => {
     },
     {
       id: '2',
+      version: 'v1',
       name: {
         fi: 'Harbor2fi',
         sv: 'Harbor2sv',
