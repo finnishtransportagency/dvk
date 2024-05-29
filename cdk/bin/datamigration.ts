@@ -33,7 +33,7 @@ async function migrateData(oldTableName: string, newTableName: string, fairwayCa
           }
         : 
           {
-            ...item,
+            id: item.id,
             version: 'v0_public',
             currentPublic: null,
           }

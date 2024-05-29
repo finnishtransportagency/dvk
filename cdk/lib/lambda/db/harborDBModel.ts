@@ -4,6 +4,7 @@ import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { Text } from './fairwayCardDBModel';
 import { getHarborTableName } from '../environment';
+import { getPutCommands } from '../util';
 
 export type Quay = {
   name?: Maybe<Text>;
@@ -104,8 +105,8 @@ class HarborDBModel {
   }
 
   static async save(data: HarborDBModel, operation: Operation) {
-    const expr = operation === Operation.Create ? 'attribute_not_exists(id)' : 'attribute_exists(id)';
-    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: getHarborTableName(), Item: data, ConditionExpression: expr }));
+    const putCommands = getPutCommands(data, getHarborTableName(), operation);
+    await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }
 

@@ -3,6 +3,7 @@ import { Maybe, Status, Operation, Orientation, Mareograph } from '../../../grap
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { getFairwayCardTableName } from '../environment';
+import { getPutCommands } from '../util';
 
 export type Text = {
   fi?: Maybe<string>;
@@ -200,8 +201,8 @@ class FairwayCardDBModel {
   }
 
   static async save(data: FairwayCardDBModel, operation: Operation) {
-    const expr = operation === Operation.Create ? 'attribute_not_exists(id)' : 'attribute_exists(id)';
-    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: getFairwayCardTableName(), Item: data, ConditionExpression: expr }));
+    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation);
+    await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }
 
