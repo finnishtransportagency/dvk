@@ -15,6 +15,21 @@ const AIS_VESSEL_CACHE = {
   STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 300, // 5 minutes (do not return vessel data more than 10 minutes old)
 };
+const DEPTH_CACHE = {
+  MAX_AGE: 240, // 4 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute 
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+}
+const OBSERVATION_CACHE = {
+  MAX_AGE: 540, // 9 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+}
+const BUOY_CACHE = {
+  MAX_AGE: 1740, // 29 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours  
+}
 
 export const FEATURE_CACHE_DURATION = 7200; // 2 hours
 
@@ -32,7 +47,7 @@ export function getFeatureCacheDuration(key: string) {
   }
 }
 
-export function getCacheControlHeaders(key: string): Record<string, string[]> {
+export function getAisCacheControlHeaders(key: string): Record<string, string[]> {
   if (key === 'aislocations') {
     return {
       'Cache-Control': [
@@ -62,6 +77,41 @@ export function getCacheControlHeaders(key: string): Record<string, string[]> {
   } else {
     return {};
   }
+}
+
+export function getFeatureCacheControlHeaders(key: string): Record<string, string[]> {
+  let maxAge;
+  let staleWhileRevalidate;
+  let staleIfError;
+
+  if (key === 'depth') {
+    maxAge = DEPTH_CACHE.MAX_AGE;
+    staleWhileRevalidate = DEPTH_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = DEPTH_CACHE.STALE_IF_ERROR;
+  } else if (key === 'observation') {
+    maxAge = OBSERVATION_CACHE.MAX_AGE;
+    staleWhileRevalidate = OBSERVATION_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = OBSERVATION_CACHE.STALE_IF_ERROR;
+  } else if (key === 'buoy') {
+    maxAge = BUOY_CACHE.MAX_AGE;
+    staleWhileRevalidate = BUOY_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = BUOY_CACHE.STALE_IF_ERROR;
+  } else {
+    return {};
+  }
+
+  return {
+    'Cache-Control': [
+      'max-age=' +
+        maxAge +
+        ', ' +
+        'stale-while-revalidate=' +
+        staleWhileRevalidate +
+        ', ' +
+        'stale-if-error=' +
+        staleIfError,
+    ],
+  };
 }
 
 export async function cacheResponse(key: string, response: object | string) {

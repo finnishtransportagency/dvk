@@ -7,7 +7,7 @@ import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { getFeatureCacheDuration, getFromCache } from '../graphql/cache';
+import { getFeatureCacheControlHeaders, getFeatureCacheDuration, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 import { handleLoaderError, getNumberValue, saveResponseToS3, invertDegrees, roundDecimals } from '../util';
 import {
@@ -551,6 +551,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
+      ...getFeatureCacheControlHeaders(key),
       'Content-Type': ['application/geo+json'],
     },
   };
