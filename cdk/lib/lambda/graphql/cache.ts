@@ -15,7 +15,7 @@ const AIS_VESSEL_CACHE = {
   STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 300, // 5 minutes (do not return vessel data more than 10 minutes old)
 };
-const DEPTH_CACHE = {
+const MAREOGRAPH_CACHE = {
   MAX_AGE: 240, // 4 minutes
   STALE_WHILE_REVALIDATE: 60, // 1 minute 
   STALE_IF_ERROR: 12 * 3600, // 12 hours
@@ -84,10 +84,10 @@ export function getFeatureCacheControlHeaders(key: string): Record<string, strin
   let staleWhileRevalidate;
   let staleIfError;
 
-  if (key === 'depth') {
-    maxAge = DEPTH_CACHE.MAX_AGE;
-    staleWhileRevalidate = DEPTH_CACHE.STALE_WHILE_REVALIDATE;
-    staleIfError = DEPTH_CACHE.STALE_IF_ERROR;
+  if (key === 'mareograph') {
+    maxAge = MAREOGRAPH_CACHE.MAX_AGE;
+    staleWhileRevalidate = MAREOGRAPH_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = MAREOGRAPH_CACHE.STALE_IF_ERROR;
   } else if (key === 'observation') {
     maxAge = OBSERVATION_CACHE.MAX_AGE;
     staleWhileRevalidate = OBSERVATION_CACHE.STALE_WHILE_REVALIDATE;

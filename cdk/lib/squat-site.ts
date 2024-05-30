@@ -376,7 +376,7 @@ export class SquatSite extends Construct {
       : undefined;
     const apiProxyBehavior = proxyBehavior || this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
     // add type and vaylaluokka as cache keys
-    // set default ttl to same as current s3 cache, feature handler returns cache-control headers for depths, observations and buoys
+    // set default ttl to same as current s3 cache, feature handler returns cache-control headers for mareographs, observations and buoys
     const featureLoaderQueryStringCachePolicy = this.createApiCachePolicy('DvkFeatureCachePolicy-' + props.env, ['type', 'vaylaluokka'], {
       defaultTtl: Duration.seconds(FEATURE_CACHE_DURATION),
       minTtl: Duration.seconds(0),
