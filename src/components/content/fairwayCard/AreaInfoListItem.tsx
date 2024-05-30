@@ -4,6 +4,7 @@ import { uniqueId } from 'lodash';
 import { setSelectedFairwayArea } from '../../layers';
 import { Area } from '../../../graphql/generated';
 import { useTranslation } from 'react-i18next';
+import { getAreaName } from './AreaInfo';
 
 type AreaInfoListItemProps = {
   area: Area;
@@ -26,7 +27,7 @@ export const AreaInfoListItem: React.FC<AreaInfoListItemProps> = ({ area, isN200
       onBlur={() => highlightArea(0)}
     >
       <li className="group inlineHoverText">
-        <em>{area?.name ?? <>{t('areaType' + area?.typeCode)}</>}</em>
+        <em>{getAreaName(area, t)}</em>
         {isDraftAvailable && (
           <>
             <br />
