@@ -41,15 +41,13 @@ const Alert: React.FC<AlertProps> = (props) => {
         <IonCol>
           <IonText>{props.title}</IonText>
           {props.startDate && (
-            <>
-              <br />
-              <br />
+            <div style={{ marginTop: '8px' }}>
               <IonText>
                 <em className="no-print">
                   {t('inForce')} {getLocaleDateFormat(props.startDate)} - {props.endDate && getLocaleDateFormat(props.endDate)}
                 </em>
               </IonText>
-            </>
+            </div>
           )}
         </IonCol>
       </IonRow>
