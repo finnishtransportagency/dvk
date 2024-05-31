@@ -19,7 +19,6 @@ import { getPilotRouteStyle } from '../layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from '../layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from '../layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from '../layerStyles/navigationLine3456Styles';
-import { getSpecialAreaStyle } from '../layerStyles/specialAreaStyles';
 import { getQuayStyle } from '../layerStyles/quayStyles';
 import { getHarborStyle } from '../layerStyles/harborStyles';
 
@@ -76,9 +75,6 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
       return getPilotRouteStyle(feature, resolution, true);
     case 'area':
       return getAreaStyleBySource(dataSource, true, selectedFairwayCard);
-    case 'specialarea2':
-    case 'specialarea15':
-      return getSpecialAreaStyle(feature, true, selectedFairwayCard);
     case 'line':
       if (feature.getProperties().dataSource === 'line12') {
         return getNavigationLine12Style(feature, resolution, true);
@@ -112,7 +108,7 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
 export function addPointerMoveInteraction(map: Map, types: string[]) {
   const pointerMoveSelect = new Select({
     condition: pointerMove,
-    style: selectStyle,
+    style: null, // Do not set style to here feature, since we have features that are in multiple layers
     layers: getLayers(),
     filter: (feature) => {
       return types.includes(feature.get('featureType'));
@@ -120,7 +116,51 @@ export function addPointerMoveInteraction(map: Map, types: string[]) {
     hitTolerance: 3,
     multi: true,
   });
+
+  const handleSelect = (f: Feature) => {
+    const type = f.getProperties().featureType;
+    if (type === 'specialarea2' || type === 'specialarea15') {
+      // These features are in two layers, so do not set styles to features, but set flag to indicate hover
+      f.set('hoverStyle', true);
+    } else {
+      // Save current style so we can restore it on deselect
+      f.set('savedStyle', f.getStyle(), false);
+      f.setStyle(selectStyle);
+    }
+  };
+
+  const handleDeselect = (f: Feature) => {
+    const type = f.getProperties().featureType;
+    if (type === 'specialarea2' || type === 'specialarea15') {
+      // Set hoverStye flag to false only if feature has not been click-selected
+      const clickInteraction = getClickSelection();
+      let found = false;
+      if (clickInteraction) {
+        clickInteraction.getFeatures().forEach((feat) => {
+          const featType = feat.getProperties().featureType;
+          if ((featType === 'specialarea2' || featType === 'specialarea15') && feat.getId() === f.getId()) {
+            found = true;
+          }
+        });
+        if (!found) {
+          f.set('hoverStyle', false);
+        }
+      }
+    } else {
+      // Restore old saved style to the feature
+      f.setStyle(f.get('savedStyle'));
+      f.unset('savedStyle', false);
+    }
+  };
+
+  // Handle hover style changes in code here
   pointerMoveSelect.on('select', (e) => {
+    for (const f of e.selected) {
+      handleSelect(f);
+    }
+    for (const f of e.deselected) {
+      handleDeselect(f);
+    }
     const target = map.getTarget() as HTMLElement;
     target.style.cursor = e.selected.length > 0 ? 'pointer' : '';
   });
@@ -131,7 +171,7 @@ export function addPointerMoveInteraction(map: Map, types: string[]) {
 export function addPointerClickInteraction(map: Map) {
   const pointerClickSelect = new Select({
     condition: never,
-    style: selectStyle,
+    style: null, // Do not set style to here feature, since we have features that are in multiple layers
     layers: getLayers(),
     hitTolerance: 3,
   });
@@ -149,14 +189,35 @@ function getClickSelection(): Select | undefined {
   return select;
 }
 
+// Handle click selection syle removals here
 export function clearClickSelectionFeatures() {
   const interaction = getClickSelection();
   if (interaction) {
+    interaction.getFeatures().forEach((f) => {
+      const type = f.getProperties().featureType;
+      if (type === 'specialarea2' || type === 'specialarea15') {
+        f.set('hoverStyle', false);
+      } else {
+        // Restore old saved style to the feature
+        f.setStyle(f.get('savedStyle'));
+        f.unset('savedStyle', false);
+      }
+    });
     interaction.getFeatures().clear();
   }
 }
 
+// Handle click selection style changes here
 export function setClickSelectionFeature(feature: FeatureLike) {
+  const f = feature as Feature;
+  const type = f.getProperties().featureType;
+  if (type === 'specialarea2' || type === 'specialarea15') {
+    f.set('hoverStyle', true);
+  } else {
+    f.set('savedStyle', f.getStyle(), false);
+    f.setStyle(selectStyle);
+  }
+
   const interaction = getClickSelection();
   if (interaction) {
     interaction.getFeatures().push(feature as Feature<Geometry>);
