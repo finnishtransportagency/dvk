@@ -76,7 +76,7 @@ export async function gzipString(input: string): Promise<Buffer> {
   );
 }
 
-async function toBase64Response(features: FeatureCollection | Vessel[]): Promise<string> {
+export async function toBase64Response(features: FeatureCollection | Vessel[]): Promise<string> {
   let start = Date.now();
   const body = JSON.stringify(features);
   log.debug('stringify duration: %d ms', Date.now() - start);
