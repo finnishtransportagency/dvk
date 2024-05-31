@@ -748,10 +748,10 @@ it('should return right cache headers for buoy', async () => {
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });
 
-it('should return right cache headers for depth', async () => {
-  const response = await handler(mockALBEvent('depth'));
+it('should return right cache headers for mareograph', async () => {
+  const response = await handler(mockALBEvent('mareograph'));
   assert(response.body);
-  const headers = getFeatureCacheControlHeaders('depth')?.['Cache-Control'];
+  const headers = getFeatureCacheControlHeaders('mareograph')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });
 
@@ -762,7 +762,7 @@ it('should return right cache headers for observation', async () => {
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });
 
-it('should return empty cache headers for non-buoy/depth/observation', async () => {
+it('should return empty cache headers for non-buoy/mareograph/observation', async () => {
   const response = await handler(mockALBEvent('circle'));
   assert(response.body);
   const headers = getFeatureCacheControlHeaders('circle')?.['Cache-Control'];
