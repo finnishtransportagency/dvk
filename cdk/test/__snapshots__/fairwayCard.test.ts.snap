@@ -71,7 +71,6 @@ exports[`should get card by id from the DynamoDB 1`] = `
   },
   "vesselRecommendation": undefined,
   "visibility": undefined,
-  "windGauge": undefined,
   "windRecommendation": undefined,
 }
 `;
@@ -150,7 +149,6 @@ exports[`should get card by id from the DynamoDB when cache expired 1`] = `
   },
   "vesselRecommendation": undefined,
   "visibility": undefined,
-  "windGauge": undefined,
   "windRecommendation": undefined,
 }
 `;

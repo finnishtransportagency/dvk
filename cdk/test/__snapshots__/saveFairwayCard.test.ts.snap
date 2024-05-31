@@ -154,11 +154,6 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "fi": "visibility",
     "sv": "visibilitysv",
   },
-  "windGauge": {
-    "en": "windGaugeen",
-    "fi": "windGauge",
-    "sv": "windGaugesv",
-  },
   "windRecommendation": {
     "en": "windRecommendationen",
     "fi": "windRecommendation",
@@ -220,7 +215,6 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   },
   "vesselRecommendation": null,
   "visibility": null,
-  "windGauge": null,
   "windRecommendation": null,
 }
 `;
