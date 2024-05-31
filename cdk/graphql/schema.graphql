@@ -68,7 +68,7 @@ input FairwayCardInput {
   attention: TextInput
   speedLimit: TextInput
   visibility: TextInput
-  windGauge: TextInput
+  # windGauge: TextInput
   vesselRecommendation: TextInput
   mareographs: [Int!]
   windRecommendation: TextInput
@@ -239,7 +239,6 @@ type FairwayCard {
   attention: Text
   speedLimit: Text
   visibility: Text
-  windGauge: Text
   vesselRecommendation: Text
   seaLevel: Text
   mareographs: [Mareograph!]
