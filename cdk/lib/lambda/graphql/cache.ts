@@ -1,4 +1,4 @@
-import { DeleteObjectsCommand, GetObjectCommand, ObjectIdentifier, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getEnvironment } from '../environment';
 import { log } from '../logger';
 import { Readable } from 'stream';
@@ -17,19 +17,19 @@ const AIS_VESSEL_CACHE = {
 };
 const MAREOGRAPH_CACHE = {
   MAX_AGE: 240, // 4 minutes
-  STALE_WHILE_REVALIDATE: 60, // 1 minute 
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 12 * 3600, // 12 hours
-}
+};
 const OBSERVATION_CACHE = {
   MAX_AGE: 540, // 9 minutes
   STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 12 * 3600, // 12 hours
-}
+};
 const BUOY_CACHE = {
   MAX_AGE: 1740, // 29 minutes
   STALE_WHILE_REVALIDATE: 60, // 1 minute
-  STALE_IF_ERROR: 12 * 3600, // 12 hours  
-}
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
 
 export const FEATURE_CACHE_DURATION = 7200; // 2 hours
 
@@ -101,16 +101,7 @@ export function getFeatureCacheControlHeaders(key: string): Record<string, strin
   }
 
   return {
-    'Cache-Control': [
-      'max-age=' +
-        maxAge +
-        ', ' +
-        'stale-while-revalidate=' +
-        staleWhileRevalidate +
-        ', ' +
-        'stale-if-error=' +
-        staleIfError,
-    ],
+    'Cache-Control': ['max-age=' + maxAge + ', ' + 'stale-while-revalidate=' + staleWhileRevalidate + ', ' + 'stale-if-error=' + staleIfError],
   };
 }
 
@@ -161,22 +152,4 @@ export async function getFromCache(key: string): Promise<CacheResponse> {
     // errors ignored also not found
   }
   return { expired: true };
-}
-
-export async function deleteCacheObjects(keys: string[]) {
-  const objects: ObjectIdentifier[] = keys.map((key) => {
-    return { Key: key };
-  });
-  const response = await s3Client.send(
-    new DeleteObjectsCommand({
-      Bucket: getCacheBucketName(),
-      Delete: {
-        Objects: objects,
-      },
-    })
-  );
-  log.debug(`Deleted cache objects ${keys}: ${response.Deleted?.length}/${keys.length}`);
-  if (response.Errors?.length) {
-    log.error(response.Errors);
-  }
 }
