@@ -728,18 +728,6 @@ export const fairwayCardReducer = (
               : '',
         })
     );
-    // } else if (actionType === 'windGauge' && validationErrors.find((error) => error.id === 'windGauge')?.msg) {
-    //   setValidationErrors(
-    //     validationErrors
-    //       .filter((error) => error.id !== 'windGauge')
-    //       .concat({
-    //         id: 'windGauge',
-    //         msg:
-    //           newState.windGauge?.fi.trim() || newState.windGauge?.sv.trim() || newState.windGauge?.en.trim()
-    //             ? t(ErrorMessageKeys?.required) || ''
-    //             : '',
-    //       })
-    //   );
   } else if (actionType === 'pilotExtraInfo' && validationErrors.find((error) => error.id === 'pilotExtraInfo')?.msg) {
     setValidationErrors(
       validationErrors
