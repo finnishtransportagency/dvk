@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MDEditor, { ICommand, bold, codeEdit, codeLive, codePreview, italic, link } from '@uiw/react-md-editor';
 import rehypeSanitize from 'rehype-sanitize';
+import { PluggableList } from 'unified';
 import { IonLabel } from '@ionic/react';
 import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../../utils/constants';
 import './MarkdownInput.css';
@@ -22,6 +23,7 @@ interface MarkdownInputProps {
 const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
   const editorRef = useRef<HTMLDivElement>(null);
+  const rehypePlugins = [[rehypeSanitize, { tagNames: ['p', 'a', 'b', 'strong', 'em', 'br'] }]] as PluggableList;
 
   const [isValid, setIsValid] = useState(!error);
   const [isTouched, setIsTouched] = useState(false);
@@ -119,7 +121,7 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, act
           onChange={(value) => handleChange(value)}
           onBlur={() => checkValidity()}
           previewOptions={{
-            rehypePlugins: [[rehypeSanitize]],
+            rehypePlugins: rehypePlugins,
           }}
           textareaProps={{
             maxLength: maxLength,

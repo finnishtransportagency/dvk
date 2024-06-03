@@ -39,6 +39,10 @@
     color: var(--ion-color-dark);
   }
 
+  .w-md-editor-preview {
+    white-space: pre-wrap;
+  }
+
   .error-text,
   .helper-text,
   .counter {
