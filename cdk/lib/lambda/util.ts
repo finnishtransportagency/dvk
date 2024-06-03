@@ -1,7 +1,7 @@
 import { FeatureCollection, Geometry, Position } from 'geojson';
 import { gzip } from 'zlib';
 import { log } from './logger';
-import { CacheResponse, cacheResponse, getCacheControlHeaders } from './graphql/cache';
+import { CacheResponse, cacheResponse, getAisCacheControlHeaders } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
 import { Vessel } from './api/apiModels';
 import { getHeaders } from './environment';
@@ -136,7 +136,7 @@ export async function handleAisCall(
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getCacheControlHeaders(key),
+      ...getAisCacheControlHeaders(key),
       'Content-Type': contentType,
     },
   };

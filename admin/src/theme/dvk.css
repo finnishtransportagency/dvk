@@ -400,7 +400,8 @@ ion-popover.multiSelect::part(content) {
 }
 
 ion-popover.multiSelect.fairwayIds::part(content),
-ion-popover.multiSelect.pilotRoutes::part(content) {
+ion-popover.multiSelect.pilotRoutes::part(content),
+ion-popover.multiSelect.mareographs::part(content) {
   bottom: 0;
 }
 

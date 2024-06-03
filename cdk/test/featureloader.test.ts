@@ -20,6 +20,7 @@ import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
 import { StreamingBlobPayloadOutputTypes } from '@smithy/types';
+import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
 const s3Mock = mockClient(S3Client);
@@ -738,4 +739,32 @@ it('should get buoys from api', async () => {
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(3);
   expect(responseObj).toMatchSnapshot();
+});
+
+it('should return right cache headers for buoy', async () => {
+  const response = await handler(mockALBEvent('buoy'));
+  assert(response.body);
+  const headers = getFeatureCacheControlHeaders('buoy')?.['Cache-Control'];
+  expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
+});
+
+it('should return right cache headers for mareograph', async () => {
+  const response = await handler(mockALBEvent('mareograph'));
+  assert(response.body);
+  const headers = getFeatureCacheControlHeaders('mareograph')?.['Cache-Control'];
+  expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
+});
+
+it('should return right cache headers for observation', async () => {
+  const response = await handler(mockALBEvent('observation'));
+  assert(response.body);
+  const headers = getFeatureCacheControlHeaders('observation')?.['Cache-Control'];
+  expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
+});
+
+it('should return empty cache headers for non-buoy/mareograph/observation', async () => {
+  const response = await handler(mockALBEvent('circle'));
+  assert(response.body);
+  const headers = getFeatureCacheControlHeaders('circle')?.['Cache-Control'];
+  expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });
