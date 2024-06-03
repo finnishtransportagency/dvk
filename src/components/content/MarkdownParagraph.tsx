@@ -14,7 +14,7 @@ type MarkdownParagraphProps = {
 const MarkdownParagraph: React.FC<MarkdownParagraphProps> = ({ markdownText }) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const lang = i18n.resolvedLanguage as Lang;
-  const rehypePlugins = [[rehypeSanitize, { tagNames: ['p', 'a', 'b', 'strong', 'em'] }]] as PluggableList;
+  const rehypePlugins = [[rehypeSanitize, { tagNames: ['p', 'a', 'b', 'strong', 'em', 'br'] }]] as PluggableList;
   const source = markdownText?.[lang] ?? markdownText?.fi ?? undefined;
 
   return <MarkdownPreview className="markdown-text" source={source} rehypePlugins={rehypePlugins} />;
