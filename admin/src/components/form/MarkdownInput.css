@@ -4,11 +4,11 @@
     margin: 1px;
     padding-bottom: 0;
     color: var(--ion-color-dark);
-    --md-editor-font-family: 'Exo2', sans-serif;
     box-shadow: none;
     border-style: solid;
     border-width: 1px;
     border-color: var(--ion-color-dark);
+    --md-editor-font-family: 'Exo2', sans-serif;
     --md-editor-box-shadow-color: var(--ion-color-dark);
   }
 
