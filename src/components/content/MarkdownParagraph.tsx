@@ -4,6 +4,7 @@ import MarkdownPreview from '@uiw/react-markdown-preview';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
+import './MarkdownParagraph.css';
 
 type MarkdownParagraphProps = {
   markdownText?: Text;
@@ -15,7 +16,7 @@ const MarkdownParagraph: React.FC<MarkdownParagraphProps> = ({ markdownText }) =
   const rehypePlugins = [rehypeSanitize];
   const source = markdownText?.[lang] ?? markdownText?.fi ?? undefined;
 
-  return <MarkdownPreview source={source} rehypePlugins={rehypePlugins} style={{ padding: 16 }} />;
+  return <MarkdownPreview className="markdown-text" source={source} rehypePlugins={rehypePlugins} skipHtml />;
 };
 
 export default MarkdownParagraph;
