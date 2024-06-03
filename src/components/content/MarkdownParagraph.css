@@ -4,6 +4,10 @@
   font-family: 'Exo2', sans-serif;
   word-wrap: normal;
 
+  p {
+    white-space: pre-wrap;
+  }
+
   a {
     color: var(--ion-color-primary);
     text-decoration: underline;
