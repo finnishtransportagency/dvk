@@ -14,14 +14,18 @@ specialAreaSelectedImage.src = specialareaSelected;
 const specialAreaSelectedImage2 = new Image();
 specialAreaSelectedImage2.src = specialareaSelected2;
 
-export function getSpecialAreaPolygonStyle(feature: FeatureLike, selected: boolean, selected2 = false) {
+export function getSpecialAreaPolygonStyle(feature: FeatureLike) {
+  const highlighted = !!feature.get('hoverStyle');
+  const selectedCard = !!feature.get('selected');
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d') as CanvasRenderingContext2D;
   let gradient;
-  if (selected2) {
+  if (selectedCard && highlighted) {
     gradient = context.createPattern(specialAreaSelectedImage2, 'repeat');
+  } else if (selectedCard || highlighted) {
+    gradient = context.createPattern(specialAreaSelectedImage, 'repeat');
   } else {
-    gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
+    gradient = context.createPattern(specialAreaImage, 'repeat');
   }
   return new Style({
     stroke: new Stroke({
@@ -56,8 +60,8 @@ export const meetAreaIconStyle = new Style({
   },
 });
 
-export function getSpecialAreaStyle(feature: FeatureLike, selected: boolean, selected2 = false) {
-  const polygonStyle = getSpecialAreaPolygonStyle(feature, selected, selected2);
+export function getSpecialAreaStyle(feature: FeatureLike) {
+  const polygonStyle = getSpecialAreaPolygonStyle(feature);
   const iconStyle = feature.getProperties().typeCode === 2 ? anchorageAreaIconStyle : meetAreaIconStyle;
   iconStyle.setZIndex(1000);
   return [polygonStyle, iconStyle];
