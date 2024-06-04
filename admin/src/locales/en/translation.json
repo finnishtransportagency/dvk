@@ -98,7 +98,15 @@
     "temporary-notification": "[en] Huomio",
     "temporary-notification-found": "[en] Huomioita",
     "notice-ends": "[en] Päättyy",
-    "temporary-in-force": "[en] Toistaiseksi voimassa"
+    "temporary-in-force": "[en] Toistaiseksi voimassa",
+    "markdown": {
+      "bold": "[en] Lihavoitu",
+      "italic": "[en] Kursivoitu",
+      "hyperlink": "[en] Aseta linkki",
+      "edit-view": "[en] Muokkaa",
+      "live-view": "[en] Jaettu näkymä",
+      "preview": "[en] Esikatsele"
+    }
   },
   "modal": {
     "title-new-CARD": "New fairway card",
