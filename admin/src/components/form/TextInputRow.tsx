@@ -43,7 +43,9 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
-  const errorText = error === t('general.required-field') && value?.fi?.trim() ? '' : error;
+  const errorTextFi = error === t('general.required-field') && value?.fi?.trim() ? '' : error;
+  const errorTextSv = error === t('general.required-field') && value?.sv?.trim() ? '' : error;
+  const errorTextEn = error === t('general.required-field') && value?.en?.trim() ? '' : error;
 
   return (
     <IonRow className="bordered">
@@ -58,7 +60,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionLang="fi"
             required={required}
             disabled={disabled}
-            error={errorText}
+            error={errorTextFi}
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
@@ -77,7 +79,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionTarget={actionTarget}
             required={required}
             disabled={disabled}
-            error={errorText}
+            error={errorTextFi}
             helperText={helperText}
           />
         )}
@@ -93,7 +95,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionLang="sv"
             required={required}
             disabled={disabled}
-            error={errorText}
+            error={errorTextSv}
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
@@ -111,7 +113,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionTarget={actionTarget}
             required={required}
             disabled={disabled}
-            error={errorText}
+            error={errorTextSv}
             helperText={helperText}
           />
         )}
@@ -127,7 +129,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionLang="en"
             required={required}
             disabled={disabled}
-            error={errorText}
+            error={errorTextEn}
             helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
@@ -145,7 +147,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionTarget={actionTarget}
             required={required}
             disabled={disabled}
-            error={errorText}
+            error={errorTextEn}
             helperText={helperText}
           />
         )}
