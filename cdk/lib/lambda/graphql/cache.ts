@@ -1,4 +1,4 @@
-import { DeleteObjectsCommand, GetObjectCommand, ObjectIdentifier, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getEnvironment } from '../environment';
 import { log } from '../logger';
 import { Readable } from 'stream';
@@ -155,22 +155,4 @@ export async function getFromCache(key: string): Promise<CacheResponse> {
     // errors ignored also not found
   }
   return { expired: true };
-}
-
-export async function deleteCacheObjects(keys: string[]) {
-  const objects: ObjectIdentifier[] = keys.map((key) => {
-    return { Key: key };
-  });
-  const response = await s3Client.send(
-    new DeleteObjectsCommand({
-      Bucket: getCacheBucketName(),
-      Delete: {
-        Objects: objects,
-      },
-    })
-  );
-  log.debug(`Deleted cache objects ${keys}: ${response.Deleted?.length}/${keys.length}`);
-  if (response.Errors?.length) {
-    log.error(response.Errors);
-  }
 }

@@ -111,7 +111,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return resolution <= 100 ? getAreaStyleBySource('area3456', highlighted, highlighted) : undefined;
     case 'specialarea2':
     case 'specialarea15':
-      return getSpecialAreaStyle(feature, true, highlighted);
+      return getSpecialAreaStyle(feature);
     case 'boardline12':
       return getBoardLineStyle(true);
     case 'safetyequipmentfault':
@@ -385,7 +385,7 @@ export function addAPILayers(map: Map) {
     source: anchorageSource,
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
+    style: getSpecialAreaPolygonStyle,
     zIndex: 202,
   });
   addFeatureVectorLayer({
@@ -407,7 +407,7 @@ export function addAPILayers(map: Map) {
     source: meetSource,
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
+    style: getSpecialAreaPolygonStyle,
     zIndex: 202,
   });
   addFeatureVectorLayer({
