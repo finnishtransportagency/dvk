@@ -66,16 +66,6 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
           error={validationErrors.find((error) => error.id === 'visibility')?.msg}
           inputType="textarea"
         />
-        <TextInputRow
-          labelKey="fairwaycard.wind-gauge"
-          value={state.windGauge}
-          updateState={updateState}
-          actionType="windGauge"
-          required={!!state.windGauge?.fi || !!state.windGauge?.sv || !!state.windGauge?.en}
-          disabled={state.status === Status.Removed}
-          error={validationErrors.find((error) => error.id === 'windGauge')?.msg}
-          inputType="textarea"
-        />
         <IonRow>
           <IonCol size="3.95">
             <SelectWithFilter

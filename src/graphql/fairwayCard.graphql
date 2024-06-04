@@ -119,11 +119,6 @@ query findFairwayCardById($id: String!) {
       sv
       en
     }
-    windGauge {
-      fi
-      sv
-      en
-    }
     vesselRecommendation {
       fi
       sv
