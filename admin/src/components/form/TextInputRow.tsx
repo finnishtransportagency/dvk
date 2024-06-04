@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import TextInput from './TextInput';
 import Textarea from './Textarea';
 import { Text } from '../../graphql/generated';
+import { translationError } from '../../utils/formValidations';
 
 interface TextInputRowProps {
   labelKey: string;
@@ -43,9 +44,13 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
-  const errorTextFi = error === t('general.required-field') && value?.fi?.trim() ? '' : error;
-  const errorTextSv = error === t('general.required-field') && value?.sv?.trim() ? '' : error;
-  const errorTextEn = error === t('general.required-field') && value?.en?.trim() ? '' : error;
+
+  // Validate all language input fields when they are required (some of them are filled), even if they are not all touched
+  const errorText = required && translationError(value) ? t('general.required-field') : error;
+  // Hide required error if current language input is filled
+  const errorTextFi = errorText === t('general.required-field') && value?.fi?.trim() ? '' : errorText;
+  const errorTextSv = errorText === t('general.required-field') && value?.sv?.trim() ? '' : errorText;
+  const errorTextEn = errorText === t('general.required-field') && value?.en?.trim() ? '' : errorText;
 
   return (
     <IonRow className="bordered">

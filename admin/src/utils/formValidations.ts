@@ -1,14 +1,14 @@
 import { diff } from 'deep-object-diff';
-import { FairwayCardInput, GeometryInput, HarborInput, TextInput } from '../graphql/generated';
+import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
 import { dateError, endDateError } from './common';
 
-function requiredError(input?: TextInput | null): boolean {
+function requiredError(input?: TextInput | Text | null): boolean {
   return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
 }
 
-function translationError(input?: TextInput | null): boolean {
-  return (!!input?.fi.trim() || !!input?.sv.trim() || !!input?.en.trim()) && requiredError(input);
+export function translationError(input?: TextInput | Text | null): boolean {
+  return (!!input?.fi?.trim() || !!input?.sv?.trim() || !!input?.en?.trim()) && requiredError(input);
 }
 
 function geometryError(input?: GeometryInput | null): boolean {

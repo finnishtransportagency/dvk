@@ -79,6 +79,8 @@ const Textarea: React.FC<TextareaProps> = ({
           console.error(err.message);
         });
       setIsTouched(false);
+    } else if (error) {
+      setIsValid(false);
     } else if (!required && !val.trim() && !error) {
       setIsValid(true);
     }

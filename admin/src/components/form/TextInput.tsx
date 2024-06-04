@@ -167,6 +167,8 @@ const TextInput: React.FC<TextInputProps> = ({
     if (isTouched) {
       checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
       setIsTouched(false);
+    } else if (error) {
+      setIsValid(false);
     } else if (!required && !val && !error) {
       setIsValid(true);
       if (setValidity) setValidity(actionType, true);
