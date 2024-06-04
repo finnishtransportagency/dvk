@@ -2,24 +2,14 @@ import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/api/featureloader-handler';
 import { mockALBEvent } from './mocks';
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@smithy/util-stream';
+import { S3Client } from '@aws-sdk/client-s3';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
-import linesCollection from './data/lines.json';
-import areasCollection from './data/areas.json';
-import warningsCollection from './data/warnings.json';
-import vtsLinesCollection from './data/vtslines.json';
-import mareographsCollection from './data/mareographs.json';
-import buoysCollection from './data/buoys.json';
-import harborsCollection from './data/harbors.json';
-import { Readable } from 'stream';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { Status } from '../graphql/generated';
-import { gunzip, gzip } from 'zlib';
+import { gunzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
-import { StreamingBlobPayloadOutputTypes } from '@smithy/types';
 import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
@@ -423,22 +413,6 @@ async function parseResponse(body: string): Promise<FeatureCollection> {
   return JSON.parse((await response).toString()) as FeatureCollection;
 }
 
-async function createCacheResponse(collectionJson: object) {
-  const collection = JSON.stringify(collectionJson);
-  const zippedString = new Promise<Error | Buffer>((resolve, reject) =>
-    gzip(Buffer.from(collection), (err, data) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(data);
-    })
-  );
-  const body = new Readable();
-  body.push((await zippedString).toString('base64'));
-  body.push(null);
-  return body;
-}
-
 let throwError = false;
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchVATUByApi: (api: string) => {
@@ -511,12 +485,6 @@ it('should get bad request when invalid type', async () => {
 });
 
 it('should get areas from api', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({
-    Body: sdkStreamMixin(await createCacheResponse(areasCollection)) as StreamingBlobPayloadOutputTypes,
-    ExpiresString: expires.toString(),
-  });
   ddbMock.on(ScanCommand).resolves({
     Items: [],
   });
@@ -528,12 +496,6 @@ it('should get areas from api', async () => {
 });
 
 it('should get warnings always from api', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({
-    Body: sdkStreamMixin(await createCacheResponse(warningsCollection)) as StreamingBlobPayloadOutputTypes,
-    ExpiresString: expires.toString(),
-  });
   const response = await handler(mockALBEvent('marinewarning'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -542,15 +504,6 @@ it('should get warnings always from api', async () => {
 });
 
 it('should get vts lines from api', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({
-    Body: sdkStreamMixin(await createCacheResponse(vtsLinesCollection)) as StreamingBlobPayloadOutputTypes,
-    ExpiresString: expires.toString(),
-  });
-  ddbMock.on(ScanCommand).resolves({
-    Items: [],
-  });
   const response = await handler(mockALBEvent('vtsline'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -559,12 +512,6 @@ it('should get vts lines from api', async () => {
 });
 
 it('should get harbors from DynamoDB', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({
-    Body: sdkStreamMixin(await createCacheResponse(harborsCollection)) as StreamingBlobPayloadOutputTypes,
-    ExpiresString: expires.toString(),
-  });
   ddbMock.on(ScanCommand, { TableName: 'Harbor-mock' }).resolves({ Items: [harbor, harbor2] });
   const response = await handler(mockALBEvent('harbor'));
   assert(response.body);
@@ -574,12 +521,6 @@ it('should get harbors from DynamoDB', async () => {
 });
 
 it('should get mareographs from api', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({
-    Body: sdkStreamMixin(await createCacheResponse(mareographsCollection)) as StreamingBlobPayloadOutputTypes,
-    ExpiresString: expires.toString(),
-  });
   const response = await handler(mockALBEvent('mareograph'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
@@ -588,12 +529,6 @@ it('should get mareographs from api', async () => {
 });
 
 it('should get buoys from api', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({
-    Body: sdkStreamMixin(await createCacheResponse(buoysCollection)) as StreamingBlobPayloadOutputTypes,
-    ExpiresString: expires.toString(),
-  });
   const response = await handler(mockALBEvent('buoy'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
