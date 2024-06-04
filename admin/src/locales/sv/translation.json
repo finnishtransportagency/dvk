@@ -98,7 +98,15 @@
     "temporary-notification": "[sv] Huomio",
     "temporary-notification-found": "[sv] Huomioita",
     "notice-ends": "[sv] Päättyy",
-    "temporary-in-force": "[sv] Toistaiseksi voimassa"
+    "temporary-in-force": "[sv] Toistaiseksi voimassa",
+    "markdown": {
+      "bold": "[sv] Lihavoitu",
+      "italic": "[sv] Kursivoitu",
+      "hyperlink": "[sv] Aseta linkki",
+      "edit-view": "[sv] Muokkaa",
+      "live-view": "[sv] Jaettu näkymä",
+      "preview": "[sv] Esikatsele"
+    }
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",

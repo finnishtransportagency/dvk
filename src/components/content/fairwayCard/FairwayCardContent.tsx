@@ -197,7 +197,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                   key={'notification' + idx}
                   title={content}
                   icon={infoIcon}
-                  className="top-margin info"
+                  className="top-margin info no-print"
                   startDate={notification.startDate ?? ''}
                   endDate={notification.endDate ?? ''}
                 />
