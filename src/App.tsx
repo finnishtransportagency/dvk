@@ -73,7 +73,7 @@ import './theme/print.css';
 import HomePage from './pages/HomePage';
 import SidebarMenu from './components/SidebarMenu';
 import MapOverlays from './components/mapOverlays/MapOverlays';
-import { isMobile } from './utils/common';
+import { isMobile, refreshPrintableMap } from './utils/common';
 import FairwayCardPage from './pages/FairwayCardPage';
 import FairwayCardListPage from './pages/FairwayCardListPage';
 import SafetyEquipmentFaultPage from './pages/SafetyEquipmentFaultPage';
@@ -286,6 +286,12 @@ const DvkIonApp: React.FC = () => {
       }
     }
   }, [dvkMap, state.isOffline]);
+
+  useEffect(() => {
+    window.onbeforeprint = () => {
+      refreshPrintableMap();
+    };
+  }, []);
 
   const [isSourceOpen, setIsSourceOpen] = useState(false);
   return (
