@@ -1,7 +1,7 @@
 import { FeatureCollection, Geometry, Position } from 'geojson';
 import { gzip } from 'zlib';
 import { log } from './logger';
-import { CacheResponse, cacheResponse, getCacheControlHeaders } from './graphql/cache';
+import { CacheResponse, cacheResponse, getAisCacheControlHeaders } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
 import { Vessel } from './api/apiModels';
 import { getHeaders } from './environment';
@@ -80,7 +80,7 @@ export async function gzipString(input: string): Promise<Buffer> {
   );
 }
 
-async function toBase64Response(features: FeatureCollection | Vessel[]): Promise<string> {
+export async function toBase64Response(features: FeatureCollection | Vessel[]): Promise<string> {
   let start = Date.now();
   const body = JSON.stringify(features);
   log.debug('stringify duration: %d ms', Date.now() - start);
@@ -140,7 +140,7 @@ export async function handleAisCall(
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getCacheControlHeaders(key),
+      ...getAisCacheControlHeaders(key),
       'Content-Type': contentType,
     },
   };

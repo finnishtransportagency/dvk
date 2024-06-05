@@ -67,7 +67,6 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     windRecommendation: { fi: '', sv: '', en: '' },
     vesselRecommendation: { fi: '', sv: '', en: '' },
     visibility: { fi: '', sv: '', en: '' },
-    windGauge: { fi: '', sv: '', en: '' },
     seaLevel: { fi: '', sv: '', en: '' },
     trafficService: {
       pilot: {
@@ -84,7 +83,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     operation: Operation.Create,
     pictures: [],
     pilotRoutes: [],
-    temporaryNotifications: [{ content: { fi: '', sv: '', en: '' }, startDate: '', endDate: '' }],
+    temporaryNotifications: [],
   };
 
   return (

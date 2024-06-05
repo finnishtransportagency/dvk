@@ -197,10 +197,6 @@ export function validateFairwayCardForm(
       msg: translationError(state.visibility) ? requiredMsg : '',
     },
     {
-      id: 'windGauge',
-      msg: translationError(state.windGauge) ? requiredMsg : '',
-    },
-    {
       id: 'pilotExtraInfo',
       msg: translationError(state.trafficService?.pilot?.extraInfo) ? requiredMsg : '',
     },

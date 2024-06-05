@@ -157,7 +157,6 @@ export class DvkBackendStack extends Stack {
         fairwayCardWithVersionsTable.grantReadWriteData(backendLambda);
         harborWithVersionsTable.grantReadWriteData(backendLambda);
         staticBucket.grantPut(backendLambda);
-        cacheBucket.grantDelete(backendLambda);
       } else {
         fairwayCardWithVersionsTable.grantReadData(backendLambda);
         harborWithVersionsTable.grantReadData(backendLambda);

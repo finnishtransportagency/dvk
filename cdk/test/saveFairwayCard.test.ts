@@ -132,11 +132,6 @@ test('test mapFairwayCardToModel all', () => {
       sv: 'visibilitysv',
       en: 'visibilityen',
     },
-    windGauge: {
-      fi: 'windGauge',
-      sv: 'windGaugesv',
-      en: 'windGaugeen',
-    },
     windRecommendation: {
       fi: 'windRecommendation',
       sv: 'windRecommendationsv',

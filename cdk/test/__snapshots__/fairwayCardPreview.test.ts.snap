@@ -75,7 +75,6 @@ exports[`should get draft card from the DynamoDB 1`] = `
   "version": "v0",
   "vesselRecommendation": undefined,
   "visibility": undefined,
-  "windGauge": undefined,
   "windRecommendation": undefined,
 }
 `;
@@ -155,7 +154,6 @@ exports[`should get public card from the DynamoDB 1`] = `
   "version": "v0",
   "vesselRecommendation": undefined,
   "visibility": undefined,
-  "windGauge": undefined,
   "windRecommendation": undefined,
 }
 `;

@@ -7,9 +7,9 @@ import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { getFeatureCacheDuration, getFromCache } from '../graphql/cache';
+import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-import { handleLoaderError, getNumberValue, saveResponseToS3, invertDegrees, roundDecimals } from '../util';
+import { getNumberValue, invertDegrees, roundDecimals, toBase64Response } from '../util';
 import {
   AlueAPIModel,
   KaantoympyraAPIModel,
@@ -446,16 +446,6 @@ function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined
   return 'noquerystring';
 }
 
-const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy', 'harbor'];
-
-function isCacheEnabled(type: string, key: string): boolean {
-  const cacheDuration = getFeatureCacheDuration(key);
-  log.debug('cacheDuration: %d', cacheDuration);
-  const cacheEnabled = cacheDuration > 0 && !noCache.includes(type);
-  log.debug('cacheEnabled: %s', cacheEnabled);
-  return cacheEnabled;
-}
-
 async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent): Promise<boolean> {
   switch (type) {
     case 'pilot':
@@ -520,30 +510,23 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   const type = event.multiValueQueryStringParameters?.type?.join(',') ?? '';
   let base64Response: string | undefined;
   let statusCode = 200;
-  const cacheEnabled = isCacheEnabled(type, key);
-  const response = await getFromCache(key);
-  if (cacheEnabled && !response.expired && response.data) {
-    base64Response = response.data;
-  } else {
-    try {
-      const features: Feature<Geometry, GeoJsonProperties>[] = [];
-      const validType = await addFeatures(type, features, event);
-      if (!validType) {
-        log.info('Invalid type: %s', type);
-        base64Response = undefined;
-        statusCode = 400;
-      } else {
-        const collection: FeatureCollection = {
-          type: 'FeatureCollection',
-          features,
-        };
-        base64Response = await saveResponseToS3(collection, key);
-      }
-    } catch (e) {
-      const errorResult = handleLoaderError(response, e);
-      base64Response = errorResult.body;
-      statusCode = errorResult.statusCode;
+  try {
+    const features: Feature<Geometry, GeoJsonProperties>[] = [];
+    const validType = await addFeatures(type, features, event);
+    if (!validType) {
+      log.info('Invalid type: %s', type);
+      base64Response = undefined;
+      statusCode = 400;
+    } else {
+      const collection: FeatureCollection = {
+        type: 'FeatureCollection',
+        features,
+      };
+      base64Response = await toBase64Response(collection);
     }
+  } catch (e) {
+    base64Response = undefined;
+    statusCode = 503;
   }
   return {
     statusCode,
@@ -551,6 +534,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
+      ...getFeatureCacheControlHeaders(key),
       'Content-Type': ['application/geo+json'],
     },
   };

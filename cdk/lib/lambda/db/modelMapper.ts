@@ -277,7 +277,6 @@ export function mapFairwayCardDBModelToGraphqlType(
     designSpeed: dbModel.designSpeed,
     navigationCondition: dbModel.navigationCondition,
     windRecommendation: dbModel.windRecommendation,
-    windGauge: dbModel.windGauge,
     visibility: dbModel.visibility,
     seaLevel: dbModel.seaLevel,
     mareographs: dbModel.mareographs,
