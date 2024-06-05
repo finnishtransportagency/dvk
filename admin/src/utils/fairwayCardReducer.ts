@@ -194,16 +194,6 @@ export const fairwayCardReducer = (
         },
       };
       break;
-    case 'windGauge':
-      if (!actionLang) return state;
-      newState = {
-        ...state,
-        windGauge: {
-          ...(state.windGauge ?? { fi: '', sv: '', en: '' }),
-          [actionLang as string]: value as string,
-        },
-      };
-      break;
     case 'mareographs':
       newState = { ...state, mareographs: value as number[] };
       break;
@@ -734,18 +724,6 @@ export const fairwayCardReducer = (
           id: 'visibility',
           msg:
             newState.visibility?.fi.trim() || newState.visibility?.sv.trim() || newState.visibility?.en.trim()
-              ? t(ErrorMessageKeys?.required) || ''
-              : '',
-        })
-    );
-  } else if (actionType === 'windGauge' && validationErrors.find((error) => error.id === 'windGauge')?.msg) {
-    setValidationErrors(
-      validationErrors
-        .filter((error) => error.id !== 'windGauge')
-        .concat({
-          id: 'windGauge',
-          msg:
-            newState.windGauge?.fi.trim() || newState.windGauge?.sv.trim() || newState.windGauge?.en.trim()
               ? t(ErrorMessageKeys?.required) || ''
               : '',
         })

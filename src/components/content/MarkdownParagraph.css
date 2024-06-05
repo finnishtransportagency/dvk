@@ -1,0 +1,20 @@
+.wmde-markdown.markdown-text {
+  background-color: transparent;
+  color: var(--ion-color-dark);
+  font-family: 'Exo2', sans-serif;
+  word-wrap: normal;
+
+  p {
+    white-space: pre-wrap;
+  }
+
+  a {
+    color: var(--ion-color-primary);
+    text-decoration: underline;
+  }
+
+  b,
+  strong {
+    font-weight: bold;
+  }
+}

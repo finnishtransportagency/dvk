@@ -45,6 +45,7 @@ import { compareAsc } from 'date-fns';
 import { useObservationFeatures } from '../../ObservationFeatureLoader';
 import { ObservationInfo } from './ObservationInfo';
 import { SpecialAreaInfo } from './SpecialAreaInfo';
+import MarkdownParagraph from '../MarkdownParagraph';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -258,7 +259,8 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                 <h4>
                   <strong>{t('additionalInfo')}</strong>
                 </h4>
-                <Paragraph bodyText={fairwayCard?.additionalInfo ?? undefined} />
+                {/* <Paragraph bodyText={fairwayCard?.additionalInfo ?? undefined} /> */}
+                <MarkdownParagraph markdownText={fairwayCard?.additionalInfo} />
               </IonText>
             )}
             <IonText>

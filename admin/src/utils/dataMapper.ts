@@ -72,11 +72,6 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       sv: stringValueOrDefault(data?.fairwayCard?.visibility?.sv),
       en: stringValueOrDefault(data?.fairwayCard?.visibility?.en),
     },
-    windGauge: {
-      fi: stringValueOrDefault(data?.fairwayCard?.windGauge?.fi),
-      sv: stringValueOrDefault(data?.fairwayCard?.windGauge?.sv),
-      en: stringValueOrDefault(data?.fairwayCard?.windGauge?.en),
-    },
     mareographs: data?.fairwayCard?.mareographs?.map((mareograph) => mareograph.id) ?? [],
     trafficService: {
       pilot: {
