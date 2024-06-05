@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonLabel, IonTextarea } from '@ionic/react';
 import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
@@ -34,19 +34,18 @@ const Textarea: React.FC<TextareaProps> = ({
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
   const inputRef = useRef<HTMLIonTextareaElement>(null);
+
+  const [isValid, setIsValid] = useState(!error);
+  const [isTouched, setIsTouched] = useState(false);
+
   const focusInput = () => {
     inputRef.current?.setFocus().catch((err) => {
       console.error(err.message);
     });
   };
 
-  const [isValid, setIsValid] = useState(!error);
-  const [isTouched, setIsTouched] = useState(false);
-
-  const checkValidity = () => {
-    if (error) {
-      setIsValid(false);
-    } else {
+  const checkValidity = useCallback(() => {
+    if (!error) {
       inputRef.current
         ?.getInputElement()
         .then((textarea) => (textarea ? setIsValid(textarea.checkValidity()) : null))
@@ -54,8 +53,8 @@ const Textarea: React.FC<TextareaProps> = ({
           console.error(err.message);
         });
     }
-    setIsTouched(true);
-  };
+  }, [error]);
+
   const handleChange = (newVal: string | null | undefined) => {
     if (isTouched) checkValidity();
     setValue(newVal as string, actionType, actionLang, actionTarget);
@@ -69,22 +68,14 @@ const Textarea: React.FC<TextareaProps> = ({
 
   useEffect(() => {
     if (isTouched) {
-      inputRef.current
-        ?.getInputElement()
-        .then((textarea) => {
-          if (error) setIsValid(false);
-          if (textarea) setIsValid(textarea.checkValidity());
-        })
-        .catch((err) => {
-          console.error(err.message);
-        });
+      checkValidity();
       setIsTouched(false);
     } else if (error) {
       setIsValid(false);
     } else if (!required && !val.trim() && !error) {
       setIsValid(true);
     }
-  }, [required, error, isTouched, val]);
+  }, [required, error, isTouched, val, checkValidity]);
 
   return (
     <>
@@ -99,7 +90,10 @@ const Textarea: React.FC<TextareaProps> = ({
         onIonInput={(ev) => handleChange(ev.target.value)}
         debounce={500}
         onIonChange={(ev) => handleChange(ev.target.value)}
-        onIonBlur={() => checkValidity()}
+        onIonBlur={() => {
+          checkValidity();
+          setIsTouched(true);
+        }}
         disabled={disabled}
         autoGrow
         rows={1}
