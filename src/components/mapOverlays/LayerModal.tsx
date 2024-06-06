@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
 import './LayerModal.css';
 import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../utils/constants';
-import { refreshPrintableMap, hasOfflineSupport } from '../../utils/common';
+import { hasOfflineSupport } from '../../utils/common';
 import LayerItem from './LayerItem';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
@@ -147,7 +147,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         featureLayer.setVisible(layers.includes(dataLayer.id) && (hasOfflineSupport(dataLayer.id) || !isOffline));
       });
     });
-    setTimeout(refreshPrintableMap, 100);
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
 
   return (
