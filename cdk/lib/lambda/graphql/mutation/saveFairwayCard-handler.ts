@@ -27,6 +27,7 @@ import {
   mapPilotJourney,
   mapString,
   mapText,
+  mapVersion,
   mapVhfChannel,
 } from '../../db/modelMapper';
 import { CurrentUser, getCurrentUser } from '../../api/login';
@@ -39,7 +40,7 @@ import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
     id: mapId(card.id),
-    version: mapId(card.version),
+    version: mapVersion(card.version),
     name: mapMandatoryText(card.name),
     status: card.status,
     n2000HeightSystem: !!card.n2000HeightSystem,
