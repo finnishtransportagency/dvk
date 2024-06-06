@@ -44,12 +44,17 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
 
   const handleChange = () => {
     // Check previous state
+    console.log(currentLayer.id);
     if (isChecked() || isIndeterminate()) {
       updateLayers(layersWOCurrentChildLayers);
-      dispatch({ type: 'setShowAisPredictor', payload: { value: false } });
+      if (currentLayer.id === 'ais') {
+        dispatch({ type: 'setShowAisPredictor', payload: { value: false } });
+      }
     } else {
       updateLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) ?? []));
-      dispatch({ type: 'setShowAisPredictor', payload: { value: true } });
+      if (currentLayer.id === 'ais') {
+        dispatch({ type: 'setShowAisPredictor', payload: { value: true } });
+      }
       setLegendOpen(true);
     }
   };
