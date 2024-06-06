@@ -174,10 +174,6 @@ class DvkMap {
 
     const bgFinlandLayer = new VectorImageLayer({
       properties: { id: 'finland' },
-      source: new VectorSource<Feature<Geometry>>({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 1,
       renderOrder: undefined,
       renderBuffer: 0,
@@ -187,10 +183,6 @@ class DvkMap {
 
     const bgMmlmeriLayer = new VectorImageLayer({
       properties: { id: 'mml_meri' },
-      source: new VectorSource<Feature<Geometry>>({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 2,
       renderOrder: undefined,
       renderBuffer: 0,
@@ -200,10 +192,6 @@ class DvkMap {
 
     const bgMmlmerirantaviivaLayer = new VectorImageLayer({
       properties: { id: 'mml_meri_rantaviiva' },
-      source: new VectorSource<Feature<Geometry>>({
-        features: [],
-        overlaps: false,
-      }),
       maxResolution: 32,
       zIndex: 3,
       renderOrder: undefined,
@@ -214,10 +202,6 @@ class DvkMap {
 
     const bgMmljarviLayer = new VectorImageLayer({
       properties: { id: 'mml_jarvi' },
-      source: new VectorSource<Feature<Geometry>>({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 4,
       renderOrder: undefined,
       renderBuffer: 0,
@@ -227,10 +211,6 @@ class DvkMap {
 
     const bgMmljarvirantaviivaLayer = new VectorImageLayer({
       properties: { id: 'mml_jarvi_rantaviiva' },
-      source: new VectorSource<Feature<Geometry>>({
-        features: [],
-        overlaps: false,
-      }),
       maxResolution: 32,
       zIndex: 5,
       renderOrder: undefined,
@@ -241,10 +221,6 @@ class DvkMap {
 
     const bgBalticseaLayer = new VectorImageLayer({
       properties: { id: 'balticsea' },
-      source: new VectorSource<Feature<Geometry>>({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 6,
       imageRatio: 3,
     });
@@ -252,10 +228,6 @@ class DvkMap {
 
     const bgMmlsatamatLayer = new VectorLayer({
       properties: { id: 'mml_satamat' },
-      source: new VectorSource<FeatureLike>({
-        features: [],
-        overlaps: false,
-      }),
       maxResolution: 30,
       zIndex: 104,
       renderBuffer: 1,
@@ -267,10 +239,6 @@ class DvkMap {
 
     const bgMmllaituritLayer = new VectorLayer({
       properties: { id: 'mml_laiturit' },
-      source: new VectorSource<FeatureLike>({
-        features: [],
-        overlaps: false,
-      }),
       maxResolution: 4,
       zIndex: 105,
       renderBuffer: 1,

@@ -74,10 +74,13 @@ function useStaticDataLayer(
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON({ featureClass: RenderFeature });
-        const source = layer.getSource() as VectorSource;
-        source.clear();
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
-        source.addFeatures(features);
+        layer.setSource(
+          new VectorSource<Feature<Geometry>>({
+            features: features,
+            overlaps: false,
+          })
+        );
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
       setReady(true);
