@@ -44,7 +44,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
 
   const handleChange = () => {
     // Check previous state
-    console.log(currentLayer.id);
     if (isChecked() || isIndeterminate()) {
       updateLayers(layersWOCurrentChildLayers);
       if (currentLayer.id === 'ais') {
