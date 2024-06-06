@@ -1,14 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonButton, IonIcon, IonInput, IonLabel, IonText } from '@ionic/react';
 import { ActionType, Lang, INPUT_MAXLENGTH } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import {
-  checkIfValidAndChangeFormatToISO,
-  checkInputValidity,
-  getCombinedErrorAndHelperText,
-  getInputCounterText,
-  isInputOk,
-} from '../../utils/common';
+import { checkIfValidAndChangeFormatToISO, getCombinedErrorAndHelperText, getInputCounterText, isInputOk } from '../../utils/common';
 import HelpIcon from '../../theme/img/help_icon.svg?react';
 import NotificationModal from '../NotificationModal';
 import CalendarIcon from '../../theme/img/calendar_icon.svg';
@@ -79,9 +73,25 @@ const TextInput: React.FC<TextInputProps> = ({
     });
   };
 
+  const checkValidity = useCallback(() => {
+    if (!error) {
+      inputRef.current
+        ?.getInputElement()
+        .then((textinput) => {
+          if (textinput) {
+            setIsValid(textinput.checkValidity());
+            if (setValidity) setValidity(actionType, textinput.checkValidity());
+          }
+        })
+        .catch((err) => {
+          console.error(err.message);
+        });
+    }
+  }, [actionType, error, setValidity]);
+
   const handleChange = (newVal: string | number | null | undefined) => {
     if (isTouched) {
-      checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
+      checkValidity();
     }
     if (!newVal) {
       newVal = '';
@@ -165,13 +175,15 @@ const TextInput: React.FC<TextInputProps> = ({
 
   useEffect(() => {
     if (isTouched) {
-      checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
+      checkValidity();
       setIsTouched(false);
+    } else if (error) {
+      setIsValid(false);
     } else if (!required && !val && !error) {
       setIsValid(true);
       if (setValidity) setValidity(actionType, true);
     }
-  }, [required, error, isTouched, val, setValidity, actionType]);
+  }, [required, error, isTouched, val, setValidity, actionType, checkValidity]);
 
   useEffect(() => {
     if (focused) {
@@ -218,7 +230,7 @@ const TextInput: React.FC<TextInputProps> = ({
         multiple={inputType === 'email' && multiple}
         name={name ? name + (actionLang ?? '') : undefined}
         onIonBlur={() => {
-          checkInputValidity(inputRef, setIsValid, actionType, setValidity, error);
+          checkValidity();
           setIsTouched(true);
         }}
         onIonChange={(ev) => handleChange(ev.target.value)}
