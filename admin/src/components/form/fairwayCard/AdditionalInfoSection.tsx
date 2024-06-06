@@ -45,16 +45,6 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
         </h2>
       </IonText>
       <IonGrid className="formGrid">
-        {/* <TextInputRow
-          labelKey="fairwaycard.fairway-additional-info"
-          value={state.additionalInfo}
-          updateState={updateState}
-          actionType="additionalInfo"
-          required={!!state.additionalInfo?.fi || !!state.additionalInfo?.sv || !!state.additionalInfo?.en}
-          disabled={state.status === Status.Removed}
-          error={validationErrors.find((error) => error.id === 'additionalInfo')?.msg}
-          inputType="textarea"
-        /> */}
         <MarkdownInputRow
           labelKey="fairwaycard.fairway-additional-info"
           value={state.additionalInfo}
