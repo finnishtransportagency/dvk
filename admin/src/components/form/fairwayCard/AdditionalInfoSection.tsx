@@ -22,6 +22,7 @@ interface AdditionalInfoSectionProps {
 const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, updateState, validationErrors }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
+  const modalText = `${t('fairwaycard.fairway-additional-info-notification-body') ?? ''}\n${t('general.markdown.description')}`;
 
   const showInfoModal = () => {
     setInfoModalOpen(true);
@@ -69,7 +70,7 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
         closeAction={() => setInfoModalOpen(false)}
         closeTitle={t('general.close')}
         header={t('fairwaycard.fairway-additional-info-notification-header') ?? ''}
-        message={t('fairwaycard.fairway-additional-info-notification-body') ?? ''}
+        message={modalText}
       />
     </>
   );

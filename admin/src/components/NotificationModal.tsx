@@ -29,6 +29,7 @@ const NotificationModal: React.FC<ModalProps> = ({
   const { t } = useTranslation();
 
   const modal = useRef<HTMLIonModalElement>(null);
+  const messages = message?.split('\n') ?? [];
 
   const closeModal = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
@@ -63,7 +64,7 @@ const NotificationModal: React.FC<ModalProps> = ({
             {!useTransElement ? (
               <IonText>
                 {header && subHeader && <p>{subHeader}</p>}
-                <p>{message}</p>
+                {messages?.map((str, i) => <p key={`${i}-${str.length}`}>{str}</p>)}
                 {itemList && (
                   <ul>
                     {itemList.map((item) => (

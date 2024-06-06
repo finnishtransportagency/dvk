@@ -20,6 +20,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
+  const helperText = t('general.markdown.helper-text');
   const errorText = error === t('general.required-field') && value?.fi?.trim() ? '' : error;
 
   return (
@@ -34,6 +35,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           required={required}
           disabled={disabled}
           error={errorText}
+          helperText={helperText}
         />
       </IonCol>
       <IonCol sizeMd="4">
@@ -46,6 +48,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           required={required}
           disabled={disabled}
           error={errorText}
+          helperText={helperText}
         />
       </IonCol>
       <IonCol sizeMd="4">
@@ -58,6 +61,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           required={required}
           disabled={disabled}
           error={errorText}
+          helperText={helperText}
         />
       </IonCol>
     </IonRow>
