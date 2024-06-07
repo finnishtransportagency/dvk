@@ -24,6 +24,7 @@ async function migrateData(oldTableName: string, newTableName: string, fairwayCa
     // the public one from currentPublicItem if there's one
     // and the actual item which results to v1
     if (!item) {
+      console.log('Item skipped...');
       continue;
     }
     console.log('Migrating item... ' + item?.name.fi);

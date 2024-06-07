@@ -165,7 +165,7 @@ class FairwayCardDBModel {
     return fairwayCard;
   }
 
-  static async getAll(): Promise<FairwayCardDBModel[]> {
+  static async getAllLatest(): Promise<FairwayCardDBModel[]> {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
         TableName: getFairwayCardTableName(),

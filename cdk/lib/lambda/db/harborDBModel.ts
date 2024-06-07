@@ -69,7 +69,7 @@ class HarborDBModel {
     return harbor;
   }
 
-  static async getAll(): Promise<HarborDBModel[]> {
+  static async getAllLatest(): Promise<HarborDBModel[]> {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
         TableName: getHarborTableName(),
