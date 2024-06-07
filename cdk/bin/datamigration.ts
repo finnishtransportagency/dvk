@@ -15,11 +15,18 @@ async function migrateData(oldTableName: string, newTableName: string, fairwayCa
 
   const items = fairwayCards ? (oldTable.Items as FairwayCardDBModel[]) : (oldTable.Items as HarborDBModel[]);
 
+  let itemsHandled = 0;
+  let itemsCreated = 0;
+  console.log('\nMIGRATING ' + (fairwayCards ? 'FAIRWAY CARDS' : 'HARBORS'));
   for (const item of items) {
     // three different objects for one item:
     // latest one is retrieved from v0_latest (regardless of status)
     // the public one from currentPublicItem if there's one
     // and the actual item which results to v1
+    if (!item) {
+      continue;
+    }
+    console.log('Migrating item... ' + item?.name.fi);
     const latestVersionItem = {
       ...item,
       version: 'v0_latest',
@@ -41,10 +48,22 @@ async function migrateData(oldTableName: string, newTableName: string, fairwayCa
       ...item,
       version: 'v1',
     };
-    await client.send(new PutCommand({ TableName: newTableName, Item: latestVersionItem }));
-    await client.send(new PutCommand({ TableName: newTableName, Item: currentPublicItem }));
-    await client.send(new PutCommand({ TableName: newTableName, Item: newItem }));
+    itemsHandled += 1;
+
+    try {
+      await client.send(new PutCommand({ TableName: newTableName, Item: latestVersionItem }));
+      await client.send(new PutCommand({ TableName: newTableName, Item: currentPublicItem }));
+      await client.send(new PutCommand({ TableName: newTableName, Item: newItem }));
+
+      itemsCreated += 3;
+    } catch (error) {
+      console.log(error);
+    }
   }
+  console.log('\nOld table items handled: ' + itemsHandled);
+  console.log('Items created/migrated to new table: ' + itemsCreated + '\n');
+  // every entry in old table should equal to 3 entries in new one, hence the check itemsHandled * 3 === itemsCreated
+  console.log('\n' + (itemsHandled * 3 === itemsCreated) ? 'EVERYTHING SHOULD BE OK!\n' : 'SOMETHING MIGHT\'VE GONE WRONG\n');
 }
 
 async function main() {
@@ -52,6 +71,7 @@ async function main() {
   console.time('Fairway card data migrated in');
   await migrateData(Config.getFairwayCardTableName(), Config.getFairwayCardWithVersionsTableName(), true);
   console.timeEnd('Fairway card data migrated in');
+  console.log();
   console.time('Harbor data migrated in');
   await migrateData(Config.getHarborTableName(), Config.getHarborWithVersionsTableName(), false);
   console.timeEnd('Harbor data migrated in');
