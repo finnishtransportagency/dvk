@@ -14,13 +14,25 @@ interface MarkdownInputProps {
   setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number) => void;
   actionType: ActionType;
   actionLang?: Lang;
+  actionTarget?: string | number;
   required?: boolean;
   disabled?: boolean;
   error?: string;
   helperText?: string;
 }
 
-const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, actionType, actionLang, required, disabled, error, helperText }) => {
+const MarkdownInput: React.FC<MarkdownInputProps> = ({
+  label,
+  val,
+  setValue,
+  actionType,
+  actionLang,
+  actionTarget,
+  required,
+  disabled,
+  error,
+  helperText,
+}) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
   const editorRef = useRef<HTMLDivElement>(null);
   const rehypePlugins = [[rehypeSanitize, { tagNames: ['p', 'a', 'b', 'strong', 'em', 'br'] }]] as PluggableList;
@@ -54,7 +66,7 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, act
 
   const handleChange = (newVal: string | null | undefined) => {
     if (isTouched) checkValidity();
-    setValue(newVal as string, actionType, actionLang);
+    setValue(newVal as string, actionType, actionLang, actionTarget);
   };
 
   const getErrorText = () => {

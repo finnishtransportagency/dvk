@@ -190,16 +190,16 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             printDisabled={printDisabled}
           />
           {fairwayCard?.temporaryNotifications?.map((notification, idx) => {
-            const content = notification?.content?.[lang];
-            if (content && isValidToDisplay(notification.startDate, notification.endDate)) {
+            if (notification.content && isValidToDisplay(notification.startDate, notification.endDate)) {
               return (
                 <NotificationAlert
                   key={'notification' + idx}
-                  title={content}
+                  title={notification.content[lang] ?? ''}
                   icon={infoIcon}
                   className="top-margin info no-print"
                   startDate={notification.startDate ?? ''}
                   endDate={notification.endDate ?? ''}
+                  markdownText={notification.content}
                 />
               );
             }

@@ -61,22 +61,23 @@ const NotificationModal: React.FC<ModalProps> = ({
       <IonGrid>
         <IonRow className="content">
           <IonCol>
-            {!useTransElement ? (
-              <IonText>
-                {header && subHeader && <p>{subHeader}</p>}
-                {messages?.map((str, i) => <p key={`${i}-${str.length}`}>{str}</p>)}
-                {itemList && (
-                  <ul>
-                    {itemList.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                )}
-              </IonText>
-            ) : (
-              /*Changed because of bold text needed for notices modal, but components part can be refactored if more diverse need arises*/
-              <Trans t={t} i18nKey={i18nkey} components={{ strong: <strong /> }} />
-            )}
+            <IonText>
+              {header && subHeader && <p>{subHeader}</p>}
+              {useTransElement && (
+                /*Changed because of bold text needed for notices modal, but components part can be refactored if more diverse need arises*/
+                <p>
+                  <Trans t={t} i18nKey={i18nkey} components={{ strong: <strong /> }} />
+                </p>
+              )}
+              {messages?.map((str, i) => <p key={`${i}-${str.length}`}>{str}</p>)}
+              {itemList && (
+                <ul>
+                  {itemList.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              )}
+            </IonText>
           </IonCol>
         </IonRow>
       </IonGrid>
