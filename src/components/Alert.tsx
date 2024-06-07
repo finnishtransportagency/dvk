@@ -4,7 +4,9 @@ import { useDvkContext } from '../hooks/dvkContext';
 import { t } from 'i18next';
 import { useTranslation } from 'react-i18next';
 import { Lang } from '../utils/constants';
+import { Text } from '../graphql/generated';
 import { format, parseISO } from 'date-fns';
+import MarkdownParagraph from './content/MarkdownParagraph';
 
 interface AlertProps {
   title: string | ReactElement;
@@ -14,9 +16,10 @@ interface AlertProps {
   mainLegendOpen?: boolean;
   startDate?: string;
   endDate?: string;
+  markdownText?: Text;
 }
 
-const Alert: React.FC<AlertProps> = (props) => {
+const Alert: React.FC<AlertProps> = ({ title, icon, color, className, startDate, endDate, markdownText }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -33,18 +36,18 @@ const Alert: React.FC<AlertProps> = (props) => {
   };
 
   return (
-    <IonGrid className={props.className ? props.className : undefined}>
+    <IonGrid className={className ?? undefined}>
       <IonRow className="ion-align-items-center">
         <IonCol size="auto" className="icon">
-          <IonIcon icon={props.icon} color={props.color} />
+          <IonIcon icon={icon} color={color} />
         </IonCol>
         <IonCol>
-          <IonText>{props.title}</IonText>
-          {props.startDate && (
+          {markdownText ? <MarkdownParagraph markdownText={markdownText} /> : <IonText>{title}</IonText>}
+          {startDate && (
             <div style={{ marginTop: '8px' }}>
               <IonText>
                 <em className="no-print">
-                  {t('inForce')} {getLocaleDateFormat(props.startDate)} - {props.endDate && getLocaleDateFormat(props.endDate)}
+                  {t('inForce')} {getLocaleDateFormat(startDate)} - {endDate && getLocaleDateFormat(endDate)}
                 </em>
               </IonText>
             </div>
@@ -55,11 +58,11 @@ const Alert: React.FC<AlertProps> = (props) => {
   );
 };
 
-export const LayerAlert: React.FC<AlertProps> = (props) => {
+export const LayerAlert: React.FC<AlertProps> = ({ title, icon, color, className, mainLegendOpen }) => {
   const { dispatch } = useDvkContext();
 
   useEffect(() => {
-    if (props.mainLegendOpen) {
+    if (mainLegendOpen) {
       dispatch({
         type: 'setResponse',
         payload: {
@@ -67,14 +70,14 @@ export const LayerAlert: React.FC<AlertProps> = (props) => {
         },
       });
     }
-  }, [dispatch, props.mainLegendOpen]);
+  }, [dispatch, mainLegendOpen]);
 
   return (
     <IonRow>
       <IonCol>
         <IonItem>
-          <IonIcon className="icon" size="small" icon={props.icon} color={props.color} />
-          <IonText className={props.className ? props.color + ' ' + props.className : props.color}>{props.title}</IonText>
+          <IonIcon className="icon" size="small" icon={icon} color={color} />
+          <IonText className={className ? color + ' ' + className : color}>{title}</IonText>
         </IonItem>
       </IonCol>
     </IonRow>
