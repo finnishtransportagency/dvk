@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MDEditor, { ICommand, bold, codeEdit, codeLive, codePreview, italic, link } from '@uiw/react-md-editor';
 import rehypeSanitize from 'rehype-sanitize';
@@ -43,17 +43,14 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, act
     element?.focus();
   };
 
-  const checkValidity = () => {
-    if (error) {
-      setIsValid(false);
-    } else {
+  const checkValidity = useCallback(() => {
+    if (!error) {
       const element = getTextareaElement();
       if (element) {
         setIsValid(element.checkValidity());
       }
     }
-    setIsTouched(true);
-  };
+  }, [error]);
 
   const handleChange = (newVal: string | null | undefined) => {
     if (isTouched) checkValidity();
@@ -68,16 +65,14 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, act
 
   useEffect(() => {
     if (isTouched) {
-      if (error) setIsValid(false);
-      const element = getTextareaElement();
-      if (element) {
-        setIsValid(element.checkValidity());
-      }
+      checkValidity();
       setIsTouched(false);
+    } else if (error) {
+      setIsValid(false);
     } else if (!required && !val.trim() && !error) {
       setIsValid(true);
     }
-  }, [required, error, isTouched, val]);
+  }, [required, error, isTouched, val, checkValidity]);
 
   const boldCommand: ICommand = {
     ...bold,
@@ -119,7 +114,10 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({ label, val, setValue, act
           className={isValid ? '' : 'error'}
           value={val}
           onChange={(value) => handleChange(value)}
-          onBlur={() => checkValidity()}
+          onBlur={() => {
+            checkValidity();
+            setIsTouched(true);
+          }}
           previewOptions={{
             rehypePlugins: rehypePlugins,
           }}

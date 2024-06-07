@@ -4,6 +4,7 @@ import { ActionType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { Text } from '../../graphql/generated';
 import MarkdownInput from './MarkdownInput';
+import { translationError } from '../../utils/formValidations';
 
 interface MarkdownInputRowProps {
   labelKey: string;
@@ -20,8 +21,10 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
+
+  // Validate all language input fields when they are required (some of them are filled), even if they are not all touched
+  const errorText = required && translationError(value) ? t('general.required-field') : error;
   const helperText = t('general.markdown.helper-text');
-  const errorText = error === t('general.required-field') && value?.fi?.trim() ? '' : error;
 
   return (
     <IonRow className="bordered">
@@ -34,7 +37,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           actionLang="fi"
           required={required}
           disabled={disabled}
-          error={errorText}
+          error={errorText === t('general.required-field') && value?.fi?.trim() ? '' : errorText}
           helperText={helperText}
         />
       </IonCol>
@@ -47,7 +50,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           actionLang="sv"
           required={required}
           disabled={disabled}
-          error={errorText}
+          error={errorText === t('general.required-field') && value?.sv?.trim() ? '' : errorText}
           helperText={helperText}
         />
       </IonCol>
@@ -60,7 +63,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           actionLang="en"
           required={required}
           disabled={disabled}
-          error={errorText}
+          error={errorText === t('general.required-field') && value?.en?.trim() ? '' : errorText}
           helperText={helperText}
         />
       </IonCol>

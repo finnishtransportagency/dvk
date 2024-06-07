@@ -148,10 +148,6 @@ class DvkMap {
 
     const bgFinlandLayer = new VectorImageLayer({
       properties: { id: 'finland' },
-      source: new VectorSource<Feature<Geometry>>({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 1,
       imageRatio: 3,
     });
@@ -159,10 +155,6 @@ class DvkMap {
     this.olMap.addLayer(bgFinlandLayer);
     const bgBalticseaLayer = new VectorImageLayer({
       properties: { id: 'balticsea' },
-      source: new VectorSource<Feature<Geometry>>({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 4,
       imageRatio: 3,
     });
@@ -170,10 +162,6 @@ class DvkMap {
 
     const bgMmlsatamatLayer = new VectorLayer({
       properties: { id: 'mml_satamat' },
-      source: new VectorSource<FeatureLike>({
-        features: [],
-        overlaps: false,
-      }),
       maxResolution: 30,
       zIndex: 104,
       renderBuffer: 1,

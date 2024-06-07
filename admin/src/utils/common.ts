@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next';
 import { FairwayCardOrHarbor, Mareograph, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
-import { ActionType, ItemType, Lang, SelectOption } from './constants';
+import { ItemType, Lang, SelectOption } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
@@ -64,31 +64,6 @@ export const filterItemList = (
         }
       }) ?? []
   );
-};
-
-export const checkInputValidity = (
-  inputRef: React.RefObject<HTMLIonInputElement>,
-  setIsValid: React.Dispatch<React.SetStateAction<boolean>>,
-  actionType: ActionType,
-  setValidity?: (actionType: ActionType, val: boolean) => void,
-  error?: string
-) => {
-  if (error) {
-    setIsValid(false);
-    if (setValidity) setValidity(actionType, false);
-  } else {
-    inputRef.current
-      ?.getInputElement()
-      .then((textinput) => {
-        if (textinput) {
-          setIsValid(textinput.checkValidity());
-          if (setValidity) setValidity(actionType, textinput.checkValidity());
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }
 };
 
 export const isInputOk = (isValid: boolean, error: string | undefined) => {
