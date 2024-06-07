@@ -2,8 +2,8 @@ import React from 'react';
 import { FairwayCardInput, Status, TemporaryNotificationInput } from '../../graphql/generated';
 import { ActionType, Lang, ValidationType, ValueType } from '../../utils/constants';
 import { IonGrid } from '@ionic/react';
-import TextInputRow from './TextInputRow';
 import CalendarInputRow from './CalendarInputRow';
+import MarkdownInputRow from './MarkdownInputRow';
 
 interface NotificationInputProps {
   idx: number;
@@ -22,7 +22,7 @@ interface NotificationInputProps {
 const NotificationInput: React.FC<NotificationInputProps> = ({ idx, section, updateState, state, validationErrors }) => {
   return (
     <IonGrid className="formGrid">
-      <TextInputRow
+      <MarkdownInputRow
         labelKey="fairwaycard.temporary-notification"
         value={section.content}
         updateState={updateState}
@@ -31,7 +31,6 @@ const NotificationInput: React.FC<NotificationInputProps> = ({ idx, section, upd
         required={!!section.content?.fi || !!section.content?.sv || !!section.content?.en}
         disabled={state.status === Status.Removed}
         error={validationErrors.find((error) => error.id === 'temporaryNotifications')?.msg}
-        inputType="textarea"
       />
       <CalendarInputRow
         idx={idx}
