@@ -9,6 +9,8 @@ const stringValueOrDefault = (value: string | null | undefined): string => {
 export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined) {
   return {
     id: origin ? '' : stringValueOrDefault(data?.fairwayCard?.id),
+    // v1 is just for now, since proper version control not in use
+    version: data?.fairwayCard?.version ?? 'v1',
     group: stringValueOrDefault(data?.fairwayCard?.group),
     name: {
       fi: stringValueOrDefault(data?.fairwayCard?.name?.fi),
@@ -150,6 +152,8 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
   const coordinates = data?.harbor?.geometry?.coordinates ?? ['', ''];
   return {
     id: origin ? '' : stringValueOrDefault(data?.harbor?.id),
+    // v1 is just for now, since proper version control not in use
+    version: data?.harbor?.version ?? 'v1',
     name: {
       fi: stringValueOrDefault(data?.harbor?.name?.fi),
       sv: stringValueOrDefault(data?.harbor?.name?.sv),

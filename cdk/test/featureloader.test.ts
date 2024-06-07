@@ -366,6 +366,7 @@ const buoys = [
 
 const card: FairwayCardDBModel = {
   id: 'test',
+  version: 'v0',
   name: {
     fi: 'Testfi',
     sv: 'Testsv',
@@ -391,12 +392,14 @@ const card: FairwayCardDBModel = {
 
 const harbor: HarborDBModel = {
   id: 'test1',
+  version: 'v1',
   name: { fi: 'Harborfi', sv: 'Harborsv', en: 'Harboren' },
   geometry: { coordinates: [1, 2] },
 };
 
 const harbor2: HarborDBModel = {
   id: 'test2',
+  version: 'v1',
   name: { fi: 'Harborfi2', sv: 'Harborsv2', en: 'Harboren2' },
   geometry: { coordinates: [3, 4] },
 };

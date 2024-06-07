@@ -1,6 +1,7 @@
 query fairwayCardsAndHarbors {
   fairwayCardsAndHarbors {
     id
+    version
     name {fi sv en}
     status
     type

@@ -7,6 +7,7 @@ test('test mapFairwayCardToModel minimal', () => {
   expect(() => mapFairwayCardToModel({} as FairwayCardInput, undefined, currentUser)).toThrow(OperationError.InvalidInput);
   const input: FairwayCardInput = {
     id: 'a1',
+    version: 'v0',
     name: { fi: 'test', sv: 'testsv', en: 'testen' },
     n2000HeightSystem: false,
     operation: Operation.Create,
@@ -23,6 +24,7 @@ test('test mapFairwayCardToModel minimal', () => {
 test('test mapFairwayCardToModel all', () => {
   const input: FairwayCardInput = {
     id: 'a2',
+    version: 'v0',
     name: { fi: 'test2', sv: 'testsv2', en: 'testen2' },
     n2000HeightSystem: true,
     operation: Operation.Update,

@@ -15,7 +15,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardPreviewArgs, Fairwa
   if (user?.roles.includes(ADMIN_ROLE)) {
     const pilotMap = await getPilotPlaceMap();
     const pilotRoutes = (await getPilotRoutes()) as FeatureCollection<Geometry, GeoJsonProperties>;
-    const dbModel = await FairwayCardDBModel.get(event.arguments.id);
+    const dbModel = await FairwayCardDBModel.get(event.arguments.id, event.arguments.version);
 
     if (dbModel?.status === Status.Draft || dbModel?.status === Status.Public) {
       return mapFairwayCardDBModelToGraphqlType(dbModel, pilotMap, user, pilotRoutes);

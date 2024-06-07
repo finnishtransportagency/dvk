@@ -38,8 +38,8 @@ export function useFairwayCardsAndHarborsQueryData() {
   return useFairwayCardsAndHarborsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
-export function useFairwayCardByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
-  return useFairwayCardByIdQuery(datasourceClient, { id }, { refetchOnWindowFocus: refetchOnWindowFocus });
+export function useFairwayCardByIdQueryData(id: string, version: string = 'v0_latest', refetchOnWindowFocus?: boolean) {
+  return useFairwayCardByIdQuery(datasourceClient, { id, version }, { refetchOnWindowFocus: refetchOnWindowFocus });
 }
 
 export function useFairwaysQueryData() {
@@ -54,8 +54,8 @@ export function useHarboursQueryData() {
   return useHarborsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
-export function useHarbourByIdQueryData(id: string, refetchOnWindowFocus?: boolean) {
-  return useHarbourByIdQuery(datasourceClient, { id }, { refetchOnWindowFocus: refetchOnWindowFocus });
+export function useHarbourByIdQueryData(id: string, version: string = 'v0_latest', refetchOnWindowFocus?: boolean) {
+  return useHarbourByIdQuery(datasourceClient, { id, version }, { refetchOnWindowFocus: refetchOnWindowFocus });
 }
 
 export function usePilotPlacesQueryData() {

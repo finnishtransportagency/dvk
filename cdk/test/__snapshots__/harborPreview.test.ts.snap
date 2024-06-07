@@ -24,6 +24,7 @@ exports[`should get draft harbor preview from the DynamoDB 1`] = `
   "phoneNumber": undefined,
   "quays": undefined,
   "status": "DRAFT",
+  "version": "v1",
 }
 `;
 
@@ -107,5 +108,6 @@ exports[`should get public harbor preview from the DynamoDB 1`] = `
     },
   ],
   "status": "PUBLIC",
+  "version": "v1",
 }
 `;
