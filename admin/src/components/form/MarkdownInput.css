@@ -63,10 +63,6 @@
     color: var(--ion-color-medium);
   }
 
-  .helper-text {
-    font-style: italic;
-  }
-
   .counter {
     text-align: right;
   }

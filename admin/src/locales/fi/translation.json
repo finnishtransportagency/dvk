@@ -109,7 +109,9 @@
       "hyperlink": "Aseta linkki",
       "edit-view": "Muokkaa",
       "live-view": "Jaettu näkymä",
-      "preview": "Esikatsele"
+      "preview": "Esikatsele",
+      "helper-text": "Kirjoita tekstikenttään ja muotoile tekstiä halutessasi ylävalikon painikkeilla.",
+      "description": "Teksti kirjoitetaan Markdown-merkintäkielellä, joka mahdollistaa tekstin muotoilun. Voit käyttää ylävalikon painikkeita muotoillaksesi tekstiä seuraavilla vaihtoehdoilla: lihavoitu tai kursivoitu teksti, tai hyperlinkin asettaminen. Linkille annetaan erikseen otsikko [title] ja osoite [url].\nOikean yläkulman painikkeilla voit vaihtaa tekstieditorin näkymää. Oletuksena on jaettu näkymä, jossa vasemmalla puolella näkyy muokattava Markdown-teksti, ja oikealla puolella muotoillun tekstin esikatselu. Voit halutessasi vaihtaa näkymää myös pelkkään muokkausnäkymään tai esikatseluun."
     }
   },
   "modal": {

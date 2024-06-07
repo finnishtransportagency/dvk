@@ -22,6 +22,7 @@ interface AdditionalInfoSectionProps {
 const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, updateState, validationErrors }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
+  const modalText = `${t('fairwaycard.fairway-additional-info-notification-body') ?? ''}\n${t('general.markdown.description')}`;
 
   const showInfoModal = () => {
     setInfoModalOpen(true);
@@ -44,16 +45,6 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
         </h2>
       </IonText>
       <IonGrid className="formGrid">
-        {/* <TextInputRow
-          labelKey="fairwaycard.fairway-additional-info"
-          value={state.additionalInfo}
-          updateState={updateState}
-          actionType="additionalInfo"
-          required={!!state.additionalInfo?.fi || !!state.additionalInfo?.sv || !!state.additionalInfo?.en}
-          disabled={state.status === Status.Removed}
-          error={validationErrors.find((error) => error.id === 'additionalInfo')?.msg}
-          inputType="textarea"
-        /> */}
         <MarkdownInputRow
           labelKey="fairwaycard.fairway-additional-info"
           value={state.additionalInfo}
@@ -69,7 +60,7 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
         closeAction={() => setInfoModalOpen(false)}
         closeTitle={t('general.close')}
         header={t('fairwaycard.fairway-additional-info-notification-header') ?? ''}
-        message={t('fairwaycard.fairway-additional-info-notification-body') ?? ''}
+        message={modalText}
       />
     </>
   );

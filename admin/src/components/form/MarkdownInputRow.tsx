@@ -25,6 +25,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
 
   // Validate all language input fields when they are required (some of them are filled), even if they are not all touched
   const errorText = required && translationError(value) ? t('general.required-field') : error;
+  const helperText = t('general.markdown.helper-text');
 
   return (
     <IonRow className="bordered">
@@ -39,6 +40,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           required={required}
           disabled={disabled}
           error={errorText === t('general.required-field') && value?.fi?.trim() ? '' : errorText}
+          helperText={helperText}
         />
       </IonCol>
       <IonCol sizeMd="4">
@@ -52,6 +54,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           required={required}
           disabled={disabled}
           error={errorText === t('general.required-field') && value?.sv?.trim() ? '' : errorText}
+          helperText={helperText}
         />
       </IonCol>
       <IonCol sizeMd="4">
@@ -65,6 +68,7 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           required={required}
           disabled={disabled}
           error={errorText === t('general.required-field') && value?.en?.trim() ? '' : errorText}
+          helperText={helperText}
         />
       </IonCol>
     </IonRow>
