@@ -16,6 +16,7 @@ import {
   mapPhoneNumbers,
   mapString,
   mapText,
+  mapVersion,
 } from '../../db/modelMapper';
 import { diff } from 'deep-object-diff';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
@@ -24,7 +25,7 @@ import { getExpires } from '../../environment';
 export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, user: CurrentUser): HarborDBModel {
   return {
     id: mapId(harbor.id),
-    version: mapId(harbor.version),
+    version: mapVersion(harbor.version),
     name: mapMandatoryText(harbor.name),
     n2000HeightSystem: !!harbor.n2000HeightSystem,
     status: harbor.status,
