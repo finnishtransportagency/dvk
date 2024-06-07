@@ -259,7 +259,6 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                 <h4>
                   <strong>{t('additionalInfo')}</strong>
                 </h4>
-                {/* <Paragraph bodyText={fairwayCard?.additionalInfo ?? undefined} /> */}
                 <MarkdownParagraph markdownText={fairwayCard?.additionalInfo} />
               </IonText>
             )}
