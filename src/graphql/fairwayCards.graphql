@@ -308,14 +308,14 @@ query findAllFairwayCards($status: [Status!]) {
   }
 }
 
-query fairwayCardPreview($id: String!) {
-  fairwayCardPreview(id: $id) {
+query fairwayCardPreview($id: String!, $version: String!) {
+  fairwayCardPreview(id: $id, version: $version) {
     ...FairwayCardParts
   }
 }
 
-query harborPreview($id: String!) {
-  harborPreview(id: $id) {
+query harborPreview($id: String!, $version: String!) {
+  harborPreview(id: $id, version: $version) {
     ...HarborParts
   }
 }

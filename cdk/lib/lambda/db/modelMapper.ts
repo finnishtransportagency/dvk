@@ -186,6 +186,17 @@ export function mapQuayDepth(text: Maybe<string> | undefined) {
   return mapNumberAndMax(text, /^\d{1,3}[.,]?\d{0,2}$/, 999.99);
 }
 
+export function mapVersion(text?: Maybe<string>) {
+  if (text && text.trim().length > 0) {
+    const regex = /^v\d+(_(latest|public))?$/
+    const passedString = regex.exec(text);
+    if (passedString && passedString[0].length === text.length) {
+      return text;
+    }
+  }
+  throw new Error(OperationError.InvalidInput);
+}
+
 export const pilotPlaceMap = new Map<number, PilotPlace>();
 const pilotCacheKey = 'pilotplaces';
 
@@ -254,6 +265,7 @@ export function mapFairwayCardDBModelToGraphqlType(
 ) {
   const card: FairwayCard = {
     id: dbModel.id,
+    version: dbModel.version,
     name: {
       fi: dbModel.name?.fi,
       sv: dbModel.name?.sv,
@@ -298,6 +310,7 @@ export function mapFairwayCardDBModelToGraphqlType(
 export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: CurrentUser | undefined): Harbor {
   return {
     id: dbModel.id,
+    version: dbModel.version,
     cargo: dbModel.cargo,
     company: dbModel.company,
     creator: user ? dbModel.creator : null,

@@ -13,6 +13,7 @@ const ddbMock = mockClient(DynamoDBDocumentClient);
 
 const card1: FairwayCardDBModel = {
   id: 'public',
+  version: 'v0',
   name: {
     fi: 'Testfi',
     sv: 'Testsv',
@@ -34,6 +35,7 @@ const card1: FairwayCardDBModel = {
 
 const card2: FairwayCardDBModel = {
   id: 'draft',
+  version: 'v0',
   name: {
     fi: 'Testfi2',
     sv: 'Testsv2',
@@ -55,6 +57,7 @@ const card2: FairwayCardDBModel = {
 
 const card3: FairwayCardDBModel = {
   id: 'removed',
+  version: 'v0',
   name: {
     fi: 'Testfi3',
     sv: 'Testsv3',

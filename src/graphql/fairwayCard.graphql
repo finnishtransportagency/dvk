@@ -1,5 +1,5 @@
-query findFairwayCardById($id: String!) {
-  fairwayCard(id: $id) {
+query findFairwayCardById($id: String!, $version: String!) {
+  fairwayCard(id: $id, version: $version) {
     name {
       fi
       sv

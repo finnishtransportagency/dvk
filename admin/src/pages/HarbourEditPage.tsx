@@ -8,11 +8,12 @@ import { mapToHarborInput } from '../utils/dataMapper';
 
 interface HarbourEditProps {
   harbourId: string;
+  harbourVersion?: string;
   origin?: boolean;
 }
 
-const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
-  const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, false);
+const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion = 'v1', origin }) => {
+  const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, harbourVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const harbour = mapToHarborInput(origin, data);
@@ -50,6 +51,7 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
   const emptyHarbourInput: HarborInput = {
     geometry: { lat: '', lon: '' },
     id: '',
+    version: 'v1',
     n2000HeightSystem: false,
     name: { fi: '', sv: '', en: '' },
     extraInfo: { fi: '', sv: '', en: '' },

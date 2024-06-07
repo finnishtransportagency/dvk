@@ -18,7 +18,7 @@ export const mockContext: Context = {
 
 // Mock for query with id (string) as param, used for fairway and harbor queries
 export const mockQueryByIdEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
-  arguments: { id: 'test' },
+  arguments: { id: 'test', version: 'v0' },
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
   prev: null,
   request: { domainName: null, headers: {} },
@@ -27,11 +27,11 @@ export const mockQueryByIdEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
 };
 
 export const mockQueryFairwayCardArgsFairwayCardEvent: AppSyncResolverEvent<QueryFairwayCardArgs, FairwayCard> = {
-  arguments: { id: 'test' },
+  arguments: { id: 'test', version: 'v0' },
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
   prev: null,
   request: { domainName: null, headers: {} },
-  source: { id: 'test', fairways: [{ id: 10 }], name: { fi: 'Testfi', sv: 'Testsv', en: 'Testen' }, n2000HeightSystem: true },
+  source: { id: 'test', version: 'v0', fairways: [{ id: 10 }], name: { fi: 'Testfi', sv: 'Testsv', en: 'Testen' }, n2000HeightSystem: true },
   stash: {},
 };
 
