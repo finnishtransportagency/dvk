@@ -261,12 +261,15 @@ export function getNotificationListingTypesCount(notifications: TemporaryNotific
 }
 
 // when api returns language versions this can be deleted (db changes necessary too)
+// when deleted, remember that filtering should be happening somewhere else
 export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefined) {
   if (!mareographs) {
     return [];
   }
 
-  return mareographs.map((mareograph) => {
+  const nonCalculatedMareographs = mareographs.filter((mareograph) => !mareograph.calculated);
+
+  return nonCalculatedMareographs.map((mareograph) => {
     return {
       id: mareograph.id,
       name: {
