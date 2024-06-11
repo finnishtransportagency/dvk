@@ -1,6 +1,6 @@
 {
   "name": "dvk",
-  "version": "1.16.0",
+  "version": "1.17.0",
   "bin": {
     "dvk": "bin/dvk.js"
   },
