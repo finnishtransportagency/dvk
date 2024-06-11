@@ -7,7 +7,7 @@
   word-wrap: normal;
 
   p {
-    white-space: pre-wrap;
+    white-space: pre-line;
     margin-bottom: 12px;
   }
 

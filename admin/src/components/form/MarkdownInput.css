@@ -46,7 +46,7 @@
   }
 
   .w-md-editor-preview p {
-    white-space: pre-wrap;
+    white-space: pre-line;
   }
 
   .error-text,
