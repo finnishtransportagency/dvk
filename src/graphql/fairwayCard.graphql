@@ -1,5 +1,5 @@
 query findFairwayCardById($id: String!, $version: String!) {
-  fairwayCard(id: $id, version: $version) {
+  fairwayCardPublic(id: $id) {
     name {
       fi
       sv

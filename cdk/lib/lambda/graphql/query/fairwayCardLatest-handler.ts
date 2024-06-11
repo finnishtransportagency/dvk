@@ -12,7 +12,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, FairwayCard |
   log.info(`fairwayCard(${event.arguments.id})`);
   const pilotMap = await getPilotPlaceMap();
   const pilotRoutes = (await getPilotRoutes()) as FeatureCollection<Geometry, GeoJsonProperties>;
-  const dbModel = await FairwayCardDBModel.get(event.arguments.id, event.arguments.version);
+  const dbModel = await FairwayCardDBModel.getLatest(event.arguments.id);
   if (dbModel) {
     const user = await getOptionalCurrentUser(event);
     return mapFairwayCardDBModelToGraphqlType(dbModel, pilotMap, user, pilotRoutes);

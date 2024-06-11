@@ -154,11 +154,41 @@ class FairwayCardDBModel {
 
   temporaryNotifications?: Maybe<TemporaryNotification[]>;
 
-  // at the moment this gives any latest version, should be separate function for latest public
+  // this can be deleted when structure changed to use getVersion, getLatest and getPublic
   static async get(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
     // v0 always the latest
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
+    );
+    const fairwayCard = response.Item as FairwayCardDBModel | undefined;
+    log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
+    return fairwayCard;
+  }
+
+  static async getVersion(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
+    // v0 always the latest
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
+    );
+    const fairwayCard = response.Item as FairwayCardDBModel | undefined;
+    log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
+    return fairwayCard;
+  }
+
+  static async getLatest(id: string): Promise<FairwayCardDBModel | undefined> {
+    // v0 always the latest
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: 'v0_latest' } })
+    );
+    const fairwayCard = response.Item as FairwayCardDBModel | undefined;
+    log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
+    return fairwayCard;
+  }
+
+  static async getPublic(id: string): Promise<FairwayCardDBModel | undefined> {
+    // v0 always the latest
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: 'v0_public' } })
     );
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
