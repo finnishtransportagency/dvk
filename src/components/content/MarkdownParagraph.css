@@ -20,4 +20,16 @@
   strong {
     font-weight: bold;
   }
+
+  ol,
+  ul {
+    margin-bottom: 12px;
+  }
+
+  ol li {
+    font-size: unset;
+    line-height: unset;
+    margin-bottom: 0;
+    list-style-position: unset;
+  }
 }

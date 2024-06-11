@@ -40,8 +40,17 @@
     line-height: unset;
     word-wrap: normal;
 
-    p {
+    p,
+    ol,
+    ul {
       margin-bottom: 12px;
+    }
+
+    ol li {
+      font-size: unset;
+      line-height: unset;
+      margin-bottom: 0;
+      list-style-position: unset;
     }
   }
 
