@@ -2,10 +2,13 @@
   background-color: transparent;
   color: var(--ion-color-dark);
   font-family: 'Exo2', sans-serif;
+  font-size: 12px;
+  line-height: 1.125rem;
   word-wrap: normal;
 
   p {
-    white-space: pre-wrap;
+    white-space: pre-line;
+    margin-bottom: 12px;
   }
 
   a {
@@ -16,5 +19,17 @@
   b,
   strong {
     font-weight: bold;
+  }
+
+  ol,
+  ul {
+    margin-bottom: 12px;
+  }
+
+  ol li {
+    font-size: unset;
+    line-height: unset;
+    margin-bottom: 0;
+    list-style-position: unset;
   }
 }
