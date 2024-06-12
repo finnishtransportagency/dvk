@@ -185,7 +185,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     id: 'observation',
     url: new URL(featureLoaderUrl + '?type=observation'),
     staticUrl: new URL(staticUrl + '/observation.json.gz'),
-    persist: false,
+    persist: true,
   },
   {
     id: 'buoy',

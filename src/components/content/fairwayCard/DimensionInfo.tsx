@@ -6,12 +6,40 @@ import { useDvkContext } from '../../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
 import { Fairway, SizingVessel, Text } from '../../../graphql/generated';
 import { metresToNauticalMiles } from '../../../utils/conversions';
+import { TFunction } from 'i18next';
 
 export type DimensionInfoProps = {
   data?: Fairway[] | null;
   designSpeedText?: Text | null;
   isN2000HeightSystem?: boolean;
 };
+
+function getSizingVesselsText(sizingVessels: SizingVessel[], t: TFunction) {
+  return (
+    <>
+      {sizingVessels.map((vessel) => {
+        const uuid = uniqueId('vessel_');
+        return (
+          <span key={uuid}>
+            {t('designVessel')}:&nbsp;
+            {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
+            <dd aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</dd>, b = {vessel.width}&nbsp;
+            <dd aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</dd>, t = {vessel.draft}&nbsp;
+            <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.&nbsp;
+          </span>
+        );
+      })}
+      ;
+    </>
+  );
+}
+
+export function getFairwayName(fairway: Fairway, lang: Lang): string {
+  if (fairway.name) {
+    return fairway.name[lang] ?? fairway.name.fi ?? '';
+  }
+  return '';
+}
 
 export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedText, isN2000HeightSystem }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
@@ -20,18 +48,9 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
 
   const numberOfFairways = data ? data.length : 0;
 
-  function getFairwayName(fairway: Fairway, lang: Lang): string {
-    if (fairway.name) {
-      return fairway.name[lang] ?? fairway.name.fi ?? '';
-    }
-    return '';
-  }
-
   function getFairwaySizingVessels(fairway: Fairway): SizingVessel[] {
     return fairway.sizingVessels ?? [];
   }
-
-  const numberOfSizingVessels = data ? data.map((fairway) => getFairwaySizingVessels(fairway)).flat().length : 0;
 
   function getFairwayDesignDraftValues(fairway: Fairway): string[] {
     const designDraftValues: Array<string> = [];
@@ -77,37 +96,6 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
       {data && (
         <IonText>
           <p>
-            <strong>{t('fairwayDesignVessel', { count: numberOfSizingVessels || 1 })}: </strong>
-            {data.map((fairway) => {
-              const uuid = uniqueId('fairway_');
-              const sizingVessels = getFairwaySizingVessels(fairway);
-              return (
-                <span key={uuid}>
-                  <br />
-                  {numberOfFairways > 1 && (
-                    <>
-                      {getFairwayName(fairway, lang)}:
-                      <br />
-                    </>
-                  )}
-                  {sizingVessels.map((vessel) => {
-                    const uuid = uniqueId('vessel_');
-                    return (
-                      <span key={uuid}>
-                        {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
-                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</dd>, b = {vessel.width}&nbsp;
-                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</dd>, t = {vessel.draft}&nbsp;
-                        <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.&nbsp;
-                      </span>
-                    );
-                  })}
-                  {sizingVessels.length < 1 && <>{t('noDataSet')}</>}
-                  <br />
-                </span>
-              );
-            })}
-          </p>
-          <p>
             <strong>{t('fairwayDimensions')}:</strong>
             <br />
             {designSpeedText && (
@@ -126,6 +114,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
               const minimumTurningCircle = fairway.sizing?.minimumTurningCircle;
               const additionalText = fairway.sizing?.additionalInformation;
               const totalLength = getFairwayTotalLength(fairway);
+              const sizingVessels = getFairwaySizingVessels(fairway);
               return (
                 <span key={uuid}>
                   {numberOfFairways > 1 && (
@@ -165,6 +154,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                   {metresToNauticalMiles(totalLength).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
                   <dd aria-label={t('unit.nmDesc', { count: 2 })}>{t('unit.nm')}</dd>
                   .&nbsp;
+                  {sizingVessels.length > 0 && getSizingVesselsText(sizingVessels, t)}
                   <br />
                   {additionalText && (
                     <>

@@ -35,7 +35,6 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
 }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
-
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
 
   const showInfoModal = () => {
@@ -109,6 +108,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
         header={t('fairwaycard.temporary-notification-title')}
         useTransElement={true}
         i18nkey="modal.temporary-notification-add"
+        message={t('general.markdown.description')}
       />
       <IonGrid>
         <IonRow className="ion-justify-content-end">

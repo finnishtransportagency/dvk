@@ -1,6 +1,6 @@
 import { TFunction } from 'i18next';
-import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
-import { ActionType, ItemType, Lang, SelectOption } from './constants';
+import { FairwayCardOrHarbor, Mareograph, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
+import { ItemType, Lang, SelectOption } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
@@ -64,31 +64,6 @@ export const filterItemList = (
         }
       }) ?? []
   );
-};
-
-export const checkInputValidity = (
-  inputRef: React.RefObject<HTMLIonInputElement>,
-  setIsValid: React.Dispatch<React.SetStateAction<boolean>>,
-  actionType: ActionType,
-  setValidity?: (actionType: ActionType, val: boolean) => void,
-  error?: string
-) => {
-  if (error) {
-    setIsValid(false);
-    if (setValidity) setValidity(actionType, false);
-  } else {
-    inputRef.current
-      ?.getInputElement()
-      .then((textinput) => {
-        if (textinput) {
-          setIsValid(textinput.checkValidity());
-          if (setValidity) setValidity(actionType, textinput.checkValidity());
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }
 };
 
 export const isInputOk = (isValid: boolean, error: string | undefined) => {
@@ -203,7 +178,7 @@ export function featureCollectionToSelectOptions(collection: FeatureCollection |
 }
 
 export function checkIfValidAndChangeFormatToLocal(value: string | undefined | null) {
-  if (value) {
+  if (value && !dateError(value)) {
     const date = value.split('T')[0];
     const parsedDate = parseISO(date);
     if (isValid(parsedDate)) {
@@ -215,7 +190,7 @@ export function checkIfValidAndChangeFormatToLocal(value: string | undefined | n
 }
 
 export function checkIfValidAndChangeFormatToISO(value: string | undefined | null) {
-  if (value) {
+  if (value && !dateError(value)) {
     const parsedDate = parse(value, 'dd.MM.yyyy', new Date());
     if (isValid(parsedDate)) {
       return format(parsedDate, 'yyyy-MM-dd');
@@ -236,12 +211,9 @@ export function dateError(date?: string | null): boolean {
   return true;
 }
 
-export function checkEndDateError(startDate: string, endDate: string): boolean {
+export function endDateError(startDate: string, endDate: string): boolean {
   if (!startDate || !endDate) {
     return false;
-  }
-  if (dateError(endDate)) {
-    return true;
   }
   endDate = endDate?.split('T')[0];
   startDate = startDate?.split('T')[0];
@@ -255,14 +227,14 @@ export function checkEndDateError(startDate: string, endDate: string): boolean {
 }
 
 export type NoticeListingTypes = {
-  active: boolean;
-  incoming: boolean;
+  active: number;
+  incoming: number;
 };
 
-export function getNotificationListingTypes(notifications: TemporaryNotification[]): NoticeListingTypes {
+export function getNotificationListingTypesCount(notifications: TemporaryNotification[]): NoticeListingTypes {
   const currentDate = new Date().setHours(0, 0, 0, 0);
 
-  const active = notifications?.some((notification) => {
+  const active = notifications?.filter((notification) => {
     if (!notification.startDate) {
       return false;
     }
@@ -273,7 +245,7 @@ export function getNotificationListingTypes(notifications: TemporaryNotification
     return compareAsc(currentDate, startDate) >= 0 && compareAsc(endDate, currentDate) >= 0;
   });
 
-  const incoming = notifications?.some((notification) => {
+  const incoming = notifications?.filter((notification) => {
     if (!notification.startDate) {
       return false;
     }
@@ -283,7 +255,26 @@ export function getNotificationListingTypes(notifications: TemporaryNotification
   });
 
   return {
-    active: active,
-    incoming: incoming,
+    active: active.length,
+    incoming: incoming.length,
   };
+}
+
+// when api returns language versions this can be deleted (db changes necessary too)
+// when deleted, remember that filtering should be happening somewhere else
+export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefined) {
+  if (!mareographs) {
+    return [];
+  }
+
+  const nonCalculatedMareographs = mareographs.filter((mareograph) => !mareograph.calculated);
+
+  return nonCalculatedMareographs.map((mareograph) => {
+    return {
+      id: mareograph.id,
+      name: {
+        fi: mareograph.name,
+      },
+    };
+  });
 }

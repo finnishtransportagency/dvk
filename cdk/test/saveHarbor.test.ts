@@ -7,6 +7,7 @@ test('test mapHarborToModel minimal', () => {
   expect(() => mapHarborToModel({} as HarborInput, undefined, currentUser)).toThrow(OperationError.InvalidInput);
   const input: HarborInput = {
     id: 'a1',
+    version: 'v2',
     name: { fi: 'test', sv: 'testsv', en: 'testen' },
     n2000HeightSystem: false,
     operation: Operation.Create,
@@ -22,6 +23,7 @@ test('test mapHarborToModel minimal', () => {
 test('test mapHarborToModel all', () => {
   const input: HarborInput = {
     id: 'a2',
+    version: 'v2',
     name: { fi: 'test2', sv: 'testsv2', en: 'testen2' },
     n2000HeightSystem: true,
     operation: Operation.Update,

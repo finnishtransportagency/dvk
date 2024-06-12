@@ -1,5 +1,5 @@
-query findFairwayCardById($id: String!) {
-  fairwayCard(id: $id) {
+query findFairwayCardById($id: String!, $version: String!) {
+  fairwayCard(id: $id, version: $version) {
     name {
       fi
       sv
@@ -119,15 +119,13 @@ query findFairwayCardById($id: String!) {
       sv
       en
     }
-    windGauge {
-      fi
-      sv
-      en
-    }
     vesselRecommendation {
       fi
       sv
       en
+    }
+    mareographs {
+      id
     }
     seaLevel {
       fi

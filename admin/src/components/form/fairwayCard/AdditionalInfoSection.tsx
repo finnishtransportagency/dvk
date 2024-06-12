@@ -3,9 +3,9 @@ import { FairwayCardInput, Status } from '../../../graphql/generated';
 import { ValueType, ActionType, Lang, ValidationType } from '../../../utils/constants';
 import { IonButton, IonGrid, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import TextInputRow from '../TextInputRow';
 import HelpIcon from '../../../theme/img/help_icon.svg?react';
 import NotificationModal from '../../NotificationModal';
+import MarkdownInputRow from '../MarkdownInputRow';
 
 interface AdditionalInfoSectionProps {
   state: FairwayCardInput;
@@ -22,6 +22,7 @@ interface AdditionalInfoSectionProps {
 const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, updateState, validationErrors }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
+  const modalText = `${t('fairwaycard.fairway-additional-info-notification-body') ?? ''}\n${t('general.markdown.description')}`;
 
   const showInfoModal = () => {
     setInfoModalOpen(true);
@@ -44,7 +45,7 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
         </h2>
       </IonText>
       <IonGrid className="formGrid">
-        <TextInputRow
+        <MarkdownInputRow
           labelKey="fairwaycard.fairway-additional-info"
           value={state.additionalInfo}
           updateState={updateState}
@@ -52,7 +53,6 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
           required={!!state.additionalInfo?.fi || !!state.additionalInfo?.sv || !!state.additionalInfo?.en}
           disabled={state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'additionalInfo')?.msg}
-          inputType="textarea"
         />
       </IonGrid>
       <NotificationModal
@@ -60,7 +60,7 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
         closeAction={() => setInfoModalOpen(false)}
         closeTitle={t('general.close')}
         header={t('fairwaycard.fairway-additional-info-notification-header') ?? ''}
-        message={t('fairwaycard.fairway-additional-info-notification-body') ?? ''}
+        message={modalText}
       />
     </>
   );

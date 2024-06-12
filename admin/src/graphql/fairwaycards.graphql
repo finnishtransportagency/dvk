@@ -1,6 +1,7 @@
 query fairwayCards {
   fairwayCards {
     id
+    version
     name {
       fi
       sv
@@ -211,20 +212,13 @@ fragment FairwayCardParts on FairwayCard {
     sv
     en
   }
-  windGauge {
-    fi
-    sv
-    en
-  }
   vesselRecommendation {
     fi
     sv
     en
   }
-  seaLevel {
-    fi
-    sv
-    en
+  mareographs {
+    id
   }
   windRecommendation {
     fi

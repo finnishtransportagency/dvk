@@ -31,6 +31,8 @@ import MapMaskControl from './mapControls/MapMaskControl';
 import { Orientation } from '../../graphql/generated';
 import { Extent } from 'ol/extent';
 import { Stroke } from 'ol/style';
+import Feature, { FeatureLike } from 'ol/Feature';
+import { Geometry } from 'ol/geom';
 
 type OrientationType = Orientation | '';
 type LangType = Lang | '';
@@ -146,10 +148,6 @@ class DvkMap {
 
     const bgFinlandLayer = new VectorImageLayer({
       properties: { id: 'finland' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 1,
       imageRatio: 3,
     });
@@ -157,10 +155,6 @@ class DvkMap {
     this.olMap.addLayer(bgFinlandLayer);
     const bgBalticseaLayer = new VectorImageLayer({
       properties: { id: 'balticsea' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 4,
       imageRatio: 3,
     });
@@ -168,7 +162,6 @@ class DvkMap {
 
     const bgMmlsatamatLayer = new VectorLayer({
       properties: { id: 'mml_satamat' },
-      source: new VectorSource(),
       maxResolution: 30,
       zIndex: 104,
       renderBuffer: 1,
@@ -193,7 +186,7 @@ class DvkMap {
       });
     };
 
-    const backLayers: Array<VectorTileLayer> = [];
+    const backLayers: Array<VectorTileLayer<FeatureLike>> = [];
 
     const buckets: Array<{ source: string; layers: Array<string> }> = [];
 
@@ -232,7 +225,7 @@ class DvkMap {
       backLayers.push(layer);
     });
 
-    const bgFiLayer = this.getFeatureLayer('finland') as VectorLayer<VectorSource>;
+    const bgFiLayer = this.getFeatureLayer('finland') as VectorLayer<Feature<Geometry>>;
     bgFiLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -241,7 +234,7 @@ class DvkMap {
       })
     );
 
-    const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer<VectorSource>;
+    const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer<Feature<Geometry>>;
     bgBsLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -250,7 +243,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer<VectorSource>;
+    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer<Feature<Geometry>>;
     bgMmlsatamatLayer.setStyle(
       new Style({
         stroke: new Stroke({

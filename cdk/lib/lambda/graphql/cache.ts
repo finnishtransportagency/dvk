@@ -1,4 +1,4 @@
-import { DeleteObjectsCommand, GetObjectCommand, ObjectIdentifier, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getEnvironment } from '../environment';
 import { log } from '../logger';
 import { Readable } from 'stream';
@@ -14,6 +14,26 @@ const AIS_VESSEL_CACHE = {
   MAX_AGE: 300, // 5 minutes
   STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 300, // 5 minutes (do not return vessel data more than 10 minutes old)
+};
+const MAREOGRAPH_CACHE = {
+  MAX_AGE: 240, // 4 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
+const OBSERVATION_CACHE = {
+  MAX_AGE: 540, // 9 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
+const BUOY_CACHE = {
+  MAX_AGE: 1740, // 29 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
+const FEATURE_CACHE = {
+  MAX_AGE: 7140, // 1 hour 59 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
 };
 
 export const FEATURE_CACHE_DURATION = 7200; // 2 hours
@@ -32,7 +52,7 @@ export function getFeatureCacheDuration(key: string) {
   }
 }
 
-export function getCacheControlHeaders(key: string): Record<string, string[]> {
+export function getAisCacheControlHeaders(key: string): Record<string, string[]> {
   if (key === 'aislocations') {
     return {
       'Cache-Control': [
@@ -62,6 +82,30 @@ export function getCacheControlHeaders(key: string): Record<string, string[]> {
   } else {
     return {};
   }
+}
+
+export function getFeatureCacheControlHeaders(key: string): Record<string, string[]> {
+  let maxAge = FEATURE_CACHE.MAX_AGE;
+  let staleWhileRevalidate = FEATURE_CACHE.STALE_WHILE_REVALIDATE;
+  let staleIfError = FEATURE_CACHE.STALE_IF_ERROR;
+
+  if (key === 'mareograph') {
+    maxAge = MAREOGRAPH_CACHE.MAX_AGE;
+    staleWhileRevalidate = MAREOGRAPH_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = MAREOGRAPH_CACHE.STALE_IF_ERROR;
+  } else if (key === 'observation') {
+    maxAge = OBSERVATION_CACHE.MAX_AGE;
+    staleWhileRevalidate = OBSERVATION_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = OBSERVATION_CACHE.STALE_IF_ERROR;
+  } else if (key === 'buoy') {
+    maxAge = BUOY_CACHE.MAX_AGE;
+    staleWhileRevalidate = BUOY_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = BUOY_CACHE.STALE_IF_ERROR;
+  }
+
+  return {
+    'Cache-Control': ['max-age=' + maxAge + ', ' + 'stale-while-revalidate=' + staleWhileRevalidate + ', ' + 'stale-if-error=' + staleIfError],
+  };
 }
 
 export async function cacheResponse(key: string, response: object | string) {
@@ -111,22 +155,4 @@ export async function getFromCache(key: string): Promise<CacheResponse> {
     // errors ignored also not found
   }
   return { expired: true };
-}
-
-export async function deleteCacheObjects(keys: string[]) {
-  const objects: ObjectIdentifier[] = keys.map((key) => {
-    return { Key: key };
-  });
-  const response = await s3Client.send(
-    new DeleteObjectsCommand({
-      Bucket: getCacheBucketName(),
-      Delete: {
-        Objects: objects,
-      },
-    })
-  );
-  log.debug(`Deleted cache objects ${keys}: ${response.Deleted?.length}/${keys.length}`);
-  if (response.Errors?.length) {
-    log.error(response.Errors);
-  }
 }

@@ -169,7 +169,7 @@ export class DvkSonarPipelineStack extends Stack {
         resources: ['*'],
       })
     );
-    let table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName() + '*');
+    let table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardWithVersionsTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,

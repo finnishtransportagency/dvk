@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`should get areas from api when cache expired 1`] = `
+exports[`should get areas from api 1`] = `
 {
   "features": [
     {
@@ -64,152 +64,6 @@ exports[`should get areas from api when cache expired 1`] = `
         "n2000ReferenceLevel": null,
         "name": null,
         "referenceLevel": "MW2005",
-        "type": "Navigointialue",
-        "typeCode": 1,
-      },
-      "type": "Feature",
-    },
-  ],
-  "type": "FeatureCollection",
-}
-`;
-
-exports[`should get areas from cache 1`] = `
-{
-  "features": [
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            [
-              28.43471,
-              61.13869,
-            ],
-            [
-              28.4407,
-              61.1347,
-            ],
-            [
-              28.44561,
-              61.13264,
-            ],
-            [
-              28.44754,
-              61.13259,
-            ],
-            [
-              28.44826,
-              61.13237,
-            ],
-            [
-              28.45069,
-              61.1331,
-            ],
-            [
-              28.4504,
-              61.13351,
-            ],
-            [
-              28.44322,
-              61.13456,
-            ],
-            [
-              28.4401,
-              61.13639,
-            ],
-            [
-              28.43471,
-              61.13869,
-            ],
-          ],
-        ],
-        "type": "Polygon",
-      },
-      "id": 88451,
-      "properties": {
-        "depth": 4.8,
-        "draft": 4.2,
-        "fairways": [
-          {
-            "fairwayId": 6105,
-            "line": 1,
-            "name": {
-              "fi": "Pulpin väylä",
-              "sv": null,
-            },
-            "sizingSpeed": null,
-            "sizingSpeed2": null,
-            "status": 1,
-          },
-        ],
-        "featureType": "area",
-        "id": 88451,
-        "n2000ReferenceLevel": "N2000+75.40",
-        "n2000depth": 4.8,
-        "n2000draft": 4.2,
-        "name": null,
-        "referenceLevel": "NN+75.10",
-        "type": "Satama-allas",
-        "typeCode": 4,
-      },
-      "type": "Feature",
-    },
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            [
-              28.44452,
-              61.14401,
-            ],
-            [
-              28.45151,
-              61.14367,
-            ],
-            [
-              28.45502,
-              61.1435,
-            ],
-            [
-              28.45823,
-              61.14484,
-            ],
-            [
-              28.45381,
-              61.14615,
-            ],
-            [
-              28.44452,
-              61.14401,
-            ],
-          ],
-        ],
-        "type": "Polygon",
-      },
-      "id": 88459,
-      "properties": {
-        "depth": 5.2,
-        "draft": 4.2,
-        "fairways": [
-          {
-            "fairwayId": 6110,
-            "line": 1,
-            "name": {
-              "fi": "Honkalahden väylä",
-              "sv": null,
-            },
-            "sizingSpeed": null,
-            "sizingSpeed2": null,
-            "status": 1,
-          },
-        ],
-        "featureType": "area",
-        "id": 88459,
-        "n2000ReferenceLevel": "N2000+75.40",
-        "n2000depth": 5.2,
-        "n2000draft": 4.2,
-        "name": null,
-        "referenceLevel": "NN+75.10",
         "type": "Navigointialue",
         "typeCode": 1,
       },
@@ -285,52 +139,6 @@ exports[`should get buoys from api 1`] = `
 }
 `;
 
-exports[`should get buoys from cache when api call fails 1`] = `
-{
-  "features": [
-    {
-      "geometry": {
-        "coordinates": [
-          24.9725,
-          60.12333,
-        ],
-        "type": "Point",
-      },
-      "id": 103976,
-      "properties": {
-        "dateTime": 1689570000000,
-        "featureType": "buoy",
-        "name": "Helsinki Suomenlinna aaltopoiju",
-        "temperature": 14.2,
-        "waveDirection": 213,
-        "waveHeight": 0.3,
-      },
-      "type": "Feature",
-    },
-    {
-      "geometry": {
-        "coordinates": [
-          25.235,
-          59.965,
-        ],
-        "type": "Point",
-      },
-      "id": 134221,
-      "properties": {
-        "dateTime": 1689570000000,
-        "featureType": "buoy",
-        "name": "Suomenlahti aaltopoiju",
-        "temperature": 16.7,
-        "waveDirection": 237,
-        "waveHeight": 0.6,
-      },
-      "type": "Feature",
-    },
-  ],
-  "type": "FeatureCollection",
-}
-`;
-
 exports[`should get harbors from DynamoDB 1`] = `
 {
   "features": [
@@ -343,24 +151,6 @@ exports[`should get harbors from DynamoDB 1`] = `
       },
       "id": "1;2",
       "properties": {
-        "fairwayCards": [
-          {
-            "id": "test",
-            "name": {
-              "en": "Testen",
-              "fi": "Testfi",
-              "sv": "Testsv",
-            },
-          },
-          {
-            "id": "test2",
-            "name": {
-              "en": "Testen2",
-              "fi": "Testfi2",
-              "sv": "Testsv2",
-            },
-          },
-        ],
         "featureType": "harbor",
         "harborId": "test1",
         "id": "1;2",
@@ -373,48 +163,24 @@ exports[`should get harbors from DynamoDB 1`] = `
       },
       "type": "Feature",
     },
-  ],
-  "type": "FeatureCollection",
-}
-`;
-
-exports[`should get harbors from cache when DynamoDB api call fails 1`] = `
-{
-  "features": [
     {
       "geometry": {
         "coordinates": [
-          21.21676,
-          62.35417,
+          3,
+          4,
         ],
-        "type": "Point",
       },
-      "id": "21.21676;62.35417",
+      "id": "3;4",
       "properties": {
-        "fairwayCards": [
-          {
-            "id": "kaskinen",
-            "name": {
-              "en": "Kaskinen channel",
-              "fi": "Kaskisten väylä",
-              "sv": "Kasköleden",
-            },
-          },
-        ],
-        "fax": "+35862207300",
         "featureType": "harbor",
-        "harborId": "kaskinen",
-        "id": "21.21676;62.35417",
-        "internet": "https//www.portofkaskinen.fi",
+        "harborId": "test2",
+        "id": "3;4",
         "name": {
-          "en": "Port of Kaskinen deep port",
-          "fi": "Kaskisten syväsatama",
-          "sv": "Kaskö djuphamn",
+          "en": "Harboren2",
+          "fi": "Harborfi2",
+          "sv": "Harborsv2",
         },
-        "phoneNumber": [
-          "+358406152848",
-        ],
-        "quays": 5,
+        "quays": 0,
       },
       "type": "Feature",
     },
@@ -488,34 +254,7 @@ exports[`should get mareographs from api 1`] = `
 }
 `;
 
-exports[`should get mareographs from cache when api call fails 1`] = `
-{
-  "features": [
-    {
-      "geometry": {
-        "coordinates": [
-          20.38482,
-          60.03188,
-        ],
-        "type": "Point",
-      },
-      "id": 134252,
-      "properties": {
-        "calculated": false,
-        "dateTime": 1689316080000,
-        "featureType": "mareograph",
-        "n2000WaterLevel": 170,
-        "name": "Föglö Degerby",
-        "waterLevel": 58,
-      },
-      "type": "Feature",
-    },
-  ],
-  "type": "FeatureCollection",
-}
-`;
-
-exports[`should get navigation lines from api when cache expired 1`] = `
+exports[`should get navigation lines from api 1`] = `
 {
   "features": [
     {
@@ -570,195 +309,7 @@ exports[`should get navigation lines from api when cache expired 1`] = `
 }
 `;
 
-exports[`should get navigation lines from cache 1`] = `
-{
-  "features": [
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            24.89501,
-            60.08965,
-          ],
-          [
-            24.90439,
-            60.11076,
-          ],
-          [
-            24.90495,
-            60.11199,
-          ],
-        ],
-        "type": "LineString",
-      },
-      "id": 264222,
-      "properties": {
-        "depth": 12.5,
-        "direction": 45,
-        "draft": 11,
-        "fairways": [
-          {
-            "fairwayId": 4710,
-            "line": 1,
-            "name": {
-              "fi": "Helsingin Länsisataman väylä",
-              "sv": "Farleden till Västhamn",
-            },
-            "status": 1,
-          },
-        ],
-        "featureType": "line",
-        "id": 264222,
-        "length": 2550,
-        "n2000ReferenceLevel": null,
-        "oppositeDirection": 225,
-        "referenceLevel": "MW2018",
-      },
-      "type": "Feature",
-    },
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            24.90516,
-            60.12494,
-          ],
-          [
-            24.9108,
-            60.12582,
-          ],
-          [
-            24.916,
-            60.12663,
-          ],
-        ],
-        "type": "LineString",
-      },
-      "id": 264272,
-      "properties": {
-        "depth": 10.2,
-        "direction": 8,
-        "draft": 8,
-        "fairways": [
-          {
-            "fairwayId": 4610,
-            "line": 1,
-            "name": {
-              "fi": "Rysäkarin väylä",
-              "sv": "Farled till Rysskär",
-            },
-            "status": 1,
-          },
-        ],
-        "featureType": "line",
-        "id": 264272,
-        "length": 631,
-        "n2000ReferenceLevel": null,
-        "oppositeDirection": 188,
-        "referenceLevel": "MW2005",
-      },
-      "type": "Feature",
-    },
-  ],
-  "type": "FeatureCollection",
-}
-`;
-
-exports[`should get navigation lines from cache when api call fails 1`] = `
-{
-  "features": [
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            24.89501,
-            60.08965,
-          ],
-          [
-            24.90439,
-            60.11076,
-          ],
-          [
-            24.90495,
-            60.11199,
-          ],
-        ],
-        "type": "LineString",
-      },
-      "id": 264222,
-      "properties": {
-        "depth": 12.5,
-        "direction": 45,
-        "draft": 11,
-        "fairways": [
-          {
-            "fairwayId": 4710,
-            "line": 1,
-            "name": {
-              "fi": "Helsingin Länsisataman väylä",
-              "sv": "Farleden till Västhamn",
-            },
-            "status": 1,
-          },
-        ],
-        "featureType": "line",
-        "id": 264222,
-        "length": 2550,
-        "n2000ReferenceLevel": null,
-        "oppositeDirection": 225,
-        "referenceLevel": "MW2018",
-      },
-      "type": "Feature",
-    },
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            24.90516,
-            60.12494,
-          ],
-          [
-            24.9108,
-            60.12582,
-          ],
-          [
-            24.916,
-            60.12663,
-          ],
-        ],
-        "type": "LineString",
-      },
-      "id": 264272,
-      "properties": {
-        "depth": 10.2,
-        "direction": 8,
-        "draft": 8,
-        "fairways": [
-          {
-            "fairwayId": 4610,
-            "line": 1,
-            "name": {
-              "fi": "Rysäkarin väylä",
-              "sv": "Farled till Rysskär",
-            },
-            "status": 1,
-          },
-        ],
-        "featureType": "line",
-        "id": 264272,
-        "length": 631,
-        "n2000ReferenceLevel": null,
-        "oppositeDirection": 188,
-        "referenceLevel": "MW2005",
-      },
-      "type": "Feature",
-    },
-  ],
-  "type": "FeatureCollection",
-}
-`;
-
-exports[`should get vts lines from api when cache expired 1`] = `
+exports[`should get vts lines from api 1`] = `
 {
   "features": [
     {
@@ -779,69 +330,7 @@ exports[`should get vts lines from api when cache expired 1`] = `
 }
 `;
 
-exports[`should get vts lines from cache 1`] = `
-{
-  "features": [
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            25.71667,
-            60.09333,
-          ],
-          [
-            26.65,
-            60.17167,
-          ],
-          [
-            26.76466,
-            60.2002,
-          ],
-          [
-            27.29306,
-            60.20021,
-          ],
-        ],
-        "type": "LineString",
-      },
-      "id": "Rdocal_L.FI 0000359354 00403",
-      "properties": {
-        "featureType": "vtsline",
-        "identifier": "FI 0000359354 00403",
-        "information": "Kotka VTS, VHF 67. See www.fintraffic.fi/en > Maritime Traffic",
-        "name": null,
-      },
-      "type": "Feature",
-    },
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            24.725,
-            59.925,
-          ],
-          [
-            24.725,
-            60.145,
-          ],
-        ],
-        "type": "LineString",
-      },
-      "id": "Rdocal_L.FI 0000359372 00403",
-      "properties": {
-        "featureType": "vtsline",
-        "identifier": "FI 0000359372 00403",
-        "information": "Helsinki VTS, VHF 09. See www.fintraffic.fi/en > Maritime Traffic",
-        "name": null,
-      },
-      "type": "Feature",
-    },
-  ],
-  "type": "FeatureCollection",
-}
-`;
-
-exports[`should get warnings always from api when cache expired 1`] = `
+exports[`should get warnings always from api 1`] = `
 {
   "features": [
     {
@@ -977,234 +466,6 @@ DATE AND TIME
         "notifier": "LEHTOLA/FINTRAFFIC/OFK/MMH",
         "number": 135,
         "startDateTime": 1688947200000,
-        "type": {
-          "en": "LOCAL WARNING",
-          "fi": "LOCAL WARNING",
-          "sv": "LOCAL WARNING",
-        },
-      },
-      "type": "Feature",
-    },
-  ],
-  "type": "FeatureCollection",
-}
-`;
-
-exports[`should get warnings always from api when cache not expired 1`] = `
-{
-  "features": [
-    {
-      "geometry": {
-        "coordinates": [
-          2790416.9999999967,
-          9625463.005102864,
-        ],
-        "type": "Point",
-      },
-      "id": 24822,
-      "properties": {
-        "area": {
-          "en": "BAY OF BOTHNIA",
-          "fi": "PERÄMERI",
-          "sv": "BOTTENVIKEN",
-        },
-        "areaId": null,
-        "areaText": null,
-        "dateTime": 1689163200000,
-        "description": {
-          "en": "
-EDGE MARK KRIISINKIVI NR 11133
-IN POS 65-12.69N 025-04.00E
-OUT OF ORDER DUE TO MAITENANCE WORK",
-          "fi": "
-REUNAMERKKI KRIISINKIVI NR 11133
-PAIKASSA  65-12.69N 025-04.00E
-EI TOIMINNASSA KORJAUSTÖIDEN VUOKSI",
-          "sv": "
-RANDMÄRKE KRIISINKIVI NR 11133
-I POS 65-12.69N 025-04.00E
-UR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE",
-        },
-        "endDateTime": 1689206400000,
-        "equipmentId": 11133,
-        "equipmentText": "TLNUMERO:11133
-ALALAJI:Kiinteä
-LAJI:Oikea
-TYYPPI:Reunamerkki
-NIMIS:Kriisinkivi
-VAYLAN_NIMI:Oulu - Kemi väylä
-TLNUMERO:11133
-ALALAJI:Kiinteä
-LAJI:Oikea
-TYYPPI:Reunamerkki
-NIMIS:Kriisinkivi
-VAYLAN_NIMI:Oulu - Kemi väylä
-",
-        "featureType": "marinewarning",
-        "lineId": null,
-        "lineText": null,
-        "location": {
-          "en": "OULU - KEMI FAIRWAY",
-          "fi": "OULU - KEMI VÄYLÄ",
-          "sv": "ULEÅBORG - KEMI FARLED",
-        },
-        "notifier": "FINTRAFFIC/BVTS/OFK/KD",
-        "number": 136,
-        "startDateTime": 1689163200000,
-        "type": {
-          "en": "LOCAL WARNING",
-          "fi": "LOCAL WARNING",
-          "sv": "LOCAL WARNING",
-        },
-      },
-      "type": "Feature",
-    },
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            2665506.999999996,
-            9658753.005071487,
-          ],
-          [
-            2678017.0000000014,
-            9671869.005059116,
-          ],
-          [
-            2696213.000000003,
-            9685819.005045967,
-          ],
-          [
-            2720701.0000000047,
-            9716222.005017307,
-          ],
-          [
-            2728618.999999995,
-            9745420.00498979,
-          ],
-        ],
-        "type": "LineString",
-      },
-      "id": 24803,
-      "properties": {
-        "area": {
-          "en": "BAY OF BOTHNIA",
-          "fi": "PERÄMERI",
-          "sv": "BOTTENVIKEN",
-        },
-        "areaId": null,
-        "areaText": null,
-        "dateTime": 1688819400000,
-        "description": {
-          "en": "
-ALTERATION OF FLOATING NAVIGATIONAL AIDS ON KEMI AJOS FAIRWAY WILL BE CONDUCTED BETWEEN 10.7-30.7.2023
-
-DATE AND TIME
-080930 UTC OF JUL",
-          "fi": "
-KEMIN AJOKSEN VÄYLÄLLÄ SUORITETAAN KELLUVIEN TURVALAITTEIDEN MUUTOSTÖITÄ 10.7-30.7.2023
-
-DATE AND TIME
-080930 UTC OF JUL",
-          "sv": "
-FÖRÄNDRINGSARBETE AV FLYTANDE NAVIGATIONS ANORDNINGAR UTFÖRS PÅ KEMI AJOS FARLED 10.7-30.7.2023
-
-DATE AND TIME
-080930 UTC OF JUL",
-        },
-        "endDateTime": null,
-        "equipmentId": null,
-        "equipmentText": null,
-        "featureType": "marinewarning",
-        "lineId": null,
-        "lineText": null,
-        "location": {
-          "en": "KEMI AJOS FAIRWAY",
-          "fi": "KEMI AJOS VÄYLÄ",
-          "sv": "KEMI AJOS FARLED",
-        },
-        "notifier": "LEHTOLA/FINTRAFFIC/OFK/MMH",
-        "number": 135,
-        "startDateTime": 1688947200000,
-        "type": {
-          "en": "LOCAL WARNING",
-          "fi": "LOCAL WARNING",
-          "sv": "LOCAL WARNING",
-        },
-      },
-      "type": "Feature",
-    },
-  ],
-  "type": "FeatureCollection",
-}
-`;
-
-exports[`should get warnings from cache when api call fails 1`] = `
-{
-  "features": [
-    {
-      "geometry": {
-        "coordinates": [
-          [
-            [
-              2482853,
-              8428118.00619,
-            ],
-            [
-              2482924,
-              8427960.00619,
-            ],
-            [
-              2482950,
-              8428921.00619,
-            ],
-            [
-              2482916,
-              8428924.00619,
-            ],
-            [
-              2482853,
-              8428118.00619,
-            ],
-          ],
-        ],
-        "type": "Polygon",
-      },
-      "id": 24303,
-      "properties": {
-        "area": {
-          "en": "ARCHIPELAGO SEA",
-          "fi": "SAARISTOMERI",
-          "sv": "SKÄRGÅRDSHAVET",
-        },
-        "areaId": 254254,
-        "areaText": "GDO_GID:254254
-SYVYYS:1,2
-VAYLAN_NIMI:Hessund-Parainen veneväylä
-GDO_GID:254254
-SYVYYS:1,2
-VAYLAN_NIMI:Hessund-Parainen veneväylä
-",
-        "dateTime": 1682629200000,
-        "description": {
-          "en": null,
-          "fi": "DVK testaa",
-          "sv": null,
-        },
-        "endDateTime": 1685480400000,
-        "equipmentId": null,
-        "equipmentText": null,
-        "featureType": "marinewarning",
-        "lineId": null,
-        "lineText": null,
-        "location": {
-          "en": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
-          "fi": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
-          "sv": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
-        },
-        "notifier": "DVK",
-        "number": 7777,
-        "startDateTime": 1682629200000,
         "type": {
           "en": "LOCAL WARNING",
           "fi": "LOCAL WARNING",

@@ -8,11 +8,12 @@ import { mapToFairwayCardInput } from '../utils/dataMapper';
 
 interface FairwayCardEditProps {
   fairwayCardId: string;
+  fairwaycardVersion?: string;
   origin?: boolean;
 }
 
-const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, origin }) => {
-  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, false);
+const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fairwaycardVersion = 'v1', origin }) => {
+  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwaycardVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const fairwayCard = mapToFairwayCardInput(origin, data);
@@ -52,6 +53,8 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     group: '',
     harbors: [],
     id: '',
+    // for now version is v1 since versioning is not still used so it always defaults to 'v1'
+    version: 'v1',
     n2000HeightSystem: false,
     name: { fi: '', sv: '', en: '' },
     additionalInfo: { fi: '', sv: '', en: '' },
@@ -64,7 +67,6 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     windRecommendation: { fi: '', sv: '', en: '' },
     vesselRecommendation: { fi: '', sv: '', en: '' },
     visibility: { fi: '', sv: '', en: '' },
-    windGauge: { fi: '', sv: '', en: '' },
     seaLevel: { fi: '', sv: '', en: '' },
     trafficService: {
       pilot: {
@@ -81,7 +83,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     operation: Operation.Create,
     pictures: [],
     pilotRoutes: [],
-    temporaryNotifications: [{ content: { fi: '', sv: '', en: '' }, startDate: '', endDate: '' }],
+    temporaryNotifications: [],
   };
 
   return (

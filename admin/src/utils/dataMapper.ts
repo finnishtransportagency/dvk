@@ -9,6 +9,8 @@ const stringValueOrDefault = (value: string | null | undefined): string => {
 export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined) {
   return {
     id: origin ? '' : stringValueOrDefault(data?.fairwayCard?.id),
+    // v1 is just for now, since proper version control not in use
+    version: data?.fairwayCard?.version ?? 'v1',
     group: stringValueOrDefault(data?.fairwayCard?.group),
     name: {
       fi: stringValueOrDefault(data?.fairwayCard?.name?.fi),
@@ -72,16 +74,7 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       sv: stringValueOrDefault(data?.fairwayCard?.visibility?.sv),
       en: stringValueOrDefault(data?.fairwayCard?.visibility?.en),
     },
-    windGauge: {
-      fi: stringValueOrDefault(data?.fairwayCard?.windGauge?.fi),
-      sv: stringValueOrDefault(data?.fairwayCard?.windGauge?.sv),
-      en: stringValueOrDefault(data?.fairwayCard?.windGauge?.en),
-    },
-    seaLevel: {
-      fi: stringValueOrDefault(data?.fairwayCard?.seaLevel?.fi),
-      sv: stringValueOrDefault(data?.fairwayCard?.seaLevel?.sv),
-      en: stringValueOrDefault(data?.fairwayCard?.seaLevel?.en),
-    },
+    mareographs: data?.fairwayCard?.mareographs?.map((mareograph) => mareograph.id) ?? [],
     trafficService: {
       pilot: {
         email: stringValueOrDefault(data?.fairwayCard?.trafficService?.pilot?.email),
@@ -159,6 +152,8 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
   const coordinates = data?.harbor?.geometry?.coordinates ?? ['', ''];
   return {
     id: origin ? '' : stringValueOrDefault(data?.harbor?.id),
+    // v1 is just for now, since proper version control not in use
+    version: data?.harbor?.version ?? 'v1',
     name: {
       fi: stringValueOrDefault(data?.harbor?.name?.fi),
       sv: stringValueOrDefault(data?.harbor?.name?.sv),

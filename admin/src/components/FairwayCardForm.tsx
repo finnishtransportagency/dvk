@@ -16,6 +16,7 @@ import {
   useFairwayCardsAndHarborsQueryData,
   useFairwaysQueryData,
   useHarboursQueryData,
+  useMareographQueryData,
   usePilotPlacesQueryData,
   useSaveFairwayCardMutationQuery,
 } from '../graphql/api';
@@ -65,6 +66,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
   const { data: pilotPlaceList, isLoading: isLoadingPilotPlaces } = usePilotPlacesQueryData();
+  const { data: mareographList, isLoading: isLoadingMareographs } = useMareographQueryData();
+
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
   // these are derived straight from featureData unlike others through graphQL
   // the graphQL approach's motives are a bit unclear so possible refactor in the future
@@ -93,7 +96,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     .filter((item) => item.type === ContentType.Card)
     .flatMap((item) => item.id);
 
-  const isLoading = isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces;
+  const isLoading = isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces || isLoadingMareographs;
 
   const updateState = (
     value: ValueType,
@@ -179,7 +182,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
       if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
     }
-    const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg);
+    const invalidErrorMsg = t(ErrorMessageKeys?.invalid);
+    const endDateErrorMsg = t(ErrorMessageKeys.endDateError);
+    const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg, invalidErrorMsg, endDateErrorMsg);
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -305,7 +310,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             />
             <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} />
             <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <RecommendationsSection state={state} updateState={updateState} validationErrors={validationErrors} />
+            <RecommendationsSection
+              state={state}
+              updateState={updateState}
+              validationErrors={validationErrors}
+              isLoadingMareographs={isLoadingMareographs}
+              mareographOptions={mareographList?.mareographs}
+            />
             <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
             <TrafficServiceSection
               state={state}

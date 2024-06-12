@@ -2,15 +2,14 @@ import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aw
 import { getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
 import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
 import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { getFeatureCacheDuration, getFromCache } from '../graphql/cache';
+import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-import { handleLoaderError, getNumberValue, saveResponseToS3, invertDegrees, roundDecimals } from '../util';
+import { getNumberValue, invertDegrees, roundDecimals, toBase64Response } from '../util';
 import {
   AlueAPIModel,
   KaantoympyraAPIModel,
@@ -23,20 +22,16 @@ import {
 
 async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
   const harbors = await HarborDBModel.getAllPublic();
-  const harborMap = new Map<string, HarborDBModel & { fairwayCards: FairwayCardIdName[] }>();
+  const harborMap = new Map<string, HarborDBModel>();
+
   for (const harbor of harbors) {
-    harborMap.set(harbor.id, { ...harbor, fairwayCards: [] });
+    harborMap.set(harbor.id, { ...harbor });
   }
-  const cards = await FairwayCardDBModel.getAllPublic();
-  for (const card of cards) {
-    for (const h of card.harbors ?? []) {
-      harborMap.get(h.id)?.fairwayCards.push({ id: card.id, name: card.name });
-    }
-  }
+
   const ids: string[] = [];
   for (const harbor of harborMap.values()) {
     const cardHarbor = harborMap.get(harbor.id);
-    if (harbor?.geometry?.coordinates?.length === 2 && cardHarbor && cardHarbor.fairwayCards.length > 0) {
+    if (harbor?.geometry?.coordinates?.length === 2 && cardHarbor) {
       const id = harbor.geometry.coordinates.join(';');
       // MW/N2000 Harbors should have same location
       if (!ids.includes(id)) {
@@ -55,13 +50,9 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
             fax: harbor.fax,
             internet: harbor.internet,
             quays: harbor.quays?.length ?? 0,
-            fairwayCards: harbor.fairwayCards,
             extraInfo: harbor.extraInfo,
           },
         });
-      } else {
-        const harborFeature = features.find((feature) => feature.id === id);
-        harborFeature?.properties?.fairwayCards.push(...harbor.fairwayCards);
       }
     }
   }
@@ -455,16 +446,6 @@ function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined
   return 'noquerystring';
 }
 
-const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy', 'harbor'];
-
-function isCacheEnabled(type: string, key: string): boolean {
-  const cacheDuration = getFeatureCacheDuration(key);
-  log.debug('cacheDuration: %d', cacheDuration);
-  const cacheEnabled = cacheDuration > 0 && !noCache.includes(type);
-  log.debug('cacheEnabled: %s', cacheEnabled);
-  return cacheEnabled;
-}
-
 async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent): Promise<boolean> {
   switch (type) {
     case 'pilot':
@@ -529,30 +510,23 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   const type = event.multiValueQueryStringParameters?.type?.join(',') ?? '';
   let base64Response: string | undefined;
   let statusCode = 200;
-  const cacheEnabled = isCacheEnabled(type, key);
-  const response = await getFromCache(key);
-  if (cacheEnabled && !response.expired && response.data) {
-    base64Response = response.data;
-  } else {
-    try {
-      const features: Feature<Geometry, GeoJsonProperties>[] = [];
-      const validType = await addFeatures(type, features, event);
-      if (!validType) {
-        log.info('Invalid type: %s', type);
-        base64Response = undefined;
-        statusCode = 400;
-      } else {
-        const collection: FeatureCollection = {
-          type: 'FeatureCollection',
-          features,
-        };
-        base64Response = await saveResponseToS3(collection, key);
-      }
-    } catch (e) {
-      const errorResult = handleLoaderError(response, e);
-      base64Response = errorResult.body;
-      statusCode = errorResult.statusCode;
+  try {
+    const features: Feature<Geometry, GeoJsonProperties>[] = [];
+    const validType = await addFeatures(type, features, event);
+    if (!validType) {
+      log.info('Invalid type: %s', type);
+      base64Response = undefined;
+      statusCode = 400;
+    } else {
+      const collection: FeatureCollection = {
+        type: 'FeatureCollection',
+        features,
+      };
+      base64Response = await toBase64Response(collection);
     }
+  } catch (e) {
+    base64Response = undefined;
+    statusCode = 503;
   }
   return {
     statusCode,
@@ -560,6 +534,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
+      ...getFeatureCacheControlHeaders(key),
       'Content-Type': ['application/geo+json'],
     },
   };

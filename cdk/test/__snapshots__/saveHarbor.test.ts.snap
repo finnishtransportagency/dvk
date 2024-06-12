@@ -84,6 +84,7 @@ exports[`test mapHarborToModel all 1`] = `
     },
   ],
   "status": "PUBLIC",
+  "version": "v2",
 }
 `;
 
@@ -118,5 +119,6 @@ exports[`test mapHarborToModel minimal 1`] = `
   "phoneNumber": null,
   "quays": null,
   "status": "DRAFT",
+  "version": "v2",
 }
 `;

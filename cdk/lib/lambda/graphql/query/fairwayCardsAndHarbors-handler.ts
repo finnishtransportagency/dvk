@@ -8,13 +8,14 @@ import { log } from '../../logger';
 export const handler = async (event: AppSyncResolverEvent<void>): Promise<FairwayCardOrHarbor[]> => {
   const user = await getCurrentUser(event);
   log.info(`fairwayCardsAndHarbors(${user.uid})`);
-  const fairwayCardModels = await FairwayCardDBModel.getAll();
+  const fairwayCardModels = await FairwayCardDBModel.getAllLatest();
   log.debug('%d fairway card(s) found', fairwayCardModels.length);
-  const harborModels = await HarborDBModel.getAll();
+  const harborModels = await HarborDBModel.getAllLatest();
   log.debug('%d harbor(s) found', harborModels.length);
   const cards: FairwayCardOrHarbor[] = fairwayCardModels.map((card) => {
     return {
       id: card.id,
+      version: card.version ?? 'v1',
       n2000HeightSystem: card.n2000HeightSystem || false,
       name: card.name,
       type: ContentType.Card,
@@ -30,6 +31,7 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairwa
   const harbors: FairwayCardOrHarbor[] = harborModels.map((harbor) => {
     return {
       id: harbor.id,
+      version: harbor.version ?? 'v1',
       n2000HeightSystem: harbor.n2000HeightSystem || false,
       name: harbor.name,
       type: ContentType.Harbor,

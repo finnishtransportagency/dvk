@@ -1,23 +1,30 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { setSelectedFairwayArea } from '../../layers';
 import { Area, Fairway } from '../../../graphql/generated';
 import { IonText } from '@ionic/react';
 import { Lang } from '../../../utils/constants';
 import uniqueId from 'lodash/uniqueId';
+import { TFunction } from 'i18next';
+import { AreaInfoListItem } from './AreaInfoListItem';
 
 type AreaInfoProps = {
   data?: Fairway[] | null;
   isN2000HeightSystem?: boolean;
 };
 
-export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem }) => {
-  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
-  const lang = i18n.resolvedLanguage as Lang;
+export function getAreaName(area: Area, t: TFunction) {
+  const name = area.name;
+  const type = t('areaType' + area.typeCode);
+  // ankkurointialueet pitkässä muodossa esim. osa 'c' -> 'ankkurointialue c'
+  if (area.typeCode == 2) {
+    return name ? type + ' ' + name : type;
+  }
+  return name ?? type;
+}
 
-  const highlightArea = (id: string | number | undefined) => {
-    setSelectedFairwayArea(id ?? 0);
-  };
+export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem }) => {
+  const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.resolvedLanguage as Lang;
 
   const fairways = data || [];
 
@@ -39,7 +46,9 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
   return (
     <>
       {fairways.map((fairway) => {
-        const fairwayAreas = getFairwayAreas(fairway);
+        const fairwayAreas = getFairwayAreas(fairway).filter((area) => {
+          return area.typeCode && area.typeCode !== 2 && area.typeCode !== 15;
+        }); // special areas moved to spearate list
         startIndex += fairwayAreas.length;
         return (
           <div key={uniqueId()}>
@@ -61,37 +70,13 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
                 ];
                 const isDraftAvailable = ((isN2000HeightSystem ? area?.n2000draft : area?.draft) ?? 0) > 0;
                 return (
-                  <IonText
-                    key={uniqueId()}
-                    onMouseEnter={() => highlightArea(area?.id)}
-                    onFocus={() => highlightArea(area?.id)}
-                    onMouseLeave={() => highlightArea(0)}
-                    onBlur={() => highlightArea(0)}
-                  >
-                    <li className="group inlineHoverText">
-                      <em>{area?.name ?? <>{t('areaType' + area?.typeCode)}</>}</em>
-                      {isDraftAvailable && (
-                        <>
-                          <br />
-                          {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() ?? '-'}&nbsp;
-                          <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })}>m</dd>
-                        </>
-                      )}
-                      <br />
-                      {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() ?? '-'}&nbsp;
-                      <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })}>m</dd>
-                      {sizingSpeeds.length > 0 && (
-                        <>
-                          <br />
-                          {t('designSpeed')}: {sizingSpeeds.join(' / ').toLocaleString()}&nbsp;
-                          <dd aria-label={t('unit.ktsDesc', { count: 0 })}>kts</dd>
-                        </>
-                      )}
-                      <br />
-                      {area?.notationCode === 1 ? t('lateralMarking') : ''}
-                      {area?.notationCode === 2 ? t('cardinalMarking') : ''}
-                    </li>
-                  </IonText>
+                  <AreaInfoListItem
+                    key={area.id}
+                    area={area}
+                    isDraftAvailable={isDraftAvailable}
+                    isN2000HeightSystem={isN2000HeightSystem}
+                    sizingSpeeds={sizingSpeeds}
+                  />
                 );
               })}
             </ol>

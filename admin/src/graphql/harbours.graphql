@@ -1,6 +1,7 @@
 query harbors {
   harbors {
     id
+    version
     geometry {
       type
       coordinates
