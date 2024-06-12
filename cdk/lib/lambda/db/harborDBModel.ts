@@ -69,6 +69,36 @@ class HarborDBModel {
     return harbor;
   }
 
+  static async getVersion(id: string, version: string = 'v0_latest'): Promise<HarborDBModel | undefined> {
+    // v0 always the latest version
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } })
+    );
+    const harbor = response.Item as HarborDBModel | undefined;
+    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    return harbor;
+  }
+
+  static async getLatest(id: string): Promise<HarborDBModel | undefined> {
+    // v0 always the public version
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: 'v0_latest' } })
+    );
+    const harbor = response.Item as HarborDBModel | undefined;
+    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    return harbor;
+  }
+
+  static async getPublic(id: string): Promise<HarborDBModel | undefined> {
+    // v0 always the public version
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: 'v0_public' } })
+    );
+    const harbor = response.Item as HarborDBModel | undefined;
+    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    return harbor;
+  }
+
   static async getAllLatest(): Promise<HarborDBModel[]> {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({

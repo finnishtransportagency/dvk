@@ -156,7 +156,6 @@ class FairwayCardDBModel {
 
   // this can be deleted when structure changed to use getVersion, getLatest and getPublic
   static async get(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
-    // v0 always the latest
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
     );
@@ -166,7 +165,6 @@ class FairwayCardDBModel {
   }
 
   static async getVersion(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
-    // v0 always the latest
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
     );
@@ -186,7 +184,7 @@ class FairwayCardDBModel {
   }
 
   static async getPublic(id: string): Promise<FairwayCardDBModel | undefined> {
-    // v0 always the latest
+    // v0 always the public version
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: 'v0_public' } })
     );

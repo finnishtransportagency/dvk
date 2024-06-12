@@ -16,6 +16,9 @@ type Query {
   pilotPlaces: [PilotPlace!]!
   harbors: [Harbor!]!
   harbor(id: String!, version: String!): Harbor
+  harborVersion(id: String!, version: String!): Harbor
+  harborLatest(id: String!): Harbor
+  harborPublic(id: String!): Harbor
   harborPreview(id: String!, version: String!): Harbor
   fairways: [Fairway!]!
   fairwayCardsAndHarbors: [FairwayCardOrHarbor!]!
