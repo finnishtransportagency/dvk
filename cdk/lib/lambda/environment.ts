@@ -203,11 +203,3 @@ export function getNewStaticBucketName() {
     return `static2.dvk${getEnvironment()}.testivaylapilvi.fi`;
   }
 }
-
-export function getLatestSortKey() {
-  return 'v0_latest';
-}
-
-export function getPublicSortKey() {
-  return 'v0_public';
-}
