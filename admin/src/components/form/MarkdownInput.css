@@ -37,10 +37,25 @@
     font-family: 'Exo2', sans-serif;
     font-size: 14px;
     color: var(--ion-color-dark);
+    line-height: unset;
+    word-wrap: normal;
+
+    p,
+    ol,
+    ul {
+      margin-bottom: 12px;
+    }
+
+    ol li {
+      font-size: unset;
+      line-height: unset;
+      margin-bottom: 0;
+      list-style-position: unset;
+    }
   }
 
-  .w-md-editor-preview {
-    white-space: pre-wrap;
+  .w-md-editor-preview p {
+    white-space: pre-line;
   }
 
   .error-text,

@@ -35,7 +35,7 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({
 }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
   const editorRef = useRef<HTMLDivElement>(null);
-  const rehypePlugins = [[rehypeSanitize, { tagNames: ['p', 'a', 'b', 'strong', 'em', 'br'] }]] as PluggableList;
+  const rehypePlugins = [[rehypeSanitize, { tagNames: ['p', 'a', 'b', 'strong', 'em', 'ul', 'ol', 'li', 'br'] }]] as PluggableList;
 
   const [isValid, setIsValid] = useState(!error);
   const [isTouched, setIsTouched] = useState(false);
