@@ -69,7 +69,7 @@ class HarborDBModel {
     return harbor;
   }
 
-  static async getVersion(id: string, version: string = 'v0_latest'): Promise<HarborDBModel | undefined> {
+  static async getVersion(id: string, version: string = 'v1'): Promise<HarborDBModel | undefined> {
     // v0 always the latest version
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
     const harbor = response?.Item as HarborDBModel | undefined;

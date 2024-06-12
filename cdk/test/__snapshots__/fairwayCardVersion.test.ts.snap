@@ -79,7 +79,7 @@ exports[`should get fairway card by id and version from the DynamoDB 1`] = `
 }
 `;
 
-exports[`should get latest card by id from the DynamoDB 1`] = `
+exports[`should get v1 by id from the DynamoDB 1`] = `
 {
   "additionalInfo": undefined,
   "anchorage": undefined,
@@ -148,7 +148,7 @@ exports[`should get latest card by id from the DynamoDB 1`] = `
     "tugs": null,
     "vts": null,
   },
-  "version": "v0_latest",
+  "version": "v1",
   "vesselRecommendation": undefined,
   "visibility": undefined,
   "windRecommendation": undefined,

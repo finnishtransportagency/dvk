@@ -28,7 +28,7 @@ exports[`should get harbor by id and version from the DynamoDB 1`] = `
 }
 `;
 
-exports[`should get latest card by id from the DynamoDB 1`] = `
+exports[`should get v1 by id from the DynamoDB 1`] = `
 {
   "cargo": {
     "en": "cargoen",
@@ -108,6 +108,6 @@ exports[`should get latest card by id from the DynamoDB 1`] = `
     },
   ],
   "status": "PUBLIC",
-  "version": "v0_latest",
+  "version": "v1",
 }
 `;

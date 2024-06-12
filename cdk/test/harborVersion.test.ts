@@ -7,7 +7,7 @@ import { mockContext, mockQueryByIdAndVersionEvent, mockQueryByIdEvent } from '.
 
 const harbor1: HarborDBModel = {
   id: 'test',
-  version: 'v0_latest',
+  version: 'v1',
   name: {
     fi: 'Harbor1fi',
     sv: 'Harbor1sv',
@@ -96,7 +96,7 @@ beforeEach(() => {
   ddbMock.reset();
 });
 
-it('should get latest card by id from the DynamoDB', async () => {
+it('should get v1 by id from the DynamoDB', async () => {
   ddbMock
     .on(GetCommand, {
       Key: { id: 'test' },

@@ -164,7 +164,7 @@ class FairwayCardDBModel {
     return fairwayCard;
   }
 
-  static async getVersion(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
+  static async getVersion(id: string, version: string = 'v1'): Promise<FairwayCardDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
     );
