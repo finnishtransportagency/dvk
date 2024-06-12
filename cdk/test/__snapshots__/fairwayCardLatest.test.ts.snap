@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should get latest card by id from the DynamoDB 1`] = `
+{
+  "additionalInfo": undefined,
+  "anchorage": undefined,
+  "attention": undefined,
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "designSpeed": undefined,
+  "fairwayIds": "#1#",
+  "fairways": [
+    {
+      "id": 1,
+      "primary": true,
+      "secondary": false,
+    },
+  ],
+  "generalInfo": undefined,
+  "group": undefined,
+  "harbors": undefined,
+  "iceCondition": undefined,
+  "id": "test",
+  "lineText": undefined,
+  "mareographs": undefined,
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test2",
+  "n2000HeightSystem": false,
+  "name": {
+    "en": "Testen",
+    "fi": "Testfi",
+    "sv": "Testsv",
+  },
+  "navigationCondition": undefined,
+  "pictures": undefined,
+  "pilotRoutes": [
+    {
+      "id": 1,
+      "name": "Reitti 1",
+    },
+  ],
+  "seaLevel": undefined,
+  "speedLimit": undefined,
+  "status": "PUBLIC",
+  "temporaryNotifications": [],
+  "trafficService": {
+    "pilot": {
+      "email": undefined,
+      "extraInfo": undefined,
+      "fax": undefined,
+      "internet": undefined,
+      "phoneNumber": undefined,
+      "places": [
+        {
+          "geometry": {
+            "coordinates": [],
+            "type": "Point",
+          },
+          "id": 681017200,
+          "name": {
+            "en": "",
+            "fi": "",
+            "sv": "",
+          },
+          "pilotJourney": undefined,
+        },
+      ],
+    },
+    "tugs": null,
+    "vts": null,
+  },
+  "version": "v0_latest",
+  "vesselRecommendation": undefined,
+  "visibility": undefined,
+  "windRecommendation": undefined,
+}
+`;

@@ -159,7 +159,7 @@ class FairwayCardDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
     );
-    const fairwayCard = response.Item as FairwayCardDBModel | undefined;
+    const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
@@ -168,7 +168,7 @@ class FairwayCardDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
     );
-    const fairwayCard = response.Item as FairwayCardDBModel | undefined;
+    const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
@@ -178,7 +178,7 @@ class FairwayCardDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: 'v0_latest' } })
     );
-    const fairwayCard = response.Item as FairwayCardDBModel | undefined;
+    const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
@@ -188,7 +188,7 @@ class FairwayCardDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: 'v0_public' } })
     );
-    const fairwayCard = response.Item as FairwayCardDBModel | undefined;
+    const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
@@ -202,7 +202,7 @@ class FairwayCardDBModel {
         ExpressionAttributeValues: { ':vVersion': 'v0_latest' },
       })
     );
-    const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
+    const fairwayCards = response?.Items as FairwayCardDBModel[] | undefined;
     if (fairwayCards) {
       log.debug('%d fairway card(s) found', fairwayCards.length);
       return fairwayCards;
@@ -220,7 +220,7 @@ class FairwayCardDBModel {
         ExpressionAttributeValues: { ':vVersion': 'v0_public' },
       })
     );
-    const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
+    const fairwayCards = response?.Items as FairwayCardDBModel[] | undefined;
     if (fairwayCards) {
       log.debug('%d public fairway card(s) found', fairwayCards.length);
       return fairwayCards;

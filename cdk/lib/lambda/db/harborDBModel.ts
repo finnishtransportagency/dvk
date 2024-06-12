@@ -64,7 +64,7 @@ class HarborDBModel {
   // at the moment this gives any latest version, should be separate function for latest public
   static async get(id: string, version: string = 'v0_latest'): Promise<HarborDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
-    const harbor = response.Item as HarborDBModel | undefined;
+    const harbor = response?.Item as HarborDBModel | undefined;
     log.debug('Harbor name: %s', harbor?.name?.fi);
     return harbor;
   }
@@ -74,7 +74,7 @@ class HarborDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } })
     );
-    const harbor = response.Item as HarborDBModel | undefined;
+    const harbor = response?.Item as HarborDBModel | undefined;
     log.debug('Harbor card name: %s', harbor?.name?.fi);
     return harbor;
   }
@@ -84,7 +84,7 @@ class HarborDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: 'v0_latest' } })
     );
-    const harbor = response.Item as HarborDBModel | undefined;
+    const harbor = response?.Item as HarborDBModel | undefined;
     log.debug('Harbor card name: %s', harbor?.name?.fi);
     return harbor;
   }
@@ -94,7 +94,7 @@ class HarborDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: 'v0_public' } })
     );
-    const harbor = response.Item as HarborDBModel | undefined;
+    const harbor = response?.Item as HarborDBModel | undefined;
     log.debug('Harbor card name: %s', harbor?.name?.fi);
     return harbor;
   }
@@ -108,7 +108,7 @@ class HarborDBModel {
         ExpressionAttributeValues: { ':vVersion': 'v0_latest' },
       })
     );
-    const harbors = response.Items as HarborDBModel[] | undefined;
+    const harbors = response?.Items as HarborDBModel[] | undefined;
     if (harbors) {
       log.debug('%d harbor(s) found', harbors.length);
       return harbors;
@@ -126,7 +126,7 @@ class HarborDBModel {
         ExpressionAttributeValues: { ':vVersion': 'v0_public' },
       })
     );
-    const harbors = response.Items as HarborDBModel[] | undefined;
+    const harbors = response?.Items as HarborDBModel[] | undefined;
     if (harbors) {
       log.debug('%d public harbor(s) found', harbors.length);
       return harbors;

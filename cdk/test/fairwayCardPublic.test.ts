@@ -1,8 +1,8 @@
 import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
-import { handler } from '../lib/lambda/graphql/query/fairwayCardVersion-handler';
+import { handler } from '../lib/lambda/graphql/query/fairwayCardLatest-handler';
 import { Status } from '../graphql/generated';
-import { mockContext, mockQueryByIdAndVersionEvent, mockQueryByIdEvent } from './mocks';
+import { mockContext, mockQueryPublicByIdEvent } from './mocks';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 import { RtzData } from '../lib/lambda/api/apiModels';
@@ -11,7 +11,7 @@ const ddbMock = mockClient(DynamoDBDocumentClient);
 
 const card: FairwayCardDBModel = {
   id: 'test',
-  version: 'v0_latest',
+  version: 'v0_public',
   name: {
     fi: 'Testfi',
     sv: 'Testsv',
@@ -33,32 +33,6 @@ const card: FairwayCardDBModel = {
     },
   },
   pilotRoutes: [{ id: 1 }],
-};
-
-const card2: FairwayCardDBModel = {
-  id: 'test',
-  version: 'v2',
-  name: {
-    fi: 'Testfi2',
-    sv: 'Testsv2',
-    en: 'Testen2',
-  },
-  creator: 'test2',
-  creationTimestamp: Date.now(),
-  modifier: 'test',
-  modificationTimestamp: Date.now(),
-  status: Status.Draft,
-  fairways: [{ id: 1, primary: true, secondary: false }],
-  trafficService: {
-    pilot: {
-      places: [
-        {
-          id: 3458100305,
-        },
-      ],
-    },
-  },
-  pilotRoutes: [{ id: 2 }],
 };
 
 const points = {
@@ -183,7 +157,7 @@ beforeEach(() => {
   pilotPlaceMap.clear();
 });
 
-it('should get latest card by id from the DynamoDB', async () => {
+it('should get public card by id from the DynamoDB', async () => {
   ddbMock
     .on(GetCommand, {
       Key: { id: 'test' },
@@ -191,36 +165,9 @@ it('should get latest card by id from the DynamoDB', async () => {
     .resolves({
       Item: card,
     });
-  const response = await handler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await handler(mockQueryPublicByIdEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
   });
-});
-
-it('should get fairway card by id and version from the DynamoDB', async () => {
-  ddbMock
-    .on(GetCommand, {
-      Key: { id: 'test', version: 'v2' },
-    })
-    .resolves({
-      Item: card2,
-    });
-  const response = await handler(mockQueryByIdAndVersionEvent, mockContext, () => {});
-  expect(response).toMatchSnapshot({
-    modificationTimestamp: expect.any(Number),
-    creationTimestamp: expect.any(Number),
-  });
-});
-
-it('should get undefined when version not present', async () => {
-  ddbMock
-    .on(GetCommand, {
-      Key: { id: 'test', version: 'v5' },
-    })
-    .resolves({
-      Item: card2,
-    });
-  const response = await handler(mockQueryByIdAndVersionEvent, mockContext, () => {});
-  expect(response).toBe(undefined);
 });
