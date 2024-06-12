@@ -4,6 +4,7 @@ import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { getFairwayCardTableName } from '../environment';
 import { getPutCommands } from '../util';
+import Config from '../../config';
 
 export type Text = {
   fi?: Maybe<string>;
@@ -176,7 +177,7 @@ class FairwayCardDBModel {
   static async getLatest(id: string): Promise<FairwayCardDBModel | undefined> {
     // v0 always the latest
     const response = await getDynamoDBDocumentClient().send(
-      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: 'v0_latest' } })
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: Config.getLatestSortKey() } })
     );
     const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
@@ -186,7 +187,7 @@ class FairwayCardDBModel {
   static async getPublic(id: string): Promise<FairwayCardDBModel | undefined> {
     // v0 always the public version
     const response = await getDynamoDBDocumentClient().send(
-      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: 'v0_public' } })
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: Config.getPublicSortKey() } })
     );
     const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
@@ -199,7 +200,7 @@ class FairwayCardDBModel {
         TableName: getFairwayCardTableName(),
         FilterExpression: '#version = :vVersion',
         ExpressionAttributeNames: { '#version': 'version' },
-        ExpressionAttributeValues: { ':vVersion': 'v0_latest' },
+        ExpressionAttributeValues: { ':vVersion': Config.getLatestSortKey() },
       })
     );
     const fairwayCards = response?.Items as FairwayCardDBModel[] | undefined;
@@ -217,7 +218,7 @@ class FairwayCardDBModel {
         TableName: getFairwayCardTableName(),
         FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
         ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
-        ExpressionAttributeValues: { ':vVersion': 'v0_public' },
+        ExpressionAttributeValues: { ':vVersion': Config.getPublicSortKey() },
       })
     );
     const fairwayCards = response?.Items as FairwayCardDBModel[] | undefined;

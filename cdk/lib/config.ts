@@ -74,6 +74,14 @@ class Config {
 
     return param.parameterArn;
   }
+
+  public static getLatestSortKey() {
+    return 'v0_latest';
+  }
+  
+  public static getPublicSortKey() {
+    return 'v0_public';
+  }
 }
 
 export default Config;

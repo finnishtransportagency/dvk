@@ -5,6 +5,7 @@ import { getDynamoDBDocumentClient } from './dynamoClient';
 import { Text } from './fairwayCardDBModel';
 import { getHarborTableName } from '../environment';
 import { getPutCommands } from '../util';
+import Config from '../../config';
 
 export type Quay = {
   name?: Maybe<Text>;
@@ -80,7 +81,7 @@ class HarborDBModel {
   static async getLatest(id: string): Promise<HarborDBModel | undefined> {
     // v0 always the public version
     const response = await getDynamoDBDocumentClient().send(
-      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: 'v0_latest' } })
+      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: Config.getLatestSortKey() } })
     );
     const harbor = response?.Item as HarborDBModel | undefined;
     log.debug('Harbor card name: %s', harbor?.name?.fi);
@@ -90,7 +91,7 @@ class HarborDBModel {
   static async getPublic(id: string): Promise<HarborDBModel | undefined> {
     // v0 always the public version
     const response = await getDynamoDBDocumentClient().send(
-      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: 'v0_public' } })
+      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: Config.getPublicSortKey() } })
     );
     const harbor = response?.Item as HarborDBModel | undefined;
     log.debug('Harbor card name: %s', harbor?.name?.fi);
@@ -103,7 +104,7 @@ class HarborDBModel {
         TableName: getHarborTableName(),
         FilterExpression: '#version = :vVersion',
         ExpressionAttributeNames: { '#version': 'version' },
-        ExpressionAttributeValues: { ':vVersion': 'v0_latest' },
+        ExpressionAttributeValues: { ':vVersion': Config.getLatestSortKey() },
       })
     );
     const harbors = response?.Items as HarborDBModel[] | undefined;
@@ -121,7 +122,7 @@ class HarborDBModel {
         TableName: getHarborTableName(),
         FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
         ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
-        ExpressionAttributeValues: { ':vVersion': 'v0_public' },
+        ExpressionAttributeValues: { ':vVersion': Config.getPublicSortKey() },
       })
     );
     const harbors = response?.Items as HarborDBModel[] | undefined;
