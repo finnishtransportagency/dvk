@@ -59,6 +59,5 @@ export async function fetchDirways(): Promise<FeatureCollection> {
     type: 'FeatureCollection',
     features: features,
   };
-  log.debug(collection);
   return collection;
 }

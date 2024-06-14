@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   getAISHeaders,
   getExtensionPort,
+  getIBNetApiUrl,
   getIlmanetPassword,
   getIlmanetUrl,
   getIlmanetUsername,
@@ -194,7 +195,7 @@ export async function fetchIlmanetApi(): Promise<string> {
 }
 
 export async function fetchIBNetApi<T>(path?: string, params?: Record<string, string>) {
-  const url = `https://testiapi.vayla.fi/ibnet/api/v2/${path ?? ''}`;
+  const url = `${await getIBNetApiUrl()}${path ?? ''}`;
   const start = Date.now();
   const response = await axios
     .get(url, {
