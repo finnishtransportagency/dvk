@@ -411,7 +411,7 @@ export type Dirway = {
   description: string;
   rv: number | null;
   change_time: string;
-  deleted: boolean | null;
+  deleted?: boolean | null;
 };
 
 export type DirwayPoint = {
