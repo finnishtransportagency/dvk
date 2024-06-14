@@ -525,6 +525,15 @@ export function addAPILayers(map: Map) {
     zIndex: 104,
   });
 
+  // Jääväylät
+  addFeatureVectorLayer({
+    map: map,
+    id: 'dirway',
+    renderBuffer: 15,
+    style: getLineStyle('#FE7C00', 4),
+    zIndex: 304,
+  });
+
   // Valitun väyläkortin featuret
   addFeatureVectorLayer({
     map: map,

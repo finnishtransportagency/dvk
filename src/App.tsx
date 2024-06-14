@@ -34,6 +34,7 @@ import {
   useVaylaWaterAreaData,
   useNameLayer,
   usePilotageAreaBorderLayer,
+  useDirwayLayer,
 } from './components/FeatureLoader';
 import {
   useAisVesselCargoLayer,
@@ -206,6 +207,7 @@ const DvkIonApp: React.FC = () => {
   useVaylaWaterAreaData();
   usePilotageLimitLayer();
   usePilotageAreaBorderLayer();
+  useDirwayLayer();
   /* Initialize observation data for offline use, needed in fairway cards */
   useObservationFeatures();
 
