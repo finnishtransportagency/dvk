@@ -402,7 +402,7 @@ export type RtzData = {
 
 export type IBNetApiResponse = {
   rvEndpoints: string[];
-  maxToRv: string;
+  toRv: string;
 };
 
 export type Dirway = {
@@ -423,5 +423,5 @@ export type DirwayPoint = {
   longitude: number;
   rv: number | null;
   change_time: string;
-  deleted: boolean | null;
+  deleted?: boolean | null;
 };

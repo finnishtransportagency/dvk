@@ -39,12 +39,12 @@ function addDirwayFeatures(features: Feature<Geometry, GeoJsonProperties>[], dir
 export async function fetchDirways(): Promise<FeatureCollection> {
   const features: Feature<Geometry, GeoJsonProperties>[] = [];
 
-  // First fetch root of the API to get maxToRV value
+  // First fetch root of the API to get max toRV value
   const apiResponse: IBNetApiResponse | null = await fetchIBNetApi<IBNetApiResponse>();
-  const { maxToRv } = apiResponse ?? {};
+  const { toRv } = apiResponse ?? {};
 
-  if (maxToRv) {
-    const params = { from: '0', to: maxToRv };
+  if (toRv) {
+    const params = { from: '0', to: toRv };
     const dirways: Dirway[] | null = await fetchIBNetApi<Dirway[]>(DIRWAY_PATH, params);
     const dirwayPoints: DirwayPoint[] | null = await fetchIBNetApi<DirwayPoint[]>(DIRWAY_POINT_PATH, params);
 
@@ -52,12 +52,13 @@ export async function fetchDirways(): Promise<FeatureCollection> {
       addDirwayFeatures(features, dirwayPoints, dirways);
     }
   } else {
-    log.warn('Could not get maxToRv from IBNetApi, not fetching dirway data');
+    log.error('Could not get toRv from IBNetApi, not fetching dirway data');
   }
 
   const collection: FeatureCollection = {
     type: 'FeatureCollection',
     features: features,
   };
+  log.debug(collection);
   return collection;
 }
