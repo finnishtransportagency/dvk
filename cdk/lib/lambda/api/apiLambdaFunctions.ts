@@ -43,7 +43,7 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     useMonitoring: true,
   },
   {
-    entry: path.join(__dirname, 'dirways-handler.ts'),
+    entry: path.join(__dirname, 'dirway-handler.ts'),
     pathPattern: '/api/dirways',
     functionName: 'dirways',
     priority: 18,

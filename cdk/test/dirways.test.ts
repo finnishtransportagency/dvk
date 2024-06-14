@@ -4,7 +4,7 @@ import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
 import { DIRWAY_PATH, DIRWAY_POINT_PATH } from '../lib/lambda/api/ibnet';
-import { handler, DIRWAYS_KEY } from '../lib/lambda/api/dirways-handler';
+import { handler, DIRWAYS_KEY } from '../lib/lambda/api/dirway-handler';
 
 const path = 'dirways';
 
