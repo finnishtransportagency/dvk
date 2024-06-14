@@ -5,7 +5,7 @@ import { getHeaders } from '../environment';
 import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchDirways } from './ibnet';
 
-const KEY = 'dirways';
+export const DIRWAYS_KEY = 'dirways';
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `dirways()`);
@@ -26,7 +26,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getFeatureCacheControlHeaders(KEY),
+      ...getFeatureCacheControlHeaders(DIRWAYS_KEY),
       'Content-Type': ['application/geo+json'],
     },
   };

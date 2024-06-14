@@ -4,8 +4,8 @@ import { fetchIBNetApi } from './axios';
 import { log } from '../logger';
 import { Position } from '@turf/helpers';
 
-const DIRWAY_PATH = 'dirway';
-const DIRWAY_POINT_PATH = 'dirwaypoint';
+export const DIRWAY_PATH = 'dirway';
+export const DIRWAY_POINT_PATH = 'dirwaypoint';
 
 function addDirwayFeatures(features: Feature<Geometry, GeoJsonProperties>[], dirwayPoints: DirwayPoint[], dirways: Dirway[]) {
   const dirwayMap = new Map<string, DirwayPoint[]>();

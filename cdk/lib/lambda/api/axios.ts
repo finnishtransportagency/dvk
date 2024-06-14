@@ -209,9 +209,6 @@ export async function fetchIBNetApi<T>(path?: string, params?: Record<string, st
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `${ExternalAPI.IBNET} api response time: ${duration} ms`);
-  console.log(response.status);
-  console.log(response.headers);
-  console.log(response.data);
   return response.data ? (response.data as T) : null;
 }
 
