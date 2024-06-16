@@ -1,5 +1,5 @@
 import { handler } from '../lib/lambda/api/aislocations-handler';
-import { mockALBEvent } from './mocks';
+import { mockAPIALBEvent } from './mocks';
 import { gunzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
@@ -109,7 +109,7 @@ beforeEach(() => {
 });
 
 it('should get locations from api', async () => {
-  const response = await handler(mockALBEvent(path));
+  const response = await handler(mockAPIALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(3);
@@ -118,12 +118,12 @@ it('should get locations from api', async () => {
 
 it('should get internal server error when api call fails', async () => {
   throwError = true;
-  const response = await handler(mockALBEvent(path));
+  const response = await handler(mockAPIALBEvent(path));
   expect(response.statusCode).toBe(503);
 });
 
 it('should return right cache headers', async () => {
-  const response = await handler(mockALBEvent(path));
+  const response = await handler(mockAPIALBEvent(path));
   assert(response.body);
   const headers = getAisCacheControlHeaders('aislocations')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
