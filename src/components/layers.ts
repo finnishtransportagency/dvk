@@ -45,6 +45,7 @@ import { anchorageAreaIconStyle, meetAreaIconStyle, getSpecialAreaPolygonStyle, 
 import { getQuayStyle } from './layerStyles/quayStyles';
 import { getHarborStyle } from './layerStyles/harborStyles';
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
+import { getDirwayStyle } from './layerStyles/dirwayStyles';
 
 const minResolutionHarbor = 3;
 
@@ -530,7 +531,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'dirway',
     renderBuffer: 15,
-    style: getLineStyle('#FE7C00', 4),
+    style: (feature, resolution) => getDirwayStyle(feature, resolution, feature.get('hoverStyle')),
     zIndex: 304,
   });
 
