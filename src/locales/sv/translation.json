@@ -468,11 +468,15 @@
       "aisvesselpleasurecraft": "Fritidsbåt",
       "aisunspecified": "Odefinierade fartyg"
     },
+    "dirway": {
+      "points": "[sv] Reittipisteet"
+    },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",
       "featureType": {
         "area": "Farledsområde",
         "buoy": "Vågboj",
+        "dirway": "[sv] Jääväylä",
         "calculated": "Beräknat vattenstånd",
         "harbor": "Hamn",
         "line": "Navigationslinje",

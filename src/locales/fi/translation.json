@@ -468,11 +468,15 @@
       "aisvesselpleasurecraft": "Huvivene",
       "aisunspecified": "Määrittelemätön alus"
     },
+    "dirway": {
+      "points": "Reittipisteet"
+    },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",
       "featureType": {
         "area": "Väyläalue",
         "buoy": "Aaltopoiju",
+        "dirway": "Jääväylä",
         "calculated": "Laskennallinen vedenkorkeus",
         "harbor": "Satama",
         "line": "Navigointilinja",

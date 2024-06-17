@@ -27,7 +27,7 @@ const pointStyle = new Style({
 
 const pointSelectedStyle = new Style({
   image: new CircleStyle({
-    radius: 6,
+    radius: 5,
     stroke: new Stroke({
       color: '#00A0E2',
       width: 3,
