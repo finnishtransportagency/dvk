@@ -4,7 +4,7 @@ import { gunzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import { VesselLocationFeatureCollection } from '../lib/lambda/api/apiModels';
-import { getCacheControlHeaders } from '../lib/lambda/graphql/cache';
+import { getAisCacheControlHeaders } from '../lib/lambda/graphql/cache';
 
 const path = 'aislocations';
 
@@ -125,6 +125,6 @@ it('should get internal server error when api call fails', async () => {
 it('should return right cache headers', async () => {
   const response = await handler(mockAISALBEvent(path));
   assert(response.body);
-  const headers = getCacheControlHeaders('aislocations')?.['Cache-Control'];
+  const headers = getAisCacheControlHeaders('aislocations')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
-})
+});

@@ -25,17 +25,7 @@
         ],
         "fax": "+35862207300",
         "internet": "https//www.portofkaskinen.fi",
-        "quays": 5,
-        "fairwayCards": [
-          {
-            "id": "kaskinen",
-            "name": {
-              "en": "Kaskinen channel",
-              "fi": "Kaskisten väylä",
-              "sv": "Kasköleden"
-            }
-          }
-        ]
+        "quays": 5
       }
     }
   ]

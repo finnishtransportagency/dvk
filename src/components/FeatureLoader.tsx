@@ -141,11 +141,14 @@ export function useInitStaticDataLayer(
   useEffect(() => {
     const initLayer = (data: unknown) => {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
-      const source = layer.getSource() as VectorSource;
       const format = new GeoJSON({ featureClass: RenderFeature });
       const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
-      source.clear(true);
-      source.addFeatures(features);
+      layer.setSource(
+        new VectorSource<Feature<Geometry>>({
+          features: features,
+          overlaps: false,
+        })
+      );
       setDataUpdatedAt(Date.now());
       layer.set('dataUpdatedAt', Date.now(), true);
       layer.set('status', 'ready', true);
@@ -410,10 +413,6 @@ export function useSpecialArea15Layer() {
 
 export function usePilotLayer() {
   return useDataLayer('pilot', 'pilot', 'EPSG:4258');
-}
-
-export function useHarborLayer() {
-  return useDataLayer('harbor', 'harbor');
 }
 
 export function useCoastalWarningLayer() {

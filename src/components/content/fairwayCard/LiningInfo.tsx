@@ -3,11 +3,44 @@ import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Lang } from '../../../utils/constants';
 import { Fairway, Text } from '../../../graphql/generated';
+import { TFunction } from 'i18next';
+import { uniqueId } from 'lodash';
+import { getFairwayName } from './DimensionInfo';
 
 export type LiningInfoProps = {
   data?: Fairway[] | null;
   lineText?: Text | null;
 };
+
+function extractLightingInfo(fairway: Fairway, t: TFunction) {
+  switch (fairway?.lightingCode) {
+    case '1':
+      return t('fairwayLit');
+    case '2':
+      return t('fairwayUnlit');
+    default:
+      return t('lightingUnknown');
+  }
+}
+
+// Extract notation information from fairway areas
+function extractNotationInfo(fairway: Fairway, t: TFunction) {
+  const lateralMarking = fairway.areas?.some((area) => area.notationCode === 1);
+  const cardinalMarking = fairway.areas?.some((area) => area.notationCode === 2);
+
+  if (lateralMarking) return t('lateralMarking') + (cardinalMarking ? ' / ' + t('cardinalMarking') : '');
+  if (cardinalMarking) return t('cardinalMarking');
+  return '';
+}
+
+function formatSentence(str?: string | null, endSentence?: boolean) {
+  if (str) {
+    if (endSentence) return str.trim() + (str.trim().endsWith('.') ? '' : '.');
+    return str.trim().endsWith('.') ? str.trim().slice(0, -1) : str.trim();
+  } else {
+    return '';
+  }
+}
 
 export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
@@ -16,35 +49,7 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
   const primaryFairway = data?.find((fairway) => fairway.primary);
   const secondaryFairway = data?.find((fairway) => fairway.secondary) ?? primaryFairway;
 
-  const extractLightingInfo = () => {
-    switch (primaryFairway?.lightingCode) {
-      case '1':
-        return t('fairwayLit');
-      case '2':
-        return t('fairwayUnlit');
-      default:
-        return t('lightingUnknown');
-    }
-  };
-
-  // Extract notation information from fairway areas
-  const extractNotationInfo = () => {
-    const lateralMarking = data?.find((fairway) => fairway.areas?.some((area) => area.notationCode === 1));
-    const cardinalMarking = data?.find((fairway) => fairway.areas?.some((area) => area.notationCode === 2));
-
-    if (lateralMarking) return t('lateralMarking') + (cardinalMarking ? ' / ' + t('cardinalMarking') : '');
-    if (cardinalMarking) return t('cardinalMarking');
-    return '';
-  };
-
-  const formatSentence = (str?: string | null, endSentence?: boolean) => {
-    if (str) {
-      if (endSentence) return str.trim() + (str.trim().endsWith('.') ? '' : '.');
-      return str.trim().endsWith('.') ? str.trim().slice(0, -1) : str.trim();
-    } else {
-      return '';
-    }
-  };
+  const numberOfFairways = data ? data.length : 0;
 
   return (
     <>
@@ -52,8 +57,32 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
         <IonText>
           <p>
             <strong>{t('liningAndMarking')}: </strong>
-            {t('starts')}: {formatSentence(primaryFairway?.startText)}, {t('ends')}: {formatSentence(secondaryFairway?.endText, true)}{' '}
-            {lineText && formatSentence(lineText[lang], true)} {extractLightingInfo()}. {extractNotationInfo()}.
+            {t('starts')}: {formatSentence(primaryFairway?.startText)}, {t('ends')}: {formatSentence(secondaryFairway?.endText, true)} <br />
+            <br />
+            {data.map((fairway, idx) => {
+              const uuid = uniqueId('fairway_');
+              return (
+                <span key={uuid}>
+                  {numberOfFairways > 1 && (
+                    <>
+                      {idx > 0 && <br />}
+                      {getFairwayName(fairway, lang)}:
+                      <br />
+                    </>
+                  )}
+                  {extractLightingInfo(fairway, t)}.&nbsp;{extractNotationInfo(fairway, t)}.
+                  <br />
+                </span>
+              );
+            })}
+            {lineText && (
+              <span>
+                <>
+                  <br />
+                  {formatSentence(lineText[lang], true)}
+                </>
+              </span>
+            )}
           </p>
         </IonText>
       )}

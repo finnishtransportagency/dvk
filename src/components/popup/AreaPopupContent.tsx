@@ -13,6 +13,7 @@ import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
 import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
 import { useFairwayCardListData } from '../../utils/dataLoader';
+import { TFunction } from 'i18next';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
@@ -24,6 +25,16 @@ export type AreaProperties = {
   coordinates: number[];
   properties: AreaFeatureProperties;
 };
+
+export function getAreaName(area: AreaProperties, t: TFunction) {
+  const name = area.properties.name;
+  const type = t('fairwayCards.areaType' + area.properties.typeCode);
+  // ankkurointialueet pitkässä muodossa esim. osa 'c' -> 'ankkurointialue c'
+  if (area.properties.typeCode == 2) {
+    return name ? type + ' ' + name : type;
+  }
+  return name ?? type;
+}
 
 const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties, isOffline }) => {
   const { t, i18n } = useTranslation();
@@ -76,7 +87,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
         </IonRow>
       )}
       <IonRow>
-        <IonCol size="auto">{area.properties.name ?? t('fairwayCards.areaType' + area.properties.typeCode)}</IonCol>
+        <IonCol size="auto">{getAreaName(area, t)}</IonCol>
       </IonRow>
       {area.properties.typeCode === 15 && (
         <IonRow>

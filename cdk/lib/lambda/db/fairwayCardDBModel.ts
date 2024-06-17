@@ -1,8 +1,9 @@
-import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
-import { Maybe, Status, Operation, Orientation } from '../../../graphql/generated';
+import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { Maybe, Status, Operation, Orientation, Mareograph } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { getFairwayCardTableName } from '../environment';
+import { getPutCommands } from '../util';
 
 export type Text = {
   fi?: Maybe<string>;
@@ -86,10 +87,12 @@ export type TemporaryNotification = {
   content?: Maybe<Text>;
   startDate?: Maybe<string>;
   endDate?: Maybe<string>;
-}
+};
 
 class FairwayCardDBModel {
   id: string;
+
+  version: string;
 
   name: Text;
 
@@ -129,11 +132,11 @@ class FairwayCardDBModel {
 
   visibility?: Maybe<Text>;
 
-  windGauge?: Maybe<Text>;
-
   vesselRecommendation?: Maybe<Text>;
 
   seaLevel?: Maybe<Text>;
+
+  mareographs?: Maybe<Mareograph[]>;
 
   windRecommendation?: Maybe<Text>;
 
@@ -151,15 +154,26 @@ class FairwayCardDBModel {
 
   temporaryNotifications?: Maybe<TemporaryNotification[]>;
 
-  static async get(id: string): Promise<FairwayCardDBModel | undefined> {
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getFairwayCardTableName(), Key: { id } }));
+  // at the moment this gives any latest version, should be separate function for latest public
+  static async get(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
+    // v0 always the latest
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
+    );
     const fairwayCard = response.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
 
-  static async getAll(): Promise<FairwayCardDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: getFairwayCardTableName() }));
+  static async getAllLatest(): Promise<FairwayCardDBModel[]> {
+    const response = await getDynamoDBDocumentClient().send(
+      new ScanCommand({
+        TableName: getFairwayCardTableName(),
+        FilterExpression: '#version = :vVersion',
+        ExpressionAttributeNames: { '#version': 'version' },
+        ExpressionAttributeValues: { ':vVersion': 'v0_latest' },
+      })
+    );
     const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
     if (fairwayCards) {
       log.debug('%d fairway card(s) found', fairwayCards.length);
@@ -173,9 +187,9 @@ class FairwayCardDBModel {
     const response = await getDynamoDBDocumentClient().send(
       new ScanCommand({
         TableName: getFairwayCardTableName(),
-        FilterExpression: '#status = :vStatus',
-        ExpressionAttributeNames: { '#status': 'status' },
-        ExpressionAttributeValues: { ':vStatus': Status.Public },
+        FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
+        ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
+        ExpressionAttributeValues: { ':vVersion': 'v0_public' },
       })
     );
     const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
@@ -188,8 +202,8 @@ class FairwayCardDBModel {
   }
 
   static async save(data: FairwayCardDBModel, operation: Operation) {
-    const expr = operation === Operation.Create ? 'attribute_not_exists(id)' : 'attribute_exists(id)';
-    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: getFairwayCardTableName(), Item: data, ConditionExpression: expr }));
+    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation);
+    await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }
 

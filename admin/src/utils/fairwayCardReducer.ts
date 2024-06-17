@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
-import { sortPictures } from './common';
+import { dateError, endDateError, sortPictures } from './common';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -194,25 +194,8 @@ export const fairwayCardReducer = (
         },
       };
       break;
-    case 'windGauge':
-      if (!actionLang) return state;
-      newState = {
-        ...state,
-        windGauge: {
-          ...(state.windGauge ?? { fi: '', sv: '', en: '' }),
-          [actionLang as string]: value as string,
-        },
-      };
-      break;
-    case 'seaLevel':
-      if (!actionLang) return state;
-      newState = {
-        ...state,
-        seaLevel: {
-          ...(state.seaLevel ?? { fi: '', sv: '', en: '' }),
-          [actionLang as string]: value as string,
-        },
-      };
+    case 'mareographs':
+      newState = { ...state, mareographs: value as number[] };
       break;
     case 'pilotEmail':
       newState = {
@@ -745,28 +728,6 @@ export const fairwayCardReducer = (
               : '',
         })
     );
-  } else if (actionType === 'windGauge' && validationErrors.find((error) => error.id === 'windGauge')?.msg) {
-    setValidationErrors(
-      validationErrors
-        .filter((error) => error.id !== 'windGauge')
-        .concat({
-          id: 'windGauge',
-          msg:
-            newState.windGauge?.fi.trim() || newState.windGauge?.sv.trim() || newState.windGauge?.en.trim()
-              ? t(ErrorMessageKeys?.required) || ''
-              : '',
-        })
-    );
-  } else if (actionType === 'seaLevel' && validationErrors.find((error) => error.id === 'seaLevel')?.msg) {
-    setValidationErrors(
-      validationErrors
-        .filter((error) => error.id !== 'seaLevel')
-        .concat({
-          id: 'seaLevel',
-          msg:
-            newState.seaLevel?.fi.trim() || newState.seaLevel?.sv.trim() || newState.seaLevel?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
-        })
-    );
   } else if (actionType === 'pilotExtraInfo' && validationErrors.find((error) => error.id === 'pilotExtraInfo')?.msg) {
     setValidationErrors(
       validationErrors
@@ -897,6 +858,50 @@ export const fairwayCardReducer = (
         .concat({
           id: 'tugName-' + actionTarget,
           msg: currentTug?.name?.fi.trim() || currentTug?.name?.sv.trim() || currentTug?.name?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  }
+
+  // manual validations for temporary notifications (errors that shows before trying to save the whole card)
+  if (actionType === 'temporaryNotificationStartDate' && actionTarget !== undefined) {
+    const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
+    let errorMsg = '';
+
+    if (!notification?.startDate) {
+      errorMsg = t(ErrorMessageKeys?.required);
+    } else if (dateError(notification?.startDate)) {
+      errorMsg = t(ErrorMessageKeys?.invalid);
+    }
+
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'temporaryNotificationStartDate-' + actionTarget)
+        .concat({
+          id: 'temporaryNotificationStartDate-' + actionTarget,
+          msg: errorMsg,
+        })
+    );
+  } else if (actionType === 'temporaryNotificationEndDate' && actionTarget !== undefined) {
+    const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
+    let errorMsg = '';
+
+    if (notification?.endDate && dateError(notification?.endDate)) {
+      errorMsg = t(ErrorMessageKeys?.invalid);
+      // only if there's valid start date check if end date is same/after start date
+    } else if (
+      notification?.endDate &&
+      notification?.startDate &&
+      !dateError(notification?.startDate) &&
+      endDateError(notification?.startDate ?? '', notification?.endDate ?? '')
+    ) {
+      errorMsg = t(ErrorMessageKeys?.endDateError);
+    }
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'temporaryNotificationEndDate-' + actionTarget)
+        .concat({
+          id: 'temporaryNotificationEndDate-' + actionTarget,
+          msg: errorMsg,
         })
     );
   }

@@ -1,5 +1,6 @@
 fragment FairwayCardById on FairwayCard {
   id
+    version
     name {
       fi
       sv
@@ -73,20 +74,13 @@ fragment FairwayCardById on FairwayCard {
       sv
       en
     }
-    windGauge {
-      fi
-      sv
-      en
-    }
     vesselRecommendation {
       fi
       sv
       en
     }
-    seaLevel {
-      fi
-      sv
-      en
+    mareographs {
+      id
     }
     windRecommendation {
       fi
@@ -179,8 +173,8 @@ fragment FairwayCardById on FairwayCard {
     }
 }
 
-query fairwayCardById($id: String!) {
-  fairwayCard(id: $id) {
+query fairwayCardById($id: String!, $version: String!) {
+  fairwayCard(id: $id, version: $version) {
     ...FairwayCardById
   }
 }

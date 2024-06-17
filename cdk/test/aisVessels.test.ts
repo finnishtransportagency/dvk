@@ -1,10 +1,9 @@
-import { mockClient } from 'aws-sdk-client-mock';
 import { handler } from '../lib/lambda/api/aisvessels-handler';
 import { mockAISALBEvent } from './mocks';
 import { gunzip } from 'zlib';
 import assert from 'assert';
 import { Vessel, VesselAPIModel } from '../lib/lambda/api/apiModels';
-import { getCacheControlHeaders } from '../lib/lambda/graphql/cache';
+import { getAisCacheControlHeaders } from '../lib/lambda/graphql/cache';
 
 const path = 'aisvessels';
 
@@ -109,6 +108,6 @@ it('should get internal server error when api call fails and no cached response'
 it('should return right cache headers', async () => {
   const response = await handler(mockAISALBEvent(path));
   assert(response.body);
-  const headers = getCacheControlHeaders('aisvessels')?.['Cache-Control'];
+  const headers = getAisCacheControlHeaders('aisvessels')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
-})
+});

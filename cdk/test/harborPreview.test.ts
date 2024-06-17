@@ -22,6 +22,7 @@ const otherUser = {
 
 const harbor1: HarborDBModel = {
   id: 'public',
+  version: 'v1',
   name: {
     fi: 'Harbor1fi',
     sv: 'Harbor1sv',
@@ -85,6 +86,7 @@ const harbor1: HarborDBModel = {
 
 const harbor2: HarborDBModel = {
   id: 'draft',
+  version: 'v1',
   name: {
     fi: 'Harbor2fi',
     sv: 'Harbor2sv',
@@ -99,6 +101,7 @@ const harbor2: HarborDBModel = {
 
 const harbor3: HarborDBModel = {
   id: 'removed',
+  version: 'v1',
   name: {
     fi: 'Harbor3fi',
     sv: 'Harbor3sv',

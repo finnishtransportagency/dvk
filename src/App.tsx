@@ -17,7 +17,6 @@ import {
   useDepth12Layer,
   useSpeedLimitLayer,
   usePilotLayer,
-  useHarborLayer,
   useCoastalWarningLayer,
   useLocalWarningLayer,
   useBoaterWarningLayer,
@@ -74,7 +73,7 @@ import './theme/print.css';
 import HomePage from './pages/HomePage';
 import SidebarMenu from './components/SidebarMenu';
 import MapOverlays from './components/mapOverlays/MapOverlays';
-import { isMobile } from './utils/common';
+import { isMobile, refreshPrintableMap } from './utils/common';
 import FairwayCardPage from './pages/FairwayCardPage';
 import FairwayCardListPage from './pages/FairwayCardListPage';
 import SafetyEquipmentFaultPage from './pages/SafetyEquipmentFaultPage';
@@ -86,6 +85,8 @@ import { ContentModal } from './components/content/MainContentWithModal';
 import SquatCalculatorPage from './pages/SquatCalculatorPage';
 import HarborPreviewPage from './pages/HarborPreviewPage';
 import PilotRoutePage from './pages/PilotRoutePage';
+import { useHarborLayer } from './components/HarborFeatureLoader';
+import { useObservationFeatures } from './components/ObservationFeatureLoader';
 
 setupIonicReact({
   mode: 'md',
@@ -205,6 +206,8 @@ const DvkIonApp: React.FC = () => {
   useVaylaWaterAreaData();
   usePilotageLimitLayer();
   usePilotageAreaBorderLayer();
+  /* Initialize observation data for offline use, needed in fairway cards */
+  useObservationFeatures();
 
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
@@ -283,6 +286,12 @@ const DvkIonApp: React.FC = () => {
       }
     }
   }, [dvkMap, state.isOffline]);
+
+  useEffect(() => {
+    window.onbeforeprint = () => {
+      refreshPrintableMap();
+    };
+  }, []);
 
   const [isSourceOpen, setIsSourceOpen] = useState(false);
   return (

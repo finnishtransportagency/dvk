@@ -3,6 +3,7 @@ import { IonButton, IonCol, IonGrid, IonRow, IonSkeletonText, IonText } from '@i
 import { useTranslation } from 'react-i18next';
 import PrintIcon from '../../../theme/img/print.svg?react';
 import { useDvkContext } from '../../../hooks/dvkContext';
+import { refreshPrintableMap } from '../../../utils/common';
 
 interface FairwayCardHeaderProps {
   fairwayTitle: string;
@@ -30,7 +31,12 @@ export const FairwayCardHeader: React.FC<FairwayCardHeaderProps> = ({ fairwayTit
           <IonButton
             fill="clear"
             className="icon-only small no-mobile no-print"
-            onClick={() => window.print()}
+            onClick={() => {
+              // trying to call window.print directly doesn't work for some reason
+              // even with the onbeforeprint event handler in place
+              refreshPrintableMap();
+              setTimeout(window.print, 500);
+            }}
             title={t('print')}
             aria-label={t('print')}
             data-testid="printButton"

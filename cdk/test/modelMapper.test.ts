@@ -16,6 +16,7 @@ import {
   mapPilotJourney,
   mapQuayLength,
   mapVhfChannel,
+  mapVersion,
 } from '../lib/lambda/db/modelMapper';
 
 test('test mapText', () => {
@@ -284,4 +285,19 @@ test('test mapVhfChannel', () => {
   expect(() => mapVhfChannel('0.1')).toThrow(OperationError.InvalidInput);
   expect(() => mapVhfChannel('999.1')).toThrow(OperationError.InvalidInput);
   expect(() => mapVhfChannel('999.99')).toThrow(OperationError.InvalidInput);
+});
+
+test('test version', () => {
+  expect(mapVersion('v1')).toBe('v1');
+  expect(mapVersion('v42')).toBe('v42');
+  expect(mapVersion('v1234')).toBe('v1234');
+  expect(mapVersion('v0_latest')).toBe('v0_latest');
+  expect(mapVersion('v0_public')).toBe('v0_public');
+  expect(() => mapVersion(null)).toThrow(OperationError.InvalidInput);
+  expect(() => mapVersion(' ')).toThrow(OperationError.InvalidInput);
+  expect(() => mapVersion('version1')).toThrow(OperationError.InvalidInput);
+  expect(() => mapVersion('v 1')).toThrow(OperationError.InvalidInput);
+  expect(() => mapVersion('v-1')).toThrow(OperationError.InvalidInput);
+  expect(() => mapVersion('1')).toThrow(OperationError.InvalidInput);
+  expect(() => mapVersion('v_0_public')).toThrow(OperationError.InvalidInput);
 });
