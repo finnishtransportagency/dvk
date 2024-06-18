@@ -148,7 +148,7 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-layer-speedlimit-border: #d72416;
   --ion-color-layer-speedlimit-text: #000000;
   --ion-color-layer-ice: #969696;
-  --ion-color-layer-pilotageareaborder: #FE7C00;
+  --ion-color-layer-pilotageareaborder: #fe7c00;
   --ion-color-speedlimit-30: #00b0cc;
   --ion-color-speedlimit-25: #8dcb6d;
   --ion-color-speedlimit-20: #ffc300;
@@ -174,7 +174,7 @@ http://ionicframework.com/docs/theming/ */
    * -------------------------------------------
    */
 
-  body {
+  :root {
     /** primary (Vayla dark blue) **/
     --ion-color-primary: #0064af;
     --ion-color-primary-rgb: 0, 100, 175;
@@ -293,7 +293,7 @@ http://ionicframework.com/docs/theming/ */
    * -------------------------------------------
    */
 
-  .ios body {
+  html.ios {
     --ion-background-color: #000000;
     --ion-background-color-rgb: 0, 0, 0;
 
@@ -325,7 +325,7 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #1c1c1d;
   }
 
-  .ios ion-modal {
+  html.ios ion-modal {
     --ion-background-color: var(--ion-color-step-100);
     --ion-toolbar-background: var(--ion-color-step-150);
     --ion-toolbar-border-color: var(--ion-color-step-250);
@@ -336,7 +336,7 @@ http://ionicframework.com/docs/theming/ */
    * -------------------------------------------
    */
 
-  .md body {
+  html.md {
     --ion-background-color: #121212;
     --ion-background-color-rgb: 18, 18, 18;
 
