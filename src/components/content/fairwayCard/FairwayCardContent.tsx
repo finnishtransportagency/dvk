@@ -288,6 +288,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <h5>{t('commonInformation')}</h5>
               <GeneralInfo data={fairwayCard?.fairways} />
               <ProhibitionInfo data={fairwayCard?.fairways} />
+              {/* 15 === prohibition area typecode*/}
               <AreaInfoByType data={fairwayCard?.fairways} typeCode={15} />
             </IonText>
             <IonText>
@@ -297,6 +298,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <IonText>
               <h5>{t('anchorage')}</h5>
               <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
+              {/* 2 === special area typecode*/}
               <AreaInfoByType data={fairwayCard?.fairways} typeCode={2} />
             </IonText>
             <IonText>
