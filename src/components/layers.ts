@@ -948,7 +948,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
 
     const extent = olExtent.createEmpty();
     // pilot excludes pilot, pilotagelimit and pilotroute
-    const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot'];
+    const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot', 'observation'];
     for (const feature of fairwayFeatures) {
       const dataSource = feature.getProperties().dataSource;
       const isWrongDataSource = excludedDatasources.some((source) => dataSource.includes(source));
@@ -994,6 +994,16 @@ export function setSelectedFairwayArea(id?: number | string) {
     f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && f.getId() === id);
   }
   selectedFairwayCardSource.dispatchEvent('change');
+}
+
+export function setSelectedObservation(id?: number | string) {
+  const dvkMap = getMap();
+  const observationSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  for (const f of observationSource.getFeatures()) {
+    f.set('hoverStyle', id && f.getId() === id);
+  }
+  observationSource.dispatchEvent('change');
 }
 
 function highlightFeatures(source: VectorSource, featureTypes: string[], id: string | number, idProp: string, selected: boolean) {

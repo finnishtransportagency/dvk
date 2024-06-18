@@ -25,7 +25,6 @@ const hoverStyle = new Style({
 export function getObservationStyle(feature: FeatureLike) {
   const selected = !!feature.get('selected');
   const hovered = !!feature.get('hoverStyle');
-  console.log('getobservationstyle ' + feature.getId() + ' ' + selected + ' ' + hovered);
   if (selected) {
     return undefined;
   }
@@ -59,7 +58,6 @@ const selectedFairwayCardHoverStyle = new Style({
 export function getSelectedFairwayCardObservationStyle(feature: FeatureLike) {
   const selected = !!feature.get('selected');
   const hovered = !!feature.get('hoverStyle');
-  console.log('getselectedffcardobservationstyle ' + feature.getId() + ' ' + selected + ' ' + hovered);
   if (selected) {
     return hovered ? selectedFairwayCardHoverStyle : selectedFairwayCardStyle;
   }
