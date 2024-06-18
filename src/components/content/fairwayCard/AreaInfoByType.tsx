@@ -3,11 +3,12 @@ import { Area, Fairway } from '../../../graphql/generated';
 import uniqueId from 'lodash/uniqueId';
 import { AreaInfoListItem } from './AreaInfoListItem';
 
-type SpecialAreaInfoProps = {
+type AreaInfoByTypeProps = {
   data: Fairway[] | null;
+  typeCode: number;
 };
 
-export const SpecialAreaInfo: React.FC<SpecialAreaInfoProps> = ({ data }) => {
+export const AreaInfoByType: React.FC<AreaInfoByTypeProps> = ({ data, typeCode }) => {
   const fairways = data || [];
 
   function getFairwayAreas(fairway: Fairway): Area[] {
@@ -18,7 +19,7 @@ export const SpecialAreaInfo: React.FC<SpecialAreaInfoProps> = ({ data }) => {
     <>
       {fairways.map((fairway) => {
         const fairwayAreas = getFairwayAreas(fairway).filter((area) => {
-          return area.typeCode && (area.typeCode == 2 || area.typeCode == 15);
+          return area.typeCode && area.typeCode == typeCode;
         }); // special areas only
 
         return (
