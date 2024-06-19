@@ -32,7 +32,7 @@ function getSpeedLimitFairwayAreas(rafs: Feature<Geometry>[], fafs: Feature<Geom
 
 type SpeedLimitGeometry = {
   speedLimits: Array<number>;
-  geometry: turf_Polygon | turf_Feature<turf_Polygon | turf_MultiPolygon, turf_GeoJsonProperties>;
+  geometry: turf_Feature<turf_Polygon | turf_MultiPolygon, turf_GeoJsonProperties>;
 };
 
 function getSpeedLimitGeometries(rafs: Feature<Geometry>[]): Array<SpeedLimitGeometry> {
@@ -48,26 +48,24 @@ function getSpeedLimitGeometries(rafs: Feature<Geometry>[]): Array<SpeedLimitGeo
     const intersections = [];
 
     for (let i = 0; i < speedLimitGeometries.length; i++) {
-      const slg = speedLimitGeometries[i]?.geometry as turf_Feature<turf_Polygon>;
-      if (slg.geometry) {
-        const intersection = turf_intersect(turf_helpers.featureCollection([raGeomPoly, slg]));
-        if (intersection) {
-          intersections.push(intersection);
-          overlapGeomIndices.push(i);
-          const intersectionPolygons = turf_flatten(intersection);
-          for (const feat of intersectionPolygons.features) {
-            const geom = feat.geometry;
-            multiSpeedLimitGeometries.push({
-              speedLimits: [speedLimit, ...speedLimitGeometries[i].speedLimits],
-              geometry: geom,
-            });
-          }
-          const diff2 = turf_difference(turf_helpers.featureCollection([slg, intersection]));
-          if (diff2) {
-            for (const feat of turf_flatten(diff2).features) {
-              if (turf_area(feat.geometry) > 100000) {
-                diffSpeedLimitGeometries.push({ speedLimits: speedLimitGeometries[i].speedLimits, geometry: feat.geometry });
-              }
+      const slg = speedLimitGeometries[i].geometry as turf_Feature<turf_Polygon>;
+      const intersection = turf_intersect(turf_helpers.featureCollection([raGeomPoly, slg]));
+      if (intersection) {
+        intersections.push(intersection);
+        overlapGeomIndices.push(i);
+        const intersectionPolygons = turf_flatten(intersection);
+        for (const feat of intersectionPolygons.features) {
+          const geom = turf_helpers.feature(feat.geometry);
+          multiSpeedLimitGeometries.push({
+            speedLimits: [speedLimit, ...speedLimitGeometries[i].speedLimits],
+            geometry: geom,
+          });
+        }
+        const diff2 = turf_difference(turf_helpers.featureCollection([slg, intersection]));
+        if (diff2) {
+          for (const feat of turf_flatten(diff2).features) {
+            if (turf_area(feat.geometry) > 100000) {
+              diffSpeedLimitGeometries.push({ speedLimits: speedLimitGeometries[i].speedLimits, geometry: turf_helpers.feature(feat.geometry) });
             }
           }
         }
@@ -79,7 +77,7 @@ function getSpeedLimitGeometries(rafs: Feature<Geometry>[]): Array<SpeedLimitGeo
     } else {
       speedLimitGeometries = speedLimitGeometries.filter((_, index) => !overlapGeomIndices.includes(index));
       overlapGeomIndices = [];
-      let diff: turf_Polygon | turf_Feature<turf_Polygon | turf_MultiPolygon, turf_GeoJsonProperties> = raGeomPoly;
+      let diff: turf_Feature<turf_Polygon | turf_MultiPolygon, turf_GeoJsonProperties> = raGeomPoly;
       for (const intersection of intersections) {
         const diff1 = turf_difference(turf_helpers.featureCollection([diff, intersection]));
         if (diff1) {
@@ -88,7 +86,7 @@ function getSpeedLimitGeometries(rafs: Feature<Geometry>[]): Array<SpeedLimitGeo
       }
       for (const feat of turf_flatten(diff).features) {
         if (turf_area(feat.geometry) > 100000) {
-          diffSpeedLimitGeometries.push({ speedLimits: [speedLimit], geometry: feat.geometry });
+          diffSpeedLimitGeometries.push({ speedLimits: [speedLimit], geometry: turf_helpers.feature(feat.geometry) });
         }
       }
     }
@@ -108,38 +106,36 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
 
   for (const slg of getSpeedLimitGeometries(rafs)) {
     const raGeomPoly = slg.geometry as turf_Feature<turf_Polygon>;
-    if (raGeomPoly.geometry) {
-      const intersectionPolygons = [];
+    const intersectionPolygons = [];
 
-      for (const faf of fafs) {
-        const aGeomPoly = format.writeFeatureObject(faf) as turf_Feature<turf_Polygon>;
-        const intersection = turf_intersect(turf_helpers.featureCollection([raGeomPoly, aGeomPoly]));
-        if (intersection) {
-          intersectionPolygons.push(turf_truncate(intersection));
-        }
+    for (const faf of fafs) {
+      const aGeomPoly = format.writeFeatureObject(faf) as turf_Feature<turf_Polygon>;
+      const intersection = turf_intersect(turf_helpers.featureCollection([raGeomPoly, aGeomPoly]));
+      if (intersection) {
+        intersectionPolygons.push(turf_truncate(intersection));
       }
-      if (intersectionPolygons.length < 1) {
-        continue; /* Speed limit polygon does not intersect with any fairway area polygon */
-      }
+    }
+    if (intersectionPolygons.length < 1) {
+      continue; /* Speed limit polygon does not intersect with any fairway area polygon */
+    }
 
-      let intersectionUnion = intersectionPolygons[0];
-      for (let i = 1; i < intersectionPolygons.length; i++) {
-        const u = turf_union(turf_helpers.featureCollection([intersectionUnion, intersectionPolygons[i]]));
-        if (u) {
-          intersectionUnion = u;
-        }
+    let intersectionUnion = intersectionPolygons[0];
+    for (let i = 1; i < intersectionPolygons.length; i++) {
+      const u = turf_union(turf_helpers.featureCollection([intersectionUnion, intersectionPolygons[i]]));
+      if (u) {
+        intersectionUnion = u;
       }
+    }
 
-      const flattenIntersectionUnion = turf_flatten(intersectionUnion);
+    const flattenIntersectionUnion = turf_flatten(intersectionUnion);
 
-      for (const union of flattenIntersectionUnion.features) {
-        const feat = format.readFeature(union.geometry, {
-          dataProjection: 'EPSG:4326',
-          featureProjection: MAP.EPSG,
-        });
-        feat.setProperties({ speedLimits: slg.speedLimits });
-        speedLimitFeatures.push(feat);
-      }
+    for (const union of flattenIntersectionUnion.features) {
+      const feat = format.readFeature(union.geometry, {
+        dataProjection: 'EPSG:4326',
+        featureProjection: MAP.EPSG,
+      });
+      feat.setProperties({ speedLimits: slg.speedLimits });
+      speedLimitFeatures.push(feat);
     }
   }
   return speedLimitFeatures;

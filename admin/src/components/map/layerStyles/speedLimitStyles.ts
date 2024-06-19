@@ -5,10 +5,10 @@ import speedLimitIcon from '../../../theme/img/rajoitus_pohja.svg';
 import speedLimitMultiIcon from '../../../theme/img/rajoitus_multi_pohja.svg';
 import specialarea from '../../../theme/img/erityisalue_tausta.svg';
 import { Geometry, MultiPolygon, Polygon } from 'ol/geom';
-import { intersect as turfIntersect } from '@turf/intersect';
-import { flatten as turfFlatten } from '@turf/flatten';
+import { intersect as turf_intersect } from '@turf/intersect';
+import { flatten as turf_flatten } from '@turf/flatten';
 import { polygon, featureCollection } from '@turf/helpers';
-import { FeatureCollection, Polygon as turf_Polygon, Feature as turf_Feature } from 'geojson';
+import { FeatureCollection as turf_FeatureCollection, Polygon as turf_Polygon, Feature as turf_Feature } from 'geojson';
 import { getTopLeft, getBottomRight } from 'ol/extent';
 import { GeoJSON } from 'ol/format';
 
@@ -113,11 +113,11 @@ export function getSpeedLimitIconStyle(feature: FeatureLike) {
       ],
     ]);
     const geomPoly = format.writeFeatureObject(feature as Feature<Geometry>) as turf_Feature<turf_Polygon>;
-    const features: FeatureCollection<turf_Polygon> = featureCollection([geomPoly, turfBBoxPolygon]);
-    const intersected = turfIntersect(features);
+    const features: turf_FeatureCollection<turf_Polygon> = featureCollection([geomPoly, turfBBoxPolygon]);
+    const intersected = turf_intersect(features);
 
     if (intersected) {
-      const flattened = turfFlatten(intersected);
+      const flattened = turf_flatten(intersected);
       const multiPolygon = new MultiPolygon([]);
       for (const fg of flattened.features) {
         const geom = format.readFeature(fg).getGeometry() as Polygon;
