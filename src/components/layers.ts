@@ -532,7 +532,7 @@ export function addAPILayers(map: Map) {
     id: 'dirway',
     renderBuffer: 15,
     style: (feature, resolution) => getDirwayStyle(feature, resolution, feature.get('hoverStyle')),
-    zIndex: 304,
+    zIndex: 302,
   });
 
   // Valitun väyläkortin featuret
