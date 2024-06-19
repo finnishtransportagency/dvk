@@ -3,7 +3,6 @@ import { Dirway, DirwayPoint, IBNetApiResponse } from './apiModels';
 import { fetchIBNetApi } from './axios';
 import { log } from '../logger';
 import { Position } from '@turf/helpers';
-import { Point } from 'proj4';
 
 export const DIRWAY_PATH = 'dirway';
 export const DIRWAY_POINT_PATH = 'dirwaypoint';
