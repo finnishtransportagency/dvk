@@ -105,19 +105,19 @@ const lambdaFunctions: BackendLambda[] = [
     useVpc: false,
   },
   {
-    entry: path.join(__dirname, 'query/harbor-handler.ts'),
+    entry: path.join(__dirname, 'query/harborVersion-handler.ts'),
     typeName: 'Query',
     fieldName: 'harborVersion',
     useVpc: false,
   },
   {
-    entry: path.join(__dirname, 'query/harbor-handler.ts'),
+    entry: path.join(__dirname, 'query/harborLatest-handler.ts'),
     typeName: 'Query',
     fieldName: 'harborLatest',
     useVpc: false,
   },
   {
-    entry: path.join(__dirname, 'query/harbor-handler.ts'),
+    entry: path.join(__dirname, 'query/harborPublic-handler.ts'),
     typeName: 'Query',
     fieldName: 'harborPublic',
     useVpc: false,
