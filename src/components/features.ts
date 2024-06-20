@@ -154,7 +154,6 @@ export type MarineWarningFeatureProperties = {
 };
 
 export type MareographFeatureProperties = {
-  id: number;
   name: string;
   waterLevel: number;
   n2000WaterLevel: number;

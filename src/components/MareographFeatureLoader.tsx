@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { MAP } from '../utils/constants';
 import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
@@ -13,10 +12,7 @@ export function useMareographFeatures() {
   useEffect(() => {
     if (data) {
       const format = new GeoJSON();
-      const oFeatures = format.readFeatures(data, {
-        dataProjection: 'EPSG:4258',
-        featureProjection: MAP.EPSG,
-      });
+      const oFeatures = format.readFeatures(data);
       setMareographFeatures(oFeatures);
       setReady(true);
     }

@@ -513,3 +513,7 @@ ion-text.previewText > * {
   pointer-events: none;
   opacity: 50%;
 }
+
+.mareographsTitle {
+  font-size: 12px;
+}
