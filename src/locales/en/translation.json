@@ -261,7 +261,9 @@
     "pilotageLimitLocation": "Limit location",
     "pilotageLimitLimit": "Limit of compulsory pilotage in fairways when one of the following is exceeded",
     "pilotageLimitDimensions": "Length / breadth / draught (m)",
-    "inForce": "In force"
+    "inForce": "In force",
+    "mareograph": "Mareograph"
+
   },
   "routes": {
     "title": "Pilot routes",
