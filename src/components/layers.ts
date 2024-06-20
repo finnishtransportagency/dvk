@@ -714,6 +714,7 @@ export function unsetSelectedFairwayCard() {
   selectedFairwayCardSource.getFeatures().forEach((f) => f.set('selected', false));
   selectedFairwayCardSource.clear();
   quaySource.clear();
+  dvkMap.getFeatureLayer('selectedfairwaycard').setVisible(false);
 }
 
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON, showDepth: boolean) {

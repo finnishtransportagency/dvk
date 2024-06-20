@@ -22,7 +22,6 @@ import {
   useBoaterWarningLayer,
   useBoardLine12Layer,
   useMareographLayer,
-  useObservationLayer,
   useBuoyLayer,
   DvkLayerState,
   useVtsLineLayer,
@@ -35,6 +34,7 @@ import {
   useNameLayer,
   usePilotageAreaBorderLayer,
 } from './components/FeatureLoader';
+import { useObservationLayer, useObservationFeatures } from './components/ObservationFeatureLoader';
 import {
   useAisVesselCargoLayer,
   useAisVesselTankerLayer,
@@ -86,7 +86,6 @@ import SquatCalculatorPage from './pages/SquatCalculatorPage';
 import HarborPreviewPage from './pages/HarborPreviewPage';
 import PilotRoutePage from './pages/PilotRoutePage';
 import { useHarborLayer } from './components/HarborFeatureLoader';
-import { useObservationFeatures } from './components/ObservationFeatureLoader';
 
 setupIonicReact({
   mode: 'md',
