@@ -33,11 +33,6 @@
     "sv": "Vädret vid kuststationerna: Kristinestad fyr, Kristinestad Björnö.",
     "en": "Marine weather observations: Kristiinankaupunki lighthouse, Kristiinanankaupunki Karhusaari."
   },
-  "seaLevel": {
-    "fi": "Kaskinen mareografi.",
-    "sv": "Kaskö mareograf.",
-    "en": "Kaskinen mareograph."
-  },
   "windRecommendation": {
     "fi": "Aluskohtainen, yli 10 m/s tuulen nopeudet voivat vaikeuttaa navigointia.",
     "sv": "Rekommendationerna är fartygsspecifika, vindhastigheter som överstiger 10 m/s kan försvåra navigeringen.",

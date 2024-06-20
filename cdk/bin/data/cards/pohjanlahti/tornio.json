@@ -48,11 +48,6 @@
     "sv": "Fartyg i dimensionerat djupgående skall beakta squat-effekten. Dimensionerande fart i angöringen 11 knop och i inloppet 7 knop.",
     "en": "Vessels sailing at design draught should beware of the squat-effect. Design speed in the approach 11 knots and in the entrance 7 knots."
   },
-  "seaLevel": {
-    "fi": "Kemi mareografi.",
-    "sv": "Kemi mareograf.",
-    "en": "Kemi mareograph."
-  },
   "windRecommendation": {
     "fi": "Osuudella Etukari - Kataja kriittinen tuulennopeus on 15 m/s, suunta KO - E - LU. Osuudella Kataja - Tornion satama kriittinen tuulennopeus on 8 m/s, suunta KO - E - LU. Kaasulaivojen luotsaus alle 10 m/s.",
     "sv": "I avsnittet Etukari - Kataja är den kritiska vindhastigheten 15 m/s, riktning NO - S - NV. I avsnittet Kataja - Torneå hamn är den kritiska vindhastigheten 8 m/s, riktning NO - S - NV. Lotsning av LNG-fartyg under 10 m/s.",

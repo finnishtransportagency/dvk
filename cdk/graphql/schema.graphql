@@ -243,7 +243,6 @@ type FairwayCard {
   speedLimit: Text
   visibility: Text
   vesselRecommendation: Text
-  seaLevel: Text
   mareographs: [Mareograph!]
   windRecommendation: Text
   trafficService: TrafficService

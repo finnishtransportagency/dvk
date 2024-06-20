@@ -33,11 +33,6 @@
     "sv": "Vädret vid kuststationerna: Karleby Tankar, Kalajoki Ulkokalla, Brahestad Nahkiainen.",
     "en": "Marine weather observations: Kokkola Tankar, Kalajoki Ulkokalla, Raahe Nahkiainen."
   },
-  "seaLevel": {
-    "fi": "Raahen mareografi.",
-    "sv": "Brahestad mareograf.",
-    "en": "Raahe mareograph."
-  },
   "windRecommendation": {
     "fi": "Tuulirajat yli 150m aluksille enintään 8-10m/s tuulen suunnan mukaan. Luoteen ja koillisen väliset tuulet mereltä satamaan päin kuljettaessa voivat olla aluksen suunnan ja nopeuden hallinnan kannalta haasteellisia.",
     "sv": "Vindbegränsning är max 8-10 m/s för fartyg över 150 m, med beaktande av vindriktningen. Vindar mellan NV och NO från havet mot hamnen kommande fartyg kan vara utmanande för att hålla fartygets riktning och fart.",
