@@ -18,7 +18,7 @@ import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
 import { getMarineWarningStyle } from './layerStyles/marineWarningStyles';
 import { getMareographStyle } from './layerStyles/mareographStyles';
-import { getObservationStyle } from './layerStyles/observationStyles';
+import { getObservationStyle, getSelectedFairwayCardObservationStyle } from './layerStyles/observationStyles';
 import { getBuoyStyle } from './layerStyles/buoyStyles';
 import { getFairwayWidthStyle } from './layerStyles/fairwayWidthStyles';
 import { getAisVesselLayerStyle } from './layerStyles/aisStyles';
@@ -36,6 +36,7 @@ import {
   getFairwayCardPilotageLimits,
   getFairwayCardPilotPlaces,
   getFairwayCardSafetyEquipmentFaults,
+  getFairwayCardObservations,
 } from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
@@ -131,6 +132,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getPilotageLimitStyle(feature, resolution, highlighted);
     case 'pilotroute':
       return getPilotRouteStyle(feature, resolution, highlighted);
+    case 'observation':
+      return getSelectedFairwayCardObservationStyle(feature);
     default:
       return undefined;
   }
@@ -593,7 +596,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'observation',
     renderBuffer: 50,
-    style: (feature) => getObservationStyle(!!feature.get('hoverStyle')),
+    style: getObservationStyle,
     declutter: true,
     zIndex: 412,
   });
@@ -718,9 +721,10 @@ export function unsetSelectedFairwayCard() {
         break;
     }
   }
-  selectedFairwayCardSource.getFeatures().forEach((f) => f.set('selected', false, true));
+  selectedFairwayCardSource.getFeatures().forEach((f) => f.set('selected', false));
   selectedFairwayCardSource.clear();
   quaySource.clear();
+  dvkMap.getFeatureLayer('selectedfairwaycard').setVisible(false);
 }
 
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON, showDepth: boolean) {
@@ -822,9 +826,17 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
     const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
     const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
+    const observationSource = dvkMap.getVectorSource('observation');
     unsetSelectedFairwayCard();
 
     const fairwayFeatures: Feature[] = [];
+
+    const observationFeatures = observationSource.getFeatures();
+    const observations = getFairwayCardObservations(fairwayCard, observationFeatures);
+    for (const observation of observations) {
+      fairwayFeatures.push(observation);
+    }
+
     for (const fairway of fairwayCard?.fairways || []) {
       for (const line of fairway.navigationLines ?? []) {
         let feature = line12Source.getFeatureById(line.id) as Feature<Geometry>;
@@ -947,7 +959,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
 
     const extent = olExtent.createEmpty();
     // pilot excludes pilot, pilotagelimit and pilotroute
-    const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot'];
+    const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot', 'observation'];
     for (const feature of fairwayFeatures) {
       const dataSource = feature.getProperties().dataSource;
       const isWrongDataSource = excludedDatasources.some((source) => dataSource.includes(source));
@@ -993,6 +1005,16 @@ export function setSelectedFairwayArea(id?: number | string) {
     f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && f.getId() === id);
   }
   selectedFairwayCardSource.dispatchEvent('change');
+}
+
+export function setSelectedObservation(id?: number | string) {
+  const dvkMap = getMap();
+  const observationSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  for (const f of observationSource.getFeatures()) {
+    f.set('hoverStyle', id && f.getId() === id);
+  }
+  observationSource.dispatchEvent('change');
 }
 
 function highlightFeatures(source: VectorSource, featureTypes: string[], id: string | number, idProp: string, selected: boolean) {
