@@ -19,6 +19,10 @@ const pilotRoutesUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/pilotroutes'
   : globalThis.location.origin + '/api/pilotroutes';
 
+const dirwaysUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/dirways'
+  : globalThis.location.origin + '/api/dirways';
+
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL
   ? `https://${import.meta.env.VITE_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
@@ -79,6 +83,7 @@ export type FeatureDataId =
   | 'pilot'
   | 'pilotageareaborder'
   | 'pilotagelimit'
+  | 'dirway'
   | 'name';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
@@ -254,6 +259,12 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
   },
   {
+    id: 'dirway',
+    url: new URL(dirwaysUrl),
+    staticUrl: new URL(staticUrl + '/dirways.json.gz'),
+    persist: true,
+  },
+  {
     id: 'name',
     url: new URL(staticUrl + '/names.json.gz'),
     staticUrl: new URL(staticUrl + '/names.json.gz'),
@@ -261,7 +272,16 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning' | 'ais' | 'piloting';
+export type FeatureDataMainLayerId =
+  | 'merchant'
+  | 'othertraffic'
+  | 'conditions'
+  | 'vts'
+  | 'depths'
+  | 'marinewarning'
+  | 'ais'
+  | 'piloting'
+  | 'wintertraffic';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -281,7 +301,6 @@ export type FeatureDataLayerId =
   | 'name'
   | 'boardline12'
   | 'mareograph'
-  | 'ice'
   | 'observation'
   | 'buoy'
   | 'vtsline'
@@ -302,7 +321,9 @@ export type FeatureDataLayerId =
   | 'pilot'
   | 'pilotroute'
   | 'pilotageareaborder'
-  | 'pilotagelimit';
+  | 'pilotagelimit'
+  | 'dirway'
+  | 'ice';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
@@ -370,6 +391,7 @@ export const MAP: MapType = {
     { id: 'pilotroute', offlineSupport: true, localizedStyle: false },
     { id: 'pilotageareaborder', offlineSupport: true, localizedStyle: false },
     { id: 'pilotagelimit', offlineSupport: true, localizedStyle: false },
+    { id: 'dirway', offlineSupport: true, localizedStyle: false },
   ],
 };
 

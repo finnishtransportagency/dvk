@@ -51,7 +51,6 @@
           "conditions": "Conditions",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",
-          "ice": "Ice map",
           "buoys": "Wave buoys",
           "vts": "VTS",
           "vtsline": "VTS areas",
@@ -78,6 +77,9 @@
           "aisVesselPleasureCraft": "Pleasure crafts",
           "aisUnspecified": "Unspecified vessels",
           "aisShowPredictor": "Velocity vectors",
+          "winterTraffic": "[en] Talvimerenkulku",
+          "dirway": "[en] Jääväylät",
+          "ice": "Ice map",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -466,11 +468,15 @@
       "aisvesselpleasurecraft": "Pleasure craft",
       "aisunspecified": "Unspecified vessel"
     },
+    "dirway": {
+      "points": "[en] Reittipisteet"
+    },
     "featureList": {
       "multipleFeatures": "Multiple items to select",
       "featureType": {
         "area": "Fairway area",
         "buoy": "Wave buoy",
+        "dirway": "[en] Jääväylä",
         "calculated": "Calculated sea level",
         "harbor": "Harbour",
         "line": "Navigation line",

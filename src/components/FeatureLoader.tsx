@@ -434,3 +434,7 @@ export function useVaylaWaterAreaData() {
 export function usePilotageAreaBorderLayer() {
   return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
 }
+
+export function useDirwayLayer() {
+  return useDataLayer('dirway', 'dirway');
+}

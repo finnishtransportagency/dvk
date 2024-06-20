@@ -21,6 +21,7 @@ import { getNavigationLine12Style } from '../layerStyles/navigationLine12Styles'
 import { getNavigationLine3456Style } from '../layerStyles/navigationLine3456Styles';
 import { getQuayStyle } from '../layerStyles/quayStyles';
 import { getHarborStyle } from '../layerStyles/harborStyles';
+import { getDirwayStyle } from '../layerStyles/dirwayStyles';
 
 function getLayers() {
   return [
@@ -53,6 +54,7 @@ function getLayers() {
     dvkMap.getFeatureLayer('aisvesselpleasurecraft'),
     dvkMap.getFeatureLayer('aisvesseltanker'),
     dvkMap.getFeatureLayer('aisvesseltugandspecialcraft'),
+    dvkMap.getFeatureLayer('dirway'),
   ];
 }
 
@@ -100,6 +102,8 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
       return getCircleStyle(feature, resolution);
     case 'aisvessel':
       return getAisVesselLayerStyle(dataSource, feature, resolution, true);
+    case 'dirway':
+      return getDirwayStyle(feature, resolution, true);
     default:
       return undefined;
   }

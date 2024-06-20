@@ -51,7 +51,6 @@
           "conditions": "Olosuhteet",
           "seaLevel": "Merivedenkorkeus",
           "weatherStation": "Säähavaintoasemat",
-          "ice": "Jääkartta",
           "buoys": "Aaltopoijut",
           "vts": "VTS",
           "vtsline": "VTS-alueet",
@@ -78,6 +77,9 @@
           "aisVesselPleasureCraft": "Huviveneet",
           "aisUnspecified": "Määrittelemättömät alukset",
           "aisShowPredictor": "Nopeusvektorit",
+          "winterTraffic": "Talvimerenkulku",
+          "dirway": "Jääväylät",
+          "ice": "Jääkartta",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
@@ -466,11 +468,15 @@
       "aisvesselpleasurecraft": "Huvivene",
       "aisunspecified": "Määrittelemätön alus"
     },
+    "dirway": {
+      "points": "Reittipisteet"
+    },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",
       "featureType": {
         "area": "Väyläalue",
         "buoy": "Aaltopoiju",
+        "dirway": "Jääväylä",
         "calculated": "Laskennallinen vedenkorkeus",
         "harbor": "Satama",
         "line": "Navigointilinja",
