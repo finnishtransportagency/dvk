@@ -43,9 +43,21 @@ function useDataLayer(
         const format = new GeoJSON();
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);
-        source.clear();
-        features.forEach((f) => f.set('dataSource', featureLayerId, true));
-        source.addFeatures(features);
+
+        features.forEach((f) => {
+          const id = f.getId();
+          const sourceFeat = id ? source.getFeatureById(id) : null;
+          if (sourceFeat) {
+            sourceFeat.setProperties(f.getProperties());
+          } else {
+            f.set('dataSource', featureLayerId, true);
+            source.addFeature(f);
+          }
+        });
+        const featureIds = features.map((f) => f.getId());
+        const featuresToRemove = source.getFeatures().filter((f) => !featureIds.includes(f.getId()));
+        source.removeFeatures(featuresToRemove);
+
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
       setReady(true);
