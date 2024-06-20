@@ -51,7 +51,6 @@
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
           "weatherStation": "Kustväderstationerna",
-          "ice": "Iskarta",
           "buoys": "Vågbojar",
           "vts": "VTS",
           "vtsline": "VTS-områden",
@@ -78,6 +77,9 @@
           "aisVesselPleasureCraft": "Fritidsbåtar",
           "aisUnspecified": "Odefinierade fartyg",
           "aisShowPredictor": "Fartvektor",
+          "winterTraffic": "[sv] Talvimerenkulku",
+          "dirway": "[sv] Jääväylät",
+          "ice": "Iskarta",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
@@ -468,11 +470,15 @@
       "aisvesselpleasurecraft": "Fritidsbåt",
       "aisunspecified": "Odefinierade fartyg"
     },
+    "dirway": {
+      "points": "[sv] Reittipisteet"
+    },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",
       "featureType": {
         "area": "Farledsområde",
         "buoy": "Vågboj",
+        "dirway": "[sv] Jääväylä",
         "calculated": "Beräknat vattenstånd",
         "harbor": "Hamn",
         "line": "Navigationslinje",

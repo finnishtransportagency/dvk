@@ -7,6 +7,20 @@ import { Position } from '@turf/helpers';
 export const DIRWAY_PATH = 'dirway';
 export const DIRWAY_POINT_PATH = 'dirwaypoint';
 
+type Point = {
+  orderNumber: number;
+  coordinates: number[];
+};
+
+function mapPoints(dirwayPoints: DirwayPoint[]): Point[] {
+  return dirwayPoints.map((p) => {
+    return {
+      orderNumber: p.order_num,
+      coordinates: [p.longitude, p.latitude],
+    };
+  });
+}
+
 function addDirwayFeatures(features: Feature<Geometry, GeoJsonProperties>[], dirwayPoints: DirwayPoint[], dirways: Dirway[]) {
   const dirwayMap = new Map<string, DirwayPoint[]>();
   for (const p of dirwayPoints) {
@@ -18,12 +32,14 @@ function addDirwayFeatures(features: Feature<Geometry, GeoJsonProperties>[], dir
     const id = points[0].dirway_id;
     const coordinates = points.sort((a, b) => a.order_num - b.order_num).map((p) => [p.longitude, p.latitude] as Position);
     const dirway = dirways.filter((d) => !d.deleted).find((d) => d.id === id);
+    const pointObjects = mapPoints(points);
 
     const properties = {
       id: id,
       name: dirway?.name,
       description: dirway?.description,
       updated: dirway?.change_time,
+      points: pointObjects,
       featureType: 'dirway',
     };
 
