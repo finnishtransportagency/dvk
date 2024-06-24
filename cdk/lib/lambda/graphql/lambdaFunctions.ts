@@ -5,6 +5,7 @@ interface BackendLambda {
   fieldName: string; // this should correlate to graphql schema field name
   typeName: string;
   useVpc?: boolean;
+  useCaching?: boolean; // used to add per resolver caching as needed
 }
 
 const lambdaFunctions: BackendLambda[] = [
@@ -13,6 +14,7 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'Query',
     fieldName: 'fairwayCards',
     useVpc: true,
+    useCaching: true,
   },
   {
     entry: path.join(__dirname, 'query/fairwayCard-handler.ts'),
