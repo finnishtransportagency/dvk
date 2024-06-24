@@ -399,3 +399,29 @@ export type RtzData = {
   rtz: string;
   reittipisteet: Array<RtzReittipiste>;
 };
+
+export type IBNetApiResponse = {
+  rvEndpoints: string[];
+  toRv: string;
+};
+
+export type Dirway = {
+  id: string;
+  name: string;
+  description: string;
+  rv: number | null;
+  change_time: string;
+  deleted?: boolean | null;
+};
+
+export type DirwayPoint = {
+  id: string;
+  dirway_id: string;
+  order_num: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  rv: number | null;
+  change_time: string;
+  deleted?: boolean | null;
+};

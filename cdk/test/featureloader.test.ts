@@ -1,7 +1,7 @@
 import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/api/featureloader-handler';
-import { mockALBEvent } from './mocks';
+import { mockFeaturesALBEvent } from './mocks';
 import { S3Client } from '@aws-sdk/client-s3';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
@@ -466,7 +466,7 @@ it('should get navigation lines from api', async () => {
   ddbMock.on(ScanCommand).resolves({
     Items: [card],
   });
-  const response = await handler(mockALBEvent('line', '1,2'));
+  const response = await handler(mockFeaturesALBEvent('line', '1,2'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(1);
@@ -478,12 +478,12 @@ it('should get internal server error when api call fails', async () => {
     Items: [card],
   });
   throwError = true;
-  const response = await handler(mockALBEvent('line', '1,2'));
+  const response = await handler(mockFeaturesALBEvent('line', '1,2'));
   expect(response.statusCode).toBe(503);
 });
 
 it('should get bad request when invalid type', async () => {
-  const response = await handler(mockALBEvent('invalid', '1,2'));
+  const response = await handler(mockFeaturesALBEvent('invalid', '1,2'));
   expect(response.statusCode).toBe(400);
 });
 
@@ -491,7 +491,7 @@ it('should get areas from api', async () => {
   ddbMock.on(ScanCommand).resolves({
     Items: [],
   });
-  const response = await handler(mockALBEvent('area', '1,2'));
+  const response = await handler(mockFeaturesALBEvent('area', '1,2'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(1);
@@ -499,7 +499,7 @@ it('should get areas from api', async () => {
 });
 
 it('should get warnings always from api', async () => {
-  const response = await handler(mockALBEvent('marinewarning'));
+  const response = await handler(mockFeaturesALBEvent('marinewarning'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(2);
@@ -507,7 +507,7 @@ it('should get warnings always from api', async () => {
 });
 
 it('should get vts lines from api', async () => {
-  const response = await handler(mockALBEvent('vtsline'));
+  const response = await handler(mockFeaturesALBEvent('vtsline'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(1);
@@ -516,7 +516,7 @@ it('should get vts lines from api', async () => {
 
 it('should get harbors from DynamoDB', async () => {
   ddbMock.on(ScanCommand, { TableName: 'Harbor-mock' }).resolves({ Items: [harbor, harbor2] });
-  const response = await handler(mockALBEvent('harbor'));
+  const response = await handler(mockFeaturesALBEvent('harbor'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(2);
@@ -524,7 +524,7 @@ it('should get harbors from DynamoDB', async () => {
 });
 
 it('should get mareographs from api', async () => {
-  const response = await handler(mockALBEvent('mareograph'));
+  const response = await handler(mockFeaturesALBEvent('mareograph'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(3);
@@ -532,7 +532,7 @@ it('should get mareographs from api', async () => {
 });
 
 it('should get buoys from api', async () => {
-  const response = await handler(mockALBEvent('buoy'));
+  const response = await handler(mockFeaturesALBEvent('buoy'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(3);
@@ -540,21 +540,21 @@ it('should get buoys from api', async () => {
 });
 
 it('should return right cache headers for buoy', async () => {
-  const response = await handler(mockALBEvent('buoy'));
+  const response = await handler(mockFeaturesALBEvent('buoy'));
   assert(response.body);
   const headers = getFeatureCacheControlHeaders('buoy')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });
 
 it('should return right cache headers for mareograph', async () => {
-  const response = await handler(mockALBEvent('mareograph'));
+  const response = await handler(mockFeaturesALBEvent('mareograph'));
   assert(response.body);
   const headers = getFeatureCacheControlHeaders('mareograph')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });
 
 it('should return right cache headers for observation', async () => {
-  const response = await handler(mockALBEvent('observation'));
+  const response = await handler(mockFeaturesALBEvent('observation'));
   assert(response.body);
   const headers = getFeatureCacheControlHeaders('observation')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
@@ -563,15 +563,15 @@ it('should return right cache headers for observation', async () => {
 it('should return same cache headers for various features of non buoy/mareograph/observation', async () => {
   const featureCacheHeaders = getFeatureCacheControlHeaders('circle')?.['Cache-Control'];
 
-  const vtsResponse = await handler(mockALBEvent('vtsline'));
+  const vtsResponse = await handler(mockFeaturesALBEvent('vtsline'));
   assert(vtsResponse.body);
   expect(vtsResponse?.multiValueHeaders?.['Cache-Control']).toStrictEqual(featureCacheHeaders);
 
-  const areaResponse = await handler(mockALBEvent('area', '1,2'));
+  const areaResponse = await handler(mockFeaturesALBEvent('area', '1,2'));
   assert(areaResponse.body);
   expect(areaResponse?.multiValueHeaders?.['Cache-Control']).toStrictEqual(featureCacheHeaders);
 
-  const linesResponse = await handler(mockALBEvent('line', '1,2'));
+  const linesResponse = await handler(mockFeaturesALBEvent('line', '1,2'));
   assert(linesResponse.body);
   expect(linesResponse?.multiValueHeaders?.['Cache-Control']).toStrictEqual(featureCacheHeaders);
 

@@ -224,3 +224,17 @@ export type AisFeaturePathPredictorProperties = {
   vesselLength?: number;
   vesselWidth?: number;
 };
+
+type DirwayPoint = {
+  orderNumber: number;
+  coordinates: number[];
+};
+
+export type DirwayFeatureProperties = {
+  featureType: 'dirway';
+  id: string;
+  name: string;
+  description: string;
+  updated: string;
+  points: DirwayPoint[];
+};

@@ -206,20 +206,6 @@ export function useMareographLayer() {
   return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
 }
 
-export function useObservationLayer() {
-  const [initialized, setInitialized] = useState(false);
-  const [visible, setVisible] = useState(false);
-  if (!initialized) {
-    const layer = dvkMap.getFeatureLayer('observation');
-    setVisible(layer.isVisible());
-    layer.on('change:visible', () => {
-      setVisible(layer.isVisible());
-    });
-    setInitialized(true);
-  }
-  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10, visible);
-}
-
 export function useBuoyLayer() {
   const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -433,4 +419,8 @@ export function useVaylaWaterAreaData() {
 
 export function usePilotageAreaBorderLayer() {
   return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
+}
+
+export function useDirwayLayer() {
+  return useDataLayer('dirway', 'dirway');
 }

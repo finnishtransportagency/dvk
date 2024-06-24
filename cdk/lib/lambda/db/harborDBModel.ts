@@ -61,11 +61,47 @@ class HarborDBModel {
 
   expires?: Maybe<number>;
 
+  private static getLatestSortKey() {
+    return 'v0_latest';
+  }
+
+  private static getPublicSortKey() {
+    return 'v0_public';
+  }
+
   // at the moment this gives any latest version, should be separate function for latest public
   static async get(id: string, version: string = 'v0_latest'): Promise<HarborDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
-    const harbor = response.Item as HarborDBModel | undefined;
+    const harbor = response?.Item as HarborDBModel | undefined;
     log.debug('Harbor name: %s', harbor?.name?.fi);
+    return harbor;
+  }
+
+  static async getVersion(id: string, version: string = 'v1'): Promise<HarborDBModel | undefined> {
+    // v0 always the latest version
+    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
+    const harbor = response?.Item as HarborDBModel | undefined;
+    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    return harbor;
+  }
+
+  static async getLatest(id: string): Promise<HarborDBModel | undefined> {
+    // v0 always the public version
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: this.getLatestSortKey() } })
+    );
+    const harbor = response?.Item as HarborDBModel | undefined;
+    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    return harbor;
+  }
+
+  static async getPublic(id: string): Promise<HarborDBModel | undefined> {
+    // v0 always the public version
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: this.getPublicSortKey() } })
+    );
+    const harbor = response?.Item as HarborDBModel | undefined;
+    log.debug('Harbor card name: %s', harbor?.name?.fi);
     return harbor;
   }
 
@@ -75,10 +111,10 @@ class HarborDBModel {
         TableName: getHarborTableName(),
         FilterExpression: '#version = :vVersion',
         ExpressionAttributeNames: { '#version': 'version' },
-        ExpressionAttributeValues: { ':vVersion': 'v0_latest' },
+        ExpressionAttributeValues: { ':vVersion': this.getLatestSortKey() },
       })
     );
-    const harbors = response.Items as HarborDBModel[] | undefined;
+    const harbors = response?.Items as HarborDBModel[] | undefined;
     if (harbors) {
       log.debug('%d harbor(s) found', harbors.length);
       return harbors;
@@ -93,10 +129,10 @@ class HarborDBModel {
         TableName: getHarborTableName(),
         FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
         ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
-        ExpressionAttributeValues: { ':vVersion': 'v0_public' },
+        ExpressionAttributeValues: { ':vVersion': this.getPublicSortKey() },
       })
     );
-    const harbors = response.Items as HarborDBModel[] | undefined;
+    const harbors = response?.Items as HarborDBModel[] | undefined;
     if (harbors) {
       log.debug('%d public harbor(s) found', harbors.length);
       return harbors;

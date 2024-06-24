@@ -179,6 +179,24 @@ query fairwayCardById($id: String!, $version: String!) {
   }
 }
 
+query fairwayCardVersionById($id: String!, $version: String!) {
+  fairwayCardVersion(id: $id, version: $version) {
+    ...FairwayCardById
+  }
+}
+
+query fairwayCardLatestById($id: String!) {
+  fairwayCardLatest(id: $id) {
+    ...FairwayCardById
+  }
+}
+
+query fairwayCardPublicById($id: String!) {
+  fairwayCardPublic(id: $id) {
+    ...FairwayCardById
+  }
+}
+
 mutation saveFairwayCard($card: FairwayCardInput!) {
   saveFairwayCard(card: $card) {
     ...FairwayCardById

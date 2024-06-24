@@ -22,7 +22,6 @@ import {
   useBoaterWarningLayer,
   useBoardLine12Layer,
   useMareographLayer,
-  useObservationLayer,
   useBuoyLayer,
   DvkLayerState,
   useVtsLineLayer,
@@ -34,7 +33,9 @@ import {
   useVaylaWaterAreaData,
   useNameLayer,
   usePilotageAreaBorderLayer,
+  useDirwayLayer,
 } from './components/FeatureLoader';
+import { useObservationLayer, useObservationFeatures } from './components/ObservationFeatureLoader';
 import {
   useAisVesselCargoLayer,
   useAisVesselTankerLayer,
@@ -86,7 +87,6 @@ import SquatCalculatorPage from './pages/SquatCalculatorPage';
 import HarborPreviewPage from './pages/HarborPreviewPage';
 import PilotRoutePage from './pages/PilotRoutePage';
 import { useHarborLayer } from './components/HarborFeatureLoader';
-import { useObservationFeatures } from './components/ObservationFeatureLoader';
 
 setupIonicReact({
   mode: 'md',
@@ -206,6 +206,7 @@ const DvkIonApp: React.FC = () => {
   useVaylaWaterAreaData();
   usePilotageLimitLayer();
   usePilotageAreaBorderLayer();
+  useDirwayLayer();
   /* Initialize observation data for offline use, needed in fairway cards */
   useObservationFeatures();
 

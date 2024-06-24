@@ -70,6 +70,24 @@ query harbourById($id: String!, $version: String!) {
   }
 }
 
+query harbourVersionById($id: String!, $version: String!) {
+  harborVersion(id: $id, version: $version) {
+    ...HarborById
+  }
+}
+
+query harbourLatestById($id: String!) {
+  harborLatest(id: $id) {
+    ...HarborById
+  }
+}
+
+query harbourPublicById($id: String!) {
+  harborPublic(id: $id) {
+    ...HarborById
+  }
+}
+
 mutation saveHarbor($harbor: HarborInput!) {
   saveHarbor(harbor: $harbor) {
     ...HarborById

@@ -1,0 +1,166 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should get dirways from api 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            21.308,
+            64.1058,
+          ],
+          [
+            21.3959,
+            64.0758,
+          ],
+          [
+            21.5002,
+            64.119,
+          ],
+          [
+            21.3712,
+            64.1813,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": "dirway-5_36000001",
+      "properties": {
+        "description": "",
+        "featureType": "dirway",
+        "id": "dirway-5_36000001",
+        "name": "IBNEXT Center 0117 13:59:35",
+        "points": [
+          {
+            "coordinates": [
+              21.308,
+              64.1058,
+            ],
+            "orderNumber": 0,
+          },
+          {
+            "coordinates": [
+              21.3959,
+              64.0758,
+            ],
+            "orderNumber": 1,
+          },
+          {
+            "coordinates": [
+              21.5002,
+              64.119,
+            ],
+            "orderNumber": 2,
+          },
+          {
+            "coordinates": [
+              21.3712,
+              64.1813,
+            ],
+            "orderNumber": 3,
+          },
+        ],
+        "updated": "2024-01-17T11:59:39.710Z",
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            20.8039,
+            63.5254,
+          ],
+          [
+            21.3041,
+            63.5645,
+          ],
+          [
+            21.7494,
+            63.7474,
+          ],
+          [
+            21.7054,
+            64.1216,
+          ],
+          [
+            21.9747,
+            64.4529,
+          ],
+          [
+            21.9253,
+            64.7053,
+          ],
+          [
+            22.266,
+            65.1338,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": "dirway-771_36000005",
+      "properties": {
+        "description": "tt",
+        "featureType": "dirway",
+        "id": "dirway-771_36000005",
+        "name": "Finnish icebreaker 1 0418 12:24:44",
+        "points": [
+          {
+            "coordinates": [
+              20.8039,
+              63.5254,
+            ],
+            "orderNumber": 0,
+          },
+          {
+            "coordinates": [
+              21.3041,
+              63.5645,
+            ],
+            "orderNumber": 1,
+          },
+          {
+            "coordinates": [
+              21.7494,
+              63.7474,
+            ],
+            "orderNumber": 2,
+          },
+          {
+            "coordinates": [
+              21.7054,
+              64.1216,
+            ],
+            "orderNumber": 3,
+          },
+          {
+            "coordinates": [
+              21.9747,
+              64.4529,
+            ],
+            "orderNumber": 4,
+          },
+          {
+            "coordinates": [
+              21.9253,
+              64.7053,
+            ],
+            "orderNumber": 5,
+          },
+          {
+            "coordinates": [
+              22.266,
+              65.1338,
+            ],
+            "orderNumber": 6,
+          },
+        ],
+        "updated": "2024-04-18T09:25:31.446Z",
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;
