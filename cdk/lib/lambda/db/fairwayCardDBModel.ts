@@ -152,13 +152,49 @@ class FairwayCardDBModel {
 
   temporaryNotifications?: Maybe<TemporaryNotification[]>;
 
-  // at the moment this gives any latest version, should be separate function for latest public
+  private static getLatestSortKey() {
+    return 'v0_latest';
+  }
+
+  private static getPublicSortKey() {
+    return 'v0_public';
+  }
+
+  // this can be deleted when structure changed to use getVersion, getLatest and getPublic
   static async get(id: string, version: string = 'v0_latest'): Promise<FairwayCardDBModel | undefined> {
-    // v0 always the latest
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
     );
-    const fairwayCard = response.Item as FairwayCardDBModel | undefined;
+    const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
+    log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
+    return fairwayCard;
+  }
+
+  static async getVersion(id: string, version: string = 'v1'): Promise<FairwayCardDBModel | undefined> {
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: version } })
+    );
+    const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
+    log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
+    return fairwayCard;
+  }
+
+  static async getLatest(id: string): Promise<FairwayCardDBModel | undefined> {
+    // v0 always the latest
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: this.getLatestSortKey() } })
+    );
+    const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
+    log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
+    return fairwayCard;
+  }
+
+  static async getPublic(id: string): Promise<FairwayCardDBModel | undefined> {
+    // v0 always the public version
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getFairwayCardTableName(), Key: { id: id, version: this.getPublicSortKey() } })
+    );
+    const fairwayCard = response?.Item as FairwayCardDBModel | undefined;
     log.debug('Fairway card name: %s', fairwayCard?.name?.fi);
     return fairwayCard;
   }
@@ -169,10 +205,10 @@ class FairwayCardDBModel {
         TableName: getFairwayCardTableName(),
         FilterExpression: '#version = :vVersion',
         ExpressionAttributeNames: { '#version': 'version' },
-        ExpressionAttributeValues: { ':vVersion': 'v0_latest' },
+        ExpressionAttributeValues: { ':vVersion': this.getLatestSortKey() },
       })
     );
-    const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
+    const fairwayCards = response?.Items as FairwayCardDBModel[] | undefined;
     if (fairwayCards) {
       log.debug('%d fairway card(s) found', fairwayCards.length);
       return fairwayCards;
@@ -187,10 +223,10 @@ class FairwayCardDBModel {
         TableName: getFairwayCardTableName(),
         FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
         ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
-        ExpressionAttributeValues: { ':vVersion': 'v0_public' },
+        ExpressionAttributeValues: { ':vVersion': this.getPublicSortKey() },
       })
     );
-    const fairwayCards = response.Items as FairwayCardDBModel[] | undefined;
+    const fairwayCards = response?.Items as FairwayCardDBModel[] | undefined;
     if (fairwayCards) {
       log.debug('%d public fairway card(s) found', fairwayCards.length);
       return fairwayCards;

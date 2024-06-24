@@ -188,7 +188,7 @@ export function mapQuayDepth(text: Maybe<string> | undefined) {
 
 export function mapVersion(text?: Maybe<string>) {
   if (text && text.trim().length > 0) {
-    const regex = /^v\d+(_(latest|public))?$/
+    const regex = /^v\d+(_(latest|public))?$/;
     const passedString = regex.exec(text);
     if (passedString && passedString[0].length === text.length) {
       return text;
