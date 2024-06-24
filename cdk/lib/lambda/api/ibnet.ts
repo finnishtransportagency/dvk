@@ -1,8 +1,7 @@
-import { Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
+import { Position, Feature, FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 import { Dirway, DirwayPoint, IBNetApiResponse } from './apiModels';
 import { fetchIBNetApi } from './axios';
 import { log } from '../logger';
-import { Position } from '@turf/helpers';
 
 export const DIRWAY_PATH = 'dirway';
 export const DIRWAY_POINT_PATH = 'dirwaypoint';
