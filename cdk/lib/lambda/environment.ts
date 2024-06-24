@@ -157,6 +157,10 @@ export async function getIlmanetPassword() {
   return readParameterForEnv('IlmanetPassword');
 }
 
+export async function getIBNetApiUrl() {
+  return readParameterForEnv('IBNetApiUrl');
+}
+
 export async function getWeatherHeaders(): Promise<Record<string, string>> {
   return {
     'x-api-key': await getWeatherSOAApiKey(),

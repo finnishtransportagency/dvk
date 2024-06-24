@@ -4,7 +4,7 @@ import { gunzip, gzip } from 'zlib';
 import { Readable } from 'stream';
 import { sdkStreamMixin } from '@smithy/util-stream';
 import { handler } from '../lib/lambda/api/pilotroute-handler';
-import { mockPilotRoutesALBEvent } from './mocks';
+import { mockALBEvent } from './mocks';
 import assert from 'assert';
 import pilotRoutesJson from './data/pilotroutes.json';
 import { FeatureCollection } from 'geojson';
@@ -389,7 +389,7 @@ it('should get pilotroutes from cache', async () => {
     Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)) as StreamingBlobPayloadOutputTypes,
     ExpiresString: expires.toString(),
   });
-  const response = await handler(mockPilotRoutesALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(2);
@@ -403,7 +403,7 @@ it('should get pilotroutes from api when cache expired', async () => {
     Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)) as StreamingBlobPayloadOutputTypes,
     ExpiresString: expires.toString(),
   });
-  const response = await handler(mockPilotRoutesALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(3);
@@ -418,7 +418,7 @@ it('should get pilotroutes from cache when api call fails', async () => {
     ExpiresString: expires.toString(),
   });
   throwError = true;
-  const response = await handler(mockPilotRoutesALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(2);
@@ -427,6 +427,6 @@ it('should get pilotroutes from cache when api call fails', async () => {
 
 it('should get internal server error when api call fails and no cached response', async () => {
   throwError = true;
-  const response = await handler(mockPilotRoutesALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   expect(response.statusCode).toBe(503);
 });

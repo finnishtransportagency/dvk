@@ -5,10 +5,9 @@ import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { Status } from '../graphql/generated';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
 
-
 const client = getDynamoDBDocumentClient();
 
-// migrate data from old table to new table and add first version to new items 
+// migrate data from old table to new table and add first version to new items
 // (v0_latest being the latest any version and v0_currentPublic being the latest public version)
 async function migrateData(oldTableName: string, newTableName: string, fairwayCards: boolean) {
   const oldTable = await client.send(new ScanCommand({ TableName: oldTableName }));
@@ -64,7 +63,7 @@ async function migrateData(oldTableName: string, newTableName: string, fairwayCa
   console.log('\nOld table items handled: ' + itemsHandled);
   console.log('Items created/migrated to new table: ' + itemsCreated + '\n');
   // every entry in old table should equal to 3 entries in new one, hence the check itemsHandled * 3 === itemsCreated
-  console.log('\n' + (itemsHandled * 3 === itemsCreated) ? 'EVERYTHING SHOULD BE OK!\n' : 'SOMETHING MIGHT\'VE GONE WRONG\n');
+  console.log('\n' + (itemsHandled * 3 === itemsCreated) ? 'EVERYTHING SHOULD BE OK!\n' : 'SOMETHING MIGHT HAVE GONE WRONG\n');
 }
 
 async function main() {

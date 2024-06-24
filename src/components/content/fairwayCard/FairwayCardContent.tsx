@@ -44,8 +44,8 @@ import infoIcon from '../../../theme/img/info.svg';
 import { compareAsc } from 'date-fns';
 import { useObservationFeatures } from '../../ObservationFeatureLoader';
 import { ObservationInfo } from './ObservationInfo';
-import { SpecialAreaInfo } from './SpecialAreaInfo';
 import MarkdownParagraph from '../MarkdownParagraph';
+import { AreaInfoByType } from './AreaInfoByType';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -288,6 +288,8 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <h5>{t('commonInformation')}</h5>
               <GeneralInfo data={fairwayCard?.fairways} />
               <ProhibitionInfo data={fairwayCard?.fairways} />
+              {/* 15 === prohibition area typecode*/}
+              <AreaInfoByType data={fairwayCard?.fairways} typeCode={15} />
             </IonText>
             <IonText>
               <h5>{t('speedLimit')}</h5>
@@ -296,7 +298,8 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <IonText>
               <h5>{t('anchorage')}</h5>
               <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
-              <SpecialAreaInfo data={fairwayCard?.fairways} />
+              {/* 2 === special area typecode*/}
+              <AreaInfoByType data={fairwayCard?.fairways} typeCode={2} />
             </IonText>
             <IonText>
               <h5>{t('fairwayAreas')}</h5>

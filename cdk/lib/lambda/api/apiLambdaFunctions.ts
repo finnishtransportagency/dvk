@@ -19,6 +19,14 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     useMonitoring: true,
   },
   {
+    entry: path.join(__dirname, 'dirway-handler.ts'),
+    pathPattern: '/api/dirways',
+    functionName: 'dirways',
+    priority: 12,
+    useVpc: true,
+    useMonitoring: true,
+  },
+  {
     entry: path.join(__dirname, 'aislocations-handler.ts'),
     pathPattern: '/api/aislocations',
     functionName: 'aislocations',
