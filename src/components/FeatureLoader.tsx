@@ -192,20 +192,6 @@ export function useBoardLine12Layer() {
   return useDataLayer('boardline12', 'boardline12');
 }
 
-export function useMareographLayer() {
-  const [initialized, setInitialized] = useState(false);
-  const [visible, setVisible] = useState(false);
-  if (!initialized) {
-    const layer = dvkMap.getFeatureLayer('mareograph');
-    setVisible(layer.isVisible());
-    layer.on('change:visible', () => {
-      setVisible(layer.isVisible());
-    });
-    setInitialized(true);
-  }
-  return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
-}
-
 export function useBuoyLayer() {
   const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);

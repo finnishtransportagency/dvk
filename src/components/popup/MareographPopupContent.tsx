@@ -26,7 +26,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
   };
-  console.log(mareograph);
+
   return (
     <IonGrid className="ion-no-padding">
       <IonRow className="ion-justify-content-between">
