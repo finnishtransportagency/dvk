@@ -6,6 +6,9 @@ schema {
 type Query {
   fairwayCards(status: [Status!]): [FairwayCard!]!
   fairwayCard(id: String!, version: String!): FairwayCard
+  fairwayCardVersion(id: String!, version: String!): FairwayCard
+  fairwayCardLatest(id: String!): FairwayCard
+  fairwayCardPublic(id: String!): FairwayCard
   fairwayCardPreview(id: String!, version: String!): FairwayCard
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
   marineWarnings: [MarineWarning!]!
@@ -13,6 +16,9 @@ type Query {
   pilotPlaces: [PilotPlace!]!
   harbors: [Harbor!]!
   harbor(id: String!, version: String!): Harbor
+  harborVersion(id: String!, version: String!): Harbor
+  harborLatest(id: String!): Harbor
+  harborPublic(id: String!): Harbor
   harborPreview(id: String!, version: String!): Harbor
   fairways: [Fairway!]!
   fairwayCardsAndHarbors: [FairwayCardOrHarbor!]!
