@@ -1,3 +1,8 @@
+/* Disable dynamic font scaling */
+html {
+  --ion-dynamic-font: initial;
+}
+
 /* Common typography */
 ion-text > * {
   color: var(--ion-color-dark);
@@ -262,8 +267,7 @@ ion-button.plainButton.button-disabled {
   margin: 1px;
 }
 
-.searchWrapper ion-input,
-.searchWrapper .sc-ion-input-md-h:not(.legacy-input) {
+.searchWrapper ion-input {
   min-height: 41px;
 }
 
