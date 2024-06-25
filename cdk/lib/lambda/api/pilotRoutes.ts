@@ -6,11 +6,11 @@ import { handleLoaderError, roundGeometry, saveResponseToS3 } from '../util';
 import { RtzData, RtzWaypoint, Coordinate, RtzReittipiste } from './apiModels';
 import { fetchPilotRoutesApi } from './axios';
 import { lineString, bearingToAzimuth } from '@turf/helpers';
-import rhumbBearing from '@turf/rhumb-bearing';
-import transformTranslate from '@turf/transform-translate';
-import lineIntersect from '@turf/line-intersect';
-import nearestPointOnLine from '@turf/nearest-point-on-line';
-import lineArc from '@turf/line-arc';
+import { rhumbBearing as turf_rhumbBearing } from '@turf/rhumb-bearing';
+import { transformTranslate as turf_transformTranslate } from '@turf/transform-translate';
+import { lineIntersect as turf_lineIntersect }from '@turf/line-intersect';
+import { nearestPointOnLine as turf_nearestPointOnLine }from '@turf/nearest-point-on-line';
+import { lineArc as turf_lineArc } from '@turf/line-arc';
 
 type TurningDirection = 'left' | 'right';
 
@@ -30,8 +30,8 @@ function getTurningArc(start: Coordinate, middle: Coordinate, end: Coordinate, t
   turningRadius = turningRadius / 1000;
 
   /* Calculate azimuths before and after turn */
-  const angle1 = bearingToAzimuth(rhumbBearing(start, middle));
-  const angle2 = bearingToAzimuth(rhumbBearing(middle, end));
+  const angle1 = bearingToAzimuth(turf_rhumbBearing(start, middle));
+  const angle2 = bearingToAzimuth(turf_rhumbBearing(middle, end));
 
   /* Do not calculate turning arc if turning less than one degree */
   if (Math.abs(angle1 - angle2) < 1 || Math.abs(angle1 - angle2) > 359) {
@@ -42,10 +42,10 @@ function getTurningArc(start: Coordinate, middle: Coordinate, end: Coordinate, t
   const turningDirection = getTurningDirection(angle1, angle2);
 
   /* Calculate offset lines to the left or rigth side of the legs based on turning direction */
-  const offsetLine1 = transformTranslate(lineString([start, middle]), turningRadius, turningDirection === 'right' ? angle1 + 90 : angle1 - 90);
-  const offsetLine2 = transformTranslate(lineString([middle, end]), turningRadius, turningDirection === 'right' ? angle2 + 90 : angle2 - 90);
+  const offsetLine1 = turf_transformTranslate(lineString([start, middle]), turningRadius, turningDirection === 'right' ? angle1 + 90 : angle1 - 90);
+  const offsetLine2 = turf_transformTranslate(lineString([middle, end]), turningRadius, turningDirection === 'right' ? angle2 + 90 : angle2 - 90);
 
-  const intersections = lineIntersect(offsetLine1, offsetLine2);
+  const intersections = turf_lineIntersect(offsetLine1, offsetLine2);
 
   /* If not exactly one intersection point found, do not return arc */
   if (intersections.features.length !== 1) {
@@ -56,16 +56,16 @@ function getTurningArc(start: Coordinate, middle: Coordinate, end: Coordinate, t
   const center = intersections.features[0].geometry.coordinates;
 
   /* Calculate points where turning circle touches original lines */
-  const touchPoint1 = nearestPointOnLine(lineString([start, middle]), center);
-  const touchPoint2 = nearestPointOnLine(lineString([middle, end]), center);
+  const touchPoint1 = turf_nearestPointOnLine(lineString([start, middle]), center);
+  const touchPoint2 = turf_nearestPointOnLine(lineString([middle, end]), center);
 
   /* If turning circle does not touch either of original lines, do not return arc */
   if (touchPoint1 === undefined || touchPoint2 === undefined) {
     return [middle];
   }
 
-  const touchPoint1Angle = rhumbBearing(center, touchPoint1.geometry);
-  const touchPoint2Angle = rhumbBearing(center, touchPoint2.geometry);
+  const touchPoint1Angle = turf_rhumbBearing(center, touchPoint1.geometry);
+  const touchPoint2Angle = turf_rhumbBearing(center, touchPoint2.geometry);
 
   /* Do not calculate turning arc if touch point angle difference is less than one degrees */
   if (Math.abs(touchPoint1Angle - touchPoint2Angle) < 1 || Math.abs(touchPoint1Angle - touchPoint2Angle) > 359) {
@@ -74,10 +74,10 @@ function getTurningArc(start: Coordinate, middle: Coordinate, end: Coordinate, t
 
   /* Turf lineArc always returns arc coordinates clockwise, so if we are turning left we need to reverse coordinates */
   if (turningDirection === 'right') {
-    const arc = lineArc(center, turningRadius, rhumbBearing(center, touchPoint1.geometry), rhumbBearing(center, touchPoint2.geometry));
+    const arc = turf_lineArc(center, turningRadius, turf_rhumbBearing(center, touchPoint1.geometry), turf_rhumbBearing(center, touchPoint2.geometry));
     return arc.geometry.coordinates as Coordinate[];
   } else {
-    const arc = lineArc(center, turningRadius, rhumbBearing(center, touchPoint2.geometry), rhumbBearing(center, touchPoint1.geometry));
+    const arc = turf_lineArc(center, turningRadius, turf_rhumbBearing(center, touchPoint2.geometry), turf_rhumbBearing(center, touchPoint1.geometry));
     const coordinates = arc.geometry.coordinates;
     coordinates.reverse();
     return coordinates as Coordinate[];

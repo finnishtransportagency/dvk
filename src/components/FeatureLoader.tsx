@@ -1,7 +1,7 @@
 import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
-import booleanDisjoint from '@turf/boolean-disjoint';
+import { booleanDisjoint as turf_booleanDisjoint } from '@turf/boolean-disjoint';
 import { Polygon as turf_Polygon } from 'geojson';
 import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, StaticFeatureDataSources, MAP, StaticFeatureDataId } from '../utils/constants';
 import dvkMap from './DvkMap';
@@ -248,7 +248,7 @@ function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
 
       const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry);
       // Check if fairway area polygone intersects restriction area polygone
-      if (!booleanDisjoint(raGeomPoly as turf_Polygon, aGeomPoly as turf_Polygon)) {
+      if (!turf_booleanDisjoint(raGeomPoly as turf_Polygon, aGeomPoly as turf_Polygon)) {
         const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
         if (oldSpeedLimit) {
           oldSpeedLimit.push(speedLimit);
