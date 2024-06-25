@@ -3,7 +3,15 @@ import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import { booleanDisjoint as turf_booleanDisjoint } from '@turf/boolean-disjoint';
 import { Polygon as turf_Polygon } from 'geojson';
-import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, StaticFeatureDataSources, MAP, StaticFeatureDataId } from '../utils/constants';
+import {
+  BackgroundLayerId,
+  FeatureDataId,
+  FeatureDataLayerId,
+  StaticFeatureDataSources,
+  MAP,
+  StaticFeatureDataId,
+  FeatureLayerId,
+} from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
 import { useFeatureData } from '../utils/dataLoader';
@@ -53,6 +61,55 @@ function useDataLayer(
   const layer = dvkMap.getFeatureLayer(featureLayerId);
   layer.set('errorUpdatedAt', errorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
+export function useConditionsDataLayer(
+  featureDataId: FeatureDataId,
+  featureLayerId: FeatureDataLayerId,
+  dataProjection = 'EPSG:4326',
+  refetchOnMount: 'always' | boolean = true,
+  refetchInterval: number | false = false,
+  enabled: boolean = true
+): DvkLayerState {
+  const [ready, setReady] = useState(false);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
+  useEffect(() => {
+    if (data) {
+      const layer = dvkMap.getFeatureLayer(featureLayerId);
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+        const source = dvkMap.getVectorSource(featureLayerId);
+
+        features.forEach((f) => {
+          const id = f.getId();
+          const sourceFeat = id ? source.getFeatureById(id) : null;
+          if (sourceFeat) {
+            sourceFeat.setProperties(f.getProperties());
+          } else {
+            f.set('dataSource', featureLayerId, true);
+            source.addFeature(f);
+          }
+        });
+        const featureIds = features.map((f) => f.getId());
+        const featuresToRemove = source.getFeatures().filter((f) => !featureIds.includes(f.getId()));
+        source.removeFeatures(featuresToRemove);
+
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      setReady(true);
+    }
+  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  const layer = dvkMap.getFeatureLayer(featureLayerId);
+  layer.set('errorUpdatedAt', errorUpdatedAt);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
+// check if feature is visible on it's own layer or selected fairway card layer
+export function featuresVisible(featureLayer: FeatureLayerId): boolean {
+  const oLayer = dvkMap.getFeatureLayer(featureLayer);
+  const sfcLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
+  return oLayer.isVisible() || sfcLayer.isVisible();
 }
 
 export function useNameLayer() {
