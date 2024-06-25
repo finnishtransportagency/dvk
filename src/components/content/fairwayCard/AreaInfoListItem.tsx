@@ -18,6 +18,7 @@ export const AreaInfoListItem: React.FC<AreaInfoListItemProps> = ({ area, isN200
   const highlightArea = (id: string | number | undefined) => {
     setSelectedFairwayArea(id ?? 0);
   };
+
   return (
     <IonText
       key={uniqueId()}
@@ -36,8 +37,12 @@ export const AreaInfoListItem: React.FC<AreaInfoListItemProps> = ({ area, isN200
           </>
         )}
         <br />
-        {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() ?? '-'}&nbsp;
-        <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })}>m</dd>
+        {area.typeCode !== 15 && (
+          <>
+            {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() ?? '-'}&nbsp;
+            <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })}>m</dd>
+          </>
+        )}
         {sizingSpeeds.length > 0 && (
           <>
             <br />
@@ -45,9 +50,22 @@ export const AreaInfoListItem: React.FC<AreaInfoListItemProps> = ({ area, isN200
             <dd aria-label={t('unit.ktsDesc', { count: 0 })}>kts</dd>
           </>
         )}
-        <br />
-        {area?.notationCode === 1 ? t('lateralMarking') : ''}
-        {area?.notationCode === 2 ? t('cardinalMarking') : ''}
+        {area?.notationCode === 1 ? (
+          <>
+            <br />
+            {t('lateralMarking')}
+          </>
+        ) : (
+          ''
+        )}
+        {area?.notationCode === 2 ? (
+          <>
+            <br />
+            {t('cardinalMarking')}
+          </>
+        ) : (
+          ''
+        )}
       </li>
     </IonText>
   );
