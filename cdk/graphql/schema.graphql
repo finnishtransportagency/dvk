@@ -63,8 +63,8 @@ input FairwayCardInput {
   group: String!
   status: Status!
   fairwayIds: [Float!]!
-  primaryFairwayId: Float
-  secondaryFairwayId: Float
+  primaryFairwayId: [Float!]
+  secondaryFairwayId: [Float!]
   additionalInfo: TextInput
   lineText: TextInput
   designSpeed: TextInput

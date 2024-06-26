@@ -69,18 +69,16 @@ export const fairwayCardReducer = (
         ...state,
         fairwayIds: value as number[],
       };
-      if (!(value as number[]).includes(state.primaryFairwayId || -1)) delete newState.primaryFairwayId;
-      if (!(value as number[]).includes(state.secondaryFairwayId || -1)) delete newState.secondaryFairwayId;
       if ((value as number[]).length === 1) {
-        newState.primaryFairwayId = (value as number[])[0];
-        newState.secondaryFairwayId = (value as number[])[0];
+        newState.primaryFairwayId = value as number[];
+        newState.secondaryFairwayId = value as number[];
       }
       break;
     case 'fairwayPrimary':
-      newState = { ...state, primaryFairwayId: Number(value) };
+      newState = { ...state, primaryFairwayId: [Number(value)] };
       break;
     case 'fairwaySecondary':
-      newState = { ...state, secondaryFairwayId: Number(value) };
+      newState = { ...state, secondaryFairwayId: [Number(value)] };
       break;
     case 'harbours':
       newState = { ...state, harbors: value as string[] };
