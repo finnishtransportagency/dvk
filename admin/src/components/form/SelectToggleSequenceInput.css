@@ -1,0 +1,16 @@
+ion-button.sequenceButton {
+  top: 10px;
+  right: 10px;
+  width: 24px;
+  height: 24px;
+  --background: transparent;
+  --border-color: var(--ion-color-primary);
+  --border-style: solid;
+  --border-width: 1px;
+  --ripple-color: transparent;
+}
+
+ion-button.sequenceButton.selected {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+}

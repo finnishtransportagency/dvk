@@ -9,6 +9,7 @@ import SelectWithFilter from '../SelectWithFilter';
 import TextInputRow from '../TextInputRow';
 import { FeatureCollection } from 'geojson';
 import { featureCollectionToSelectOptions } from '../../../utils/common';
+import SelectToggleSequenceInput from '../SelectToggleSequenceInput';
 
 interface MainSectionProps {
   state: FairwayCardInput;
@@ -169,6 +170,7 @@ const MainSection: React.FC<MainSectionProps> = ({
           />
         </IonCol>
       </IonRow>
+      <SelectToggleSequenceInput options={fairwaySelection ?? []} selected={state.primaryFairwayId ?? []} setSelected={updateState} actionType="fairwayPrimary" />
     </IonGrid>
   );
 };
