@@ -745,7 +745,6 @@ export const mockFairwayCard = {
       sv: 'Fartyg med maximalt djupgående ska med avseende på hastigheten beakta grunden och fartens inverkan på följande platser: SO om Svartbådan, V om Utö, vid Torvskär, mellan S Länggadd och Gråskär, mellan Berghamn och Smörgrund och Kyrkfjärden, vid Lövskär samt i Erstan vid de tre grunden på 16,8 m.',
       en: 'Vessels with a draught close to the max. authorised draught are requested to beware of shoals and the causing of squat in the following areas: SE of Svartbådan, W of Utö, at Torvskär, between the southern part of Länggadd and Gråskär, between Berghamn and Smörgrund and Kyrkfjärden, at Lövskär and in Airisto at the three 16,8 m shoals.',
     },
-    seaLevel: { fi: 'Kemi mareografi', sv: 'Kemi mareograf', en: 'Kemi mareograph' },
     additionalInfo: { fi: 'Lisätieto', sv: 'Ytterligare information', en: 'Additional information' },
     windRecommendation: {
       fi: 'Yli 200 m:n pituisilla aluksilla maksimituulennopeus 15 m/s.',

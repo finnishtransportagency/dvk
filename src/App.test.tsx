@@ -143,6 +143,12 @@ vi.mock('./components/FeatureLoader', () => ({
   useDirwayLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
+  useConditionsDataLayer: () => {
+    return {};
+  },
+  featuresVisible: () => {
+    return {};
+  },
 }));
 
 vi.mock('./graphql/generated', async () => {

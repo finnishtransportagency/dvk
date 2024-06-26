@@ -134,8 +134,6 @@ class FairwayCardDBModel {
 
   vesselRecommendation?: Maybe<Text>;
 
-  seaLevel?: Maybe<Text>;
-
   mareographs?: Maybe<Mareograph[]>;
 
   windRecommendation?: Maybe<Text>;
