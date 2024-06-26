@@ -96,6 +96,7 @@ function mapRestrictions(restrictions: RestrictionApiModel[]): Restriction[] {
       description: r.text_compilation,
       startTime: new Date(r.start_time),
       endTime: r.end_time ? new Date(r.end_time) : undefined,
+      updated: r.change_time,
     };
   });
 }
@@ -106,7 +107,9 @@ function addRestrictionFeatures(
   apiRestrictions: RestrictionApiModel[]
 ) {
   // Sort locations and restrictions by change time so latest are first (API can return duplicates for the same id)
-  const locations = apiLocations.filter((l) => !l.deleted && l.type === 'PORT').sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
+  const locations = apiLocations
+    .filter((l) => !l.deleted && l.type === 'PORT' && l.nationality === 'FI')
+    .sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
   const restrictions = apiRestrictions.filter((r) => !r.deleted).sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
   // Remove duplicate restrictions (first in array remains)
   const uniqueRestrictions = restrictions.filter((val, index, arr) => arr.findIndex((l) => l.id === val.id) === index);
