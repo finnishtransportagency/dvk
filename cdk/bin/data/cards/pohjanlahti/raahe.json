@@ -38,11 +38,6 @@
     "sv": "Vädret vid kuststationerna, Karlö Marjaniemi, Brahestad Nahkiainen, Kalajoki Ulkokalla.",
     "en": "Marine weather observations: Raahe Nahkiainen, Hailuoto Marjaniemi, Kalajoki Ulkokalla."
   },
-  "seaLevel": {
-    "fi": "Raahe mareografi.",
-    "sv": "Brahestad mareograf.",
-    "en": "Raahe mareograph."
-  },
   "windRecommendation": {
     "fi": "Kriittinen tuulen nopeus on mitoitusalukselle 15 m/s, suunta LU-KO; isommille aluksille avovesikautena 12 - 15 m/s, suunta LO-P; satama-alueella samat suositukset.",
     "sv": "Kritisk vindhastighet för det dimensionerande fartyget är 15 m/s, riktning NV-NO; för större fartyg 12-15 m/s på öppet vatten, riktning SV-N. I hamnområdet sker samma rekommendationer.",

@@ -37,6 +37,7 @@ import {
   getFairwayCardPilotPlaces,
   getFairwayCardSafetyEquipmentFaults,
   getFairwayCardObservations,
+  getFairwayCardMareographs,
 } from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
@@ -134,6 +135,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getPilotRouteStyle(feature, resolution, highlighted);
     case 'observation':
       return getSelectedFairwayCardObservationStyle(feature);
+    case 'mareograph':
+      return getMareographStyle(feature, highlighted, resolution);
     default:
       return undefined;
   }
@@ -827,6 +830,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
     const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
     const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
     const observationSource = dvkMap.getVectorSource('observation');
+    const mareographSource = dvkMap.getVectorSource('mareograph');
     unsetSelectedFairwayCard();
 
     const fairwayFeatures: Feature[] = [];
@@ -942,6 +946,12 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
     }
 
+    const mareographFeatures = mareographSource.getFeatures();
+    const mareographs = getFairwayCardMareographs(fairwayCard, mareographFeatures);
+    for (const mareograph of mareographs) {
+      fairwayFeatures.push(mareograph);
+    }
+
     if (import.meta.env.VITE_APP_ENV !== 'prod') {
       const pilotRouteFeatures = pilotRouteSource.getFeatures();
       const cardRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
@@ -959,7 +969,7 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
 
     const extent = olExtent.createEmpty();
     // pilot excludes pilot, pilotagelimit and pilotroute
-    const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot', 'observation'];
+    const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot', 'observation', 'mareograph'];
     for (const feature of fairwayFeatures) {
       const dataSource = feature.getProperties().dataSource;
       const isWrongDataSource = excludedDatasources.some((source) => dataSource.includes(source));
@@ -1005,6 +1015,16 @@ export function setSelectedFairwayArea(id?: number | string) {
     f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && f.getId() === id);
   }
   selectedFairwayCardSource.dispatchEvent('change');
+}
+
+export function setSelectedMareograph(id?: number | string) {
+  const dvkMap = getMap();
+  const mareographSource = dvkMap.getVectorSource('selectedfairwaycard');
+
+  for (const f of mareographSource.getFeatures()) {
+    f.set('hoverStyle', id && f.getId() === id);
+  }
+  mareographSource.dispatchEvent('change');
 }
 
 export function setSelectedObservation(id?: number | string) {

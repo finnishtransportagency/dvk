@@ -134,6 +134,13 @@ export function getFairwayCardObservations(fairwayCard: FairwayCardPartsFragment
   return [];
 }
 
+export function getFairwayCardMareographs(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  const mareographs = features.filter((f) => {
+    return fairwayCard?.mareographs?.find((mareograph) => f.getId() === mareograph?.id) ?? false;
+  });
+  return mareographs;
+}
+
 export function getPilotPlaceFairwayCards(pilotPlaceId: number, fairwayCards: FairwayCardPartsFragment[]) {
   return fairwayCards.filter((card) => {
     return card.trafficService?.pilot?.places?.some((place) => place.id === pilotPlaceId) ?? false;
