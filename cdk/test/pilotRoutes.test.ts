@@ -2,7 +2,7 @@ import { S3Client } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
 import { gunzip } from 'zlib';
 import { handler } from '../lib/lambda/api/pilotroute-handler';
-import { mockAPIALBEvent } from './mocks';
+import { mockALBEvent } from './mocks';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import { RtzData } from '../lib/lambda/api/apiModels';
@@ -364,7 +364,7 @@ beforeEach(() => {
 });
 
 it('should get pilotroutes from api', async () => {
-  const response = await handler(mockAPIALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(3);
@@ -373,12 +373,12 @@ it('should get pilotroutes from api', async () => {
 
 it('should get internal server error when api call fails', async () => {
   throwError = true;
-  const response = await handler(mockAPIALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   expect(response.statusCode).toBe(503);
 });
 
 it('should return right cache headers for pilotroutes', async () => {
-  const response = await handler(mockAPIALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   assert(response.body);
   const headers = getPilotRouteCacheControlHeaders()?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);

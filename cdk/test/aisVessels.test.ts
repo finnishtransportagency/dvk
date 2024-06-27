@@ -1,5 +1,5 @@
 import { handler } from '../lib/lambda/api/aisvessels-handler';
-import { mockAPIALBEvent } from './mocks';
+import { mockALBEvent } from './mocks';
 import { gunzip } from 'zlib';
 import assert from 'assert';
 import { Vessel, VesselAPIModel } from '../lib/lambda/api/apiModels';
@@ -92,7 +92,7 @@ beforeEach(() => {
 });
 
 it('should get locations from api', async () => {
-  const response = await handler(mockAPIALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.length).toBe(3);
@@ -101,12 +101,12 @@ it('should get locations from api', async () => {
 
 it('should get internal server error when api call fails and no cached response', async () => {
   throwError = true;
-  const response = await handler(mockAPIALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   expect(response.statusCode).toBe(503);
 });
 
 it('should return right cache headers', async () => {
-  const response = await handler(mockAPIALBEvent(path));
+  const response = await handler(mockALBEvent(path));
   assert(response.body);
   const headers = getAisCacheControlHeaders('aisvessels')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
