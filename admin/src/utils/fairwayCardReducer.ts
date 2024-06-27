@@ -75,10 +75,10 @@ export const fairwayCardReducer = (
       }
       break;
     case 'fairwayPrimary':
-      newState = { ...state, primaryFairwayId: [Number(value)] };
+      newState = { ...state, primaryFairwayId: value as number[] };
       break;
     case 'fairwaySecondary':
-      newState = { ...state, secondaryFairwayId: [Number(value)] };
+      newState = { ...state, secondaryFairwayId: value as number[] };
       break;
     case 'harbours':
       newState = { ...state, harbors: value as string[] };

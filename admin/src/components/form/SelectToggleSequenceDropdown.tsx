@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Lang, SelectOption } from '../../utils/constants';
 import { IonButton, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
@@ -25,8 +25,6 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
   const { i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const [sequence, setSequence] = useState(false);
-
   const popover = useRef<HTMLIonPopoverElement>(null);
 
   const isOptionSelected = (value: SelectOption) => {
@@ -41,10 +39,9 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
     setExpanded(true);
   };
 
-  const handleChange = (id: number) => {
-    console.log(setSelected);
-    console.log(setSequence);
-    console.log(id);
+  const handleChange = (id: number, optionSelected: boolean) => {
+    const updatedValues = optionSelected ? selected.filter((selectedId) => selectedId !== id) : [...selected, id];
+    setSelected(updatedValues);
   };
 
   const handlePopupClose = () => {
@@ -75,7 +72,7 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
                 className={optionSelected ? 'option-selected' : ''}
                 lines="none"
                 onClick={() => {
-                  handleChange(option.id as number);
+                  handleChange(option.id as number, optionSelected);
                 }}
               >
                 <IonButton
@@ -85,11 +82,11 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
                     ev.stopPropagation();
                   }}
                   fill="clear"
-                  className={'icon-only sequenceButton ' + (sequence ? 'selected' : '')}
+                  className={'icon-only sequenceButton ' + (optionSelected ? 'selected' : '')}
                 >
-                  {sequence ? '1' : ''}
+                  {optionSelected ? '1' : ''}
                 </IonButton>
-                <IonLabel color={sequence ? 'primary' : 'dark'}>{optionLabel}</IonLabel>
+                <IonLabel color={optionSelected ? 'primary' : 'dark'}>{optionLabel}</IonLabel>
               </IonItem>
             </div>
           );
