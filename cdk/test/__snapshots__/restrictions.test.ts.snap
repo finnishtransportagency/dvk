@@ -16,7 +16,6 @@ exports[`should get restrictions from api 1`] = `
         "featureType": "restrictionport",
         "id": "location-2_969",
         "name": "KEMI",
-        "nationality": "FI",
         "restrictions": [
           {
             "description": "IAS 4000",
@@ -49,7 +48,7 @@ exports[`should get restrictions from api 1`] = `
             "updated": "2022-12-19T08:25:01.995Z",
           },
         ],
-        "updated": "2022-11-18T00:00:00Z",
+        "updated": "2022-11-18T00:00:00.000Z",
       },
       "type": "Feature",
     },
@@ -66,7 +65,6 @@ exports[`should get restrictions from api 1`] = `
         "featureType": "restrictionport",
         "id": "location-2_931",
         "name": "HAMINA",
-        "nationality": "FI",
         "restrictions": [
           {
             "description": "II 2000",
@@ -86,7 +84,7 @@ exports[`should get restrictions from api 1`] = `
             "updated": "2023-03-03T07:46:27.865Z",
           },
         ],
-        "updated": "2023-12-19T00:00:00Z",
+        "updated": "2023-12-19T00:00:00.000Z",
       },
       "type": "Feature",
     },
@@ -103,7 +101,6 @@ exports[`should get restrictions from api 1`] = `
         "featureType": "restrictionport",
         "id": "location-2_967",
         "name": "KASKINEN",
-        "nationality": "FI",
         "restrictions": [
           {
             "description": "II 2000",
@@ -111,7 +108,7 @@ exports[`should get restrictions from api 1`] = `
             "updated": "2023-04-12T07:40:36.860Z",
           },
         ],
-        "updated": "2022-11-18T00:00:00Z",
+        "updated": "2022-11-18T00:00:00.000Z",
       },
       "type": "Feature",
     },
@@ -128,7 +125,6 @@ exports[`should get restrictions from api 1`] = `
         "featureType": "restrictionport",
         "id": "location-2_955",
         "name": "KANTVIK",
-        "nationality": "FI",
         "restrictions": [
           {
             "description": "II 2000",

@@ -17,6 +17,7 @@ type Restriction = {
   description: string;
   startTime: Date;
   endTime?: Date;
+  updated: Date;
 };
 
 function mapPoints(dirwayPoints: DirwayPoint[]): Point[] {
@@ -49,7 +50,7 @@ function addDirwayFeatures(features: Feature<Geometry, GeoJsonProperties>[], api
         id: id,
         name: dirway.name,
         description: dirway.description,
-        updated: dirway.change_time,
+        updated: new Date(dirway.change_time),
         points: mapPoints(points),
         featureType: 'dirway',
       };
@@ -96,7 +97,7 @@ function mapRestrictions(restrictions: RestrictionApiModel[]): Restriction[] {
       description: r.text_compilation,
       startTime: new Date(r.start_time),
       endTime: r.end_time ? new Date(r.end_time) : undefined,
-      updated: r.change_time,
+      updated: new Date(r.change_time),
     };
   });
 }
@@ -126,7 +127,7 @@ function addRestrictionFeatures(
       const properties = {
         id: locationId,
         name: location.name,
-        updated: location.change_time,
+        updated: new Date(location.change_time),
         restrictions: mapRestrictions(r),
         featureType: 'restrictionport',
       };
