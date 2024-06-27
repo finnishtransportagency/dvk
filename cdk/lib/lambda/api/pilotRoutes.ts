@@ -8,8 +8,8 @@ import { fetchPilotRoutesApi } from './axios';
 import { lineString, bearingToAzimuth } from '@turf/helpers';
 import { rhumbBearing as turf_rhumbBearing } from '@turf/rhumb-bearing';
 import { transformTranslate as turf_transformTranslate } from '@turf/transform-translate';
-import { lineIntersect as turf_lineIntersect } from '@turf/line-intersect';
-import { nearestPointOnLine as turf_nearestPointOnLine } from '@turf/nearest-point-on-line';
+import { lineIntersect as turf_lineIntersect }from '@turf/line-intersect';
+import { nearestPointOnLine as turf_nearestPointOnLine }from '@turf/nearest-point-on-line';
 import { lineArc as turf_lineArc } from '@turf/line-arc';
 
 type TurningDirection = 'left' | 'right';
