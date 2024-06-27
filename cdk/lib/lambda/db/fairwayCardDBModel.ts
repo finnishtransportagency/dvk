@@ -208,13 +208,13 @@ class FairwayCardDBModel {
       FilterExpression: '#version = :vVersion',
       ExpressionAttributeNames: { '#version': 'version' },
       ExpressionAttributeValues: { ':vVersion': this.getLatestSortKey() },
-    }
+    };
 
     do {
       response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
-      response.Items?.forEach((item) => fairwayCards.push(item as FairwayCardDBModel))
+      response.Items?.forEach((item) => fairwayCards.push(item as FairwayCardDBModel));
       params.ExclusiveStartKey = response.LastEvaluatedKey;
-    } while (typeof response.LastEvaluatedKey !== "undefined")
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
 
     if (fairwayCards) {
       log.debug('%d fairway card(s) found', fairwayCards.length);
@@ -233,13 +233,13 @@ class FairwayCardDBModel {
       FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
       ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
       ExpressionAttributeValues: { ':vVersion': this.getPublicSortKey() },
-    }
+    };
 
     do {
       response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
-      response.Items?.forEach((item) => fairwayCards.push(item as FairwayCardDBModel))
+      response.Items?.forEach((item) => fairwayCards.push(item as FairwayCardDBModel));
       params.ExclusiveStartKey = response.LastEvaluatedKey;
-    } while (typeof response.LastEvaluatedKey !== "undefined")
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
 
     if (fairwayCards) {
       log.debug('%d fairway card(s) found', fairwayCards.length);

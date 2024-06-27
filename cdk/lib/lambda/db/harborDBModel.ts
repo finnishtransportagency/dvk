@@ -114,13 +114,13 @@ class HarborDBModel {
       FilterExpression: '#version = :vVersion',
       ExpressionAttributeNames: { '#version': 'version' },
       ExpressionAttributeValues: { ':vVersion': this.getLatestSortKey() },
-    }
+    };
 
     do {
       response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
-      response.Items?.forEach((item) => harbors.push(item as HarborDBModel))
+      response.Items?.forEach((item) => harbors.push(item as HarborDBModel));
       params.ExclusiveStartKey = response.LastEvaluatedKey;
-    } while (typeof response.LastEvaluatedKey !== "undefined")
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
 
     if (harbors) {
       log.debug('%d harbor(s) found', harbors.length);
@@ -139,13 +139,13 @@ class HarborDBModel {
       FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
       ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
       ExpressionAttributeValues: { ':vVersion': this.getPublicSortKey() },
-    }
+    };
 
     do {
       response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
-      response.Items?.forEach((item) => harbors.push(item as HarborDBModel))
+      response.Items?.forEach((item) => harbors.push(item as HarborDBModel));
       params.ExclusiveStartKey = response.LastEvaluatedKey;
-    } while (typeof response.LastEvaluatedKey !== "undefined")
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
 
     if (harbors) {
       log.debug('%d public harbor(s) found', harbors.length);
