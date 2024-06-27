@@ -35,6 +35,11 @@ const FEATURE_CACHE = {
   STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 12 * 3600, // 12 hours
 };
+const PILOTROUTE_CACHE = {
+  MAX_AGE: 7140, // 1 hour 59 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
 
 export const FEATURE_CACHE_DURATION = 7200; // 2 hours
 
@@ -105,6 +110,21 @@ export function getFeatureCacheControlHeaders(key: string): Record<string, strin
 
   return {
     'Cache-Control': ['max-age=' + maxAge + ', ' + 'stale-while-revalidate=' + staleWhileRevalidate + ', ' + 'stale-if-error=' + staleIfError],
+  };
+}
+
+export function getPilotRouteCacheControlHeaders() {
+  return {
+    'Cache-Control': [
+      'max-age=' +
+        PILOTROUTE_CACHE.MAX_AGE +
+        ', ' +
+        'stale-while-revalidate=' +
+        PILOTROUTE_CACHE.STALE_WHILE_REVALIDATE +
+        ', ' +
+        'stale-if-error=' +
+        PILOTROUTE_CACHE.STALE_IF_ERROR,
+    ],
   };
 }
 
