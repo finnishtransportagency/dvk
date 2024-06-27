@@ -4,7 +4,7 @@ import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
 import { RESTRICTIONS_KEY, handler } from '../lib/lambda/api/restriction-handler';
-import { LOCATION_PATH, RESTRICTION_PATH } from '../lib/lambda/api/ibnet';
+import { LOCATION_PATH, RESTRICTION_PATH, Restriction } from '../lib/lambda/api/ibnet';
 
 jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
@@ -33,6 +33,18 @@ const locationResponse = [
   {
     rv: 7895851919,
     change_time: '2022-11-18T00:00:00Z',
+    id: 'location-2_931',
+    type: 'PORT',
+    name: 'HAMINA',
+    locode_list: 'FIHMN',
+    nationality: 'FI',
+    latitude: 60.5667,
+    longitude: 27.1833,
+    winterport: true,
+  },
+  {
+    rv: 7895851919,
+    change_time: '2023-12-19T00:00:00Z',
     id: 'location-2_931',
     type: 'PORT',
     name: 'HAMINA',
@@ -103,6 +115,18 @@ const locationResponse = [
     winterport: true,
   },
   {
+    rv: 7895851922,
+    change_time: '2022-10-17T00:00:00Z',
+    id: 'location-2_967',
+    type: 'PORT',
+    name: 'KASKINEN',
+    locode_list: 'FIKAS',
+    nationality: 'FI',
+    latitude: 62.3833,
+    longitude: 21.2167,
+    winterport: true,
+  },
+  {
     rv: 7895851923,
     change_time: '2022-11-18T00:00:00Z',
     id: 'location-2_969',
@@ -123,30 +147,6 @@ const locationResponse = [
     nationality: 'FI',
     latitude: 65.2227,
     longitude: 24.674,
-    winterport: true,
-  },
-  {
-    rv: 7895851919,
-    change_time: '2023-12-19T00:00:00Z',
-    id: 'location-2_931',
-    type: 'PORT',
-    name: 'HAMINA',
-    locode_list: 'FIHMN',
-    nationality: 'FI',
-    latitude: 60.5667,
-    longitude: 27.1833,
-    winterport: true,
-  },
-  {
-    rv: 7895851922,
-    change_time: '2022-10-17T00:00:00Z',
-    id: 'location-2_967',
-    type: 'PORT',
-    name: 'KASKINEN',
-    locode_list: 'FIKAS',
-    nationality: 'FI',
-    latitude: 62.3833,
-    longitude: 21.2167,
     winterport: true,
   },
 ];
@@ -357,7 +357,22 @@ it('should get restrictions from api', async () => {
   const response = await handler(mockALBEvent(RESTRICTIONS_KEY));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
+
+  // 12 locations minus 8: 2 duplicates, 2 other nationalities, 2 deleted, 1 fairway, 1 without restrictions
   expect(responseObj.features.length).toBe(4);
+
+  // Check correct duplicates are filtered
+  const haminaDuplicate = responseObj.features.find((f) => f.id === 'location-2_931');
+  expect(haminaDuplicate?.properties?.updated).toBe('2023-12-19T00:00:00.000Z');
+  expect(haminaDuplicate?.properties?.restrictions?.length).toBe(3);
+  const haminaRestrictionDuplicate = haminaDuplicate?.properties?.restrictions?.find((r: Restriction) => r.id === 'restriction-47_35000173');
+  expect(haminaRestrictionDuplicate?.updated).toBe('2023-04-17T08:46:23.892Z');
+
+  const kaskinenDuplicate = responseObj.features.find((f) => f.id === 'location-2_967');
+  expect(kaskinenDuplicate?.properties?.updated).toBe('2022-11-18T00:00:00.000Z');
+  expect(kaskinenDuplicate?.properties?.restrictions?.length).toBe(1);
+  expect(kaskinenDuplicate?.properties?.restrictions?.[0].updated).toBe('2023-04-12T07:40:36.860Z');
+
   expect(responseObj).toMatchSnapshot();
 });
 

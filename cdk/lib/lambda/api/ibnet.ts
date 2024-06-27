@@ -13,7 +13,8 @@ type Point = {
   coordinates: number[];
 };
 
-type Restriction = {
+export type Restriction = {
+  id: string;
   description: string;
   startTime: Date;
   endTime?: Date;
@@ -94,6 +95,7 @@ export async function fetchDirways(): Promise<FeatureCollection> {
 function mapRestrictions(restrictions: RestrictionApiModel[]): Restriction[] {
   return restrictions.map((r) => {
     return {
+      id: r.id,
       description: r.text_compilation,
       startTime: new Date(r.start_time),
       endTime: r.end_time ? new Date(r.end_time) : undefined,

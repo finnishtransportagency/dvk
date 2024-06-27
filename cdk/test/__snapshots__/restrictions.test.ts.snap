@@ -19,31 +19,37 @@ exports[`should get restrictions from api 1`] = `
         "restrictions": [
           {
             "description": "IAS 4000",
+            "id": "restriction-47_36000003",
             "startTime": "2024-01-13T22:00:00.000Z",
             "updated": "2024-04-08T07:58:38.719Z",
           },
           {
             "description": "IA 4000",
+            "id": "restriction-47_35000122",
             "startTime": "2023-02-21T22:00:00.000Z",
             "updated": "2023-05-05T06:59:02.348Z",
           },
           {
             "description": "IA 2000",
+            "id": "restriction-47_35000114",
             "startTime": "2023-01-31T22:00:00.000Z",
             "updated": "2023-02-17T08:23:36.416Z",
           },
           {
             "description": "IB 2000",
+            "id": "restriction-47_35000095",
             "startTime": "2023-01-06T22:00:00.000Z",
             "updated": "2023-01-27T07:24:33.406Z",
           },
           {
             "description": "I 2000",
+            "id": "restriction-47_35000057",
             "startTime": "2022-12-23T22:00:00.000Z",
             "updated": "2023-01-02T08:56:58.260Z",
           },
           {
             "description": "II 2000",
+            "id": "restriction-47_35000001",
             "startTime": "2022-11-30T22:00:00.000Z",
             "updated": "2022-12-19T08:25:01.995Z",
           },
@@ -68,18 +74,21 @@ exports[`should get restrictions from api 1`] = `
         "restrictions": [
           {
             "description": "II 2000",
+            "id": "restriction-47_35000173",
             "startTime": "2023-04-11T21:00:00.000Z",
             "updated": "2023-04-17T08:46:23.892Z",
           },
           {
             "description": "I 2000",
             "endTime": "2023-04-11T20:59:59.000Z",
+            "id": "restriction-47_35000152",
             "startTime": "2023-03-07T22:00:00.000Z",
             "updated": "2023-04-13T07:13:35.706Z",
           },
           {
             "description": "II 2000",
             "endTime": "2023-03-07T21:59:59.000Z",
+            "id": "restriction-47_35000059",
             "startTime": "2022-12-23T22:00:00.000Z",
             "updated": "2023-03-03T07:46:27.865Z",
           },
@@ -104,6 +113,7 @@ exports[`should get restrictions from api 1`] = `
         "restrictions": [
           {
             "description": "II 2000",
+            "id": "restriction-47_35000101",
             "startTime": "2023-01-06T22:00:00.000Z",
             "updated": "2023-04-12T07:40:36.860Z",
           },
@@ -129,6 +139,7 @@ exports[`should get restrictions from api 1`] = `
           {
             "description": "II 2000",
             "endTime": "2023-04-04T21:00:00.000Z",
+            "id": "restriction-47_35000105",
             "startTime": "2023-01-06T22:00:00.000Z",
             "updated": "2023-04-05T07:46:32.792Z",
           },
