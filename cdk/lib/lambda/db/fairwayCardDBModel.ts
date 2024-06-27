@@ -242,10 +242,10 @@ class FairwayCardDBModel {
     } while (typeof response.LastEvaluatedKey !== 'undefined');
 
     if (fairwayCards) {
-      log.debug('%d fairway card(s) found', fairwayCards.length);
+      log.debug('%d Public fairway card(s) found', fairwayCards.length);
       return fairwayCards;
     }
-    log.debug('No fairway cards found');
+    log.debug('No public fairway cards found');
     return [];
   }
 
