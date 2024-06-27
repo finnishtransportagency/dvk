@@ -34,7 +34,7 @@ function addDirwayFeatures(features: Feature<Geometry, GeoJsonProperties>[], api
   // Sort dirways and points by change time so latest are first (API can return duplicates for the same id)
   const dirways = apiDirways.filter((d) => !d.deleted).sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
   const dirwayPoints = apiDirwayPoints.filter((d) => !d.deleted).sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
-  // Remove duplicate restrictions (first in array remains)
+  // Remove duplicate points (first in array remains)
   const uniquePoints = dirwayPoints.filter((val, index, arr) => arr.findIndex((l) => l.id === val.id) === index);
 
   const dirwayMap = new Map<string, DirwayPoint[]>();
