@@ -7,68 +7,6 @@ exports[`should get dirways from api 1`] = `
       "geometry": {
         "coordinates": [
           [
-            21.308,
-            64.1058,
-          ],
-          [
-            21.3959,
-            64.0758,
-          ],
-          [
-            21.5002,
-            64.119,
-          ],
-          [
-            21.3712,
-            64.1813,
-          ],
-        ],
-        "type": "LineString",
-      },
-      "id": "dirway-5_36000001",
-      "properties": {
-        "description": "",
-        "featureType": "dirway",
-        "id": "dirway-5_36000001",
-        "name": "IBNEXT Center 0117 13:59:35",
-        "points": [
-          {
-            "coordinates": [
-              21.308,
-              64.1058,
-            ],
-            "orderNumber": 0,
-          },
-          {
-            "coordinates": [
-              21.3959,
-              64.0758,
-            ],
-            "orderNumber": 1,
-          },
-          {
-            "coordinates": [
-              21.5002,
-              64.119,
-            ],
-            "orderNumber": 2,
-          },
-          {
-            "coordinates": [
-              21.3712,
-              64.1813,
-            ],
-            "orderNumber": 3,
-          },
-        ],
-        "updated": "2024-01-17T11:59:39.710Z",
-      },
-      "type": "Feature",
-    },
-    {
-      "geometry": {
-        "coordinates": [
-          [
             20.8039,
             63.5254,
           ],
@@ -157,6 +95,68 @@ exports[`should get dirways from api 1`] = `
           },
         ],
         "updated": "2024-04-18T09:25:31.446Z",
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          [
+            21.308,
+            64.1058,
+          ],
+          [
+            21.3959,
+            64.0758,
+          ],
+          [
+            21.5002,
+            64.119,
+          ],
+          [
+            21.3712,
+            64.1813,
+          ],
+        ],
+        "type": "LineString",
+      },
+      "id": "dirway-5_36000001",
+      "properties": {
+        "description": "",
+        "featureType": "dirway",
+        "id": "dirway-5_36000001",
+        "name": "IBNEXT Center 0117 13:59:35",
+        "points": [
+          {
+            "coordinates": [
+              21.308,
+              64.1058,
+            ],
+            "orderNumber": 0,
+          },
+          {
+            "coordinates": [
+              21.3959,
+              64.0758,
+            ],
+            "orderNumber": 1,
+          },
+          {
+            "coordinates": [
+              21.5002,
+              64.119,
+            ],
+            "orderNumber": 2,
+          },
+          {
+            "coordinates": [
+              21.3712,
+              64.1813,
+            ],
+            "orderNumber": 3,
+          },
+        ],
+        "updated": "2024-01-17T11:59:39.710Z",
       },
       "type": "Feature",
     },

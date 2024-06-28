@@ -51,6 +51,14 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     useMonitoring: true,
   },
   {
+    entry: path.join(__dirname, 'restriction-handler.ts'),
+    pathPattern: '/api/restrictions',
+    functionName: 'restrictions',
+    priority: 22,
+    useVpc: true,
+    useMonitoring: true,
+  },
+  {
     entry: path.join(__dirname, 'login.ts'),
     pathPattern: '/yllapito/kirjaudu.html',
     functionName: 'login',
