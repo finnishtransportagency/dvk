@@ -1,4 +1,4 @@
-import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, ScanCommand, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { Maybe, Status, Operation, Orientation, Mareograph } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
@@ -200,15 +200,22 @@ class FairwayCardDBModel {
   }
 
   static async getAllLatest(): Promise<FairwayCardDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(
-      new ScanCommand({
-        TableName: getFairwayCardTableName(),
-        FilterExpression: '#version = :vVersion',
-        ExpressionAttributeNames: { '#version': 'version' },
-        ExpressionAttributeValues: { ':vVersion': this.getLatestSortKey() },
-      })
-    );
-    const fairwayCards = response?.Items as FairwayCardDBModel[] | undefined;
+    const fairwayCards: FairwayCardDBModel[] | undefined = [];
+    let response;
+
+    const params: ScanCommandInput = {
+      TableName: getFairwayCardTableName(),
+      FilterExpression: '#version = :vVersion',
+      ExpressionAttributeNames: { '#version': 'version' },
+      ExpressionAttributeValues: { ':vVersion': this.getLatestSortKey() },
+    };
+
+    do {
+      response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
+      response.Items?.forEach((item) => fairwayCards.push(item as FairwayCardDBModel));
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
+
     if (fairwayCards) {
       log.debug('%d fairway card(s) found', fairwayCards.length);
       return fairwayCards;
@@ -218,17 +225,24 @@ class FairwayCardDBModel {
   }
 
   static async getAllPublic(): Promise<FairwayCardDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(
-      new ScanCommand({
-        TableName: getFairwayCardTableName(),
-        FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
-        ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
-        ExpressionAttributeValues: { ':vVersion': this.getPublicSortKey() },
-      })
-    );
-    const fairwayCards = response?.Items as FairwayCardDBModel[] | undefined;
+    const fairwayCards: FairwayCardDBModel[] | undefined = [];
+    let response;
+
+    const params: ScanCommandInput = {
+      TableName: getFairwayCardTableName(),
+      FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
+      ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
+      ExpressionAttributeValues: { ':vVersion': this.getPublicSortKey() },
+    };
+
+    do {
+      response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
+      response.Items?.forEach((item) => fairwayCards.push(item as FairwayCardDBModel));
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
+
     if (fairwayCards) {
-      log.debug('%d public fairway card(s) found', fairwayCards.length);
+      log.debug('%d Public fairway card(s) found', fairwayCards.length);
       return fairwayCards;
     }
     log.debug('No public fairway cards found');
