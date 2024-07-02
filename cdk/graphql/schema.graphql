@@ -63,8 +63,8 @@ input FairwayCardInput {
   group: String!
   status: Status!
   fairwayIds: [Float!]!
-  primaryFairwayId: Float
-  secondaryFairwayId: Float
+  primaryFairwayId: [LinkedFairwayInput!]
+  secondaryFairwayId: [LinkedFairwayInput!]
   additionalInfo: TextInput
   lineText: TextInput
   designSpeed: TextInput
@@ -352,8 +352,8 @@ type Section {
 type Fairway {
   id: Int!
   name: Text
-  primary: Boolean
-  secondary: Boolean
+  primary: LinkedFairway
+  secondary: LinkedFairway
   startText: String
   endText: String
   lightingCode: String
@@ -576,4 +576,14 @@ type Mareograph {
   waterLevel: Float
   n2000WaterLevel: Float
   calculated: Boolean
+}
+
+input LinkedFairwayInput {
+  id: Int!
+  sequenceNumber: Int!
+}
+
+type LinkedFairway {
+  id: Int!
+  sequenceNumber: Int!
 }

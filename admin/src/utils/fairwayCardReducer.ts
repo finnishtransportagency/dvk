@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
+import { FairwayCardInput, LinkedFairwayInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
 import { dateError, endDateError, sortPictures } from './common';
 
@@ -69,6 +69,7 @@ export const fairwayCardReducer = (
         ...state,
         fairwayIds: value as number[],
       };
+<<<<<<< Updated upstream
       if (!(value as number[]).includes(state.primaryFairwayId || -1)) delete newState.primaryFairwayId;
       if (!(value as number[]).includes(state.secondaryFairwayId || -1)) delete newState.secondaryFairwayId;
       if ((value as number[]).length === 1) {
@@ -81,6 +82,18 @@ export const fairwayCardReducer = (
       break;
     case 'fairwaySecondary':
       newState = { ...state, secondaryFairwayId: Number(value) };
+=======
+      if ((value as LinkedFairwayInput[]).length === 1) {
+        newState.primaryFairwayId = value as LinkedFairwayInput[];
+        newState.secondaryFairwayId = value as LinkedFairwayInput[];
+      }
+      break;
+    case 'fairwayPrimary':
+      newState = { ...state, primaryFairwayId: value as LinkedFairwayInput[] };
+      break;
+    case 'fairwaySecondary':
+      newState = { ...state, secondaryFairwayId: value as LinkedFairwayInput[] };
+>>>>>>> Stashed changes
       break;
     case 'harbours':
       newState = { ...state, harbors: value as string[] };

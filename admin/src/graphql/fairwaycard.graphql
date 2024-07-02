@@ -21,8 +21,14 @@ fragment FairwayCardById on FairwayCard {
         sv
         en
       }
-      primary
-      secondary
+      primary {
+        id
+        sequenceNumber
+      }
+      secondary {
+        id
+        sequenceNumber
+      }
     }
     additionalInfo {
       fi

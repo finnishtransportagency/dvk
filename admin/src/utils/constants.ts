@@ -1,4 +1,4 @@
-import { GeometryPoint, PictureInput, PilotPlaceInput, Text, TextInput } from '../graphql/generated';
+import { GeometryPoint, LinkedFairwayInput, PictureInput, PilotPlaceInput, Text, TextInput } from '../graphql/generated';
 
 export type Lang = 'fi' | 'sv' | 'en';
 
@@ -24,7 +24,7 @@ export const ErrorMessageKeys: ErrorMessageType = {
   endDateError: 'general.end-date-error',
 };
 
-export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput[];
+export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput[] | LinkedFairwayInput[];
 
 export type HarbourActionType =
   | 'name'

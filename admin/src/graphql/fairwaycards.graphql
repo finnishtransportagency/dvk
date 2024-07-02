@@ -92,9 +92,14 @@ fragment FairwayCardParts on FairwayCard {
       sv
       en
     }
-    primary
-    secondary
-    startText
+    primary {
+      id
+      sequenceNumber
+    }
+    secondary {
+      id
+      sequenceNumber
+    }
     endText
     lightingCode
     lighting {
