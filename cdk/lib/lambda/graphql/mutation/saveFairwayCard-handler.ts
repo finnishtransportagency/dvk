@@ -49,12 +49,16 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     creator: old ? old.creator : `${user.firstName} ${user.lastName}`,
     modifier: `${user.firstName} ${user.lastName}`,
     modificationTimestamp: Date.now(),
-    fairways: card.fairwayIds.map((id, idx) => {
+    fairways: card.fairwayIds.map((id) => {
+      const primary = card.primaryFairwayId?.find((pId) => pId.id === id);
+      const secondary = card.secondaryFairwayId?.find((sId) => sId.id === id);
       return {
         id,
-        primary: card.primaryFairwayId ? card.primaryFairwayId === id : idx === 0,
-        secondary: card.secondaryFairwayId ? id === card.secondaryFairwayId : idx === 0,
-      };
+        primary: !!primary,
+        primarySequenceNumber: primary?.sequenceNumber,
+        secondary: !!secondary,
+        secondarySequenceNumber: secondary?.sequenceNumber,
+      }
     }),
     generalInfo: mapText(card.generalInfo),
     anchorage: mapText(card.anchorage),

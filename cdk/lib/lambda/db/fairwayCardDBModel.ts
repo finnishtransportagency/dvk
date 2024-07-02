@@ -14,7 +14,9 @@ export type Text = {
 export type FairwayDBModel = {
   id: number;
   primary?: Maybe<boolean>;
+  primarySequenceNumber?: Maybe<number>;
   secondary?: Maybe<boolean>;
+  secondarySequenceNumber?: Maybe<number>;
 };
 
 export type TrafficServiceDBModel = {

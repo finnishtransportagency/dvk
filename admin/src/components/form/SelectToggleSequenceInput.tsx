@@ -3,10 +3,11 @@ import { ActionType, SelectOption, ValueType } from '../../utils/constants';
 import { IonIcon, IonItem, IonLabel } from '@ionic/react';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 import SelectToggleSequenceDropdown from './SelectToggleSequenceDropdown';
+import { SelectedFairwayInput } from '../../graphql/generated';
 
 interface SelectToggleSequenceInputProps {
   options: SelectOption[];
-  selected: number[];
+  selected: SelectedFairwayInput[];
   setSelected: (value: ValueType, actionType: ActionType) => void;
   actionType: ActionType;
 }

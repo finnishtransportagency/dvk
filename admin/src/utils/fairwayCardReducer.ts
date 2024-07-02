@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
+import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, SelectedFairwayInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
 import { dateError, endDateError, sortPictures } from './common';
 
@@ -70,15 +70,15 @@ export const fairwayCardReducer = (
         fairwayIds: value as number[],
       };
       if ((value as number[]).length === 1) {
-        newState.primaryFairwayId = value as number[];
-        newState.secondaryFairwayId = value as number[];
+        newState.primaryFairwayId = value as SelectedFairwayInput[];
+        newState.secondaryFairwayId = value as SelectedFairwayInput[];
       }
       break;
     case 'fairwayPrimary':
-      newState = { ...state, primaryFairwayId: value as number[] };
+      newState = { ...state, primaryFairwayId: value as SelectedFairwayInput[] };
       break;
     case 'fairwaySecondary':
-      newState = { ...state, secondaryFairwayId: value as number[] };
+      newState = { ...state, secondaryFairwayId: value as SelectedFairwayInput[] };
       break;
     case 'harbours':
       newState = { ...state, harbors: value as string[] };

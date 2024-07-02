@@ -4,11 +4,12 @@ import { IonButton, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react'
 import { useTranslation } from 'react-i18next';
 import { constructSelectOptionLabel } from '../../utils/common';
 import './SelectToggleSequenceInput.css';
+import { SelectedFairwayInput } from '../../graphql/generated';
 
 interface SelectToggleSequenceDropdownProps {
   options: SelectOption[] | null;
-  selected: number[];
-  setSelected: (selected: number[]) => void;
+  selected: SelectedFairwayInput[];
+  setSelected: (selected: SelectedFairwayInput[]) => void;
   setExpanded: (expanded: boolean) => void;
   trigger: string;
   triggerRef: React.RefObject<HTMLIonItemElement>;
@@ -31,7 +32,7 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
     if (value === undefined) {
       return false;
     }
-    return typeof value.id === 'number' && selected.includes(value.id);
+    return typeof value.id === 'number' && selected.some((fairway) => fairway.id === value.id);
   };
 
   const handlePopupOpen = () => {
@@ -39,8 +40,10 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
     setExpanded(true);
   };
 
-  const handleChange = (id: number, optionSelected: boolean) => {
-    const updatedValues = optionSelected ? selected.filter((selectedId) => selectedId !== id) : [...selected, id];
+  const handleChange = (id: number, sequenceNumber: number, optionSelected: boolean) => {
+    const updatedValues = optionSelected
+      ? selected.filter((fairway) => fairway.id !== id)
+      : [...selected, { id: id, sequenceNumber: sequenceNumber }];
     setSelected(updatedValues);
   };
 
@@ -72,7 +75,7 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
                 className={optionSelected ? 'option-selected' : ''}
                 lines="none"
                 onClick={() => {
-                  handleChange(option.id as number, optionSelected);
+                  handleChange(option.id as number, 1, optionSelected);
                 }}
               >
                 <IonButton
