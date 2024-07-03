@@ -17,7 +17,7 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fa
   const { data: userData } = useCurrentUserQueryData();
 
   const fairwayCard = mapToFairwayCardInput(origin, data);
-  console.log(fairwayCard);
+
   return (
     <>
       {isLoading && <IonProgressBar type="indeterminate" />}

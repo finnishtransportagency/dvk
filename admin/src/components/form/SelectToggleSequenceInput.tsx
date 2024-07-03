@@ -16,7 +16,7 @@ const SelectToggleSequenceInput: React.FC<SelectToggleSequenceInputProps> = ({ o
   const [expanded, setExpanded] = useState(false);
 
   const selectRef = useRef<HTMLIonItemElement>(null);
-  const triggerId = 'select-with-toggle-sequence';
+  const triggerId = 'select-with-toggle-sequence-' + actionType;
 
   const focusSelectItem = () => {
     selectRef.current?.click();
@@ -39,7 +39,7 @@ const SelectToggleSequenceInput: React.FC<SelectToggleSequenceInputProps> = ({ o
 
   const labelText = constructSelectDropdownLabel(selected, options, lang, showId);*/
 
-  const handleSelect = (updatedValues: number[]) => {
+  const handleSelect = (updatedValues: SelectedFairwayInput[]) => {
     setSelected(updatedValues, actionType);
   };
 

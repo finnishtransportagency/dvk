@@ -170,12 +170,24 @@ const MainSection: React.FC<MainSectionProps> = ({
           />
         </IonCol>
       </IonRow>
-      <SelectToggleSequenceInput
-        options={fairwaySelection ?? []}
-        selected={state.primaryFairwayId ?? []}
-        setSelected={updateState}
-        actionType="fairwayPrimary"
-      />
+      <IonRow>
+        <IonCol>
+          <SelectToggleSequenceInput
+            options={fairwaySelection ?? []}
+            selected={state.primaryFairwayId ?? []}
+            setSelected={updateState}
+            actionType="fairwayPrimary"
+          />
+        </IonCol>
+        <IonCol>
+          <SelectToggleSequenceInput
+            options={fairwaySelection ?? []}
+            selected={state.secondaryFairwayId ?? []}
+            setSelected={updateState}
+            actionType="fairwaySecondary"
+          />
+        </IonCol>
+      </IonRow>
     </IonGrid>
   );
 };
