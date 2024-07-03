@@ -229,7 +229,9 @@ function mapFairwayDBModelToFairway(dbModel: FairwayDBModel): Fairway {
   const fairway: Fairway = {
     id: dbModel.id,
     primary: dbModel.primary ?? false,
+    primarySequenceNumber: dbModel.primarySequenceNumber,
     secondary: dbModel.secondary ?? false,
+    secondarySequenceNumber: dbModel.secondarySequenceNumber,
   };
   return fairway;
 }

@@ -58,7 +58,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
         primarySequenceNumber: primary?.sequenceNumber,
         secondary: !!secondary,
         secondarySequenceNumber: secondary?.sequenceNumber,
-      }
+      };
     }),
     generalInfo: mapText(card.generalInfo),
     anchorage: mapText(card.anchorage),
