@@ -1,17 +1,20 @@
 import React, { useRef, useState } from 'react';
 import { IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, SelectOption, ValueType } from '../../utils/constants';
+import { ActionType, DropdownType, Lang, SelectOption, ValueType } from '../../utils/constants';
 import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, isInputOk } from '../../utils/common';
 import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 import SelectDropdownPopup from './SelectDropdownPopup';
+import { SelectedFairwayInput } from '../../graphql/generated';
+import SelectToggleSequenceDropdown from './SelectToggleSequenceDropdown';
 
-interface SelectWithFilterProps {
+interface SelectWithCustomDropdownProps {
   label: string;
   options: SelectOption[] | null;
-  selected: number[];
+  selected: number[] | SelectedFairwayInput[];
   setSelected: (value: ValueType, actionType: ActionType) => void;
   actionType: ActionType;
+  dropdownType: DropdownType;
   required?: boolean;
   showId?: boolean;
   disabled?: boolean;
@@ -20,12 +23,13 @@ interface SelectWithFilterProps {
   isLoading?: boolean;
 }
 
-const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
+const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   label,
   options,
   selected,
   setSelected,
   actionType,
+  dropdownType,
   required,
   showId,
   disabled,
@@ -40,7 +44,7 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
   const [expanded, setExpanded] = useState(false);
 
   const selectRef = useRef<HTMLIonItemElement>(null);
-  const triggerId = 'select-with-search-' + actionType;
+  const triggerId = 'select-with-dropdown-' + actionType;
 
   const focusSelectItem = () => {
     selectRef.current?.click();
@@ -61,11 +65,16 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
     setIsValid(required ? !error && selected.length > 0 : !error);
   };
 
-  const handleSelect = (updatedValues: number[]) => {
+  const handleSelect = (updatedValues: number[] | SelectedFairwayInput[]) => {
     setSelected(updatedValues, actionType);
   };
 
-  const labelText = constructSelectDropdownLabel(selected, options, lang, showId);
+  const labelText = constructSelectDropdownLabel(
+    dropdownType === 'sequence' ? selected.map((s) => (s as SelectedFairwayInput).id) : (selected as number[]),
+    options,
+    lang,
+    showId
+  );
 
   return (
     <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
@@ -109,21 +118,33 @@ const SelectWithFilter: React.FC<SelectWithFilterProps> = ({
           </IonItem>
           {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
           <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
-          <SelectDropdownPopup
-            trigger={triggerId}
-            triggerRef={selectRef}
-            options={options}
-            selected={selected}
-            setSelected={handleSelect}
-            setIsExpanded={setExpanded}
-            checkValidity={checkValidity}
-            showId={showId}
-            className={actionType}
-          />
+          {dropdownType === 'filter' && (
+            <SelectDropdownPopup
+              trigger={triggerId}
+              triggerRef={selectRef}
+              options={options}
+              selected={selected as number[]}
+              setSelected={handleSelect}
+              setIsExpanded={setExpanded}
+              checkValidity={checkValidity}
+              showId={showId}
+              className={actionType}
+            />
+          )}
+          {dropdownType === 'sequence' && (
+            <SelectToggleSequenceDropdown
+              options={options}
+              setExpanded={setExpanded}
+              trigger={triggerId}
+              triggerRef={selectRef}
+              selected={selected as SelectedFairwayInput[]}
+              setSelected={handleSelect}
+            />
+          )}
         </>
       )}
     </div>
   );
 };
 
-export default SelectWithFilter;
+export default SelectWithCustomDropdown;

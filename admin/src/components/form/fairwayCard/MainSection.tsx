@@ -5,11 +5,10 @@ import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../..
 import { FairwayCardInput, Operation, Status } from '../../../graphql/generated';
 import TextInput from '../TextInput';
 import SelectInput from '../SelectInput';
-import SelectWithFilter from '../SelectWithFilter';
 import TextInputRow from '../TextInputRow';
 import { FeatureCollection } from 'geojson';
 import { featureCollectionToSelectOptions } from '../../../utils/common';
-import SelectToggleSequenceInput from '../SelectToggleSequenceInput';
+import SelectWithCustomDropdown from '../SelectWithCustomDropdown';
 
 interface MainSectionProps {
   state: FairwayCardInput;
@@ -74,7 +73,8 @@ const MainSection: React.FC<MainSectionProps> = ({
           />
         </IonCol>
         <IonCol sizeMd="3">
-          <SelectWithFilter
+          <SelectWithCustomDropdown
+            dropdownType="filter"
             label={t('fairwaycard.linked-fairways')}
             options={fairwayOptions ?? []}
             selected={state.fairwayIds || []}
@@ -159,7 +159,8 @@ const MainSection: React.FC<MainSectionProps> = ({
           />
         </IonCol>
         <IonCol sizeMd="3">
-          <SelectWithFilter
+          <SelectWithCustomDropdown
+            dropdownType="filter"
             label={t('fairwaycard.linked-pilot-routes')}
             options={featureCollectionToSelectOptions(pilotRouteOptions) ?? []}
             selected={state.pilotRoutes ?? []}
@@ -172,19 +173,25 @@ const MainSection: React.FC<MainSectionProps> = ({
       </IonRow>
       <IonRow>
         <IonCol>
-          <SelectToggleSequenceInput
+          <SelectWithCustomDropdown
+            dropdownType="sequence"
             options={fairwaySelection ?? []}
+            label={t('fairwaycard.starting-fairway')}
             selected={state.primaryFairwayId ?? []}
             setSelected={updateState}
             actionType="fairwayPrimary"
+            isLoading={isLoadingFairways}
           />
         </IonCol>
         <IonCol>
-          <SelectToggleSequenceInput
+          <SelectWithCustomDropdown
+            dropdownType="sequence"
             options={fairwaySelection ?? []}
+            label={t('fairwaycard.ending-fairway')}
             selected={state.secondaryFairwayId ?? []}
             setSelected={updateState}
             actionType="fairwaySecondary"
+            isLoading={isLoadingFairways}
           />
         </IonCol>
       </IonRow>
