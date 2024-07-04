@@ -36,6 +36,7 @@ import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { getExpires, getNewStaticBucketName } from '../../environment';
 import { PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
+import { deleteCacheObjects } from '../cache';
 
 export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
@@ -191,6 +192,15 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   log.debug('card: %o', newModel);
   await tagPictures(event.arguments.card.id, event.arguments.card.pictures, dbModel?.pictures);
   try {
+    // Clear fairway cache of a fairway card
+    // delete when more sophisticated caching is implemented
+    // needed to get updated starting and ending fairways for fairwaycard
+    // if linked fairways are for example 1111, 2222, then the key for cache clearing is 'fairways:1111:2222'
+    const fairways = newModel.fairways.map((f) => f.id);
+    if (fairways) {
+      const cacheKey = 'fairways:' + fairways.join(':');
+      await deleteCacheObjects([cacheKey]);
+    }
     await FairwayCardDBModel.save(newModel, event.arguments.card.operation);
   } catch (e) {
     if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
