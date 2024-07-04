@@ -32,6 +32,18 @@ export const fairwayCardReducer = (
         .filter((error) => error.id !== 'fairwayIds')
         .concat({ id: 'fairwayIds', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
+  } else if (actionType === 'fairwayPrimary' && validationErrors.find((error) => error.id === 'fairwayPrimary')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'fairwayPrimary')
+        .concat({ id: 'fairwayPrimary', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
+    );
+  } else if (actionType === 'fairwaySecondary' && validationErrors.find((error) => error.id === 'fairwaySecondary')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'fairwaySecondary')
+        .concat({ id: 'fairwaySecondary', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
+    );
   } else if (actionType === 'group' && validationErrors.find((error) => error.id === 'group')?.msg) {
     setValidationErrors(
       validationErrors

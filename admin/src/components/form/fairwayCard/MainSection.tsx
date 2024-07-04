@@ -98,7 +98,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             helperText={t('fairwaycard.fairway-order-help-text') + ' ' + t('general.multiple-values-supported')}
             isLoading={isLoadingFairways}
             disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
-            error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
+            error={validationErrors.find((error) => error.id === 'fairwayPrimary')?.msg}
             required
             showId
           />
@@ -114,7 +114,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             helperText={t('fairwaycard.fairway-order-help-text') + ' ' + t('general.multiple-values-supported')}
             isLoading={isLoadingFairways}
             disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
-            error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
+            error={validationErrors.find((error) => error.id === 'fairwaySecondary')?.msg}
             required
             showId
           />
