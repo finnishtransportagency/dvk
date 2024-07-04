@@ -88,31 +88,35 @@ const MainSection: React.FC<MainSectionProps> = ({
           />
         </IonCol>
         <IonCol sizeMd="3">
-          <SelectInput
-            label={t('fairwaycard.starting-fairway')}
-            selected={state.primaryFairwayId ?? ''}
+          <SelectWithCustomDropdown
+            dropdownType="sequence"
             options={fairwaySelection ?? []}
+            label={t('fairwaycard.starting-fairway')}
+            selected={state.primaryFairwayId ?? []}
             setSelected={updateState}
             actionType="fairwayPrimary"
+            helperText={t('fairwaycard.fairway-order-help-text') + ' ' + t('general.multiple-values-supported')}
+            isLoading={isLoadingFairways}
+            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
+            error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
             required
             showId
-            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
-            helperText={t('fairwaycard.fairway-order-help-text')}
-            isLoading={isLoadingFairways}
           />
         </IonCol>
         <IonCol sizeMd="3">
-          <SelectInput
-            label={t('fairwaycard.ending-fairway')}
-            selected={state.secondaryFairwayId ?? ''}
+          <SelectWithCustomDropdown
+            dropdownType="sequence"
             options={fairwaySelection ?? []}
+            label={t('fairwaycard.ending-fairway')}
+            selected={state.secondaryFairwayId ?? []}
             setSelected={updateState}
             actionType="fairwaySecondary"
+            helperText={t('fairwaycard.fairway-order-help-text') + ' ' + t('general.multiple-values-supported')}
+            isLoading={isLoadingFairways}
+            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
+            error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
             required
             showId
-            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
-            helperText={t('fairwaycard.fairway-order-help-text')}
-            isLoading={isLoadingFairways}
           />
         </IonCol>
       </IonRow>
@@ -168,30 +172,6 @@ const MainSection: React.FC<MainSectionProps> = ({
             actionType="pilotRoutes"
             disabled={state.status === Status.Removed || import.meta.env.VITE_APP_ENV === 'prod'}
             isLoading={isLoadingPilotRoutes}
-          />
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          <SelectWithCustomDropdown
-            dropdownType="sequence"
-            options={fairwaySelection ?? []}
-            label={t('fairwaycard.starting-fairway')}
-            selected={state.primaryFairwayId ?? []}
-            setSelected={updateState}
-            actionType="fairwayPrimary"
-            isLoading={isLoadingFairways}
-          />
-        </IonCol>
-        <IonCol>
-          <SelectWithCustomDropdown
-            dropdownType="sequence"
-            options={fairwaySelection ?? []}
-            label={t('fairwaycard.ending-fairway')}
-            selected={state.secondaryFairwayId ?? []}
-            setSelected={updateState}
-            actionType="fairwaySecondary"
-            isLoading={isLoadingFairways}
           />
         </IonCol>
       </IonRow>

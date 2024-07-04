@@ -134,11 +134,13 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
           {dropdownType === 'sequence' && (
             <SelectToggleSequenceDropdown
               options={options}
-              setExpanded={setExpanded}
-              trigger={triggerId}
-              triggerRef={selectRef}
               selected={selected as SelectedFairwayInput[]}
               setSelected={handleSelect}
+              setExpanded={setExpanded}
+              checkValidity={checkValidity}
+              trigger={triggerId}
+              triggerRef={selectRef}
+              showId={showId}
             />
           )}
         </>

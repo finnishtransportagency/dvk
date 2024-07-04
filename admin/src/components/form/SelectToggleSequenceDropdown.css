@@ -2,7 +2,8 @@ ion-button.sequenceButton {
   top: 10px;
   right: 10px;
   width: 24px;
-  height: 24px;
+  height: 23px;
+  margin-right: 14px;
   --background: transparent;
   --border-color: var(--ion-color-primary);
   --border-style: solid;

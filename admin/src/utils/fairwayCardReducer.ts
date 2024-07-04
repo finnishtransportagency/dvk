@@ -69,9 +69,10 @@ export const fairwayCardReducer = (
         ...state,
         fairwayIds: value as number[],
       };
-      if ((value as number[]).length === 1) {
-        newState.primaryFairwayId = value as SelectedFairwayInput[];
-        newState.secondaryFairwayId = value as SelectedFairwayInput[];
+      if ((value as SelectedFairwayInput[]).length === 1) {
+        const onlyLinkedFairwayInArray = [{ id: (value as number[])[0], sequenceNumber: 1 }] as SelectedFairwayInput[];
+        newState.primaryFairwayId = onlyLinkedFairwayInArray;
+        newState.secondaryFairwayId = onlyLinkedFairwayInArray;
       }
       break;
     case 'fairwayPrimary':
