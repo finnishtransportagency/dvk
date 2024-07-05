@@ -155,8 +155,11 @@ export function validateFairwayCardForm(
     { id: 'name', msg: requiredError(state.name) ? requiredMsg : '' },
     { id: 'primaryId', msg: primaryIdErrorMsg },
     { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? requiredMsg : '' },
-    { id: 'fairwayPrimary', msg: state.primaryFairwayId && state.primaryFairwayId.length < 1 ? requiredMsg : '' },
-    { id: 'fairwaySecondary', msg: state.secondaryFairwayId && state.secondaryFairwayId.length < 1 ? requiredMsg : '' },
+    { id: 'fairwayPrimary', msg: state.fairwayIds.length > 1 && state.primaryFairwayId && state.primaryFairwayId.length < 1 ? requiredMsg : '' },
+    {
+      id: 'fairwaySecondary',
+      msg: state.fairwayIds.length > 1 && state.secondaryFairwayId && state.secondaryFairwayId.length < 1 ? requiredMsg : '',
+    },
     { id: 'group', msg: state.group.length < 1 ? requiredMsg : '' },
     {
       id: 'additionalInfo',
