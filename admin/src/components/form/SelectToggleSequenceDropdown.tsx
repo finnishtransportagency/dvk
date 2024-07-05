@@ -82,6 +82,7 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
       onDidDismiss={handlePopupClose}
     >
       <IonList className="ion-no-padding sequenceList">
+        <span className="sequenceButtonAsCircle"></span>
         {sortedOptions?.map((option) => {
           const optionSelected = isOptionSelected(option);
           const optionLabel = constructSelectOptionLabel(option, lang, showId);

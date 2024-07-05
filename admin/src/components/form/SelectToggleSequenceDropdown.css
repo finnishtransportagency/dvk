@@ -15,3 +15,17 @@ ion-button.sequenceButton.selected {
   --background: var(--ion-color-primary);
   --color: var(--ion-color-primary-contrast);
 }
+
+.sequenceButtonAsSpan {
+  display: inline-block;
+  position: static;
+  background: transparent;
+  width: 24px;
+  height: 23px;
+  border: 1px solid var(--ion-color-primary);
+  border-radius: 50%;
+  box-sizing: border-box;
+  vertical-align: middle;
+  transform: translateY(-1px);
+  margin-right: 2px;
+}

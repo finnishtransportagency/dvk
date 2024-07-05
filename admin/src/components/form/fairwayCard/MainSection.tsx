@@ -99,6 +99,8 @@ const MainSection: React.FC<MainSectionProps> = ({
             isLoading={isLoadingFairways}
             disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
             error={validationErrors.find((error) => error.id === 'fairwayPrimary')?.msg}
+            infoTitle={t('modal.starting-fairway-title')}
+            infoDescription={t('modal.starting-fairway-description')}
             required
             showId
           />
@@ -115,6 +117,8 @@ const MainSection: React.FC<MainSectionProps> = ({
             isLoading={isLoadingFairways}
             disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
             error={validationErrors.find((error) => error.id === 'fairwaySecondary')?.msg}
+            infoTitle={t('modal.ending-fairway-title')}
+            infoDescription={t('modal.ending-fairway-description')}
             required
             showId
           />

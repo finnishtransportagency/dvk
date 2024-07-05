@@ -157,7 +157,11 @@
     "picture-errors": "[sv] Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt.",
     "temporary-notification-add": "[sv] Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erilliseen elementtiin. Huomiolle tulee aina lisätä vähintään <strong>voimaantulopäivämäärä</strong>. Jos huomiolle ei merkitä <strong>päättymispäivämäärää</strong>, on huomio voimassa toistaiseksi.",
     "temporary-notification-in-effect-content": "[sv] Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa, ja huomio tulee poistaa näkyvistä käsin.",
-    "temporary-notification-in-effect-title": "[sv] Väliaikaisen huomion voimassaoloaika"
+    "temporary-notification-in-effect-title": "[sv] Väliaikaisen huomion voimassaoloaika",
+    "starting-fairway-title": "[sv] Aloittavat väylät järjestyksen valinta",
+    "starting-fairway-description": "[sv] Voit valita useita aloittavia väyliä. Aloittavien väylien järjestys määräytyy sen mukaan missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa",
+    "ending-fairway-title": "[sv] Päättävät väylät järjestyksen valinta",
+    "ending-fairway-description": "[sv] Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa"
   },
   "fairwaycard": {
     "name": "Farledskortets namn",

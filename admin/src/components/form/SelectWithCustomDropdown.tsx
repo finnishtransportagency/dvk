@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText } from '@ionic/react';
+import { IonButton, IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, DropdownType, Lang, SelectOption, ValueType } from '../../utils/constants';
 import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, isInputOk } from '../../utils/common';
@@ -7,6 +7,8 @@ import { caretDownSharp, caretUpSharp } from 'ionicons/icons';
 import SelectDropdownPopup from './SelectDropdownPopup';
 import { SelectedFairwayInput } from '../../graphql/generated';
 import SelectToggleSequenceDropdown from './SelectToggleSequenceDropdown';
+import HelpIcon from '../../theme/img/help_icon.svg?react';
+import NotificationModal from '../NotificationModal';
 
 interface SelectWithCustomDropdownProps {
   label: string;
@@ -21,6 +23,8 @@ interface SelectWithCustomDropdownProps {
   helperText?: string | null;
   error?: string;
   isLoading?: boolean;
+  infoTitle?: string;
+  infoDescription?: string;
 }
 
 const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
@@ -36,12 +40,15 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   helperText,
   error,
   isLoading,
+  infoTitle,
+  infoDescription,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
   const [isValid, setIsValid] = useState(!error);
   const [expanded, setExpanded] = useState(false);
+  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
   const selectRef = useRef<HTMLIonItemElement>(null);
   const triggerId = 'select-with-dropdown-' + actionType;
@@ -69,6 +76,10 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
     setSelected(updatedValues, actionType);
   };
 
+  const showInfoModal = () => {
+    setInfoModalOpen(true);
+  };
+
   const labelText = constructSelectDropdownLabel(
     dropdownType === 'sequence' ? selected.map((s) => (s as SelectedFairwayInput).id) : (selected as number[]),
     options,
@@ -78,8 +89,21 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
 
   return (
     <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
-      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={disabled ? undefined : focusSelectItem}>
-        {label} {required ? '*' : ''}
+      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')}>
+        <IonText onClick={disabled ? undefined : focusSelectItem}>
+          {label} {required ? '*' : ''}
+        </IonText>
+        {infoTitle && infoDescription && (
+          <IonButton
+            fill="clear"
+            className="icon-only xx-small labelButton"
+            onClick={() => showInfoModal()}
+            title={t('info') ?? ''}
+            aria-label={t('info') ?? ''}
+          >
+            <HelpIcon />
+          </IonButton>
+        )}
       </IonLabel>
       {isLoading ? (
         <IonSkeletonText animated={true} className="select-skeleton" />
@@ -143,6 +167,14 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
               showId={showId}
             />
           )}
+          <NotificationModal
+            isOpen={infoModalOpen}
+            closeAction={() => setInfoModalOpen(false)}
+            closeTitle={t('close')}
+            useTransElement={true}
+            header={infoTitle ?? ''}
+            i18nkey={infoDescription}
+          />
         </>
       )}
     </div>
