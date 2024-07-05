@@ -61,13 +61,15 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
         <IonText>
           <p>
             <strong>{t('liningAndMarking')}: </strong>
+            <br />
             {t('starts')}:&nbsp;
-            {primaryFairways?.map((pf) => {
+            {primaryFairways?.map((pf, idx) => {
               const startText = formatSentence(pf.startText);
               if (!startText) return '';
-              return startText + ', ';
+              return startText + (idx !== primaryFairways.length - 1 ? ', ' : ' ');
             })}
-            {t('ends')}:&nbsp;
+            <br />
+            {t('ends').charAt(0).toLocaleUpperCase() + t('ends').slice(1)}:&nbsp;
             {secondaryFairways?.map((sf, idx) => {
               const endText = formatSentence(sf.endText);
               if (!endText) return '';

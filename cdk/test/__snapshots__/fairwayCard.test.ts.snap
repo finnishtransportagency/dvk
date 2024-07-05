@@ -13,7 +13,9 @@ exports[`should get card by id from the DynamoDB 1`] = `
     {
       "id": 1,
       "primary": true,
+      "primarySequenceNumber": undefined,
       "secondary": false,
+      "secondarySequenceNumber": undefined,
     },
   ],
   "generalInfo": undefined,
@@ -89,7 +91,9 @@ exports[`should get card by id from the DynamoDB when cache expired 1`] = `
     {
       "id": 1,
       "primary": true,
+      "primarySequenceNumber": undefined,
       "secondary": false,
+      "secondarySequenceNumber": undefined,
     },
   ],
   "generalInfo": undefined,

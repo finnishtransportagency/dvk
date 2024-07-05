@@ -13,7 +13,9 @@ exports[`should get latest card by id from the DynamoDB 1`] = `
     {
       "id": 1,
       "primary": true,
+      "primarySequenceNumber": 1,
       "secondary": false,
+      "secondarySequenceNumber": 1,
     },
   ],
   "generalInfo": undefined,
