@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, SelectedFairwayInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
-import { dateError, endDateError, sortPictures } from './common';
+import { dateError, endDateError, removeSequence, sortPictures } from './common';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -76,7 +76,7 @@ export const fairwayCardReducer = (
     case 'status':
       newState = { ...state, status: value as Status };
       break;
-    case 'fairwayIds':
+    case 'fairwayIds': {
       newState = {
         ...state,
         fairwayIds: value as number[],
@@ -86,7 +86,32 @@ export const fairwayCardReducer = (
         newState.primaryFairwayId = onlyLinkedFairwayInArray;
         newState.secondaryFairwayId = onlyLinkedFairwayInArray;
       }
+      // this monster of a conditional clause is to update sequencing when one of the linked fairways are removed
+      if (state.fairwayIds.length > newState.fairwayIds.length) {
+        const removedId = state.fairwayIds.find((id) => !(value as number[]).includes(id));
+        const removedStartingFairway = state.primaryFairwayId?.find((fairway) => fairway.id === removedId) as SelectedFairwayInput;
+        const newPrimaryValues = state.primaryFairwayId?.filter((f) => f.id !== removedId) as SelectedFairwayInput[];
+
+        const removedEndingFairway = state.secondaryFairwayId?.find((fairway) => fairway.id === removedId) as SelectedFairwayInput;
+        const newSecondaryValues = state.secondaryFairwayId?.filter((f) => f.id !== removedId) as SelectedFairwayInput[];
+
+        if (removedStartingFairway) {
+          newState.primaryFairwayId = removeSequence(
+            removedStartingFairway,
+            newPrimaryValues,
+            removedStartingFairway?.sequenceNumber
+          ) as SelectedFairwayInput[];
+        }
+        if (removedEndingFairway) {
+          newState.secondaryFairwayId = removeSequence(
+            removedEndingFairway,
+            newSecondaryValues,
+            removedEndingFairway?.sequenceNumber
+          ) as SelectedFairwayInput[];
+        }
+      }
       break;
+    }
     case 'fairwayPrimary':
       newState = { ...state, primaryFairwayId: value as SelectedFairwayInput[] };
       break;
