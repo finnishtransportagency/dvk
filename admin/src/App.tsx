@@ -11,7 +11,7 @@ import { Lang } from './utils/constants';
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
 /* Ionic dark mode */
-//import '@ionic/react/css/palettes/dark.system.css';
+import '@ionic/react/css/palettes/dark.system.css';
 
 /* Basic CSS for apps built with Ionic */
 import '@ionic/react/css/normalize.css';

@@ -46,8 +46,12 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const primaryFairway = data?.find((fairway) => fairway.primary);
-  const secondaryFairway = data?.find((fairway) => fairway.secondary) ?? primaryFairway;
+  const primaryFairways = data
+    ?.filter((fairway) => fairway.primary)
+    .sort((a, b) => (a.primarySequenceNumber as number) - (b.primarySequenceNumber as number));
+  const secondaryFairways = data
+    ?.filter((fairway) => fairway.secondary)
+    .sort((a, b) => (a.secondarySequenceNumber as number) - (b.secondarySequenceNumber as number));
 
   const numberOfFairways = data ? data.length : 0;
 
@@ -57,7 +61,19 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
         <IonText>
           <p>
             <strong>{t('liningAndMarking')}: </strong>
-            {t('starts')}: {formatSentence(primaryFairway?.startText)}, {t('ends')}: {formatSentence(secondaryFairway?.endText, true)} <br />
+            {t('starts')}:&nbsp;
+            {primaryFairways?.map((pf) => {
+              const startText = formatSentence(pf.startText);
+              if (!startText) return '';
+              return startText + ', ';
+            })}
+            {t('ends')}:&nbsp;
+            {secondaryFairways?.map((sf, idx) => {
+              const endText = formatSentence(sf.endText);
+              if (!endText) return '';
+              return endText + (idx !== secondaryFairways.length - 1 ? ', ' : ' ');
+            })}
+            <br />
             <br />
             {data.map((fairway, idx) => {
               const uuid = uniqueId('fairway_');
