@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { FeatureDataId, FeatureDataLayerId, MAP } from '../utils/constants';
+import { MAP } from '../utils/constants';
 import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
 import { useFeatureData } from '../utils/dataLoader';
 import dvkMap from './DvkMap';
-import { DvkLayerState } from './FeatureLoader';
+import { featuresVisible, useConditionsDataLayer } from './FeatureLoader';
 
 export function useObservationFeatures() {
   const [ready, setReady] = useState(false);
@@ -26,67 +26,19 @@ export function useObservationFeatures() {
   return { ready, observationFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching };
 }
 
-function useDataLayer(
-  featureDataId: FeatureDataId,
-  featureLayerId: FeatureDataLayerId,
-  dataProjection = 'EPSG:4326',
-  refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false,
-  enabled: boolean = true
-): DvkLayerState {
-  const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
-  useEffect(() => {
-    if (data) {
-      const layer = dvkMap.getFeatureLayer(featureLayerId);
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
-        const source = dvkMap.getVectorSource(featureLayerId);
-
-        features.forEach((f) => {
-          const id = f.getId();
-          const sourceFeat = id ? source.getFeatureById(id) : null;
-          if (sourceFeat) {
-            sourceFeat.setProperties(f.getProperties());
-          } else {
-            f.set('dataSource', featureLayerId, true);
-            source.addFeature(f);
-          }
-        });
-        const featureIds = features.map((f) => f.getId());
-        const featuresToRemove = source.getFeatures().filter((f) => !featureIds.includes(f.getId()));
-        source.removeFeatures(featuresToRemove);
-
-        layer.set('dataUpdatedAt', dataUpdatedAt);
-      }
-      setReady(true);
-    }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
-  const layer = dvkMap.getFeatureLayer(featureLayerId);
-  layer.set('errorUpdatedAt', errorUpdatedAt);
-  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
-}
-
-function featuresVisible(): boolean {
-  const oLayer = dvkMap.getFeatureLayer('observation');
-  const sfcLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
-  return oLayer.isVisible() || sfcLayer.isVisible();
-}
-
 export function useObservationLayer() {
   const [initialized, setInitialized] = useState(false);
-  const [fetchingEnabled, setFetchingEnabled] = useState(featuresVisible());
+  const [fetchingEnabled, setFetchingEnabled] = useState(featuresVisible('observation'));
   if (!initialized) {
     const oLayer = dvkMap.getFeatureLayer('observation');
     const sfcLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
     oLayer.on('change:visible', () => {
-      setFetchingEnabled(featuresVisible());
+      setFetchingEnabled(featuresVisible('observation'));
     });
     sfcLayer.on('change:visible', () => {
-      setFetchingEnabled(featuresVisible());
+      setFetchingEnabled(featuresVisible('observation'));
     });
     setInitialized(true);
   }
-  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10, fetchingEnabled);
+  return useConditionsDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10, fetchingEnabled);
 }

@@ -221,11 +221,6 @@ fragment FairwayCardParts on FairwayCard {
   mareographs {
     id
   }
-  seaLevel {
-    fi
-    sv
-    en
-  }
   windRecommendation {
     fi
     sv

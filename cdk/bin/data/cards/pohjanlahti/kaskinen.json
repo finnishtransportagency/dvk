@@ -38,11 +38,6 @@
     "sv": "Vädret vid kuststationerna: Kristinestads fyr.",
     "en": "Marine weather observations: Kristiinankaupungin lighthouse."
   },
-  "seaLevel": {
-    "fi": "Kaskinen mareografi.",
-    "sv": "Kaskö mareograf.",
-    "en": "Kaskinen mareograph."
-  },
   "windRecommendation": {
     "fi": "Kriittinen tuulennopeus mitoitusaluksella on n. 10 m/s avovedessä.",
     "sv": "Kritisk vindhastighet ca 10 m/s för dimensionerande fartyg i öppet vatten.",

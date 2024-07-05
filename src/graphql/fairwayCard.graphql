@@ -129,11 +129,6 @@ query findFairwayCardById($id: String!, $version: String!) {
     mareographs {
       id
     }
-    seaLevel {
-      fi
-      sv
-      en
-    }
     windRecommendation {
       fi
       sv

@@ -55,6 +55,16 @@ export class DvkBackendStack extends Stack {
       },
       xrayEnabled: false,
     });
+    // Configure the appsync cache using CfnApiCache
+    const cache = new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
+      apiCachingBehavior: 'PER_RESOLVER_CACHING',
+      apiId: api.apiId,
+      type: 'SMALL',
+      transitEncryptionEnabled: true,
+      atRestEncryptionEnabled: true,
+      ttl: 3600,
+      healthMetricsConfig: 'ENABLED',
+    });
     const config = new Config(this);
     if (Config.isPermanentEnvironment()) {
       try {
@@ -148,10 +158,12 @@ export class DvkBackendStack extends Stack {
           minify: true,
         },
       });
+
       const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource_${typeName}_${fieldName}`, backendLambda);
       lambdaDataSource.createResolver(`${typeName}${fieldName}Resolver`, {
         typeName: typeName,
         fieldName: fieldName,
+        cachingConfig: lambdaFunc.useCaching ? { cachingKeys: ['$context.arguments'], ttl: cdk.Duration.minutes(60) } : undefined,
       });
       if (typeName === 'Mutation') {
         fairwayCardWithVersionsTable.grantReadWriteData(backendLambda);

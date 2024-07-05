@@ -41,7 +41,6 @@ exports[`should get latest card by id from the DynamoDB 1`] = `
       "name": "Reitti 1",
     },
   ],
-  "seaLevel": undefined,
   "speedLimit": undefined,
   "status": "PUBLIC",
   "temporaryNotifications": [],
