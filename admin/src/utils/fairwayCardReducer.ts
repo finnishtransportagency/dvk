@@ -79,7 +79,7 @@ export const fairwayCardReducer = (
     case 'fairwayIds': {
       newState = {
         ...state,
-        fairwayIds: value as number[],
+        fairwayIds: (value as number[]).sort((a, b) => a - b),
       };
       if ((value as number[]).length === 1) {
         const onlyLinkedFairwayInArray = [{ id: (value as number[])[0], sequenceNumber: 1 }] as SelectedFairwayInput[];
@@ -113,10 +113,10 @@ export const fairwayCardReducer = (
       break;
     }
     case 'fairwayPrimary':
-      newState = { ...state, primaryFairwayId: value as SelectedFairwayInput[] };
+      newState = { ...state, primaryFairwayId: (value as SelectedFairwayInput[]).sort((a, b) => a.sequenceNumber - b.sequenceNumber) };
       break;
     case 'fairwaySecondary':
-      newState = { ...state, secondaryFairwayId: value as SelectedFairwayInput[] };
+      newState = { ...state, secondaryFairwayId: (value as SelectedFairwayInput[]).sort((a, b) => a.sequenceNumber - b.sequenceNumber) };
       break;
     case 'harbours':
       newState = { ...state, harbors: value as string[] };

@@ -19,7 +19,7 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
     },
     n2000HeightSystem: data?.fairwayCard?.n2000HeightSystem ?? false,
     status: origin ? Status.Draft : data?.fairwayCard?.status ?? Status.Draft,
-    fairwayIds: data?.fairwayCard?.fairways.flatMap((fairway) => fairway.id) ?? [],
+    fairwayIds: data?.fairwayCard?.fairways.flatMap((fairway) => fairway.id).sort() ?? [],
     harbors: data?.fairwayCard?.harbors?.flatMap((harbor) => harbor.id) ?? [],
     pilotRoutes: data?.fairwayCard?.pilotRoutes?.map((route) => route.id) ?? [],
     primaryFairwayId:
@@ -30,7 +30,8 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
             id: fairway.id,
             sequenceNumber: fairway.primarySequenceNumber ?? 1,
           };
-        }) ?? [],
+        })
+        .sort((a, b) => a.sequenceNumber - b.sequenceNumber) ?? [],
     secondaryFairwayId:
       data?.fairwayCard?.fairways
         .filter((fairway) => fairway.secondary)
@@ -39,7 +40,8 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
             id: fairway.id,
             sequenceNumber: fairway.secondarySequenceNumber ?? 1,
           };
-        }) ?? [],
+        })
+        .sort((a, b) => a.sequenceNumber - b.sequenceNumber) ?? [],
     additionalInfo: {
       fi: stringValueOrDefault(data?.fairwayCard?.additionalInfo?.fi),
       sv: stringValueOrDefault(data?.fairwayCard?.additionalInfo?.sv),
