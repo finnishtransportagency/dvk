@@ -316,10 +316,5 @@ export function validateHarbourForm(state: HarborInput, requiredMsg: string, pri
 
 export function hasUnsavedChanges(oldState: FairwayCardInput | HarborInput, currentState: FairwayCardInput | HarborInput) {
   const diffObj = diff(oldState, currentState);
-  console.log((oldState as FairwayCardInput).fairwayIds);
-  console.log((oldState as FairwayCardInput).primaryFairwayId);
-  console.log((currentState as FairwayCardInput).fairwayIds);
-  console.log((currentState as FairwayCardInput).primaryFairwayId);
-  console.log(diffObj);
   return JSON.stringify(diffObj) !== '{}';
 }
