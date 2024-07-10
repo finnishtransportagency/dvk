@@ -151,7 +151,7 @@ const depthSelectedStyle = new Style({
 });
 
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
-  if (resolution > 3) {
+  if (resolution > 2) {
     return undefined;
   }
 
@@ -173,7 +173,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
 
   const styles = [s, circleStyle];
 
-  if (props.showDepth) {
+  if (props.showDepth && resolution < 1) {
     const depthText =
       props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('homePage.map.numberFormat', { val: d })).join(' m / ')} m` : '';
     const ds = selected ? depthSelectedStyle : depthStyle;
