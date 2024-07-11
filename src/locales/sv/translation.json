@@ -406,7 +406,9 @@
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Senaste observation",
-      "calculated": "Beräknat vattenstånd"
+      "calculated": "Beräknat vattenstånd",
+      "outdatedData": "[sv] Tieto on yli 12h vanhaa"
+
     },
     "observation": {
       "observation": "Kustväderstation",

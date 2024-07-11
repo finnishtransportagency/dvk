@@ -406,7 +406,8 @@
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Viimeisin havainto",
-      "calculated": "Laskennallinen vedenkorkeus"
+      "calculated": "Laskennallinen vedenkorkeus",
+      "outdatedData": "Tieto on yli 12h vanhaa"
     },
     "observation": {
       "observation": "Säähavaintoasema",

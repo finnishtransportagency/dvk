@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
@@ -8,6 +8,9 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
+import alertIcon from '../../theme/img/alert_icon.svg';
+
+const hourInMilliseconds = 3600000;
 
 type MareographPopupContentProps = {
   mareograph: MareographProperties;
@@ -25,6 +28,11 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
+  };
+
+  const getTimeDifference = (dataUpdatedAt: number) => {
+    const current = Date.now();
+    return current + dataUpdatedAt;
   };
 
   return (
@@ -46,32 +54,54 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
       <IonRow>
         <IonCol>{coordinatesToStringHDM(mareograph.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
       </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.mareograph.dateTime')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>{t('popup.mareograph.dateTimeFormat', { val: mareograph.properties.dateTime })}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.mareograph.seaLevel')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          {mareograph.properties.waterLevel >= 0 ? '+' : ''}
-          {Math.round(mareograph.properties.waterLevel / 10)}{' '}
-          <dd aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.waterLevel || 0) / 10) })}>cm</dd>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.mareograph.n2000SeaLevel')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          {mareograph.properties.n2000WaterLevel >= 0 ? '+' : ''}
-          {Math.round(mareograph.properties.n2000WaterLevel / 10)}{' '}
-          <dd aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.n2000WaterLevel || 0) / 10) })}>cm</dd>
-        </IonCol>
-      </IonRow>
+      <div className={getTimeDifference(mareograph.properties.dateTime) > hourInMilliseconds ? 'outdatedData' : ''}>
+        <IonRow>
+          <IonCol className="header">{t('popup.mareograph.dateTime')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>{t('popup.mareograph.dateTimeFormat', { val: mareograph.properties.dateTime })}</IonCol>
+        </IonRow>
+      </div>
+      <div className={getTimeDifference(mareograph.properties.dateTime) > hourInMilliseconds * 12 ? 'outdatedData' : ''}>
+        <IonRow>
+          <IonCol className="header">{t('popup.mareograph.seaLevel')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            {getTimeDifference(mareograph.properties.dateTime) < hourInMilliseconds * 12 ? (
+              <>
+                {mareograph.properties.waterLevel >= 0 ? '+' : ''}
+                {Math.round(mareograph.properties.waterLevel / 10)}{' '}
+                <dd aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.waterLevel || 0) / 10) })}>cm</dd>
+              </>
+            ) : (
+              <>
+                <IonIcon className="outdatedDataIcon" icon={alertIcon} />
+                {t('popup.mareograph.outdatedData')}
+              </>
+            )}
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.mareograph.n2000SeaLevel')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            {getTimeDifference(mareograph.properties.dateTime) < hourInMilliseconds * 12 ? (
+              <>
+                {mareograph.properties.n2000WaterLevel >= 0 ? '+' : ''}
+                {Math.round(mareograph.properties.n2000WaterLevel / 10)}{' '}
+                <dd aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((mareograph.properties.n2000WaterLevel || 0) / 10) })}>cm</dd>
+              </>
+            ) : (
+              <>
+                <IonIcon className="outdatedDataIcon" icon={alertIcon} />
+                {t('popup.mareograph.outdatedData')}
+              </>
+            )}
+          </IonCol>
+        </IonRow>
+      </div>
     </IonGrid>
   );
 };
