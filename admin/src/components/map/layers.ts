@@ -99,7 +99,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'safetyequipment':
       return getSafetyEquipmentStyle(feature, 1, false);
     case 'harbor':
-      return getHarborStyle(feature, resolution, false, 3);
+      return getHarborStyle(feature, resolution, false, 2);
     case 'circle':
       return getCircleStyle(feature, resolution);
     default:
