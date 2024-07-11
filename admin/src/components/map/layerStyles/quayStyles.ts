@@ -151,7 +151,7 @@ const depthSelectedStyle = new Style({
 });
 
 export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
-  if (resolution > 2) {
+  if (resolution >= 2) {
     return undefined;
   }
 
@@ -166,17 +166,18 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   const quayName = props.quay?.[lang] ?? '';
 
   const s = selected ? quaySelectedStyle : quayStyle;
-  s.getText()?.setOffsetY(props.showDepth ? -72 : -55);
+  s.getText()?.setOffsetY(-55);
   s.getText()?.setText(quayName);
 
   circleStyle.setZIndex(selected ? 11 : 2);
 
   const styles = [s, circleStyle];
 
-  if (props.showDepth && resolution < 1) {
+  if (props.showDepth && resolution <= 1) {
     const depthText =
       props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('homePage.map.numberFormat', { val: d })).join(' m / ')} m` : '';
     const ds = selected ? depthSelectedStyle : depthStyle;
+    ds.getText()?.setOffsetY(10);
     ds.getText()?.setText(depthText);
     styles.push(ds);
   }
