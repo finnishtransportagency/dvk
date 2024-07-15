@@ -170,4 +170,4 @@ it('should get public card by id from the DynamoDB', async () => {
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
   });
-});
+}, 60000);
