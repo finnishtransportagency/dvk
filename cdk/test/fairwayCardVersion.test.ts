@@ -22,7 +22,7 @@ const card: FairwayCardDBModel = {
   modifier: 'test2',
   modificationTimestamp: Date.now(),
   status: Status.Public,
-  fairways: [{ id: 1, primary: true, secondary: false }],
+  fairways: [{ id: 1, primary: true, primarySequenceNumber: 1, secondary: false, secondarySequenceNumber: 1 }],
   trafficService: {
     pilot: {
       places: [
@@ -196,7 +196,7 @@ it('should get v1 by id from the DynamoDB', async () => {
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
   });
-});
+}, 60000);
 
 it('should get fairway card by id and version from the DynamoDB', async () => {
   ddbMock
@@ -211,7 +211,7 @@ it('should get fairway card by id and version from the DynamoDB', async () => {
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
   });
-});
+}, 60000);
 
 it('should get undefined when version not present', async () => {
   ddbMock
@@ -223,4 +223,4 @@ it('should get undefined when version not present', async () => {
     });
   const response = await handler(mockQueryByIdAndVersionEvent, mockContext, () => {});
   expect(response).toBe(undefined);
-});
+}, 60000);

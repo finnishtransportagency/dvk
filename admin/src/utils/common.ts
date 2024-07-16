@@ -1,5 +1,14 @@
 import { TFunction } from 'i18next';
-import { FairwayCardOrHarbor, Mareograph, Maybe, Orientation, PictureInput, TemporaryNotification, Text } from '../graphql/generated';
+import {
+  FairwayCardOrHarbor,
+  Mareograph,
+  Maybe,
+  Orientation,
+  PictureInput,
+  SelectedFairwayInput,
+  TemporaryNotification,
+  Text,
+} from '../graphql/generated';
 import { ItemType, Lang, SelectOption } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
@@ -122,28 +131,36 @@ export function openPreview(id: string, isCard: boolean) {
   window.open(path + '/esikatselu/' + (isCard ? 'kortit/' : 'satamat/') + id, '_blank');
 }
 
-export function removeSequence(picture: PictureInput, pictures: PictureInput[], currentSequenceNumber: number) {
-  return pictures.map((pic) => {
-    if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) {
-      pic.sequenceNumber = null;
-    } else if (pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
-      pic.sequenceNumber--;
+function hasGroupId(sequenceObject: PictureInput | SelectedFairwayInput): sequenceObject is PictureInput {
+  return (sequenceObject as PictureInput).groupId !== undefined;
+}
+
+export function removeSequence(
+  option: PictureInput | SelectedFairwayInput,
+  options: PictureInput[] | SelectedFairwayInput[],
+  currentSequenceNumber: number
+) {
+  return options.map((o) => {
+    if (o.id === option.id || (hasGroupId(o) && hasGroupId(option) && option.groupId && o.groupId === option.groupId)) {
+      o.sequenceNumber = null;
+    } else if (o.sequenceNumber && o.sequenceNumber > currentSequenceNumber) {
+      o.sequenceNumber--;
     }
-    return pic;
+    return o;
   });
 }
 
-export function addSequence(picture: PictureInput, pictures: PictureInput[]) {
-  const sequencedPictures = pictures.filter((pic) => !!pic.sequenceNumber);
-  const maxSequenceNumber = sequencedPictures.reduce((acc, pic) => {
-    return acc > (pic.sequenceNumber ?? 0) ? acc : pic.sequenceNumber ?? 0;
+export function addSequence(option: PictureInput | SelectedFairwayInput, options: PictureInput[] | SelectedFairwayInput[]) {
+  const sequencedPictures = options.filter((o) => !!o.sequenceNumber);
+  const maxSequenceNumber = sequencedPictures.reduce((acc, o) => {
+    return acc > (o.sequenceNumber ?? 0) ? acc : o.sequenceNumber ?? 0;
   }, 0);
 
-  return pictures.map((pic) => {
-    if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) {
-      pic.sequenceNumber = (maxSequenceNumber ?? 0) + 1;
+  return options.map((o) => {
+    if (o.id === option.id || (hasGroupId(o) && hasGroupId(option) && o.groupId === option.groupId)) {
+      o.sequenceNumber = (maxSequenceNumber ?? 0) + 1;
     }
-    return pic;
+    return o;
   });
 }
 

@@ -1,7 +1,7 @@
 import { t } from 'i18next';
-import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
+import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, SelectedFairwayInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
-import { dateError, endDateError, sortPictures } from './common';
+import { dateError, endDateError, removeSequence, sortPictures } from './common';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -31,6 +31,18 @@ export const fairwayCardReducer = (
       validationErrors
         .filter((error) => error.id !== 'fairwayIds')
         .concat({ id: 'fairwayIds', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
+    );
+  } else if (actionType === 'fairwayPrimary' && validationErrors.find((error) => error.id === 'fairwayPrimary')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'fairwayPrimary')
+        .concat({ id: 'fairwayPrimary', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
+    );
+  } else if (actionType === 'fairwaySecondary' && validationErrors.find((error) => error.id === 'fairwaySecondary')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'fairwaySecondary')
+        .concat({ id: 'fairwaySecondary', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   } else if (actionType === 'group' && validationErrors.find((error) => error.id === 'group')?.msg) {
     setValidationErrors(
@@ -64,23 +76,47 @@ export const fairwayCardReducer = (
     case 'status':
       newState = { ...state, status: value as Status };
       break;
-    case 'fairwayIds':
+    case 'fairwayIds': {
       newState = {
         ...state,
-        fairwayIds: value as number[],
+        fairwayIds: (value as number[]).sort((a, b) => a - b),
       };
-      if (!(value as number[]).includes(state.primaryFairwayId || -1)) delete newState.primaryFairwayId;
-      if (!(value as number[]).includes(state.secondaryFairwayId || -1)) delete newState.secondaryFairwayId;
       if ((value as number[]).length === 1) {
-        newState.primaryFairwayId = (value as number[])[0];
-        newState.secondaryFairwayId = (value as number[])[0];
+        const onlyLinkedFairwayInArray = [{ id: (value as number[])[0], sequenceNumber: 1 }] as SelectedFairwayInput[];
+        newState.primaryFairwayId = onlyLinkedFairwayInArray;
+        newState.secondaryFairwayId = onlyLinkedFairwayInArray;
+      }
+      // this monster of a conditional clause is to update sequencing when one of the linked fairways are removed
+      if (state.fairwayIds.length > newState.fairwayIds.length) {
+        const removedId = state.fairwayIds.find((id) => !(value as number[]).includes(id));
+        const removedStartingFairway = state.primaryFairwayId?.find((fairway) => fairway.id === removedId) as SelectedFairwayInput;
+        const newPrimaryValues = state.primaryFairwayId?.filter((f) => f.id !== removedId) as SelectedFairwayInput[];
+
+        const removedEndingFairway = state.secondaryFairwayId?.find((fairway) => fairway.id === removedId) as SelectedFairwayInput;
+        const newSecondaryValues = state.secondaryFairwayId?.filter((f) => f.id !== removedId) as SelectedFairwayInput[];
+
+        if (removedStartingFairway) {
+          newState.primaryFairwayId = removeSequence(
+            removedStartingFairway,
+            newPrimaryValues,
+            removedStartingFairway?.sequenceNumber
+          ) as SelectedFairwayInput[];
+        }
+        if (removedEndingFairway) {
+          newState.secondaryFairwayId = removeSequence(
+            removedEndingFairway,
+            newSecondaryValues,
+            removedEndingFairway?.sequenceNumber
+          ) as SelectedFairwayInput[];
+        }
       }
       break;
+    }
     case 'fairwayPrimary':
-      newState = { ...state, primaryFairwayId: Number(value) };
+      newState = { ...state, primaryFairwayId: (value as SelectedFairwayInput[]).sort((a, b) => a.sequenceNumber - b.sequenceNumber) };
       break;
     case 'fairwaySecondary':
-      newState = { ...state, secondaryFairwayId: Number(value) };
+      newState = { ...state, secondaryFairwayId: (value as SelectedFairwayInput[]).sort((a, b) => a.sequenceNumber - b.sequenceNumber) };
       break;
     case 'harbours':
       newState = { ...state, harbors: value as string[] };
