@@ -18,7 +18,7 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       en: stringValueOrDefault(data?.fairwayCard?.name?.en),
     },
     n2000HeightSystem: data?.fairwayCard?.n2000HeightSystem ?? false,
-    status: origin ? Status.Draft : data?.fairwayCard?.status ?? Status.Draft,
+    status: origin ? Status.Draft : (data?.fairwayCard?.status ?? Status.Draft),
     fairwayIds: data?.fairwayCard?.fairways.flatMap((fairway) => fairway.id).sort() ?? [],
     harbors: data?.fairwayCard?.harbors?.flatMap((harbor) => harbor.id) ?? [],
     pilotRoutes: data?.fairwayCard?.pilotRoutes?.map((route) => route.id) ?? [],
@@ -224,7 +224,7 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
         }),
       };
     }),
-    status: origin ? Status.Draft : data?.harbor?.status ?? Status.Draft,
+    status: origin ? Status.Draft : (data?.harbor?.status ?? Status.Draft),
     operation: origin ? Operation.Create : Operation.Update,
   };
 }
