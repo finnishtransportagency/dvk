@@ -26,7 +26,9 @@ exports[`test mapFairwayCardToModel all 1`] = `
     {
       "id": 1,
       "primary": true,
+      "primarySequenceNumber": 1,
       "secondary": true,
+      "secondarySequenceNumber": 1,
     },
   ],
   "generalInfo": {
@@ -175,8 +177,10 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "fairways": [
     {
       "id": 1,
-      "primary": true,
-      "secondary": true,
+      "primary": false,
+      "primarySequenceNumber": undefined,
+      "secondary": false,
+      "secondarySequenceNumber": undefined,
     },
   ],
   "generalInfo": null,

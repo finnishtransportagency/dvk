@@ -66,7 +66,7 @@ const NotificationModal: React.FC<ModalProps> = ({
               {useTransElement && (
                 /*Changed because of bold text needed for notices modal, but components part can be refactored if more diverse need arises*/
                 <p>
-                  <Trans t={t} i18nKey={i18nkey} components={{ strong: <strong /> }} />
+                  <Trans t={t} i18nKey={i18nkey} components={{ strong: <strong />, span: <span /> }} />
                 </p>
               )}
               {messages?.map((str, i) => <p key={`${i}-${str.length}`}>{str}</p>)}

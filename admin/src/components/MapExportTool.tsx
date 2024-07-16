@@ -335,7 +335,7 @@ const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
     const newSequencedPictures = currentSequenceNumber
       ? removeSequence(picture, currentPicturesByOrientation, currentSequenceNumber)
       : addSequence(picture, currentPicturesByOrientation);
-    setPicture([...newSequencedPictures, ...currentOtherPictures], 'picture');
+    setPicture([...newSequencedPictures, ...currentOtherPictures] as PictureInput[], 'picture');
   };
 
   const deletePicture = (picture: PictureInput) => {
