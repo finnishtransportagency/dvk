@@ -63,8 +63,8 @@ input FairwayCardInput {
   group: String!
   status: Status!
   fairwayIds: [Float!]!
-  primaryFairwayId: Float
-  secondaryFairwayId: Float
+  primaryFairwayId: [SelectedFairwayInput!]
+  secondaryFairwayId: [SelectedFairwayInput!]
   additionalInfo: TextInput
   lineText: TextInput
   designSpeed: TextInput
@@ -197,6 +197,11 @@ input TemporaryNotificationInput {
   content: TextInput!
   startDate: String!
   endDate: String
+}
+
+input SelectedFairwayInput {
+  id: Int!
+  sequenceNumber: Int!
 }
 
 type FairwayCardOrHarbor {
@@ -353,7 +358,9 @@ type Fairway {
   id: Int!
   name: Text
   primary: Boolean
+  primarySequenceNumber: Int
   secondary: Boolean
+  secondarySequenceNumber: Int
   startText: String
   endText: String
   lightingCode: String

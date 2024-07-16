@@ -303,3 +303,5 @@ export const POSITION = {
   topRight: 'topRight',
   bottomRight: 'bottomRight',
 };
+
+export type DropdownType = 'filter' | 'sequence';

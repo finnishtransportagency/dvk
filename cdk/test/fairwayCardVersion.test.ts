@@ -22,7 +22,7 @@ const card: FairwayCardDBModel = {
   modifier: 'test2',
   modificationTimestamp: Date.now(),
   status: Status.Public,
-  fairways: [{ id: 1, primary: true, secondary: false }],
+  fairways: [{ id: 1, primary: true, primarySequenceNumber: 1, secondary: false, secondarySequenceNumber: 1 }],
   trafficService: {
     pilot: {
       places: [
