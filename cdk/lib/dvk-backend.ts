@@ -56,7 +56,7 @@ export class DvkBackendStack extends Stack {
       xrayEnabled: false,
     });
     // Configure the appsync cache using CfnApiCache
-    const cache = new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
+    new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
       apiCachingBehavior: 'PER_RESOLVER_CACHING',
       apiId: api.apiId,
       type: 'SMALL',
