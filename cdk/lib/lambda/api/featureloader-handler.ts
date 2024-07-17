@@ -79,7 +79,7 @@ async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
 }
 
 async function addDepthFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-  const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
+  const areas = (await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event)).data as AlueAPIModel[];
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter(
     (a) => a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11 || a.tyyppiKoodi === 2
@@ -128,7 +128,7 @@ async function addAreaFeatures(
   featureType: string,
   areaFilter: (a: AlueAPIModel) => boolean
 ) {
-  const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
+  const areas = (await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event)).data as AlueAPIModel[];
   log.debug('areas: %d', areas.length);
 
   for (const area of areas.filter(areaFilter)) {
@@ -168,7 +168,7 @@ async function addAreaFeatures(
 }
 
 async function addRestrictionAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-  const areas = await fetchVATUByFairwayClass<RajoitusAlueAPIModel>('rajoitusalueet', event);
+  const areas = (await fetchVATUByFairwayClass<RajoitusAlueAPIModel>('rajoitusalueet', event)).data as RajoitusAlueAPIModel[];
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter(
     (a) => a.rajoitustyyppi === 'Nopeusrajoitus' || (a.rajoitustyypit?.filter((b) => b.rajoitustyyppi === 'Nopeusrajoitus')?.length ?? 0) > 0
@@ -205,7 +205,7 @@ async function addRestrictionAreaFeatures(features: FeaturesWithMaxFetchTime, ev
 }
 
 async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-  const lines = await fetchVATUByFairwayClass<TaululinjaAPIModel>('taululinjat', event);
+  const lines = (await fetchVATUByFairwayClass<TaululinjaAPIModel>('taululinjat', event)).data as TaululinjaAPIModel[];
   log.debug('board lines: %d', lines.length);
   for (const line of lines) {
     features.featureArray.push({
@@ -231,7 +231,7 @@ async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: A
 }
 
 async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-  const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
+  const lines = (await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event)).data as NavigointiLinjaAPIModel[];
   log.debug('lines: %d', lines.length);
   for (const line of lines) {
     features.featureArray.push({
@@ -268,7 +268,7 @@ async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
 }
 
 async function addSafetyEquipmentFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-  const equipments = await fetchVATUByFairwayClass<TurvalaiteAPIModel>('turvalaitteet', event);
+  const equipments = (await fetchVATUByFairwayClass<TurvalaiteAPIModel>('turvalaitteet', event)).data as TurvalaiteAPIModel[];
   log.debug('equipments: %d', equipments.length);
   for (const equipment of equipments) {
     features.featureArray.push({
@@ -299,7 +299,10 @@ async function addSafetyEquipmentFeatures(features: FeaturesWithMaxFetchTime, ev
 }
 
 async function addSafetyEquipmentFaultFeatures(features: FeaturesWithMaxFetchTime) {
-  const faults = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
+  const resp = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
+  console.log(resp);
+  const faults = resp.data as TurvalaiteVikatiedotAPIModel[];
+  features.fetchedDate = resp.headers.date;
   log.debug('faults: %d', faults.length);
   for (const fault of faults) {
     features.featureArray.push({
@@ -427,7 +430,7 @@ async function addBuoys(features: FeaturesWithMaxFetchTime) {
 }
 
 async function addTurningCircleFeatures(features: FeaturesWithMaxFetchTime ) {
-  const circles = await fetchVATUByApi<KaantoympyraAPIModel>('kaantoympyrat');
+  const circles = (await fetchVATUByApi<KaantoympyraAPIModel>('kaantoympyrat')).data as KaantoympyraAPIModel[];
   log.debug('circles: %d', circles.length);
   for (const circle of circles) {
     features.featureArray.push({

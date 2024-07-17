@@ -123,13 +123,12 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
       throw new Error(getFetchErrorMessage(ExternalAPI.VATU));
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
-  const datas = response ? (response.data as T[]) : [];
-  for (const obj of datas) {
+  for (const obj of response.data as T[]) {
     if ('geometria' in obj) {
       roundGeometry(obj.geometria as Geometry);
     }
   }
-  return datas;
+  return response;
 }
 
 export async function fetchMarineWarnings() {
