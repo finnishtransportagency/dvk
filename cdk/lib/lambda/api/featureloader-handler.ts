@@ -20,7 +20,12 @@ import {
   TurvalaiteVikatiedotAPIModel,
 } from './apiModels';
 
-async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+interface FeaturesWithMaxFetchTime {
+  featureArray: Feature<Geometry, GeoJsonProperties>[];
+  fetchedDate?: string;
+}
+
+async function addHarborFeatures(features: FeaturesWithMaxFetchTime) {
   const harbors = await HarborDBModel.getAllPublic();
   const harborMap = new Map<string, HarborDBModel>();
 
@@ -36,7 +41,7 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
       // MW/N2000 Harbors should have same location
       if (!ids.includes(id)) {
         ids.push(id);
-        features.push({
+        features.featureArray.push({
           type: 'Feature',
           id,
           geometry: harbor.geometry as Geometry,
@@ -58,10 +63,10 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
   }
 }
 
-async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
   const pilotPlaces = await fetchPilotPoints();
   for (const place of pilotPlaces) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       geometry: place.geometry as Geometry,
       id: place.id,
@@ -73,13 +78,13 @@ async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]
   }
 }
 
-async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+async function addDepthFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
   const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter(
     (a) => a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11 || a.tyyppiKoodi === 2
   )) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: area.id,
       geometry: area.geometria as Geometry,
@@ -118,7 +123,7 @@ function getAreaFilter(type: 'area' | 'specialarea' | 'specialarea2' | 'speciala
 }
 
 async function addAreaFeatures(
-  features: Feature<Geometry, GeoJsonProperties>[],
+  features: FeaturesWithMaxFetchTime,
   event: ALBEvent,
   featureType: string,
   areaFilter: (a: AlueAPIModel) => boolean
@@ -127,7 +132,7 @@ async function addAreaFeatures(
   log.debug('areas: %d', areas.length);
 
   for (const area of areas.filter(areaFilter)) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: area.id,
       geometry: area.geometria as Geometry,
@@ -162,7 +167,7 @@ async function addAreaFeatures(
   }
 }
 
-async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+async function addRestrictionAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
   const areas = await fetchVATUByFairwayClass<RajoitusAlueAPIModel>('rajoitusalueet', event);
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter(
@@ -195,15 +200,15 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
     if (area.rajoitustyyppi) {
       feature.properties?.types.push({ text: area.rajoitustyyppi });
     }
-    features.push(feature);
+    features.featureArray.push(feature);
   }
 }
 
-async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<TaululinjaAPIModel>('taululinjat', event);
   log.debug('board lines: %d', lines.length);
   for (const line of lines) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: line.taululinjaId,
       geometry: line.geometria as Geometry,
@@ -225,11 +230,11 @@ async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonPropertie
   }
 }
 
-async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
   const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
   log.debug('lines: %d', lines.length);
   for (const line of lines) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: line.id,
       geometry: line.geometria as Geometry,
@@ -262,11 +267,11 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
   }
 }
 
-async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
+async function addSafetyEquipmentFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
   const equipments = await fetchVATUByFairwayClass<TurvalaiteAPIModel>('turvalaitteet', event);
   log.debug('equipments: %d', equipments.length);
   for (const equipment of equipments) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: equipment.turvalaitenumero,
       geometry: equipment.geometria as Geometry,
@@ -293,11 +298,11 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
   }
 }
 
-async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addSafetyEquipmentFaultFeatures(features: FeaturesWithMaxFetchTime) {
   const faults = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
   log.debug('faults: %d', faults.length);
   for (const fault of faults) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: fault.vikaId,
       geometry: fault.geometria as Geometry,
@@ -313,11 +318,12 @@ async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJs
   }
 }
 
-async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addMarineWarnings(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchMarineWarnings();
-  for (const feature of resp.features) {
+  features.fetchedDate = resp.headers.date;
+  for (const feature of (resp.data as FeatureCollection).features) {
     const dates = parseDateTimes(feature);
-    features.push({
+    features.featureArray.push({
       type: feature.type,
       id: feature.properties?.ID,
       geometry: feature.geometry,
@@ -343,10 +349,10 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
   }
 }
 
-async function addVTSPointsOrLines(features: Feature<Geometry, GeoJsonProperties>[], isPoint: boolean) {
+async function addVTSPointsOrLines(features: FeaturesWithMaxFetchTime, isPoint: boolean) {
   const resp = isPoint ? await fetchVTSPoints() : await fetchVTSLines();
   for (const feature of resp) {
-    features.push({
+    features.featureArray.push({
       type: feature.type,
       id: feature.id,
       geometry: feature.geometry,
@@ -361,10 +367,10 @@ async function addVTSPointsOrLines(features: Feature<Geometry, GeoJsonProperties
   }
 }
 
-async function addMareoGraphs(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addMareoGraphs(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchMareoGraphs();
   for (const mareograph of resp) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: mareograph.id,
       geometry: mareograph.geometry,
@@ -380,10 +386,10 @@ async function addMareoGraphs(features: Feature<Geometry, GeoJsonProperties>[]) 
   }
 }
 
-async function addWeatherObservations(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addWeatherObservations(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchWeatherObservations();
   for (const observation of resp) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: observation.id,
       geometry: observation.geometry,
@@ -401,10 +407,10 @@ async function addWeatherObservations(features: Feature<Geometry, GeoJsonPropert
   }
 }
 
-async function addBuoys(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addBuoys(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchBuoys();
   for (const buoy of resp) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: buoy.id,
       geometry: buoy.geometry,
@@ -420,11 +426,11 @@ async function addBuoys(features: Feature<Geometry, GeoJsonProperties>[]) {
   }
 }
 
-async function addTurningCircleFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addTurningCircleFeatures(features: FeaturesWithMaxFetchTime ) {
   const circles = await fetchVATUByApi<KaantoympyraAPIModel>('kaantoympyrat');
   log.debug('circles: %d', circles.length);
   for (const circle of circles) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: circle.kaantoympyraID,
       geometry: circle.geometria as Geometry,
@@ -446,7 +452,7 @@ function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined
   return 'noquerystring';
 }
 
-async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent): Promise<boolean> {
+async function addFeatures(type: string, features: FeaturesWithMaxFetchTime, event: ALBEvent): Promise<boolean> {
   switch (type) {
     case 'pilot':
       await addPilotFeatures(features);
@@ -510,8 +516,11 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   const type = event.multiValueQueryStringParameters?.type?.join(',') ?? '';
   let base64Response: string | undefined;
   let statusCode = 200;
+  let fetchedDate = '';
   try {
-    const features: Feature<Geometry, GeoJsonProperties>[] = [];
+    // fetched is the real time the data is fetched from api. Needed for observations, buyos, 
+    // mareographs, marine warnings and safety equipment faults
+    const features: FeaturesWithMaxFetchTime = { featureArray: [], fetchedDate: '' };
     const validType = await addFeatures(type, features, event);
     if (!validType) {
       log.info('Invalid type: %s', type);
@@ -520,8 +529,9 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     } else {
       const collection: FeatureCollection = {
         type: 'FeatureCollection',
-        features,
+        features: features.featureArray,
       };
+      fetchedDate = features.fetchedDate ?? '';
       base64Response = await toBase64Response(collection);
     }
   } catch (e) {
@@ -536,6 +546,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
       ...getHeaders(),
       ...getFeatureCacheControlHeaders(key),
       'Content-Type': ['application/geo+json'],
+      'fetchedDate': [fetchedDate],
     },
   };
 };

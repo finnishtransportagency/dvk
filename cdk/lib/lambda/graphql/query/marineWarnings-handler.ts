@@ -3,17 +3,23 @@ import { parseDateTimes } from '../../api/pooki';
 import { log } from '../../logger';
 import { cacheResponse, getFromCache } from '../cache';
 import { fetchMarineWarnings } from '../../api/axios';
+import { FeatureCollection } from 'geojson';
 
 function getKey() {
   return 'marinewarning-graphql';
 }
 
-export const handler = async (): Promise<MarineWarning[]> => {
+interface FetchedMarineWarningsObject {
+  marineWarnings: MarineWarning[],
+  fetched: number,
+}
+
+export const handler = async (): Promise<FetchedMarineWarningsObject> => {
   const key = getKey();
   try {
     const resp = await fetchMarineWarnings();
     const warnings = [];
-    for (const feature of resp.features) {
+    for (const feature of (resp.data as FeatureCollection).features) {
       const dates = parseDateTimes(feature);
       const warning: MarineWarning = {
         id: feature.properties?.ID,
@@ -33,7 +39,7 @@ export const handler = async (): Promise<MarineWarning[]> => {
       warnings.push(warning);
     }
     await cacheResponse(key, warnings);
-    return warnings;
+    return { marineWarnings: warnings, fetched: Date.parse(resp.headers.date) };
   } catch (e) {
     log.error('Getting marine warnings failed: %s', e);
     const cacheResponseData = await getFromCache(key);

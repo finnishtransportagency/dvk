@@ -42,10 +42,19 @@ function useDataLayer(
   filterMethod?: (features: Feature<Geometry>[]) => Feature<Geometry>[]
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
+  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
   useEffect(() => {
+    // if no features, still set for layer when api was called
+    if (
+      ['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'safetyequipmentfault'].includes(featureLayerId) &&
+      !data
+    ) {
+      const layer = dvkMap.getFeatureLayer(featureLayerId);
+      layer.set('fetchedDate', headers?.['fetcheddate']);
+    }
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
+      layer.set('fetchedDate', headers?.['fetcheddate']);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
@@ -57,7 +66,7 @@ function useDataLayer(
       }
       setReady(true);
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection, filterMethod]);
+  }, [featureLayerId, featureDataId, headers, data, dataUpdatedAt, dataProjection, filterMethod]);
   const layer = dvkMap.getFeatureLayer(featureLayerId);
   layer.set('errorUpdatedAt', errorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };

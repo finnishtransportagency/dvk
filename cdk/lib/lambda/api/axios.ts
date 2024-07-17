@@ -132,7 +132,7 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
   return datas;
 }
 
-export async function fetchMarineWarnings(): Promise<FeatureCollection> {
+export async function fetchMarineWarnings() {
   const start = Date.now();
   const response = await axios
     .get(await getPookiUrl(), {
@@ -151,7 +151,7 @@ export async function fetchMarineWarnings(): Promise<FeatureCollection> {
       roundGeometry(feature.geometry);
     }
   }
-  return response.data as FeatureCollection;
+  return response;
 }
 
 export async function fetchWeatherApi<T>(path: string) {
