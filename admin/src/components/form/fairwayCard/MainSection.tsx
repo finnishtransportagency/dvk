@@ -91,7 +91,7 @@ const MainSection: React.FC<MainSectionProps> = ({
           <SelectWithCustomDropdown
             dropdownType="sequence"
             options={fairwaySelection ?? []}
-            label={t('fairwaycard.starting-fairway')}
+            label={t('fairwaycard.starting-fairways')}
             selected={state.primaryFairwayId ?? []}
             setSelected={updateState}
             actionType="fairwayPrimary"
@@ -109,7 +109,7 @@ const MainSection: React.FC<MainSectionProps> = ({
           <SelectWithCustomDropdown
             dropdownType="sequence"
             options={fairwaySelection ?? []}
-            label={t('fairwaycard.ending-fairway')}
+            label={t('fairwaycard.ending-fairways')}
             selected={state.secondaryFairwayId ?? []}
             setSelected={updateState}
             actionType="fairwaySecondary"
