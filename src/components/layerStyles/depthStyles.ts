@@ -19,7 +19,7 @@ export function getDepthStyle(feature: FeatureLike) {
   const dvkMap = getMap();
   const n2000HeightSystem = isShowN2000HeightSystem(feature.getProperties() as AreaFeatureProperties);
   const text =
-    dvkMap.t('popup.quay.number', { val: n2000HeightSystem ? props.n2000depth ?? props.depth : props.depth }) + (n2000HeightSystem ? 'm' : '');
+    dvkMap.t('popup.quay.number', { val: n2000HeightSystem ? (props.n2000depth ?? props.depth) : props.depth }) + (n2000HeightSystem ? 'm' : '');
 
   const specialFeature = feature.getProperties().areaType === 2;
   let image;

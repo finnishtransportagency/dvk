@@ -1,8 +1,8 @@
 import { ALBResult } from 'aws-lambda';
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, LineString } from 'geojson';
 import { getPilotRoutesHeaders } from '../environment';
-import { getFromCache, getPilotRouteCacheControlHeaders } from '../graphql/cache';
-import { handleLoaderError, roundGeometry, saveResponseToS3, toBase64Response } from '../util';
+import { getPilotRouteCacheControlHeaders } from '../graphql/cache';
+import { roundGeometry, toBase64Response } from '../util';
 import { RtzData, RtzWaypoint, Coordinate, RtzReittipiste } from './apiModels';
 import { fetchPilotRoutesApi } from './axios';
 import { lineString, bearingToAzimuth } from '@turf/helpers';
@@ -150,7 +150,7 @@ export async function fetchPilotRouteData(): Promise<FeatureCollection> {
   };
 }
 
-export async function fetchPilotRoutes(key: string): Promise<ALBResult> {
+export async function fetchPilotRoutes(): Promise<ALBResult> {
   let base64Response: string | undefined;
   let statusCode = 200;
 

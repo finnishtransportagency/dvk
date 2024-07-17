@@ -222,11 +222,11 @@ const TextInput: React.FC<TextInputProps> = ({
         fill="outline"
         helperText={isInputOk(isValid, error) ? getHelperText() : ''}
         inputMode={getInputMode()}
-        label={unit ? t('unit.' + unit) ?? '' : ''}
+        label={unit ? (t('unit.' + unit) ?? '') : ''}
         labelPlacement={unit ? 'end' : undefined}
-        max={inputType === 'number' ? max ?? 9999999 : undefined}
+        max={inputType === 'number' ? (max ?? 9999999) : undefined}
         maxlength={maxCharLength ?? INPUT_MAXLENGTH}
-        min={inputType === 'number' ? min ?? 0 : undefined}
+        min={inputType === 'number' ? (min ?? 0) : undefined}
         multiple={inputType === 'email' && multiple}
         name={name ? name + (actionLang ?? '') : undefined}
         onIonBlur={() => {
