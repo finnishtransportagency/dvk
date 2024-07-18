@@ -10,8 +10,8 @@ function getKey() {
 }
 
 interface FetchedMarineWarningsObject {
-  marineWarnings: MarineWarning[],
-  fetched: number,
+  marineWarnings: MarineWarning[];
+  fetched: number;
 }
 
 export const handler = async (): Promise<FetchedMarineWarningsObject> => {

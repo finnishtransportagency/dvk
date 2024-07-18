@@ -122,12 +122,7 @@ function getAreaFilter(type: 'area' | 'specialarea' | 'specialarea2' | 'speciala
   }
 }
 
-async function addAreaFeatures(
-  features: FeaturesWithMaxFetchTime,
-  event: ALBEvent,
-  featureType: string,
-  areaFilter: (a: AlueAPIModel) => boolean
-) {
+async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent, featureType: string, areaFilter: (a: AlueAPIModel) => boolean) {
   const areas = (await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event)).data as AlueAPIModel[];
   log.debug('areas: %d', areas.length);
 
@@ -372,9 +367,11 @@ async function addVTSPointsOrLines(features: FeaturesWithMaxFetchTime, isPoint: 
 async function addMareoGraphs(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchMareoGraphs();
   // dateTime is got straight from backend, so it can determine when last time data was fetched
-  features.fetchedDate = String(resp.reduce((max, feature) => {
-    return feature.dateTime > max ? feature.dateTime : max;
-  }, -1));
+  features.fetchedDate = String(
+    resp.reduce((max, feature) => {
+      return feature.dateTime > max ? feature.dateTime : max;
+    }, -1)
+  );
 
   for (const mareograph of resp) {
     features.featureArray.push({
@@ -396,9 +393,11 @@ async function addMareoGraphs(features: FeaturesWithMaxFetchTime) {
 async function addWeatherObservations(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchWeatherObservations();
   // dateTime is got straight from backend, so it can determine when last time data was fetched
-  features.fetchedDate = String(resp.reduce((max, feature) => {
-    return feature.dateTime > max ? feature.dateTime : max;
-  }, -1));
+  features.fetchedDate = String(
+    resp.reduce((max, feature) => {
+      return feature.dateTime > max ? feature.dateTime : max;
+    }, -1)
+  );
 
   for (const observation of resp) {
     features.featureArray.push({
@@ -422,9 +421,11 @@ async function addWeatherObservations(features: FeaturesWithMaxFetchTime) {
 async function addBuoys(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchBuoys();
   // dateTime is got straight from backend, so it can determine when last time data was fetched
-  features.fetchedDate = String(resp.reduce((max, feature) => {
-    return feature.dateTime > max ? feature.dateTime : max;
-  }, -1));
+  features.fetchedDate = String(
+    resp.reduce((max, feature) => {
+      return feature.dateTime > max ? feature.dateTime : max;
+    }, -1)
+  );
 
   for (const buoy of resp) {
     features.featureArray.push({
@@ -443,7 +444,7 @@ async function addBuoys(features: FeaturesWithMaxFetchTime) {
   }
 }
 
-async function addTurningCircleFeatures(features: FeaturesWithMaxFetchTime ) {
+async function addTurningCircleFeatures(features: FeaturesWithMaxFetchTime) {
   const circles = (await fetchVATUByApi<KaantoympyraAPIModel>('kaantoympyrat')).data as KaantoympyraAPIModel[];
   log.debug('circles: %d', circles.length);
   for (const circle of circles) {
@@ -535,7 +536,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   let statusCode = 200;
   let fetchedDate = '';
   try {
-    // fetched is the real time the data is fetched from api. Needed for observations, buyos, 
+    // fetched is the real time the data is fetched from api. Needed for observations, buyos,
     // mareographs, marine warnings and safety equipment faults
     const features: FeaturesWithMaxFetchTime = { featureArray: [], fetchedDate: '' };
     const validType = await addFeatures(type, features, event);
@@ -563,7 +564,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
       ...getHeaders(),
       ...getFeatureCacheControlHeaders(key),
       'Content-Type': ['application/geo+json'],
-      'fetchedDate': [fetchedDate],
+      fetchedDate: [fetchedDate],
     },
   };
 };
