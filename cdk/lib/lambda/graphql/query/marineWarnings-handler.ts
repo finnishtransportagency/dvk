@@ -9,12 +9,7 @@ function getKey() {
   return 'marinewarning-graphql';
 }
 
-interface FetchedMarineWarningsObject {
-  marineWarnings: MarineWarning[];
-  fetched: number;
-}
-
-export const handler = async (): Promise<FetchedMarineWarningsObject> => {
+export const handler = async (): Promise<MarineWarning[]> => {
   const key = getKey();
   try {
     const resp = await fetchMarineWarnings();
@@ -39,7 +34,7 @@ export const handler = async (): Promise<FetchedMarineWarningsObject> => {
       warnings.push(warning);
     }
     await cacheResponse(key, warnings);
-    return { marineWarnings: warnings, fetched: Date.parse(resp.headers.date) };
+    return warnings;
   } catch (e) {
     log.error('Getting marine warnings failed: %s', e);
     const cacheResponseData = await getFromCache(key);

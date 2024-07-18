@@ -433,7 +433,12 @@ jest.mock('../lib/lambda/api/axios', () => ({
     if (throwError) {
       throw new Error('Fetching from Pooki api failed');
     }
-    return { data: warnings };
+    return {
+      data: warnings,
+      headers: {
+        date: 0,
+      },
+    };
   },
   fetchTraficomApi: () => {
     if (throwError) {
@@ -500,7 +505,6 @@ it('should get areas from api', async () => {
 
 it('should get warnings always from api', async () => {
   const response = await handler(mockFeaturesALBEvent('marinewarning'));
-  console.log(response);
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(2);
