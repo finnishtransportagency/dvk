@@ -36,9 +36,6 @@ export function useFeatureData(
     queryFn: async () => {
       // get headers to get the real time of fetching from api
       const { data, headers } = await axios.get(urlStr);
-      if (featureDataId === 'safetyequipmentfault') {
-        console.log(headers);
-      }
       return { data, headers };
     },
     enabled,

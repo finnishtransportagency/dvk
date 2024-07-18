@@ -300,9 +300,8 @@ async function addSafetyEquipmentFeatures(features: FeaturesWithMaxFetchTime, ev
 
 async function addSafetyEquipmentFaultFeatures(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
-  console.log(resp);
   const faults = resp.data as TurvalaiteVikatiedotAPIModel[];
-  features.fetchedDate = resp.headers.date;
+  features.fetchedDate = String(Date.parse(resp.headers.date));
   log.debug('faults: %d', faults.length);
   for (const fault of faults) {
     features.featureArray.push({
@@ -323,7 +322,7 @@ async function addSafetyEquipmentFaultFeatures(features: FeaturesWithMaxFetchTim
 
 async function addMarineWarnings(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchMarineWarnings();
-  features.fetchedDate = resp.headers.date;
+  features.fetchedDate = String(Date.parse(resp.headers.date));
   for (const feature of (resp.data as FeatureCollection).features) {
     const dates = parseDateTimes(feature);
     features.featureArray.push({
@@ -372,6 +371,11 @@ async function addVTSPointsOrLines(features: FeaturesWithMaxFetchTime, isPoint: 
 
 async function addMareoGraphs(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchMareoGraphs();
+  // dateTime is got straight from backend, so it can determine when last time data was fetched
+  features.fetchedDate = String(resp.reduce((max, feature) => {
+    return feature.dateTime > max ? feature.dateTime : max;
+  }, -1));
+
   for (const mareograph of resp) {
     features.featureArray.push({
       type: 'Feature',
@@ -391,6 +395,11 @@ async function addMareoGraphs(features: FeaturesWithMaxFetchTime) {
 
 async function addWeatherObservations(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchWeatherObservations();
+  // dateTime is got straight from backend, so it can determine when last time data was fetched
+  features.fetchedDate = String(resp.reduce((max, feature) => {
+    return feature.dateTime > max ? feature.dateTime : max;
+  }, -1));
+
   for (const observation of resp) {
     features.featureArray.push({
       type: 'Feature',
@@ -412,6 +421,11 @@ async function addWeatherObservations(features: FeaturesWithMaxFetchTime) {
 
 async function addBuoys(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchBuoys();
+  // dateTime is got straight from backend, so it can determine when last time data was fetched
+  features.fetchedDate = String(resp.reduce((max, feature) => {
+    return feature.dateTime > max ? feature.dateTime : max;
+  }, -1));
+
   for (const buoy of resp) {
     features.featureArray.push({
       type: 'Feature',

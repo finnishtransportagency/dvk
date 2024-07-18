@@ -81,10 +81,11 @@ export function useConditionsDataLayer(
   enabled: boolean = true
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
+  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
   useEffect(() => {
+    const layer = dvkMap.getFeatureLayer(featureLayerId);
+    layer.set('fetchedDate', headers?.['fetcheddate']);
     if (data) {
-      const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
@@ -108,7 +109,7 @@ export function useConditionsDataLayer(
       }
       setReady(true);
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  }, [featureLayerId, headers, data, dataUpdatedAt, dataProjection]);
   const layer = dvkMap.getFeatureLayer(featureLayerId);
   layer.set('errorUpdatedAt', errorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
