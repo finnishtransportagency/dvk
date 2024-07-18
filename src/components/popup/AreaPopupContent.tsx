@@ -82,7 +82,9 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
         <IonRow>
           <IonCol>
-            <em>{showN2000HeightSystem ? area.properties.n2000ReferenceLevel ?? area.properties.referenceLevel : area.properties.referenceLevel}</em>
+            <em>
+              {showN2000HeightSystem ? (area.properties.n2000ReferenceLevel ?? area.properties.referenceLevel) : area.properties.referenceLevel}
+            </em>
           </IonCol>
         </IonRow>
       )}
@@ -112,10 +114,10 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       {(area.properties.n2000draft || area.properties.draft) && (
         <IonRow>
           <IonCol>
-            {t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft ?? area.properties.draft : area.properties.draft })}{' '}
+            {t('popup.area.draft', { val: showN2000HeightSystem ? (area.properties.n2000draft ?? area.properties.draft) : area.properties.draft })}{' '}
             <dd
               aria-label={t('fairwayCards.unit.mDesc', {
-                count: showN2000HeightSystem ? area.properties.n2000draft ?? area.properties.draft : area.properties.draft,
+                count: showN2000HeightSystem ? (area.properties.n2000draft ?? area.properties.draft) : area.properties.draft,
               })}
             >
               m
@@ -126,10 +128,10 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       {(area.properties.n2000depth || area.properties.depth) && (
         <IonRow>
           <IonCol>
-            {t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth ?? area.properties.depth : area.properties.depth })}{' '}
+            {t('popup.area.depth', { val: showN2000HeightSystem ? (area.properties.n2000depth ?? area.properties.depth) : area.properties.depth })}{' '}
             <dd
               aria-label={t('fairwayCards.unit.mDesc', {
-                count: showN2000HeightSystem ? area.properties.n2000depth ?? area.properties.depth : area.properties.depth,
+                count: showN2000HeightSystem ? (area.properties.n2000depth ?? area.properties.depth) : area.properties.depth,
               })}
             >
               m

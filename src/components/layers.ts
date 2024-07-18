@@ -49,7 +49,7 @@ import { getHarborStyle } from './layerStyles/harborStyles';
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
 import { getDirwayStyle } from './layerStyles/dirwayStyles';
 
-const minResolutionHarbor = 3;
+const minResolutionHarbor = 2;
 
 function getAreaStyle(color: string, width: number, fillColor: string, resolution?: number) {
   let strokeWidth = width;

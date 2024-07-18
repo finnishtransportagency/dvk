@@ -55,7 +55,7 @@ function useDataLayer(
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       layer.set('fetchedDate', headers?.['fetcheddate']);
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      if (!layer.get('dataUpdatedAt') || dataUpdatedAt > layer.get('dataUpdatedAt')) {
         const format = new GeoJSON();
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);

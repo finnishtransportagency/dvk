@@ -56,7 +56,7 @@ export class DvkBackendStack extends Stack {
       xrayEnabled: false,
     });
     // Configure the appsync cache using CfnApiCache
-    const cache = new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
+    new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
       apiCachingBehavior: 'PER_RESOLVER_CACHING',
       apiId: api.apiId,
       type: 'SMALL',
@@ -169,6 +169,9 @@ export class DvkBackendStack extends Stack {
         fairwayCardWithVersionsTable.grantReadWriteData(backendLambda);
         harborWithVersionsTable.grantReadWriteData(backendLambda);
         staticBucket.grantPut(backendLambda);
+        // delete when more sophisticated caching is implemented
+        // only needed to get updated starting and ending fairways for fairwaycard
+        cacheBucket.grantDelete(backendLambda);
       } else {
         fairwayCardWithVersionsTable.grantReadData(backendLambda);
         harborWithVersionsTable.grantReadData(backendLambda);

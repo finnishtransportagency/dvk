@@ -1,15 +1,15 @@
 import { ALBResult } from 'aws-lambda';
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, LineString } from 'geojson';
 import { getPilotRoutesHeaders } from '../environment';
-import { getFromCache, getPilotRouteCacheControlHeaders } from '../graphql/cache';
-import { handleLoaderError, roundGeometry, saveResponseToS3, toBase64Response } from '../util';
+import { getPilotRouteCacheControlHeaders } from '../graphql/cache';
+import { roundGeometry, toBase64Response } from '../util';
 import { RtzData, RtzWaypoint, Coordinate, RtzReittipiste } from './apiModels';
 import { fetchPilotRoutesApi } from './axios';
 import { lineString, bearingToAzimuth } from '@turf/helpers';
 import { rhumbBearing as turf_rhumbBearing } from '@turf/rhumb-bearing';
 import { transformTranslate as turf_transformTranslate } from '@turf/transform-translate';
-import { lineIntersect as turf_lineIntersect }from '@turf/line-intersect';
-import { nearestPointOnLine as turf_nearestPointOnLine }from '@turf/nearest-point-on-line';
+import { lineIntersect as turf_lineIntersect } from '@turf/line-intersect';
+import { nearestPointOnLine as turf_nearestPointOnLine } from '@turf/nearest-point-on-line';
 import { lineArc as turf_lineArc } from '@turf/line-arc';
 
 type TurningDirection = 'left' | 'right';
@@ -150,7 +150,7 @@ export async function fetchPilotRouteData(): Promise<FeatureCollection> {
   };
 }
 
-export async function fetchPilotRoutes(key: string): Promise<ALBResult> {
+export async function fetchPilotRoutes(): Promise<ALBResult> {
   let base64Response: string | undefined;
   let statusCode = 200;
 
