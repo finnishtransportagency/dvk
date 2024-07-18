@@ -1,33 +1,35 @@
-[
-  {
-    "id": 24303,
-    "number": 7777,
-    "area": {
-      "fi": "SAARISTOMERI",
-      "sv": "SKÄRGÅRDSHAVET",
-      "en": "ARCHIPELAGO SEA"
-    },
-    "type": {
-      "fi": "LOCAL WARNING",
-      "sv": "LOCAL WARNING",
-      "en": "LOCAL WARNING"
-    },
-    "location": {
-      "fi": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
-      "sv": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
-      "en": "Hessund-Parainen veneväylä 3545, syvyys: 1,5"
-    },
-    "description": {
-      "fi": "DVK testaa",
-      "sv": null,
-      "en": null
-    },
-    "startDateTime": 1682629200000,
-    "endDateTime": 1685480400000,
-    "dateTime": 1682629200000,
-    "notifier": "DVK",
-    "equipmentId": null,
-    "lineId": null,
-    "areaId": 254254
-  }
-]
+{ "marineWarnings": [
+    {
+      "id": 24303,
+      "number": 7777,
+      "area": {
+        "fi": "SAARISTOMERI",
+        "sv": "SKÄRGÅRDSHAVET",
+        "en": "ARCHIPELAGO SEA"
+      },
+      "type": {
+        "fi": "LOCAL WARNING",
+        "sv": "LOCAL WARNING",
+        "en": "LOCAL WARNING"
+      },
+      "location": {
+        "fi": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+        "sv": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+        "en": "Hessund-Parainen veneväylä 3545, syvyys: 1,5"
+      },
+      "description": {
+        "fi": "DVK testaa",
+        "sv": null,
+        "en": null
+      },
+      "startDateTime": 1682629200000,
+      "endDateTime": 1685480400000,
+      "dateTime": 1682629200000,
+      "notifier": "DVK",
+      "equipmentId": null,
+      "lineId": null,
+      "areaId": 254254
+    }
+  ],
+  "fetched": 0
+}

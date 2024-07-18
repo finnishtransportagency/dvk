@@ -423,9 +423,9 @@ jest.mock('../lib/lambda/api/axios', () => ({
       throw new Error('Fetching from VATU api failed');
     }
     if (api === 'navigointilinjat') {
-      return lines;
+      return { data: lines };
     } else if (api === 'vaylaalueet') {
-      return areas;
+      return { data: areas };
     }
     return [];
   },
@@ -433,7 +433,7 @@ jest.mock('../lib/lambda/api/axios', () => ({
     if (throwError) {
       throw new Error('Fetching from Pooki api failed');
     }
-    return warnings;
+    return { data: warnings };
   },
   fetchTraficomApi: () => {
     if (throwError) {
@@ -500,6 +500,7 @@ it('should get areas from api', async () => {
 
 it('should get warnings always from api', async () => {
   const response = await handler(mockFeaturesALBEvent('marinewarning'));
+  console.log(response);
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(2);

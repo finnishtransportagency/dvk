@@ -106,7 +106,7 @@ jest.mock('../lib/lambda/api/axios', () => ({
     if (throwError) {
       throw new Error('Fetching from Pooki api failed');
     }
-    return warnings;
+    return { data: warnings };
   },
 }));
 
@@ -122,7 +122,7 @@ it('should get warnings from api', async () => {
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   const response = await handler();
-  expect(response.length).toBe(2);
+  expect(response.marineWarnings.length).toBe(2);
   expect(response).toMatchSnapshot();
 });
 
@@ -133,6 +133,6 @@ it('should get warnings from cache when api call fails', async () => {
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
   throwError = true;
   const response = await handler();
-  expect(response.length).toBe(1);
+  expect(response.marineWarnings.length).toBe(1);
   expect(response).toMatchSnapshot();
 });

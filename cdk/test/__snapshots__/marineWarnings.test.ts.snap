@@ -4,94 +4,6 @@ exports[`should get warnings from api 1`] = `
 [
   {
     "area": {
-      "en": "BAY OF BOTHNIA",
-      "fi": "PERÄMERI",
-      "sv": "BOTTENVIKEN",
-    },
-    "areaId": NaN,
-    "dateTime": 1689163200000,
-    "description": {
-      "en": "
-EDGE MARK KRIISINKIVI NR 11133
-IN POS 65-12.69N 025-04.00E
-OUT OF ORDER DUE TO MAITENANCE WORK",
-      "fi": "
-REUNAMERKKI KRIISINKIVI NR 11133
-PAIKASSA  65-12.69N 025-04.00E
-EI TOIMINNASSA KORJAUSTÖIDEN VUOKSI",
-      "sv": "
-RANDMÄRKE KRIISINKIVI NR 11133
-I POS 65-12.69N 025-04.00E
-UR FUNKTION PÅ GRUND AV UNDERHÅLLSARBETE",
-    },
-    "endDateTime": NaN,
-    "equipmentId": 11133,
-    "id": 24822,
-    "lineId": NaN,
-    "location": {
-      "en": "OULU - KEMI FAIRWAY",
-      "fi": "OULU - KEMI VÄYLÄ",
-      "sv": "ULEÅBORG - KEMI FARLED",
-    },
-    "notifier": "FINTRAFFIC/BVTS/OFK/KD",
-    "number": 136,
-    "startDateTime": 1689163200000,
-    "type": {
-      "en": "LOCAL WARNING",
-      "fi": "LOCAL WARNING",
-      "sv": "LOCAL WARNING",
-    },
-  },
-  {
-    "area": {
-      "en": "BAY OF BOTHNIA",
-      "fi": "PERÄMERI",
-      "sv": "BOTTENVIKEN",
-    },
-    "areaId": NaN,
-    "dateTime": 1688819400000,
-    "description": {
-      "en": "
-ALTERATION OF FLOATING NAVIGATIONAL AIDS ON KEMI AJOS FAIRWAY WILL BE CONDUCTED BETWEEN 10.7-30.7.2023
-
-DATE AND TIME
-080930 UTC OF JUL",
-      "fi": "
-KEMIN AJOKSEN VÄYLÄLLÄ SUORITETAAN KELLUVIEN TURVALAITTEIDEN MUUTOSTÖITÄ 10.7-30.7.2023
-
-DATE AND TIME
-080930 UTC OF JUL",
-      "sv": "
-FÖRÄNDRINGSARBETE AV FLYTANDE NAVIGATIONS ANORDNINGAR UTFÖRS PÅ KEMI AJOS FARLED 10.7-30.7.2023
-
-DATE AND TIME
-080930 UTC OF JUL",
-    },
-    "endDateTime": NaN,
-    "equipmentId": NaN,
-    "id": 24803,
-    "lineId": NaN,
-    "location": {
-      "en": "KEMI AJOS FAIRWAY",
-      "fi": "KEMI AJOS VÄYLÄ",
-      "sv": "KEMI AJOS FARLED",
-    },
-    "notifier": "LEHTOLA/FINTRAFFIC/OFK/MMH",
-    "number": 135,
-    "startDateTime": 1688947200000,
-    "type": {
-      "en": "LOCAL WARNING",
-      "fi": "LOCAL WARNING",
-      "sv": "LOCAL WARNING",
-    },
-  },
-]
-`;
-
-exports[`should get warnings from cache when api call fails 1`] = `
-[
-  {
-    "area": {
       "en": "ARCHIPELAGO SEA",
       "fi": "SAARISTOMERI",
       "sv": "SKÄRGÅRDSHAVET",
@@ -122,4 +34,43 @@ exports[`should get warnings from cache when api call fails 1`] = `
     },
   },
 ]
+`;
+
+exports[`should get warnings from cache when api call fails 1`] = `
+{
+  "fetched": 0,
+  "marineWarnings": [
+    {
+      "area": {
+        "en": "ARCHIPELAGO SEA",
+        "fi": "SAARISTOMERI",
+        "sv": "SKÄRGÅRDSHAVET",
+      },
+      "areaId": 254254,
+      "dateTime": 1682629200000,
+      "description": {
+        "en": null,
+        "fi": "DVK testaa",
+        "sv": null,
+      },
+      "endDateTime": 1685480400000,
+      "equipmentId": null,
+      "id": 24303,
+      "lineId": null,
+      "location": {
+        "en": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+        "fi": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+        "sv": "Hessund-Parainen veneväylä 3545, syvyys: 1,5",
+      },
+      "notifier": "DVK",
+      "number": 7777,
+      "startDateTime": 1682629200000,
+      "type": {
+        "en": "LOCAL WARNING",
+        "fi": "LOCAL WARNING",
+        "sv": "LOCAL WARNING",
+      },
+    },
+  ],
+}
 `;
