@@ -92,8 +92,8 @@ export function getMareographStyle(feature: FeatureLike, selected: boolean, reso
   }
 
   const s = props.calculated ? getCalculatedStyle(selected, isOutdatedData) : getMeasuredStyle(selected, isOutdatedData);
-  const basicText = `${Math.round(props.waterLevel / 10)}/${Math.round(props.n2000WaterLevel / 10)} cm`;
-  const outDatedText = '-/- cm';
+  const basicText = `${Math.round(props.waterLevel / 10)}/${Math.round(props.n2000WaterLevel / 10)}cm`;
+  const outDatedText = '-/-cm';
   s.getText()?.setText(isOutdatedData ? outDatedText : basicText);
   return s;
 }
