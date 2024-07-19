@@ -9,6 +9,7 @@ import { InfoParagraph } from '../content/Paragraph';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import alertIcon from '../../theme/img/alert_icon.svg';
+import { getTimeDifference } from '../../utils/common';
 
 const hourInMilliseconds = 3600000;
 
@@ -28,11 +29,6 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
-  };
-
-  const getTimeDifference = (dataUpdatedAt: number) => {
-    const current = Date.now();
-    return current + dataUpdatedAt;
   };
 
   return (
