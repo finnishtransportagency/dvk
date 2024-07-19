@@ -157,15 +157,19 @@
     "picture-errors": "[en] Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt.",
     "temporary-notification-add": "[en] Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erilliseen elementtiin. Huomiolle tulee aina lisätä vähintään <strong>voimaantulopäivämäärä</strong>. Jos huomiolle ei merkitä <strong>päättymispäivämäärää</strong>, on huomio voimassa toistaiseksi.",
     "temporary-notification-in-effect-content": "[en] Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa, ja huomio tulee poistaa näkyvistä käsin.",
-    "temporary-notification-in-effect-title": "[en] Väliaikaisen huomion voimassaoloaika"
+    "temporary-notification-in-effect-title": "[en] Väliaikaisen huomion voimassaoloaika",
+    "starting-fairway-title": " [en] Aloittavat väylät järjestyksen valinta",
+    "starting-fairway-description": "[en] Voit valita useita aloittavia väyliä. Aloittavien väylien järjestys määräytyy sen mukaan missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa",
+    "ending-fairway-title": "[en] Päättävät väylät järjestyksen valinta",
+    "ending-fairway-description": "[en] Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa"
   },
   "fairwaycard": {
     "name": "Fairway card name",
     "primary-id": "Fairway card ID",
     "primary-id-help-text": "Unique identifier, visible in browser's address bar; valid characters: (a-z) and (0-9).",
     "linked-fairways": "Linked fairways",
-    "starting-fairway": "Starting fairway",
-    "ending-fairway": "Ending fairway",
+    "starting-fairways": "Starting fairways",
+    "ending-fairways": "Ending fairways",
     "linked-harbours": "Linked harbours",
     "fairway-order-help-text": "[en] Väyläkortin suunta avomereltä rantaan.",
     "error-duplicate-id": "[en] Tunniste on jo käytössä",

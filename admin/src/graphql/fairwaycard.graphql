@@ -22,7 +22,9 @@ fragment FairwayCardById on FairwayCard {
         en
       }
       primary
+      primarySequenceNumber
       secondary
+      secondarySequenceNumber
     }
     additionalInfo {
       fi

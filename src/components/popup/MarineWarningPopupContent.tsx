@@ -41,8 +41,8 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
   const dvkMap = getMap();
 
   const equipmentFeature = marine.properties.equipmentId
-    ? (dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>) ??
-      (dvkMap.getVectorSource('safetyequipmentfault').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>)
+    ? ((dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>) ??
+      (dvkMap.getVectorSource('safetyequipmentfault').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>))
     : undefined;
 
   const closePopup = () => {

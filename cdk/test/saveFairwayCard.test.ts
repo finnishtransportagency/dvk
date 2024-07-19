@@ -67,9 +67,15 @@ test('test mapFairwayCardToModel all', () => {
       sv: 'navigationConditionsv',
       en: 'navigationConditionen',
     },
-    primaryFairwayId: 1,
+    primaryFairwayId: [
+      { id: 1, sequenceNumber: 1 },
+      { id: 2, sequenceNumber: 2 },
+    ],
     mareographs: [1, 2, 3, 4],
-    secondaryFairwayId: 1,
+    secondaryFairwayId: [
+      { id: 1, sequenceNumber: 1 },
+      { id: 2, sequenceNumber: 2 },
+    ],
     speedLimit: {
       fi: 'speedLimit',
       sv: 'speedLimitsv',
