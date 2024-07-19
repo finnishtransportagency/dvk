@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
@@ -8,6 +8,10 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { InfoParagraph } from '../content/Paragraph';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
+import alertIcon from '../../theme/img/alert_icon.svg';
+import { getTimeDifference } from '../../utils/common';
+
+const hourInMilliseconds = 3600000;
 
 type ObservationPopupContentProps = {
   observation: ObservationProperties;
@@ -26,6 +30,8 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
   };
+
+  const isDataOutdated = getTimeDifference(observation.properties.dateTime) > hourInMilliseconds * 12;
 
   return (
     <IonGrid className="ion-no-padding">
@@ -48,54 +54,94 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
           <IonCol>{coordinatesToStringHDM(observation.coordinates)}</IonCol>
         </IonRow>
       )}
-      <IonRow>
-        <IonCol className="header">{t('popup.observation.dateTime')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>{t('popup.observation.dateTimeFormat', { val: observation.properties.dateTime })}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.observation.windSpeedAvgDir')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          {Math.round(observation.properties.windSpeedAvg)}{' '}
-          <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedAvg || 0) })}>m/s</dd>,{' '}
-          {Math.round(observation.properties.windDirection)}{' '}
-          <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.windDirection || 0) })}>°</dd>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.observation.windSpeedMax')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          {Math.round(observation.properties.windSpeedMax)}{' '}
-          <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedMax || 0) })}>m/s</dd>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.observation.temperature')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          {Math.round(observation.properties.temperature)}{' '}
-          <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.temperature || 0) }) + ' (Celsius)'}>°C</dd>
-        </IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol className="header">{t('popup.observation.visibility')}</IonCol>
-      </IonRow>
-      <IonRow>
-        <IonCol>
-          {(observation.properties.visibility !== null && (
-            <>
-              {Math.round((observation.properties.visibility || 0) / 1000)}{' '}
-              <dd aria-label={t('fairwayCards.unit.kmDesc', { count: Math.round((observation.properties.visibility || 0) / 1000) })}>km</dd>
-            </>
-          )) || <InfoParagraph title={t('common.noData')} />}
-        </IonCol>
-      </IonRow>
+      <div className={isDataOutdated ? 'outdatedData' : ''}>
+        <IonRow>
+          <IonCol className="header">{t('popup.observation.dateTime')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>{t('popup.observation.dateTimeFormat', { val: observation.properties.dateTime })}</IonCol>
+        </IonRow>
+      </div>
+      <div className={isDataOutdated ? 'outdatedData' : ''}>
+        <IonRow>
+          <IonCol className="header">{t('popup.observation.windSpeedAvgDir')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            {!isDataOutdated ? (
+              <>
+                {Math.round(observation.properties.windSpeedAvg)}{' '}
+                <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedAvg || 0) })}>m/s</dd>,{' '}
+                {Math.round(observation.properties.windDirection)}{' '}
+                <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.windDirection || 0) })}>°</dd>
+              </>
+            ) : (
+              <>
+                <IonIcon className="outdatedDataIcon" icon={alertIcon} />
+                {t('popup.observation.outdatedData')}
+              </>
+            )}
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.observation.windSpeedMax')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            {!isDataOutdated ? (
+              <>
+                {Math.round(observation.properties.windSpeedMax)}{' '}
+                <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedMax || 0) })}>m/s</dd>
+              </>
+            ) : (
+              <>
+                <IonIcon className="outdatedDataIcon" icon={alertIcon} />
+                {t('popup.observation.outdatedData')}
+              </>
+            )}
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.observation.temperature')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            {!isDataOutdated ? (
+              <>
+                {Math.round(observation.properties.temperature)}{' '}
+                <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.temperature || 0) }) + ' (Celsius)'}>°C</dd>
+              </>
+            ) : (
+              <>
+                <IonIcon className="outdatedDataIcon" icon={alertIcon} />
+                {t('popup.observation.outdatedData')}
+              </>
+            )}
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol className="header">{t('popup.observation.visibility')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            {!isDataOutdated ? (
+              <>
+                {(observation.properties.visibility !== null && (
+                  <>
+                    {Math.round((observation.properties.visibility || 0) / 1000)}{' '}
+                    <dd aria-label={t('fairwayCards.unit.kmDesc', { count: Math.round((observation.properties.visibility || 0) / 1000) })}>km</dd>
+                  </>
+                )) || <InfoParagraph title={t('common.noData')} />}
+              </>
+            ) : (
+              <>
+                <IonIcon className="outdatedDataIcon" icon={alertIcon} />
+                {t('popup.observation.outdatedData')}
+              </>
+            )}
+          </IonCol>
+        </IonRow>
+      </div>
     </IonGrid>
   );
 };
