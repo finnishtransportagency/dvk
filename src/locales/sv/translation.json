@@ -418,14 +418,16 @@
       "windSpeedMax": "Vindhastighet (vindby)",
       "visibility": "Sikt",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "Beräknat vattenstånd"
+      "dateTime": "Beräknat vattenstånd",
+      "outdatedData": "[sv] Tieto on yli 12h vanhaa"
     },
     "buoy": {
       "coordinates": "Koordinater",
       "temperature": "Vattentemperatur",
       "waveHeightDir": "Våghöjd och riktning",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "Beräknat vattenstånd"
+      "dateTime": "Beräknat vattenstånd",
+      "outdatedData": "[sv] Tieto on yli 12h vanhaa"
     },
     "harbor": {
       "coordinates": "Koordinater",

@@ -228,5 +228,5 @@ export function goToFeature(id: number | string | undefined, layerId: FeatureLay
 
 export function getTimeDifference(dataUpdatedAt: number) {
   const current = Date.now();
-  return current + dataUpdatedAt;
+  return current - dataUpdatedAt;
 }

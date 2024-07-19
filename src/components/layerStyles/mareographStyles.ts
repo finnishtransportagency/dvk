@@ -6,13 +6,12 @@ import { MareographFeatureProperties } from '../features';
 import mareographRedIcon from '../../theme/img/vedenkorkeus_pohja_red.svg';
 import mareographRedIcon2 from '../../theme/img/laskennallinen_vedenkorkeus_pohja_red.svg';
 import { getTimeDifference } from '../../utils/common';
+import { hourInMilliseconds } from '../../utils/constants';
 
 let style: Style | undefined = undefined;
 let selectedStyle: Style | undefined = undefined;
 let calculatedStyle: Style | undefined = undefined;
 let calculatedSelectedStyle: Style | undefined = undefined;
-
-const hourInMilliseconds = 3600000;
 
 function getSelectedStyle(icon: string, offsetX: number, offsetY: number, isOutdatedData: boolean) {
   return new Style({

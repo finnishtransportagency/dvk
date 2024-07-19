@@ -10,6 +10,7 @@ import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { getTimeDifference } from '../../utils/common';
 import alertIcon from '../../theme/img/alert_icon.svg';
+import { hourInMilliseconds } from '../../utils/constants';
 
 type BuoyPopupContentProps = {
   buoy: BuoyProperties;
@@ -21,8 +22,6 @@ export type BuoyProperties = {
   properties: BuoyFeatureProperties;
 };
 
-const hourInMilliseconds = 3600000;
-
 const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupProperties }) => {
   const { t } = useTranslation();
 
@@ -30,6 +29,9 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
   };
+
+  const isDataOutdated12Hours = getTimeDifference(buoy.properties.dateTime) > hourInMilliseconds * 12;
+  const isDataOutdated1Hour = getTimeDifference(buoy.properties.dateTime) > hourInMilliseconds;
 
   return (
     <IonGrid className="ion-no-padding">
@@ -47,7 +49,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
       <IonRow>
         <IonCol>{coordinatesToStringHDM(buoy.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
       </IonRow>
-      <div className={getTimeDifference(buoy.properties.dateTime) > hourInMilliseconds ? 'outdatedData' : ''}>
+      <div className={isDataOutdated1Hour ? 'outdatedData' : ''}>
         <IonRow>
           <IonCol className="header">{t('popup.buoy.dateTime')}</IonCol>
         </IonRow>
@@ -55,7 +57,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
           <IonCol>{t('popup.buoy.dateTimeFormat', { val: buoy.properties.dateTime })}</IonCol>
         </IonRow>
       </div>
-      <div className={getTimeDifference(buoy.properties.dateTime) > hourInMilliseconds * 12 ? 'outdatedData' : ''}>
+      <div className={isDataOutdated12Hours ? 'outdatedData' : ''}>
         <IonRow>
           <IonCol className="header">{t('popup.buoy.waveHeightDir')}</IonCol>
         </IonRow>
@@ -85,7 +87,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
         </IonRow>
         <IonRow>
           <IonCol>
-            {getTimeDifference(buoy.properties.dateTime) < hourInMilliseconds * 12 ? (
+            {!isDataOutdated12Hours ? (
               <>
                 {(typeof buoy.properties.temperature === 'number' && (
                   <>

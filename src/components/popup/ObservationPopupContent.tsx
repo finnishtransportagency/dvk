@@ -10,8 +10,7 @@ import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import { getTimeDifference } from '../../utils/common';
-
-const hourInMilliseconds = 3600000;
+import { hourInMilliseconds } from '../../utils/constants';
 
 type ObservationPopupContentProps = {
   observation: ObservationProperties;
@@ -31,7 +30,8 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
     clearClickSelectionFeatures();
   };
 
-  const isDataOutdated = getTimeDifference(observation.properties.dateTime) > hourInMilliseconds * 12;
+  const isDataOutdated12Hours = getTimeDifference(observation.properties.dateTime) > hourInMilliseconds * 12;
+  const isDataOutdated1Hour = getTimeDifference(observation.properties.dateTime) > hourInMilliseconds;
 
   return (
     <IonGrid className="ion-no-padding">
@@ -54,7 +54,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
           <IonCol>{coordinatesToStringHDM(observation.coordinates)}</IonCol>
         </IonRow>
       )}
-      <div className={isDataOutdated ? 'outdatedData' : ''}>
+      <div className={isDataOutdated1Hour ? 'outdatedData' : ''}>
         <IonRow>
           <IonCol className="header">{t('popup.observation.dateTime')}</IonCol>
         </IonRow>
@@ -62,13 +62,13 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
           <IonCol>{t('popup.observation.dateTimeFormat', { val: observation.properties.dateTime })}</IonCol>
         </IonRow>
       </div>
-      <div className={isDataOutdated ? 'outdatedData' : ''}>
+      <div className={isDataOutdated12Hours ? 'outdatedData' : ''}>
         <IonRow>
           <IonCol className="header">{t('popup.observation.windSpeedAvgDir')}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol>
-            {!isDataOutdated ? (
+            {!isDataOutdated12Hours ? (
               <>
                 {Math.round(observation.properties.windSpeedAvg)}{' '}
                 <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedAvg || 0) })}>m/s</dd>,{' '}
@@ -88,7 +88,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
         </IonRow>
         <IonRow>
           <IonCol>
-            {!isDataOutdated ? (
+            {!isDataOutdated12Hours ? (
               <>
                 {Math.round(observation.properties.windSpeedMax)}{' '}
                 <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedMax || 0) })}>m/s</dd>
@@ -106,7 +106,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
         </IonRow>
         <IonRow>
           <IonCol>
-            {!isDataOutdated ? (
+            {!isDataOutdated12Hours ? (
               <>
                 {Math.round(observation.properties.temperature)}{' '}
                 <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.temperature || 0) }) + ' (Celsius)'}>°C</dd>
@@ -124,7 +124,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
         </IonRow>
         <IonRow>
           <IonCol>
-            {!isDataOutdated ? (
+            {!isDataOutdated12Hours ? (
               <>
                 {(observation.properties.visibility !== null && (
                   <>

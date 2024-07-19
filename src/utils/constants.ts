@@ -517,3 +517,5 @@ export const equipmentAreasStructure: SafetyEquipmentFaultFilter[] = [
     childAreas: [{ id: 'saimaa', parent: 'inlandAreas' }],
   },
 ];
+
+export const hourInMilliseconds = 3600000;

@@ -10,8 +10,7 @@ import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import alertIcon from '../../theme/img/alert_icon.svg';
 import { getTimeDifference } from '../../utils/common';
-
-const hourInMilliseconds = 3600000;
+import { hourInMilliseconds } from '../../utils/constants';
 
 type MareographPopupContentProps = {
   mareograph: MareographProperties;
@@ -30,6 +29,9 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
   };
+
+  const isDataOutdated12Hours = getTimeDifference(mareograph.properties.dateTime) > hourInMilliseconds * 12;
+  const isDataOutdated1Hour = getTimeDifference(mareograph.properties.dateTime) > hourInMilliseconds;
 
   return (
     <IonGrid className="ion-no-padding">
@@ -50,7 +52,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
       <IonRow>
         <IonCol>{coordinatesToStringHDM(mareograph.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
       </IonRow>
-      <div className={getTimeDifference(mareograph.properties.dateTime) > hourInMilliseconds ? 'outdatedData' : ''}>
+      <div className={isDataOutdated1Hour ? 'outdatedData' : ''}>
         <IonRow>
           <IonCol className="header">{t('popup.mareograph.dateTime')}</IonCol>
         </IonRow>
@@ -58,13 +60,13 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
           <IonCol>{t('popup.mareograph.dateTimeFormat', { val: mareograph.properties.dateTime })}</IonCol>
         </IonRow>
       </div>
-      <div className={getTimeDifference(mareograph.properties.dateTime) > hourInMilliseconds * 12 ? 'outdatedData' : ''}>
+      <div className={isDataOutdated12Hours ? 'outdatedData' : ''}>
         <IonRow>
           <IonCol className="header">{t('popup.mareograph.seaLevel')}</IonCol>
         </IonRow>
         <IonRow>
           <IonCol>
-            {getTimeDifference(mareograph.properties.dateTime) < hourInMilliseconds * 12 ? (
+            {!isDataOutdated12Hours ? (
               <>
                 {mareograph.properties.waterLevel >= 0 ? '+' : ''}
                 {Math.round(mareograph.properties.waterLevel / 10)}{' '}
@@ -83,7 +85,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
         </IonRow>
         <IonRow>
           <IonCol>
-            {getTimeDifference(mareograph.properties.dateTime) < hourInMilliseconds * 12 ? (
+            {!isDataOutdated12Hours ? (
               <>
                 {mareograph.properties.n2000WaterLevel >= 0 ? '+' : ''}
                 {Math.round(mareograph.properties.n2000WaterLevel / 10)}{' '}
