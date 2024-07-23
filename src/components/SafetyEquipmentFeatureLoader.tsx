@@ -49,6 +49,7 @@ export function useSafetyEquipmentAndFaultFeatures() {
   } = useFeatureData('safetyequipment');
   const {
     data: fData,
+    headers: fHeaders,
     dataUpdatedAt: fDataUpdatedAt,
     errorUpdatedAt: fErrorUpdatedAt,
     isPaused: fIsPaused,
@@ -112,6 +113,7 @@ export function useSafetyEquipmentAndFaultFeatures() {
 
   return {
     ready,
+    fHeaders,
     safetyEquipmentFeatures,
     safetyEquipmentFaultFeatures,
     dataUpdatedAt,
@@ -122,7 +124,7 @@ export function useSafetyEquipmentAndFaultFeatures() {
 }
 
 export function useSafetyEquipmentAndFaultLayer() {
-  const { ready, safetyEquipmentFeatures, safetyEquipmentFaultFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } =
+  const { ready, fHeaders, safetyEquipmentFeatures, safetyEquipmentFaultFeatures, dataUpdatedAt, errorUpdatedAt, isPaused, isError } =
     useSafetyEquipmentAndFaultFeatures();
 
   useEffect(() => {
@@ -139,13 +141,14 @@ export function useSafetyEquipmentAndFaultLayer() {
       faultSource.addFeatures(safetyEquipmentFaultFeatures);
       equipmentLayer.set('dataUpdatedAt', dataUpdatedAt);
       faultLayer.set('dataUpdatedAt', dataUpdatedAt);
+      faultLayer.set('fetchedDate', fHeaders?.['fetcheddate']);
 
       // in case there's selected fairway card containing safety equipment faults (to avoid duplicates)
       handleSafetyEquipmentLayerChange();
     }
     equipmentLayer.set('errorUpdatedAt', errorUpdatedAt, true);
     faultLayer.set('errorUpdatedAt', errorUpdatedAt, true);
-  }, [dataUpdatedAt, errorUpdatedAt, ready, safetyEquipmentFaultFeatures, safetyEquipmentFeatures]);
+  }, [dataUpdatedAt, errorUpdatedAt, ready, safetyEquipmentFaultFeatures, safetyEquipmentFeatures, fHeaders]);
 
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }

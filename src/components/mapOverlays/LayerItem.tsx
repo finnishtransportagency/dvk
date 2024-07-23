@@ -43,10 +43,13 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
         color: string;
       }
     | undefined = undefined;
-  const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'ice', 'safetyequipmentfault'].includes(id)) {
-    if (dvkMap.getFeatureLayer(id).get('errorUpdatedAt')) {
-      alertProps = getAlertProperties(dataUpdatedAt, id);
+  const layer = dvkMap.getFeatureLayer(id);
+  const dataUpdatedAt = layer.get('dataUpdatedAt');
+  const fetchedDate = layer.get('fetchedDate');
+  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'safetyequipmentfault', 'ice'].includes(id)) {
+    // the second conditional here is for buoys since they are loaded when layer is selected
+    if (fetchedDate || (!fetchedDate && layer.get('errorUpdatedAt'))) {
+      alertProps = getAlertProperties(fetchedDate, id);
     }
   }
 
@@ -54,13 +57,11 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
     const initialized =
       !!dataUpdatedAt ||
       [
-        'ice',
         'depthcontour',
         'deptharea',
-        'soundingpoint',
-        'mareograph',
-        'observation',
         'buoy',
+        'ice',
+        'soundingpoint',
         'aisvesselcargo',
         'aisvesseltanker',
         'aisvesselpassenger',
@@ -68,10 +69,11 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
         'aisvesseltugandspecialcraft',
         'aisvesselpleasurecraft',
         'aisunspecified',
-        'safetyequipmentfault',
         'pilotroute',
         'pilotageareaborder',
-      ].includes(id);
+      ].includes(id) ||
+      (!!fetchedDate && ['ice', 'mareograph', 'observation', 'safetyequipmentfault'].includes(id));
+
     return !initialized || (!hasOfflineSupport(id) && isOffline);
   };
 

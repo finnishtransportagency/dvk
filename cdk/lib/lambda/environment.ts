@@ -56,6 +56,7 @@ export function getHeaders(): Record<string, string[]> {
     'Access-Control-Allow-Methods': ['*'],
     'Access-Control-Allow-Headers': ['*'],
     'Content-Encoding': ['gzip'],
+    'Access-Control-Expose-Headers': ['fetchedDate'],
   };
 }
 

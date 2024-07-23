@@ -198,20 +198,25 @@ function addIceLayer(map: Map) {
   } else {
     tileUrl = `/fmi/wms`;
   }
-  map.addLayer(
-    new TileLayer({
-      properties: { id: 'ice' },
-      source: new TileWMS({
-        url: tileUrl,
-        params: { layers: 'fmi:ice:icechart_iceareas' },
-        transition: 0,
-        crossOrigin: 'Anonymous',
-      }),
-      zIndex: 102,
-      preload: 10,
-      opacity: 0.4,
-    })
-  );
+  const source = new TileWMS({
+    url: tileUrl,
+    params: { layers: 'fmi:ice:icechart_iceareas' },
+    transition: 0,
+    crossOrigin: 'Anonymous',
+  });
+
+  const iceLayer = new TileLayer({
+    properties: { id: 'ice' },
+    source: source,
+    zIndex: 102,
+    preload: 10,
+    opacity: 0.4,
+  });
+
+  const fetched = Date.now();
+  iceLayer.set('fetchedDate', String(fetched));
+
+  map.addLayer(iceLayer);
 }
 
 function getTileUrl(service: 'wfs' | 'wms') {

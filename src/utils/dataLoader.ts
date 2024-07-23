@@ -34,17 +34,18 @@ export function useFeatureData(
     staleTime,
     gcTime,
     queryFn: async () => {
-      const { data } = await axios.get(urlStr);
-      return data;
+      // get headers to get the real time of fetching from api
+      const { data, headers } = await axios.get(urlStr);
+      return { data, headers };
     },
     enabled,
   });
   return {
     ...response,
     data: response.data?.data ? response.data.data : response.data,
+    headers: response.data?.headers,
   };
 }
-
 const fetchParams = {
   headers: {
     'content-type': 'application/json;charset=UTF-8',

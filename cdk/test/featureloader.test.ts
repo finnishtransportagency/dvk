@@ -423,9 +423,9 @@ jest.mock('../lib/lambda/api/axios', () => ({
       throw new Error('Fetching from VATU api failed');
     }
     if (api === 'navigointilinjat') {
-      return lines;
+      return { data: lines };
     } else if (api === 'vaylaalueet') {
-      return areas;
+      return { data: areas };
     }
     return [];
   },
@@ -433,7 +433,12 @@ jest.mock('../lib/lambda/api/axios', () => ({
     if (throwError) {
       throw new Error('Fetching from Pooki api failed');
     }
-    return warnings;
+    return {
+      data: warnings,
+      headers: {
+        date: 0,
+      },
+    };
   },
   fetchTraficomApi: () => {
     if (throwError) {
