@@ -39,7 +39,7 @@ interface APIModel extends GeometryModel {
 }
 
 async function getModelMap(fairwayIds: number[], api: string) {
-  const models = await fetchVATUByFairwayId<APIModel>(fairwayIds, api);
+  const models = (await fetchVATUByFairwayId<APIModel>(fairwayIds, api)).data as APIModel[];
   log.debug('models: %d', models.length);
   const modelMap = new Map<number, APIModel[]>();
   for (const model of models) {
@@ -61,7 +61,7 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairwa
     log.debug('returning fairways from cache');
     return JSON.parse(cacheResponseData.data);
   } else {
-    const fairways = await fetchVATUByApi<VaylaAPIModel>('vaylat', { vaylaluokka: '1,2' });
+    const fairways = (await fetchVATUByApi<VaylaAPIModel>('vaylat', { vaylaluokka: '1,2' })).data as VaylaAPIModel[];
     log.debug('%d fairway(s) found', fairways.length);
     const fairwayIds = fairways.map((f) => f.jnro);
     const lines = await getModelMap(fairwayIds, 'navigointilinjat');

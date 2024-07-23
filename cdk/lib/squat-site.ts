@@ -304,6 +304,7 @@ export class SquatSite extends Construct {
         accessControlAllowMethods: ['ALL'],
         accessControlAllowOrigins: ['*'],
         accessControlAllowHeaders: ['*'],
+        accessControlExposeHeaders: ['fetchedDate'],
         originOverride: false,
         accessControlMaxAge: Duration.seconds(3600),
       },

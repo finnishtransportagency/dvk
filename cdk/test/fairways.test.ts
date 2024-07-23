@@ -419,17 +419,17 @@ const restrictionAres = [
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchVATUByApi: (api: string) => {
     if (api === 'navigointilinjat') {
-      return lines;
+      return { data: lines };
     } else if (api === 'vaylat') {
-      return fairways;
+      return { data: fairways };
     } else if (api === 'vaylaalueet') {
-      return areas;
+      return { data: areas };
     } else if (api === 'kaantoympyrat') {
-      return circles;
+      return { data: circles };
     } else if (api === 'taululinjat') {
-      return boardLines;
+      return { data: boardLines };
     } else if (api === 'rajoitusalueet') {
-      return restrictionAres;
+      return { data: restrictionAres };
     }
     return [];
   },
