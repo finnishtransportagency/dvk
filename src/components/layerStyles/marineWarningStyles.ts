@@ -28,6 +28,7 @@ function getAreaStyle(selected: boolean) {
       fill: new Fill({
         color: gradient,
       }),
+      zIndex: 1,
     });
     if (selected) {
       selectedAreaStyle = s;
@@ -50,12 +51,16 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
         image: new Icon({
           src: getWarningImgSource(featureProperties.type?.fi ?? ''),
           opacity: 1,
+          anchor: [0.5, 28],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
           scale: iconScale,
         }),
         geometry: function (feat) {
           const geometry = feat.getGeometry() as Polygon;
           return geometry.getInteriorPoint();
         },
+        zIndex: 2,
       }),
     ];
   } else if (feature.getGeometry()?.getType() === 'Point') {
@@ -78,17 +83,22 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
           color: '#EC0E0E',
           width: 2,
         }),
+        zIndex: 1,
       }),
       new Style({
         image: new Icon({
           src: getWarningImgSource(featureProperties.type?.fi ?? ''),
           opacity: 1,
+          anchor: [0.5, 28],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
           scale: iconScale,
         }),
         geometry: function (feat) {
           const geometry = feat.getGeometry() as LineString;
           return new Point(geometry.getFlatMidpoint());
         },
+        zIndex: 2,
       }),
     ];
   }
