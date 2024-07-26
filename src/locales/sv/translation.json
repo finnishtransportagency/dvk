@@ -77,8 +77,8 @@
           "aisVesselPleasureCraft": "Fritidsbåtar",
           "aisUnspecified": "Odefinierade fartyg",
           "aisShowPredictor": "Fartvektor",
-          "winterTraffic": "[sv] Talvimerenkulku",
-          "dirway": "[sv] Jääväylät",
+          "winterTraffic": "Vintersjöfart",
+          "dirway": "Isruttens waypointer",
           "ice": "Iskarta",
           "mapStyle": {
             "header": "Kartans stil",
@@ -471,14 +471,14 @@
       "aisunspecified": "Odefinierade fartyg"
     },
     "dirway": {
-      "points": "[sv] Reittipisteet"
+      "points": "Waypointer"
     },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",
       "featureType": {
         "area": "Farledsområde",
         "buoy": "Vågboj",
-        "dirway": "[sv] Jääväylä",
+        "dirway": "Isruttens waypointer",
         "calculated": "Beräknat vattenstånd",
         "harbor": "Hamn",
         "line": "Navigationslinje",

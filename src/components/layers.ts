@@ -537,7 +537,7 @@ export function addAPILayers(map: Map) {
     zIndex: 104,
   });
 
-  // Jääväylät
+  // Jääreittipisteet
   addFeatureVectorLayer({
     map: map,
     id: 'dirway',
