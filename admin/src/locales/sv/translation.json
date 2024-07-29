@@ -219,7 +219,7 @@
     "print-images-info-upload-image": " [sv] Vaihtoehtoisesti voit ladata järjestelmän ulkopuolisen kuvan tulosteelle",
     "print-images-info-upload-image-button-portrait": "[sv] Lataa kuva -painikkeella. Kuvan tulee olla suhteessa 810x563px, PNG-tiedostomuotoa ja se ei saa ylittää 2 Mt kokoa.",
     "print-images-info-upload-image-button-landscape": "[sv] Lataa kuva -painikkeella. Kuvan tulee olla suhteessa 563x810px, PNG-tiedostomuotoa ja se ei saa ylittää 2 Mt kokoa.",
-    "print-images-modified": "[sv] Kuva luotu",
+    "print-images-modified": "[sv] Kuva lisätty",
     "print-images-language": "[sv] Kuvan kieli",
     "print-images-language-fi": "[sv] suomi",
     "print-images-language-sv": "[sv] ruotsi",
