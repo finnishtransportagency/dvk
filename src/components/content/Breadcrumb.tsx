@@ -15,6 +15,11 @@ type BreadcrumbProps = {
   path: PathItem[];
 };
 
+function getFullItemPath(item: PathItem, preview: boolean) {
+  const root = preview ? '/esikatselu' : '/vaylakortti';
+  return `${root}${item.route}`;
+}
+
 const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'common' });
   const history = useHistory();
@@ -41,6 +46,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
                 routerLink={idx < path.length - 1 ? item.route : undefined}
                 onClick={item.onClick}
                 className={item.onClick ? 'ion-activatable ion-focusable' : undefined}
+                href={idx < path.length - 1 ? getFullItemPath(item, state.preview) : undefined}
               >
                 {idx < path.length - 1 && (
                   <>

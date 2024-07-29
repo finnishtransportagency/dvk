@@ -1,4 +1,4 @@
-import { GetCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, ScanCommand, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { GeometryPoint, Maybe, Operation, Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
@@ -106,15 +106,22 @@ class HarborDBModel {
   }
 
   static async getAllLatest(): Promise<HarborDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(
-      new ScanCommand({
-        TableName: getHarborTableName(),
-        FilterExpression: '#version = :vVersion',
-        ExpressionAttributeNames: { '#version': 'version' },
-        ExpressionAttributeValues: { ':vVersion': this.getLatestSortKey() },
-      })
-    );
-    const harbors = response?.Items as HarborDBModel[] | undefined;
+    const harbors: HarborDBModel[] | undefined = [];
+    let response;
+
+    const params: ScanCommandInput = {
+      TableName: getHarborTableName(),
+      FilterExpression: '#version = :vVersion',
+      ExpressionAttributeNames: { '#version': 'version' },
+      ExpressionAttributeValues: { ':vVersion': this.getLatestSortKey() },
+    };
+
+    do {
+      response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
+      response.Items?.forEach((item) => harbors.push(item as HarborDBModel));
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
+
     if (harbors) {
       log.debug('%d harbor(s) found', harbors.length);
       return harbors;
@@ -124,15 +131,22 @@ class HarborDBModel {
   }
 
   static async getAllPublic(): Promise<HarborDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(
-      new ScanCommand({
-        TableName: getHarborTableName(),
-        FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
-        ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
-        ExpressionAttributeValues: { ':vVersion': this.getPublicSortKey() },
-      })
-    );
-    const harbors = response?.Items as HarborDBModel[] | undefined;
+    const harbors: HarborDBModel[] | undefined = [];
+    let response;
+
+    const params: ScanCommandInput = {
+      TableName: getHarborTableName(),
+      FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
+      ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
+      ExpressionAttributeValues: { ':vVersion': this.getPublicSortKey() },
+    };
+
+    do {
+      response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
+      response.Items?.forEach((item) => harbors.push(item as HarborDBModel));
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
+
     if (harbors) {
       log.debug('%d public harbor(s) found', harbors.length);
       return harbors;

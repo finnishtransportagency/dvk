@@ -106,7 +106,7 @@ jest.mock('../lib/lambda/api/axios', () => ({
     if (throwError) {
       throw new Error('Fetching from Pooki api failed');
     }
-    return warnings;
+    return { data: warnings };
   },
 }));
 

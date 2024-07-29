@@ -1,15 +1,15 @@
 import { ALBResult } from 'aws-lambda';
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, LineString } from 'geojson';
 import { getPilotRoutesHeaders } from '../environment';
-import { getFromCache } from '../graphql/cache';
-import { handleLoaderError, roundGeometry, saveResponseToS3 } from '../util';
+import { getPilotRouteCacheControlHeaders } from '../graphql/cache';
+import { roundGeometry, toBase64Response } from '../util';
 import { RtzData, RtzWaypoint, Coordinate, RtzReittipiste } from './apiModels';
 import { fetchPilotRoutesApi } from './axios';
 import { lineString, bearingToAzimuth } from '@turf/helpers';
 import { rhumbBearing as turf_rhumbBearing } from '@turf/rhumb-bearing';
 import { transformTranslate as turf_transformTranslate } from '@turf/transform-translate';
-import { lineIntersect as turf_lineIntersect }from '@turf/line-intersect';
-import { nearestPointOnLine as turf_nearestPointOnLine }from '@turf/nearest-point-on-line';
+import { lineIntersect as turf_lineIntersect } from '@turf/line-intersect';
+import { nearestPointOnLine as turf_nearestPointOnLine } from '@turf/nearest-point-on-line';
 import { lineArc as turf_lineArc } from '@turf/line-arc';
 
 type TurningDirection = 'left' | 'right';
@@ -150,29 +150,25 @@ export async function fetchPilotRouteData(): Promise<FeatureCollection> {
   };
 }
 
-export async function fetchPilotRoutes(key: string): Promise<ALBResult> {
+export async function fetchPilotRoutes(): Promise<ALBResult> {
   let base64Response: string | undefined;
   let statusCode = 200;
-  const cacheResponse = await getFromCache(key);
 
-  if (!cacheResponse.expired && cacheResponse.data) {
-    base64Response = cacheResponse.data;
-  } else {
-    try {
-      const pilotRouteData = await fetchPilotRouteData();
-      base64Response = await saveResponseToS3(pilotRouteData, key);
-    } catch (e) {
-      const errorResult = handleLoaderError(cacheResponse, e);
-      base64Response = errorResult.body;
-      statusCode = errorResult.statusCode;
-    }
+  try {
+    const pilotRouteData = await fetchPilotRouteData();
+    base64Response = await toBase64Response(pilotRouteData);
+  } catch (e) {
+    base64Response = undefined;
+    statusCode = 503;
   }
+
   return {
     statusCode,
     body: base64Response,
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getPilotRoutesHeaders(),
+      ...getPilotRouteCacheControlHeaders(),
     },
   };
 }

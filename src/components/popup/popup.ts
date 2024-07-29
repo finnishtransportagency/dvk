@@ -248,7 +248,7 @@ function getSectionDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
   const props = feature.getProperties() as QuayFeatureProperties;
   const quayName = props.quay?.[lang];
   const sectionName = props.name ?? '';
-  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : quayName ?? sectionName;
+  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : (quayName ?? sectionName);
   return {
     header: [headerText],
     featureType: t('featureList.featureType.section'),

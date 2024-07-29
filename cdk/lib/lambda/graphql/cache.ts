@@ -1,4 +1,4 @@
-import { GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { DeleteObjectsCommand, GetObjectCommand, ObjectIdentifier, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { getEnvironment } from '../environment';
 import { log } from '../logger';
 import { Readable } from 'stream';
@@ -31,6 +31,11 @@ const BUOY_CACHE = {
   STALE_IF_ERROR: 12 * 3600, // 12 hours
 };
 const FEATURE_CACHE = {
+  MAX_AGE: 7140, // 1 hour 59 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
+const PILOTROUTE_CACHE = {
   MAX_AGE: 7140, // 1 hour 59 minutes
   STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 12 * 3600, // 12 hours
@@ -108,6 +113,21 @@ export function getFeatureCacheControlHeaders(key: string): Record<string, strin
   };
 }
 
+export function getPilotRouteCacheControlHeaders() {
+  return {
+    'Cache-Control': [
+      'max-age=' +
+        PILOTROUTE_CACHE.MAX_AGE +
+        ', ' +
+        'stale-while-revalidate=' +
+        PILOTROUTE_CACHE.STALE_WHILE_REVALIDATE +
+        ', ' +
+        'stale-if-error=' +
+        PILOTROUTE_CACHE.STALE_IF_ERROR,
+    ],
+  };
+}
+
 export async function cacheResponse(key: string, response: object | string) {
   const cacheDurationSeconds = getFeatureCacheDuration(key);
   const expires = new Date();
@@ -155,4 +175,25 @@ export async function getFromCache(key: string): Promise<CacheResponse> {
     // errors ignored also not found
   }
   return { expired: true };
+}
+
+// delete when more sophisticated caching is implemented
+// only needed to get updated starting and ending fairways for fairwaycard
+// parameter left as an array just in case if more cache clearing needs arise
+export async function deleteCacheObjects(keys: string[]) {
+  const objects: ObjectIdentifier[] = keys.map((key) => {
+    return { Key: key };
+  });
+  const response = await s3Client.send(
+    new DeleteObjectsCommand({
+      Bucket: getCacheBucketName(),
+      Delete: {
+        Objects: objects,
+      },
+    })
+  );
+  log.debug(`Deleted cache objects ${keys}: ${response.Deleted?.length}/${keys.length}`);
+  if (response.Errors?.length) {
+    log.error(response.Errors);
+  }
 }

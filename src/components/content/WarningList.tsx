@@ -37,8 +37,8 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
       {sortedWarnings.map((warning) => {
         const equipmentFeature = warning.equipmentId
-          ? (equipmentSource.getFeatureById(warning.equipmentId) as Feature<Geometry>) ??
-            (faultSource.getFeatureById(warning.equipmentId) as Feature<Geometry>)
+          ? ((equipmentSource.getFeatureById(warning.equipmentId) as Feature<Geometry>) ??
+            (faultSource.getFeatureById(warning.equipmentId) as Feature<Geometry>))
           : undefined;
 
         return (

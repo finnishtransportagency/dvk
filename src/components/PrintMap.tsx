@@ -59,7 +59,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
             </div>
             <div className="cardInfo">
               <IonText>
-                <h3 id="exportFairwayName">{name ? name[lang] ?? name.fi : t('documentTitle')}</h3>
+                <h3 id="exportFairwayName">{name ? (name[lang] ?? name.fi) : t('documentTitle')}</h3>
               </IonText>
               {modified && (
                 <em>
