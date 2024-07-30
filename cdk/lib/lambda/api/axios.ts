@@ -11,6 +11,7 @@ import {
   getSOAApiUrl,
   getTimeout,
   getTraficomHeaders,
+  getTraficomUrl,
   getVatuHeaders,
   getVatuPilotRoutesUrl,
   getVatuUrl,
@@ -25,6 +26,7 @@ export enum ExternalAPI {
   ILMANET = 'Ilmanet',
   POOKI = 'Pooki',
   TRAFICOM = 'Traficom',
+  TRAFICOM_PUBLIC = 'Traficom public',
   VATU = 'VATU',
   WEATHER = 'Weather',
   AIS = 'AIS',
@@ -51,6 +53,29 @@ export async function fetchTraficomApi<T>(path: string) {
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `Traficom api response time: ${duration} ms`);
+  return response.data ? (response.data as T) : ({ type: 'FeatureCollection', features: [] } as FeatureCollection);
+}
+
+export async function fetchPublicTraficomApi<T>(path: string, typeName: string) {
+  const url = `https://${await getTraficomUrl()}/inspirepalvelu/avoin/${path}&typeName=${typeName}`;
+  const start = Date.now();
+  const response = await axios
+    .get(url, {
+      timeout: getTimeout(),
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      log.fatal(
+        `${ExternalAPI.TRAFICOM_PUBLIC} api %s fetch failed: status=%d code=%s message=%s`,
+        path,
+        errorObj.status,
+        errorObj.code,
+        errorObj.message
+      );
+      throw new Error(getFetchErrorMessage(ExternalAPI.TRAFICOM_PUBLIC));
+    });
+  const duration = Date.now() - start;
+  log.debug({ duration }, `Traficom public api response time: ${duration} ms`);
   return response.data ? (response.data as T) : ({ type: 'FeatureCollection', features: [] } as FeatureCollection);
 }
 

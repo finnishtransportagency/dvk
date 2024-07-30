@@ -1,7 +1,7 @@
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Point } from 'geojson';
 import { roundGeometry } from '../util';
 import { PilotPlace } from '../../../graphql/generated';
-import { fetchTraficomApi } from './axios';
+import { fetchPublicTraficomApi, fetchTraficomApi } from './axios';
 
 function flattenCoordinates(row: Feature<Geometry, GeoJsonProperties>) {
   if ('coordinates' in row.geometry) {
@@ -53,6 +53,38 @@ export async function fetchPilotPoints(): Promise<PilotPlace[]> {
         en: row.properties?.OBJNAM,
       },
       geometry: { type: row.geometry.type, coordinates: row.geometry.coordinates },
+    };
+  });
+}
+
+export async function fetchProhibitionAreas(): Promise<Feature<Geometry, GeoJsonProperties>[]> {
+  const path = 'wfs?request=GetFeature&service=WFS&version=1.1.0&outputFormat=application/json';
+  const typeName = 'avoin:kohtaamis_ja_ohittamiskieltoalueet';
+  const data = await fetchPublicTraficomApi<FeatureCollection>(path, typeName);
+  return data.features.map((row) => {
+    return {
+      type: 'Feature',
+      id: row.properties?.ALUENRO,
+      geometry: row.geometry,
+      properties: {
+        featureType: 'specialarea15',
+        typeCode: 15,
+        type: row.properties?.RAJOITE_TYYPPI,
+        vtsArea: row.properties?.VTS_ALUE,
+        extra: {
+          fi: row.properties?.LISATIETO?.trim(),
+          sv: row.properties?.LISATIETO_SV?.trim(),
+        },
+        fairways: [
+          {
+            fairwayId: row.properties?.JNRO,
+            name: {
+              fi: row.properties?.VAYLA_NIMI,
+              sv: row.properties?.VAYLA_NIMI_SV,
+            },
+          },
+        ],
+      },
     };
   });
 }
