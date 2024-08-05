@@ -270,7 +270,7 @@ const MainPage: React.FC = () => {
             <IonCol size="1">
               <HeaderButton
                 headername="notice"
-                text="temporary-notification"
+                text="temporary-notifications"
                 sortBy={sortBy}
                 headerButtonClassName={headerButtonClassName}
                 sortItemsBy={sortItemsBy}
