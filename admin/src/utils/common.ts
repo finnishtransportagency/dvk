@@ -155,7 +155,7 @@ export function removeSequence(
 export function addSequence(option: PictureInput | SelectedFairwayInput, options: PictureInput[] | SelectedFairwayInput[]) {
   const sequencedPictures = options.filter((o) => !!o.sequenceNumber);
   const maxSequenceNumber = sequencedPictures.reduce((acc, o) => {
-    return acc > (o.sequenceNumber ?? 0) ? acc : o.sequenceNumber ?? 0;
+    return acc > (o.sequenceNumber ?? 0) ? acc : (o.sequenceNumber ?? 0);
   }, 0);
 
   return options.map((o) => {

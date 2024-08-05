@@ -252,10 +252,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
           (saveError
             ? t('general.error-' + saveError)
             : t('modal.saved-harbor-by-name', {
-                name: savedHarbour?.name ? savedHarbour?.name[lang] ?? savedHarbour.name.fi : savedHarbour?.id,
+                name: savedHarbour?.name ? (savedHarbour?.name[lang] ?? savedHarbour.name.fi) : savedHarbour?.id,
               })) ?? ''
         }
-        message={saveError ? saveErrorMsg ?? t('general.fix-errors-try-again') ?? '' : ''}
+        message={saveError ? (saveErrorMsg ?? t('general.fix-errors-try-again') ?? '') : ''}
         itemList={saveErrorItems}
       />
       <Header
