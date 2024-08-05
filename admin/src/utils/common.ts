@@ -68,6 +68,8 @@ export const filterItemList = (
             return sortByNumber(Number(a.modificationTimestamp), Number(b.modificationTimestamp), !sortDescending);
           case 'notice':
             return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sortDescending);
+          case 'identifier':
+            return sortByString(a.id, b.id, sortDescending);
           default:
             return 1;
         }

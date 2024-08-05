@@ -475,7 +475,7 @@
       "aisunspecified": "Odefinierade fartyg"
     },
     "dirway": {
-      "points": "Waypointer"
+      "points": "Isruttens waypointer"
     },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",

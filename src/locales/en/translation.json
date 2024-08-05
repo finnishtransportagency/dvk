@@ -474,7 +474,7 @@
       "aisunspecified": "Unspecified vessel"
     },
     "dirway": {
-      "points": "Waypoints"
+      "points": "Ice waypoints"
     },
     "featureList": {
       "multipleFeatures": "Multiple items to select",
