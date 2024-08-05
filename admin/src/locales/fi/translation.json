@@ -21,7 +21,7 @@
     "item-area": "Meri­alue",
     "item-referencelevel": "Ver­taus­ta­so",
     "item-status": "Tila",
-    "item-creator": "Luonut",
+    "item-creator": "Lisääjä",
     "item-created": "Luotu",
     "item-modifier": "Muo­kan­nut",
     "item-modified": "Päi­vi­tet­ty",
@@ -112,7 +112,12 @@
       "preview": "Esikatsele",
       "helper-text": "Kirjoita tekstikenttään ja muotoile tekstiä halutessasi ylävalikon painikkeilla.",
       "description": "Teksti kirjoitetaan Markdown-merkintäkielellä, joka mahdollistaa tekstin muotoilun. Voit käyttää ylävalikon painikkeita muotoillaksesi tekstiä seuraavilla vaihtoehdoilla: lihavoitu tai kursivoitu teksti, tai hyperlinkin asettaminen. Linkille annetaan erikseen otsikko [title] ja osoite [url].\nOikean yläkulman painikkeilla voit vaihtaa tekstieditorin näkymää. Oletuksena on jaettu näkymä, jossa vasemmalla puolella näkyy muokattava Markdown-teksti, ja oikealla puolella muotoillun tekstin esikatselu. Voit halutessasi vaihtaa näkymää myös pelkkään muokkausnäkymään tai esikatseluun."
-    }
+    },
+    "item-identifier": "Tunniste",
+    "item-updated": "Päivityspäivämäärä",
+    "item-latest-updater": "Viimeisin päivittäjä",
+    "version-number": "Versionumero",
+    "temporary-notifications": "Huomio(t)"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
