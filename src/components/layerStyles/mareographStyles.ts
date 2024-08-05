@@ -2,9 +2,11 @@ import { FeatureLike } from 'ol/Feature';
 import { Style, Icon, Text, Fill } from 'ol/style';
 import mareographIcon from '../../theme/img/vedenkorkeus_pohja.svg';
 import mareographIcon2 from '../../theme/img/laskennallinen_vedenkorkeus_pohja.svg';
+import mareographRedIconWithValues from '../../theme/img/vedenkorkeus_pohja_red_yli_tunti.svg';
 import { MareographFeatureProperties } from '../features';
 import mareographRedIcon from '../../theme/img/vedenkorkeus_pohja_red.svg';
 import mareographRedIcon2 from '../../theme/img/laskennallinen_vedenkorkeus_pohja_red.svg';
+import mareographRedIconWithValues2 from '../../theme/img/laskennallinen_vedenkorkeus_pohja_yli_tunti.svg';
 import { getTimeDifference } from '../../utils/common';
 import { hourInMilliseconds } from '../../utils/constants';
 
@@ -57,9 +59,20 @@ function getStyle(icon: string, offsetX: number, offsetY: number, isOutdatedData
   });
 }
 
-function getCalculatedStyle(selected: boolean, isOutdatedData: boolean) {
+function getIcon(timeDifference: number, calculated: boolean) {
+  if (timeDifference > hourInMilliseconds * 12) {
+    return calculated ? mareographRedIcon2 : mareographRedIcon;
+  } else if (timeDifference > hourInMilliseconds) {
+    return calculated ? mareographRedIconWithValues2 : mareographRedIconWithValues;
+  } else {
+    return calculated ? mareographIcon2 : mareographIcon;
+  }
+}
+
+function getCalculatedStyle(selected: boolean, timeDifference: number) {
   let s = selected ? calculatedSelectedStyle : calculatedStyle;
-  const icon = isOutdatedData ? mareographRedIcon2 : mareographIcon2;
+  const isOutdatedData = timeDifference > hourInMilliseconds;
+  const icon = getIcon(timeDifference, true);
   if (!s) {
     if (selected) {
       s = calculatedSelectedStyle = getSelectedStyle(icon, 44, -20, isOutdatedData);
@@ -70,9 +83,10 @@ function getCalculatedStyle(selected: boolean, isOutdatedData: boolean) {
   return s;
 }
 
-function getMeasuredStyle(selected: boolean, isOutdatedData: boolean) {
+function getMeasuredStyle(selected: boolean, timeDifference: number) {
   let s = selected ? selectedStyle : style;
-  const icon = isOutdatedData ? mareographRedIcon : mareographIcon;
+  const isOutdatedData = timeDifference > hourInMilliseconds;
+  const icon = getIcon(timeDifference, false);
   if (!s) {
     if (selected) {
       s = selectedStyle = getSelectedStyle(icon, 44, -20, isOutdatedData);
@@ -85,14 +99,14 @@ function getMeasuredStyle(selected: boolean, isOutdatedData: boolean) {
 
 export function getMareographStyle(feature: FeatureLike, selected: boolean, resolution: number) {
   const props = feature.getProperties() as MareographFeatureProperties;
-  const isOutdatedData = getTimeDifference(props.dateTime) > hourInMilliseconds * 12;
+  const timeDifference = getTimeDifference(props.dateTime);
   if (props.calculated && resolution > 150) {
     return undefined;
   }
 
-  const s = props.calculated ? getCalculatedStyle(selected, isOutdatedData) : getMeasuredStyle(selected, isOutdatedData);
+  const s = props.calculated ? getCalculatedStyle(selected, timeDifference) : getMeasuredStyle(selected, timeDifference);
   const basicText = `${Math.round(props.waterLevel / 10)}/${Math.round(props.n2000WaterLevel / 10)}cm`;
   const outDatedText = '-/-cm';
-  s.getText()?.setText(isOutdatedData ? outDatedText : basicText);
+  s.getText()?.setText(timeDifference > hourInMilliseconds * 12 ? outDatedText : basicText);
   return s;
 }
