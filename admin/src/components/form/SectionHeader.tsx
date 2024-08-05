@@ -73,7 +73,6 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title, idx, deleteSection
         closeTitle={t('general.close')}
         header={infoTitle ?? ''}
         message={infoDescription ?? ''}
-        useTransElement={true}
       />
     </>
   );

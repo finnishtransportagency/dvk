@@ -77,8 +77,8 @@
           "aisVesselPleasureCraft": "Pleasure crafts",
           "aisUnspecified": "Unspecified vessels",
           "aisShowPredictor": "Velocity vectors",
-          "winterTraffic": "[en] Talvimerenkulku",
-          "dirway": "[en] Jääväylät",
+          "winterTraffic": "Winter navigation",
+          "dirway": "Ice waypoints",
           "ice": "Ice map",
           "mapStyle": {
             "header": "Map style",
@@ -474,14 +474,14 @@
       "aisunspecified": "Unspecified vessel"
     },
     "dirway": {
-      "points": "[en] Reittipisteet"
+      "points": "Waypoints"
     },
     "featureList": {
       "multipleFeatures": "Multiple items to select",
       "featureType": {
         "area": "Fairway area",
         "buoy": "Wave buoy",
-        "dirway": "[en] Jääväylä",
+        "dirway": "Ice waypoints",
         "calculated": "Calculated sea level",
         "harbor": "Harbour",
         "line": "Navigation line",

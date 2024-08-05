@@ -78,7 +78,7 @@
           "aisUnspecified": "Määrittelemättömät alukset",
           "aisShowPredictor": "Nopeusvektorit",
           "winterTraffic": "Talvimerenkulku",
-          "dirway": "Jääväylät",
+          "dirway": "Jääreittipisteet",
           "ice": "Jääkartta",
           "mapStyle": {
             "header": "Kartan tyyli",
@@ -481,7 +481,7 @@
       "featureType": {
         "area": "Väyläalue",
         "buoy": "Aaltopoiju",
-        "dirway": "Jääväylä",
+        "dirway": "Jääreittipisteet",
         "calculated": "Laskennallinen vedenkorkeus",
         "harbor": "Satama",
         "line": "Navigointilinja",

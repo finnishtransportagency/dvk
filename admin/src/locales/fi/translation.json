@@ -167,9 +167,9 @@
     "temporary-notification-in-effect-content": "Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa, ja huomio tulee poistaa näkyvistä käsin.",
     "temporary-notification-in-effect-title": "Väliaikaisen huomion voimassaoloaika",
     "starting-fairway-title": "Aloittavat väylät järjestyksen valinta",
-    "starting-fairway-description": "Voit valita useita aloittavia väyliä. Aloittavien väylien järjestys määräytyy sen mukaan missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa",
+    "starting-fairway-description": "Voit valita useita aloittavia väyliä. Aloittavien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "ending-fairway-title": "Päättävät väylät järjestyksen valinta",
-    "ending-fairway-description": "Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa"
+    "ending-fairway-description": "Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa."
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",
@@ -227,7 +227,7 @@
     "print-images-info-upload-image": "Vaihtoehtoisesti voit ladata järjestelmän ulkopuolisen kuvan tulosteelle",
     "print-images-info-upload-image-button-portrait": "Lataa kuva -painikkeella. Kuvan tulee olla suhteessa 810x563px, PNG-tiedostomuotoa ja se ei saa ylittää 2 Mt kokoa.",
     "print-images-info-upload-image-button-landscape": "Lataa kuva -painikkeella. Kuvan tulee olla suhteessa 563x810px, PNG-tiedostomuotoa ja se ei saa ylittää 2 Mt kokoa.",
-    "print-images-modified": "Kuva luotu",
+    "print-images-modified": "Kuva lisätty",
     "print-images-language": "Kuvan kieli",
     "print-images-language-fi": "suomi",
     "print-images-language-sv": "ruotsi",
