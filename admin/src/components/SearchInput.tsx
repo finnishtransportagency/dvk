@@ -85,7 +85,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
           className="searchBar"
           placeholder={t('search-placeholder') ?? ''}
           title={t('search-title') ?? ''}
-          value={isDropdownOpen ? searchQuery : (selectedItem?.name[lang] ?? selectedItem?.name.fi ?? '')}
+          value={isDropdownOpen ? searchQuery : selectedItem?.name[lang] ?? selectedItem?.name.fi ?? ''}
           onIonFocus={openDropdown}
           onIonInput={(e) => changeAction(e.detail.value)}
           onIonBlur={blurAction}

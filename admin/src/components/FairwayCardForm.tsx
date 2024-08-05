@@ -122,9 +122,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const setValidity = (actionType: ActionType, val: boolean) => {
     setInnerValidationErrors(
-      innerValidationErrors
-        .filter((error) => error.id !== actionType)
-        .concat({ id: actionType, msg: !val ? (t(ErrorMessageKeys?.invalid) ?? '') : '' })
+      innerValidationErrors.filter((error) => error.id !== actionType).concat({ id: actionType, msg: !val ? t(ErrorMessageKeys?.invalid) ?? '' : '' })
     );
   };
 
