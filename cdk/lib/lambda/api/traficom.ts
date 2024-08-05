@@ -71,19 +71,17 @@ export async function fetchProhibitionAreas(): Promise<Feature<Geometry, GeoJson
         typeCode: 15,
         type: row.properties?.RAJOITE_TYYPPI,
         vtsArea: row.properties?.VTS_ALUE,
-        extra: {
+        extraInfo: {
           fi: row.properties?.LISATIETO?.trim(),
           sv: row.properties?.LISATIETO_SV?.trim(),
         },
-        fairways: [
-          {
-            fairwayId: row.properties?.JNRO,
-            name: {
-              fi: row.properties?.VAYLA_NIMI,
-              sv: row.properties?.VAYLA_NIMI_SV,
-            },
+        fairway: {
+          fairwayId: row.properties?.JNRO,
+          name: {
+            fi: row.properties?.VAYLA_NIMI,
+            sv: row.properties?.VAYLA_NIMI_SV,
           },
-        ],
+        },
       },
     };
   });
