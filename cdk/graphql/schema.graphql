@@ -453,6 +453,7 @@ type RestrictionFairway {
 
 type ProhibitionArea {
   id: Int!
+  typeCode: Int!
   extraInfo: Text
   fairway: ProhibitionFairway!
 }

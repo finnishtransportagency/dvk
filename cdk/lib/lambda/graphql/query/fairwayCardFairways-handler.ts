@@ -246,6 +246,7 @@ async function getProhibitionAreaMap() {
     }
     areaMap.get(fairway.fairwayId)?.push({
       id: area.id as number,
+      typeCode: area.properties?.typeCode,
       extraInfo: area.properties?.extraInfo,
       fairway: area.properties?.fairway,
     });
