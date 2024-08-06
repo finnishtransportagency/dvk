@@ -47,8 +47,8 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
     <>
       {fairways.map((fairway) => {
         const fairwayAreas = getFairwayAreas(fairway).filter((area) => {
-          return area.typeCode && area.typeCode !== 2 && area.typeCode !== 15;
-        }); // special areas and prohibition areas moved to separate lists
+          return area.typeCode && area.typeCode !== 2;
+        }); // special areas moved to separate lists
         startIndex += fairwayAreas.length;
         return (
           <div key={uniqueId()}>
