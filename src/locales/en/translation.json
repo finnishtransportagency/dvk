@@ -322,7 +322,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "No fairway cards"
+      "noFairwayCards": "No fairway cards",
+      "outdatedData": "[en] Tieto on yli 12h vanhaa"
     },
     "pilotPlace": {
       "header": "Pilot boarding position {{val}}",
@@ -406,8 +407,7 @@
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Last observation",
-      "calculated": "Calculated sea level",
-      "outdatedData": "[en] Tieto on yli 12h vanhaa"
+      "calculated": "Calculated sea level"
     },
     "observation": {
       "observation": "Weather station",
@@ -417,16 +417,14 @@
       "windSpeedMax": "Wind speed (gusts)",
       "visibility": "Visibility",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "Last observation",
-      "outdatedData": "[en] Tieto on yli 12h vanhaa"
+      "dateTime": "Last observation"
     },
     "buoy": {
       "coordinates": "Coordinates",
       "temperature": "Water temperature",
       "waveHeightDir": "Wave height and direction",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "Last observation",
-      "outdatedData": "[en] Tieto on yli 12h vanhaa"
+      "dateTime": "Last observation"
     },
     "harbor": {
       "coordinates": "Coordinates",

@@ -322,7 +322,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Inget farledskort"
+      "noFairwayCards": "Inget farledskort",
+      "outdatedData": "[sv] Tieto on yli 12h vanhaa"
     },
     "pilotPlace": {
       "header": "Lotsplats {{val}}",
@@ -406,9 +407,7 @@
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Senaste observation",
-      "calculated": "Beräknat vattenstånd",
-      "outdatedData": "[sv] Tieto on yli 12h vanhaa"
-
+      "calculated": "Beräknat vattenstånd"
     },
     "observation": {
       "observation": "Kustväderstation",
@@ -418,16 +417,14 @@
       "windSpeedMax": "Vindhastighet (vindby)",
       "visibility": "Sikt",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "Beräknat vattenstånd",
-      "outdatedData": "[sv] Tieto on yli 12h vanhaa"
+      "dateTime": "Beräknat vattenstånd"
     },
     "buoy": {
       "coordinates": "Koordinater",
       "temperature": "Vattentemperatur",
       "waveHeightDir": "Våghöjd och riktning",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "Beräknat vattenstånd",
-      "outdatedData": "[sv] Tieto on yli 12h vanhaa"
+      "dateTime": "Beräknat vattenstånd"
     },
     "harbor": {
       "coordinates": "Koordinater",

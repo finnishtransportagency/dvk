@@ -75,7 +75,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
             ) : (
               <>
                 <IonIcon className="outdatedDataIcon" icon={alertIcon} />
-                {t('popup.mareograph.outdatedData')}
+                {t('popup.common.outdatedData')}
               </>
             )}
           </IonCol>
@@ -94,7 +94,7 @@ const MareographPopupContent: React.FC<MareographPopupContentProps> = ({ mareogr
             ) : (
               <>
                 <IonIcon className="outdatedDataIcon" icon={alertIcon} />
-                {t('popup.mareograph.outdatedData')}
+                {t('popup.common.outdatedData')}
               </>
             )}
           </IonCol>

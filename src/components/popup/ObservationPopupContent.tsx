@@ -78,7 +78,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
             ) : (
               <>
                 <IonIcon className="outdatedDataIcon" icon={alertIcon} />
-                {t('popup.observation.outdatedData')}
+                {t('popup.common.outdatedData')}
               </>
             )}
           </IonCol>
@@ -96,7 +96,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
             ) : (
               <>
                 <IonIcon className="outdatedDataIcon" icon={alertIcon} />
-                {t('popup.observation.outdatedData')}
+                {t('popup.common.outdatedData')}
               </>
             )}
           </IonCol>
@@ -114,7 +114,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
             ) : (
               <>
                 <IonIcon className="outdatedDataIcon" icon={alertIcon} />
-                {t('popup.observation.outdatedData')}
+                {t('popup.common.outdatedData')}
               </>
             )}
           </IonCol>
@@ -136,7 +136,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
             ) : (
               <>
                 <IonIcon className="outdatedDataIcon" icon={alertIcon} />
-                {t('popup.observation.outdatedData')}
+                {t('popup.common.outdatedData')}
               </>
             )}
           </IonCol>

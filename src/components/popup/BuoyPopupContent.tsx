@@ -77,7 +77,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
             ) : (
               <>
                 <IonIcon className="outdatedDataIcon" icon={alertIcon} />
-                {t('popup.buoy.outdatedData')}
+                {t('popup.common.outdatedData')}
               </>
             )}
           </IonCol>
@@ -99,7 +99,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
             ) : (
               <>
                 <IonIcon className="outdatedDataIcon" icon={alertIcon} />
-                {t('popup.buoy.outdatedData')}
+                {t('popup.common.outdatedData')}
               </>
             )}
           </IonCol>

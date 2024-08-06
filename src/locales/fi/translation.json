@@ -322,7 +322,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Ei väyläkorttia"
+      "noFairwayCards": "Ei väyläkorttia",
+      "outdatedData": "Tieto on yli 12h vanhaa"
     },
     "pilotPlace": {
       "header": "Luotsipaikka {{val}}",
@@ -406,8 +407,7 @@
       "n2000SeaLevel": "N2000",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Viimeisin havainto",
-      "calculated": "Laskennallinen vedenkorkeus",
-      "outdatedData": "Tieto on yli 12h vanhaa"
+      "calculated": "Laskennallinen vedenkorkeus"
     },
     "observation": {
       "observation": "Säähavaintoasema",
@@ -417,16 +417,14 @@
       "windSpeedMax": "Tuulen nopeus (puuska)",
       "visibility": "Näkyvyys",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "Viimeisin havainto",
-      "outdatedData": "Tieto on yli 12h vanhaa"
+      "dateTime": "Viimeisin havainto"
     },
     "buoy": {
       "coordinates": "Koordinaatit",
       "temperature": "Veden lämpötila",
       "waveHeightDir": "Aallonkorkeus ja suunta",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
-      "dateTime": "Viimeisin havainto",
-      "outdatedData": "Tieto on yli 12h vanhaa"
+      "dateTime": "Viimeisin havainto"
     },
     "harbor": {
       "coordinates": "Koordinaatit",
