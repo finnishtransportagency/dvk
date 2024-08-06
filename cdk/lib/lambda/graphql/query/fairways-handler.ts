@@ -68,7 +68,7 @@ async function getProhibitionAreaMap() {
     if (!areaMap.has(fairway.fairwayId)) {
       areaMap.set(fairway.fairwayId, []);
     }
-    areaMap.get(fairway.fairwayId)?.push({ id: area.id as number, fairway: { fairwayId: fairway.fairwayId } });
+    areaMap.get(fairway.fairwayId)?.push({ id: area.id as number, typeCode: area.properties?.typeCode, fairway: { fairwayId: fairway.fairwayId } });
   }
   return areaMap;
 }
