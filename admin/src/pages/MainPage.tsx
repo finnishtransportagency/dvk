@@ -186,7 +186,16 @@ const MainPage: React.FC = () => {
       <IonContent className="mainContent ion-no-padding" data-testid="mainPageContent">
         <IonGrid className="itemList">
           <IonRow className="header ion-align-items-stretch">
-            <IonCol size="2">
+            <IonCol size="1">
+              <HeaderButton
+                headername="identifier"
+                text="item-identifier"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
+            </IonCol>
+            <IonCol size="1.25">
               <HeaderButton
                 headername="name"
                 text="item-name"
@@ -195,7 +204,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.5">
+            <IonCol size="1.25">
               <HeaderButton
                 headername="type"
                 text="item-type"
@@ -204,7 +213,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.5">
+            <IonCol size="1.25">
               <HeaderButton
                 headername="area"
                 text="item-area"
@@ -213,7 +222,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1">
+            <IonCol size="1.25">
               <HeaderButton
                 headername="referencelevel"
                 text="item-referencelevel"
@@ -222,10 +231,28 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1">
+            <IonCol size="1.25">
               <HeaderButton
                 headername="status"
                 text="item-status"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
+            </IonCol>
+            <IonCol size="1.25">
+              <HeaderButton
+                headername="modified"
+                text="item-updated"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
+            </IonCol>
+            <IonCol size="1.25">
+              <HeaderButton
+                headername="modifier"
+                text="item-latest-updater"
                 sortBy={sortBy}
                 headerButtonClassName={headerButtonClassName}
                 sortItemsBy={sortItemsBy}
@@ -240,28 +267,10 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.25">
-              <HeaderButton
-                headername="modifier"
-                text="item-modifier"
-                sortBy={sortBy}
-                headerButtonClassName={headerButtonClassName}
-                sortItemsBy={sortItemsBy}
-              />
-            </IonCol>
-            <IonCol size="1.25">
-              <HeaderButton
-                headername="modified"
-                text="item-modified"
-                sortBy={sortBy}
-                headerButtonClassName={headerButtonClassName}
-                sortItemsBy={sortItemsBy}
-              />
-            </IonCol>
-            <IonCol size="1.25">
+            <IonCol size="1">
               <HeaderButton
                 headername="notice"
-                text="temporary-notification"
+                text="temporary-notifications"
                 sortBy={sortBy}
                 headerButtonClassName={headerButtonClassName}
                 sortItemsBy={sortItemsBy}
@@ -285,17 +294,18 @@ const MainPage: React.FC = () => {
                   onClick={() => selectItem(item.id, item.type)}
                   onKeyDown={(e) => keyDownAction(e, item.id, item.type)}
                 >
-                  <IonCol size="2">{item.name[lang] ?? item.name.fi}</IonCol>
-                  <IonCol size="1.5">{t('item-type-' + item.type)}</IonCol>
-                  <IonCol size="1.5">{groups[Number(item.group ?? 0)]}</IonCol>
-                  <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
-                  <IonCol size="1" className={'item-status-' + item.status}>
+                  <IonCol size="1">{item.id}</IonCol>
+                  <IonCol size="1.25">{item.name[lang] ?? item.name.fi}</IonCol>
+                  <IonCol size="1.25">{t('item-type-' + item.type)}</IonCol>
+                  <IonCol size="1.25">{groups[Number(item.group ?? 0)]}</IonCol>
+                  <IonCol size="1.25">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
+                  <IonCol size="1.25" className={'item-status-' + item.status}>
                     {t('item-status-' + item.status)}
                   </IonCol>
-                  <IonCol size="1.25">{item.creator}</IonCol>
-                  <IonCol size="1.25">{item.modifier}</IonCol>
                   <IonCol size="1.25">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
-                  <IonCol size="1.25">{getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
+                  <IonCol size="1.25">{item.modifier}</IonCol>
+                  <IonCol size="1.25">{item.creator}</IonCol>
+                  <IonCol size="1">{getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
                 </IonRow>
               );
             })}

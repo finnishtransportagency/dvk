@@ -106,7 +106,6 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
         closeAction={() => setInfoModalOpen(false)}
         closeTitle={t('general.close')}
         header={t('fairwaycard.temporary-notification-title')}
-        useTransElement={true}
         i18nkey="modal.temporary-notification-add"
         message={t('general.markdown.description')}
       />
