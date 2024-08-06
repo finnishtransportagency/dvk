@@ -127,6 +127,7 @@ button.icon:focus-visible:hover {
 }
 
 .dropdownWrapper ion-input.searchBar.has-focus input {
+  caret-color: auto;
   background-position: right 11px center;
   padding-inline-start: 9px;
 }
