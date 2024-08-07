@@ -283,7 +283,7 @@ export function useSpecialArea2Layer() {
 }
 
 export function useSpecialArea15Layer() {
-  return useDataLayer('specialarea15', 'specialarea15');
+  return useDataLayer('specialarea15', 'specialarea15', 'EPSG:3067');
 }
 
 export function usePilotLayer() {

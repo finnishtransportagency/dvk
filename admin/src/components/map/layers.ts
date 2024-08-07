@@ -589,13 +589,12 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
             feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           }
         }
-        if (!feature) {
-          feature = specialArea15Source.getFeatureById(area.id) as Feature<Geometry>;
-          if (feature) {
-            specialArea15Source.removeFeature(feature);
-            fairwayFeatures.push(feature);
-            feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-          }
+      }
+      for (const prohibitionArea of fairway.prohibitionAreas ?? []) {
+        const feature = specialArea15Source.getFeatureById(prohibitionArea.id) as Feature<Geometry>;
+        if (feature) {
+          specialArea15Source.removeFeature(feature);
+          fairwayFeatures.push(feature);
         }
       }
       for (const line of fairway.boardLines ?? []) {
