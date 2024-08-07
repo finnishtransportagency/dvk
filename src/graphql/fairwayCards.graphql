@@ -81,6 +81,7 @@ fragment FairwayCardParts on FairwayCard {
     sv
     en
   }
+  version
   n2000HeightSystem
   group
   modificationTimestamp
