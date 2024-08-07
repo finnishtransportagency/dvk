@@ -73,11 +73,14 @@ function getCalculatedStyle(selected: boolean, timeDifference: number) {
   let s = selected ? calculatedSelectedStyle : calculatedStyle;
   const isOutdatedData = timeDifference > hourInMilliseconds;
   const icon = getIcon(timeDifference, true);
+  const selectedOffsetX = timeDifference > hourInMilliseconds * 12 ? 36 : 44;
+  const offsetX = timeDifference > hourInMilliseconds * 12 ? 34 : 42;
+
   if (!s) {
     if (selected) {
-      s = calculatedSelectedStyle = getSelectedStyle(icon, 44, -20, isOutdatedData);
+      s = calculatedSelectedStyle = getSelectedStyle(icon, selectedOffsetX, -20, isOutdatedData);
     } else {
-      s = calculatedStyle = getStyle(icon, 42, -16, isOutdatedData);
+      s = calculatedStyle = getStyle(icon, offsetX, -16, isOutdatedData);
     }
   }
   return s;
@@ -87,11 +90,14 @@ function getMeasuredStyle(selected: boolean, timeDifference: number) {
   let s = selected ? selectedStyle : style;
   const isOutdatedData = timeDifference > hourInMilliseconds;
   const icon = getIcon(timeDifference, false);
+  const selectedOffsetX = timeDifference > hourInMilliseconds * 12 ? 36 : 44;
+  const offsetX = timeDifference > hourInMilliseconds * 12 ? 34 : 42;
+
   if (!s) {
     if (selected) {
-      s = selectedStyle = getSelectedStyle(icon, 44, -20, isOutdatedData);
+      s = selectedStyle = getSelectedStyle(icon, selectedOffsetX, -20, isOutdatedData);
     } else {
-      s = style = getStyle(icon, 42, -16, isOutdatedData);
+      s = style = getStyle(icon, offsetX, -16, isOutdatedData);
     }
   }
   return s;
