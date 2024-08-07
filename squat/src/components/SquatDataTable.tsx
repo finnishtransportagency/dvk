@@ -41,21 +41,21 @@ const WideSquatDataTable: React.FC<Props> = (props) => {
         <IonCol>
           <IonGrid className="ion-no-left-padding">
             <IonRow className="dataTableRow">
-              <DataTableTitleColumn value={t('aluksen-nopeus-kn')} />
+              <DataTableTitleColumn value={t('aluksen-nopeus-kn')} columnCount={props.speeds.length} />
               {props.speeds?.map((speed) => {
                 const uuid = uniqueId('col_');
                 return <DataTableDataCell key={uuid} value={speed.toFixed(1)} />;
               })}
             </IonRow>
             <IonRow className="dataTableRow">
-              <DataTableTitleColumn value={t('aluksen-nopeus-ms')} />
+              <DataTableTitleColumn value={t('aluksen-nopeus-ms')} columnCount={props.speeds.length} />
               {props.speeds?.map((speed) => {
                 const uuid = uniqueId('col_');
                 return <DataTableDataCell key={uuid} value={knotsToMetresPerSecond(speed).toFixed(1)} />;
               })}
             </IonRow>
             <IonRow className="dataTableRow">
-              <DataTableTitleColumn value={t('froude-syvyysluku')} />
+              <DataTableTitleColumn value={t('froude-syvyysluku')} columnCount={props.speeds.length} />
               {props.speeds?.map((speed) => {
                 const froudeNumber = calculateFroudeNumber(speed, props.sweptDepth, props.waterLevel);
                 const uuid = uniqueId('col_');
@@ -69,6 +69,7 @@ const WideSquatDataTable: React.FC<Props> = (props) => {
                     value={t('squat-max', {
                       kerroin: '2,0',
                     })}
+                    columnCount={props.speeds.length}
                   />
                   {props.huuskaGuliev20?.filter(props.filterSpeeds).map((values) => {
                     const uuid = uniqueId('col_');
@@ -76,7 +77,7 @@ const WideSquatDataTable: React.FC<Props> = (props) => {
                   })}
                 </IonRow>
                 <IonRow className="dataTableRow">
-                  <DataTableTitleColumn value={t('squat-max', { kerroin: '2,4' })} />
+                  <DataTableTitleColumn value={t('squat-max', { kerroin: '2,4' })} columnCount={props.speeds.length} />
                   {props.getPaddedHuuskaGuliev24Data().map((value) => {
                     const uuid = uniqueId('col_');
                     return <DataTableDataCell key={uuid} value={value >= 0 ? value.toFixed(2) : '-'} color={DATACOLOR.SQUAT} />;
@@ -86,7 +87,7 @@ const WideSquatDataTable: React.FC<Props> = (props) => {
             )}
             {state.status.showBarrass && (
               <IonRow className="dataTableRow">
-                <DataTableTitleColumn value={t('squat-max', { kerroin: undefined })} />
+                <DataTableTitleColumn value={t('squat-max', { kerroin: undefined })} columnCount={props.speeds.length} />
                 {props.barrass?.filter(props.filterSpeeds).map((values) => {
                   const uuid = uniqueId('col_');
                   return <DataTableDataCell key={uuid} value={values[1].toFixed(2)} color={DATACOLOR.SQUAT} />;
