@@ -1,17 +1,1 @@
-<svg width="91" height="34" viewBox="0 0 91 34" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-  <defs>
-    <filter x="-4.7%" y="-14.3%" width="111.8%" height="135.7%" filterUnits="objectBoundingBox" id="a">
-      <feOffset dx="1" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"/>
-      <feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"/>
-      <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" in="shadowBlurOuter1"/>
-    </filter>
-    <path d="m16 24-4 4-4-4H0V0h85v24H16Z" id="b"/>
-  </defs>
-  <g fill="none" fill-rule="evenodd">
-    <g transform="translate(2 2)">
-      <use fill="#000" filter="url(#a)" xlink:href="#b"/>
-      <use fill="#FFF" xlink:href="#b"/>
-    </g>
-    <path d="M10.18888889 17.9472222h1.16666667v-3.9861111h-1.16666667v3.9861111Zm6.45555551 0h1.1666667V9.78055556h-1.1666667v8.16666664Zm-3.2277777 0h1.1666666v-2.2944444h-1.1666666v2.2944444Zm0-3.9861111h1.1666666v-1.1666667h-1.1666666v1.1666667ZM8.16666667 21c-.31111111 0-.58333334-.1166667-.81666667-.35-.23333333-.2333333-.35-.5055556-.35-.8166667V8.16666667c0-.31111111.11666667-.58333334.35-.81666667.23333333-.23333333.50555556-.35.81666667-.35H19.8333333c.3111111 0 .5833334.11666667.8166667.35.2333333.23333333.35.50555556.35.81666667V19.8333333c0 .3111111-.1166667.5833334-.35.8166667-.2333333.2333333-.5055556.35-.8166667.35H8.16666667Zm0-1.1666667H19.8333333V8.16666667H8.16666667V19.8333333Zm.04027777-11.66666663V19.8333333 8.16666667Z" stroke="#EC0E0E" stroke-width=".25" fill="#EC0E0E" fill-rule="nonzero"/>
-  </g>
-</svg>
+<svg width="91" height="34" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><defs><filter x="-4.7%" y="-14.3%" width="111.8%" height="135.7%" filterUnits="objectBoundingBox" id="a"><feOffset dx="1" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"/><feGaussianBlur stdDeviation="1.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"/><feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" in="shadowBlurOuter1"/></filter><path d="m16 24-4 4-4-4H0V0h85v24H16Z" id="b"/></defs><g fill="none" fill-rule="evenodd"><g transform="translate(2 2)"><use fill="#000" filter="url(#a)" xlink:href="#b"/><use fill="#FFF" xlink:href="#b"/></g><path d="M10.189 17.947h1.167v-3.986h-1.167v3.986Zm6.455 0h1.167V9.781h-1.167v8.166Zm-3.227 0h1.166v-2.294h-1.166v2.294Zm0-3.986h1.166v-1.167h-1.166v1.167ZM8.167 21a1.12 1.12 0 0 1-.817-.35 1.12 1.12 0 0 1-.35-.817V8.167c0-.311.117-.584.35-.817A1.12 1.12 0 0 1 8.167 7h11.666c.311 0 .584.117.817.35.233.233.35.506.35.817v11.666c0 .311-.117.584-.35.817a1.12 1.12 0 0 1-.817.35H8.167Zm0-1.167h11.666V8.167H8.167v11.666Zm.04-11.666v11.666V8.167Z" stroke="#EC0E0E" stroke-width=".25" fill="#EC0E0E" fill-rule="nonzero"/></g></svg>
