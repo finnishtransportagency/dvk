@@ -322,7 +322,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Ei väyläkorttia"
+      "noFairwayCards": "Ei väyläkorttia",
+      "outdatedData": "Tieto on yli 12h vanhaa"
     },
     "pilotPlace": {
       "header": "Luotsipaikka {{val}}",
