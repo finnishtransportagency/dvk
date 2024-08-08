@@ -322,7 +322,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Inget farledskort"
+      "noFairwayCards": "Inget farledskort",
+      "outdatedData": "[sv] Tieto on yli 12h vanhaa"
     },
     "pilotPlace": {
       "header": "Lotsplats {{val}}",

@@ -76,3 +76,12 @@ ion-row.negativeMargin {
   opacity: 0.5;
   pointer-events: none;
 }
+
+.outdatedData {
+  color: #EC0E0E
+}
+
+.outdatedDataIcon {
+  margin-top: 2px;
+  margin-right: 5px;
+}
