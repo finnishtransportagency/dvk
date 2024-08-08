@@ -1,5 +1,5 @@
 import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
-import { FairwayCard, QueryFairwayCardsArgs } from '../../../../graphql/generated';
+import { FairwayCard, QueryFairwayCardsArgs, Status } from '../../../../graphql/generated';
 import { getOptionalCurrentUser } from '../../api/login';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import { getPilotPlaceMap, getPilotRoutes, mapFairwayCardDBModelToGraphqlType } from '../../db/modelMapper';
@@ -8,9 +8,11 @@ import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 export const handler = async (event: AppSyncResolverEvent<QueryFairwayCardsArgs>): Promise<FairwayCard[]> => {
   log.info(`fairwayCards(${event.arguments.status})`);
-  const fairwayCards = (await FairwayCardDBModel.getAllLatest()).filter((card) =>
-    event.arguments.status?.length && event.arguments.status.length > 0 ? event.arguments.status.includes(card.status) : true
-  );
+  const fairwayCards = event.arguments.status?.includes(Status.Public)
+    ? await FairwayCardDBModel.getAllPublic()
+    : (await FairwayCardDBModel.getAllLatest()).filter((card) =>
+        event.arguments.status?.length && event.arguments.status.length > 0 ? event.arguments.status.includes(card.status) : true
+      );
   log.debug('%d filtered fairway card(s) found', fairwayCards.length);
   const pilotMap = await getPilotPlaceMap();
   const pilotRoutes = (await getPilotRoutes()) as FeatureCollection<Geometry, GeoJsonProperties>;
