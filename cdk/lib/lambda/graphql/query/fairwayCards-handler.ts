@@ -8,11 +8,9 @@ import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 
 export const handler = async (event: AppSyncResolverEvent<QueryFairwayCardsArgs>): Promise<FairwayCard[]> => {
   log.info(`fairwayCards(${event.arguments.status})`);
-  const fairwayCards = event.arguments.status?.every((s) => s === Status.Public)
-    ? await FairwayCardDBModel.getAllPublic()
-    : (await FairwayCardDBModel.getAllLatest()).filter((card) =>
-        event.arguments.status?.length && event.arguments.status.length > 0 ? event.arguments.status.includes(card.status) : true
-      );
+  const fairwayCards = (
+    event.arguments.status?.every((s) => s === Status.Public) ? await FairwayCardDBModel.getAllPublic() : await FairwayCardDBModel.getAllLatest()
+  ).filter((card) => (event.arguments.status?.length && event.arguments.status.length > 0 ? event.arguments.status.includes(card.status) : true));
   log.debug('%d filtered fairway card(s) found', fairwayCards.length);
   const pilotMap = await getPilotPlaceMap();
   const pilotRoutes = (await getPilotRoutes()) as FeatureCollection<Geometry, GeoJsonProperties>;
