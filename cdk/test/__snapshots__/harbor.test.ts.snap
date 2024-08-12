@@ -276,7 +276,7 @@ exports[`should get public card when admin role missing 1`] = `
     },
   ],
   "status": "PUBLIC",
-  "version": "v0_latest",
+  "version": "v0_public",
 }
 `;
 
@@ -360,6 +360,6 @@ exports[`should get public harbor by id from the DynamoDB 1`] = `
     },
   ],
   "status": "PUBLIC",
-  "version": "v0_latest",
+  "version": "v0_public",
 }
 `;

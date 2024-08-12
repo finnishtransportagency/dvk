@@ -8,7 +8,7 @@ import { ADMIN_ROLE, getOptionalCurrentUser } from '../lib/lambda/api/login';
 
 const harbor1: HarborDBModel = {
   id: 'test',
-  version: 'v0_latest',
+  version: 'v0_public',
   name: {
     fi: 'Harbor1fi',
     sv: 'Harbor1sv',
