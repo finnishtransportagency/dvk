@@ -14,7 +14,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Harbor[], Fai
   const harbors: Harbor[] = [];
   const user = await getOptionalCurrentUser(event);
   for (const id of harborIds || []) {
-    const model = await HarborDBModel.get(id);
+    const model = await HarborDBModel.getLatest(id);
     if (model) {
       harbors.push(mapHarborDBModelToGraphqlType(model, user));
     }
