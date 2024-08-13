@@ -138,10 +138,6 @@ export async function getSOAApiUrl() {
   return readParameterForEnv('SOAApiUrl');
 }
 
-export async function getSOATraficomApiUrl() {
-  return readParameterForEnv('SOATraficomApiUrl');
-}
-
 async function getWeatherSOAApiKey() {
   return readParameterForEnv('WeatherSOAApiKey');
 }

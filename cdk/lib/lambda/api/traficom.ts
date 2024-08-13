@@ -1,7 +1,7 @@
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Point } from 'geojson';
 import { roundGeometry } from '../util';
 import { PilotPlace } from '../../../graphql/generated';
-import { fetchSOATraficomApi, fetchTraficomApi } from './axios';
+import { fetchTraficomApi } from './axios';
 
 function flattenCoordinates(row: Feature<Geometry, GeoJsonProperties>) {
   if ('coordinates' in row.geometry) {
@@ -58,9 +58,9 @@ export async function fetchPilotPoints(): Promise<PilotPlace[]> {
 }
 
 export async function fetchProhibitionAreas(): Promise<Feature<Geometry, GeoJsonProperties>[]> {
-  const path = 'wfs?request=GetFeature&service=WFS&version=1.1.0&outputFormat=application/json';
-  const typeName = 'avoin:kohtaamis_ja_ohittamiskieltoalueet';
-  const data = await fetchSOATraficomApi<FeatureCollection>(path, typeName);
+  const path =
+    'trafiaineistot/inspirepalvelu/avoin/wfs?request=GetFeature&service=WFS&version=1.1.0&outputFormat=application/json&typeName=avoin:kohtaamis_ja_ohittamiskieltoalueet';
+  const data = await fetchTraficomApi<FeatureCollection>(path);
   return data.features.map((row) => {
     return {
       type: 'Feature',
