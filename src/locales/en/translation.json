@@ -323,7 +323,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "No fairway cards"
+      "noFairwayCards": "No fairway cards",
+      "outdatedData": "[en] Tieto on yli 12h vanhaa"
     },
     "pilotPlace": {
       "header": "Pilot boarding position {{val}}",
