@@ -171,7 +171,6 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
             isOpen={infoModalOpen}
             closeAction={() => setInfoModalOpen(false)}
             closeTitle={t('close')}
-            useTransElement={true}
             header={infoTitle ?? ''}
             i18nkey={infoDescription}
           />

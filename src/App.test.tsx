@@ -5,7 +5,7 @@ import { act, render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { mockFairwayCard, mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
+import { mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
 import { vi } from 'vitest';
 
 class ResizeObserver {
@@ -162,12 +162,6 @@ vi.mock('./graphql/generated', async () => {
         isPending: false,
       };
     },
-    useFindFairwayCardByIdQuery: () => {
-      return {
-        data: mockFairwayCard,
-        isPending: false,
-      };
-    },
     useFindAllMarineWarningsQuery: () => {
       return {
         data: mockMarineWarningList,
@@ -267,7 +261,6 @@ test('if sidePane header elements are present and working', () => {
     const listPane = screen.getByTestId('listPane');
     expect(listPane).toBeInTheDocument();
     vi.advanceTimersByTime(1200);
-    //expect(listPane.className).toBe('wide');
 
     // togglePane
     const togglePane = screen.getByTestId('togglePane');

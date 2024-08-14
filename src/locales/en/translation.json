@@ -265,7 +265,7 @@
     "pilotageLimitDimensions": "Length / breadth / draught (m)",
     "inForce": "In force",
     "mareograph": "Mareograph",
-    "mareographLocation": "[en] Mareografin sijainti"
+    "mareographLocation": "Location of the measurement site"
   },
   "routes": {
     "title": "Pilot routes",
@@ -322,7 +322,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "No fairway cards"
+      "noFairwayCards": "No fairway cards",
+      "outdatedData": "The data is more than 12 hours old"
     },
     "pilotPlace": {
       "header": "Pilot boarding position {{val}}",
@@ -471,7 +472,7 @@
       "aisunspecified": "Unspecified vessel"
     },
     "dirway": {
-      "points": "Waypoints"
+      "points": "Ice waypoints"
     },
     "featureList": {
       "multipleFeatures": "Multiple items to select",

@@ -265,7 +265,7 @@
     "pilotageLimitDimensions": "Längd / bredd / djup (m)",
     "inForce": "Gällande",
     "mareograph": "Mareograf",
-    "mareographLocation": "[sv] Mareografin sijainti"
+    "mareographLocation": "Mareografens plats"
   },
   "routes": {
     "title": "Lotsningsrutter",
@@ -322,7 +322,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Inget farledskort"
+      "noFairwayCards": "Inget farledskort",
+      "outdatedData": "Informationen är mer än 12 timmar gammal"
     },
     "pilotPlace": {
       "header": "Lotsplats {{val}}",
@@ -471,7 +472,7 @@
       "aisunspecified": "Odefinierade fartyg"
     },
     "dirway": {
-      "points": "Waypointer"
+      "points": "Isruttens waypointer"
     },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",

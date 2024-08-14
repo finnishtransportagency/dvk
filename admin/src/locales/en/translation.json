@@ -108,7 +108,12 @@
       "preview": "[en] Esikatsele",
       "helper-text": "[en] Kirjoita tekstikenttään ja muotoile tekstiä halutessasi ylävalikon painikkeilla.",
       "description": "[en] Teksti kirjoitetaan Markdown-merkintäkielellä, joka mahdollistaa tekstin muotoilun. Voit käyttää ylävalikon painikkeita muotoillaksesi tekstiä seuraavilla vaihtoehdoilla: lihavoitu tai kursivoitu teksti, tai hyperlinkin asettaminen. Linkille annetaan erikseen otsikko [title] ja osoite [url].\nOikean yläkulman painikkeilla voit vaihtaa tekstieditorin näkymää. Oletuksena on jaettu näkymä, jossa vasemmalla puolella näkyy muokattava Markdown-teksti, ja oikealla puolella muotoillun tekstin esikatselu. Voit halutessasi vaihtaa näkymää myös pelkkään muokkausnäkymään tai esikatseluun."
-    }
+    },
+    "item-identifier": "[en] Tunniste",
+    "item-updated": "[en] Päivityspäivämäärä",
+    "item-latest-updater": "[en] Viimeisin päivittäjä",
+    "version-number": "[en] Versionumero",
+    "temporary-notifications": "[en] Huomio(t)"
   },
   "modal": {
     "title-new-CARD": "New fairway card",
@@ -150,18 +155,18 @@
     "help-title-picture-PORTRAIT": "[en] Väyläkortin pystytulosteen esikatselu",
     "help-title-picture-LANDSCAPE": "[en] Väyläkortin vaakatulosteen esikatselu",
     "help-title-quay": "[en] Laiturin sijainnin syöttö",
-    "help-description-quay": "[en] Syöttämällä laiturille sen sijaintitiedot, piirrät kartalle laituri-ikonin, jonka yhteyteen lisätään laiturin nimi.",
+    "help-description-quay": "[en] Syöttämällä laiturille sen sijaintitiedot piirrät kartalle laituri-ikonin, jonka yhteyteen lisätään laiturin nimi. Sijaintitietojen tulisi olla kohdennettu laiturin keskikohtaan. Ilman sijaintitietoja laituri-ikonia ei piirretä kartalle.",
     "help-title-section": "[en] Laituripaikan sijainnin syöttö",
-    "help-description-section": "[en] Syöttämällä laituripaikalle sen sijaintitiedot, piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle, ja haraussyvyystieto siirretään laituri-ikonin nimen yhteyteen.",
+    "help-description-section": "[en] Syöttämällä laituripaikalle sen sijaintitiedot piirrät kartalle laituripaikkaikonin, jonka yhteyteen lisätään laituripaikan haraussyvyys. Ilman sijaintitietoja laituripaikkaikonia ei piirretä kartalle ja haraussyvyys-tieto siirretään laituri-ikonin nimen yhteyteen.",
     "picture-upload-failed": "[en] Tiedoston lataus epäonnistui",
     "picture-errors": "[en] Varmista, että tiedosto on .png-tiedostomuodossa ja kooltaan alle 2 Mt.",
     "temporary-notification-add": "[en] Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erilliseen elementtiin. Huomiolle tulee aina lisätä vähintään <strong>voimaantulopäivämäärä</strong>. Jos huomiolle ei merkitä <strong>päättymispäivämäärää</strong>, on huomio voimassa toistaiseksi.",
     "temporary-notification-in-effect-content": "[en] Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa, ja huomio tulee poistaa näkyvistä käsin.",
     "temporary-notification-in-effect-title": "[en] Väliaikaisen huomion voimassaoloaika",
     "starting-fairway-title": " [en] Aloittavat väylät järjestyksen valinta",
-    "starting-fairway-description": "[en] Voit valita useita aloittavia väyliä. Aloittavien väylien järjestys määräytyy sen mukaan missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa",
+    "starting-fairway-description": "[en] Voit valita useita aloittavia väyliä. Aloittavien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "ending-fairway-title": "[en] Päättävät väylät järjestyksen valinta",
-    "ending-fairway-description": "[en] Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa"
+    "ending-fairway-description": "[en] Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa."
   },
   "fairwaycard": {
     "name": "Fairway card name",
@@ -219,7 +224,7 @@
     "print-images-info-upload-image": " [en] Vaihtoehtoisesti voit ladata järjestelmän ulkopuolisen kuvan tulosteelle",
     "print-images-info-upload-image-button-portrait": "[en] Lataa kuva -painikkeella. Kuvan tulee olla suhteessa 810x563px, PNG-tiedostomuotoa ja se ei saa ylittää 2 Mt kokoa.",
     "print-images-info-upload-image-button-landscape": "[en] Lataa kuva -painikkeella. Kuvan tulee olla suhteessa 563x810px, PNG-tiedostomuotoa ja se ei saa ylittää 2 Mt kokoa.",
-    "print-images-modified": "[en] Kuva luotu",
+    "print-images-modified": "[en] Kuva lisätty",
     "print-images-language": "[en] Kuvan kieli",
     "print-images-language-fi": "[en] suomi",
     "print-images-language-sv": "[en] ruotsi",
