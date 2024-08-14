@@ -68,7 +68,7 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
 ): Promise<Harbor> => {
   const user = await getCurrentUser(event);
   log.info(`saveHarbor(${event.arguments.harbor?.id}, ${user.uid})`);
-  const dbModel = await HarborDBModel.get(event.arguments.harbor.id, event.arguments.harbor.version);
+  const dbModel = await HarborDBModel.getVersion(event.arguments.harbor.id, event.arguments.harbor.version);
   const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
   log.debug('harbor: %o', newModel);
   try {

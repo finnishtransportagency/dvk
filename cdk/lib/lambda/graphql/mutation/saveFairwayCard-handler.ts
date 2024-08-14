@@ -185,7 +185,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
 ): Promise<FairwayCard> => {
   const user = await getCurrentUser(event);
   log.info(`saveFairwayCard(${event.arguments.card.id}, ${user.uid})`);
-  const dbModel = await FairwayCardDBModel.get(event.arguments.card.id, event.arguments.card.version);
+  const dbModel = await FairwayCardDBModel.getVersion(event.arguments.card.id, event.arguments.card.version);
   const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
   log.debug('card: %o', newModel);
   await tagPictures(event.arguments.card.id, event.arguments.card.pictures, dbModel?.pictures);
