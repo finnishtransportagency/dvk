@@ -70,20 +70,14 @@ query harbourById($id: String!, $version: String!) {
   }
 }
 
-query harbourVersionById($id: String!, $version: String!) {
-  harborVersion(id: $id, version: $version) {
-    ...HarborById
-  }
-}
-
 query harbourLatestById($id: String!) {
-  harborLatest(id: $id) {
+  harbor(id: $id) {
     ...HarborById
   }
 }
 
-query harbourPublicById($id: String!) {
-  harborPublic(id: $id) {
+query harbourPublicById($id: String!, $status: [Status!]!) {
+  harbor(id: $id, status: $status) {
     ...HarborById
   }
 }

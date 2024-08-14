@@ -265,7 +265,7 @@
     "pilotageLimitDimensions": "Längd / bredd / djup (m)",
     "inForce": "Gällande",
     "mareograph": "Mareograf",
-    "mareographLocation": "[sv] Mareografin sijainti"
+    "mareographLocation": "Mareografens plats"
   },
   "routes": {
     "title": "Lotsningsrutter",
@@ -323,7 +323,7 @@
   "popup": {
     "common": {
       "noFairwayCards": "Inget farledskort",
-      "outdatedData": "[sv] Tieto on yli 12h vanhaa"
+      "outdatedData": "Informationen är mer än 12 timmar gammal"
     },
     "pilotPlace": {
       "header": "Lotsplats {{val}}",

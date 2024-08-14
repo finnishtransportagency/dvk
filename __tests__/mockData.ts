@@ -1,4 +1,4 @@
-export const mockFairwayCard = {
+const mockFairwayCard = {
   fairwayCard: {
     id: 'vuosaari',
     name: { fi: 'Vuosaaren väylä', sv: 'Nordsjöleden', en: 'Vuosaari channel' },

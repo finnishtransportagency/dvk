@@ -1,5 +1,5 @@
 import { ALBEvent, AppSyncResolverEvent, Context } from 'aws-lambda';
-import { FairwayCard, QueryFairwayCardArgs, QueryFairwayCardLatestArgs, QueryFairwayCardPublicArgs } from '../graphql/generated';
+import { FairwayCard, QueryFairwayCardArgs, QueryFairwayCardPreviewArgs, Status } from '../graphql/generated';
 
 export const mockContext: Context = {
   callbackWaitsForEmptyEventLoop: false,
@@ -16,9 +16,9 @@ export const mockContext: Context = {
   fail: () => {},
 };
 
-// Mock for query with id (string) as param, used for fairway and harbor queries (for basic getter and version)
+// Mock for query with id (string) as param, used for fairway and harbor queries
 export const mockQueryByIdEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
-  arguments: { id: 'test', version: 'v0_latest' },
+  arguments: { id: 'test' },
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
   prev: null,
   request: { domainName: null, headers: {} },
@@ -26,7 +26,7 @@ export const mockQueryByIdEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
   stash: {},
 };
 
-// Mock for query with id (string) as param, used for fairway and harbor queries (for basic getter and version)
+// Mock for query with id (string) and version as params, used for fairway and harbor queries
 export const mockQueryByIdAndVersionEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
   arguments: { id: 'test', version: 'v2' },
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
@@ -36,8 +36,9 @@ export const mockQueryByIdAndVersionEvent: AppSyncResolverEvent<QueryFairwayCard
   stash: {},
 };
 
-export const mockQueryLatestByIdEvent: AppSyncResolverEvent<QueryFairwayCardLatestArgs> = {
-  arguments: { id: 'test' },
+// Mock for query with id (string) and public status as params, used for fairway and harbor queries
+export const mockQueryByIdAndStatusPublicEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
+  arguments: { id: 'test', status: [Status.Public] },
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
   prev: null,
   request: { domainName: null, headers: {} },
@@ -45,8 +46,9 @@ export const mockQueryLatestByIdEvent: AppSyncResolverEvent<QueryFairwayCardLate
   stash: {},
 };
 
-export const mockQueryPublicByIdEvent: AppSyncResolverEvent<QueryFairwayCardPublicArgs> = {
-  arguments: { id: 'test' },
+// Mock for query with id (string) and version as param, used for fairway and harbor preview queries
+export const mockQueryPreviewEvent: AppSyncResolverEvent<QueryFairwayCardPreviewArgs> = {
+  arguments: { id: 'test', version: 'v0_latest' },
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
   prev: null,
   request: { domainName: null, headers: {} },

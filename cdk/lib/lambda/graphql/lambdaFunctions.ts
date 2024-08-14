@@ -23,24 +23,6 @@ const lambdaFunctions: BackendLambda[] = [
     useVpc: true,
   },
   {
-    entry: path.join(__dirname, 'query/fairwayCardVersion-handler.ts'),
-    typeName: 'Query',
-    fieldName: 'fairwayCardVersion',
-    useVpc: true,
-  },
-  {
-    entry: path.join(__dirname, 'query/fairwayCardLatest-handler.ts'),
-    typeName: 'Query',
-    fieldName: 'fairwayCardLatest',
-    useVpc: true,
-  },
-  {
-    entry: path.join(__dirname, 'query/fairwayCardPublic-handler.ts'),
-    typeName: 'Query',
-    fieldName: 'fairwayCardPublic',
-    useVpc: true,
-  },
-  {
     entry: path.join(__dirname, 'query/fairwayCardPreview-handler.ts'),
     typeName: 'Query',
     fieldName: 'fairwayCardPreview',
@@ -104,24 +86,6 @@ const lambdaFunctions: BackendLambda[] = [
     entry: path.join(__dirname, 'query/harbor-handler.ts'),
     typeName: 'Query',
     fieldName: 'harbor',
-    useVpc: false,
-  },
-  {
-    entry: path.join(__dirname, 'query/harborVersion-handler.ts'),
-    typeName: 'Query',
-    fieldName: 'harborVersion',
-    useVpc: false,
-  },
-  {
-    entry: path.join(__dirname, 'query/harborLatest-handler.ts'),
-    typeName: 'Query',
-    fieldName: 'harborLatest',
-    useVpc: false,
-  },
-  {
-    entry: path.join(__dirname, 'query/harborPublic-handler.ts'),
-    typeName: 'Query',
-    fieldName: 'harborPublic',
     useVpc: false,
   },
   {

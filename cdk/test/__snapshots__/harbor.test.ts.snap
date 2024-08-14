@@ -1,0 +1,365 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should get harbor by id and version from the DynamoDB 1`] = `
+{
+  "cargo": undefined,
+  "company": undefined,
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "email": undefined,
+  "extraInfo": undefined,
+  "fax": undefined,
+  "geometry": undefined,
+  "harborBasin": undefined,
+  "id": "test",
+  "internet": undefined,
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test2",
+  "n2000HeightSystem": undefined,
+  "name": {
+    "en": "Harbor2en",
+    "fi": "Harbor2fi",
+    "sv": "Harbor2sv",
+  },
+  "phoneNumber": undefined,
+  "quays": undefined,
+  "status": "DRAFT",
+  "version": "v2",
+}
+`;
+
+exports[`should get latest harbor by id from the DynamoDB 1`] = `
+{
+  "cargo": {
+    "en": "cargoen",
+    "fi": "cargofi",
+    "sv": "cargosv",
+  },
+  "company": {
+    "en": "companyen",
+    "fi": "companyfi",
+    "sv": "companysv",
+  },
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "email": "email@fi",
+  "extraInfo": {
+    "en": "extraen",
+    "fi": "extrafi",
+    "sv": "extrasv",
+  },
+  "fax": "32321",
+  "geometry": {
+    "coordinates": [
+      18,
+      62,
+    ],
+  },
+  "harborBasin": {
+    "en": "basinen",
+    "fi": "basinfi",
+    "sv": "basinsv",
+  },
+  "id": "test",
+  "internet": "www.fi",
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test2",
+  "n2000HeightSystem": true,
+  "name": {
+    "en": "Harbor1en",
+    "fi": "Harbor1fi",
+    "sv": "Harbor1sv",
+  },
+  "phoneNumber": [
+    "12345",
+    "22222",
+  ],
+  "quays": [
+    {
+      "extraInfo": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "geometry": {
+        "coordinates": [
+          22.1,
+          63.2,
+        ],
+      },
+      "length": 123,
+      "name": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "sections": [
+        {
+          "depth": 10,
+          "geometry": {
+            "coordinates": [
+              17,
+              62.2,
+            ],
+          },
+          "name": "stest",
+        },
+      ],
+    },
+  ],
+  "status": "PUBLIC",
+  "version": "v0_latest",
+}
+`;
+
+exports[`should get latest harbor by id from the DynamoDB when cache expired 1`] = `
+{
+  "cargo": {
+    "en": "cargoen",
+    "fi": "cargofi",
+    "sv": "cargosv",
+  },
+  "company": {
+    "en": "companyen",
+    "fi": "companyfi",
+    "sv": "companysv",
+  },
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "email": "email@fi",
+  "extraInfo": {
+    "en": "extraen",
+    "fi": "extrafi",
+    "sv": "extrasv",
+  },
+  "fax": "32321",
+  "geometry": {
+    "coordinates": [
+      18,
+      62,
+    ],
+  },
+  "harborBasin": {
+    "en": "basinen",
+    "fi": "basinfi",
+    "sv": "basinsv",
+  },
+  "id": "test",
+  "internet": "www.fi",
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test2",
+  "n2000HeightSystem": true,
+  "name": {
+    "en": "Harbor1en",
+    "fi": "Harbor1fi",
+    "sv": "Harbor1sv",
+  },
+  "phoneNumber": [
+    "12345",
+    "22222",
+  ],
+  "quays": [
+    {
+      "extraInfo": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "geometry": {
+        "coordinates": [
+          22.1,
+          63.2,
+        ],
+      },
+      "length": 123,
+      "name": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "sections": [
+        {
+          "depth": 10,
+          "geometry": {
+            "coordinates": [
+              17,
+              62.2,
+            ],
+          },
+          "name": "stest",
+        },
+      ],
+    },
+  ],
+  "status": "PUBLIC",
+  "version": "v0_latest",
+}
+`;
+
+exports[`should get public card when admin role missing 1`] = `
+{
+  "cargo": {
+    "en": "cargoen",
+    "fi": "cargofi",
+    "sv": "cargosv",
+  },
+  "company": {
+    "en": "companyen",
+    "fi": "companyfi",
+    "sv": "companysv",
+  },
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "email": "email@fi",
+  "extraInfo": {
+    "en": "extraen",
+    "fi": "extrafi",
+    "sv": "extrasv",
+  },
+  "fax": "32321",
+  "geometry": {
+    "coordinates": [
+      18,
+      62,
+    ],
+  },
+  "harborBasin": {
+    "en": "basinen",
+    "fi": "basinfi",
+    "sv": "basinsv",
+  },
+  "id": "test",
+  "internet": "www.fi",
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test2",
+  "n2000HeightSystem": true,
+  "name": {
+    "en": "Harbor1en",
+    "fi": "Harbor1fi",
+    "sv": "Harbor1sv",
+  },
+  "phoneNumber": [
+    "12345",
+    "22222",
+  ],
+  "quays": [
+    {
+      "extraInfo": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "geometry": {
+        "coordinates": [
+          22.1,
+          63.2,
+        ],
+      },
+      "length": 123,
+      "name": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "sections": [
+        {
+          "depth": 10,
+          "geometry": {
+            "coordinates": [
+              17,
+              62.2,
+            ],
+          },
+          "name": "stest",
+        },
+      ],
+    },
+  ],
+  "status": "PUBLIC",
+  "version": "v0_public",
+}
+`;
+
+exports[`should get public harbor by id from the DynamoDB 1`] = `
+{
+  "cargo": {
+    "en": "cargoen",
+    "fi": "cargofi",
+    "sv": "cargosv",
+  },
+  "company": {
+    "en": "companyen",
+    "fi": "companyfi",
+    "sv": "companysv",
+  },
+  "creationTimestamp": Any<Number>,
+  "creator": "test",
+  "email": "email@fi",
+  "extraInfo": {
+    "en": "extraen",
+    "fi": "extrafi",
+    "sv": "extrasv",
+  },
+  "fax": "32321",
+  "geometry": {
+    "coordinates": [
+      18,
+      62,
+    ],
+  },
+  "harborBasin": {
+    "en": "basinen",
+    "fi": "basinfi",
+    "sv": "basinsv",
+  },
+  "id": "test",
+  "internet": "www.fi",
+  "modificationTimestamp": Any<Number>,
+  "modifier": "test2",
+  "n2000HeightSystem": true,
+  "name": {
+    "en": "Harbor1en",
+    "fi": "Harbor1fi",
+    "sv": "Harbor1sv",
+  },
+  "phoneNumber": [
+    "12345",
+    "22222",
+  ],
+  "quays": [
+    {
+      "extraInfo": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "geometry": {
+        "coordinates": [
+          22.1,
+          63.2,
+        ],
+      },
+      "length": 123,
+      "name": {
+        "en": "cargoen",
+        "fi": "cargofi",
+        "sv": "cargosv",
+      },
+      "sections": [
+        {
+          "depth": 10,
+          "geometry": {
+            "coordinates": [
+              17,
+              62.2,
+            ],
+          },
+          "name": "stest",
+        },
+      ],
+    },
+  ],
+  "status": "PUBLIC",
+  "version": "v0_public",
+}
+`;
