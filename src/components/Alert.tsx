@@ -17,6 +17,8 @@ interface AlertProps {
   startDate?: string;
   endDate?: string;
   markdownText?: Text;
+  isError?: boolean;
+  isFeatures?: boolean;
 }
 
 const Alert: React.FC<AlertProps> = ({ title, icon, color, className, startDate, endDate, markdownText }) => {
@@ -58,11 +60,11 @@ const Alert: React.FC<AlertProps> = ({ title, icon, color, className, startDate,
   );
 };
 
-export const LayerAlert: React.FC<AlertProps> = ({ title, icon, color, className, mainLegendOpen }) => {
+export const LayerAlert: React.FC<AlertProps> = ({ title, icon, color, className, mainLegendOpen, isError, isFeatures }) => {
   const { dispatch } = useDvkContext();
 
   useEffect(() => {
-    if (mainLegendOpen) {
+    if (mainLegendOpen && isError && !isFeatures) {
       dispatch({
         type: 'setResponse',
         payload: {
@@ -70,7 +72,7 @@ export const LayerAlert: React.FC<AlertProps> = ({ title, icon, color, className
         },
       });
     }
-  }, [dispatch, mainLegendOpen]);
+  }, [dispatch, mainLegendOpen, isError, isFeatures]);
 
   return (
     <IonRow>
