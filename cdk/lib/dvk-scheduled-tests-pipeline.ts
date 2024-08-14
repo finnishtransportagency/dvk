@@ -101,7 +101,7 @@ export class DvkScheduledTestsPipelineStack extends Stack {
 
     const projectTarget = new CodeBuildProject(project);
     const hourlyRule = new Rule(this, 'TestScheduleRule-' + env, {
-      schedule: Schedule.rate(Duration.hours(1)),
+      schedule: Schedule.rate(Duration.hours(12)),
       targets: [projectTarget],
     });
 
