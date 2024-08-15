@@ -31,3 +31,16 @@ ion-grid.inlineHoverText:focus-visible {
 div.marineWarningList ion-grid.inlineHoverText:focus-visible {
   outline: none;
 }
+
+ion-text .warningHeader {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.125rem;
+  text-transform: none;
+  break-after: avoid;
+}
+
+ion-grid.table.light ion-row.header .warningHeader {
+  margin-bottom: 0;
+  line-height: 0.875rem;
+}

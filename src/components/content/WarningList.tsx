@@ -42,6 +42,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
             (faultSource.getFeatureById(warning.equipmentId) as Feature<Geometry>))
           : undefined;
         const marineWarningDataLayerId = getMarineWarningDataLayerId(warning.type);
+        const capitalizedType = warning.type[lang] && warning.type[lang]?.charAt(0) + warning.type[lang]?.slice(1).toLocaleLowerCase();
         return (
           <>
             <div style={{ padding: '6px' }} />
@@ -56,9 +57,9 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
               <IonRow className="header">
                 <IonCol>
                   <IonText>
-                    <div className="h5">
-                      {(warning.type[lang] as string)?.toLocaleUpperCase()} - {warning.number}
-                    </div>
+                    <IonText className="warningHeader">
+                      {capitalizedType} - {warning.number}
+                    </IonText>
                   </IonText>
                 </IonCol>
                 <IonCol className="ion-text-end ion-align-self-end">
