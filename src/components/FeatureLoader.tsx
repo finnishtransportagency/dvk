@@ -85,6 +85,7 @@ export function useConditionsDataLayer(
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(featureLayerId);
     layer.set('fetchedDate', headers?.['fetcheddate']);
+    layer.set('isError', isError);
     if (data) {
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
@@ -109,7 +110,7 @@ export function useConditionsDataLayer(
       }
       setReady(true);
     }
-  }, [featureLayerId, headers, data, dataUpdatedAt, dataProjection]);
+  }, [featureLayerId, headers, data, dataUpdatedAt, dataProjection, isError]);
   const layer = dvkMap.getFeatureLayer(featureLayerId);
   layer.set('errorUpdatedAt', errorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
