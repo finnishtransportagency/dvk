@@ -4,7 +4,7 @@ import { handler as previewHandler } from '../lib/lambda/graphql/query/harborPre
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
 import { Status } from '../graphql/generated';
 import { ADMIN_ROLE, getOptionalCurrentUser } from '../lib/lambda/api/login';
-import { mockContext, mockQueryByIdEvent } from './mocks';
+import { mockContext, mockQueryPreviewEvent } from './mocks';
 
 const adminUser = {
   uid: 'K123456',
@@ -137,7 +137,7 @@ it('should get public harbor preview from the DynamoDB', async () => {
     .resolves({
       Item: harbor1,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -152,7 +152,7 @@ it('should get draft harbor preview from the DynamoDB', async () => {
     .resolves({
       Item: harbor2,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -167,7 +167,7 @@ it('should filter removed harbor preview from the DynamoDB', async () => {
     .resolves({
       Item: harbor3,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toBe(undefined);
 });
 
@@ -180,6 +180,6 @@ it('should return nothing when admin role missing', async () => {
     .resolves({
       Item: harbor1,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toBe(undefined);
 });

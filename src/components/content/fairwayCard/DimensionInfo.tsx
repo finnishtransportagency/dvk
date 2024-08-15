@@ -56,7 +56,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
     const designDraftValues: Array<string> = [];
     if (fairway.areas) {
       for (const area of fairway.areas) {
-        const str = (isN2000HeightSystem ? area.n2000draft : area.draft)?.toLocaleString();
+        const str = (isN2000HeightSystem && area.n2000draft ? area.n2000draft : area.draft)?.toLocaleString();
         if (str !== undefined && str !== '0' && !designDraftValues.includes(str)) {
           designDraftValues.push(str);
         }
@@ -69,7 +69,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
     const sweptDepthValues: Array<string> = [];
     if (fairway.areas) {
       for (const area of fairway.areas) {
-        const str = (isN2000HeightSystem ? area.n2000depth : area.depth)?.toLocaleString();
+        const str = (isN2000HeightSystem && area.n2000depth ? area.n2000depth : area.depth)?.toLocaleString();
         if (str !== undefined && str !== '0' && !sweptDepthValues.includes(str)) {
           sweptDepthValues.push(str);
         }

@@ -4,7 +4,7 @@ import { ActionType, Lang, ValidationType, ValueType } from '../../../utils/cons
 import { FairwayCardInput, Mareograph, Status } from '../../../graphql/generated';
 import TextInputRow from '../TextInputRow';
 import { useTranslation } from 'react-i18next';
-import SelectWithFilter from '../SelectWithFilter';
+import SelectWithCustomDropdown from '../SelectWithCustomDropdown';
 import { mareographsToSelectOptionList } from '../../../utils/common';
 
 interface RecommendationsSectionProps {
@@ -68,7 +68,8 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
         />
         <IonRow>
           <IonCol size="3.95">
-            <SelectWithFilter
+            <SelectWithCustomDropdown
+              dropdownType="filter"
               label={t('fairwaycard.linked-mareographs')}
               options={mareographsToSelectOptionList(mareographOptions)}
               selected={state.mareographs ?? []}

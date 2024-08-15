@@ -1,5 +1,5 @@
 import { ALBEvent, AppSyncResolverEvent, Context } from 'aws-lambda';
-import { FairwayCard, QueryFairwayCardArgs } from '../graphql/generated';
+import { FairwayCard, QueryFairwayCardArgs, QueryFairwayCardPreviewArgs, Status } from '../graphql/generated';
 
 export const mockContext: Context = {
   callbackWaitsForEmptyEventLoop: false,
@@ -18,7 +18,37 @@ export const mockContext: Context = {
 
 // Mock for query with id (string) as param, used for fairway and harbor queries
 export const mockQueryByIdEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
-  arguments: { id: 'test', version: 'v0' },
+  arguments: { id: 'test' },
+  info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
+  prev: null,
+  request: { domainName: null, headers: {} },
+  source: {},
+  stash: {},
+};
+
+// Mock for query with id (string) and version as params, used for fairway and harbor queries
+export const mockQueryByIdAndVersionEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
+  arguments: { id: 'test', version: 'v2' },
+  info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
+  prev: null,
+  request: { domainName: null, headers: {} },
+  source: {},
+  stash: {},
+};
+
+// Mock for query with id (string) and public status as params, used for fairway and harbor queries
+export const mockQueryByIdAndStatusPublicEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
+  arguments: { id: 'test', status: [Status.Public] },
+  info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
+  prev: null,
+  request: { domainName: null, headers: {} },
+  source: {},
+  stash: {},
+};
+
+// Mock for query with id (string) and version as param, used for fairway and harbor preview queries
+export const mockQueryPreviewEvent: AppSyncResolverEvent<QueryFairwayCardPreviewArgs> = {
+  arguments: { id: 'test', version: 'v0_latest' },
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
   prev: null,
   request: { domainName: null, headers: {} },
@@ -27,11 +57,11 @@ export const mockQueryByIdEvent: AppSyncResolverEvent<QueryFairwayCardArgs> = {
 };
 
 export const mockQueryFairwayCardArgsFairwayCardEvent: AppSyncResolverEvent<QueryFairwayCardArgs, FairwayCard> = {
-  arguments: { id: 'test', version: 'v0' },
+  arguments: { id: 'test', version: 'v0_latest' },
   info: { fieldName: '', parentTypeName: '', selectionSetGraphQL: '', selectionSetList: [], variables: {} },
   prev: null,
   request: { domainName: null, headers: {} },
-  source: { id: 'test', version: 'v0', fairways: [{ id: 10 }], name: { fi: 'Testfi', sv: 'Testsv', en: 'Testen' }, n2000HeightSystem: true },
+  source: { id: 'test', version: 'v0_latest', fairways: [{ id: 10 }], name: { fi: 'Testfi', sv: 'Testsv', en: 'Testen' }, n2000HeightSystem: true },
   stash: {},
 };
 
@@ -44,7 +74,17 @@ export const mockVoidEvent: AppSyncResolverEvent<void> = {
   stash: {},
 };
 
-export const mockALBEvent = (type: string, fairwayClass?: string): ALBEvent => {
+export const mockALBEvent = (path: string): ALBEvent => {
+  return {
+    requestContext: { elb: { targetGroupArn: 'arn' } },
+    body: null,
+    httpMethod: 'GET',
+    path: '/api/' + path,
+    isBase64Encoded: false,
+  };
+};
+
+export const mockFeaturesALBEvent = (type: string, fairwayClass?: string): ALBEvent => {
   return {
     requestContext: { elb: { targetGroupArn: 'arn' } },
     body: null,
@@ -52,25 +92,5 @@ export const mockALBEvent = (type: string, fairwayClass?: string): ALBEvent => {
     path: '/api/featureloader',
     isBase64Encoded: false,
     multiValueQueryStringParameters: { type: [type], vaylaluokka: [fairwayClass ?? ''] },
-  };
-};
-
-export const mockAISALBEvent = (path: string): ALBEvent => {
-  return {
-    requestContext: { elb: { targetGroupArn: 'arn' } },
-    body: null,
-    httpMethod: 'GET',
-    path: '/api/' + path,
-    isBase64Encoded: false,
-  };
-};
-
-export const mockPilotRoutesALBEvent = (path: string): ALBEvent => {
-  return {
-    requestContext: { elb: { targetGroupArn: 'arn' } },
-    body: null,
-    httpMethod: 'GET',
-    path: '/api/' + path,
-    isBase64Encoded: false,
   };
 };

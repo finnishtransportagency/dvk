@@ -14,6 +14,7 @@ import {
   AisFeatureProperties,
   AreaFeatureProperties,
   BuoyFeatureProperties,
+  DirwayFeatureProperties,
   EquipmentFeatureProperties,
   HarborFeatureProperties,
   LineFeatureProperties,
@@ -154,6 +155,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'observation',
     'buoy',
     'mareograph',
+    'dirway',
     'vtsline',
     'line',
     'specialarea2',
@@ -246,7 +248,7 @@ function getSectionDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
   const props = feature.getProperties() as QuayFeatureProperties;
   const quayName = props.quay?.[lang];
   const sectionName = props.name ?? '';
-  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : quayName ?? sectionName;
+  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : (quayName ?? sectionName);
   return {
     header: [headerText],
     featureType: t('featureList.featureType.section'),
@@ -281,6 +283,8 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       };
     case 'buoy':
       return { header: [(props as BuoyFeatureProperties).name], featureType: t('featureList.featureType.buoy'), className: type };
+    case 'dirway':
+      return { header: [(props as DirwayFeatureProperties).name], featureType: t('featureList.featureType.dirway'), className: type };
     case 'harbor':
       return { header: [(props as HarborFeatureProperties).name?.[lang] ?? ''], featureType: t('featureList.featureType.harbor'), className: type };
     case 'line':

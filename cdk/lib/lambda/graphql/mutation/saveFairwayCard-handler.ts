@@ -36,6 +36,7 @@ import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { getExpires, getNewStaticBucketName } from '../../environment';
 import { PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
+import { deleteCacheObjects } from '../cache';
 
 export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
   return {
@@ -49,11 +50,15 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     creator: old ? old.creator : `${user.firstName} ${user.lastName}`,
     modifier: `${user.firstName} ${user.lastName}`,
     modificationTimestamp: Date.now(),
-    fairways: card.fairwayIds.map((id, idx) => {
+    fairways: card.fairwayIds.map((id) => {
+      const primary = card.primaryFairwayId?.find((pId) => pId.id === id);
+      const secondary = card.secondaryFairwayId?.find((sId) => sId.id === id);
       return {
         id,
-        primary: card.primaryFairwayId ? card.primaryFairwayId === id : idx === 0,
-        secondary: card.secondaryFairwayId ? id === card.secondaryFairwayId : idx === 0,
+        primary: !!primary,
+        primarySequenceNumber: primary?.sequenceNumber,
+        secondary: !!secondary,
+        secondarySequenceNumber: secondary?.sequenceNumber,
       };
     }),
     generalInfo: mapText(card.generalInfo),
@@ -66,8 +71,6 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     navigationCondition: mapText(card.navigationCondition),
     windRecommendation: mapText(card.windRecommendation),
     visibility: mapText(card.visibility),
-    //keep already saved seaLevel-values for now even though other changes can occur
-    seaLevel: old?.seaLevel,
     mareographs: card.mareographs?.map((id) => {
       return { id };
     }),
@@ -182,11 +185,20 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
 ): Promise<FairwayCard> => {
   const user = await getCurrentUser(event);
   log.info(`saveFairwayCard(${event.arguments.card.id}, ${user.uid})`);
-  const dbModel = await FairwayCardDBModel.get(event.arguments.card.id, event.arguments.card.version);
+  const dbModel = await FairwayCardDBModel.getVersion(event.arguments.card.id, event.arguments.card.version);
   const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
   log.debug('card: %o', newModel);
   await tagPictures(event.arguments.card.id, event.arguments.card.pictures, dbModel?.pictures);
   try {
+    // Clear fairway cache of a fairway card
+    // delete when more sophisticated caching is implemented
+    // needed to get updated starting and ending fairways for fairwaycard
+    // if linked fairways are for example 1111, 2222, then the key for cache clearing is 'fairways:1111:2222'
+    const fairways = newModel.fairways.map((f) => f.id);
+    if (fairways) {
+      const cacheKey = 'fairways:' + fairways.join(':');
+      await deleteCacheObjects([cacheKey]);
+    }
     await FairwayCardDBModel.save(newModel, event.arguments.card.operation);
   } catch (e) {
     if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {

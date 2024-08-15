@@ -88,7 +88,6 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         { id: 'mareograph', title: t('homePage.map.controls.layer.seaLevel') },
         { id: 'observation', title: t('homePage.map.controls.layer.weatherStation') },
         { id: 'buoy', title: t('homePage.map.controls.layer.buoys') },
-        { id: 'ice', title: t('homePage.map.controls.layer.ice') },
       ],
     },
     {
@@ -128,6 +127,14 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
         { id: 'aisvesseltugandspecialcraft', title: t('homePage.map.controls.layer.aisVesselTugAndSpecialCraft') },
         { id: 'aisvesselpleasurecraft', title: t('homePage.map.controls.layer.aisVesselPleasureCraft') },
         { id: 'aisunspecified', title: t('homePage.map.controls.layer.aisUnspecified') },
+      ],
+    },
+    {
+      id: 'wintertraffic',
+      title: t('homePage.map.controls.layer.winterTraffic'),
+      childLayers: [
+        { id: 'dirway', title: t('homePage.map.controls.layer.dirway') },
+        { id: 'ice', title: t('homePage.map.controls.layer.ice') },
       ],
     },
     { id: 'name', title: t('homePage.map.controls.layer.name') },

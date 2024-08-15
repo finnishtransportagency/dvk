@@ -43,11 +43,6 @@
     "sv": "Vädret vid kuststationerna: fyren Kemi 1.",
     "en": "Marine weather observations: Kemi 1 lighthouse."
   },
-  "seaLevel": {
-    "fi": "Kemi mareografi.",
-    "sv": "Kemi mareograf.",
-    "en": "Kemi mareograph."
-  },
   "windRecommendation": {
     "fi": "Mitoitusalukselle kriittinen tuulen nopeus osuudella Välimatala - Koivuhauta 12 m/s, suunta KA - L - LU, osuudella Koivuhauta - satama 10 m/s, suunta KA-L-LU.",
     "sv": "Kritisk vindhastighet för det dimensionerande fartyget i avsnittet Välimatala - Koivuhauta 12 m/s, riktning SO-V-NV, i avsnittet Koivuhauta - hamnen 10 m/s, riktning SO-V-NV.",

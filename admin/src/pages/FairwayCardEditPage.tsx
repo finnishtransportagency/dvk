@@ -24,8 +24,8 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fa
       {!isLoading && (
         <FairwayCardForm
           fairwayCard={fairwayCard}
-          modified={origin ? 0 : data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0}
-          modifier={(origin ? userData?.currentUser?.name : data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator) ?? ''}
+          modified={origin ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
+          modifier={origin ? userData?.currentUser?.name : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
           isError={isError}
         />
       )}
@@ -67,7 +67,6 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     windRecommendation: { fi: '', sv: '', en: '' },
     vesselRecommendation: { fi: '', sv: '', en: '' },
     visibility: { fi: '', sv: '', en: '' },
-    seaLevel: { fi: '', sv: '', en: '' },
     trafficService: {
       pilot: {
         email: '',

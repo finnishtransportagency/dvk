@@ -48,11 +48,6 @@
     "sv": "Fartyg med ett dimensionerat djupgående på 12,5 m bör ta hänsyn till squat-effekten mellan Kyrönkari och hamnen.",
     "en": "Ships with a design draught of 12,5 m should make allowance for that squat effect might affect the navigation of the vessel between Kyrönkari and the port."
   },
-  "seaLevel": {
-    "fi": "Oulu mareografi Toppilansalmen suulla.",
-    "sv": "Kemi mareograf, Uleåborg mareograf, Uleåborg - Toppilasundet",
-    "en": "Kemi mareograph, Oulu mareograph outside of Oulu , Toppila harbour."
-  },
   "trafficService": {
     "pilot": {
       "email": "pilotdispatch.bothnia@finnpilot.fi",

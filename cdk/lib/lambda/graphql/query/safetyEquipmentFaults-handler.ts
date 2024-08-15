@@ -13,7 +13,7 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Safety
   log.info(`safetyEquipmentFaults(${event.identity})`);
   const key = getKey();
   try {
-    const faults = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
+    const faults = (await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot')).data as TurvalaiteVikatiedotAPIModel[];
     log.debug('faults: %d', faults.length);
     const response = faults.map((apiFault) => {
       const fault: SafetyEquipmentFault = {

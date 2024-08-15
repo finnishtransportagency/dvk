@@ -38,11 +38,6 @@
     "sv": "Vädret vid kuststationerna: Tankar fyr.",
     "en": "Marine weather observations, Tankar lighthouse."
   },
-  "seaLevel": {
-    "fi": "Pietarsaaren mareografi.",
-    "sv": "Jakobstad mareograf.",
-    "en": "Pietarsaari mareograph."
-  },
   "trafficService": {
     "pilot": {
       "email": "pilotdispatch.bothnia@finnpilot.fi",

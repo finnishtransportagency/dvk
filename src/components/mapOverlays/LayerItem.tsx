@@ -43,10 +43,20 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
         color: string;
       }
     | undefined = undefined;
-  const dataUpdatedAt = dvkMap.getFeatureLayer(id).get('dataUpdatedAt');
-  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'ice', 'safetyequipmentfault'].includes(id)) {
-    if (dvkMap.getFeatureLayer(id).get('errorUpdatedAt')) {
-      alertProps = getAlertProperties(dataUpdatedAt, id);
+  const layer = dvkMap.getFeatureLayer(id);
+  const dataUpdatedAt = layer.get('dataUpdatedAt');
+  const fetchedDate = layer.get('fetchedDate');
+  // isError and isFeatures is for checking if modal for (503) unavailable resources is needed
+  // if layer is in error state and there's not features on layer, we can determine if we can get any data
+  const isError = layer.get('isError');
+  let isFeatures = false;
+  if (['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'safetyequipmentfault', 'ice'].includes(id)) {
+    if (id !== 'ice') {
+      isFeatures = dvkMap.getVectorSource(id).getFeatures().length > 0;
+    }
+    // the second conditional here is for buoys since they are loaded when layer is selected
+    if (fetchedDate || (!fetchedDate && layer.get('errorUpdatedAt'))) {
+      alertProps = getAlertProperties(fetchedDate, id);
     }
   }
 
@@ -54,13 +64,11 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
     const initialized =
       !!dataUpdatedAt ||
       [
-        'ice',
         'depthcontour',
         'deptharea',
-        'soundingpoint',
-        'mareograph',
-        'observation',
         'buoy',
+        'ice',
+        'soundingpoint',
         'aisvesselcargo',
         'aisvesseltanker',
         'aisvesselpassenger',
@@ -68,10 +76,11 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
         'aisvesseltugandspecialcraft',
         'aisvesselpleasurecraft',
         'aisunspecified',
-        'safetyequipmentfault',
         'pilotroute',
         'pilotageareaborder',
-      ].includes(id);
+      ].includes(id) ||
+      (!!fetchedDate && ['ice', 'mareograph', 'observation', 'safetyequipmentfault'].includes(id));
+
     return !initialized || (!hasOfflineSupport(id) && isOffline);
   };
 
@@ -139,6 +148,8 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
           title={getLayerItemAlertText()}
           color={alertProps.color}
           mainLegendOpen={mainLegendOpen}
+          isError={isError}
+          isFeatures={isFeatures}
         />
       )}
       {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea' || id === 'depthcontour') && (

@@ -35,7 +35,7 @@ jest.mock('../lib/lambda/api/axios', () => ({
     if (throwError) {
       throw new Error('Fetching from VATU api failed');
     }
-    return faults;
+    return { data: faults };
   },
 }));
 

@@ -13,7 +13,7 @@ class FileUploader {
 
   constructor() {
     this.uppy.use(FileInput, {
-      locale: { strings: { chooseFiles: 'Choose files' } },
+      locale: { strings: { chooseFiles: 'Choose files' }, pluralize: () => 1 },
     });
   }
 

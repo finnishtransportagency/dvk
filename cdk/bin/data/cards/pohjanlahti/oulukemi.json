@@ -38,11 +38,6 @@
     "sv": "Vädret vid kuststationerna, Karlö Marjaniemi, Uleåborg Vihreäsaari, Fyren Kemi 1.",
     "en": "Marine weather observations, Hailuoto Marjaniemi, Oulu Vihreäsaari, Kemi 1 lighthouse."
   },
-  "seaLevel": {
-    "fi": "Oulu mareografi, Toppilasalmen suulla.",
-    "sv": "Uleåborg mareograf, i Toppila sundet.",
-    "en": "Oulu mareograph, outside of Oulu Toppila harbour."
-  },
   "trafficService": {
     "pilot": {
       "email": "pilotdispatch.bothnia@finnpilot.fi",

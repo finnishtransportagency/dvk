@@ -2,7 +2,7 @@ import { TFunction } from 'i18next';
 import { CountryCode, countryTable } from './countryCodes';
 import { Point } from 'ol/geom';
 import { point as turf_point } from '@turf/helpers';
-import transformTranslate from '@turf/transform-translate';
+import { transformTranslate as turf_transformTranslate } from '@turf/transform-translate';
 import { MAP } from './constants';
 
 export const getAisVesselShipType = (typeNumber?: number): string => {
@@ -117,7 +117,7 @@ export function translatePoint(point: Point, heading: number, distance: number) 
   const wgs84Point = geom.transform(MAP.EPSG, 'EPSG:4326');
   const turfPoint = turf_point(wgs84Point.getCoordinates());
   // Transform given point 1km to headng direction
-  const turfPoint2 = transformTranslate(turfPoint, distance / 1000, heading);
+  const turfPoint2 = turf_transformTranslate(turfPoint, distance / 1000, heading);
   const point2 = new Point(turfPoint2.geometry.coordinates);
   point2.transform('EPSG:4326', MAP.EPSG);
   return point2;

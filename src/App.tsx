@@ -21,8 +21,6 @@ import {
   useLocalWarningLayer,
   useBoaterWarningLayer,
   useBoardLine12Layer,
-  useMareographLayer,
-  useObservationLayer,
   useBuoyLayer,
   DvkLayerState,
   useVtsLineLayer,
@@ -34,7 +32,9 @@ import {
   useVaylaWaterAreaData,
   useNameLayer,
   usePilotageAreaBorderLayer,
+  useDirwayLayer,
 } from './components/FeatureLoader';
+import { useObservationLayer, useObservationFeatures } from './components/ObservationFeatureLoader';
 import {
   useAisVesselCargoLayer,
   useAisVesselTankerLayer,
@@ -86,7 +86,7 @@ import SquatCalculatorPage from './pages/SquatCalculatorPage';
 import HarborPreviewPage from './pages/HarborPreviewPage';
 import PilotRoutePage from './pages/PilotRoutePage';
 import { useHarborLayer } from './components/HarborFeatureLoader';
-import { useObservationFeatures } from './components/ObservationFeatureLoader';
+import { useMareographFeatures, useMareographLayer } from './components/MareographFeatureLoader';
 
 setupIonicReact({
   mode: 'md',
@@ -206,8 +206,10 @@ const DvkIonApp: React.FC = () => {
   useVaylaWaterAreaData();
   usePilotageLimitLayer();
   usePilotageAreaBorderLayer();
-  /* Initialize observation data for offline use, needed in fairway cards */
+  useDirwayLayer();
+  /* Initialize observation and merograph data for offline use, needed in fairway cards */
   useObservationFeatures();
+  useMareographFeatures();
 
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);

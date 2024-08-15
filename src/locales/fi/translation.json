@@ -51,7 +51,6 @@
           "conditions": "Olosuhteet",
           "seaLevel": "Merivedenkorkeus",
           "weatherStation": "Säähavaintoasemat",
-          "ice": "Jääkartta",
           "buoys": "Aaltopoijut",
           "vts": "VTS",
           "vtsline": "VTS-alueet",
@@ -78,6 +77,9 @@
           "aisVesselPleasureCraft": "Huviveneet",
           "aisUnspecified": "Määrittelemättömät alukset",
           "aisShowPredictor": "Nopeusvektorit",
+          "winterTraffic": "Talvimerenkulku",
+          "dirway": "Jääreittipisteet",
+          "ice": "Jääkartta",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
@@ -261,7 +263,9 @@
     "pilotageLimitLocation": "Linjan sijainti",
     "pilotageLimitLimit": "Luotsinkäyttövelvollisuuden raja väylällä, kun jokin seuraavista ylittyy",
     "pilotageLimitDimensions": "Pituus / leveys / syväys (m)",
-    "inForce": "Voimassa"
+    "inForce": "Voimassa",
+    "mareograph": "Mareografi",
+    "mareographLocation": "Mareografin sijainti"
   },
   "routes": {
     "title": "Luotsausreitit",
@@ -318,7 +322,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Ei väyläkorttia"
+      "noFairwayCards": "Ei väyläkorttia",
+      "outdatedData": "Tieto on yli 12h vanhaa"
     },
     "pilotPlace": {
       "header": "Luotsipaikka {{val}}",
@@ -466,11 +471,15 @@
       "aisvesselpleasurecraft": "Huvivene",
       "aisunspecified": "Määrittelemätön alus"
     },
+    "dirway": {
+      "points": "Jääreittipisteet"
+    },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",
       "featureType": {
         "area": "Väyläalue",
         "buoy": "Aaltopoiju",
+        "dirway": "Jääreittipisteet",
         "calculated": "Laskennallinen vedenkorkeus",
         "harbor": "Satama",
         "line": "Navigointilinja",

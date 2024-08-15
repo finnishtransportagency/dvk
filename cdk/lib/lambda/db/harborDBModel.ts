@@ -69,16 +69,7 @@ class HarborDBModel {
     return 'v0_public';
   }
 
-  // at the moment this gives any latest version, should be separate function for latest public
-  static async get(id: string, version: string = 'v0_latest'): Promise<HarborDBModel | undefined> {
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
-    const harbor = response?.Item as HarborDBModel | undefined;
-    log.debug('Harbor name: %s', harbor?.name?.fi);
-    return harbor;
-  }
-
   static async getVersion(id: string, version: string = 'v1'): Promise<HarborDBModel | undefined> {
-    // v0 always the latest version
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
     const harbor = response?.Item as HarborDBModel | undefined;
     log.debug('Harbor card name: %s', harbor?.name?.fi);
@@ -86,7 +77,7 @@ class HarborDBModel {
   }
 
   static async getLatest(id: string): Promise<HarborDBModel | undefined> {
-    // v0 always the public version
+    // v0 always the latest
     const response = await getDynamoDBDocumentClient().send(
       new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: this.getLatestSortKey() } })
     );

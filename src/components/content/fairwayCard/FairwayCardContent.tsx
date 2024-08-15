@@ -27,6 +27,7 @@ import {
   getFairwayCardPilotageLimits,
   getFairwayCardSafetyEquipmentFaults,
   getFairwayCardObservations,
+  getFairwayCardMareographs,
 } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
@@ -44,8 +45,10 @@ import infoIcon from '../../../theme/img/info.svg';
 import { compareAsc } from 'date-fns';
 import { useObservationFeatures } from '../../ObservationFeatureLoader';
 import { ObservationInfo } from './ObservationInfo';
-import { SpecialAreaInfo } from './SpecialAreaInfo';
 import MarkdownParagraph from '../MarkdownParagraph';
+import { AreaInfoByType } from './AreaInfoByType';
+import MareographInfo from './MareographInfo';
+import { useMareographFeatures } from '../../MareographFeatureLoader';
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -72,6 +75,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const [pilotageLimits, setPilotageLimits] = useState<Feature<Geometry>[]>([]);
   const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
   const [observations, setObservations] = useState<Feature<Geometry>[]>([]);
+  const [mareographs, setMareographs] = useState<Feature<Geometry>[]>([]);
 
   const {
     data: safetyEquipmentData,
@@ -83,6 +87,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { pilotageLimitFeatures, ready: pilotageLimitsReady } = usePilotageLimitFeatures();
   const { pilotRouteFeatures, ready: pilotRoutesReady } = usePilotRouteFeatures();
   const { observationFeatures, ready: observationsReady } = useObservationFeatures();
+  const { mareographFeatures, ready: mareographsReady } = useMareographFeatures();
 
   useEffect(() => {
     if (fairwayCard && safetyEquipmentsReady && !faultIsPending && !faultIsFetching) {
@@ -121,6 +126,12 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
       setObservations(getFairwayCardObservations(fairwayCard, observationFeatures));
     }
   }, [observationsReady, observationFeatures, fairwayCard]);
+
+  useEffect(() => {
+    if (fairwayCard && mareographsReady) {
+      setMareographs(getFairwayCardMareographs(fairwayCard, mareographFeatures));
+    }
+  }, [mareographsReady, mareographFeatures, fairwayCard]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
@@ -251,7 +262,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <Paragraph title={t('vesselRecommendation')} bodyText={fairwayCard?.vesselRecommendation ?? undefined} showNoData />
               <Paragraph title={t('visibilityRecommendation')} bodyText={fairwayCard?.visibility ?? undefined} showNoData />
               <ObservationInfo observations={observations} />
-              <Paragraph title={t('seaLevel')} bodyText={fairwayCard?.seaLevel ?? undefined} showNoData />
+              <MareographInfo mareographs={mareographs} />
             </IonText>
 
             {fairwayCard?.additionalInfo && (
@@ -288,6 +299,8 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <h5>{t('commonInformation')}</h5>
               <GeneralInfo data={fairwayCard?.fairways} />
               <ProhibitionInfo data={fairwayCard?.fairways} />
+              {/* 15 === prohibition area typecode*/}
+              <AreaInfoByType data={fairwayCard?.fairways} typeCode={15} />
             </IonText>
             <IonText>
               <h5>{t('speedLimit')}</h5>
@@ -296,7 +309,8 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <IonText>
               <h5>{t('anchorage')}</h5>
               <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
-              <SpecialAreaInfo data={fairwayCard?.fairways} />
+              {/* 2 === special area typecode*/}
+              <AreaInfoByType data={fairwayCard?.fairways} typeCode={2} />
             </IonText>
             <IonText>
               <h5>{t('fairwayAreas')}</h5>

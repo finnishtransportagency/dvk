@@ -43,11 +43,6 @@
     "sv": "Fartyg utan effektiva manöveregenskaper bör anlita bogserhjälp när vindstyrkan överstiger 10 m/s.",
     "en": "Ships without advanced manoeuvring characteristics should employ tugs in the harbour if wind speed exceeds 10 m/s."
   },
-  "seaLevel": {
-    "fi": "Kemi mareografi",
-    "sv": "Kemi mareograf",
-    "en": "Kemi mareograph"
-  },
   "windRecommendation": {
     "fi": "Mitoitusalukselle kriittiset tuulirajat ovat osuudella Ristinmatala - Inakari 15 m/s, suunta KO-E-LU, osuudella Inakari - satama 10 m/s, suunta KO-E-LU.",
     "sv": "Kritisk gräns för det dimensionerande fartyget är 15 m/s på sträckan Ristinmatala–Inakari, riktning NE-S-NW; 10 m/s på sträckan Inakari–hamnen, riktning NO-S-NV.",

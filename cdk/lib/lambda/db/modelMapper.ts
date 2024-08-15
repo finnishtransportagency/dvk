@@ -188,7 +188,7 @@ export function mapQuayDepth(text: Maybe<string> | undefined) {
 
 export function mapVersion(text?: Maybe<string>) {
   if (text && text.trim().length > 0) {
-    const regex = /^v\d+(_(latest|public))?$/
+    const regex = /^v\d+(_(latest|public))?$/;
     const passedString = regex.exec(text);
     if (passedString && passedString[0].length === text.length) {
       return text;
@@ -229,7 +229,9 @@ function mapFairwayDBModelToFairway(dbModel: FairwayDBModel): Fairway {
   const fairway: Fairway = {
     id: dbModel.id,
     primary: dbModel.primary ?? false,
+    primarySequenceNumber: dbModel.primarySequenceNumber,
     secondary: dbModel.secondary ?? false,
+    secondarySequenceNumber: dbModel.secondarySequenceNumber,
   };
   return fairway;
 }
@@ -289,7 +291,6 @@ export function mapFairwayCardDBModelToGraphqlType(
     navigationCondition: dbModel.navigationCondition,
     windRecommendation: dbModel.windRecommendation,
     visibility: dbModel.visibility,
-    seaLevel: dbModel.seaLevel,
     mareographs: dbModel.mareographs,
     speedLimit: dbModel.speedLimit,
     vesselRecommendation: dbModel.vesselRecommendation,

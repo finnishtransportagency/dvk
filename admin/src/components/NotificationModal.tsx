@@ -11,21 +11,10 @@ interface ModalProps {
   subHeader?: string;
   message?: string;
   itemList?: string[];
-  useTransElement?: boolean;
   i18nkey?: string;
 }
 
-const NotificationModal: React.FC<ModalProps> = ({
-  isOpen,
-  closeAction,
-  closeTitle,
-  header,
-  subHeader,
-  message,
-  itemList,
-  useTransElement,
-  i18nkey,
-}) => {
+const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTitle, header, subHeader, message, itemList, i18nkey }) => {
   const { t } = useTranslation();
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -63,10 +52,10 @@ const NotificationModal: React.FC<ModalProps> = ({
           <IonCol>
             <IonText>
               {header && subHeader && <p>{subHeader}</p>}
-              {useTransElement && (
+              {i18nkey && (
                 /*Changed because of bold text needed for notices modal, but components part can be refactored if more diverse need arises*/
                 <p>
-                  <Trans t={t} i18nKey={i18nkey} components={{ strong: <strong /> }} />
+                  <Trans t={t} i18nKey={i18nkey} components={{ strong: <strong />, span: <span /> }} />
                 </p>
               )}
               {messages?.map((str, i) => <p key={`${i}-${str.length}`}>{str}</p>)}

@@ -5,7 +5,7 @@ import { act, render, screen } from '@testing-library/react';
 import { ionFireEvent as fireEvent } from '@ionic/react-test-utils';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
-import { mockFairwayCard, mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
+import { mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
 import { vi } from 'vitest';
 
 class ResizeObserver {
@@ -140,6 +140,15 @@ vi.mock('./components/FeatureLoader', () => ({
   usePilotageAreaBorderLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
+  useDirwayLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useConditionsDataLayer: () => {
+    return {};
+  },
+  featuresVisible: () => {
+    return {};
+  },
 }));
 
 vi.mock('./graphql/generated', async () => {
@@ -150,12 +159,6 @@ vi.mock('./graphql/generated', async () => {
     useFindAllFairwayCardsQuery: () => {
       return {
         data: mockFairwayList,
-        isPending: false,
-      };
-    },
-    useFindFairwayCardByIdQuery: () => {
-      return {
-        data: mockFairwayCard,
         isPending: false,
       };
     },
@@ -258,7 +261,6 @@ test('if sidePane header elements are present and working', () => {
     const listPane = screen.getByTestId('listPane');
     expect(listPane).toBeInTheDocument();
     vi.advanceTimersByTime(1200);
-    //expect(listPane.className).toBe('wide');
 
     // togglePane
     const togglePane = screen.getByTestId('togglePane');

@@ -1,9 +1,17 @@
 import { Feature } from 'ol';
 import { GeoJSON } from 'ol/format';
 import { Geometry } from 'ol/geom';
-import booleanDisjoint from '@turf/boolean-disjoint';
+import { booleanDisjoint as turf_booleanDisjoint } from '@turf/boolean-disjoint';
 import { Polygon as turf_Polygon } from 'geojson';
-import { BackgroundLayerId, FeatureDataId, FeatureDataLayerId, StaticFeatureDataSources, MAP, StaticFeatureDataId } from '../utils/constants';
+import {
+  BackgroundLayerId,
+  FeatureDataId,
+  FeatureDataLayerId,
+  StaticFeatureDataSources,
+  MAP,
+  StaticFeatureDataId,
+  FeatureLayerId,
+} from '../utils/constants';
 import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
 import { useFeatureData } from '../utils/dataLoader';
@@ -34,11 +42,20 @@ function useDataLayer(
   filterMethod?: (features: Feature<Geometry>[]) => Feature<Geometry>[]
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
+  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
   useEffect(() => {
+    // if no features, still set for layer when api was called
+    if (
+      ['mareograph', 'buoy', 'observation', 'coastalwarning', 'localwarning', 'boaterwarning', 'safetyequipmentfault'].includes(featureLayerId) &&
+      !data
+    ) {
+      const layer = dvkMap.getFeatureLayer(featureLayerId);
+      layer.set('fetchedDate', headers?.['fetcheddate']);
+    }
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      layer.set('fetchedDate', headers?.['fetcheddate']);
+      if (!layer.get('dataUpdatedAt') || dataUpdatedAt > layer.get('dataUpdatedAt')) {
         const format = new GeoJSON();
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);
@@ -49,10 +66,61 @@ function useDataLayer(
       }
       setReady(true);
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection, filterMethod]);
+  }, [featureLayerId, featureDataId, headers, data, dataUpdatedAt, dataProjection, filterMethod]);
   const layer = dvkMap.getFeatureLayer(featureLayerId);
   layer.set('errorUpdatedAt', errorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
+export function useConditionsDataLayer(
+  featureDataId: FeatureDataId,
+  featureLayerId: FeatureDataLayerId,
+  dataProjection = 'EPSG:4326',
+  refetchOnMount: 'always' | boolean = true,
+  refetchInterval: number | false = false,
+  enabled: boolean = true
+): DvkLayerState {
+  const [ready, setReady] = useState(false);
+  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
+  useEffect(() => {
+    const layer = dvkMap.getFeatureLayer(featureLayerId);
+    layer.set('fetchedDate', headers?.['fetcheddate']);
+    layer.set('isError', isError);
+    if (data) {
+      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+        const format = new GeoJSON();
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+        const source = dvkMap.getVectorSource(featureLayerId);
+
+        features.forEach((f) => {
+          const id = f.getId();
+          const sourceFeat = id ? source.getFeatureById(id) : null;
+          if (sourceFeat) {
+            sourceFeat.setProperties(f.getProperties());
+          } else {
+            f.set('dataSource', featureLayerId, true);
+            source.addFeature(f);
+          }
+        });
+        const featureIds = features.map((f) => f.getId());
+        const featuresToRemove = source.getFeatures().filter((f) => !featureIds.includes(f.getId()));
+        source.removeFeatures(featuresToRemove);
+
+        layer.set('dataUpdatedAt', dataUpdatedAt);
+      }
+      setReady(true);
+    }
+  }, [featureLayerId, headers, data, dataUpdatedAt, dataProjection, isError]);
+  const layer = dvkMap.getFeatureLayer(featureLayerId);
+  layer.set('errorUpdatedAt', errorUpdatedAt);
+  return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
+}
+
+// check if feature is visible on it's own layer or selected fairway card layer
+export function featuresVisible(featureLayer: FeatureLayerId): boolean {
+  const oLayer = dvkMap.getFeatureLayer(featureLayer);
+  const sfcLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
+  return oLayer.isVisible() || sfcLayer.isVisible();
 }
 
 export function useNameLayer() {
@@ -192,34 +260,6 @@ export function useBoardLine12Layer() {
   return useDataLayer('boardline12', 'boardline12');
 }
 
-export function useMareographLayer() {
-  const [initialized, setInitialized] = useState(false);
-  const [visible, setVisible] = useState(false);
-  if (!initialized) {
-    const layer = dvkMap.getFeatureLayer('mareograph');
-    setVisible(layer.isVisible());
-    layer.on('change:visible', () => {
-      setVisible(layer.isVisible());
-    });
-    setInitialized(true);
-  }
-  return useDataLayer('mareograph', 'mareograph', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
-}
-
-export function useObservationLayer() {
-  const [initialized, setInitialized] = useState(false);
-  const [visible, setVisible] = useState(false);
-  if (!initialized) {
-    const layer = dvkMap.getFeatureLayer('observation');
-    setVisible(layer.isVisible());
-    layer.on('change:visible', () => {
-      setVisible(layer.isVisible());
-    });
-    setInitialized(true);
-  }
-  return useDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 10, visible);
-}
-
 export function useBuoyLayer() {
   const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
@@ -262,7 +302,7 @@ function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
 
       const aGeomPoly = format.writeGeometryObject(faf.getGeometry() as Geometry);
       // Check if fairway area polygone intersects restriction area polygone
-      if (!booleanDisjoint(raGeomPoly as turf_Polygon, aGeomPoly as turf_Polygon)) {
+      if (!turf_booleanDisjoint(raGeomPoly as turf_Polygon, aGeomPoly as turf_Polygon)) {
         const oldSpeedLimit = faf.get('speedLimit') as number[] | undefined;
         if (oldSpeedLimit) {
           oldSpeedLimit.push(speedLimit);
@@ -433,4 +473,8 @@ export function useVaylaWaterAreaData() {
 
 export function usePilotageAreaBorderLayer() {
   return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
+}
+
+export function useDirwayLayer() {
+  return useDataLayer('dirway', 'dirway');
 }
