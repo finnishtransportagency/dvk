@@ -14,3 +14,20 @@
 #marineWarningList ion-grid.table ion-row > ion-col p {
   margin: 0;
 }
+
+ion-grid.inlineHoverText:hover {
+  background-color: var(--ion-color-light);
+  cursor: default;
+}
+
+ion-grid.inlineHoverText:focus-visible {
+  outline: 1px solid var(--ion-color-dark);
+}
+
+.marineWarningList ion-grid.inlineHoverText:hover {
+  background-color: var(--ion-color-dangerbg-shade);
+}
+
+div.marineWarningList ion-grid.inlineHoverText:focus-visible {
+  outline: none;
+}

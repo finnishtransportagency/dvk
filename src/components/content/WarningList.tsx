@@ -12,6 +12,7 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
+import { setSelectedMarineWarning } from '../layers';
 
 type WarningListProps = {
   data: MarineWarning[];
@@ -40,9 +41,16 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
           ? ((equipmentSource.getFeatureById(warning.equipmentId) as Feature<Geometry>) ??
             (faultSource.getFeatureById(warning.equipmentId) as Feature<Geometry>))
           : undefined;
-
+        const marineWarningDataLayerId = getMarineWarningDataLayerId(warning.type);
         return (
-          <IonGrid className="table light group ion-no-padding" key={warning.id}>
+          <IonGrid
+            className="table light group ion-no-padding inlineHoverText"
+            key={warning.id}
+            onMouseEnter={() => setSelectedMarineWarning(warning.id, true, marineWarningDataLayerId)}
+            onFocus={() => setSelectedMarineWarning(warning.id, true, marineWarningDataLayerId)}
+            onMouseLeave={() => setSelectedMarineWarning(warning.id, false, marineWarningDataLayerId)}
+            onBlur={() => setSelectedMarineWarning(warning.id, false, marineWarningDataLayerId)}
+          >
             <IonRow className="header">
               <IonCol>
                 <IonText>
@@ -79,7 +87,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                       to="/merivaroitukset/"
                       onClick={(e) => {
                         e.preventDefault();
-                        goToFeature(warning.id, getMarineWarningDataLayerId(warning.type), state.layers);
+                        goToFeature(warning.id, marineWarningDataLayerId, state.layers);
                       }}
                     >
                       {warning.location[lang] ?? warning.location.fi ?? t('noObjects')}
