@@ -22,7 +22,6 @@ import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
 import { filterMarineWarnings } from '../utils/common';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
-import RenderFeature from 'ol/render/Feature';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -209,7 +208,7 @@ export function useInitStaticDataLayer(
   useEffect(() => {
     const initLayer = (data: unknown) => {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
-      const format = new GeoJSON({ featureClass: RenderFeature });
+      const format = new GeoJSON({ featureClass: Feature });
       const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
       layer.setSource(
         new VectorSource<Feature<Geometry>>({
