@@ -518,3 +518,12 @@ ion-text.previewText > * {
 .mareographsTitle {
   font-size: 12px;
 }
+
+.infoIcon {
+  position: relative;
+  max-height: 14px;
+  max-width: 14px;
+  margin-right: 2px;
+  top: 3px;
+  color: var(--ion-color-primary);
+}

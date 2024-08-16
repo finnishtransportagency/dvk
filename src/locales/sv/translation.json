@@ -265,7 +265,8 @@
     "pilotageLimitDimensions": "Längd / bredd / djup (m)",
     "inForce": "Gällande",
     "mareograph": "Mareograf",
-    "mareographLocation": "Mareografens plats"
+    "mareographLocation": "Mareografens plats",
+    "dateTime": "Beräknat vattenstånd"
   },
   "routes": {
     "title": "Lotsningsrutter",

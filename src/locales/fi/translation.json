@@ -264,7 +264,6 @@
     "pilotageLimitLimit": "Luotsinkäyttövelvollisuuden raja väylällä, kun jokin seuraavista ylittyy",
     "pilotageLimitDimensions": "Pituus / leveys / syväys (m)",
     "inForce": "Voimassa",
-    "mareograph": "Mareografi",
     "mareographLocation": "Mareografin sijainti"
   },
   "routes": {
