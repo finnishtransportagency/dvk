@@ -235,6 +235,22 @@ export type DirwayFeatureProperties = {
   id: string;
   name: string;
   description: string;
-  updated: string;
+  updated: Date;
   points: DirwayPoint[];
+};
+
+type Restriction = {
+  id: string;
+  description: string;
+  startTime: Date;
+  endTime: Date | undefined;
+  updated: Date;
+};
+
+export type RestrictionPortFeatureProperties = {
+  featureType: 'restrictionport';
+  id: string;
+  name: string;
+  updated: Date;
+  restrictions: Restriction[];
 };

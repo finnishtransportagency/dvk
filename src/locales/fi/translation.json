@@ -491,6 +491,7 @@
         "pilotagelimit": "Luotsinkäyttölinja",
         "pilotroute": "Luotsausreitti",
         "quay": "Laituri",
+        "restrictionport": "Avustusrajoitus",
         "safetyequipment": "Turvalaite",
         "safetyequipmentfault": "Turvalaitevika",
         "section": "Laituripaikka",

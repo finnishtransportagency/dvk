@@ -491,6 +491,7 @@
         "pilotagelimit": "Compulsory pilotage limit",
         "pilotroute": "Pilot route",
         "quay": "Quay",
+        "restrictionport": "[en] Avustusrajoitus",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",
         "section": "Berth position",
