@@ -18,6 +18,8 @@ class CenterToOwnLocationControl extends Control {
 
   disabled: boolean = false;
 
+  setLoading: (loading: boolean) => void = () => {};
+
   constructor() {
     const element = document.createElement('div');
     element.className = 'centerToOwnLocationControlContainer ol-unselectable ol-control';
@@ -34,6 +36,10 @@ class CenterToOwnLocationControl extends Control {
     });
   }
 
+  public setLoadingState(loading: boolean) {
+    this.setLoading(loading);
+  }
+
   public setTipLabel(label: string) {
     this.buttonElement.title = label;
     this.buttonElement.ariaLabel = label;
@@ -46,6 +52,7 @@ class CenterToOwnLocationControl extends Control {
 
   centerToOwnLocation = () => {
     if (!this.disabled) {
+      this.setLoadingState(true);
       this.geolocation.setProjection(this.getMap()?.getView().getProjection());
       this.geolocation.setTracking(true);
 
@@ -66,6 +73,7 @@ class CenterToOwnLocationControl extends Control {
           this.getMap()?.getView().setCenter(this.position);
           this.getMap()?.getView().animate({ center: this.position, zoom: 5 });
         }
+        this.setLoadingState(false);
       });
     }
   };

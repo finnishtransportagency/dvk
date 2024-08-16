@@ -1131,3 +1131,15 @@ export function unsetSelectedHarborPreview() {
   fairwayCardLayer.setVisible(false);
   harborLayer.setVisible(true);
 }
+
+export function setSelectedMarineWarning(id: number, selected: boolean, marineWarningDataLayerId: FeatureDataLayerId) {
+  const dvkMap = getMap();
+  const warningSource = dvkMap.getVectorSource(marineWarningDataLayerId);
+
+  for (const f of warningSource.getFeatures()) {
+    if (id === f.getId()) {
+      f.set('hoverStyle', selected);
+    }
+  }
+  warningSource.dispatchEvent('change');
+}
