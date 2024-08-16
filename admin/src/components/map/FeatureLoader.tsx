@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../../speedlimitworker/SpeedlimitUtils';
 import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
-import RenderFeature from 'ol/render/Feature';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -73,7 +72,7 @@ function useStaticDataLayer(
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON({ featureClass: RenderFeature });
+        const format = new GeoJSON({ featureClass: Feature });
         const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
         layer.setSource(
           new VectorSource<Feature<Geometry>>({

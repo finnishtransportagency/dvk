@@ -736,7 +736,7 @@ export function unsetSelectedFairwayCard() {
 }
 
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON, showDepth: boolean) {
-  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
   feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
@@ -756,7 +756,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorS
 }
 
 function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, source: VectorSource, format: GeoJSON) {
-  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'section',
@@ -795,7 +795,7 @@ function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
 
 function addHarborFeature(harbor: HarborPartsFragment, source: VectorSource): Feature<Geometry> {
   const format = new GeoJSON();
-  const feature = format.readFeature(harbor.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(harbor.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(harbor.id);
   feature.setProperties({
     featureType: 'harbor',

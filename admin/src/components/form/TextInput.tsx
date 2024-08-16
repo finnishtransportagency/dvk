@@ -249,7 +249,9 @@ const TextInput: React.FC<TextInputProps> = ({
             onClick={() => {
               setIsTouched(true);
               focusInput();
-              setModalOpen && setModalOpen(true);
+              if (setModalOpen) {
+                setModalOpen(true);
+              }
             }}
             disabled={disabled}
           >
