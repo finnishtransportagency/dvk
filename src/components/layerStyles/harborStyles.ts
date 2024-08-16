@@ -4,6 +4,8 @@ import { getMap } from '../DvkMap';
 import { Lang } from '../../utils/constants';
 import quayIcon from '../../theme/img/dock_icon.svg';
 import quayIconActive from '../../theme/img/dock_icon_active.svg';
+import restrictionIcon from '../../theme/img/restriction_port.svg';
+import restrictionIconActive from '../../theme/img/restriction_port_active.svg';
 import { HarborFeatureProperties } from '../features';
 
 const style = new Style({
@@ -65,4 +67,28 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, selecte
   s.getText()?.setFont(`bold ${resolution < 50 ? '18' : '13'}px "Exo2"`);
   s.getText()?.setText(text);
   return s;
+}
+
+const restrictionStyle = new Style({
+  image: new Icon({
+    src: restrictionIcon,
+    anchor: [0.5, 43],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  }),
+  zIndex: 1,
+});
+
+const selectedRestrictionStyle = new Style({
+  image: new Icon({
+    src: restrictionIconActive,
+    anchor: [0.5, 43],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'pixels',
+  }),
+  zIndex: 10,
+});
+
+export function getRestrictionPortStyle(selected = false) {
+  return selected ? selectedRestrictionStyle : restrictionStyle;
 }
