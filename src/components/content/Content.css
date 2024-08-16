@@ -521,9 +521,9 @@ ion-text.previewText > * {
 
 .infoIcon {
   position: relative;
-  max-height: 14px;
-  max-width: 14px;
+  max-height: 12px;
+  max-width: 12px;
   margin-right: 2px;
-  top: 3px;
+  top: 2px;
   color: var(--ion-color-primary);
 }

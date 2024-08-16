@@ -11,6 +11,7 @@ import { setSelectedMareograph } from '../../layers';
 import { hourInMilliseconds } from '../../../utils/constants';
 import alertIcon from '../../../theme/img/alert_icon.svg';
 import InfoIcon from '../../../theme/img/info.svg?react';
+import { useDvkContext } from '../../../hooks/dvkContext';
 
 interface MareographInfoProps {
   mareographs: Feature<Geometry>[];
@@ -18,6 +19,9 @@ interface MareographInfoProps {
 
 const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
   const { t } = useTranslation();
+
+  const { state } = useDvkContext();
+  const { isOffline } = state;
 
   const highlightMareograph = (id?: string | number) => {
     setSelectedMareograph(id);
@@ -70,20 +74,20 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                       </u>
                     )}
                   </IonRow>
-                  <span className={isDataOutdated1Hour ? 'outdatedData' : ''}>
+                  <span className={isDataOutdated1Hour ? 'outdatedData no-print' : 'no-print'}>
                     <IonRow>
                       <IonText>
                         {t('popup.mareograph.dateTime')}: {t('fairwayCards.datetimeFormat', { val: properties.dateTime })}
                       </IonText>
                     </IonRow>
                   </span>
-                  <span className={isDataOutdated12Hours ? 'outdatedData' : ''}>
+                  <span className={isDataOutdated12Hours ? 'outdatedData no-print' : 'no-print'}>
                     <IonRow>
                       <IonText>
                         {t('popup.mareograph.seaLevel')}:&nbsp;
                         {!isDataOutdated12Hours ? (
                           <>
-                            {properties.waterLevel ? (
+                            {properties.waterLevel && !isOffline ? (
                               <>
                                 {properties.waterLevel >= 0 ? '+' : ''}
                                 {Math.round(properties.waterLevel / 10)}{' '}
@@ -92,7 +96,7 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                             ) : (
                               <>
                                 <InfoIcon className="infoIcon" />
-                                {t('common.noDataSet')}
+                                {t('common.noData')}
                               </>
                             )}
                           </>
@@ -109,7 +113,7 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                         {t('popup.mareograph.n2000SeaLevel')}:&nbsp;
                         {!isDataOutdated12Hours ? (
                           <>
-                            {properties.n2000WaterLevel ? (
+                            {properties.n2000WaterLevel && !isOffline ? (
                               <>
                                 {properties.n2000WaterLevel >= 0 ? '+' : ''}
                                 {Math.round(properties.n2000WaterLevel / 10)}{' '}
@@ -118,7 +122,7 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                             ) : (
                               <>
                                 <InfoIcon className="infoIcon" />
-                                {t('common.noDataSet')}
+                                {t('common.noData')}
                               </>
                             )}
                           </>
