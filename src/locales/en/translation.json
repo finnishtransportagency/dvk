@@ -79,6 +79,7 @@
           "aisShowPredictor": "Velocity vectors",
           "winterTraffic": "Winter navigation",
           "dirway": "Ice waypoints",
+          "restrictionPort": "[en] Avustusrajoitukset",
           "ice": "Ice map",
           "mapStyle": {
             "header": "Map style",

@@ -478,3 +478,7 @@ export function usePilotageAreaBorderLayer() {
 export function useDirwayLayer() {
   return useDataLayer('dirway', 'dirway');
 }
+
+export function useRestrictionPortLayer() {
+  return useDataLayer('restrictionport', 'restrictionport');
+}

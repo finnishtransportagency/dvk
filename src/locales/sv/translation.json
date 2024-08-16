@@ -79,6 +79,7 @@
           "aisShowPredictor": "Fartvektor",
           "winterTraffic": "Vintersjöfart",
           "dirway": "Isruttens waypointer",
+          "restrictionPort": "[sv] Avustusrajoitukset",
           "ice": "Iskarta",
           "mapStyle": {
             "header": "Kartans stil",

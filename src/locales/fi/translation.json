@@ -79,6 +79,7 @@
           "aisShowPredictor": "Nopeusvektorit",
           "winterTraffic": "Talvimerenkulku",
           "dirway": "Jääreittipisteet",
+          "restrictionPort": "Avustusrajoitukset",
           "ice": "Jääkartta",
           "mapStyle": {
             "header": "Kartan tyyli",

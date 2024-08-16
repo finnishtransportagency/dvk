@@ -23,6 +23,10 @@ const dirwaysUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/dirways'
   : globalThis.location.origin + '/api/dirways';
 
+const restrictionPortUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/restrictions'
+  : globalThis.location.origin + '/api/restrictions';
+
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL
   ? `https://${import.meta.env.VITE_APP_STATIC_URL}/s3static`
   : globalThis.location.origin + '/s3static';
@@ -84,6 +88,7 @@ export type FeatureDataId =
   | 'pilotageareaborder'
   | 'pilotagelimit'
   | 'dirway'
+  | 'restrictionport'
   | 'name';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
@@ -265,6 +270,12 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
   },
   {
+    id: 'restrictionport',
+    url: new URL(restrictionPortUrl),
+    staticUrl: new URL(staticUrl + '/restrictions.json.gz'),
+    persist: true,
+  },
+  {
     id: 'name',
     url: new URL(staticUrl + '/names.json.gz'),
     staticUrl: new URL(staticUrl + '/names.json.gz'),
@@ -323,6 +334,7 @@ export type FeatureDataLayerId =
   | 'pilotageareaborder'
   | 'pilotagelimit'
   | 'dirway'
+  | 'restrictionport'
   | 'ice';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
@@ -392,6 +404,7 @@ export const MAP: MapType = {
     { id: 'pilotageareaborder', offlineSupport: true, localizedStyle: false },
     { id: 'pilotagelimit', offlineSupport: true, localizedStyle: false },
     { id: 'dirway', offlineSupport: true, localizedStyle: false },
+    { id: 'restrictionport', offlineSupport: true, localizedStyle: false },
   ],
 };
 

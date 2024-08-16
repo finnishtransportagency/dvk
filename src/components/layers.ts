@@ -545,6 +545,14 @@ export function addAPILayers(map: Map) {
     style: (feature, resolution) => getDirwayStyle(feature, resolution, feature.get('hoverStyle')),
     zIndex: 302,
   });
+  // Avustusrajoitukset
+  addFeatureVectorLayer({
+    map: map,
+    id: 'restrictionport',
+    renderBuffer: 100,
+    style: (feature, resolution) => getHarborStyle(feature, resolution, !!feature.get('hoverStyle')),
+    zIndex: 306,
+  });
 
   // Valitun väyläkortin featuret
   addFeatureVectorLayer({
