@@ -5,14 +5,14 @@ schema {
 
 type Query {
   fairwayCards(status: [Status!]): [FairwayCard!]!
-  fairwayCard(id: String!, version: String!): FairwayCard
+  fairwayCard(id: String!, version: String, status: [Status!]): FairwayCard
   fairwayCardPreview(id: String!, version: String!): FairwayCard
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
   marineWarnings: [MarineWarning!]!
   currentUser: CurrentUser
   pilotPlaces: [PilotPlace!]!
   harbors: [Harbor!]!
-  harbor(id: String!, version: String!): Harbor
+  harbor(id: String!, version: String, status: [Status!]): Harbor
   harborPreview(id: String!, version: String!): Harbor
   fairways: [Fairway!]!
   fairwayCardsAndHarbors: [FairwayCardOrHarbor!]!
@@ -57,8 +57,8 @@ input FairwayCardInput {
   group: String!
   status: Status!
   fairwayIds: [Float!]!
-  primaryFairwayId: Float
-  secondaryFairwayId: Float
+  primaryFairwayId: [SelectedFairwayInput!]
+  secondaryFairwayId: [SelectedFairwayInput!]
   additionalInfo: TextInput
   lineText: TextInput
   designSpeed: TextInput
@@ -193,6 +193,11 @@ input TemporaryNotificationInput {
   endDate: String
 }
 
+input SelectedFairwayInput {
+  id: Int!
+  sequenceNumber: Int!
+}
+
 type FairwayCardOrHarbor {
   id: String!
   version: String!
@@ -243,7 +248,6 @@ type FairwayCard {
   speedLimit: Text
   visibility: Text
   vesselRecommendation: Text
-  seaLevel: Text
   mareographs: [Mareograph!]
   windRecommendation: Text
   trafficService: TrafficService
@@ -348,7 +352,9 @@ type Fairway {
   id: Int!
   name: Text
   primary: Boolean
+  primarySequenceNumber: Int
   secondary: Boolean
+  secondarySequenceNumber: Int
   startText: String
   endText: String
   lightingCode: String

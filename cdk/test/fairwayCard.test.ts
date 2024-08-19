@@ -2,16 +2,17 @@ import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/graphql/query/fairwayCard-handler';
 import { Status } from '../graphql/generated';
-import { mockContext, mockQueryByIdEvent } from './mocks';
+import { mockContext, mockQueryByIdAndStatusPublicEvent, mockQueryByIdAndVersionEvent, mockQueryByIdEvent } from './mocks';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 import { RtzData } from '../lib/lambda/api/apiModels';
+import { ADMIN_ROLE, getOptionalCurrentUser } from '../lib/lambda/api/login';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
 
-const card: FairwayCardDBModel = {
+const card1: FairwayCardDBModel = {
   id: 'test',
-  version: 'v0',
+  version: 'v0_public',
   name: {
     fi: 'Testfi',
     sv: 'Testsv',
@@ -22,7 +23,7 @@ const card: FairwayCardDBModel = {
   modifier: 'test2',
   modificationTimestamp: Date.now(),
   status: Status.Public,
-  fairways: [{ id: 1, primary: true, secondary: false }],
+  fairways: [{ id: 1, primary: true, primarySequenceNumber: 1, secondary: false, secondarySequenceNumber: 1 }],
   trafficService: {
     pilot: {
       places: [
@@ -37,23 +38,49 @@ const card: FairwayCardDBModel = {
 
 const card2: FairwayCardDBModel = {
   id: 'test',
-  version: 'v0',
+  version: 'v2',
   name: {
-    fi: 'Testfi2',
-    sv: 'Testsv2',
-    en: 'Testen2',
+    fi: 'Testfi',
+    sv: 'Testsv',
+    en: 'Testen',
   },
-  creator: 'test2',
+  creator: 'test',
   creationTimestamp: Date.now(),
-  modifier: 'test',
+  modifier: 'test2',
   modificationTimestamp: Date.now(),
   status: Status.Draft,
-  fairways: [{ id: 1, primary: true, secondary: false }],
+  fairways: [{ id: 1, primary: true, primarySequenceNumber: 1, secondary: false, secondarySequenceNumber: 1 }],
   trafficService: {
     pilot: {
       places: [
         {
-          id: 3458100305,
+          id: 681017200,
+        },
+      ],
+    },
+  },
+  pilotRoutes: [{ id: 2 }],
+};
+
+const card3: FairwayCardDBModel = {
+  id: 'test',
+  version: 'v0_latest',
+  name: {
+    fi: 'Testfi',
+    sv: 'Testsv',
+    en: 'Testen',
+  },
+  creator: 'test',
+  creationTimestamp: Date.now(),
+  modifier: 'test2',
+  modificationTimestamp: Date.now(),
+  status: Status.Draft,
+  fairways: [{ id: 1, primary: true, primarySequenceNumber: 1, secondary: false, secondarySequenceNumber: 1 }],
+  trafficService: {
+    pilot: {
+      places: [
+        {
+          id: 681017200,
         },
       ],
     },
@@ -166,6 +193,22 @@ const routes: RtzData[] = [
   },
 ];
 
+const adminUser = {
+  uid: 'K123456',
+  firstName: 'Developer',
+  lastName: 'X',
+  roles: [ADMIN_ROLE],
+};
+
+const otherUser = {
+  uid: 'K654321',
+  firstName: 'User',
+  lastName: 'X',
+  roles: ['DVK_Kayttaja'],
+};
+
+jest.mock('../lib/lambda/api/login');
+
 jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
@@ -188,34 +231,119 @@ beforeEach(() => {
   jest.resetAllMocks();
   ddbMock.reset();
   pilotPlaceMap.clear();
+  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => adminUser);
 });
 
-it('should get card by id from the DynamoDB', async () => {
+it('should get public card by id from the DynamoDB', async () => {
   ddbMock
     .on(GetCommand, {
-      Key: { id: 'test' },
+      Key: { id: 'test', version: 'v0_public' },
     })
     .resolves({
-      Item: card,
+      Item: card1,
     });
-  const response = await handler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await handler(mockQueryByIdAndStatusPublicEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
   });
-});
+}, 60000);
 
-it('should get card by id from the DynamoDB when cache expired', async () => {
+it('should get card by id and version by id from the DynamoDB', async () => {
   ddbMock
     .on(GetCommand, {
-      Key: { id: 'test' },
+      Key: { id: 'test', version: 'v2' },
     })
     .resolves({
       Item: card2,
     });
+  const response = await handler(mockQueryByIdAndVersionEvent, mockContext, () => {});
+  expect(response).toMatchSnapshot({
+    modificationTimestamp: expect.any(Number),
+    creationTimestamp: expect.any(Number),
+  });
+}, 60000);
+
+it('should get latest card by id from the DynamoDB', async () => {
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v0_latest' },
+    })
+    .resolves({
+      Item: card3,
+    });
+  const response = await handler(mockQueryByIdEvent, mockContext, () => {});
+  expect(response).toMatchSnapshot({
+    modificationTimestamp: expect.any(Number),
+    creationTimestamp: expect.any(Number),
+  });
+}, 60000);
+
+it('should get latest card by id from the DynamoDB when cache expired', async () => {
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v0_latest' },
+    })
+    .resolves({
+      Item: card3,
+    });
   const response = await handler(mockQueryByIdEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
   });
 });
+
+it('should get undefined when version not present', async () => {
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v2' },
+    })
+    .resolves({
+      Item: undefined,
+    });
+  const response = await handler(mockQueryByIdAndVersionEvent, mockContext, () => {});
+  expect(response).toBe(undefined);
+}, 60000);
+
+it('should get public card when admin role missing', async () => {
+  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => otherUser);
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v0_public' },
+    })
+    .resolves({
+      Item: card1,
+    });
+  const response = await handler(mockQueryByIdAndStatusPublicEvent, mockContext, () => {});
+  expect(response).toMatchSnapshot({
+    modificationTimestamp: expect.any(Number),
+    creationTimestamp: expect.any(Number),
+  });
+}, 60000);
+
+it('should get undefined from version when admin role missing', async () => {
+  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => otherUser);
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v2' },
+    })
+    .resolves({
+      Item: card2,
+    });
+  const response = await handler(mockQueryByIdAndVersionEvent, mockContext, () => {});
+  expect(response).toBe(undefined);
+}, 60000);
+
+it('should get undefined from latest when admin role missing', async () => {
+  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => otherUser);
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v0_latest' },
+    })
+    .resolves({
+      Item: card3,
+    });
+  const response = await handler(mockQueryByIdEvent, mockContext, () => {});
+  expect(response).toBe(undefined);
+}, 60000);

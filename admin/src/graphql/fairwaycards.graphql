@@ -93,7 +93,9 @@ fragment FairwayCardParts on FairwayCard {
       en
     }
     primary
+    primarySequenceNumber
     secondary
+    secondarySequenceNumber
     startText
     endText
     lightingCode

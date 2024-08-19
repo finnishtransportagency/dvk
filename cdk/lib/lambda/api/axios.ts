@@ -2,6 +2,7 @@ import axios from 'axios';
 import {
   getAISHeaders,
   getExtensionPort,
+  getIBNetApiUrl,
   getIlmanetPassword,
   getIlmanetUrl,
   getIlmanetUsername,
@@ -28,6 +29,7 @@ export enum ExternalAPI {
   WEATHER = 'Weather',
   AIS = 'AIS',
   PILOTROUTE = 'PilotRoute',
+  IBNET = 'IBNet',
 }
 
 export function getFetchErrorMessage(api: ExternalAPI): string {
@@ -121,16 +123,15 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
       throw new Error(getFetchErrorMessage(ExternalAPI.VATU));
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
-  const datas = response ? (response.data as T[]) : [];
-  for (const obj of datas) {
+  for (const obj of response.data as T[]) {
     if ('geometria' in obj) {
       roundGeometry(obj.geometria as Geometry);
     }
   }
-  return datas;
+  return response;
 }
 
-export async function fetchMarineWarnings(): Promise<FeatureCollection> {
+export async function fetchMarineWarnings() {
   const start = Date.now();
   const response = await axios
     .get(await getPookiUrl(), {
@@ -149,7 +150,7 @@ export async function fetchMarineWarnings(): Promise<FeatureCollection> {
       roundGeometry(feature.geometry);
     }
   }
-  return response.data as FeatureCollection;
+  return response;
 }
 
 export async function fetchWeatherApi<T>(path: string) {
@@ -190,6 +191,25 @@ export async function fetchIlmanetApi(): Promise<string> {
   const duration = Date.now() - start;
   log.debug({ duration }, `Ilmanet api response time: ${duration} ms`);
   return response.data;
+}
+
+export async function fetchIBNetApi<T>(path?: string, params?: Record<string, string>) {
+  const url = `${await getIBNetApiUrl()}${path ?? ''}`;
+  const start = Date.now();
+  const response = await axios
+    .get(url, {
+      headers: await getVatuHeaders(),
+      params: params ?? [],
+      timeout: getTimeout(),
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      log.fatal(`${ExternalAPI.IBNET} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error(getFetchErrorMessage(ExternalAPI.IBNET));
+    });
+  const duration = Date.now() - start;
+  log.debug({ duration }, `${ExternalAPI.IBNET} api response time: ${duration} ms`);
+  return response.data ? (response.data as T) : null;
 }
 
 async function getParameterFromStore(path: string): Promise<string | undefined> {

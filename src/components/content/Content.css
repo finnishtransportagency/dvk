@@ -127,6 +127,7 @@ button.icon:focus-visible:hover {
 }
 
 .dropdownWrapper ion-input.searchBar.has-focus input {
+  caret-color: auto;
   background-position: right 11px center;
   padding-inline-start: 9px;
 }
@@ -512,4 +513,8 @@ ion-text.previewText > * {
 .disabled {
   pointer-events: none;
   opacity: 50%;
+}
+
+.mareographsTitle {
+  font-size: 12px;
 }

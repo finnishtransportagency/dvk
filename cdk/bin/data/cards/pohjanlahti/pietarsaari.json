@@ -38,11 +38,6 @@
     "sv": "Vädret vid kuststationerna: Jakobstad Kallan.",
     "en": "Marine weather observations: Pietarsaari Kallan."
   },
-  "seaLevel": {
-    "fi": "Pietarsaaren mareografi.",
-    "sv": "Jakobstad mareograf.",
-    "en": "Pietarsaari mareograph."
-  },
   "windRecommendation": {
     "fi": "Tuulirajasuositus yli 150 m pitkille aluksille on satamaan tultaessa < 10 m/s ja satamasta lähdettäessä < 15 m/s.",
     "sv": "Rekommendation för fartyg med en längd över 150 m är max. vindhastigheten för inkommande < 10 m/s och för utgående < 15 m/s.",

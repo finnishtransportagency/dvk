@@ -195,7 +195,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20230712.json.gz') },
+  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20240719.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
   { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
   { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
@@ -303,3 +303,5 @@ export const POSITION = {
   topRight: 'topRight',
   bottomRight: 'bottomRight',
 };
+
+export type DropdownType = 'filter' | 'sequence';

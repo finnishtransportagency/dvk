@@ -2,7 +2,7 @@ import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { handler as previewHandler } from '../lib/lambda/graphql/query/fairwayCardPreview-handler';
 import { Status } from '../graphql/generated';
-import { mockContext, mockQueryByIdEvent } from './mocks';
+import { mockContext, mockQueryPreviewEvent } from './mocks';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
 import { ADMIN_ROLE, getOptionalCurrentUser } from '../lib/lambda/api/login';
@@ -24,7 +24,7 @@ const card1: FairwayCardDBModel = {
   modifier: 'test2',
   modificationTimestamp: Date.now(),
   status: Status.Public,
-  fairways: [{ id: 1, primary: true, secondary: false }],
+  fairways: [{ id: 1, primary: true, primarySequenceNumber: 1, secondary: false, secondarySequenceNumber: 1 }],
   trafficService: {
     pilot: {
       places: [{ id: 1, pilotJourney: 1 }],
@@ -275,7 +275,7 @@ it('should get public card from the DynamoDB', async () => {
     .resolves({
       Item: card1,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -290,7 +290,7 @@ it('should get draft card from the DynamoDB', async () => {
     .resolves({
       Item: card2,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -305,7 +305,7 @@ it('should filter removed card from the DynamoDB', async () => {
     .resolves({
       Item: card3,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toBe(undefined);
 });
 
@@ -318,6 +318,6 @@ it('should return nothing when admin role missing', async () => {
     .resolves({
       Item: card1,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toBe(undefined);
 });

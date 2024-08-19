@@ -56,6 +56,7 @@ export function getHeaders(): Record<string, string[]> {
     'Access-Control-Allow-Methods': ['*'],
     'Access-Control-Allow-Headers': ['*'],
     'Content-Encoding': ['gzip'],
+    'Access-Control-Expose-Headers': ['fetchedDate'],
   };
 }
 
@@ -155,6 +156,10 @@ export async function getIlmanetUsername() {
 
 export async function getIlmanetPassword() {
   return readParameterForEnv('IlmanetPassword');
+}
+
+export async function getIBNetApiUrl() {
+  return readParameterForEnv('IBNetApiUrl');
 }
 
 export async function getWeatherHeaders(): Promise<Record<string, string>> {
