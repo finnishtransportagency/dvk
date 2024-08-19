@@ -36,7 +36,7 @@ export class DvkBuildImageStack extends Stack {
       repo: 'dvk',
       oauthToken: SecretValue.secretsManager('dev/dvk/github'),
       output: sourceOutput,
-      branch: env === 'prod' ? 'prod' : 'main',
+      branch: 'feature/DVK-1563-robotimage', //env === 'prod' ? 'prod' : 'main',
       trigger: GitHubTrigger.NONE,
     });
 
@@ -66,7 +66,7 @@ export class DvkBuildImageStack extends Stack {
         },
       ],
     });
-    const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.3', 'test', 'RobotImageBuild');
+    const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.4', 'test', 'RobotImageBuild');
     actions.push(
       new cdk.aws_codepipeline_actions.CodeBuildAction({
         actionName: 'BuildRobotImage',
