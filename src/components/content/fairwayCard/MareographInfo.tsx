@@ -95,7 +95,7 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                               </>
                             ) : (
                               <>
-                                <InfoIcon className="infoIcon" />
+                                <InfoIcon className="fairwayCardInfoIcon" />
                                 {t('common.noData')}
                               </>
                             )}
@@ -121,7 +121,7 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                               </>
                             ) : (
                               <>
-                                <InfoIcon className="infoIcon" />
+                                <InfoIcon className="fairwayCardInfoIcon" />
                                 {t('common.noData')}
                               </>
                             )}
