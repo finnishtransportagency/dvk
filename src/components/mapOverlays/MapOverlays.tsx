@@ -31,6 +31,7 @@ import PilotRoutePopupContent, { PilotRouteProperties } from '../popup/PilotRout
 import PilotageLimitPopupContent, { PilotageLimitProperties } from '../popup/PilotageLimitPopupContent';
 import DirwayPopupContent, { DirwayProperties } from '../popup/DirwayPopupContent';
 import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup/RestrictionPortPopupContent';
+import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup/ProhibitionAreaPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -40,7 +41,7 @@ export type PopupProperties = {
   section?: QuayProperties;
   area?: AreaProperties;
   specialarea2?: AreaProperties;
-  specialarea15?: AreaProperties;
+  specialarea15?: ProhibitionAreaProperties;
   line?: LineProperties;
   safetyequipment?: EquipmentProperties;
   safetyequipmentfault?: EquipmentProperties;
@@ -60,10 +61,9 @@ export type PopupProperties = {
 type MapOverlaysProps = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  isOffline: boolean;
 };
 
-const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen, isOffline }) => {
+const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen }) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const { state, dispatch } = useDvkContext();
@@ -153,12 +153,10 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.pilotroute && <PilotRoutePopupContent pilotroute={popupProperties.pilotroute} setPopupProperties={setPopupProperties} />}
         {popupProperties?.quay && <QuayPopupContent quay={popupProperties.quay} setPopupProperties={setPopupProperties} />}
         {popupProperties?.section && <QuayPopupContent quay={popupProperties.section} setPopupProperties={setPopupProperties} />}
-        {popupProperties?.area && <AreaPopupContent area={popupProperties.area} setPopupProperties={setPopupProperties} isOffline={isOffline} />}
-        {popupProperties?.specialarea2 && (
-          <AreaPopupContent area={popupProperties.specialarea2} setPopupProperties={setPopupProperties} isOffline={isOffline} />
-        )}
+        {popupProperties?.area && <AreaPopupContent area={popupProperties.area} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.specialarea2 && <AreaPopupContent area={popupProperties.specialarea2} setPopupProperties={setPopupProperties} />}
         {popupProperties?.specialarea15 && (
-          <AreaPopupContent area={popupProperties.specialarea15} setPopupProperties={setPopupProperties} isOffline={isOffline} />
+          <ProhibitionAreaPopupContent area={popupProperties.specialarea15} setPopupProperties={setPopupProperties} />
         )}
         {popupProperties?.line && <LinePopupContent line={popupProperties.line} setPopupProperties={setPopupProperties} />}
         {popupProperties?.safetyequipment && (

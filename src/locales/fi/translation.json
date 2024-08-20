@@ -232,6 +232,7 @@
     "areaType11": "Varmistettu lisäalue",
     "areaType14": "STS-alue",
     "areaType15": "Kohtaamis- ja ohittamiskieltoalue",
+    "extraInfo": "Lisätieto",
     "noDataSet": "Tietoa ei ole asetettu.",
     "noRestrictions": "Ei voimassa olevia rajoituksia.",
     "notForNavigation": "Ei navigointikäyttöön",

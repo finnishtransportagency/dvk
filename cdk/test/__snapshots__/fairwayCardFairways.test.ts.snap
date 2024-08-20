@@ -197,6 +197,7 @@ exports[`should get fairway card fairways from api when cache expired 1`] = `
     ],
     "owner": null,
     "primary": true,
+    "prohibitionAreas": [],
     "restrictionAreas": [],
     "secondary": true,
     "sizing": {
@@ -427,6 +428,7 @@ exports[`should get fairway card fairways from cache 1`] = `
     ],
     "owner": null,
     "primary": true,
+    "prohibitionAreas": [],
     "restrictionAreas": [],
     "secondary": true,
     "sizing": {

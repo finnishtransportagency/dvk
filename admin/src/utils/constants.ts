@@ -209,7 +209,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'pilotagelimit', url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'), staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz') },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts' | 'piloting';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts' | 'piloting' | 'specialarea';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -217,7 +217,6 @@ export type FeatureDataLayerId =
   | 'line12'
   | 'line3456'
   | 'speedlimit'
-  | 'specialarea'
   | 'pilot'
   | 'harbor'
   | 'quay'

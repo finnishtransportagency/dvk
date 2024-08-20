@@ -744,7 +744,7 @@ export function unsetSelectedFairwayCard() {
 }
 
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON, showDepth: boolean) {
-  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
   feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
@@ -764,7 +764,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorS
 }
 
 function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, source: VectorSource, format: GeoJSON) {
-  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'section',
@@ -803,7 +803,7 @@ function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
 
 function addHarborFeature(harbor: HarborPartsFragment, source: VectorSource): Feature<Geometry> {
   const format = new GeoJSON();
-  const feature = format.readFeature(harbor.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(harbor.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(harbor.id);
   feature.setProperties({
     featureType: 'harbor',
@@ -892,16 +892,14 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
             feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           }
         }
-        if (!feature) {
-          feature = specialArea15Source.getFeatureById(area.id) as Feature<Geometry>;
-          if (feature) {
-            specialArea15Source.removeFeature(feature);
-            fairwayFeatures.push(feature);
-            feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-          }
+      }
+      for (const prohibitionArea of fairway.prohibitionAreas ?? []) {
+        const feature = specialArea15Source.getFeatureById(prohibitionArea.id) as Feature<Geometry>;
+        if (feature) {
+          specialArea15Source.removeFeature(feature);
+          fairwayFeatures.push(feature);
         }
       }
-
       for (const line of fairway.boardLines ?? []) {
         const feature = boardLine12Source.getFeatureById(line.id) as Feature<Geometry>;
         if (feature) {

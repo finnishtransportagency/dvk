@@ -232,6 +232,7 @@
     "areaType11": "Additional swept area",
     "areaType14": "STS area",
     "areaType15": "Meeting and overtaking prohibition area",
+    "extraInfo": "Additional information",
     "noDataSet": "Data is not set.",
     "noRestrictions": "No effective restrictions.",
     "notForNavigation": "Not for navigational use",

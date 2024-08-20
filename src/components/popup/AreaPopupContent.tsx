@@ -3,7 +3,7 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Link } from 'react-router-dom';
-import { Lang, MASTERSGUIDE_URLS } from '../../utils/constants';
+import { Lang } from '../../utils/constants';
 import { AreaFeatureProperties } from '../features';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
@@ -18,7 +18,6 @@ import { TFunction } from 'i18next';
 type AreaPopupContentProps = {
   area: AreaProperties;
   setPopupProperties?: (properties: PopupProperties) => void;
-  isOffline: boolean;
 };
 
 export type AreaProperties = {
@@ -36,7 +35,7 @@ export function getAreaName(area: AreaProperties, t: TFunction) {
   return name ?? type;
 }
 
-const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties, isOffline }) => {
+const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
@@ -91,16 +90,6 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       <IonRow>
         <IonCol size="auto">{getAreaName(area, t)}</IonCol>
       </IonRow>
-      {area.properties.typeCode === 15 && (
-        <IonRow>
-          <IonCol>
-            <p className="info use-flex ion-align-items-center">
-              <InfoIcon />
-              {t('popup.area.overtake')}
-            </p>
-          </IonCol>
-        </IonRow>
-      )}
       {(area.properties.n2000draft ||
         area.properties.draft ||
         area.properties.n2000depth ||
@@ -177,25 +166,6 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
             </p>
           </IonCol>
         </IonRow>
-      )}
-      {area.properties.typeCode === 15 && (
-        <>
-          <IonRow>
-            <IonCol className="header">{t('popup.area.extra')}</IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <>
-                {t('popup.area.prohibitionText')}{' '}
-                <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer" tabIndex={isOffline ? -1 : undefined}>
-                  {MASTERSGUIDE_URLS[lang]}
-                  <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
-                </a>
-                {'.'}
-              </>
-            </IonCol>
-          </IonRow>
-        </>
       )}
     </IonGrid>
   );
