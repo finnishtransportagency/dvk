@@ -475,6 +475,10 @@
     "dirway": {
       "points": "Isruttens waypointer"
     },
+    "restriction": {
+      "current": "[sv] Voimassaolevat avustusrajoitteet",
+      "upcoming": "[sv] Tulevat avustusrajoitteet"
+    },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",
       "featureType": {

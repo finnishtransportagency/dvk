@@ -475,6 +475,10 @@
     "dirway": {
       "points": "Jääreittipisteet"
     },
+    "restriction": {
+      "current": "Voimassaolevat avustusrajoitteet",
+      "upcoming": "Tulevat avustusrajoitteet"
+    },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",
       "featureType": {

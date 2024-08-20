@@ -30,6 +30,7 @@ import FeatureListPopupContent, { FeatureListProperties } from '../popup/Feature
 import PilotRoutePopupContent, { PilotRouteProperties } from '../popup/PilotRoutePopupContent';
 import PilotageLimitPopupContent, { PilotageLimitProperties } from '../popup/PilotageLimitPopupContent';
 import DirwayPopupContent, { DirwayProperties } from '../popup/DirwayPopupContent';
+import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup/RestrictionPortPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -52,6 +53,7 @@ export type PopupProperties = {
   vtsline?: VtsProperties;
   aisvessel?: AisVesselProperties;
   dirway?: DirwayProperties;
+  restrictionport?: RestrictionPortProperties;
   featureList?: FeatureListProperties;
 };
 
@@ -178,6 +180,9 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.vtsline && <VtsLinePopupContent vts={popupProperties.vtsline} setPopupProperties={setPopupProperties} />}
         {popupProperties?.aisvessel && <AisVesselPopupContent vessel={popupProperties.aisvessel} setPopupProperties={setPopupProperties} />}
         {popupProperties?.dirway && <DirwayPopupContent dirway={popupProperties.dirway} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.restrictionport && (
+          <RestrictionPortPopupContent restrictionPort={popupProperties.restrictionport} setPopupProperties={setPopupProperties} />
+        )}
         {popupProperties?.featureList && (
           <FeatureListPopupContent featureList={popupProperties.featureList} setPopupProperties={setPopupProperties} />
         )}

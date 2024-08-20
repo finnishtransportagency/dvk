@@ -475,6 +475,10 @@
     "dirway": {
       "points": "Ice waypoints"
     },
+    "restriction": {
+      "current": "[en] Voimassaolevat avustusrajoitteet",
+      "upcoming": "[en] Tulevat avustusrajoitteet"
+    },
     "featureList": {
       "multipleFeatures": "Multiple items to select",
       "featureType": {
