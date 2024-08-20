@@ -266,7 +266,8 @@
     "pilotageLimitDimensions": "Length / breadth / draught (m)",
     "inForce": "In force",
     "mareograph": "Mareograph",
-    "mareographLocation": "Location of the measurement site"
+    "mareographLocation": "Location of the measurement site",
+    "dateTime": "Last observation"
   },
   "routes": {
     "title": "Pilot routes",
