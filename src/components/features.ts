@@ -78,6 +78,13 @@ export type AreaFairway = {
   sizingSpeed2?: number;
 };
 
+export type ProhibitionAreaFeatureProperties = {
+  typeCode: number;
+  type?: string;
+  extraInfo?: Text;
+  fairway: AreaFairway;
+};
+
 export type LineFairway = {
   fairwayId: number;
   name: Text;
