@@ -214,6 +214,7 @@ const DvkIonApp: React.FC = () => {
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
+  const [centering, setCentering] = useState(false);
 
   const { state } = useDvkContext();
 
@@ -278,6 +279,7 @@ const DvkIonApp: React.FC = () => {
   }, [modalContent]);
 
   const dvkMap = getMap();
+  dvkMap.getCenterToOwnLocationControl().setLoadingState = setCentering;
 
   useEffect(() => {
     if (dvkMap.initialized) {
@@ -301,11 +303,11 @@ const DvkIonApp: React.FC = () => {
       {initDone && <OfflineStatus />}
       <IonReactRouter basename={state.preview ? '/esikatselu' : '/vaylakortti'}>
         <SidebarMenu setIsSourceOpen={setIsSourceOpen} />
-        {(!!isFetching || !initDone) && (
+        {(!!isFetching || !initDone || centering) && (
           <IonProgressBar
             value={percentDone}
             buffer={percentDone}
-            type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
+            type={(!!isFetching && initDone) || centering ? 'indeterminate' : 'determinate'}
             className={fetchError ? 'danger' : ''}
           />
         )}

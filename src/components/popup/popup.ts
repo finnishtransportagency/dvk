@@ -130,6 +130,15 @@ export function showFeaturePopup(
   setPopupPosition(popup, coordinate, selectedFeature, popupPositioningCoordinate);
 }
 
+function singleNavigationLineOnArea(features: FeatureLike[]): boolean {
+  if (features.length === 2) {
+    return (
+      features.filter((f) => f.get('featureType') === 'line').length === 1 && features.filter((f) => f.get('featureType') === 'area').length === 1
+    );
+  }
+  return false;
+}
+
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
   const overlay = new Overlay({
@@ -197,7 +206,10 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       { hitTolerance: 3 }
     );
 
-    if (features.length > 1) {
+    if (singleNavigationLineOnArea(features)) {
+      const feature = features.find((f) => f.get('featureType') === 'line');
+      showFeaturePopup(features, feature as FeatureLike, evt.coordinate, setPopupProperties, overlay);
+    } else if (features.length > 1) {
       features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
       showFeatureListPopup(features, evt.coordinate, setPopupProperties, overlay);
     } else {

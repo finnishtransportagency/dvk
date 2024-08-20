@@ -279,7 +279,7 @@ const boardLines = [
   },
 ];
 
-const restrictionAres = [
+const restrictionAreas = [
   {
     id: 154814,
     rajoitustyyppi: null,
@@ -418,6 +418,40 @@ const restrictionAres = [
   },
 ];
 
+const prohibitionAreas = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [118615.13697811, 6667254.34387074],
+            [118607.57144377, 6667077.39860421],
+            [119056.32001752, 6667065.07649735],
+            [119430.96165268, 6666980.25399899],
+            [119458.54593377, 6667158.83712926],
+            [119424.31313345, 6667152.82494862],
+            [119018.31102416, 6667208.05956297],
+            [118632.18081231, 6667247.56113973],
+            [118615.13697811, 6667254.34387074],
+          ],
+        ],
+      },
+      properties: {
+        ALUENRO: 24,
+        RAJOITE_TYYPPI: 'kohtaamiskieltoalue, ohittamiskieltoalue',
+        VTS_ALUE: 'Archipelago VTS',
+        LISATIETO: 'Lisätieto',
+        LISATIETO_SV: 'Lisätieto sv',
+        JNRO: 10,
+        VAYLA_NIMI: 'Lieteniemi - Lietesalmi venereitti',
+      },
+    },
+  ],
+};
+
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchVATUByApi: (api: string) => {
     if (api === 'navigointilinjat') {
@@ -431,10 +465,11 @@ jest.mock('../lib/lambda/api/axios', () => ({
     } else if (api === 'taululinjat') {
       return boardLines;
     } else if (api === 'rajoitusalueet') {
-      return restrictionAres;
+      return restrictionAreas;
     }
     return [];
   },
+  fetchTraficomApi: () => prohibitionAreas,
 }));
 
 beforeEach(() => {
