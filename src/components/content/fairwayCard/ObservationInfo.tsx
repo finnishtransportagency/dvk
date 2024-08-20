@@ -120,7 +120,7 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                           </>
                         ) : (
                           <>
-                            <InfoIcon className="infoIcon" />
+                            <InfoIcon className="fairwayCardInfoIcon" />
                             {t('common.noData')}
                           </>
                         )}
@@ -143,7 +143,7 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                           </>
                         ) : (
                           <>
-                            <InfoIcon className="infoIcon" />
+                            <InfoIcon className="fairwayCardInfoIcon" />
                             {t('common.noData')}
                           </>
                         )}
@@ -166,7 +166,7 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                           </>
                         ) : (
                           <>
-                            <InfoIcon className="infoIcon" />
+                            <InfoIcon className="fairwayCardInfoIcon" />
                             {t('common.noData')}
                           </>
                         )}
@@ -189,7 +189,7 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                           </>
                         ) : (
                           <>
-                            <InfoIcon className="infoIcon" />
+                            <InfoIcon className="fairwayCardInfoIcon" />
                             {t('common.noData')}
                           </>
                         )}
