@@ -55,7 +55,7 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                   tabIndex={0}
                 >
                   <strong>
-                    {properties.name} - {t('popup.mareograph.n2000SeaLevel')}
+                    {properties.name} - {t('popup.mareograph.mareograph')}
                   </strong>
                   <br />
                   <IonRow>
