@@ -56,3 +56,33 @@ export async function fetchPilotPoints(): Promise<PilotPlace[]> {
     };
   });
 }
+
+export async function fetchProhibitionAreas(): Promise<Feature<Geometry, GeoJsonProperties>[]> {
+  const path =
+    'trafiaineistot/inspirepalvelu/avoin/wfs?request=GetFeature&service=WFS&version=1.1.0&outputFormat=application/json&typeName=avoin:kohtaamis_ja_ohittamiskieltoalueet';
+  const data = await fetchTraficomApi<FeatureCollection>(path);
+  return data.features.map((row) => {
+    return {
+      type: 'Feature',
+      id: row.properties?.ALUENRO,
+      geometry: row.geometry,
+      properties: {
+        featureType: 'specialarea15',
+        typeCode: 15,
+        type: row.properties?.RAJOITE_TYYPPI,
+        vtsArea: row.properties?.VTS_ALUE,
+        extraInfo: {
+          fi: row.properties?.LISATIETO?.trim(),
+          sv: row.properties?.LISATIETO_SV?.trim(),
+        },
+        fairway: {
+          fairwayId: row.properties?.JNRO,
+          name: {
+            fi: row.properties?.VAYLA_NIMI,
+            sv: row.properties?.VAYLA_NIMI_SV,
+          },
+        },
+      },
+    };
+  });
+}

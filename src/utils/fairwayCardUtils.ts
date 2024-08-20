@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery } from '../graphql/generated';
+import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, ProhibitionFairway } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
 import { Geometry, Point, Polygon } from 'ol/geom';
 import { Feature } from 'ol';
@@ -160,7 +160,10 @@ export function getPilotageLimitFairwayCards(pilotageLimitProperties: PilotageLi
   });
 }
 
-export function getFairwayListFairwayCards(fairways: AreaFairway[] | LineFairway[] | EquipmentFairway[], fairwayCards: FairwayCardPartsFragment[]) {
+export function getFairwayListFairwayCards(
+  fairways: AreaFairway[] | LineFairway[] | EquipmentFairway[] | ProhibitionFairway[],
+  fairwayCards: FairwayCardPartsFragment[]
+) {
   const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
   return fairwayCards.filter((card) => card.fairways.some((fairway) => fairwayIds.includes(fairway.id)));
 }

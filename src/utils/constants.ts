@@ -281,6 +281,7 @@ export type FeatureDataMainLayerId =
   | 'marinewarning'
   | 'ais'
   | 'piloting'
+  | 'specialarea'
   | 'wintertraffic';
 
 export type FeatureDataLayerId =
@@ -289,7 +290,6 @@ export type FeatureDataLayerId =
   | 'line12'
   | 'line3456'
   | 'speedlimit'
-  | 'specialarea'
   | 'harbor'
   | 'quay'
   | 'safetyequipment'

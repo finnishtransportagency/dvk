@@ -260,6 +260,9 @@ ion-text .info svg {
   height: 12px;
   margin-right: 8px;
 }
+ion-text .info.inline svg {
+  margin-left: 8px;
+}
 ion-text .hoverText {
   display: block;
 }

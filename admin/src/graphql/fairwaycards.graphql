@@ -151,6 +151,23 @@ fragment FairwayCardParts on FairwayCard {
     boardLines {
       id
     }
+    prohibitionAreas {
+      id
+      typeCode
+      extraInfo {
+        fi
+        sv
+        en
+      }
+      fairway {
+        fairwayId
+        name {
+          fi
+          sv
+          en
+        }
+      }
+    }
     restrictionAreas {
       id
       types {

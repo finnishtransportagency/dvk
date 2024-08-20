@@ -369,6 +369,7 @@ type Fairway {
   navigationLines: [NavigationLine!]
   areas: [Area!]
   restrictionAreas: [RestrictionArea!]
+  prohibitionAreas: [ProhibitionArea!]
   boardLines: [Boardline!]
   turningCircles: [TurningCircle!]
 }
@@ -442,6 +443,18 @@ type RestrictionType {
 
 type RestrictionFairway {
   fairwayId: Int!
+}
+
+type ProhibitionArea {
+  id: Int!
+  typeCode: Int!
+  extraInfo: Text
+  fairway: ProhibitionFairway!
+}
+
+type ProhibitionFairway {
+  fairwayId: Int!
+  name: Text
 }
 
 type BoardlineFairway {
