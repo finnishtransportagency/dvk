@@ -6,6 +6,8 @@ import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useTranslation } from 'react-i18next';
+import { InfoParagraph } from '../content/Paragraph';
+import { formatDate } from '../../utils/common';
 
 type RestrictionPortPopupContentProps = {
   restrictionPort: RestrictionPortProperties;
@@ -18,14 +20,13 @@ export type RestrictionPortProperties = {
 
 const RestrictionPortPopupContent: React.FC<RestrictionPortPopupContentProps> = ({ restrictionPort, setPopupProperties }) => {
   const { t } = useTranslation();
-  console.log(restrictionPort);
 
   const currentRestrictions = restrictionPort.properties.restrictions
     .filter((r) => Date.parse(r.startTime) <= Date.now() && (!r.endTime || Date.parse(r.endTime) > Date.now()))
     .sort((a, b) => Date.parse(b.startTime) - Date.parse(a.startTime));
   const upcomingRestrictions = restrictionPort.properties.restrictions
     .filter((r) => Date.parse(r.startTime) > Date.now())
-    .sort((a, b) => Date.parse(b.startTime) - Date.parse(a.startTime));
+    .sort((a, b) => Date.parse(a.startTime) - Date.parse(b.startTime));
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
@@ -45,19 +46,41 @@ const RestrictionPortPopupContent: React.FC<RestrictionPortPopupContentProps> = 
       <IonRow>
         <IonCol className="header">{t('popup.restriction.current')}</IonCol>
       </IonRow>
-      {currentRestrictions.map((r) => (
-        <IonRow key={r.id}>
-          <IonCol>{r.description}</IonCol>
+      {currentRestrictions.length > 0 ? (
+        currentRestrictions.map((r) => (
+          <IonRow key={r.id}>
+            <IonCol>
+              {`${r.description}, ${formatDate(r.startTime)}`}
+              {r.endTime ? ` - ${formatDate(r.endTime)}` : ''}
+            </IonCol>
+          </IonRow>
+        ))
+      ) : (
+        <IonRow>
+          <IonCol>
+            <InfoParagraph title={t('common.noData')} />
+          </IonCol>
         </IonRow>
-      ))}
+      )}
       <IonRow>
         <IonCol className="header">{t('popup.restriction.upcoming')}</IonCol>
       </IonRow>
-      {upcomingRestrictions.map((r) => (
-        <IonRow key={r.id}>
-          <IonCol>{r.description}</IonCol>
+      {upcomingRestrictions.length > 0 ? (
+        upcomingRestrictions.map((r) => (
+          <IonRow key={r.id}>
+            <IonCol>
+              {`${r.description}, ${formatDate(r.startTime)}`}
+              {r.endTime ? ` - ${formatDate(r.endTime)}` : ''}
+            </IonCol>
+          </IonRow>
+        ))
+      ) : (
+        <IonRow>
+          <IonCol>
+            <InfoParagraph title={t('common.noData')} />
+          </IonCol>
         </IonRow>
-      ))}
+      )}
     </IonGrid>
   );
 };
