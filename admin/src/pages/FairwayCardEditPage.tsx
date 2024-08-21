@@ -92,7 +92,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
       {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
       {locationState?.origin && <FairwayCardEditForm fairwayCardId={locationState.origin.id} origin />}
       {!fairwayCardId && !locationState.origin && (
-        <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier={data?.currentUser?.name ?? ''} />
+        <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier="-" creator={data?.currentUser?.name} created={new Date().getTime()} />
       )}
     </>
   );
