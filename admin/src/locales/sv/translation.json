@@ -113,7 +113,8 @@
     "item-updated": "[sv] Päivityspäivämäärä",
     "item-latest-updater": "[sv] Viimeisin päivittäjä",
     "version-number": "[sv] Versionumero",
-    "temporary-notifications": "[sv] Huomiot(t)"
+    "temporary-notifications": "[sv] Huomiot(t)",
+    "item-created-date": "[sv] Lisäyspäivämäärä"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",

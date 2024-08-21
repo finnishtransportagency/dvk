@@ -16,8 +16,8 @@ const StatusBar: React.FC<StatusBarProps> = ({ status, modified, modifier, creat
 
   return (
     <IonHeader className="statusHeader">
-      <IonGrid className="statusContent ion-no-padding">
-        <IonRow className="divider">
+      <IonGrid className="statusContent">
+        <IonRow className="statusBarRow divider">
           <IonCol size="2.5">
             <IonLabel className="formLabel">{t('general.item-status')}</IonLabel>
             <IonText className={'item-status-' + status}>{t('general.item-status-' + status)}</IonText>

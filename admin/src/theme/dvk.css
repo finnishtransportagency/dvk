@@ -1246,12 +1246,8 @@ dd {
 
 /* Status bar */
 
-ion-grid.statusContent {
-  padding: 10px 43px;
-}
-ion-grid.statusContent ion-row {
-  min-height: 43px;
-  width: 100%;
+ion-row.statusBarRow {
+  padding-bottom: 4px;
 }
 ion-header.statusHeader .divider {
   border-top: 1px solid var(--ion-color-light);
