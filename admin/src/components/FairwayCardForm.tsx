@@ -293,8 +293,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         handlePreview={handlePreview}
-        modifiedInfo={getDateTimeInfo(true)}
-        modifierInfo={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
         isError={isError}
       />
 
