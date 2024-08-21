@@ -281,8 +281,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         handlePreview={handlePreview}
-        modifiedInfo={getDateTimeInfo(true)}
-        modifierInfo={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
         isError={isError}
       />
 
