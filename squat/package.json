@@ -65,9 +65,12 @@
   },
   "browserslist": {
     "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
+      "Chrome >=89 and > 0.2%",
+      "ChromeAndroid >=89 and > 0.2%",
+      "Firefox >=75 and > 0.2%",
+      "Edge >=89 and > 0.2%",
+      "Safari >=15 and > 0.2%",
+      "iOS >=15 and > 0.2%"
     ],
     "development": [
       "last 1 chrome version",
