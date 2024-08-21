@@ -44,8 +44,8 @@ interface FormProps {
   fairwayCard: FairwayCardInput;
   modified?: number;
   modifier?: string;
-  creator?: string | null | undefined;
-  created?: number | null | undefined;
+  creator?: string;
+  created?: number;
   isError?: boolean;
 }
 
