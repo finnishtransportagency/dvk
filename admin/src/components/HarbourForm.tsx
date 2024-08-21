@@ -17,15 +17,18 @@ import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
 import { openPreview } from '../utils/common';
+import StatusBar from './StatusBar';
 
 interface FormProps {
   harbour: HarborInput;
   modified?: number;
   modifier?: string;
+  creator?: string;
+  created?: number;
   isError?: boolean;
 }
 
-const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError }) => {
+const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator, created, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -198,9 +201,19 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     }
   };
 
-  const getModifiedInfo = () => {
-    if (savedHarbour) return t('general.datetimeFormat', { val: savedHarbour.modificationTimestamp ?? savedHarbour.creationTimestamp });
-    return modified ? t('general.datetimeFormat', { val: modified }) : '-';
+  const getDateTimeInfo = (isModifiedInfo: boolean) => {
+    if (savedHarbour) {
+      return t('general.datetimeFormat', {
+        val: isModifiedInfo
+          ? (savedHarbour.modificationTimestamp ?? savedHarbour.creationTimestamp)
+          : (savedHarbour.creationTimestamp ?? savedHarbour.modificationTimestamp),
+      });
+    }
+    if (isModifiedInfo) {
+      return modified ? t('general.datetimeFormat', { val: modified }) : '-';
+    } else {
+      return created ? t('general.datetimeFormat', { val: created }) : '-';
+    }
   };
 
   const closeNotification = () => {
@@ -268,7 +281,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         handlePreview={handlePreview}
-        modifiedInfo={getModifiedInfo()}
+        modifiedInfo={getDateTimeInfo(true)}
         modifierInfo={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
         isError={isError}
       />
@@ -277,19 +290,28 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         {isError && <p>{t('general.loading-error')}</p>}
 
         {!isError && (
-          <form ref={formRef}>
-            <MainSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <Section
-              title={t('harbour.quay-heading')}
-              sections={state.quays as QuayInput[]}
-              updateState={updateState}
-              sectionType="quay"
-              validationErrors={validationErrors}
-              disabled={state.status === Status.Removed}
+          <>
+            <StatusBar
+              status={state.status}
+              modified={getDateTimeInfo(true)}
+              modifier={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
+              creator={savedHarbour?.creator ?? creator}
+              created={getDateTimeInfo(false)}
             />
-          </form>
+            <form ref={formRef}>
+              <MainSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <Section
+                title={t('harbour.quay-heading')}
+                sections={state.quays as QuayInput[]}
+                updateState={updateState}
+                sectionType="quay"
+                validationErrors={validationErrors}
+                disabled={state.status === Status.Removed}
+              />
+            </form>
+          </>
         )}
       </IonContent>
     </IonPage>
