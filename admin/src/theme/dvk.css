@@ -1246,27 +1246,27 @@ dd {
 
 /* Status bar */
 
-ion-row.statusBarRow {
+ion-row.infoHeaderRow {
   padding-bottom: 4px;
 }
-ion-header.statusHeader .divider {
+ion-header.infoHeader .infoHeaderDivider {
   border-top: 1px solid var(--ion-color-light);
   border-bottom: 1px solid var(--ion-color-light);
 }
-.statusContent ion-text {
+.infoContent ion-text {
   font-size: 14px;
 }
-.statusContent .item-status-PUBLIC {
+.infoContent .item-status-PUBLIC {
   color: var(--ion-color-success);
   font-weight: bold;
 }
-.statusContent .item-status-REMOVED {
+.infoContent .item-status-REMOVED {
   color: var(--ion-color-danger);
   opacity: 0.75;
   text-decoration: line-through;
   font-size: 14px;
 }
-.statusContent .item-status-DRAFT {
+.infoContent .item-status-DRAFT {
   color: var(--ion-color-medium);
   font-style: italic;
   font-size: 14px;

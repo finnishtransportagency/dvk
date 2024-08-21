@@ -38,7 +38,7 @@ import { openPreview } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
-import StatusBar from './StatusBar';
+import InfoHeader from './InfoHeader';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -301,7 +301,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
         {!isError && (
           <>
-            <StatusBar
+            <InfoHeader
               status={state.status}
               modified={getDateTimeInfo(true)}
               modifier={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}

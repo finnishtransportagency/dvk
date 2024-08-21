@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Status } from '../graphql/generated';
 
-interface StatusBarProps {
+interface InfoHeaderProps {
   status: Status;
   modified: string;
   modifier: string | null | undefined;
@@ -11,13 +11,13 @@ interface StatusBarProps {
   created: string;
 }
 
-const StatusBar: React.FC<StatusBarProps> = ({ status, modified, modifier, creator, created }) => {
+const InfoHeader: React.FC<InfoHeaderProps> = ({ status, modified, modifier, creator, created }) => {
   const { t } = useTranslation();
 
   return (
-    <IonHeader className="statusHeader">
-      <IonGrid className="statusContent">
-        <IonRow className="statusBarRow divider">
+    <IonHeader className="infoHeader">
+      <IonGrid className="infoContent">
+        <IonRow className="infoHeaderRow infoHeaderDivider">
           <IonCol size="2.5">
             <IonLabel className="formLabel">{t('general.item-status')}</IonLabel>
             <IonText className={'item-status-' + status}>{t('general.item-status-' + status)}</IonText>
@@ -44,4 +44,4 @@ const StatusBar: React.FC<StatusBarProps> = ({ status, modified, modifier, creat
   );
 };
 
-export default StatusBar;
+export default InfoHeader;

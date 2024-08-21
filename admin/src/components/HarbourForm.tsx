@@ -17,7 +17,7 @@ import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
 import { openPreview } from '../utils/common';
-import StatusBar from './StatusBar';
+import InfoHeader from './InfoHeader';
 
 interface FormProps {
   harbour: HarborInput;
@@ -289,7 +289,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
         {!isError && (
           <>
-            <StatusBar
+            <InfoHeader
               status={state.status}
               modified={getDateTimeInfo(true)}
               modifier={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
