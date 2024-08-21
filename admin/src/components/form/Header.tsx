@@ -1,5 +1,5 @@
 import React from 'react';
-import { IonButton, IonCol, IonGrid, IonHeader, IonProgressBar, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonHeader, IonProgressBar, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Operation, Status } from '../../graphql/generated';
 import SelectInput from './SelectInput';
@@ -21,8 +21,6 @@ interface HeaderProps {
   handleSubmit: (isRemove: boolean) => void;
   handleCancel: () => void;
   handlePreview: () => void;
-  modifiedInfo: string;
-  modifierInfo: string;
   isError?: boolean;
 }
 
@@ -36,8 +34,6 @@ const Header: React.FC<HeaderProps> = ({
   handleSubmit,
   handleCancel,
   handlePreview,
-  modifiedInfo,
-  modifierInfo,
   isError,
 }) => {
   const { t } = useTranslation();
@@ -53,21 +49,8 @@ const Header: React.FC<HeaderProps> = ({
       {isLoadingMutation && <IonProgressBar type="indeterminate" />}
       <IonGrid className="optionBar">
         <IonRow className="ion-align-items-end">
-          <IonCol className="align-right">
-            <IonGrid>
-              <IonRow className="ion-align-items-center">
-                <IonCol>
-                  <IonText>
-                    <em>
-                      {operation === Operation.Update ? t('general.item-modified') : t('general.item-created')}: {modifiedInfo}
-                      <br />
-                      {operation === Operation.Update ? t('general.item-modifier') : t('general.item-creator')}: {modifierInfo}
-                    </em>
-                  </IonText>
-                </IonCol>
-              </IonRow>
-            </IonGrid>
-          </IonCol>
+          {/* this 'extra' column keeps everything in it's right place */}
+          <IonCol className="align-right" />
           <IonCol size="auto">
             <SelectInput
               label={t('general.item-status')}
