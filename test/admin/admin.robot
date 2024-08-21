@@ -83,10 +83,10 @@ Generate Unique Id
 Get Random Item From List
     [Documentation]    Get random public item from list based item type.
     [Arguments]    ${ItemType}
-    Wait Until Element Is Visible    //ion-grid[@class = "itemList md"]/ion-row[@tabindex = "0"]/ion-col[1]
-    ${names}=    Get WebElements    //ion-grid[@class = "itemList md"]/ion-row[@tabindex = "0"]/ion-col[1]
-    ${types}=    Get WebElements    //ion-grid[@class = "itemList md"]/ion-row[@tabindex = "0"]/ion-col[2]
-    ${statuses}=    Get WebElements    //ion-grid[@class = "itemList md"]/ion-row[@tabindex = "0"]/ion-col[5]
+    Wait Until Element Is Visible    //ion-grid[@class = "itemList md"]/ion-row[@tabindex = "0"]/ion-col[2]
+    ${names}=    Get WebElements    //ion-grid[@class = "itemList md"]/ion-row[@tabindex = "0"]/ion-col[2]
+    ${types}=    Get WebElements    //ion-grid[@class = "itemList md"]/ion-row[@tabindex = "0"]/ion-col[3]
+    ${statuses}=    Get WebElements    //ion-grid[@class = "itemList md"]/ion-row[@tabindex = "0"]/ion-col[6]
     @{items}=    Create List
     FOR    ${name}    ${type}    ${status}    IN ZIP    ${names}    ${types}    ${statuses}
         IF    "${ItemType}" == "${type.text}" and "Julkaistu" == "${status.text}"
