@@ -1257,10 +1257,12 @@ ion-header.statusHeader .divider {
   border-top: 1px solid var(--ion-color-light);
   border-bottom: 1px solid var(--ion-color-light);
 }
+.statusContent ion-text {
+  font-size: 14px;
+}
 .statusContent .item-status-PUBLIC {
   color: var(--ion-color-success);
   font-weight: bold;
-  font-size: 14px;
 }
 .statusContent .item-status-REMOVED {
   color: var(--ion-color-danger);

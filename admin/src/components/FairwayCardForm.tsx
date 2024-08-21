@@ -44,10 +44,12 @@ interface FormProps {
   fairwayCard: FairwayCardInput;
   modified?: number;
   modifier?: string;
+  creator?: string | null | undefined;
+  created?: number | null | undefined;
   isError?: boolean;
 }
 
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -226,6 +228,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     return modified ? t('general.datetimeFormat', { val: modified }) : '-';
   };
 
+  const getCreatedInfo = () => {
+    if (savedCard) return t('general.datetimeFormat', { val: savedCard.creationTimestamp ?? savedCard.modificationTimestamp });
+    return created ? t('general.datetimeFormat', { val: created }) : '-';
+  };
+
   const closeNotification = () => {
     setSaveError('');
     setNotificationOpen(false);
@@ -286,7 +293,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         isError={isError}
       />
 
-      <StatusBar status={state.status} />
+      <StatusBar
+        status={state.status}
+        modified={getModifiedInfo()}
+        modifier={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
+        creator={savedCard?.creator ?? creator}
+        created={getCreatedInfo()}
+      />
 
       <IonContent className="mainContent ion-no-padding" data-testid="fairwayCardEditPage">
         {isError && <p>{t('general.loading-error')}</p>}

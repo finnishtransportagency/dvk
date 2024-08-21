@@ -117,7 +117,8 @@
     "item-updated": "Päivityspäivämäärä",
     "item-latest-updater": "Viimeisin päivittäjä",
     "version-number": "Versionumero",
-    "temporary-notifications": "Huomio(t)"
+    "temporary-notifications": "Huomio(t)",
+    "item-created-date": "Lisäyspäivämäärä"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",

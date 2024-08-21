@@ -26,6 +26,8 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fa
           fairwayCard={fairwayCard}
           modified={origin ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
           modifier={origin ? userData?.currentUser?.name : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
+          creator={data?.fairwayCard?.creator}
+          created={data?.fairwayCard?.creationTimestamp}
           isError={isError}
         />
       )}
