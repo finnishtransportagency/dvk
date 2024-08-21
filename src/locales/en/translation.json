@@ -267,7 +267,7 @@
     "inForce": "In force",
     "mareograph": "Mareograph",
     "mareographLocation": "Location of the measurement site",
-    "dateTime": "Last observation"
+    "observationLocation": "[en] Säähavaintoaseman sijainti"
   },
   "routes": {
     "title": "Pilot routes",

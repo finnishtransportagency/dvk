@@ -267,7 +267,7 @@
     "inForce": "Gällande",
     "mareograph": "Mareograf",
     "mareographLocation": "Mareografens plats",
-    "dateTime": "Beräknat vattenstånd"
+    "observationLocation": "[sv] Säähavaintoaseman sijainti"
   },
   "routes": {
     "title": "Lotsningsrutter",

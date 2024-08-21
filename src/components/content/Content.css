@@ -526,7 +526,8 @@ ion-text.previewText > * {
   position: relative;
   max-height: 12px;
   max-width: 12px;
-  margin-right: 2px;
-  top: 2px;
+  margin-right: 6px;
+  margin-left: 6px;
+  top: 4px;
   color: var(--ion-color-primary);
 }
