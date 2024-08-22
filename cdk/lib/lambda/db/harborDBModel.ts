@@ -146,7 +146,7 @@ class HarborDBModel {
     return [];
   }
 
-  static async getAllVersions(): Promise<HarborDBModel[]> {
+  static async getVersions(): Promise<HarborDBModel[]> {
     const fairwayCards: HarborDBModel[] | undefined = [];
     let response;
 

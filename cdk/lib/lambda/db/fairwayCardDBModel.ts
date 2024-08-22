@@ -241,7 +241,7 @@ class FairwayCardDBModel {
     return [];
   }
 
-  static async getAllVersions(): Promise<FairwayCardDBModel[]> {
+  static async getVersions(): Promise<FairwayCardDBModel[]> {
     const fairwayCards: FairwayCardDBModel[] | undefined = [];
     let response;
 
