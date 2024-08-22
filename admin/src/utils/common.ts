@@ -70,6 +70,8 @@ export const filterItemList = (
             return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sortDescending);
           case 'identifier':
             return sortByString(a.id, b.id, sortDescending);
+          case 'version':
+            return sortByString(a.version, b.version, sortDescending);
           default:
             return 1;
         }
