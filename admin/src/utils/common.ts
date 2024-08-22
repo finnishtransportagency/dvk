@@ -73,7 +73,7 @@ export const filterItemList = (
             return sortByString(a.id, b.id, sortDescending);
           case 'version':
             // should be newest first when arrow down hence "!sortDescending"
-            return sortByNumber(Number(a.version.slice(1)), Number(b.version.slice(1)), !sortDescending);
+            return sortByString(a.version, b.version, sortDescending);
           default:
             return 1;
         }

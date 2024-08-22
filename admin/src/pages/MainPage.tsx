@@ -315,7 +315,7 @@ const MainPage: React.FC = () => {
                   <IonCol size="1.25">{item.modifier}</IonCol>
                   <IonCol size="1.25">{item.creator}</IonCol>
                   <IonCol size="1">{getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
-                  <IonCol size="1">{item.version.slice(1)}</IonCol>
+                  <IonCol size="1">{item.version}</IonCol>
                 </IonRow>
               );
             })}
