@@ -44,7 +44,8 @@ export const filterItemList = (
     data
       ?.filter(
         (item) =>
-          (item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 &&
+          ((item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 ||
+            (item.id ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1) &&
           (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true)
       )
       .sort((a, b) => {
