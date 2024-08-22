@@ -521,3 +521,13 @@ ion-text.previewText > * {
 .mareographsTitle {
   font-size: 12px;
 }
+
+.fairwayCardInfoIcon {
+  position: relative;
+  max-height: 12px;
+  max-width: 12px;
+  margin-right: 6px;
+  margin-left: 6px;
+  top: 4px;
+  color: var(--ion-color-primary);
+}

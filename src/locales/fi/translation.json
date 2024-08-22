@@ -266,7 +266,8 @@
     "pilotageLimitDimensions": "Pituus / leveys / syväys (m)",
     "inForce": "Voimassa",
     "mareograph": "Mareografi",
-    "mareographLocation": "Mareografin sijainti"
+    "mareographLocation": "Mareografin sijainti",
+    "observationLocation": "Säähavaintoaseman sijainti"
   },
   "routes": {
     "title": "Luotsausreitit",

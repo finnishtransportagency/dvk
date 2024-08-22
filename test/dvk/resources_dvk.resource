@@ -32,7 +32,7 @@ ${FAIRWAYS_TEXT_SWEDISH}    Farledskort
 ${FAIRWAYS_TEXT_ENGLISH}    Fairway Cards
 
 #Fairway Cards list locators
-${FAIRWAY_CARDS}    //ion-row[@class = "fairwayCards md"]/ion-col/ion-label/a
+${FAIRWAY_CARDS}    //ion-content[@id = "fairwayCardsContainer"] /div/div/ion-grid/ion-row/ion-col/ion-label/a
 ${FAIRWAY_CARDS_HEADING_FINNISH}    //ion-text[@class = "fairwayTitle md"]/h2/strong[text() = "Väyläkortit"]
 ${GENERAL_HEADING_FINNISH}    //ion-item[@slot = "header"]/ion-label[text() = "Yleistä"]
 ${ARCHIPELAGO_SEA_HEADING_FINNISH}    //ion-text/h4/strong[text() = "Saaristomeri"]

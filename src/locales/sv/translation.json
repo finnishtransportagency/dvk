@@ -266,7 +266,8 @@
     "pilotageLimitDimensions": "Längd / bredd / djup (m)",
     "inForce": "Gällande",
     "mareograph": "Mareograf",
-    "mareographLocation": "Mareografens plats"
+    "mareographLocation": "Mareografens plats",
+    "observationLocation": "[sv] Säähavaintoaseman sijainti"
   },
   "routes": {
     "title": "Lotsningsrutter",
