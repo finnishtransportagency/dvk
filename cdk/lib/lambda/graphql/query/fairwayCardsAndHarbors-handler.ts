@@ -8,9 +8,9 @@ import { log } from '../../logger';
 export const handler = async (event: AppSyncResolverEvent<void>): Promise<FairwayCardOrHarbor[]> => {
   const user = await getCurrentUser(event);
   log.info(`fairwayCardsAndHarbors(${user.uid})`);
-  const fairwayCardModels = await FairwayCardDBModel.getAllLatest();
+  const fairwayCardModels = await FairwayCardDBModel.getAllVersions();
   log.debug('%d fairway card(s) found', fairwayCardModels.length);
-  const harborModels = await HarborDBModel.getAllLatest();
+  const harborModels = await HarborDBModel.getAllVersions();
   log.debug('%d harbor(s) found', harborModels.length);
   const cards: FairwayCardOrHarbor[] = fairwayCardModels.map((card) => {
     return {

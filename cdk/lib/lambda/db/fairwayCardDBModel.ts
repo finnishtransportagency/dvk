@@ -241,6 +241,36 @@ class FairwayCardDBModel {
     return [];
   }
 
+  static async getAllVersions(): Promise<FairwayCardDBModel[]> {
+    const fairwayCards: FairwayCardDBModel[] | undefined = [];
+    let response;
+
+    const params: ScanCommandInput = {
+      TableName: getFairwayCardTableName(),
+      FilterExpression: '#version <> :v0_latest AND #version <> :v0_public',
+      ExpressionAttributeNames: {
+        '#version': 'version',
+      },
+      ExpressionAttributeValues: {
+        ':v0_latest': 'v0_latest',
+        ':v0_public': 'v0_public',
+      },
+    };
+
+    do {
+      response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
+      response.Items?.forEach((item) => fairwayCards.push(item as FairwayCardDBModel));
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
+
+    if (fairwayCards) {
+      log.debug('%d Fairway card(s) found', fairwayCards.length);
+      return fairwayCards;
+    }
+    log.debug('No fairway cards found');
+    return [];
+  }
+
   static async save(data: FairwayCardDBModel, operation: Operation) {
     const putCommands = getPutCommands(data, getFairwayCardTableName(), operation);
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));

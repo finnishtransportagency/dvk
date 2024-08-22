@@ -204,7 +204,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.25">
+            <IonCol size="1">
               <HeaderButton
                 headername="type"
                 text="item-type"
@@ -222,7 +222,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.25">
+            <IonCol size="1">
               <HeaderButton
                 headername="referencelevel"
                 text="item-referencelevel"
@@ -231,7 +231,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.25">
+            <IonCol size="1">
               <HeaderButton
                 headername="status"
                 text="item-status"
@@ -240,7 +240,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.25">
+            <IonCol size="1">
               <HeaderButton
                 headername="modified"
                 text="item-updated"
@@ -276,6 +276,15 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
+            <IonCol size="1">
+              <HeaderButton
+                headername="version"
+                text="version-number"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
+            </IonCol>
           </IonRow>
           {isLoading &&
             [1, 2, 3, 4, 5].map((val) => (
@@ -296,16 +305,17 @@ const MainPage: React.FC = () => {
                 >
                   <IonCol size="1">{item.id}</IonCol>
                   <IonCol size="1.25">{item.name[lang] ?? item.name.fi}</IonCol>
-                  <IonCol size="1.25">{t('item-type-' + item.type)}</IonCol>
+                  <IonCol size="1">{t('item-type-' + item.type)}</IonCol>
                   <IonCol size="1.25">{groups[Number(item.group ?? 0)]}</IonCol>
-                  <IonCol size="1.25">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
-                  <IonCol size="1.25" className={'item-status-' + item.status}>
+                  <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
+                  <IonCol size="1" className={'item-status-' + item.status}>
                     {t('item-status-' + item.status)}
                   </IonCol>
-                  <IonCol size="1.25">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
+                  <IonCol size="1">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
                   <IonCol size="1.25">{item.modifier}</IonCol>
                   <IonCol size="1.25">{item.creator}</IonCol>
                   <IonCol size="1">{getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
+                  <IonCol size="1">{item.version.slice(1)}</IonCol>
                 </IonRow>
               );
             })}
