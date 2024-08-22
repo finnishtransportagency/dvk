@@ -138,8 +138,8 @@ const MainPage: React.FC = () => {
                 <IonItem lines="none" className="searchBar">
                   <IonInput
                     className="searchBar"
-                    placeholder={translatedTextOrEmpty('search-placeholder')}
-                    title={translatedTextOrEmpty('search-title')}
+                    placeholder={translatedTextOrEmpty('search-placeholder-mainPage')}
+                    title={translatedTextOrEmpty('search-title-mainPage')}
                     value={searchQuery}
                     onIonInput={(e) => changeAction(e.detail.value)}
                     ref={searchRef}
