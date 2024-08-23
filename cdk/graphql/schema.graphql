@@ -16,6 +16,7 @@ type Query {
   harborPreview(id: String!, version: String!): Harbor
   fairways: [Fairway!]!
   fairwayCardsAndHarbors: [FairwayCardOrHarbor!]!
+  fairwayCardsAndHarborsVersions: [FairwayCardOrHarbor!]!
   mareographs: [Mareograph!]!
 }
 
