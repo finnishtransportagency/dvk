@@ -30,7 +30,7 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { initialState } from '../hooks/dvkReducer';
-import { Geometry, Point } from 'ol/geom';
+import { Geometry, LineString, Point, Polygon } from 'ol/geom';
 import {
   getFairwayCardPilotRoutes,
   getFairwayCardPilotageLimits,
@@ -48,6 +48,7 @@ import { getQuayStyle } from './layerStyles/quayStyles';
 import { getHarborStyle } from './layerStyles/harborStyles';
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
 import { getDirwayStyle } from './layerStyles/dirwayStyles';
+import { Cluster } from 'ol/source';
 
 const minResolutionHarbor = 3;
 
@@ -574,14 +575,45 @@ export function addAPILayers(map: Map) {
     declutter: true,
     zIndex: 401,
   });
-  addFeatureVectorLayer({
-    map: map,
-    id: 'localwarning',
-    renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
-    zIndex: 402,
+  const s1 = new VectorSource<FeatureLike>();
+  const c1 = new Cluster<FeatureLike>({
+    distance: 20,
+    geometryFunction: (feature) => {
+      const geom = feature.getGeometry() as Geometry;
+      if (geom?.getType() === 'Polygon') {
+        return (geom as Polygon).getInteriorPoint();
+      } else if (geom?.getType() === 'LineString') {
+        return new Point((geom as LineString).getFlatMidpoint());
+      } else if (geom?.getType() === 'Point') {
+        return geom as Point;
+      }
+      return null;
+    },
+    createCluster: (point, features) => {
+      return new Feature({
+        geometry: point,
+        featureType: 'marinewarning',
+        cluster: true,
+        features: features,
+      });
+    },
+    source: s1,
   });
+  map.addLayer(
+    new VectorLayer({
+      source: c1,
+      declutter: false,
+      style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
+      properties: { id: 'localwarning' },
+      renderBuffer: 50,
+      updateWhileInteracting: false,
+      updateWhileAnimating: false,
+      opacity: 1,
+      zIndex: 402,
+      visible: initialState.layers.includes('localwarning'),
+    })
+  );
+
   addFeatureVectorLayer({
     map: map,
     id: 'boaterwarning',
