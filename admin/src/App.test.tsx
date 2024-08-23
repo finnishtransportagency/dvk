@@ -85,6 +85,7 @@ vi.mock('./graphql/api', () => ({
             name: { fi: 'Kaskisten väylä', sv: 'Kasköleden', en: 'Kaskinen channel' },
             status: 'PUBLIC',
             type: 'CARD',
+            version: 'v1',
           },
           {
             creator: 'James',
@@ -97,6 +98,7 @@ vi.mock('./graphql/api', () => ({
             name: { fi: 'Hangon meriväylä', sv: 'Hangö havsfarled', en: 'Hanko channel' },
             status: 'PUBLIC',
             type: 'CARD',
+            version: 'v1',
           },
           {
             creator: 'James',
@@ -109,6 +111,7 @@ vi.mock('./graphql/api', () => ({
             name: { fi: 'HaminaKotka Satama Oy', sv: 'Fredrikshamn-Kotka hamn', en: 'Port of HaminaKotka' },
             status: 'PUBLIC',
             type: 'HARBOR',
+            version: 'v1',
           },
         ],
       },

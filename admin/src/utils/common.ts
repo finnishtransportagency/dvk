@@ -44,7 +44,8 @@ export const filterItemList = (
     data
       ?.filter(
         (item) =>
-          (item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 &&
+          ((item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 ||
+            (item.id ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1) &&
           (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true)
       )
       .sort((a, b) => {
@@ -70,6 +71,9 @@ export const filterItemList = (
             return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sortDescending);
           case 'identifier':
             return sortByString(a.id, b.id, sortDescending);
+          case 'version':
+            // should be newest first when arrow down hence "!sortDescending"
+            return sortByString(a.version, b.version, sortDescending);
           default:
             return 1;
         }
