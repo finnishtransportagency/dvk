@@ -182,7 +182,7 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                     <IonText>{t('popup.observation.visibility')}:&nbsp;</IonText>
                     {!isDataOutdated12Hours ? (
                       <>
-                        {o.temperature && !isOffline ? (
+                        {o.visibility && !isOffline ? (
                           <>
                             {Math.round((o.visibility ?? 0) / 1000)}&nbsp;
                             <dd aria-label={t('fairwayCards.unit.kmDesc', { count: Math.round((o.visibility || 0) / 1000) })}>km</dd>
