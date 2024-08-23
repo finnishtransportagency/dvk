@@ -15,7 +15,7 @@ import {
   IonSkeletonText,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
+import { useFairwayCardsAndHarborsVersionsQueryData } from '../graphql/api';
 import { ItemType, Lang } from '../utils/constants';
 import { filterItemList, getNotificationListingTypesCount } from '../utils/common';
 import { useHistory } from 'react-router-dom';
@@ -48,7 +48,7 @@ const MainPage: React.FC = () => {
   const lang = i18n.language as Lang;
   const history = useHistory();
 
-  const { data, isLoading } = useFairwayCardsAndHarborsQueryData();
+  const { data, isLoading } = useFairwayCardsAndHarborsVersionsQueryData();
   const groups = ['-', t('archipelagoSea'), t('gulfOfFinland'), t('gulfOfBothnia')];
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -59,7 +59,7 @@ const MainPage: React.FC = () => {
   const [sortDescending, setSortDescending] = useState(false);
   const searchRef = useRef<HTMLIonInputElement>(null);
 
-  const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, sortBy, sortDescending, t);
+  const filteredItemList = filterItemList(data?.fairwayCardsAndHarborsVersions, lang, searchQuery, itemTypes, sortBy, sortDescending, t);
 
   const changeAction = (val?: string | number | null) => {
     setSearchQuery(String(val));
@@ -311,7 +311,7 @@ const MainPage: React.FC = () => {
             })}
         </IonGrid>
 
-        <CreationModal itemList={data?.fairwayCardsAndHarbors ?? []} itemType={itemType} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <CreationModal itemList={data?.fairwayCardsAndHarborsVersions ?? []} itemType={itemType} isOpen={isOpen} setIsOpen={setIsOpen} />
       </IonContent>
     </IonPage>
   );
