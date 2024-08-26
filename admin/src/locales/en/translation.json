@@ -113,7 +113,9 @@
     "item-updated": "[en] Päivityspäivämäärä",
     "item-latest-updater": "[en] Viimeisin päivittäjä",
     "version-number": "[en] Versionumero",
-    "temporary-notifications": "[en] Huomio(t)"
+    "temporary-notifications": "[en] Huomio(t)",
+    "search-placeholder-mainPage": "[en] Hae nimellä tai tunnisteella",
+    "search-title-mainPage": "[en] Hae nimellä tai tunnisteella"
   },
   "modal": {
     "title-new-CARD": "New fairway card",
