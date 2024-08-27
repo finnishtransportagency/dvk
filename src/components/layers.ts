@@ -187,6 +187,68 @@ function addFeatureVectorLayer({
   );
 }
 
+interface MarineWarningClusterLayerProps {
+  map: Map;
+  id: FeatureLayerId;
+  maxResolution?: number;
+  renderBuffer: number;
+  minResolution?: number;
+  opacity?: number;
+  declutter?: boolean;
+  zIndex: number | undefined; //= undefined
+}
+
+function addMarineWarningClusterLayer({
+  map,
+  id,
+  maxResolution = undefined,
+  renderBuffer,
+  minResolution = undefined,
+  opacity = 1,
+  declutter = false,
+  zIndex = undefined,
+}: MarineWarningClusterLayerProps) {
+  const cluster = new Cluster<FeatureLike>({
+    distance: 20,
+    geometryFunction: (feature) => {
+      const geom = feature.getGeometry() as Geometry;
+      if (geom?.getType() === 'Polygon') {
+        return (geom as Polygon).getInteriorPoint();
+      } else if (geom?.getType() === 'LineString') {
+        return new Point((geom as LineString).getFlatMidpoint());
+      } else if (geom?.getType() === 'Point') {
+        return geom as Point;
+      }
+      return null;
+    },
+    createCluster: (point, features) => {
+      return new Feature({
+        geometry: point,
+        featureType: 'marinewarning',
+        cluster: true,
+        features: features,
+      });
+    },
+    source: new VectorSource<FeatureLike>(),
+  });
+  map.addLayer(
+    new VectorLayer({
+      source: cluster,
+      declutter,
+      style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
+      properties: { id },
+      maxResolution,
+      minResolution,
+      renderBuffer,
+      updateWhileInteracting: false,
+      updateWhileAnimating: false,
+      opacity,
+      zIndex,
+      visible: initialState.layers.includes(id),
+    })
+  );
+}
+
 function addIceLayer(map: Map) {
   const apiKey = import.meta.env.VITE_APP_FMI_MAP_API_KEY;
   const cloudFrontUrl = import.meta.env.VITE_APP_FRONTEND_DOMAIN_NAME;
@@ -567,59 +629,24 @@ export function addAPILayers(map: Map) {
   });
 
   // Merivaroitukset
-  addFeatureVectorLayer({
+  addMarineWarningClusterLayer({
     map: map,
     id: 'coastalwarning',
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
     zIndex: 401,
   });
-  const s1 = new VectorSource<FeatureLike>();
-  const c1 = new Cluster<FeatureLike>({
-    distance: 20,
-    geometryFunction: (feature) => {
-      const geom = feature.getGeometry() as Geometry;
-      if (geom?.getType() === 'Polygon') {
-        return (geom as Polygon).getInteriorPoint();
-      } else if (geom?.getType() === 'LineString') {
-        return new Point((geom as LineString).getFlatMidpoint());
-      } else if (geom?.getType() === 'Point') {
-        return geom as Point;
-      }
-      return null;
-    },
-    createCluster: (point, features) => {
-      return new Feature({
-        geometry: point,
-        featureType: 'marinewarning',
-        cluster: true,
-        features: features,
-      });
-    },
-    source: s1,
-  });
-  map.addLayer(
-    new VectorLayer({
-      source: c1,
-      declutter: false,
-      style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-      properties: { id: 'localwarning' },
-      renderBuffer: 50,
-      updateWhileInteracting: false,
-      updateWhileAnimating: false,
-      opacity: 1,
-      zIndex: 402,
-      visible: initialState.layers.includes('localwarning'),
-    })
-  );
 
-  addFeatureVectorLayer({
+  addMarineWarningClusterLayer({
+    map: map,
+    id: 'localwarning',
+    renderBuffer: 50,
+    zIndex: 402,
+  });
+
+  addMarineWarningClusterLayer({
     map: map,
     id: 'boaterwarning',
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
     zIndex: 403,
   });
 
