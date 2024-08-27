@@ -74,7 +74,7 @@ export class DvkScheduledTestsPipelineStack extends Stack {
       source: gitHubSource,
       cache: codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM, codebuild.LocalCacheMode.SOURCE, codebuild.LocalCacheMode.DOCKER_LAYER),
       environment: {
-        buildImage: codebuild.LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.3'),
+        buildImage: codebuild.LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.4'),
         computeType: codebuild.ComputeType.MEDIUM,
       },
       grantReportGroupPermissions: true,
