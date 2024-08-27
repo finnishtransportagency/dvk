@@ -15,7 +15,7 @@ const marineAreaSelectedImage = new Image();
 marineAreaSelectedImage.src = marineareaSelected;
 let selectedAreaStyle: Style | undefined = undefined;
 
-function getAreaStyle(selected: boolean) {
+function getAreaStyle(feature: FeatureLike, selected: boolean) {
   let s = selected ? selectedAreaStyle : areaStyle;
   if (!s) {
     const canvas = document.createElement('canvas');
@@ -37,6 +37,11 @@ function getAreaStyle(selected: boolean) {
       areaStyle = s;
     }
   }
+
+  s.setGeometry(() => {
+    return feature.getGeometry();
+  });
+
   return s;
 }
 
@@ -82,25 +87,23 @@ function getIconStyle(feature: FeatureLike, selected: boolean) {
   });
 }
 
-function getClusterCountStyle(count: number) {
+function getClusterCountStyle(count: number, selected: boolean) {
   return new Style({
     image: new CircleStyle({
-      radius: 10,
-      stroke: new Stroke({
-        color: '#000',
-      }),
+      radius: selected ? 1.2 * 10 : 10,
       fill: new Fill({
-        color: '#fff',
+        color: '#00509b',
       }),
-      displacement: [10, 0],
+      displacement: selected ? [1.2 * 12, 1.2 * 28] : [12, 28],
     }),
     text: new Text({
       text: count.toString(),
+      font: selected ? `bold 14px "Exo2"` : `bold 12px "Exo2"`,
       fill: new Fill({
-        color: '#000',
+        color: '#fff',
       }),
-      offsetX: 10,
-      offsetY: 0,
+      offsetX: selected ? 1.2 * 12 : 12,
+      offsetY: selected ? 1.2 * -28 : -28,
     }),
     zIndex: 3,
   });
@@ -110,23 +113,33 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
   const styles: Style[] = [];
   let feat = feature;
   if (feature.get('cluster')) {
-    const feats = feature.get('features');
+    const feats = feature.get('features') as Array<Feature>;
     if (feats.length < 1) {
       return undefined;
     } else if (feats.length === 1) {
       feat = feature.get('features')[0];
     } else {
+      for (const f of feats) {
+        feat = new Feature();
+        feat.setProperties(f.getProperties());
+        feat.setGeometry(f.getGeometry());
+        if (feat.getGeometry()?.getType() === 'Polygon') {
+          styles.push(getAreaStyle(feat, selected));
+        } else if (feat.getGeometry()?.getType() === 'LineString') {
+          styles.push(getLineStyle(feat));
+        }
+      }
       feat = new Feature();
       feat.setProperties((feature.get('features')[0] as Feature).getProperties());
       feat.setGeometry((feature as Feature).getGeometry());
-      styles.push(getClusterCountStyle(feats.length));
+      styles.push(getClusterCountStyle(feats.length, selected));
     }
   }
 
   styles.push(getIconStyle(feat, selected));
 
   if (feat.getGeometry()?.getType() === 'Polygon') {
-    styles.push(getAreaStyle(selected));
+    styles.push(getAreaStyle(feat, selected));
   } else if (feat.getGeometry()?.getType() === 'LineString') {
     styles.push(getLineStyle(feat));
   }
