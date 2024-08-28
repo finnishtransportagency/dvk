@@ -202,7 +202,12 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
           types.includes(f.getProperties().featureType) &&
           features.findIndex((feat) => feat.get('featureType') === f.get('featureType') && feat.getId() == f.getId()) < 0
         ) {
-          features.push(f);
+          if (f.get('cluster') === true) {
+            /* If we clicked cluster feature, add all features in the cluster */
+            features.push(...f.get('features'));
+          } else {
+            features.push(f);
+          }
         }
       },
       { hitTolerance: 3 }
