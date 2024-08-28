@@ -184,7 +184,6 @@ const restrictionResponse = [
     id: 'restriction-47_35000059',
     location_id: 'location-2_931',
     start_time: '2022-12-23T22:00:00Z',
-    end_time: '2023-03-07T21:59:59Z',
     text_compilation: 'II 2000',
   },
   {
@@ -193,7 +192,6 @@ const restrictionResponse = [
     id: 'restriction-47_35000152',
     location_id: 'location-2_931',
     start_time: '2023-03-07T22:00:00Z',
-    end_time: '2023-04-11T20:59:59Z',
     text_compilation: 'I 2000',
   },
   {
@@ -298,7 +296,6 @@ const restrictionResponse = [
     id: 'restriction-47_35000152',
     location_id: 'location-2_931',
     start_time: '2023-03-07T22:00:00Z',
-    end_time: '2023-04-11T20:59:59Z',
     text_compilation: 'I 2000 -1',
   },
   {
@@ -358,8 +355,8 @@ it('should get restrictions from api', async () => {
   assert(response.body);
   const responseObj = await parseResponse(response.body);
 
-  // 12 locations minus 8: 2 duplicates, 2 other nationalities, 2 deleted, 1 fairway, 1 without restrictions
-  expect(responseObj.features.length).toBe(4);
+  // 12 locations minus 9: 2 duplicates, 2 other nationalities, 2 deleted, 1 fairway, 1 without restrictions, 1 outdated restriction
+  expect(responseObj.features.length).toBe(3);
 
   // Check correct duplicates are filtered
   const haminaDuplicate = responseObj.features.find((f) => f.id === 'location-2_931');
