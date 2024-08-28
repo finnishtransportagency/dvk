@@ -356,7 +356,6 @@
     },
     "area": {
       "info": "Farledsområdets uppgifter",
-      "overtake": "Farledsområdet har ett kontinuerligt omkörningsförbud.",
       "depth": "Ramningsdjup {{val, number}}",
       "draft": "Dimensionerande djup {{val, number}}",
       "speedLimit": "Hastighetsbegränsning {{val}}",
