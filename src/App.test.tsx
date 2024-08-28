@@ -7,7 +7,6 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
 import { vi } from 'vitest';
-import { useRestrictionPortLayer } from './components/FeatureLoader';
 
 class ResizeObserver {
   observe() {
