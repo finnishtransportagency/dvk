@@ -113,7 +113,10 @@ function addRestrictionFeatures(
   const locations = apiLocations
     .filter((l) => !l.deleted && l.type === 'PORT' && l.nationality === 'FI')
     .sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
-  const restrictions = apiRestrictions.filter((r) => !r.deleted).sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
+  // Remove deleted or outdated restrictions
+  const restrictions = apiRestrictions
+    .filter((r) => !r.deleted && (!r.end_time || Date.parse(r.end_time) > Date.now()))
+    .sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
   // Remove duplicate restrictions (first in array remains)
   const uniqueRestrictions = restrictions.filter((val, index, arr) => arr.findIndex((l) => l.id === val.id) === index);
 

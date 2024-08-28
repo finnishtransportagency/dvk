@@ -22,7 +22,7 @@ const RestrictionPortPopupContent: React.FC<RestrictionPortPopupContentProps> = 
   const { t } = useTranslation();
 
   const currentRestrictions = restrictionPort.properties.restrictions
-    .filter((r) => Date.parse(r.startTime) <= Date.now() && (!r.endTime || Date.parse(r.endTime) > Date.now()))
+    .filter((r) => Date.parse(r.startTime) <= Date.now())
     .sort((a, b) => Date.parse(b.startTime) - Date.parse(a.startTime));
   const upcomingRestrictions = restrictionPort.properties.restrictions
     .filter((r) => Date.parse(r.startTime) > Date.now())
