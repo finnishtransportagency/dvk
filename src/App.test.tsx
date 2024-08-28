@@ -7,6 +7,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { mockFairwayList, mockMarineWarningList, mockSafetyEquipmentFaultList } from '../__tests__/mockData';
 import { vi } from 'vitest';
+import { useRestrictionPortLayer } from './components/FeatureLoader';
 
 class ResizeObserver {
   observe() {
@@ -141,6 +142,9 @@ vi.mock('./components/FeatureLoader', () => ({
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useDirwayLayer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
+  useRestrictionPortLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useConditionsDataLayer: () => {
