@@ -356,7 +356,6 @@
     },
     "area": {
       "info": "Fairway area information",
-      "overtake": "Continuous overtaking prohibition on the fairway area",
       "depth": "Swept depth {{val, number}}",
       "draft": "Design draught {{val, number}}",
       "speedLimit": "Speed limit {{val}}",
