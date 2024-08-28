@@ -100,7 +100,6 @@ button.icon:focus-visible:hover {
   border-radius: 0;
   --min-height: 43px;
   --background: var(--ion-color-primary-contrast);
-  --highlight-color-focused: transparent;
   --padding-top: 1px;
   --padding-bottom: 1px;
 }

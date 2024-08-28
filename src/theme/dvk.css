@@ -1,3 +1,7 @@
+/* Disable dynamic font scaling */
+html {
+  --ion-dynamic-font: initial;
+}
 ion-text > * {
   color: var(--ion-color-dark);
 }
