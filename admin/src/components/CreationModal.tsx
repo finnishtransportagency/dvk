@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonLabel, IonModal, IonRow, IonSelect, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardOrHarbor } from '../graphql/generated';
 import { ItemType } from '../utils/constants';
@@ -69,6 +69,23 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               isDropdownOpen={isDropdownOpen}
               setIsDropdownOpen={setIsDropdownOpen}
             />
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonLabel className={`formLabel ion-margin-top${!origin ? ' disabled' : ''}`}>{t('general.version-number')}</IonLabel>
+            <IonSelect
+              className="selectInput"
+              disabled={!origin}
+              placeholder={t('general.choose')}
+              interface="popover"
+              multiple={true}
+              interfaceOptions={{
+                size: 'cover',
+              }}
+              labelPlacement="stacked"
+              fill="outline"
+            ></IonSelect>
           </IonCol>
         </IonRow>
       </IonGrid>
