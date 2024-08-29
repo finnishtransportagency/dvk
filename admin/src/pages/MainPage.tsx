@@ -15,7 +15,6 @@ import {
   IonSkeletonText,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 import { ItemType, Lang } from '../utils/constants';
 import { filterItemList, getNotificationListingTypesCount } from '../utils/common';
 import { useHistory } from 'react-router-dom';
@@ -24,6 +23,7 @@ import CreationModal from '../components/CreationModal';
 import ClearSearchButton from '../components/ClearSearchButton';
 import { getMap } from '../components/map/DvkMap';
 import { Status, TemporaryNotification } from '../graphql/generated';
+import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 
 type HeaderButtonProps = {
   headername: string;
@@ -48,7 +48,7 @@ const MainPage: React.FC = () => {
   const lang = i18n.language as Lang;
   const history = useHistory();
 
-  const { data, isLoading } = useFairwayCardsAndHarborsQueryData();
+  const { data, isLoading } = useFairwayCardsAndHarborsQueryData(true);
   const groups = ['-', t('archipelagoSea'), t('gulfOfFinland'), t('gulfOfBothnia')];
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -344,7 +344,7 @@ const MainPage: React.FC = () => {
                   <IonCol size="1.25">{item.modifier}</IonCol>
                   <IonCol size="1.25">{item.creator}</IonCol>
                   <IonCol size="1">{getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
-                  <IonCol size="1">{item.version}</IonCol>
+                  <IonCol size="1">{item.version.slice(1)}</IonCol>
                 </IonRow>
               );
             })}

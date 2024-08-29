@@ -68,7 +68,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: pilotPlaceList, isLoading: isLoadingPilotPlaces } = usePilotPlacesQueryData();
   const { data: mareographList, isLoading: isLoadingMareographs } = useMareographQueryData();
 
-  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
   // these are derived straight from featureData unlike others through graphQL
   // the graphQL approach's motives are a bit unclear so possible refactor in the future
   const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
