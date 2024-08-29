@@ -23,7 +23,7 @@ import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
 import ClearSearchButton from '../components/ClearSearchButton';
 import { getMap } from '../components/map/DvkMap';
-import { TemporaryNotification } from '../graphql/generated';
+import { Status, TemporaryNotification } from '../graphql/generated';
 
 type HeaderButtonProps = {
   headername: string;
@@ -53,24 +53,24 @@ const MainPage: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
+  const [itemStatus, setItemStatus] = useState<Status[]>([]);
   const [itemType, setItemType] = useState<ItemType>('');
   const [isOpen, setIsOpen] = useState(false);
   const [sortBy, setSortBy] = useState('name');
   const [sortDescending, setSortDescending] = useState(false);
   const searchRef = useRef<HTMLIonInputElement>(null);
 
-  const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, sortBy, sortDescending, t);
+  const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, itemStatus, sortBy, sortDescending, t);
 
   const changeAction = (val?: string | number | null) => {
     setSearchQuery(String(val));
   };
+
   const clearInput = () => {
     setSearchQuery('');
     searchRef.current?.setFocus().catch((err) => console.error(err));
   };
-  const itemTypeSelection = (value: ItemType[]) => {
-    setItemTypes(value);
-  };
+
   const itemCreationAction = (selectedType: ItemType) => {
     setItemType(selectedType);
     setIsOpen(true);
@@ -85,6 +85,7 @@ const MainPage: React.FC = () => {
     if (type === 'CARD') history.push('/vaylakortti/' + id);
     if (type === 'HARBOR') history.push('/satama/' + id);
   };
+
   const keyDownAction = (event: React.KeyboardEvent<HTMLIonRowElement>, id: string, type: string) => {
     if (event.key === 'Enter') selectItem(id, type);
   };
@@ -103,6 +104,11 @@ const MainPage: React.FC = () => {
   const selectTypeRef = useRef<HTMLIonSelectElement>(null);
   const focusTypeSelect = () => {
     selectTypeRef.current?.click();
+  };
+
+  const selectStatusRef = useRef<HTMLIonSelectElement>(null);
+  const focusStatusSelect = () => {
+    selectStatusRef.current?.click();
   };
 
   const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[]) => {
@@ -158,7 +164,7 @@ const MainPage: React.FC = () => {
                 placeholder={translatedTextOrEmpty('choose')}
                 interface="popover"
                 multiple={true}
-                onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
+                onIonChange={(ev) => setItemTypes(ev.detail.value)}
                 interfaceOptions={{
                   size: 'cover',
                   className: 'multiSelect',
@@ -168,6 +174,29 @@ const MainPage: React.FC = () => {
               >
                 <IonSelectOption value="CARD">{translatedTextOrEmpty('type-fairwaycard')}</IonSelectOption>
                 <IonSelectOption value="HARBOR">{translatedTextOrEmpty('type-harbour')}</IonSelectOption>
+              </IonSelect>
+            </IonCol>
+            <IonCol size="auto">
+              <IonLabel className="formLabel" onClick={() => focusStatusSelect()}>
+                {translatedTextOrEmpty('item-status')}
+              </IonLabel>
+              <IonSelect
+                ref={selectStatusRef}
+                className="selectInput"
+                placeholder={translatedTextOrEmpty('choose')}
+                interface="popover"
+                multiple={true}
+                onIonChange={(ev) => setItemStatus(ev.detail.value)}
+                interfaceOptions={{
+                  size: 'cover',
+                  className: 'multiSelect',
+                }}
+                labelPlacement="stacked"
+                fill="outline"
+              >
+                <IonSelectOption value={Status.Public}>{translatedTextOrEmpty('item-status-PUBLIC')}</IonSelectOption>
+                <IonSelectOption value={Status.Draft}>{translatedTextOrEmpty('item-status-DRAFT')}</IonSelectOption>
+                <IonSelectOption value={Status.Removed}>{translatedTextOrEmpty('item-status-REMOVED')}</IonSelectOption>
               </IonSelect>
             </IonCol>
             <IonCol></IonCol>
