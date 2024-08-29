@@ -19,7 +19,7 @@ import { getPilotageLimitStyle } from '../layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from '../layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from '../layerStyles/navigationLine3456Styles';
 import { getQuayStyle } from '../layerStyles/quayStyles';
-import { getHarborStyle } from '../layerStyles/harborStyles';
+import { getHarborStyle, getRestrictionPortStyle } from '../layerStyles/harborStyles';
 import { getDirwayStyle } from '../layerStyles/dirwayStyles';
 
 function getLayers() {
@@ -54,6 +54,7 @@ function getLayers() {
     dvkMap.getFeatureLayer('aisvesseltanker'),
     dvkMap.getFeatureLayer('aisvesseltugandspecialcraft'),
     dvkMap.getFeatureLayer('dirway'),
+    dvkMap.getFeatureLayer('restrictionport'),
   ];
 }
 
@@ -101,6 +102,8 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
       return getAisVesselLayerStyle(dataSource, feature, resolution, true);
     case 'dirway':
       return getDirwayStyle(feature, resolution, true);
+    case 'restrictionport':
+      return getRestrictionPortStyle(true);
     default:
       return undefined;
   }

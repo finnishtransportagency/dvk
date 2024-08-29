@@ -124,7 +124,7 @@ export class DvkSonarPipelineStack extends Stack {
       source: gitHubSource,
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.3'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.4'),
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           CI: { value: true },
@@ -177,7 +177,7 @@ export class DvkSonarPipelineStack extends Stack {
         resources: [table.tableArn],
       })
     );
-    table = Table.fromTableName(this, 'HarborTable', Config.getHarborTableName() + '*');
+    table = Table.fromTableName(this, 'HarborTable', Config.getHarborWithVersionsTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,

@@ -6,6 +6,7 @@ import {
   Orientation,
   PictureInput,
   SelectedFairwayInput,
+  Status,
   TemporaryNotification,
   Text,
 } from '../graphql/generated';
@@ -35,6 +36,7 @@ export const filterItemList = (
   lang: Lang,
   searchQuery: string,
   itemTypes: ItemType[],
+  itemStatus: Status[],
   sortBy: string,
   sortDescending: boolean,
   t?: TFunction
@@ -44,8 +46,10 @@ export const filterItemList = (
     data
       ?.filter(
         (item) =>
-          (item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 &&
-          (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true)
+          ((item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 ||
+            (item.id ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1) &&
+          (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true) &&
+          (itemStatus.length > 0 ? itemStatus.indexOf(item.status) > -1 : true)
       )
       .sort((a, b) => {
         switch (sortBy) {
@@ -70,6 +74,9 @@ export const filterItemList = (
             return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sortDescending);
           case 'identifier':
             return sortByString(a.id, b.id, sortDescending);
+          case 'version':
+            // should be newest first when arrow down hence "!sortDescending"
+            return sortByNumber(Number(a.version.slice(1)), Number(b.version.slice(1)), !sortDescending);
           default:
             return 1;
         }

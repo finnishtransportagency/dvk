@@ -30,7 +30,7 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { initialState } from '../hooks/dvkReducer';
-import { Geometry, Point } from 'ol/geom';
+import { Geometry, LineString, Point, Polygon } from 'ol/geom';
 import {
   getFairwayCardPilotRoutes,
   getFairwayCardPilotageLimits,
@@ -45,9 +45,10 @@ import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
 import { anchorageAreaIconStyle, meetAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
 import { getQuayStyle } from './layerStyles/quayStyles';
-import { getHarborStyle } from './layerStyles/harborStyles';
+import { getHarborStyle, getRestrictionPortStyle } from './layerStyles/harborStyles';
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
 import { getDirwayStyle } from './layerStyles/dirwayStyles';
+import { Cluster } from 'ol/source';
 
 const minResolutionHarbor = 3;
 
@@ -180,6 +181,68 @@ function addFeatureVectorLayer({
       updateWhileAnimating: false,
       opacity,
       renderOrder: undefined,
+      zIndex,
+      visible: initialState.layers.includes(id),
+    })
+  );
+}
+
+interface MarineWarningClusterLayerProps {
+  map: Map;
+  id: FeatureLayerId;
+  maxResolution?: number;
+  renderBuffer: number;
+  minResolution?: number;
+  opacity?: number;
+  declutter?: boolean;
+  zIndex: number | undefined; //= undefined
+}
+
+function addMarineWarningClusterLayer({
+  map,
+  id,
+  maxResolution = undefined,
+  renderBuffer,
+  minResolution = undefined,
+  opacity = 1,
+  declutter = false,
+  zIndex = undefined,
+}: MarineWarningClusterLayerProps) {
+  const cluster = new Cluster<FeatureLike>({
+    distance: 20,
+    geometryFunction: (feature) => {
+      const geom = feature.getGeometry() as Geometry;
+      if (geom?.getType() === 'Polygon') {
+        return (geom as Polygon).getInteriorPoint();
+      } else if (geom?.getType() === 'LineString') {
+        return new Point((geom as LineString).getFlatMidpoint());
+      } else if (geom?.getType() === 'Point') {
+        return geom as Point;
+      }
+      return null;
+    },
+    createCluster: (point, features) => {
+      return new Feature({
+        geometry: point,
+        featureType: 'marinewarning',
+        cluster: true,
+        features: features,
+      });
+    },
+    source: new VectorSource<FeatureLike>(),
+  });
+  map.addLayer(
+    new VectorLayer({
+      source: cluster,
+      declutter,
+      style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
+      properties: { id },
+      maxResolution,
+      minResolution,
+      renderBuffer,
+      updateWhileInteracting: false,
+      updateWhileAnimating: false,
+      opacity,
       zIndex,
       visible: initialState.layers.includes(id),
     })
@@ -545,6 +608,14 @@ export function addAPILayers(map: Map) {
     style: (feature, resolution) => getDirwayStyle(feature, resolution, feature.get('hoverStyle')),
     zIndex: 302,
   });
+  // Avustusrajoitukset
+  addFeatureVectorLayer({
+    map: map,
+    id: 'restrictionport',
+    renderBuffer: 100,
+    style: (feature) => getRestrictionPortStyle(!!feature.get('hoverStyle')),
+    zIndex: 306,
+  });
 
   // Valitun väyläkortin featuret
   addFeatureVectorLayer({
@@ -566,28 +637,24 @@ export function addAPILayers(map: Map) {
   });
 
   // Merivaroitukset
-  addFeatureVectorLayer({
+  addMarineWarningClusterLayer({
     map: map,
     id: 'coastalwarning',
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
     zIndex: 401,
   });
-  addFeatureVectorLayer({
+
+  addMarineWarningClusterLayer({
     map: map,
     id: 'localwarning',
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
     zIndex: 402,
   });
-  addFeatureVectorLayer({
+
+  addMarineWarningClusterLayer({
     map: map,
     id: 'boaterwarning',
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
     zIndex: 403,
   });
 

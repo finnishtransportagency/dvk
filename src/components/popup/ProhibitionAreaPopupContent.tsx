@@ -51,14 +51,6 @@ const ProhibitionAreaPopupContent: React.FC<ProhibitionAreaPopupContentProps> = 
         <IonCol size="auto">{t('fairwayCards.areaType' + area.properties.typeCode)}</IonCol>
       </IonRow>
       <IonRow>
-        <IonCol>
-          <p className="info use-flex ion-align-items-center">
-            <InfoIcon />
-            {t('popup.area.overtake')}
-          </p>
-        </IonCol>
-      </IonRow>
-      <IonRow>
         <IonCol className="header">{t('popup.area.fairways')}</IonCol>
       </IonRow>
       {fairwayCards.length > 0 ? (

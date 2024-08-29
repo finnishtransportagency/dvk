@@ -79,6 +79,7 @@
           "aisShowPredictor": "Velocity vectors",
           "winterTraffic": "Winter navigation",
           "dirway": "Ice waypoints",
+          "restrictionPort": "[en] Avustusrajoitukset",
           "ice": "Ice map",
           "mapStyle": {
             "header": "Map style",
@@ -356,7 +357,6 @@
     },
     "area": {
       "info": "Fairway area information",
-      "overtake": "Continuous overtaking prohibition on the fairway area",
       "depth": "Swept depth {{val, number}}",
       "draft": "Design draught {{val, number}}",
       "speedLimit": "Speed limit {{val}}",
@@ -476,6 +476,10 @@
     "dirway": {
       "points": "Ice waypoints"
     },
+    "restriction": {
+      "current": "[en] Voimassaolevat avustusrajoitteet",
+      "upcoming": "[en] Tulevat avustusrajoitteet"
+    },
     "featureList": {
       "multipleFeatures": "Multiple items to select",
       "featureType": {
@@ -492,6 +496,7 @@
         "pilotagelimit": "Compulsory pilotage limit",
         "pilotroute": "Pilot route",
         "quay": "Quay",
+        "restrictionport": "[en] Avustusrajoitus",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",
         "section": "Berth position",

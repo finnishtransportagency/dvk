@@ -146,6 +146,36 @@ class HarborDBModel {
     return [];
   }
 
+  static async getVersions(): Promise<HarborDBModel[]> {
+    const harbors: HarborDBModel[] | undefined = [];
+    let response;
+
+    const params: ScanCommandInput = {
+      TableName: getHarborTableName(),
+      FilterExpression: '#version <> :v0_latest AND #version <> :v0_public',
+      ExpressionAttributeNames: {
+        '#version': 'version',
+      },
+      ExpressionAttributeValues: { 
+        ':v0_latest': 'v0_latest',
+        ':v0_public': 'v0_public',
+      },
+    };
+
+    do {
+      response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
+      response.Items?.forEach((item) => harbors.push(item as HarborDBModel));
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
+
+    if (harbors) {
+      log.debug('%d Harbor(s) found', harbors.length);
+      return harbors;
+    }
+    log.debug('No harbors found');
+    return [];
+  }
+
   static async save(data: HarborDBModel, operation: Operation) {
     const putCommands = getPutCommands(data, getHarborTableName(), operation);
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));

@@ -25,6 +25,7 @@ import {
   PilotRouteFeatureProperties,
   PilotageLimitFeatureProperties,
   QuayFeatureProperties,
+  RestrictionPortFeatureProperties,
   VtsFeatureProperties,
 } from '../features';
 import { getMarineWarningDataLayerId } from '../../utils/common';
@@ -158,6 +159,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'quay',
     'section',
     'harbor',
+    'restrictionport',
     'marinewarning',
     'safetyequipment',
     'safetyequipmentfault',
@@ -200,7 +202,12 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
           types.includes(f.getProperties().featureType) &&
           features.findIndex((feat) => feat.get('featureType') === f.get('featureType') && feat.getId() == f.getId()) < 0
         ) {
-          features.push(f);
+          if (f.get('cluster') === true) {
+            /* If we clicked cluster feature, add all features in the cluster */
+            features.push(...f.get('features'));
+          } else {
+            features.push(f);
+          }
         }
       },
       { hitTolerance: 3 }
@@ -331,6 +338,12 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       };
     case 'quay':
       return { header: [(props as QuayFeatureProperties).quay?.[lang] ?? ''], featureType: t('featureList.featureType.quay'), className: type };
+    case 'restrictionport':
+      return {
+        header: [(props as RestrictionPortFeatureProperties).name ?? ''],
+        featureType: t('featureList.featureType.restrictionport'),
+        className: type,
+      };
     case 'safetyequipment':
     case 'safetyequipmentfault':
       return getSafetyEquipmentDetails(t, lang, feature);

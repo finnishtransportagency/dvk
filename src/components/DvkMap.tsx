@@ -39,6 +39,7 @@ import locationIcon from '../theme/img/user_location_indicator.svg';
 import { Dispatch } from 'react';
 import { Action } from '../hooks/dvkReducer';
 import { FeatureLike } from 'ol/Feature';
+import { Cluster } from 'ol/source';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -627,7 +628,12 @@ class DvkMap {
 
   public getVectorSource(layerId: FeatureLayerId | BackgroundLayerId) {
     const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
-    return layer.getSource() as VectorSource;
+    const layerSource = layer.getSource();
+    /* If Cluster source, return wrapped source that contains original features */
+    if (layerSource instanceof Cluster) {
+      return (layerSource as Cluster<FeatureLike>).getSource() as VectorSource;
+    }
+    return layerSource as VectorSource;
   }
 }
 

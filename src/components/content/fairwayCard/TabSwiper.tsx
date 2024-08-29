@@ -51,7 +51,7 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane, dis
           return (
             <swiper-slide key={tabId}>
               <IonButton
-                className={cssClass}
+                className={`ion-text-nowrap ${cssClass}`}
                 expand="full"
                 fill="clear"
                 onClick={() => setTab(tabId)}

@@ -47,7 +47,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const [previewPending, setPreviewPending] = useState(false);
 
   const queryClient = useQueryClient();
-  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
   const { data: fairwayCardList } = useFairwayCardsQueryData();
   const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {

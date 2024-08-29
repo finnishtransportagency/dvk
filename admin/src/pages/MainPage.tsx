@@ -15,7 +15,6 @@ import {
   IonSkeletonText,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 import { ItemType, Lang } from '../utils/constants';
 import { filterItemList, getNotificationListingTypesCount } from '../utils/common';
 import { useHistory } from 'react-router-dom';
@@ -23,7 +22,8 @@ import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
 import ClearSearchButton from '../components/ClearSearchButton';
 import { getMap } from '../components/map/DvkMap';
-import { TemporaryNotification } from '../graphql/generated';
+import { Status, TemporaryNotification } from '../graphql/generated';
+import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 
 type HeaderButtonProps = {
   headername: string;
@@ -48,29 +48,29 @@ const MainPage: React.FC = () => {
   const lang = i18n.language as Lang;
   const history = useHistory();
 
-  const { data, isLoading } = useFairwayCardsAndHarborsQueryData();
+  const { data, isLoading } = useFairwayCardsAndHarborsQueryData(true);
   const groups = ['-', t('archipelagoSea'), t('gulfOfFinland'), t('gulfOfBothnia')];
 
   const [searchQuery, setSearchQuery] = useState('');
   const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
+  const [itemStatus, setItemStatus] = useState<Status[]>([]);
   const [itemType, setItemType] = useState<ItemType>('');
   const [isOpen, setIsOpen] = useState(false);
   const [sortBy, setSortBy] = useState('name');
   const [sortDescending, setSortDescending] = useState(false);
   const searchRef = useRef<HTMLIonInputElement>(null);
 
-  const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, sortBy, sortDescending, t);
+  const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, itemStatus, sortBy, sortDescending, t);
 
   const changeAction = (val?: string | number | null) => {
     setSearchQuery(String(val));
   };
+
   const clearInput = () => {
     setSearchQuery('');
     searchRef.current?.setFocus().catch((err) => console.error(err));
   };
-  const itemTypeSelection = (value: ItemType[]) => {
-    setItemTypes(value);
-  };
+
   const itemCreationAction = (selectedType: ItemType) => {
     setItemType(selectedType);
     setIsOpen(true);
@@ -85,6 +85,7 @@ const MainPage: React.FC = () => {
     if (type === 'CARD') history.push('/vaylakortti/' + id);
     if (type === 'HARBOR') history.push('/satama/' + id);
   };
+
   const keyDownAction = (event: React.KeyboardEvent<HTMLIonRowElement>, id: string, type: string) => {
     if (event.key === 'Enter') selectItem(id, type);
   };
@@ -103,6 +104,11 @@ const MainPage: React.FC = () => {
   const selectTypeRef = useRef<HTMLIonSelectElement>(null);
   const focusTypeSelect = () => {
     selectTypeRef.current?.click();
+  };
+
+  const selectStatusRef = useRef<HTMLIonSelectElement>(null);
+  const focusStatusSelect = () => {
+    selectStatusRef.current?.click();
   };
 
   const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[]) => {
@@ -138,8 +144,8 @@ const MainPage: React.FC = () => {
                 <IonItem lines="none" className="searchBar">
                   <IonInput
                     className="searchBar"
-                    placeholder={translatedTextOrEmpty('search-placeholder')}
-                    title={translatedTextOrEmpty('search-title')}
+                    placeholder={translatedTextOrEmpty('search-placeholder-mainPage')}
+                    title={translatedTextOrEmpty('search-title-mainPage')}
                     value={searchQuery}
                     onIonInput={(e) => changeAction(e.detail.value)}
                     ref={searchRef}
@@ -158,7 +164,7 @@ const MainPage: React.FC = () => {
                 placeholder={translatedTextOrEmpty('choose')}
                 interface="popover"
                 multiple={true}
-                onIonChange={(ev) => itemTypeSelection(ev.detail.value)}
+                onIonChange={(ev) => setItemTypes(ev.detail.value)}
                 interfaceOptions={{
                   size: 'cover',
                   className: 'multiSelect',
@@ -168,6 +174,29 @@ const MainPage: React.FC = () => {
               >
                 <IonSelectOption value="CARD">{translatedTextOrEmpty('type-fairwaycard')}</IonSelectOption>
                 <IonSelectOption value="HARBOR">{translatedTextOrEmpty('type-harbour')}</IonSelectOption>
+              </IonSelect>
+            </IonCol>
+            <IonCol size="auto">
+              <IonLabel className="formLabel" onClick={() => focusStatusSelect()}>
+                {translatedTextOrEmpty('item-status')}
+              </IonLabel>
+              <IonSelect
+                ref={selectStatusRef}
+                className="selectInput"
+                placeholder={translatedTextOrEmpty('choose')}
+                interface="popover"
+                multiple={true}
+                onIonChange={(ev) => setItemStatus(ev.detail.value)}
+                interfaceOptions={{
+                  size: 'cover',
+                  className: 'multiSelect',
+                }}
+                labelPlacement="stacked"
+                fill="outline"
+              >
+                <IonSelectOption value={Status.Public}>{translatedTextOrEmpty('item-status-PUBLIC')}</IonSelectOption>
+                <IonSelectOption value={Status.Draft}>{translatedTextOrEmpty('item-status-DRAFT')}</IonSelectOption>
+                <IonSelectOption value={Status.Removed}>{translatedTextOrEmpty('item-status-REMOVED')}</IonSelectOption>
               </IonSelect>
             </IonCol>
             <IonCol></IonCol>
@@ -204,7 +233,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.25">
+            <IonCol size="1">
               <HeaderButton
                 headername="type"
                 text="item-type"
@@ -222,7 +251,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.25">
+            <IonCol size="1">
               <HeaderButton
                 headername="referencelevel"
                 text="item-referencelevel"
@@ -231,7 +260,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.25">
+            <IonCol size="1">
               <HeaderButton
                 headername="status"
                 text="item-status"
@@ -240,7 +269,7 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
-            <IonCol size="1.25">
+            <IonCol size="1">
               <HeaderButton
                 headername="modified"
                 text="item-updated"
@@ -276,6 +305,15 @@ const MainPage: React.FC = () => {
                 sortItemsBy={sortItemsBy}
               />
             </IonCol>
+            <IonCol size="1">
+              <HeaderButton
+                headername="version"
+                text="version-number"
+                sortBy={sortBy}
+                headerButtonClassName={headerButtonClassName}
+                sortItemsBy={sortItemsBy}
+              />
+            </IonCol>
           </IonRow>
           {isLoading &&
             [1, 2, 3, 4, 5].map((val) => (
@@ -296,16 +334,17 @@ const MainPage: React.FC = () => {
                 >
                   <IonCol size="1">{item.id}</IonCol>
                   <IonCol size="1.25">{item.name[lang] ?? item.name.fi}</IonCol>
-                  <IonCol size="1.25">{t('item-type-' + item.type)}</IonCol>
+                  <IonCol size="1">{t('item-type-' + item.type)}</IonCol>
                   <IonCol size="1.25">{groups[Number(item.group ?? 0)]}</IonCol>
-                  <IonCol size="1.25">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
-                  <IonCol size="1.25" className={'item-status-' + item.status}>
+                  <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
+                  <IonCol size="1" className={'item-status-' + item.status}>
                     {t('item-status-' + item.status)}
                   </IonCol>
-                  <IonCol size="1.25">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
+                  <IonCol size="1">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
                   <IonCol size="1.25">{item.modifier}</IonCol>
                   <IonCol size="1.25">{item.creator}</IonCol>
                   <IonCol size="1">{getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
+                  <IonCol size="1">{item.version.slice(1)}</IonCol>
                 </IonRow>
               );
             })}

@@ -181,7 +181,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                   <IonButtons>
                     <IonButton
                       ref={lastFocusableElement}
-                      className="sourceText"
+                      className="sourceText ion-text-nowrap"
                       onClick={() => {
                         menuController.close();
                         setIsSourceOpen(true);

@@ -33,6 +33,7 @@ import {
   useNameLayer,
   usePilotageAreaBorderLayer,
   useDirwayLayer,
+  useRestrictionPortLayer,
 } from './components/FeatureLoader';
 import { useObservationLayer, useObservationFeatures } from './components/ObservationFeatureLoader';
 import {
@@ -207,6 +208,7 @@ const DvkIonApp: React.FC = () => {
   usePilotageLimitLayer();
   usePilotageAreaBorderLayer();
   useDirwayLayer();
+  useRestrictionPortLayer();
   /* Initialize observation and merograph data for offline use, needed in fairway cards */
   useObservationFeatures();
   useMareographFeatures();
