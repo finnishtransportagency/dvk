@@ -5,7 +5,9 @@ import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import HarborDBModel from '../../db/harborDBModel';
 import { log } from '../../logger';
 
-export const handler: AppSyncResolverHandler<QueryFairwayCardsAndHarborsArgs, FairwayCardOrHarbor[]> = async (event: AppSyncResolverEvent<QueryFairwayCardsAndHarborsArgs>): Promise<FairwayCardOrHarbor[]> => {
+export const handler: AppSyncResolverHandler<QueryFairwayCardsAndHarborsArgs, FairwayCardOrHarbor[]> = async (
+  event: AppSyncResolverEvent<QueryFairwayCardsAndHarborsArgs>
+): Promise<FairwayCardOrHarbor[]> => {
   const user = await getCurrentUser(event);
   const { getAllVersions } = event.arguments;
   log.info(`fairwayCardsAndHarbors(${user.uid})`);
