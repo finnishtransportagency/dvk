@@ -6,6 +6,7 @@ import {
   Orientation,
   PictureInput,
   SelectedFairwayInput,
+  Status,
   TemporaryNotification,
   Text,
 } from '../graphql/generated';
@@ -35,6 +36,7 @@ export const filterItemList = (
   lang: Lang,
   searchQuery: string,
   itemTypes: ItemType[],
+  itemStatus: Status[],
   sortBy: string,
   sortDescending: boolean,
   t?: TFunction
@@ -46,7 +48,8 @@ export const filterItemList = (
         (item) =>
           ((item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 ||
             (item.id ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1) &&
-          (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true)
+          (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true) &&
+          (itemStatus.length > 0 ? itemStatus.indexOf(item.status) > -1 : true)
       )
       .sort((a, b) => {
         switch (sortBy) {

@@ -16,9 +16,9 @@ type Point = {
 export type Restriction = {
   id: string;
   description: string;
-  startTime: Date;
-  endTime?: Date;
-  updated: Date;
+  startTime: string;
+  endTime?: string;
+  updated: string;
 };
 
 function mapPoints(dirwayPoints: DirwayPoint[]): Point[] {
@@ -51,7 +51,7 @@ function addDirwayFeatures(features: Feature<Geometry, GeoJsonProperties>[], api
         id: id,
         name: dirway.name,
         description: dirway.description,
-        updated: new Date(dirway.change_time),
+        updated: dirway.change_time,
         points: mapPoints(points),
         featureType: 'dirway',
       };
@@ -97,9 +97,9 @@ function mapRestrictions(restrictions: RestrictionApiModel[]): Restriction[] {
     return {
       id: r.id,
       description: r.text_compilation,
-      startTime: new Date(r.start_time),
-      endTime: r.end_time ? new Date(r.end_time) : undefined,
-      updated: new Date(r.change_time),
+      startTime: r.start_time,
+      endTime: r.end_time ?? undefined,
+      updated: r.change_time,
     };
   });
 }
@@ -113,7 +113,10 @@ function addRestrictionFeatures(
   const locations = apiLocations
     .filter((l) => !l.deleted && l.type === 'PORT' && l.nationality === 'FI')
     .sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
-  const restrictions = apiRestrictions.filter((r) => !r.deleted).sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
+  // Remove deleted or outdated restrictions
+  const restrictions = apiRestrictions
+    .filter((r) => !r.deleted && (!r.end_time || Date.parse(r.end_time) > Date.now()))
+    .sort((a, b) => Date.parse(b.change_time) - Date.parse(a.change_time));
   // Remove duplicate restrictions (first in array remains)
   const uniqueRestrictions = restrictions.filter((val, index, arr) => arr.findIndex((l) => l.id === val.id) === index);
 

@@ -245,3 +245,19 @@ export type DirwayFeatureProperties = {
   updated: string;
   points: DirwayPoint[];
 };
+
+type Restriction = {
+  id: string;
+  description: string;
+  startTime: string;
+  endTime: string | undefined;
+  updated: string;
+};
+
+export type RestrictionPortFeatureProperties = {
+  featureType: 'restrictionport';
+  id: string;
+  name: string;
+  updated: string;
+  restrictions: Restriction[];
+};

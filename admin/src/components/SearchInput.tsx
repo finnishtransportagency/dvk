@@ -23,7 +23,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSelection, setActiveSelection] = useState(0);
   const inputRef = useRef<HTMLIonInputElement>(null);
-  const filteredList = filterItemList(itemList, lang, searchQuery, [], 'name', false);
+  const filteredList = filterItemList(itemList, lang, searchQuery, [], [], 'name', false);
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);

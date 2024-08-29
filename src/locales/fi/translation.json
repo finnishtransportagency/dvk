@@ -79,6 +79,7 @@
           "aisShowPredictor": "Nopeusvektorit",
           "winterTraffic": "Talvimerenkulku",
           "dirway": "Jääreittipisteet",
+          "restrictionPort": "Avustusrajoitukset",
           "ice": "Jääkartta",
           "mapStyle": {
             "header": "Kartan tyyli",
@@ -475,6 +476,10 @@
     "dirway": {
       "points": "Jääreittipisteet"
     },
+    "restriction": {
+      "current": "Voimassaolevat avustusrajoitteet",
+      "upcoming": "Tulevat avustusrajoitteet"
+    },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",
       "featureType": {
@@ -491,6 +496,7 @@
         "pilotagelimit": "Luotsinkäyttölinja",
         "pilotroute": "Luotsausreitti",
         "quay": "Laituri",
+        "restrictionport": "Avustusrajoitus",
         "safetyequipment": "Turvalaite",
         "safetyequipmentfault": "Turvalaitevika",
         "section": "Laituripaikka",
