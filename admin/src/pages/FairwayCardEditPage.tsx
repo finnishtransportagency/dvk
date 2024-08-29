@@ -27,7 +27,7 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fa
           modified={origin ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
           modifier={origin ? userData?.currentUser?.name : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
           creator={origin ? userData?.currentUser?.name : (data?.fairwayCard?.creator ?? undefined)}
-          created={origin ? new Date().getTime() : (data?.fairwayCard?.creationTimestamp ?? undefined)}
+          created={origin ? 0 : (data?.fairwayCard?.creationTimestamp ?? undefined)}
           isError={isError}
         />
       )}
@@ -92,7 +92,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
       {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
       {locationState?.origin && <FairwayCardEditForm fairwayCardId={locationState.origin.id} origin />}
       {!fairwayCardId && !locationState.origin && (
-        <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier="-" creator={data?.currentUser?.name} created={new Date().getTime()} />
+        <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier="-" creator={data?.currentUser?.name} created={0} />
       )}
     </>
   );
