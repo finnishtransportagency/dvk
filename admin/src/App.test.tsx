@@ -70,61 +70,10 @@ vi.mock('./graphql/api', () => ({
   useCurrentUserQueryData: () => {
     return { data: { currentUser: { name: 'James' } }, dataUpdatedAt: Date.now(), errorUpdatedAt: 0, isPaused: true, isError: false };
   },
-  useFairwayCardsAndHarborsQueryData: () => {
-    return {
-      data: {
-        fairwayCardsAndHarbors: [
-          {
-            creator: 'James',
-            fairwayIds: [1, 2],
-            group: '3',
-            id: 'kaskinen',
-            modificationTimestamp: 1675238700000,
-            modifier: 'Potkukelkka',
-            n2000HeightSystem: false,
-            name: { fi: 'Kaskisten väylä', sv: 'Kasköleden', en: 'Kaskinen channel' },
-            status: 'PUBLIC',
-            type: 'CARD',
-            version: 'v1',
-          },
-          {
-            creator: 'James',
-            fairwayIds: [3],
-            group: '2',
-            id: 'hanko',
-            modificationTimestamp: 1675238700000,
-            modifier: 'Potkukelkka',
-            n2000HeightSystem: true,
-            name: { fi: 'Hangon meriväylä', sv: 'Hangö havsfarled', en: 'Hanko channel' },
-            status: 'PUBLIC',
-            type: 'CARD',
-            version: 'v1',
-          },
-          {
-            creator: 'James',
-            fairwayIds: null,
-            group: null,
-            id: 'hamina',
-            modificationTimestamp: 1675238700000,
-            modifier: null,
-            n2000HeightSystem: false,
-            name: { fi: 'HaminaKotka Satama Oy', sv: 'Fredrikshamn-Kotka hamn', en: 'Port of HaminaKotka' },
-            status: 'PUBLIC',
-            type: 'HARBOR',
-            version: 'v1',
-          },
-        ],
-      },
-      dataUpdatedAt: Date.now(),
-      errorUpdatedAt: 0,
-      isPaused: false,
-      isError: false,
-    };
-  },
   useFairwayCardsAndHarborsVersionsQueryData: () => {
     return {
       data: {
-        fairwayCardsAndHarbors: [
+        fairwayCardsAndHarborsVersions: [
           {
             creator: 'James',
             fairwayIds: [1, 2],
@@ -201,6 +150,7 @@ vi.mock('./graphql/api', () => ({
             name: { fi: 'HaminaKotka Satama Oy', sv: 'Fredrikshamn-Kotka hamn', en: 'Port of HaminaKotka' },
             status: 'PUBLIC',
             type: 'HARBOR',
+            version: 'v1',
           },
         ],
       },
