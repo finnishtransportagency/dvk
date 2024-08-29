@@ -7,11 +7,12 @@ import { clearClickSelectionFeatures } from './selectInteraction';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import InfoIcon from '../../theme/img/info.svg?react';
-import { getAisVesselShipType, getCountryCode, getNavState, reformatAisVesselDataUpdatedTime } from '../../utils/aisUtils';
+import { getAisVesselShipType, getCountryCode, getNavState } from '../../utils/aisUtils';
 import { ReactCountryFlag } from 'react-country-flag';
 import CloseButton from './CloseButton';
 import { Point } from 'ol/geom';
 import { MAP } from '../../utils/constants';
+import { formatDate } from '../../utils/common';
 
 type AisVesselInfoRowProperties = {
   title: string;
@@ -52,7 +53,7 @@ const AisVesselPopupContent: React.FC<AisVesselPopupContentProps> = ({ vessel, s
   const { t } = useTranslation();
 
   const properties = vessel.properties;
-  const timestamp = reformatAisVesselDataUpdatedTime(properties.timestampExternal);
+  const timestamp = formatDate(properties.timestampExternal, true);
   const aisPoint = properties.aisPoint as Point;
   const wgs84Point = aisPoint.clone().transform(MAP.EPSG, 'EPSG:4326');
   const coordinates = coordinatesToStringHDM(wgs84Point.getCoordinates());

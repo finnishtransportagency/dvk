@@ -410,7 +410,15 @@ ion-modal#layerModalContainer::part(content) {
   background: url('../../theme/img/dirway_icon.svg') no-repeat center;
   background-size: cover;
   margin-top: 4px;
-  margin-right: 3px;
+  margin-right: 2px;
+}
+
+#layerModalContainer ion-item .restrictionport {
+  width: 16px;
+  height: 20px;
+  background: url('../../theme/img/restriction_port.svg') no-repeat center;
+  background-size: cover;
+  margin-right: 2px;
 }
 
 #layerModalContainer ion-checkbox {

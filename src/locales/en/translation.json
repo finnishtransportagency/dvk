@@ -79,6 +79,7 @@
           "aisShowPredictor": "Velocity vectors",
           "winterTraffic": "Winter navigation",
           "dirway": "Ice waypoints",
+          "restrictionPort": "[en] Avustusrajoitukset",
           "ice": "Ice map",
           "mapStyle": {
             "header": "Map style",
@@ -475,6 +476,10 @@
     "dirway": {
       "points": "Ice waypoints"
     },
+    "restriction": {
+      "current": "[en] Voimassaolevat avustusrajoitteet",
+      "upcoming": "[en] Tulevat avustusrajoitteet"
+    },
     "featureList": {
       "multipleFeatures": "Multiple items to select",
       "featureType": {
@@ -491,6 +496,7 @@
         "pilotagelimit": "Compulsory pilotage limit",
         "pilotroute": "Pilot route",
         "quay": "Quay",
+        "restrictionport": "[en] Avustusrajoitus",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",
         "section": "Berth position",

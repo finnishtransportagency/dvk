@@ -230,3 +230,19 @@ export function getTimeDifference(dataUpdatedAt: number) {
   const current = Date.now();
   return current - dataUpdatedAt;
 }
+
+export const formatDate = (dateTimeString: Date | string, formatTime: boolean = false): string => {
+  const dateTime = new Date(dateTimeString);
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: formatTime ? '2-digit' : undefined,
+    minute: formatTime ? '2-digit' : undefined,
+  };
+
+  const formattedDatetime = new Intl.DateTimeFormat('fi', options).format(dateTime);
+
+  return formattedDatetime.replace(' ', ', ');
+};

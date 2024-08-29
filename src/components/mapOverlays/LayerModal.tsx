@@ -134,6 +134,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
       title: t('homePage.map.controls.layer.winterTraffic'),
       childLayers: [
         { id: 'dirway', title: t('homePage.map.controls.layer.dirway') },
+        { id: 'restrictionport', title: t('homePage.map.controls.layer.restrictionPort') },
         { id: 'ice', title: t('homePage.map.controls.layer.ice') },
       ],
     },

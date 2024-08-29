@@ -26,22 +26,6 @@ export const getAisVesselShipType = (typeNumber?: number): string => {
   }
 };
 
-export const reformatAisVesselDataUpdatedTime = (dateTimeString: Date): string => {
-  const dateTime = new Date(dateTimeString);
-
-  const options: Intl.DateTimeFormatOptions = {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  };
-
-  const formattedDatetime = new Intl.DateTimeFormat('fi', options).format(dateTime);
-
-  return formattedDatetime.replace(' ', ', ');
-};
-
 export const getNavState = (t: TFunction, navState: number): string | undefined => {
   switch (navState) {
     case 0:

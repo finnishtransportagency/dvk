@@ -79,6 +79,7 @@
           "aisShowPredictor": "Fartvektor",
           "winterTraffic": "Vintersjöfart",
           "dirway": "Isruttens waypointer",
+          "restrictionPort": "[sv] Avustusrajoitukset",
           "ice": "Iskarta",
           "mapStyle": {
             "header": "Kartans stil",
@@ -475,6 +476,10 @@
     "dirway": {
       "points": "Isruttens waypointer"
     },
+    "restriction": {
+      "current": "[sv] Voimassaolevat avustusrajoitteet",
+      "upcoming": "[sv] Tulevat avustusrajoitteet"
+    },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",
       "featureType": {
@@ -491,6 +496,7 @@
         "pilotagelimit": "Lotspliktslinje",
         "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
+        "restrictionport": "[sv] Avustusrajoitus",
         "safetyequipment": "Säkerhetsanordning",
         "safetyequipmentfault": "Säkerhetsanordningsfel",
         "section": "Kajplats",
