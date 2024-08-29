@@ -147,7 +147,7 @@ class HarborDBModel {
   }
 
   static async getVersions(): Promise<HarborDBModel[]> {
-    const fairwayCards: HarborDBModel[] | undefined = [];
+    const harbors: HarborDBModel[] | undefined = [];
     let response;
 
     const params: ScanCommandInput = {
@@ -164,15 +164,15 @@ class HarborDBModel {
 
     do {
       response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
-      response.Items?.forEach((item) => fairwayCards.push(item as HarborDBModel));
+      response.Items?.forEach((item) => harbors.push(item as HarborDBModel));
       params.ExclusiveStartKey = response.LastEvaluatedKey;
     } while (typeof response.LastEvaluatedKey !== 'undefined');
 
-    if (fairwayCards) {
-      log.debug('%d Fairway card(s) found', fairwayCards.length);
-      return fairwayCards;
+    if (harbors) {
+      log.debug('%d Harbor(s) found', harbors.length);
+      return harbors;
     }
-    log.debug('No fairway cards found');
+    log.debug('No harbors found');
     return [];
   }
 
