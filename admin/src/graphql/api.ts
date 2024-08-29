@@ -9,7 +9,6 @@ import {
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
   useFairwayCardsAndHarborsQuery,
-  useFairwayCardsAndHarborsVersionsQuery,
   useFairwayCardsQuery,
   useFairwaysQuery,
   useHarborsQuery,
@@ -35,12 +34,8 @@ export function useCurrentUserQueryData() {
   return useCurrentUserQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
-export function useFairwayCardsAndHarborsQueryData() {
-  return useFairwayCardsAndHarborsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
-}
-
-export function useFairwayCardsAndHarborsVersionsQueryData() {
-  return useFairwayCardsAndHarborsVersionsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
+export function useFairwayCardsAndHarborsQueryData(getAllVersions: boolean) {
+  return useFairwayCardsAndHarborsQuery(datasourceClient, { getAllVersions }, { refetchOnWindowFocus: false });
 }
 
 export function useFairwayCardByIdQueryData(id: string, version: string = 'v0_latest', refetchOnWindowFocus?: boolean) {

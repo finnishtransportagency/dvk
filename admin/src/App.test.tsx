@@ -70,10 +70,10 @@ vi.mock('./graphql/api', () => ({
   useCurrentUserQueryData: () => {
     return { data: { currentUser: { name: 'James' } }, dataUpdatedAt: Date.now(), errorUpdatedAt: 0, isPaused: true, isError: false };
   },
-  useFairwayCardsAndHarborsVersionsQueryData: () => {
+  useFairwayCardsAndHarborsQueryData: () => {
     return {
       data: {
-        fairwayCardsAndHarborsVersions: [
+        fairwayCardsAndHarbors: [
           {
             creator: 'James',
             fairwayIds: [1, 2],

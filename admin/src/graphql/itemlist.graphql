@@ -1,30 +1,5 @@
-query fairwayCardsAndHarbors {
-  fairwayCardsAndHarbors {
-    id
-    version
-    name {fi sv en}
-    status
-    type
-    group
-    fairwayIds
-    n2000HeightSystem
-    creator
-    modifier
-    modificationTimestamp
-    temporaryNotifications {
-      content {
-        fi
-        sv
-        en
-      }
-      startDate
-      endDate
-    }
-  }
-}
-
-query fairwayCardsAndHarborsVersions {
-  fairwayCardsAndHarborsVersions {
+query fairwayCardsAndHarbors($getAllVersions: Boolean!) {
+  fairwayCardsAndHarbors(getAllVersions: $getAllVersions) {
     id
     version
     name {fi sv en}

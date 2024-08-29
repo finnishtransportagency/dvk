@@ -1,16 +1,17 @@
-import { AppSyncResolverEvent } from 'aws-lambda/trigger/appsync-resolver';
-import { ContentType, FairwayCardOrHarbor, Status } from '../../../../graphql/generated';
+import { AppSyncResolverEvent, AppSyncResolverHandler } from 'aws-lambda/trigger/appsync-resolver';
+import { ContentType, FairwayCardOrHarbor, QueryFairwayCardsAndHarborsArgs, Status } from '../../../../graphql/generated';
 import { getCurrentUser } from '../../api/login';
 import FairwayCardDBModel from '../../db/fairwayCardDBModel';
 import HarborDBModel from '../../db/harborDBModel';
 import { log } from '../../logger';
 
-export const handler = async (event: AppSyncResolverEvent<void>): Promise<FairwayCardOrHarbor[]> => {
+export const handler: AppSyncResolverHandler<QueryFairwayCardsAndHarborsArgs, FairwayCardOrHarbor[]> = async (event: AppSyncResolverEvent<QueryFairwayCardsAndHarborsArgs>): Promise<FairwayCardOrHarbor[]> => {
   const user = await getCurrentUser(event);
+  const { getAllVersions } = event.arguments;
   log.info(`fairwayCardsAndHarbors(${user.uid})`);
-  const fairwayCardModels = await FairwayCardDBModel.getAllLatest();
+  const fairwayCardModels = getAllVersions ? await FairwayCardDBModel.getVersions() : await FairwayCardDBModel.getAllLatest();
   log.debug('%d fairway card(s) found', fairwayCardModels.length);
-  const harborModels = await HarborDBModel.getAllLatest();
+  const harborModels = getAllVersions ? await HarborDBModel.getVersions() : await HarborDBModel.getAllLatest();
   log.debug('%d harbor(s) found', harborModels.length);
   const cards: FairwayCardOrHarbor[] = fairwayCardModels.map((card) => {
     return {
