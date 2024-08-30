@@ -29,14 +29,21 @@ export function useObservationFeatures() {
 export function useObservationLayer() {
   const [initialized, setInitialized] = useState(false);
   const [fetchingEnabled, setFetchingEnabled] = useState(featuresVisible('observation'));
+  const { refetch } = useFeatureData('observation');
   if (!initialized) {
     const oLayer = dvkMap.getFeatureLayer('observation');
     const sfcLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
     oLayer.on('change:visible', () => {
       setFetchingEnabled(featuresVisible('observation'));
+      if (featuresVisible('observation')) {
+        refetch();
+      }
     });
     sfcLayer.on('change:visible', () => {
       setFetchingEnabled(featuresVisible('observation'));
+      if (featuresVisible('observation')) {
+        refetch();
+      }
     });
     setInitialized(true);
   }
