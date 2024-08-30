@@ -103,20 +103,20 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               ...quay,
               geometry:
                 !quay?.geometry?.lat || !quay?.geometry?.lon
-                  ? undefined
+                  ? ''
                   : {
                       lat: quay?.geometry?.lat,
                       lon: quay?.geometry?.lon,
                     },
-              length: quay?.length ?? undefined,
+              length: quay?.length ?? '',
               sections: quay?.sections?.map((quaySection) => {
                 return {
                   ...quaySection,
                   geometry:
                     !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
-                      ? undefined
+                      ? { lat: '', lon: '' }
                       : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
-                  depth: quaySection?.depth ?? undefined,
+                  depth: quaySection?.depth ?? '',
                 };
               }),
             };
