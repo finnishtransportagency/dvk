@@ -2,11 +2,11 @@ import React, { useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonLabel, IonModal, IonRow, IonSelect, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardOrHarbor } from '../graphql/generated';
-import { ItemType } from '../utils/constants';
+import { ItemType, Lang } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
-import { FairwayCardOrHarborGroup } from '../utils/common';
+import { FairwayCardOrHarborGroup, sortItemGroups } from '../utils/common';
 
 interface ModalProps {
   itemList: FairwayCardOrHarbor[];
@@ -16,7 +16,7 @@ interface ModalProps {
 }
 
 const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIsOpen }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const history = useHistory();
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -31,6 +31,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   };
 
   const groupItemList = useMemo(() => {
+    const lang = i18n.language as Lang;
     const filtered = itemList.filter((item) => item.type === itemType) || [];
     const groupedItems: FairwayCardOrHarborGroup[] = [];
     for (const item of filtered) {
@@ -41,9 +42,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
         groupedItems.push({ id: item.id, items: [item] });
       }
     }
-    console.log(groupedItems);
-    return groupedItems;
-  }, [itemList, itemType]);
+    return sortItemGroups(groupedItems, lang);
+  }, [i18n.language, itemList, itemType]);
 
   const closeModal = () => {
     setIsOpen(false);

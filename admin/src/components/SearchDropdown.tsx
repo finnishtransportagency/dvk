@@ -1,9 +1,8 @@
 import React from 'react';
 import { IonItem, IonLabel, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Lang, VERSION } from '../utils/constants';
-import { FairwayCardOrHarbor } from '../graphql/generated';
-import { FairwayCardOrHarborGroup } from '../utils/common';
+import { Lang } from '../utils/constants';
+import { FairwayCardOrHarborGroup, getDefiningVersionName } from '../utils/common';
 
 interface DropdownProps {
   isOpen: boolean;
@@ -21,12 +20,6 @@ const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, itemList
     return selected === idx ? ' ion-focused' : '';
   };
 
-  const getLabel = (items: FairwayCardOrHarbor[]) => {
-    // Use name from version: 1. public 2.latest 3.first from list (precaution)
-    const item = items.find((val) => val.version === VERSION.PUBLIC) ?? items.find((val) => val.version === VERSION.LATEST);
-    return item ? (item?.name[lang] ?? item?.name.fi) : (items[0].name[lang] ?? items[0].name.fi);
-  };
-
   return (
     <>
       {isOpen && (
@@ -34,7 +27,7 @@ const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, itemList
           {itemList.map((item, idx) => {
             return (
               <IonItem key={item.id} className={'item' + checkSelected(idx)} button onClick={() => setSelectedItem(item)}>
-                <IonLabel>{getLabel(item.items)}</IonLabel>
+                <IonLabel>{getDefiningVersionName(item.items, lang)}</IonLabel>
               </IonItem>
             );
           })}

@@ -10,7 +10,7 @@ import {
   TemporaryNotification,
   Text,
 } from '../graphql/generated';
-import { ItemType, Lang, SelectOption } from './constants';
+import { ItemType, Lang, SelectOption, VERSION } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
@@ -98,6 +98,20 @@ export type FairwayCardOrHarborGroup = {
 export function filterItemGroups(data: FairwayCardOrHarborGroup[], lang: Lang, searchQuery: string) {
   return data.filter((value) => {
     return value.items.some((item) => searchQueryMatches(searchQuery, lang, item.name, item.id));
+  });
+}
+
+export function getDefiningVersionName(items: FairwayCardOrHarbor[], lang: Lang) {
+  // Use name from version: 1. public 2.latest 3.first from list (precaution)
+  const item = items.find((val) => val.version === VERSION.PUBLIC) ?? items.find((val) => val.version === VERSION.LATEST);
+  return item ? (item?.name[lang] ?? item?.name.fi) : (items[0].name[lang] ?? items[0].name.fi);
+}
+
+export function sortItemGroups(data: FairwayCardOrHarborGroup[], lang: Lang) {
+  return data.sort((a, b) => {
+    const nameA = getDefiningVersionName(a.items, lang);
+    const nameB = getDefiningVersionName(b.items, lang);
+    return sortByString(nameA, nameB, false);
   });
 }
 
