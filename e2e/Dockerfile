@@ -1,3 +1,13 @@
 FROM mcr.microsoft.com/playwright:v1.46.0-jammy
 
-CMD ["npm ci && npx playwright install --with-deps && npx playwright test"]
+# Set the working directory
+WORKDIR /app
+
+# Copy the script file
+COPY runlocal.sh .
+
+# Make the script executable
+RUN chmod +x runlocal.sh
+
+# Set the entrypoint to run the script
+ENTRYPOINT ["./runlocal.sh"]
