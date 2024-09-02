@@ -36,7 +36,7 @@ export class DvkBuildImageStack extends Stack {
       repo: 'dvk',
       oauthToken: SecretValue.secretsManager('dev/dvk/github'),
       output: sourceOutput,
-      branch: 'feature/DVK-1569-playwright',//env === 'prod' ? 'prod' : 'main',
+      branch: env === 'prod' ? 'prod' : 'main',
       trigger: GitHubTrigger.NONE,
     });
 

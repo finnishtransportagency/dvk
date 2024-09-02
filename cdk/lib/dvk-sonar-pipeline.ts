@@ -36,7 +36,6 @@ export class DvkSonarPipelineStack extends Stack {
       repo: 'dvk',
       reportBuildStatus: true,
       webhookFilters: [FilterGroup.inEventOf(EventAction.PUSH).andBranchIs('main')],
-      branchOrRef: 'feature/DVK-1569-playwright'
     };
     const sonarBucket = new Bucket(this, 'SonarBucket', {
       bucketName: 'dvksonar.testivaylapilvi.fi',
