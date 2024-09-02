@@ -31,6 +31,13 @@ const sortByNumber = (a: number, b: number, sortDescending: boolean) => {
   return sortDescending ? b - a : a - b;
 };
 
+function searchQueryMatches(searchQuery: string, lang: Lang, name: Text, id: string) {
+  return (
+    (name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 ||
+    (id ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1
+  );
+}
+
 export const filterItemList = (
   data: FairwayCardOrHarbor[] | undefined,
   lang: Lang,
@@ -46,8 +53,7 @@ export const filterItemList = (
     data
       ?.filter(
         (item) =>
-          ((item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 ||
-            (item.id ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1) &&
+          searchQueryMatches(searchQuery, lang, item.name, item.id) &&
           (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true) &&
           (itemStatus.length > 0 ? itemStatus.indexOf(item.status) > -1 : true)
       )
@@ -83,6 +89,17 @@ export const filterItemList = (
       }) ?? []
   );
 };
+
+export type FairwayCardOrHarborGroup = {
+  id: string;
+  items: FairwayCardOrHarbor[];
+};
+
+export function filterItemGroups(data: FairwayCardOrHarborGroup[], lang: Lang, searchQuery: string) {
+  return data.filter((value) => {
+    return value.items.some((item) => searchQueryMatches(searchQuery, lang, item.name, item.id));
+  });
+}
 
 export const isInputOk = (isValid: boolean, error: string | undefined) => {
   return isValid && (!error || error === '');

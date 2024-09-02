@@ -1,18 +1,19 @@
 import React from 'react';
 import { IonItem, IonLabel, IonList } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Lang } from '../utils/constants';
+import { Lang, VERSION } from '../utils/constants';
 import { FairwayCardOrHarbor } from '../graphql/generated';
+import { FairwayCardOrHarborGroup } from '../utils/common';
 
 interface DropdownProps {
   isOpen: boolean;
   searchQuery: string;
-  items: FairwayCardOrHarbor[];
+  itemList: FairwayCardOrHarborGroup[];
   selected?: number;
-  setSelectedItem: (item: FairwayCardOrHarbor) => void;
+  setSelectedItem: (item: FairwayCardOrHarborGroup | undefined) => void;
 }
 
-const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, items, selected, setSelectedItem }) => {
+const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, itemList, selected, setSelectedItem }) => {
   const { t, i18n } = useTranslation('', { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -20,18 +21,24 @@ const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, items, s
     return selected === idx ? ' ion-focused' : '';
   };
 
+  const getLabel = (items: FairwayCardOrHarbor[]) => {
+    // Use name from version: 1. public 2.latest 3.first from list (precaution)
+    const item = items.find((val) => val.version === VERSION.PUBLIC) ?? items.find((val) => val.version === VERSION.LATEST);
+    return item ? (item?.name[lang] ?? item?.name.fi) : (items[0].name[lang] ?? items[0].name.fi);
+  };
+
   return (
     <>
       {isOpen && (
         <IonList lines="none" className="searchInputDropdownContainer ion-no-padding">
-          {items.map((item, idx) => {
+          {itemList.map((item, idx) => {
             return (
-              <IonItem key={item.id} className={'item' + checkSelected(idx + 1)} button onClick={() => setSelectedItem(item)}>
-                <IonLabel>{item.name[lang] ?? item.name.fi}</IonLabel>
+              <IonItem key={item.id} className={'item' + checkSelected(idx)} button onClick={() => setSelectedItem(item)}>
+                <IonLabel>{getLabel(item.items)}</IonLabel>
               </IonItem>
             );
           })}
-          {(!items || (items && items.length < 1)) && (
+          {itemList.length < 1 && (
             <IonItem className="item">
               <IonLabel>{t('no-results', { query: searchQuery })}</IonLabel>
             </IonItem>

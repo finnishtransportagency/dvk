@@ -2,16 +2,15 @@ import React, { useRef, useState } from 'react';
 import { IonInput, IonItem } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import SearchDropdown from './SearchDropdown';
-import { FairwayCardOrHarbor } from '../graphql/generated';
-import { filterItemList } from '../utils/common';
+import { FairwayCardOrHarborGroup, filterItemGroups } from '../utils/common';
 import { Lang } from '../utils/constants';
 import './SearchInput.css';
 import ClearSearchButton from './ClearSearchButton';
 
 interface SearchProps {
-  itemList: FairwayCardOrHarbor[];
-  selectedItem: FairwayCardOrHarbor | undefined;
-  setSelectedItem: (item: FairwayCardOrHarbor | undefined) => void;
+  itemList: FairwayCardOrHarborGroup[];
+  selectedItem: FairwayCardOrHarborGroup | undefined;
+  setSelectedItem: (item: FairwayCardOrHarborGroup | undefined) => void;
   isDropdownOpen: boolean;
   setIsDropdownOpen: (isOpen: boolean) => void;
 }
@@ -23,7 +22,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSelection, setActiveSelection] = useState(0);
   const inputRef = useRef<HTMLIonInputElement>(null);
-  const filteredList = filterItemList(itemList, lang, searchQuery, [], [], 'name', false);
+  const filteredList = filterItemGroups(itemList, lang, searchQuery);
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
@@ -41,7 +40,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
     setSearchQuery(String(val));
     setActiveSelection(0);
   };
-  const selectAction = (item: FairwayCardOrHarbor | undefined) => {
+  const selectAction = (item: FairwayCardOrHarborGroup | undefined) => {
     setSelectedItem(item);
     setSearchQuery('');
     closeDropdown();
@@ -85,7 +84,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
           className="searchBar"
           placeholder={t('search-placeholder') ?? ''}
           title={t('search-title') ?? ''}
-          value={isDropdownOpen ? searchQuery : (selectedItem?.name[lang] ?? selectedItem?.name.fi ?? '')}
+          value={isDropdownOpen ? searchQuery : (selectedItem?.id ?? '')}
           onIonFocus={openDropdown}
           onIonInput={(e) => changeAction(e.detail.value)}
           onIonBlur={blurAction}
@@ -98,7 +97,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
       <SearchDropdown
         isOpen={isDropdownOpen}
         searchQuery={searchQuery.trim()}
-        items={filteredList}
+        itemList={filteredList}
         selected={activeSelection}
         setSelectedItem={selectAction}
       />

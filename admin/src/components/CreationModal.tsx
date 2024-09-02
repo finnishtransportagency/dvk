@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useMemo, useRef, useState } from 'react';
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonLabel, IonModal, IonRow, IonSelect, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardOrHarbor } from '../graphql/generated';
@@ -6,6 +6,7 @@ import { ItemType } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
+import { FairwayCardOrHarborGroup } from '../utils/common';
 
 interface ModalProps {
   itemList: FairwayCardOrHarbor[];
@@ -20,13 +21,29 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const modal = useRef<HTMLIonModalElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [origin, setOrigin] = useState<FairwayCardOrHarbor | undefined>();
+  const [origin, setOrigin] = useState<FairwayCardOrHarborGroup>();
+  //const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
 
   const createNewItem = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
     if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: origin } });
     if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: origin } });
   };
+
+  const groupItemList = useMemo(() => {
+    const filtered = itemList.filter((item) => item.type === itemType) || [];
+    const groupedItems: FairwayCardOrHarborGroup[] = [];
+    for (const item of filtered) {
+      const group = groupedItems.find((g) => g.id === item.id);
+      if (group) {
+        group.items.push(item);
+      } else {
+        groupedItems.push({ id: item.id, items: [item] });
+      }
+    }
+    console.log(groupedItems);
+    return groupedItems;
+  }, [itemList, itemType]);
 
   const closeModal = () => {
     setIsOpen(false);
@@ -63,7 +80,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               <p>{t('modal.description-new-' + itemType)}</p>
             </IonText>
             <SearchInput
-              itemList={itemList.filter((item) => item.type === itemType) || []}
+              itemList={groupItemList}
               selectedItem={origin}
               setSelectedItem={setOrigin}
               isDropdownOpen={isDropdownOpen}
