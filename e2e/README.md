@@ -9,6 +9,8 @@
 ```
 # headless
 npx playwright test
+# headless specific test set
+npx playwright test dvk/mainpage/dvk.spec.ts
 # head
 npx playwright test --headed
 # ui incl for debugging, locator picker etc
