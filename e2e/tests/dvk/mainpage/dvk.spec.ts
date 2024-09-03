@@ -14,6 +14,7 @@ test.describe('Open front page and go to fairway cards', () => {
     await page.getByTestId('fairwaysLink').click();
     await expect(page.getByRole('heading', { name: 'Väyläkortit' })).toBeVisible();
 
+    // xpath example, would be prettier with for example with locator('ion-row.fairwayCards.md').getByRole('link')
     const count = await page.locator('xpath=//ion-content[@id = "fairwayCardsContainer"] /div/div/ion-grid/ion-row/ion-col/ion-label/a').count();
     expect(count).toBeGreaterThan(0);
   });
@@ -29,6 +30,7 @@ test.describe('Open front page and go to fairway cards', () => {
     await page.getByTestId('fairwaysLink').click();
     await expect(page.getByRole('heading', { name: 'Farledskort' })).toBeVisible();
 
+    // this link count could be a function instead of copy paste
     const count = await page.locator('xpath=//ion-content[@id = "fairwayCardsContainer"] /div/div/ion-grid/ion-row/ion-col/ion-label/a').count();
     expect(count).toBeGreaterThan(0);
   });
