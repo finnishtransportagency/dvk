@@ -53,6 +53,8 @@ export const filterItemList = (
     data
       ?.filter(
         (item) =>
+          item.version !== VERSION.LATEST &&
+          item.version !== VERSION.PUBLIC &&
           searchQueryMatches(searchQuery, lang, item.name, item.id) &&
           (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true) &&
           (itemStatus.length > 0 ? itemStatus.indexOf(item.status) > -1 : true)
