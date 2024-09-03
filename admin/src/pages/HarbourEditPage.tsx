@@ -38,13 +38,14 @@ interface HarbourProps {
 }
 
 type LocationState = {
-  origin?: FairwayCardOrHarbor[];
+  origin?: FairwayCardOrHarbor | FairwayCardOrHarbor[];
 };
 
 const HarbourEditPage: React.FC<HarbourProps> = () => {
   const { harbourId } = useParams<HarbourProps>();
   const location = useLocation();
   const locationState = location.state as LocationState;
+  const origin: FairwayCardOrHarbor | undefined = Array.isArray(locationState?.origin) ? locationState?.origin[0] : locationState?.origin;
 
   const { data } = useCurrentUserQueryData();
 
@@ -70,8 +71,8 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
   return (
     <>
       {harbourId && <HarbourEditForm harbourId={harbourId} />}
-      {locationState?.origin && <HarbourEditForm harbourId={locationState.origin[0].id} harbourVersion={locationState.origin[0].version} origin />}
-      {!harbourId && !locationState.origin && <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={data?.currentUser?.name ?? ''} />}
+      {origin && <HarbourEditForm harbourId={origin.id} harbourVersion={origin.version} origin />}
+      {!harbourId && !origin && <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={data?.currentUser?.name ?? ''} />}
     </>
   );
 };

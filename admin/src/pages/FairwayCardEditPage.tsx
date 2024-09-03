@@ -38,13 +38,14 @@ interface FairwayCardProps {
 }
 
 type LocationState = {
-  origin?: FairwayCardOrHarbor[];
+  origin?: FairwayCardOrHarbor | FairwayCardOrHarbor[];
 };
 
 const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
   const { fairwayCardId } = useParams<FairwayCardProps>();
   const location = useLocation();
   const locationState = location.state as LocationState;
+  const origin: FairwayCardOrHarbor | undefined = Array.isArray(locationState?.origin) ? locationState?.origin[0] : locationState?.origin;
 
   const { data } = useCurrentUserQueryData();
 
@@ -88,12 +89,8 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
   return (
     <>
       {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
-      {locationState?.origin && (
-        <FairwayCardEditForm fairwayCardId={locationState.origin[0].id} fairwayCardVersion={locationState.origin[0].version} origin />
-      )}
-      {!fairwayCardId && !locationState.origin && (
-        <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier={data?.currentUser?.name ?? ''} />
-      )}
+      {origin && <FairwayCardEditForm fairwayCardId={origin.id} fairwayCardVersion={origin.version} origin />}
+      {!fairwayCardId && !origin && <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier={data?.currentUser?.name ?? ''} />}
     </>
   );
 };
