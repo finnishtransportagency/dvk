@@ -25,7 +25,7 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion
         <HarbourForm
           harbour={harbour}
           modified={origin ? 0 : (data?.harbor?.modificationTimestamp ?? data?.harbor?.creationTimestamp ?? 0)}
-          modifier={(origin ? userData?.currentUser?.name : (data?.harbor?.modifier ?? data?.harbor?.creator)) ?? ''}
+          modifier={(origin ? '-' : (data?.harbor?.modifier ?? data?.harbor?.creator)) ?? ''}
           creator={origin ? userData?.currentUser?.name : (data?.harbor?.creator ?? undefined)}
           created={origin ? 0 : (data?.harbor?.creationTimestamp ?? undefined)}
           isError={isError}
