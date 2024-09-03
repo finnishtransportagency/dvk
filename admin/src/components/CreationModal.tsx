@@ -131,7 +131,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               {source?.items.map((item) => {
                 return (
                   <IonSelectOption key={`${item.id}-${item.version}`} value={item}>
-                    {item.version.slice(1)}
+                    {`${item.version.slice(1)} (${t('general.item-status-' + item.status).toLocaleLowerCase()})`}
                   </IonSelectOption>
                 );
               })}
