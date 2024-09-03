@@ -902,13 +902,6 @@ ion-modal.prompt .ion-page {
   overflow: visible;
 }
 
-ion-modal ion-button.button-disabled {
-  text-decoration: none;
-  font-weight: bold;
-  color: var(--ion-color-dark);
-  opacity: 1;
-}
-
 /* Alert */
 ion-grid.alert {
   font-size: 14px;

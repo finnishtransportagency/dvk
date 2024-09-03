@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { IonInput, IonItem } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import SearchDropdown from './SearchDropdown';
@@ -6,6 +6,7 @@ import { FairwayCardOrHarborGroup, filterItemGroups } from '../utils/common';
 import { Lang } from '../utils/constants';
 import './SearchInput.css';
 import ClearSearchButton from './ClearSearchButton';
+import { FairwayCardOrHarbor } from '../graphql/generated';
 
 interface SearchProps {
   itemList: FairwayCardOrHarborGroup[];
@@ -13,9 +14,10 @@ interface SearchProps {
   setSelectedItem: (item: FairwayCardOrHarborGroup | undefined) => void;
   isDropdownOpen: boolean;
   setIsDropdownOpen: (isOpen: boolean) => void;
+  setVersion: Dispatch<SetStateAction<FairwayCardOrHarbor | undefined>>;
 }
 
-const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelectedItem, isDropdownOpen, setIsDropdownOpen }) => {
+const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelectedItem, isDropdownOpen, setIsDropdownOpen, setVersion }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.language as Lang;
 
@@ -43,6 +45,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
   const selectAction = (item: FairwayCardOrHarborGroup | undefined) => {
     setSelectedItem(item);
     setSearchQuery('');
+    setVersion(undefined);
     closeDropdown();
   };
   const blurAction = () => {

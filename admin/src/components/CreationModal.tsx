@@ -106,6 +106,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               setSelectedItem={setSource}
               isDropdownOpen={isDropdownOpen}
               setIsDropdownOpen={setIsDropdownOpen}
+              setVersion={setVersion}
             />
           </IonCol>
         </IonRow>
@@ -117,13 +118,13 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               disabled={!source}
               placeholder={t('general.choose')}
               interface="popover"
-              multiple={true}
               interfaceOptions={{
                 className: 'version-select',
                 size: 'cover',
               }}
               labelPlacement="stacked"
               fill="outline"
+              value={version}
               onIonChange={(ev) => setVersion(ev.detail.value)}
               compareWith={compareOptions}
             >
