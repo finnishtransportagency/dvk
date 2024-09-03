@@ -2,7 +2,7 @@ import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { IonInput, IonItem } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import SearchDropdown from './SearchDropdown';
-import { FairwayCardOrHarborGroup, filterItemGroups } from '../utils/common';
+import { FairwayCardOrHarborGroup, filterItemGroups, getDefiningVersionName } from '../utils/common';
 import { Lang } from '../utils/constants';
 import './SearchInput.css';
 import ClearSearchButton from './ClearSearchButton';
@@ -79,6 +79,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
   };
 
   const searchHasInput = searchQuery.length > 0 || !!selectedItem;
+  const selectedItemName = selectedItem ? getDefiningVersionName(selectedItem?.items, lang) : '';
 
   return (
     <div id="fairwayCardOrHarborSearch" className="searchWrapper">
@@ -87,7 +88,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
           className="searchBar"
           placeholder={t('search-placeholder') ?? ''}
           title={t('search-title') ?? ''}
-          value={isDropdownOpen ? searchQuery : (selectedItem?.id ?? '')}
+          value={isDropdownOpen ? searchQuery : selectedItemName}
           onIonFocus={openDropdown}
           onIonInput={(e) => changeAction(e.detail.value)}
           onIonBlur={blurAction}
