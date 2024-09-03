@@ -38,6 +38,12 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const [source, setSource] = useState<FairwayCardOrHarborGroup | undefined>();
   const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
 
+  const selectVersionRef = useRef<HTMLIonSelectElement>(null);
+
+  const focusVersionSelect = () => {
+    selectVersionRef.current?.click();
+  };
+
   const createNewItem = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
     if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version } });
@@ -72,6 +78,13 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const compareOptions = (o1: FairwayCardOrHarbor, o2: FairwayCardOrHarbor) => {
     return o1 && o2 ? o1.id === o2.id && o1.version === o2.version : o1 === o2;
+  };
+
+  const keyDownAction = (event: React.KeyboardEvent<HTMLIonSelectElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      focusVersionSelect();
+    }
   };
 
   return (
@@ -112,8 +125,11 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonLabel className={`formLabel ion-margin-top${!source ? ' disabled' : ''}`}>{t('general.version-number')}</IonLabel>
+            <IonLabel className={`formLabel ion-margin-top${!source ? ' disabled' : ''}`} onClick={() => focusVersionSelect()}>
+              {t('general.version-number')}
+            </IonLabel>
             <IonSelect
+              ref={selectVersionRef}
               className="selectInput"
               disabled={!source}
               placeholder={t('general.choose')}
@@ -124,8 +140,10 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               }}
               labelPlacement="stacked"
               fill="outline"
+              tabIndex={source ? 0 : -1}
               value={version}
               onIonChange={(ev) => setVersion(ev.detail.value)}
+              onKeyDown={(e) => keyDownAction(e)}
               compareWith={compareOptions}
             >
               {source?.items.map((item) => {
