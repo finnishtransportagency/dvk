@@ -119,6 +119,8 @@ export const harbourReducer = (
               name: { fi: '', sv: '', en: '' },
               length: undefined,
               geometry: { lat: '', lon: '' },
+              extraInfo: { fi: '', sv: '', en: '' },
+              sections: undefined,
             },
           ]),
         };
