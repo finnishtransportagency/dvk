@@ -8,12 +8,12 @@ import { mapToFairwayCardInput } from '../utils/dataMapper';
 
 interface FairwayCardEditProps {
   fairwayCardId: string;
-  fairwaycardVersion?: string;
+  fairwayCardVersion?: string;
   origin?: boolean;
 }
 
-const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fairwaycardVersion = 'v1', origin }) => {
-  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwaycardVersion, false);
+const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fairwayCardVersion = 'v1', origin }) => {
+  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwayCardVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const fairwayCard = mapToFairwayCardInput(origin, data);
@@ -38,7 +38,7 @@ interface FairwayCardProps {
 }
 
 type LocationState = {
-  origin?: FairwayCardOrHarbor;
+  origin?: FairwayCardOrHarbor[];
 };
 
 const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
@@ -88,7 +88,9 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
   return (
     <>
       {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
-      {locationState?.origin && <FairwayCardEditForm fairwayCardId={locationState.origin.id} origin />}
+      {locationState?.origin && (
+        <FairwayCardEditForm fairwayCardId={locationState.origin[0].id} fairwayCardVersion={locationState.origin[0].version} origin />
+      )}
       {!fairwayCardId && !locationState.origin && (
         <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier={data?.currentUser?.name ?? ''} />
       )}

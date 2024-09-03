@@ -1,5 +1,19 @@
 import React, { useMemo, useRef, useState } from 'react';
-import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonLabel, IonModal, IonRow, IonSelect, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import {
+  IonButton,
+  IonCol,
+  IonFooter,
+  IonGrid,
+  IonHeader,
+  IonLabel,
+  IonModal,
+  IonRow,
+  IonSelect,
+  IonSelectOption,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardOrHarbor } from '../graphql/generated';
 import { ItemType, Lang } from '../utils/constants';
@@ -21,13 +35,13 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const modal = useRef<HTMLIonModalElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [origin, setOrigin] = useState<FairwayCardOrHarborGroup>();
-  //const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
+  const [source, setSource] = useState<FairwayCardOrHarborGroup | undefined>();
+  const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
 
   const createNewItem = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
-    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: origin } });
-    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: origin } });
+    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version } });
+    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version } });
   };
 
   const groupItemList = useMemo(() => {
@@ -49,8 +63,15 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
     setIsOpen(false);
     modal.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {
-      if (!isDropdownOpen) setOrigin(undefined);
+      if (!isDropdownOpen) {
+        setSource(undefined);
+        setVersion(undefined);
+      }
     }, 150);
+  };
+
+  const compareOptions = (o1: FairwayCardOrHarbor, o2: FairwayCardOrHarbor) => {
+    return o1 && o2 ? o1.id === o2.id && o1.version === o2.version : o1 === o2;
   };
 
   return (
@@ -81,8 +102,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             </IonText>
             <SearchInput
               itemList={groupItemList}
-              selectedItem={origin}
-              setSelectedItem={setOrigin}
+              selectedItem={source}
+              setSelectedItem={setSource}
               isDropdownOpen={isDropdownOpen}
               setIsDropdownOpen={setIsDropdownOpen}
             />
@@ -90,19 +111,30 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonLabel className={`formLabel ion-margin-top${!origin ? ' disabled' : ''}`}>{t('general.version-number')}</IonLabel>
+            <IonLabel className={`formLabel ion-margin-top${!source ? ' disabled' : ''}`}>{t('general.version-number')}</IonLabel>
             <IonSelect
               className="selectInput"
-              disabled={!origin}
+              disabled={!source}
               placeholder={t('general.choose')}
               interface="popover"
               multiple={true}
               interfaceOptions={{
+                className: 'version-select',
                 size: 'cover',
               }}
               labelPlacement="stacked"
               fill="outline"
-            ></IonSelect>
+              onIonChange={(ev) => setVersion(ev.detail.value)}
+              compareWith={compareOptions}
+            >
+              {source?.items.map((item) => {
+                return (
+                  <IonSelectOption key={`${item.id}-${item.version}`} value={item}>
+                    {item.version.slice(1)}
+                  </IonSelectOption>
+                );
+              })}
+            </IonSelect>
           </IonCol>
         </IonRow>
       </IonGrid>
@@ -111,7 +143,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
           <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert">
             {t('general.cancel')}
           </IonButton>
-          <IonButton slot="end" onClick={() => createNewItem()} shape="round">
+          <IonButton slot="end" onClick={() => createNewItem()} shape="round" disabled={source && !version}>
             {t('modal.create-' + itemType)}
           </IonButton>
         </IonToolbar>

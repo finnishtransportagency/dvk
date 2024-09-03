@@ -38,7 +38,7 @@ interface HarbourProps {
 }
 
 type LocationState = {
-  origin?: FairwayCardOrHarbor;
+  origin?: FairwayCardOrHarbor[];
 };
 
 const HarbourEditPage: React.FC<HarbourProps> = () => {
@@ -70,7 +70,7 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
   return (
     <>
       {harbourId && <HarbourEditForm harbourId={harbourId} />}
-      {locationState?.origin && <HarbourEditForm harbourId={locationState.origin.id} origin />}
+      {locationState?.origin && <HarbourEditForm harbourId={locationState.origin[0].id} harbourVersion={locationState.origin[0].version} origin />}
       {!harbourId && !locationState.origin && <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={data?.currentUser?.name ?? ''} />}
     </>
   );

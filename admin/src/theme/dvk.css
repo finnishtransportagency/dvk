@@ -436,6 +436,10 @@ ion-popover.multiSelect ion-icon.closeIcon {
   height: 18px;
 }
 
+ion-popover.version-select ion-list {
+  padding: 0;
+}
+
 .dropdownSearchWrapper {
   width: 100%;
   display: flex;
