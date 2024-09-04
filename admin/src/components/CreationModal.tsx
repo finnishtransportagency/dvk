@@ -50,7 +50,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
     if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version } });
   };
 
-  const groupItemList = useMemo(() => {
+  const groupedItemList = useMemo(() => {
     const lang = i18n.language as Lang;
     const filtered = itemList.filter((item) => item.type === itemType) || [];
     const groupedItems: FairwayCardOrHarborGroup[] = [];
@@ -114,7 +114,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               <p>{t('modal.description-new-' + itemType)}</p>
             </IonText>
             <SearchInput
-              itemList={groupItemList}
+              itemList={groupedItemList}
               selectedItem={source}
               setSelectedItem={setSource}
               isDropdownOpen={isDropdownOpen}

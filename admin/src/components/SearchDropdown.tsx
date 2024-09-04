@@ -26,7 +26,7 @@ const SearchDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, itemList
         <IonList lines="none" className="searchInputDropdownContainer ion-no-padding">
           {itemList.map((item, idx) => {
             return (
-              <IonItem key={item.id} className={'item' + checkSelected(idx)} button onClick={() => setSelectedItem(item)}>
+              <IonItem key={item.id} className={'item' + checkSelected(idx + 1)} button onClick={() => setSelectedItem(item)}>
                 <IonLabel>{getDefiningVersionName(item.items, lang)}</IonLabel>
               </IonItem>
             );
