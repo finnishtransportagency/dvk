@@ -148,6 +148,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             >
               {source?.items
                 .filter((item) => item.version !== VERSION.PUBLIC && item.version !== VERSION.LATEST)
+                .sort((a, b) => Number(b.version.slice(1)) - Number(a.version.slice(1)))
                 .map((item) => {
                   return (
                     <IonSelectOption key={`${item.id}-${item.version}`} value={item}>
