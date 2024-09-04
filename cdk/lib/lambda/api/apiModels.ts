@@ -261,7 +261,7 @@ export type WeatherObservation = {
   fmisid: number;
   geoid: number;
   latlon: string;
-  name: string;
+  stationname: string;
   localtime: string;
   WG_PT10M_MAX: number;
   WD_PT10M_AVG: number;
