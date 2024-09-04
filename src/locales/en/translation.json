@@ -477,8 +477,8 @@
       "points": "Ice waypoints"
     },
     "restriction": {
-      "current": "[en] Voimassaolevat avustusrajoitteet",
-      "upcoming": "[en] Tulevat avustusrajoitteet"
+      "current": "[en] Voimassaolevat avustusrajoitukset",
+      "upcoming": "[en] Tulevat avustusrajoitukset"
     },
     "featureList": {
       "multipleFeatures": "Multiple items to select",

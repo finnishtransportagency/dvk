@@ -477,8 +477,8 @@
       "points": "Jääreittipisteet"
     },
     "restriction": {
-      "current": "Voimassaolevat avustusrajoitteet",
-      "upcoming": "Tulevat avustusrajoitteet"
+      "current": "Voimassaolevat avustusrajoitukset",
+      "upcoming": "Tulevat avustusrajoitukset"
     },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",

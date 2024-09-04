@@ -67,7 +67,7 @@ async function deleteTableData(tableName: string) {
 async function main() {
   const response = await getDynamoDBDocumentClient().send(new ListTablesCommand({}));
   console.log(`Table names: ${response.TableNames?.join(', ')}`);
-  let tableName = Config.getFairwayCardWithVersionsTableName();
+  let tableName = Config.getFairwayCardTableName();
   if (response.TableNames?.includes(tableName)) {
     if (process.argv.includes('--reset')) {
       console.log('Deleting existing fairway cards');
@@ -76,7 +76,7 @@ async function main() {
     await updateTable(tableName, getRootDirectory('cards'), true);
     console.log(`FairwayCard table ${tableName} updated`);
   }
-  tableName = Config.getHarborWithVersionsTableName();
+  tableName = Config.getHarborTableName();
   if (response.TableNames?.includes(tableName)) {
     if (process.argv.includes('--reset')) {
       console.log('Deleting existing harbors');

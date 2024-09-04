@@ -477,8 +477,8 @@
       "points": "Isruttens waypointer"
     },
     "restriction": {
-      "current": "[sv] Voimassaolevat avustusrajoitteet",
-      "upcoming": "[sv] Tulevat avustusrajoitteet"
+      "current": "[sv] Voimassaolevat avustusrajoitukset",
+      "upcoming": "[sv] Tulevat avustusrajoitukset"
     },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",

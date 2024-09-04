@@ -53,7 +53,7 @@ const MainPage: React.FC = () => {
 
   const [searchQuery, setSearchQuery] = useState('');
   const [itemTypes, setItemTypes] = useState<ItemType[]>([]);
-  const [itemStatus, setItemStatus] = useState<Status[]>([]);
+  const [itemStatus, setItemStatus] = useState<Status[]>([Status.Public, Status.Draft]);
   const [itemType, setItemType] = useState<ItemType>('');
   const [isOpen, setIsOpen] = useState(false);
   const [sortBy, setSortBy] = useState('name');
@@ -109,6 +109,10 @@ const MainPage: React.FC = () => {
   const selectStatusRef = useRef<HTMLIonSelectElement>(null);
   const focusStatusSelect = () => {
     selectStatusRef.current?.click();
+  };
+
+  const compareStatusOptions = (o1: Status, o2: Status): boolean => {
+    return o1 && o2 ? o1.valueOf() === o2.valueOf() : o1 === o2;
   };
 
   const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[]) => {
@@ -186,6 +190,8 @@ const MainPage: React.FC = () => {
                 placeholder={translatedTextOrEmpty('choose')}
                 interface="popover"
                 multiple={true}
+                value={itemStatus}
+                compareWith={compareStatusOptions}
                 onIonChange={(ev) => setItemStatus(ev.detail.value)}
                 interfaceOptions={{
                   size: 'cover',
