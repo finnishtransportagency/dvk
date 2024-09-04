@@ -16,7 +16,7 @@ import {
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardOrHarbor } from '../graphql/generated';
-import { ItemType, Lang } from '../utils/constants';
+import { ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
@@ -146,13 +146,15 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               onKeyDown={(e) => keyDownAction(e)}
               compareWith={compareOptions}
             >
-              {source?.items.map((item) => {
-                return (
-                  <IonSelectOption key={`${item.id}-${item.version}`} value={item}>
-                    {`${item.version.slice(1)} (${t('general.item-status-' + item.status).toLocaleLowerCase()})`}
-                  </IonSelectOption>
-                );
-              })}
+              {source?.items
+                .filter((item) => item.version !== VERSION.PUBLIC && item.version !== VERSION.LATEST)
+                .map((item) => {
+                  return (
+                    <IonSelectOption key={`${item.id}-${item.version}`} value={item}>
+                      {`${item.version.slice(1)} (${t('general.item-status-' + item.status).toLocaleLowerCase()})`}
+                    </IonSelectOption>
+                  );
+                })}
             </IonSelect>
           </IonCol>
         </IonRow>
