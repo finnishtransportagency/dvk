@@ -130,7 +130,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             </IonLabel>
             <IonSelect
               ref={selectVersionRef}
-              className="selectInput"
+              className="selectInput version-select"
               disabled={!source}
               placeholder={t('general.choose')}
               interface="popover"

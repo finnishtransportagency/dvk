@@ -333,6 +333,13 @@ ion-select.selectInput.select-expanded {
   border-image-width: 2px;
 }
 
+/* Hide default focus outline when focused on keyboard */
+ion-select.selectInput.version-select.ion-focused {
+  outline: none;
+  border-width: 2px;
+  min-height: 41px;
+}
+
 .selectWrapper.invalid ion-select.selectInput,
 .selectWrapper.invalid ion-item.selectInput {
   border-color: var(--ion-color-danger);
