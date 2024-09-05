@@ -104,7 +104,7 @@ export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit-20240719.json.gz') },
 ];
 
-export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL; persist: boolean };
+export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL; persist: boolean; staleTime?: number };
 
 export const FeatureDataSources: Array<FeatureDataSource> = [
   {
@@ -190,18 +190,21 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=mareograph'),
     staticUrl: new URL(staticUrl + '/mareograph.json.gz'),
     persist: false,
+    staleTime: 60 * 1000,
   },
   {
     id: 'observation',
     url: new URL(featureLoaderUrl + '?type=observation'),
     staticUrl: new URL(staticUrl + '/observation.json.gz'),
     persist: true,
+    staleTime: 60 * 1000,
   },
   {
     id: 'buoy',
     url: new URL(featureLoaderUrl + '?type=buoy'),
     staticUrl: new URL(staticUrl + '/buoy.json.gz'),
     persist: false,
+    staleTime: 60 * 1000,
   },
   {
     id: 'vtsline',

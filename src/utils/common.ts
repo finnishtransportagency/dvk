@@ -123,8 +123,10 @@ export function getDuration(dataUpdatedAt: number, decimals = 1) {
 export function getAlertProperties(dataUpdatedAt: number, layer: FeatureDataLayerId) {
   const duration = getDuration(dataUpdatedAt);
   let warningDurationHours = 2;
-  if (layer === 'buoy' || layer === 'mareograph' || layer === 'observation') {
+  if (layer === 'mareograph' || layer === 'observation') {
     warningDurationHours = 1;
+  } else if (layer === 'buoy') {
+    warningDurationHours = 3;
   }
   if (duration < warningDurationHours) {
     return undefined;

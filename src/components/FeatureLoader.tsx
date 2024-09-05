@@ -262,15 +262,19 @@ export function useBoardLine12Layer() {
 export function useBuoyLayer() {
   const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
+  const { refetch } = useFeatureData('buoy');
   if (!initialized) {
     const layer = dvkMap.getFeatureLayer('buoy');
     setVisible(layer.isVisible());
     layer.on('change:visible', () => {
       setVisible(layer.isVisible());
+      if (layer.isVisible()) {
+        refetch();
+      }
     });
     setInitialized(true);
   }
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30, visible);
+  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
 }
 
 export function useVtsLineLayer() {

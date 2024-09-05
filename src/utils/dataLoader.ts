@@ -31,7 +31,7 @@ export function useFeatureData(
     meta: { persist: fds?.persist },
     refetchOnMount,
     refetchInterval,
-    staleTime,
+    staleTime: fds?.staleTime ?? staleTime,
     gcTime,
     queryFn: async () => {
       // get headers to get the real time of fetching from api
