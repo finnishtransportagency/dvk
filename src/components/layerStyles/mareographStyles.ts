@@ -80,7 +80,8 @@ function getCalculatedStyle(selected: boolean, timeDifference: number) {
   const offsetX = timeDifference > hourInMilliseconds * 12 ? 34 : 42;
   const textColor = s?.getText()?.getFill()?.getColor()?.toString();
 
-  if (!s || (s && textColor === defaultColor && isOutdatedData)) {
+  // these long conditionals are for checking if styles need to be changed after data is refetched
+  if (!s || (s && textColor === defaultColor && isOutdatedData) || (s && textColor === alertColor && !isOutdatedData)) {
     if (selected) {
       s = calculatedSelectedStyle = getSelectedStyle(icon, selectedOffsetX, -20, isOutdatedData);
     } else {
@@ -98,7 +99,8 @@ function getMeasuredStyle(selected: boolean, timeDifference: number) {
   const offsetX = timeDifference > hourInMilliseconds * 12 ? 34 : 42;
   const textColor = s?.getText()?.getFill()?.getColor()?.toString();
 
-  if (!s || (s && textColor === defaultColor && isOutdatedData)) {
+  // these long conditionals are for checking if styles need to be changed after data is refetched
+  if (!s || (s && textColor === defaultColor && isOutdatedData) || (s && textColor === alertColor && !isOutdatedData)) {
     if (selected) {
       s = selectedStyle = getSelectedStyle(icon, selectedOffsetX, -20, isOutdatedData);
     } else {
