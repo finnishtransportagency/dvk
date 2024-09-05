@@ -75,6 +75,27 @@ export class DvkBuildImageStack extends Stack {
       })
     );
 
+    const playwrightImageRepoName = 'dvk-playwrightimage';
+    new cdk.aws_ecr.Repository(this, 'PlaywrightBuildImageRepository', {
+      repositoryName: playwrightImageRepoName,
+      lifecycleRules: [
+        {
+          rulePriority: 1,
+          description: 'Remove untagged images over 30 days old',
+          maxImageAge: cdk.Duration.days(30),
+          tagStatus: TagStatus.UNTAGGED,
+        },
+      ],
+    });
+    const playwrightBuildProject = this.buildProject(account, playwrightImageRepoName, '1.0.0', 'e2e', 'PlaywrightImageBuild');
+    actions.push(
+      new cdk.aws_codepipeline_actions.CodeBuildAction({
+        actionName: 'BuildPlaywrightImage',
+        project: playwrightBuildProject,
+        input: sourceOutput,
+      })
+    );
+
     const analyticsImageRepoName = 'dvk-analyticsimage';
     new cdk.aws_ecr.Repository(this, 'AnalyticsBuildImageRepository', {
       repositoryName: analyticsImageRepoName,
