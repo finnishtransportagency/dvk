@@ -274,7 +274,7 @@ export function useBuoyLayer() {
     });
     setInitialized(true);
   }
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30, visible);
+  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
 }
 
 export function useVtsLineLayer() {
