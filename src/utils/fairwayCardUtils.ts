@@ -80,6 +80,7 @@ export function getFairwayCardPilotRoutes(fairwayCard: FairwayCardPartsFragment,
 
 function getFairwayCardFairwayAreas(fairwayCard: FairwayCardPartsFragment) {
   const area12Source = dvkMap.getVectorSource('area12');
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   const fairwayAreas: Feature<Geometry>[] = [];
   for (const fairway of fairwayCard?.fairways || []) {
     for (const area of fairway.areas ?? []) {
@@ -87,6 +88,11 @@ function getFairwayCardFairwayAreas(fairwayCard: FairwayCardPartsFragment) {
         const feature = area12Source.getFeatureById(area.id) as Feature<Geometry>;
         if (feature) {
           fairwayAreas.push(feature);
+        } else if (!feature) {
+          const selectedFairwayCardFeature = selectedFairwayCardSource.getFeatureById(area.id) as Feature<Geometry>;
+          if (selectedFairwayCardFeature && selectedFairwayCardFeature.get('featureType') === 'area') {
+            fairwayAreas.push(selectedFairwayCardFeature);
+          }
         }
       }
     }
