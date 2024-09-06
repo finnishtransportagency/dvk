@@ -268,7 +268,8 @@
     "inForce": "Voimassa",
     "mareograph": "Mareografi",
     "mareographLocation": "Mareografin sijainti",
-    "observationLocation": "Säähavaintoaseman sijainti"
+    "observationLocation": "Säähavaintoaseman sijainti",
+    "fairwayNumbers": "Väylän numero(t)"
   },
   "routes": {
     "title": "Luotsausreitit",

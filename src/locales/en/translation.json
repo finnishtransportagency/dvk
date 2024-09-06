@@ -268,7 +268,8 @@
     "inForce": "In force",
     "mareograph": "Mareograph",
     "mareographLocation": "Location of the measurement site",
-    "observationLocation": "[en] Säähavaintoaseman sijainti"
+    "observationLocation": "[en] Säähavaintoaseman sijainti",
+    "fairwayNumbers": "[en] Väylän numero(t)"
   },
   "routes": {
     "title": "Pilot routes",

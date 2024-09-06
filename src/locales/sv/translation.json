@@ -268,7 +268,8 @@
     "inForce": "Gällande",
     "mareograph": "Mareograf",
     "mareographLocation": "Mareografens plats",
-    "observationLocation": "[sv] Säähavaintoaseman sijainti"
+    "observationLocation": "[sv] Säähavaintoaseman sijainti",
+    "fairwayNumbers": "[sv] Väylän numero(t)"
   },
   "routes": {
     "title": "Lotsningsrutter",
