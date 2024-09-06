@@ -970,7 +970,7 @@ export const mockFairwayList = {
       modificationTimestamp: 1667808284000,
       group: '2',
       n2000HeightSystem: false,
-      fairways: [],
+      fairways: [{ id: 1234 }],
     },
     {
       id: 'utohanko',
@@ -979,7 +979,7 @@ export const mockFairwayList = {
       modificationTimestamp: 1667808284000,
       group: '1',
       n2000HeightSystem: false,
-      fairways: [],
+      fairways: [{ id: 234 }],
     },
     {
       id: 'kemi',
@@ -988,7 +988,7 @@ export const mockFairwayList = {
       modificationTimestamp: 1667808284000,
       group: '3',
       n2000HeightSystem: true,
-      fairways: [],
+      fairways: [{ id: 345 }],
     },
     {
       id: 'naantali',
@@ -997,7 +997,7 @@ export const mockFairwayList = {
       modificationTimestamp: 1667808285000,
       group: '1',
       n2000HeightSystem: false,
-      fairways: [],
+      fairways: [{ id: 4567 }],
     },
     mockFairwayCard.fairwayCard,
   ],
