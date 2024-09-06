@@ -1,5 +1,10 @@
 import { GeometryPoint, PictureInput, PilotPlaceInput, Text, TextInput } from '../graphql/generated';
 
+export const VERSION = {
+  PUBLIC: 'v0_public',
+  LATEST: 'v0_latest',
+};
+
 export type Lang = 'fi' | 'sv' | 'en';
 
 export type ItemType = '' | 'CARD' | 'HARBOR';
