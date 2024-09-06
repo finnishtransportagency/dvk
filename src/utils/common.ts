@@ -20,9 +20,21 @@ export const getCurrentDecimalSeparator = () => {
   return sep;
 };
 
+export const isDigitsOnly = (s: string) => {
+  return /^\d+$/.test(s);
+};
+
 export const filterFairways = (data: FairwayCardPartsFragment[] | undefined, lang: 'fi' | 'sv' | 'en', searchQuery: string) => {
-  if (searchQuery.length < MINIMUM_QUERYLENGTH) return [];
-  const filtered = data?.filter((card) => (card.name[lang] ?? '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS) ?? [];
+  if (searchQuery.length < MINIMUM_QUERYLENGTH && !isDigitsOnly(searchQuery)) return [];
+  const filtered =
+    data
+      ?.filter((card) => {
+        const nameMatches = (card.name[lang] ?? '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1;
+        const fairwayMatches = card.fairways.find((ff) => ff.id.toString().includes(searchQuery));
+
+        return nameMatches || fairwayMatches;
+      })
+      .slice(0, MAX_HITS) ?? [];
   return filtered.sort((a, b) => {
     const nameA = a.name[lang] ?? '';
     const nameB = b.name[lang] ?? '';
