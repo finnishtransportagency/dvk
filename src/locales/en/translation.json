@@ -110,7 +110,7 @@
           "mousePositionLabel": "Mouse coordinates:"
         },
         "searchbar": {
-          "placeholder": "Search fairway by name",
+          "placeholder": "Search fairway by name or number",
           "title": "Fairway search",
           "clearTitle": "Clear",
           "no-search-results": "Search '{{query}}' did not match any fairway"
@@ -515,7 +515,7 @@
     "general": "General",
     "openDescription": "Open",
     "closeDescription": "Close",
-    "search": "Search by fairway name",
+    "search": "Search by fairway name or number",
     "searchTitle": "Fairway search",
     "clearTitle": "Clear",
     "expandPane": "Expand",

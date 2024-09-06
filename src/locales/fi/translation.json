@@ -110,7 +110,7 @@
           "mousePositionLabel": "Hiiren koordinaatti:"
         },
         "searchbar": {
-          "placeholder": "Hae väylän nimellä",
+          "placeholder": "Hae väylän nimellä tai numerolla",
           "title": "Väylähaku",
           "clearTitle": "Tyhjennä",
           "no-search-results": "Haulla '{{query}}' ei löydy yhtään väylää"
@@ -515,7 +515,7 @@
     "general": "Yleistä",
     "openDescription": "Avaa",
     "closeDescription": "Sulje",
-    "search": "Hae väylän nimellä",
+    "search": "Hae väylän nimellä tai numerolla",
     "searchTitle": "Väylähaku",
     "clearTitle": "Tyhjennä",
     "expandPane": "Laajenna",

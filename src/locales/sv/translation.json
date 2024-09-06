@@ -110,7 +110,7 @@
           "mousePositionLabel": "Kursorns koordinat:"
         },
         "searchbar": {
-          "placeholder": "Sök med farledsnamn",
+          "placeholder": "Sök med farledsnamn eller nummer",
           "title": "Farledssökning",
           "clearTitle": "Töm",
           "no-search-results": "Med sökning '{{query}}' ingen farled hittades"
@@ -515,7 +515,7 @@
     "general": "Allmänt",
     "openDescription": "Öppna",
     "closeDescription": "Stäng",
-    "search": "Sök med farledsnamn",
+    "search": "Sök med farledsnamn eller nummer",
     "searchTitle": "Farledssökning",
     "clearTitle": "Töm",
     "expandPane": "Utöka",
