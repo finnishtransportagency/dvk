@@ -15,6 +15,9 @@ let selectedStyle: Style | undefined = undefined;
 let calculatedStyle: Style | undefined = undefined;
 let calculatedSelectedStyle: Style | undefined = undefined;
 
+const defaultColor = '#000000';
+const alertColor = '#EC0E0E';
+
 function getSelectedStyle(icon: string, offsetX: number, offsetY: number, isOutdatedData: boolean) {
   return new Style({
     image: new Icon({
@@ -31,7 +34,7 @@ function getSelectedStyle(icon: string, offsetX: number, offsetY: number, isOutd
       offsetY,
       text: '',
       fill: new Fill({
-        color: isOutdatedData ? '#EC0E0E' : '#000000',
+        color: isOutdatedData ? alertColor : defaultColor,
       }),
     }),
   });
@@ -53,7 +56,7 @@ function getStyle(icon: string, offsetX: number, offsetY: number, isOutdatedData
       offsetY,
       text: '',
       fill: new Fill({
-        color: isOutdatedData ? '#EC0E0E' : '#000000',
+        color: isOutdatedData ? alertColor : defaultColor,
       }),
     }),
   });
@@ -75,8 +78,10 @@ function getCalculatedStyle(selected: boolean, timeDifference: number) {
   const icon = getIcon(timeDifference, true);
   const selectedOffsetX = timeDifference > hourInMilliseconds * 12 ? 36 : 44;
   const offsetX = timeDifference > hourInMilliseconds * 12 ? 34 : 42;
+  const textColor = s?.getText()?.getFill()?.getColor()?.toString();
 
-  if (!s) {
+  // these long conditionals are for checking if styles need to be changed after data is refetched
+  if (!s || (s && textColor === defaultColor && isOutdatedData) || (s && textColor === alertColor && !isOutdatedData)) {
     if (selected) {
       s = calculatedSelectedStyle = getSelectedStyle(icon, selectedOffsetX, -20, isOutdatedData);
     } else {
@@ -92,8 +97,10 @@ function getMeasuredStyle(selected: boolean, timeDifference: number) {
   const icon = getIcon(timeDifference, false);
   const selectedOffsetX = timeDifference > hourInMilliseconds * 12 ? 36 : 44;
   const offsetX = timeDifference > hourInMilliseconds * 12 ? 34 : 42;
+  const textColor = s?.getText()?.getFill()?.getColor()?.toString();
 
-  if (!s) {
+  // these long conditionals are for checking if styles need to be changed after data is refetched
+  if (!s || (s && textColor === defaultColor && isOutdatedData) || (s && textColor === alertColor && !isOutdatedData)) {
     if (selected) {
       s = selectedStyle = getSelectedStyle(icon, selectedOffsetX, -20, isOutdatedData);
     } else {
