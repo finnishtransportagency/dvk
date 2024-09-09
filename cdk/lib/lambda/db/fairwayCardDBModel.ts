@@ -247,13 +247,9 @@ class FairwayCardDBModel {
 
     const params: ScanCommandInput = {
       TableName: getFairwayCardTableName(),
-      FilterExpression: '#version <> :v0_latest AND #version <> :v0_public',
+      FilterExpression: 'attribute_exists(#status)',
       ExpressionAttributeNames: {
-        '#version': 'version',
-      },
-      ExpressionAttributeValues: {
-        ':v0_latest': 'v0_latest',
-        ':v0_public': 'v0_public',
+        '#status': 'status',
       },
     };
 

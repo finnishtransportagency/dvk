@@ -333,6 +333,13 @@ ion-select.selectInput.select-expanded {
   border-image-width: 2px;
 }
 
+/* Hide default focus outline when focused on keyboard */
+ion-select.selectInput.version-select.ion-focused {
+  outline: none;
+  border-width: 2px;
+  min-height: 41px;
+}
+
 .selectWrapper.invalid ion-select.selectInput,
 .selectWrapper.invalid ion-item.selectInput {
   border-color: var(--ion-color-danger);
@@ -434,6 +441,10 @@ ion-popover.multiSelect ion-icon.searchIcon {
 ion-popover.multiSelect ion-icon.closeIcon {
   width: 18px;
   height: 18px;
+}
+
+ion-popover.version-select ion-list {
+  padding: 0;
 }
 
 .dropdownSearchWrapper {
@@ -896,13 +907,6 @@ ion-modal.prompt::part(content) {
 
 ion-modal.prompt .ion-page {
   overflow: visible;
-}
-
-ion-modal ion-button.button-disabled {
-  text-decoration: none;
-  font-weight: bold;
-  color: var(--ion-color-dark);
-  opacity: 1;
 }
 
 /* Alert */

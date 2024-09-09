@@ -72,8 +72,8 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
   return (
     <>
       {harbourId && <HarbourEditForm harbourId={harbourId} />}
-      {locationState?.origin && <HarbourEditForm harbourId={locationState.origin.id} origin />}
-      {!harbourId && !locationState.origin && (
+      {locationState?.origin && <HarbourEditForm harbourId={locationState.origin.id} harbourVersion={locationState.origin.version} origin />}
+      {!harbourId && !locationState?.origin && (
         <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={'-'} creator={data?.currentUser?.name} created={0} />
       )}
     </>
