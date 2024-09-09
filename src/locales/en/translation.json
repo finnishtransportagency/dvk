@@ -79,7 +79,7 @@
           "aisShowPredictor": "Velocity vectors",
           "winterTraffic": "Winter navigation",
           "dirway": "Ice waypoints",
-          "restrictionPort": "[en] Avustusrajoitukset",
+          "restrictionPort": "Assistance restrictions",
           "ice": "Ice map",
           "mapStyle": {
             "header": "Map style",
@@ -268,7 +268,7 @@
     "inForce": "In force",
     "mareograph": "Mareograph",
     "mareographLocation": "Location of the measurement site",
-    "observationLocation": "[en] Säähavaintoaseman sijainti",
+    "observationLocation": "Location of the observation station",
     "fairwayNumber": "Fairway ID",
     "fairwayNumbers": "Fairway IDs"
   },
@@ -479,8 +479,8 @@
       "points": "Ice waypoints"
     },
     "restriction": {
-      "current": "[en] Voimassaolevat avustusrajoitukset",
-      "upcoming": "[en] Tulevat avustusrajoitukset"
+      "current": "The assistance restrictions in force",
+      "upcoming": "Forthcoming assistance restrictions"
     },
     "featureList": {
       "multipleFeatures": "Multiple items to select",
@@ -498,7 +498,7 @@
         "pilotagelimit": "Compulsory pilotage limit",
         "pilotroute": "Pilot route",
         "quay": "Quay",
-        "restrictionport": "[en] Avustusrajoitus",
+        "restrictionport": "Assistance restriction",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",
         "section": "Berth position",

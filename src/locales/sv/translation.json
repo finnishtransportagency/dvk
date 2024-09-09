@@ -79,7 +79,7 @@
           "aisShowPredictor": "Fartvektor",
           "winterTraffic": "Vintersjöfart",
           "dirway": "Isruttens waypointer",
-          "restrictionPort": "[sv] Avustusrajoitukset",
+          "restrictionPort": "Assistansrestriktioner",
           "ice": "Iskarta",
           "mapStyle": {
             "header": "Kartans stil",
@@ -268,7 +268,7 @@
     "inForce": "Gällande",
     "mareograph": "Mareograf",
     "mareographLocation": "Mareografens plats",
-    "observationLocation": "[sv] Säähavaintoaseman sijainti",
+    "observationLocation": "Observationsstations läge",
     "fairwayNumber": "Farleds nummer",
     "fairwayNumbers": "Farleds nummer"
   },
@@ -479,8 +479,8 @@
       "points": "Isruttens waypointer"
     },
     "restriction": {
-      "current": "[sv] Voimassaolevat avustusrajoitukset",
-      "upcoming": "[sv] Tulevat avustusrajoitukset"
+      "current": "Gällande assistansrestriktioner",
+      "upcoming": "Förhandsuppgifter om assistansrestriktioner"
     },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",
@@ -498,7 +498,7 @@
         "pilotagelimit": "Lotspliktslinje",
         "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
-        "restrictionport": "[sv] Avustusrajoitus",
+        "restrictionport": "Assistansrestriktion",
         "safetyequipment": "Säkerhetsanordning",
         "safetyequipmentfault": "Säkerhetsanordningsfel",
         "section": "Kajplats",
