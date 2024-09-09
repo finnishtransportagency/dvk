@@ -12,7 +12,7 @@ interface FairwayCardHeaderProps {
   isPending: boolean;
   isFetching: boolean;
   printDisabled: boolean;
-  fairwayIds: number[];
+  fairwayIds?: number[];
 }
 export const FairwayCardHeader: React.FC<FairwayCardHeaderProps> = ({
   fairwayTitle,
@@ -62,7 +62,7 @@ export const FairwayCardHeader: React.FC<FairwayCardHeaderProps> = ({
         <IonCol>
           <IonText className="fairwayTitle">
             <em>
-              {fairwayIds.length > 1 ? (
+              {fairwayIds && fairwayIds.length > 1 ? (
                 <>
                   {t('fairwayNumbers')}:&nbsp;{fairwayIds.join(', ')}
                 </>
