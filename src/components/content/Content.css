@@ -161,7 +161,7 @@ button.icon:focus-visible:hover {
   display: none;
 }
 
-.dropdownWrapper ion-input input::placeholder {
+.placeholderSmallerFont {
   font-size: 11.25px;
 }
 
