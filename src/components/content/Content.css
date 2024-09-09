@@ -149,6 +149,7 @@ button.icon:focus-visible:hover {
 
 .dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:hover {
   background-color: var(--ion-color-light);
+  font-size: 14px;
 }
 
 .dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:focus-visible {
@@ -163,6 +164,10 @@ button.icon:focus-visible:hover {
 
 .placeholderSmallerFont {
   font-size: 11.25px;
+}
+/* Only placeholder text needs to be smaller since it's longer now */
+.placeholderSmallerFont ion-input.searchBar.has-value {
+  font-size: 16px;
 }
 
 #fairwayCardsContainer .closeButton {

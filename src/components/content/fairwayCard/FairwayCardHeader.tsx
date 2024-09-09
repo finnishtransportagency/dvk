@@ -62,7 +62,15 @@ export const FairwayCardHeader: React.FC<FairwayCardHeaderProps> = ({
         <IonCol>
           <IonText className="fairwayTitle">
             <em>
-              {t('fairwayNumbers')}:&nbsp;{fairwayIds.join(', ')}
+              {fairwayIds.length > 1 ? (
+                <>
+                  {t('fairwayNumbers')}:&nbsp;{fairwayIds.join(', ')}
+                </>
+              ) : (
+                <>
+                  {t('fairwayNumber')}&nbsp;{fairwayIds}
+                </>
+              )}
             </em>
           </IonText>
           <br />

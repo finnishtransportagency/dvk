@@ -269,6 +269,7 @@
     "mareograph": "Mareografi",
     "mareographLocation": "Mareografin sijainti",
     "observationLocation": "Säähavaintoaseman sijainti",
+    "fairwayNumber": "Väylän numero",
     "fairwayNumbers": "Väylän numero(t)"
   },
   "routes": {
