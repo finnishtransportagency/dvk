@@ -3,7 +3,7 @@ import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, Ion
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { Orientation } from '../graphql/generated';
-import { PrintInfo } from './MapExportTool';
+import { PrintInfo } from './pictures/PrintInfo';
 
 interface ModalProps {
   orientation: Orientation | '';
