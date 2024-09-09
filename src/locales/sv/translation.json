@@ -269,7 +269,7 @@
     "mareograph": "Mareograf",
     "mareographLocation": "Mareografens plats",
     "observationLocation": "[sv] Säähavaintoaseman sijainti",
-    "fairwayNumbers": "[sv] Väylän numero(t)"
+    "fairwayNumbers": "Farleds nummer"
   },
   "routes": {
     "title": "Lotsningsrutter",
