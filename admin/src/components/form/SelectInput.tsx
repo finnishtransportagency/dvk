@@ -78,9 +78,17 @@ const SelectInput: React.FC<SelectInputProps> = ({
     setIsValid(required ? validity && !error : true);
     setIsTouched(true);
   };
+
   const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
     if (isTouched) checkValidity(event);
     setSelected(event.detail.value, actionType);
+  };
+
+  const keyDownAction = (event: React.KeyboardEvent<HTMLIonSelectElement>) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      focusInput();
+    }
   };
 
   const getHelperText = () => {
@@ -129,6 +137,8 @@ const SelectInput: React.FC<SelectInputProps> = ({
             disabled={disabled}
             fill="outline"
             labelPlacement="stacked"
+            tabIndex={disabled ? -1 : 0}
+            onKeyDown={(e) => keyDownAction(e)}
           >
             {sortedOptions?.map((item) => {
               const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
