@@ -23,7 +23,7 @@ const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, fairw
 
   return (
     <>
-      {((isOpen && searchQuery.length >= MINIMUM_QUERYLENGTH && !isDigitsOnly(searchQuery)) || (isOpen && isDigitsOnly(searchQuery))) && (
+      {isOpen && (searchQuery.length >= MINIMUM_QUERYLENGTH || isDigitsOnly(searchQuery)) && (
         <IonList lines="none" className="searchbarDropdownContainer ion-no-padding">
           {fairwayCards.map((fairwayCard, idx) => {
             const fairwayIds = fairwayCard.fairways.map((ff) => ff.id).join(', ');
