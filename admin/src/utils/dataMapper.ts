@@ -6,7 +6,30 @@ const stringValueOrDefault = (value: string | null | undefined): string => {
   return value ?? '';
 };
 
-export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined) {
+function mapPictures(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined, copyPictures: boolean | undefined) {
+  // If card is based on another card, copying pictures is optional
+  return origin && !copyPictures
+    ? []
+    : sortPictures(
+        data?.fairwayCard?.pictures?.map((picture) => {
+          return {
+            id: picture.id,
+            text: picture.text,
+            lang: picture.lang,
+            orientation: picture.orientation,
+            rotation: picture.rotation,
+            modificationTimestamp: copyPictures ? 0 : picture.modificationTimestamp,
+            sequenceNumber: picture.sequenceNumber,
+            scaleLabel: picture.scaleLabel,
+            scaleWidth: picture.scaleWidth,
+            groupId: picture.groupId,
+            legendPosition: picture.legendPosition ?? POSITION.bottomLeft,
+          };
+        }) ?? []
+      );
+}
+
+export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined, copyPictures?: boolean) {
   return {
     id: origin ? '' : stringValueOrDefault(data?.fairwayCard?.id),
     // v1 is just for now, since proper version control not in use
@@ -133,25 +156,7 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       }),
     },
     operation: origin ? Operation.Create : Operation.Update,
-    pictures: origin
-      ? []
-      : sortPictures(
-          data?.fairwayCard?.pictures?.map((picture) => {
-            return {
-              id: picture.id,
-              text: picture.text,
-              lang: picture.lang,
-              orientation: picture.orientation,
-              rotation: picture.rotation,
-              modificationTimestamp: picture.modificationTimestamp,
-              sequenceNumber: picture.sequenceNumber,
-              scaleLabel: picture.scaleLabel,
-              scaleWidth: picture.scaleWidth,
-              groupId: picture.groupId,
-              legendPosition: picture.legendPosition ?? POSITION.bottomLeft,
-            };
-          }) ?? []
-        ),
+    pictures: mapPictures(origin, data, copyPictures),
     temporaryNotifications: data?.fairwayCard?.temporaryNotifications?.map((notification) => {
       return {
         content: {

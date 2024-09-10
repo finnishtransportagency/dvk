@@ -10,13 +10,14 @@ interface FairwayCardEditProps {
   fairwayCardId: string;
   fairwayCardVersion?: string;
   origin?: boolean;
+  copyPictures?: boolean;
 }
 
-const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fairwayCardVersion = 'v1', origin }) => {
+const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fairwayCardVersion = 'v1', origin, copyPictures }) => {
   const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwayCardVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
-  const fairwayCard = mapToFairwayCardInput(origin, data);
+  const fairwayCard = mapToFairwayCardInput(origin, data, copyPictures);
 
   return (
     <>
@@ -91,7 +92,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     <>
       {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
       {locationState?.origin && (
-        <FairwayCardEditForm fairwayCardId={locationState.origin.id} fairwayCardVersion={locationState.origin.version} origin />
+        <FairwayCardEditForm fairwayCardId={locationState.origin.id} fairwayCardVersion={locationState.origin.version} origin copyPictures />
       )}
       {!fairwayCardId && !locationState?.origin && (
         <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier="-" creator={data?.currentUser?.name} created={0} />

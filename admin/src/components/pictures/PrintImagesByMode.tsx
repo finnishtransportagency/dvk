@@ -174,7 +174,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                     <p>
                       <strong>{t('fairwaycard.print-images-modified')}</strong>
                       <br />
-                      {t('general.datetimeFormat', { val: pic.modificationTimestamp })}
+                      {pic.modificationTimestamp ? t('general.datetimeFormat', { val: pic.modificationTimestamp }) : '-'}
                     </p>
                     <p>
                       <strong>{t('fairwaycard.print-images-language')}</strong>
