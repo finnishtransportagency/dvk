@@ -111,6 +111,7 @@ function getClusterCountStyle(count: number, selected: boolean) {
 
 export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
   const styles: Style[] = [];
+  let selectedIcon = selected;
   let feat = feature;
   if (feature.get('cluster')) {
     const feats = feature.get('features') as Array<Feature>;
@@ -118,6 +119,9 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
       return undefined;
     } else if (feats.length === 1) {
       feat = feature.get('features')[0];
+      if (feat.get('hoverStyle') === true) {
+        selectedIcon = true;
+      }
     } else {
       for (const f of feats) {
         feat = new Feature();
@@ -128,15 +132,20 @@ export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
         } else if (feat.getGeometry()?.getType() === 'LineString') {
           styles.push(getLineStyle(feat));
         }
+        if (feat.get('hoverStyle') === true) {
+          selectedIcon = true;
+        }
       }
       feat = new Feature();
       feat.setProperties((feature.get('features')[0] as Feature).getProperties());
       feat.setGeometry((feature as Feature).getGeometry());
-      styles.push(getClusterCountStyle(feats.length, selected));
+      styles.push(getClusterCountStyle(feats.length, selectedIcon));
     }
+  } else if (feature.get('hoverStyle') === true) {
+    selectedIcon = true;
   }
 
-  styles.push(getIconStyle(feat, selected));
+  styles.push(getIconStyle(feat, selectedIcon));
 
   if (feat.getGeometry()?.getType() === 'Polygon') {
     styles.push(getAreaStyle(feat, selected));
