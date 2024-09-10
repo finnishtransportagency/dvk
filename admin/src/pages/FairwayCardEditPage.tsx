@@ -42,6 +42,7 @@ interface FairwayCardProps {
 
 type LocationState = {
   origin?: FairwayCardOrHarbor;
+  copyPictures?: boolean;
 };
 
 const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
@@ -92,7 +93,12 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     <>
       {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
       {locationState?.origin && (
-        <FairwayCardEditForm fairwayCardId={locationState.origin.id} fairwayCardVersion={locationState.origin.version} origin copyPictures />
+        <FairwayCardEditForm
+          fairwayCardId={locationState.origin.id}
+          fairwayCardVersion={locationState.origin.version}
+          origin
+          copyPictures={locationState?.copyPictures}
+        />
       )}
       {!fairwayCardId && !locationState?.origin && (
         <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier="-" creator={data?.currentUser?.name} created={0} />

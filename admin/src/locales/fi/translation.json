@@ -129,6 +129,7 @@
     "description-new-HARBOR": "Voit valita halutessasi olemassa olevan sataman pohjaksi uuden luontia varten.",
     "create-CARD": "Luo väyläkortti",
     "create-HARBOR": "Luo satama",
+    "copy-pictures": "Kopioi kuvat aiemmasta versiosta",
     "logout-title": "Olet kirjautumassa ulos",
     "logout-description": "Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella.",
     "cancel-fairwaycard-title": "Poistu tallentamatta",

@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import {
   IonButton,
+  IonCheckbox,
   IonCol,
   IonFooter,
   IonGrid,
@@ -37,6 +38,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [source, setSource] = useState<FairwayCardOrHarborGroup | undefined>();
   const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
+  const [copyPics, setCopyPics] = useState(false);
 
   const selectVersionRef = useRef<HTMLIonSelectElement>(null);
 
@@ -46,7 +48,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const createNewItem = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
-    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version } });
+    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version, copyPictures: copyPics } });
     if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version } });
   };
 
@@ -159,6 +161,15 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             </IonSelect>
           </IonCol>
         </IonRow>
+        {itemType === 'CARD' && (
+          <IonRow className="ion-margin-top">
+            <IonCol>
+              <IonCheckbox labelPlacement="end" disabled={!source || !version} checked={copyPics} onIonChange={(e) => setCopyPics(e.detail.checked)}>
+                {t('modal.copy-pictures')}
+              </IonCheckbox>
+            </IonCol>
+          </IonRow>
+        )}
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
