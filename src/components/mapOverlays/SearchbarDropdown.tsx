@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import './SearchbarDropdown.css';
 import { FairwayCardPartsFragment } from '../../graphql/generated';
 import { Lang, MINIMUM_QUERYLENGTH } from '../../utils/constants';
+import { isDigitsOnly } from '../../utils/common';
 
 interface DropdownProps {
   isOpen: boolean;
@@ -22,9 +23,10 @@ const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, fairw
 
   return (
     <>
-      {isOpen && searchQuery.length >= MINIMUM_QUERYLENGTH && (
+      {isOpen && (searchQuery.length >= MINIMUM_QUERYLENGTH || isDigitsOnly(searchQuery)) && (
         <IonList lines="none" className="searchbarDropdownContainer ion-no-padding">
           {fairwayCards.map((fairwayCard, idx) => {
+            const fairwayIds = fairwayCard.fairways.map((ff) => ff.id).join(', ');
             return (
               <IonItem
                 key={fairwayCard.id}
@@ -32,7 +34,9 @@ const SearchbarDropdown: React.FC<DropdownProps> = ({ isOpen, searchQuery, fairw
                 routerLink={'/kortit/' + fairwayCard.id}
                 data-testid="cardOption"
               >
-                <IonLabel>{fairwayCard.name[lang]}</IonLabel>
+                <IonLabel>
+                  {fairwayCard.name[lang]}&nbsp;{'(' + fairwayIds + ')'}
+                </IonLabel>
               </IonItem>
             );
           })}

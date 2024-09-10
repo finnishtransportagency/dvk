@@ -110,7 +110,7 @@
           "mousePositionLabel": "Mouse coordinates:"
         },
         "searchbar": {
-          "placeholder": "Search fairway by name",
+          "placeholder": "Search fairway by name or number",
           "title": "Fairway search",
           "clearTitle": "Clear",
           "no-search-results": "Search '{{query}}' did not match any fairway"
@@ -268,7 +268,9 @@
     "inForce": "In force",
     "mareograph": "Mareograph",
     "mareographLocation": "Location of the measurement site",
-    "observationLocation": "Location of the observation station"
+    "observationLocation": "Location of the observation station",
+    "fairwayNumber": "Fairway ID",
+    "fairwayNumbers": "Fairway IDs"
   },
   "routes": {
     "title": "Pilot routes",
@@ -515,7 +517,7 @@
     "general": "General",
     "openDescription": "Open",
     "closeDescription": "Close",
-    "search": "Search by fairway name",
+    "search": "Search by fairway name or number",
     "searchTitle": "Fairway search",
     "clearTitle": "Clear",
     "expandPane": "Expand",

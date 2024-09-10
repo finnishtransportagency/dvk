@@ -76,7 +76,6 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const { data } = useFairwayCardListData();
   const [showMarineWarningNotification, setShowMarineWarningNotification] = useState(false);
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
-
   const [popupProperties, setPopupProperties] = useState<PopupProperties>();
 
   const openMapLayersModal = () => {
