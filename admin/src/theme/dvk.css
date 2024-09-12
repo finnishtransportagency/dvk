@@ -333,6 +333,13 @@ ion-select.selectInput.select-expanded {
   border-image-width: 2px;
 }
 
+/* Hide default focus outline when focused on keyboard */
+ion-select.selectInput.version-select.ion-focused {
+  outline: none;
+  border-width: 2px;
+  min-height: 41px;
+}
+
 .selectWrapper.invalid ion-select.selectInput,
 .selectWrapper.invalid ion-item.selectInput {
   border-color: var(--ion-color-danger);
@@ -434,6 +441,10 @@ ion-popover.multiSelect ion-icon.searchIcon {
 ion-popover.multiSelect ion-icon.closeIcon {
   width: 18px;
   height: 18px;
+}
+
+ion-popover.version-select ion-list {
+  padding: 0;
 }
 
 .dropdownSearchWrapper {
@@ -898,13 +909,6 @@ ion-modal.prompt .ion-page {
   overflow: visible;
 }
 
-ion-modal ion-button.button-disabled {
-  text-decoration: none;
-  font-weight: bold;
-  color: var(--ion-color-dark);
-  opacity: 1;
-}
-
 /* Alert */
 ion-grid.alert {
   font-size: 14px;
@@ -1242,4 +1246,32 @@ span.screen-reader-only {
 dd {
   display: inline;
   margin: 0;
+}
+
+/* Status bar */
+
+ion-row.infoHeaderRow {
+  padding-bottom: 4px;
+}
+ion-header.infoHeader .infoHeaderDivider {
+  border-top: 1px solid var(--ion-color-light);
+  border-bottom: 1px solid var(--ion-color-light);
+}
+.infoContent ion-text {
+  font-size: 14px;
+}
+.infoContent .item-status-PUBLIC {
+  color: var(--ion-color-success);
+  font-weight: bold;
+}
+.infoContent .item-status-REMOVED {
+  color: var(--ion-color-danger);
+  opacity: 0.75;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+.infoContent .item-status-DRAFT {
+  color: var(--ion-color-medium);
+  font-style: italic;
+  font-size: 14px;
 }

@@ -22,7 +22,6 @@ import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
 import { filterMarineWarnings } from '../utils/common';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
-import RenderFeature from 'ol/render/Feature';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -209,7 +208,7 @@ export function useInitStaticDataLayer(
   useEffect(() => {
     const initLayer = (data: unknown) => {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
-      const format = new GeoJSON({ featureClass: RenderFeature });
+      const format = new GeoJSON({ featureClass: Feature });
       const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
       layer.setSource(
         new VectorSource<Feature<Geometry>>({
@@ -263,15 +262,19 @@ export function useBoardLine12Layer() {
 export function useBuoyLayer() {
   const [initialized, setInitialized] = useState(false);
   const [visible, setVisible] = useState(false);
+  const { refetch } = useFeatureData('buoy');
   if (!initialized) {
     const layer = dvkMap.getFeatureLayer('buoy');
     setVisible(layer.isVisible());
     layer.on('change:visible', () => {
       setVisible(layer.isVisible());
+      if (layer.isVisible()) {
+        refetch();
+      }
     });
     setInitialized(true);
   }
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 30, visible);
+  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
 }
 
 export function useVtsLineLayer() {
@@ -448,7 +451,7 @@ export function useSpecialArea2Layer() {
 }
 
 export function useSpecialArea15Layer() {
-  return useDataLayer('specialarea15', 'specialarea15');
+  return useDataLayer('specialarea15', 'specialarea15', 'EPSG:3067');
 }
 
 export function usePilotLayer() {
@@ -477,4 +480,8 @@ export function usePilotageAreaBorderLayer() {
 
 export function useDirwayLayer() {
   return useDataLayer('dirway', 'dirway');
+}
+
+export function useRestrictionPortLayer() {
+  return useDataLayer('restrictionport', 'restrictionport');
 }

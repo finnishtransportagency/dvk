@@ -477,7 +477,7 @@ export function unsetSelectedFairwayCard() {
 
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: VectorSource, format: GeoJSON, showDepth: boolean) {
   const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
-  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'quay',
@@ -496,7 +496,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: Vecto
 }
 
 function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, features: VectorSource, format: GeoJSON) {
-  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'section',
@@ -589,13 +589,12 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
             feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           }
         }
-        if (!feature) {
-          feature = specialArea15Source.getFeatureById(area.id) as Feature<Geometry>;
-          if (feature) {
-            specialArea15Source.removeFeature(feature);
-            fairwayFeatures.push(feature);
-            feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-          }
+      }
+      for (const prohibitionArea of fairway.prohibitionAreas ?? []) {
+        const feature = specialArea15Source.getFeatureById(prohibitionArea.id) as Feature<Geometry>;
+        if (feature) {
+          specialArea15Source.removeFeature(feature);
+          fairwayFeatures.push(feature);
         }
       }
       for (const line of fairway.boardLines ?? []) {

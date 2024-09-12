@@ -78,6 +78,13 @@ export type AreaFairway = {
   sizingSpeed2?: number;
 };
 
+export type ProhibitionAreaFeatureProperties = {
+  typeCode: number;
+  type?: string;
+  extraInfo?: Text;
+  fairway: AreaFairway;
+};
+
 export type LineFairway = {
   fairwayId: number;
   name: Text;
@@ -237,4 +244,20 @@ export type DirwayFeatureProperties = {
   description: string;
   updated: string;
   points: DirwayPoint[];
+};
+
+type Restriction = {
+  id: string;
+  description: string;
+  startTime: string;
+  endTime: string | undefined;
+  updated: string;
+};
+
+export type RestrictionPortFeatureProperties = {
+  featureType: 'restrictionport';
+  id: string;
+  name: string;
+  updated: string;
+  restrictions: Restriction[];
 };

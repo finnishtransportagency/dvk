@@ -119,6 +119,8 @@ export const harbourReducer = (
               name: { fi: '', sv: '', en: '' },
               length: undefined,
               geometry: { lat: '', lon: '' },
+              extraInfo: { fi: '', sv: '', en: '' },
+              sections: undefined,
             },
           ]),
         };
@@ -209,7 +211,7 @@ export const harbourReducer = (
             i === actionOuterTarget
               ? {
                   ...quayItem,
-                  sections: (quayItem?.sections ?? []).concat([{ name: '', depth: undefined, geometry: { lat: '', lon: '' } }]),
+                  sections: (quayItem?.sections ?? []).concat([{ name: '', depth: '', geometry: { lat: '', lon: '' } }]),
                 }
               : quayItem
           ),

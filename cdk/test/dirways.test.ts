@@ -6,8 +6,6 @@ import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
 import { DIRWAY_PATH, DIRWAY_POINT_PATH } from '../lib/lambda/api/ibnet';
 import { handler, DIRWAYS_KEY } from '../lib/lambda/api/dirway-handler';
 
-const path = 'dirways';
-
 jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
@@ -211,7 +209,7 @@ beforeEach(() => {
 });
 
 it('should get dirways from api', async () => {
-  const response = await handler(mockALBEvent(path));
+  const response = await handler(mockALBEvent(DIRWAYS_KEY));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(2);
@@ -220,12 +218,12 @@ it('should get dirways from api', async () => {
 
 it('should get internal server error when api call fails', async () => {
   throwError = true;
-  const response = await handler(mockALBEvent(path));
+  const response = await handler(mockALBEvent(DIRWAYS_KEY));
   expect(response.statusCode).toBe(503);
 });
 
 it('should return right cache headers', async () => {
-  const response = await handler(mockALBEvent(path));
+  const response = await handler(mockALBEvent(DIRWAYS_KEY));
   assert(response.body);
   const headers = getFeatureCacheControlHeaders(DIRWAYS_KEY)?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);

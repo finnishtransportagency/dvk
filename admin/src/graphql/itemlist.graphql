@@ -1,5 +1,5 @@
-query fairwayCardsAndHarbors {
-  fairwayCardsAndHarbors {
+query fairwayCardsAndHarbors($getAllVersions: Boolean!) {
+  fairwayCardsAndHarbors(getAllVersions: $getAllVersions) {
     id
     version
     name {fi sv en}

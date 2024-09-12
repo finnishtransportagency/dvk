@@ -55,6 +55,7 @@ export class DvkSonarPipelineStack extends Stack {
         phases: {
           build: {
             commands: [
+              'npm config set cache /tmp/.npm --global',
               'cd squat',
               'npm ci',
               'npm run buildlib',
@@ -84,39 +85,27 @@ export class DvkSonarPipelineStack extends Stack {
               'cd cdk',
               'npm run cdk deploy DvkBackendStack -- --require-approval never',
               'npm run datasync -- --reset',
+              'npm run datamigration',
               'npm run setup',
               'cd ..',
-              'cd squat',
               'npm run build',
-              'npx serve -s build &',
+              'npx serve -p 3000 -s build &',
               'until curl -s http://localhost:3000 > /dev/null; do sleep 1; done',
-              'cd ../test',
-              'pip3 install --user --no-cache-dir -r requirements.txt',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome --outputdir report/squat --xunit xunit.xml squat.robot',
-              'cd ..',
-              'npm run build',
-              'npx serve -p 3001 -s build &',
-              'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
-              'cd test',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome -v PORT:3001 --outputdir report/dvk --xunit xunit.xml dvk',
-              'cd ..',
-              'cd admin',
-              'npm run build',
-              'npx serve -p 3002 -s build &',
-              'until curl -s http://localhost:3002 > /dev/null; do sleep 1; done',
-              'cd ../test',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" robot -v BROWSER:chrome -v PORT:3002 --outputdir report/admin --xunit xunit.xml admin',
+              'cd e2e',
+              'npm ci',
+              'npx playwright install --with-deps',
+              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" npx playwright test'
             ],
           },
         },
-        cache: { paths: ['/opt/robotframework/temp/.npm/**/*', '/opt/robotframework/temp/.sonar/**/*'] },
+        cache: { paths: ['/tmp/.npm/**/*', '/tmp/.sonar/**/*'] },
         reports: {
-          'squat-robot-tests': { files: 'test/report/squat/xunit.xml' },
-          'dvk-robot-tests': { files: 'test/report/dvk/xunit.xml' },
-          'admin-robot-tests': { files: 'test/report/admin/xunit.xml' },
+          'squat-robot-tests': { files: 'e2e/xml-report/results.xml' },
+          'dvk-robot-tests': { files: 'e2e/xml-report/results.xml' },
+          'admin-robot-tests': { files: 'e2e/xml-report/results.xml' },
         },
         artifacts: {
-          'base-directory': 'test/report',
+          'base-directory': 'e2e/xml-report',
           files: '**/*',
           name: '$CODEBUILD_BUILD_NUMBER',
         },
@@ -124,11 +113,12 @@ export class DvkSonarPipelineStack extends Stack {
       source: gitHubSource,
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.3'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkPlaywrightImage', 'dvk-playwrightimage'), '1.0.0'),
         computeType: ComputeType.MEDIUM,
         environmentVariables: {
           CI: { value: true },
           ENVIRONMENT: { value: 'feature' },
+          SONAR_BINARY_CACHE: { value: '/tmp/.sonar'},
           SONARQUBE_HOST_URL: { value: config.getGlobalStringParameter('SonarQubeHostURL') },
           SONARQUBE_ACCESS_TOKEN: {
             type: BuildEnvironmentVariableType.SECRETS_MANAGER,
@@ -169,7 +159,23 @@ export class DvkSonarPipelineStack extends Stack {
         resources: ['*'],
       })
     );
-    let table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardWithVersionsTableName() + '*');
+    let table = Table.fromTableName(this, 'FairwayCardVersionsTable', Config.getFairwayCardWithVersionsTableName() + '*');
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['dynamodb:PutItem', 'dynamodb:DeleteItem', 'dynamodb:Scan'],
+        resources: [table.tableArn],
+      })
+    );
+    table = Table.fromTableName(this, 'FairwayCardTable', Config.getFairwayCardTableName() + '*');
+    project.addToRolePolicy(
+      new PolicyStatement({
+        effect: Effect.ALLOW,
+        actions: ['dynamodb:PutItem', 'dynamodb:DeleteItem', 'dynamodb:Scan'],
+        resources: [table.tableArn],
+      })
+    );
+    table = Table.fromTableName(this, 'HarborVersionsTable', Config.getHarborWithVersionsTableName() + '*');
     project.addToRolePolicy(
       new PolicyStatement({
         effect: Effect.ALLOW,

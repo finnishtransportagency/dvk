@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery } from '../graphql/generated';
+import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, ProhibitionFairway } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
 import { Geometry, Point, Polygon } from 'ol/geom';
 import { Feature } from 'ol';
@@ -80,6 +80,7 @@ export function getFairwayCardPilotRoutes(fairwayCard: FairwayCardPartsFragment,
 
 function getFairwayCardFairwayAreas(fairwayCard: FairwayCardPartsFragment) {
   const area12Source = dvkMap.getVectorSource('area12');
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   const fairwayAreas: Feature<Geometry>[] = [];
   for (const fairway of fairwayCard?.fairways || []) {
     for (const area of fairway.areas ?? []) {
@@ -87,6 +88,11 @@ function getFairwayCardFairwayAreas(fairwayCard: FairwayCardPartsFragment) {
         const feature = area12Source.getFeatureById(area.id) as Feature<Geometry>;
         if (feature) {
           fairwayAreas.push(feature);
+        } else if (!feature) {
+          const selectedFairwayCardFeature = selectedFairwayCardSource.getFeatureById(area.id) as Feature<Geometry>;
+          if (selectedFairwayCardFeature && selectedFairwayCardFeature.get('featureType') === 'area') {
+            fairwayAreas.push(selectedFairwayCardFeature);
+          }
         }
       }
     }
@@ -160,7 +166,10 @@ export function getPilotageLimitFairwayCards(pilotageLimitProperties: PilotageLi
   });
 }
 
-export function getFairwayListFairwayCards(fairways: AreaFairway[] | LineFairway[] | EquipmentFairway[], fairwayCards: FairwayCardPartsFragment[]) {
+export function getFairwayListFairwayCards(
+  fairways: AreaFairway[] | LineFairway[] | EquipmentFairway[] | ProhibitionFairway[],
+  fairwayCards: FairwayCardPartsFragment[]
+) {
   const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
   return fairwayCards.filter((card) => card.fairways.some((fairway) => fairwayIds.includes(fairway.id)));
 }

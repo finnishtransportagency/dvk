@@ -30,7 +30,7 @@ import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { initialState } from '../hooks/dvkReducer';
-import { Geometry, Point } from 'ol/geom';
+import { Geometry, LineString, Point, Polygon } from 'ol/geom';
 import {
   getFairwayCardPilotRoutes,
   getFairwayCardPilotageLimits,
@@ -45,9 +45,10 @@ import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
 import { anchorageAreaIconStyle, meetAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
 import { getQuayStyle } from './layerStyles/quayStyles';
-import { getHarborStyle } from './layerStyles/harborStyles';
+import { getHarborStyle, getRestrictionPortStyle } from './layerStyles/harborStyles';
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
 import { getDirwayStyle } from './layerStyles/dirwayStyles';
+import { Cluster } from 'ol/source';
 
 const minResolutionHarbor = 3;
 
@@ -180,6 +181,68 @@ function addFeatureVectorLayer({
       updateWhileAnimating: false,
       opacity,
       renderOrder: undefined,
+      zIndex,
+      visible: initialState.layers.includes(id),
+    })
+  );
+}
+
+interface MarineWarningClusterLayerProps {
+  map: Map;
+  id: FeatureLayerId;
+  maxResolution?: number;
+  renderBuffer: number;
+  minResolution?: number;
+  opacity?: number;
+  declutter?: boolean;
+  zIndex: number | undefined; //= undefined
+}
+
+function addMarineWarningClusterLayer({
+  map,
+  id,
+  maxResolution = undefined,
+  renderBuffer,
+  minResolution = undefined,
+  opacity = 1,
+  declutter = false,
+  zIndex = undefined,
+}: MarineWarningClusterLayerProps) {
+  const cluster = new Cluster<FeatureLike>({
+    distance: 20,
+    geometryFunction: (feature) => {
+      const geom = feature.getGeometry() as Geometry;
+      if (geom?.getType() === 'Polygon') {
+        return (geom as Polygon).getInteriorPoint();
+      } else if (geom?.getType() === 'LineString') {
+        return new Point((geom as LineString).getFlatMidpoint());
+      } else if (geom?.getType() === 'Point') {
+        return geom as Point;
+      }
+      return null;
+    },
+    createCluster: (point, features) => {
+      return new Feature({
+        geometry: point,
+        featureType: 'marinewarning',
+        cluster: true,
+        features: features,
+      });
+    },
+    source: new VectorSource<FeatureLike>(),
+  });
+  map.addLayer(
+    new VectorLayer({
+      source: cluster,
+      declutter,
+      style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
+      properties: { id },
+      maxResolution,
+      minResolution,
+      renderBuffer,
+      updateWhileInteracting: false,
+      updateWhileAnimating: false,
+      opacity,
       zIndex,
       visible: initialState.layers.includes(id),
     })
@@ -545,6 +608,14 @@ export function addAPILayers(map: Map) {
     style: (feature, resolution) => getDirwayStyle(feature, resolution, feature.get('hoverStyle')),
     zIndex: 302,
   });
+  // Avustusrajoitukset
+  addFeatureVectorLayer({
+    map: map,
+    id: 'restrictionport',
+    renderBuffer: 100,
+    style: (feature) => getRestrictionPortStyle(!!feature.get('hoverStyle')),
+    zIndex: 306,
+  });
 
   // Valitun väyläkortin featuret
   addFeatureVectorLayer({
@@ -566,28 +637,24 @@ export function addAPILayers(map: Map) {
   });
 
   // Merivaroitukset
-  addFeatureVectorLayer({
+  addMarineWarningClusterLayer({
     map: map,
     id: 'coastalwarning',
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
     zIndex: 401,
   });
-  addFeatureVectorLayer({
+
+  addMarineWarningClusterLayer({
     map: map,
     id: 'localwarning',
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
     zIndex: 402,
   });
-  addFeatureVectorLayer({
+
+  addMarineWarningClusterLayer({
     map: map,
     id: 'boaterwarning',
     renderBuffer: 50,
-    style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
-    declutter: true,
     zIndex: 403,
   });
 
@@ -736,7 +803,7 @@ export function unsetSelectedFairwayCard() {
 }
 
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON, showDepth: boolean) {
-  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
   feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
@@ -756,7 +823,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorS
 }
 
 function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, source: VectorSource, format: GeoJSON) {
-  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
     featureType: 'section',
@@ -795,7 +862,7 @@ function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
 
 function addHarborFeature(harbor: HarborPartsFragment, source: VectorSource): Feature<Geometry> {
   const format = new GeoJSON();
-  const feature = format.readFeature(harbor.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+  const feature = format.readFeature(harbor.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(harbor.id);
   feature.setProperties({
     featureType: 'harbor',
@@ -884,16 +951,14 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
             feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           }
         }
-        if (!feature) {
-          feature = specialArea15Source.getFeatureById(area.id) as Feature<Geometry>;
-          if (feature) {
-            specialArea15Source.removeFeature(feature);
-            fairwayFeatures.push(feature);
-            feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-          }
+      }
+      for (const prohibitionArea of fairway.prohibitionAreas ?? []) {
+        const feature = specialArea15Source.getFeatureById(prohibitionArea.id) as Feature<Geometry>;
+        if (feature) {
+          specialArea15Source.removeFeature(feature);
+          fairwayFeatures.push(feature);
         }
       }
-
       for (const line of fairway.boardLines ?? []) {
         const feature = boardLine12Source.getFeatureById(line.id) as Feature<Geometry>;
         if (feature) {
@@ -1130,4 +1195,16 @@ export function unsetSelectedHarborPreview() {
   (fairwayCardLayer.getSource() as VectorSource).clear();
   fairwayCardLayer.setVisible(false);
   harborLayer.setVisible(true);
+}
+
+export function setSelectedMarineWarning(id: number, selected: boolean, marineWarningDataLayerId: FeatureDataLayerId) {
+  const dvkMap = getMap();
+  const warningSource = dvkMap.getVectorSource(marineWarningDataLayerId);
+
+  for (const f of warningSource.getFeatures()) {
+    if (id === f.getId()) {
+      f.set('hoverStyle', selected);
+    }
+  }
+  warningSource.dispatchEvent('change');
 }

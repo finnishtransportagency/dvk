@@ -25,6 +25,7 @@ import {
   PilotRouteFeatureProperties,
   PilotageLimitFeatureProperties,
   QuayFeatureProperties,
+  RestrictionPortFeatureProperties,
   VtsFeatureProperties,
 } from '../features';
 import { getMarineWarningDataLayerId } from '../../utils/common';
@@ -130,6 +131,15 @@ export function showFeaturePopup(
   setPopupPosition(popup, coordinate, selectedFeature, popupPositioningCoordinate);
 }
 
+function singleNavigationLineOnArea(features: FeatureLike[]): boolean {
+  if (features.length === 2) {
+    return (
+      features.filter((f) => f.get('featureType') === 'line').length === 1 && features.filter((f) => f.get('featureType') === 'area').length === 1
+    );
+  }
+  return false;
+}
+
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
   const container = document.getElementById('popup') as HTMLElement;
   const overlay = new Overlay({
@@ -149,6 +159,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'quay',
     'section',
     'harbor',
+    'restrictionport',
     'marinewarning',
     'safetyequipment',
     'safetyequipmentfault',
@@ -169,6 +180,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     });
     container.addEventListener('touchmove', (e) => {
       e.preventDefault();
+    });
+    container.addEventListener('pointermove', (e) => {
+      e.stopPropagation();
     });
   }
 
@@ -191,13 +205,21 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
           types.includes(f.getProperties().featureType) &&
           features.findIndex((feat) => feat.get('featureType') === f.get('featureType') && feat.getId() == f.getId()) < 0
         ) {
-          features.push(f);
+          if (f.get('cluster') === true) {
+            /* If we clicked cluster feature, add all features in the cluster */
+            features.push(...f.get('features'));
+          } else {
+            features.push(f);
+          }
         }
       },
       { hitTolerance: 3 }
     );
 
-    if (features.length > 1) {
+    if (singleNavigationLineOnArea(features)) {
+      const feature = features.find((f) => f.get('featureType') === 'line');
+      showFeaturePopup(features, feature as FeatureLike, evt.coordinate, setPopupProperties, overlay);
+    } else if (features.length > 1) {
       features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
       showFeatureListPopup(features, evt.coordinate, setPopupProperties, overlay);
     } else {
@@ -319,6 +341,12 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       };
     case 'quay':
       return { header: [(props as QuayFeatureProperties).quay?.[lang] ?? ''], featureType: t('featureList.featureType.quay'), className: type };
+    case 'restrictionport':
+      return {
+        header: [(props as RestrictionPortFeatureProperties).name ?? ''],
+        featureType: t('featureList.featureType.restrictionport'),
+        className: type,
+      };
     case 'safetyequipment':
     case 'safetyequipmentfault':
       return getSafetyEquipmentDetails(t, lang, feature);

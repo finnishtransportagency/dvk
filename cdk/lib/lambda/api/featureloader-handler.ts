@@ -6,7 +6,7 @@ import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
-import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
+import { fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 import { getNumberValue, invertDegrees, roundDecimals, toBase64Response } from '../util';
@@ -104,21 +104,15 @@ async function addDepthFeatures(features: FeaturesWithMaxFetchTime, event: ALBEv
 }
 
 // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
-// 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
+// 2 = Ankkurointialue
 const navigationAreaFilter = (a: AlueAPIModel) =>
   a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11;
-const specialAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15;
 const anchoringAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2;
-const meetRestrictionAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 15;
-function getAreaFilter(type: 'area' | 'specialarea' | 'specialarea2' | 'specialarea15') {
+function getAreaFilter(type: 'area' | 'specialarea2') {
   if (type === 'area') {
     return navigationAreaFilter;
-  } else if (type === 'specialarea2') {
-    return anchoringAreaFilter;
-  } else if (type === 'specialarea15') {
-    return meetRestrictionAreaFilter;
   } else {
-    return specialAreaFilter;
+    return anchoringAreaFilter;
   }
 }
 
@@ -160,6 +154,12 @@ async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
       },
     });
   }
+}
+
+async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
+  const areas = await fetchProhibitionAreas();
+  log.debug('prohibition areas: %d', areas.length);
+  features.featureArray.push(...areas);
 }
 
 async function addRestrictionAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
@@ -479,10 +479,11 @@ async function addFeatures(type: string, features: FeaturesWithMaxFetchTime, eve
       await addHarborFeatures(features);
       return true;
     case 'area':
-    case 'specialarea':
     case 'specialarea2':
-    case 'specialarea15':
       await addAreaFeatures(features, event, type, getAreaFilter(type));
+      return true;
+    case 'specialarea15':
+      await addProhibitionAreaFeatures(features);
       return true;
     case 'restrictionarea':
       await addRestrictionAreaFeatures(features, event);

@@ -48,7 +48,7 @@ function getSpeedLimitGeometries(rafs: Feature<Geometry>[]): Array<SpeedLimitGeo
     const intersections = [];
 
     for (let i = 0; i < speedLimitGeometries.length; i++) {
-      const slg = speedLimitGeometries[i].geometry as turf_Feature<turf_Polygon>;
+      const slg = speedLimitGeometries[i].geometry;
       const intersection = turf_intersect(turf_helpers.featureCollection([raGeomPoly, slg]));
       if (intersection) {
         intersections.push(intersection);
@@ -105,7 +105,7 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
   fafs = getSpeedLimitFairwayAreas(rafs, fafs);
 
   for (const slg of getSpeedLimitGeometries(rafs)) {
-    const raGeomPoly = slg.geometry as turf_Feature<turf_Polygon>;
+    const raGeomPoly = slg.geometry;
     const intersectionPolygons = [];
 
     for (const faf of fafs) {
@@ -120,6 +120,7 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
     }
 
     let intersectionUnion = intersectionPolygons[0];
+
     for (let i = 1; i < intersectionPolygons.length; i++) {
       const u = turf_union(turf_helpers.featureCollection([intersectionUnion, intersectionPolygons[i]]));
       if (u) {
@@ -133,7 +134,7 @@ export function getSpeedLimitFeatures(rafs: Feature<Geometry>[], fafs: Feature<G
       const feat = format.readFeature(union.geometry, {
         dataProjection: 'EPSG:4326',
         featureProjection: MAP.EPSG,
-      });
+      }) as Feature<Geometry>;
       feat.setProperties({ speedLimits: slg.speedLimits });
       speedLimitFeatures.push(feat);
     }

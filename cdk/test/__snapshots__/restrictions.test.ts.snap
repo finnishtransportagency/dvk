@@ -1,0 +1,126 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should get restrictions from api 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          24.5667,
+          65.7333,
+        ],
+        "type": "Point",
+      },
+      "id": "location-2_969",
+      "properties": {
+        "featureType": "restrictionport",
+        "id": "location-2_969",
+        "name": "KEMI",
+        "restrictions": [
+          {
+            "description": "IAS 4000",
+            "id": "restriction-47_36000003",
+            "startTime": "2024-01-13T22:00:00Z",
+            "updated": "2024-04-08T07:58:38.719Z",
+          },
+          {
+            "description": "IA 4000",
+            "id": "restriction-47_35000122",
+            "startTime": "2023-02-21T22:00:00Z",
+            "updated": "2023-05-05T06:59:02.348Z",
+          },
+          {
+            "description": "IA 2000",
+            "id": "restriction-47_35000114",
+            "startTime": "2023-01-31T22:00:00Z",
+            "updated": "2023-02-17T08:23:36.416Z",
+          },
+          {
+            "description": "IB 2000",
+            "id": "restriction-47_35000095",
+            "startTime": "2023-01-06T22:00:00Z",
+            "updated": "2023-01-27T07:24:33.406Z",
+          },
+          {
+            "description": "I 2000",
+            "id": "restriction-47_35000057",
+            "startTime": "2022-12-23T22:00:00Z",
+            "updated": "2023-01-02T08:56:58.260Z",
+          },
+          {
+            "description": "II 2000",
+            "id": "restriction-47_35000001",
+            "startTime": "2022-11-30T22:00:00Z",
+            "updated": "2022-12-19T08:25:01.995Z",
+          },
+        ],
+        "updated": "2022-11-18T00:00:00.000Z",
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          27.1833,
+          60.5667,
+        ],
+        "type": "Point",
+      },
+      "id": "location-2_931",
+      "properties": {
+        "featureType": "restrictionport",
+        "id": "location-2_931",
+        "name": "HAMINA",
+        "restrictions": [
+          {
+            "description": "II 2000",
+            "id": "restriction-47_35000173",
+            "startTime": "2023-04-11T21:00:00Z",
+            "updated": "2023-04-17T08:46:23.892Z",
+          },
+          {
+            "description": "I 2000",
+            "id": "restriction-47_35000152",
+            "startTime": "2023-03-07T22:00:00Z",
+            "updated": "2023-04-13T07:13:35.706Z",
+          },
+          {
+            "description": "II 2000",
+            "id": "restriction-47_35000059",
+            "startTime": "2022-12-23T22:00:00Z",
+            "updated": "2023-03-03T07:46:27.865Z",
+          },
+        ],
+        "updated": "2023-12-19T00:00:00.000Z",
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          21.2167,
+          62.3833,
+        ],
+        "type": "Point",
+      },
+      "id": "location-2_967",
+      "properties": {
+        "featureType": "restrictionport",
+        "id": "location-2_967",
+        "name": "KASKINEN",
+        "restrictions": [
+          {
+            "description": "II 2000",
+            "id": "restriction-47_35000101",
+            "startTime": "2023-01-06T22:00:00Z",
+            "updated": "2023-04-12T07:40:36.860Z",
+          },
+        ],
+        "updated": "2022-11-18T00:00:00.000Z",
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;

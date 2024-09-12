@@ -6,10 +6,11 @@ import {
   Orientation,
   PictureInput,
   SelectedFairwayInput,
+  Status,
   TemporaryNotification,
   Text,
 } from '../graphql/generated';
-import { ItemType, Lang, SelectOption } from './constants';
+import { ItemType, Lang, SelectOption, VERSION } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
@@ -30,11 +31,19 @@ const sortByNumber = (a: number, b: number, sortDescending: boolean) => {
   return sortDescending ? b - a : a - b;
 };
 
+function searchQueryMatches(searchQuery: string, lang: Lang, name: Text, id: string) {
+  return (
+    (name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 ||
+    (id ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1
+  );
+}
+
 export const filterItemList = (
   data: FairwayCardOrHarbor[] | undefined,
   lang: Lang,
   searchQuery: string,
   itemTypes: ItemType[],
+  itemStatus: Status[],
   sortBy: string,
   sortDescending: boolean,
   t?: TFunction
@@ -44,8 +53,11 @@ export const filterItemList = (
     data
       ?.filter(
         (item) =>
-          (item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 &&
-          (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true)
+          item.version !== VERSION.LATEST &&
+          item.version !== VERSION.PUBLIC &&
+          searchQueryMatches(searchQuery, lang, item.name, item.id) &&
+          (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true) &&
+          (itemStatus.length > 0 ? itemStatus.indexOf(item.status) > -1 : true)
       )
       .sort((a, b) => {
         switch (sortBy) {
@@ -70,12 +82,40 @@ export const filterItemList = (
             return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sortDescending);
           case 'identifier':
             return sortByString(a.id, b.id, sortDescending);
+          case 'version':
+            // should be newest first when arrow down hence "!sortDescending"
+            return sortByNumber(Number(a.version.slice(1)), Number(b.version.slice(1)), !sortDescending);
           default:
             return 1;
         }
       }) ?? []
   );
 };
+
+export type FairwayCardOrHarborGroup = {
+  id: string;
+  items: FairwayCardOrHarbor[];
+};
+
+export function filterItemGroups(data: FairwayCardOrHarborGroup[], lang: Lang, searchQuery: string) {
+  return data.filter((value) => {
+    return value.items.some((item) => searchQueryMatches(searchQuery, lang, item.name, item.id));
+  });
+}
+
+export function getDefiningVersionName(items: FairwayCardOrHarbor[], lang: Lang) {
+  // Use name from version: 1. public 2.latest 3.first from list (precaution)
+  const item = items.find((val) => val.version === VERSION.PUBLIC) ?? items.find((val) => val.version === VERSION.LATEST);
+  return item ? (item?.name[lang] ?? item?.name.fi) : (items[0].name[lang] ?? items[0].name.fi);
+}
+
+export function sortItemGroups(data: FairwayCardOrHarborGroup[], lang: Lang) {
+  return data.sort((a, b) => {
+    const nameA = getDefiningVersionName(a.items, lang);
+    const nameB = getDefiningVersionName(b.items, lang);
+    return sortByString(nameA, nameB, false);
+  });
+}
 
 export const isInputOk = (isValid: boolean, error: string | undefined) => {
   return isValid && (!error || error === '');
