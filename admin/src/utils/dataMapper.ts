@@ -6,7 +6,7 @@ const stringValueOrDefault = (value: string | null | undefined): string => {
   return value ?? '';
 };
 
-function mapPictures(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined, copyPictures: boolean | undefined) {
+function mapPictures(origin: string | undefined, data: FairwayCardByIdQuery | undefined, copyPictures: boolean | undefined) {
   // If card is based on another card, copying pictures is optional
   return origin && !copyPictures
     ? []
@@ -29,7 +29,7 @@ function mapPictures(origin: boolean | undefined, data: FairwayCardByIdQuery | u
       );
 }
 
-export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined, copyPictures?: boolean) {
+export function mapToFairwayCardInput(origin: string | undefined, data: FairwayCardByIdQuery | undefined, copyPictures?: boolean) {
   return {
     id: origin ? '' : stringValueOrDefault(data?.fairwayCard?.id),
     // v1 is just for now, since proper version control not in use

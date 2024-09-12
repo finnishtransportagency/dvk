@@ -9,7 +9,7 @@ import { mapToFairwayCardInput } from '../utils/dataMapper';
 interface FairwayCardEditProps {
   fairwayCardId: string;
   fairwayCardVersion?: string;
-  origin?: boolean;
+  origin?: string;
   copyPictures?: boolean;
 }
 
@@ -29,6 +29,7 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fa
           modifier={origin ? '-' : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
           creator={origin ? userData?.currentUser?.name : (data?.fairwayCard?.creator ?? undefined)}
           created={origin ? 0 : (data?.fairwayCard?.creationTimestamp ?? undefined)}
+          origin={origin}
           isError={isError}
         />
       )}
@@ -96,7 +97,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
         <FairwayCardEditForm
           fairwayCardId={locationState.origin.id}
           fairwayCardVersion={locationState.origin.version}
-          origin
+          origin={locationState.origin.id}
           copyPictures={locationState?.copyPictures}
         />
       )}

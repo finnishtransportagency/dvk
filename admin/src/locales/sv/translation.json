@@ -239,6 +239,7 @@
     "print-images-card-id-required": "[sv] Kelvollinen väyläkortin tunniste pitää olla syötettynä ennen kuin tulostekuvia voidaan ottaa/asettaa. Kuvan asettamisen jälkeen tunnistetta ei voi enää muuttaa ilman, että kaikki asetetut kuvat ensin poistetaan.",
     "notForNavigation": "Ej för navigation",
     "toggle-sequence": "[sv] Aseta järjestysnumero",
+    "pic-copy": "[sv] kopio",
     "fairway-additional-info": "Ytterligare information",
     "fairway-additional-info-notification-header": "[sv] Lisätietojen lisääminen väyläkortille",
     "fairway-additional-info-notification-body": "[sv] Väyläkortille on mahdollista lisätä lisätietoja, esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",

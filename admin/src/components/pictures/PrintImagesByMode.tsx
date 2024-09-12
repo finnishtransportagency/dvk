@@ -27,6 +27,7 @@ interface PrintImagesByModeProps {
   isLoading?: boolean;
   isProcessingCurLang?: boolean;
   validationErrors?: ValidationType[];
+  origin?: string;
 }
 
 export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
@@ -38,11 +39,13 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   isLoading,
   isProcessingCurLang,
   validationErrors,
+  origin,
 }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
-
   const dvkMap = getMap();
+
+  const copiedPictures = origin && origin.length > 0;
 
   const mainPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && (pic.lang === curLang || !pic.lang));
   const secondaryPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && pic.lang !== curLang);
@@ -101,6 +104,8 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
       <IonRow>
         {mainPictures?.map((pic, idx) => {
           const groupedPics = secondaryPictures?.filter((p) => p.groupId && p.groupId === pic.groupId);
+          const imgSource = `${imageUrl}${copiedPictures ? origin : fairwayCardInput.id}/`;
+
           return (
             <IonCol key={pic.id} size="auto">
               <IonGrid className="picWrapper">
@@ -108,13 +113,13 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                   <IonCol size="auto">
                     <a
                       className={'picLink' + (pic.sequenceNumber ? ' selected' : '')}
-                      href={imageUrl + fairwayCardInput.id + '/' + pic.id}
+                      href={imgSource + pic.id}
                       onClick={(ev) => {
                         ev.preventDefault();
                         setShowPicture(pic);
                       }}
                     >
-                      <img src={imageUrl + fairwayCardInput.id + '/' + pic.id} alt={pic.id} />
+                      <img src={imgSource + pic.id} alt={copiedPictures ? `${t('fairwaycard.pic-copy')}-${pic.id}` : pic.id} />
                       <IonButton
                         slot="end"
                         onClick={(ev) => {
@@ -152,13 +157,17 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           <IonCol key={groupedPic.id + groupedPic.groupId} size="auto">
                             <a
                               className={'picLink' + (pic.sequenceNumber ? ' selected' : '')}
-                              href={imageUrl + fairwayCardInput.id + '/' + groupedPic.id}
+                              href={imgSource + groupedPic.id}
                               onClick={(ev) => {
                                 ev.preventDefault();
                                 setShowPicture(groupedPic);
                               }}
                             >
-                              <img src={imageUrl + fairwayCardInput.id + '/' + groupedPic.id} alt={groupedPic.id} className="small" />
+                              <img
+                                src={imgSource + groupedPic.id}
+                                alt={copiedPictures ? `${t('fairwaycard.pic-copy')}-${groupedPic.id}` : groupedPic.id}
+                                className="small"
+                              />
                             </a>
                           </IonCol>
                         ))}

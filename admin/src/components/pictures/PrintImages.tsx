@@ -22,6 +22,7 @@ interface PrintImageProps {
   isLoading?: boolean;
   validationErrors?: ValidationType[];
   isProcessingCurLang?: boolean;
+  origin?: string;
 }
 
 export const PrintImages: React.FC<PrintImageProps> = ({
@@ -31,6 +32,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
   disabled,
   validationErrors,
   isProcessingCurLang,
+  origin,
 }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
@@ -78,6 +80,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         isLoading={dvkMap.getOrientationType() === Orientation.Portrait && isLoading}
         isProcessingCurLang={isProcessingCurLang}
         validationErrors={validationErrors}
+        origin={origin}
       />
 
       <IonText>
@@ -108,6 +111,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         isLoading={dvkMap.getOrientationType() === Orientation.Landscape && isLoading}
         isProcessingCurLang={isProcessingCurLang}
         validationErrors={validationErrors}
+        origin={origin}
       />
     </>
   );

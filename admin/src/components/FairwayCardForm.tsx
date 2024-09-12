@@ -46,10 +46,11 @@ interface FormProps {
   modifier?: string;
   creator?: string;
   created?: number;
+  origin?: string;
   isError?: boolean;
 }
 
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, origin, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -78,7 +79,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
-      setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
+      setOldState(mapToFairwayCardInput(undefined, { fairwayCard: data.saveFairwayCard }));
       setNotificationOpen(true);
       if (previewPending) {
         handleOpenPreview();
@@ -375,6 +376,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 setPicture={updateState}
                 fairways={fairwaySelection}
                 harbours={harbourSelection}
+                origin={origin}
               />
             </form>
           </>
