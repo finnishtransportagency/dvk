@@ -181,6 +181,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     container.addEventListener('touchmove', (e) => {
       e.preventDefault();
     });
+    container.addEventListener('pointermove', (e) => {
+      e.stopPropagation();
+    });
   }
 
   addPointerMoveInteraction(map, types);

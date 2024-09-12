@@ -54,7 +54,9 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
           <div key={uniqueId()}>
             {numberOfFairways > 1 && (
               <IonText>
-                <h5 className="fairwayAreasFairwayName">{getFairwayName(fairway, lang)}:</h5>
+                <h5 className="fairwayAreasFairwayName">
+                  {getFairwayName(fairway, lang)}&nbsp;{fairway.id}:
+                </h5>
               </IonText>
             )}
             <ol start={startIndex - fairwayAreas.length}>
