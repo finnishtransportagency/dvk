@@ -146,39 +146,30 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const saveCard = useCallback(
     (isRemove?: boolean) => {
+      const cardInput = isRemove ? oldState : state;
+      const newInput = {
+        ...cardInput,
+        trafficService: {
+          ...cardInput.trafficService,
+          pilot: {
+            ...cardInput.trafficService?.pilot,
+            places: cardInput.trafficService?.pilot?.places?.map((place) => {
+              return { id: place.id, pilotJourney: place.pilotJourney };
+            }),
+          },
+        },
+      };
+
       if (isRemove) {
-        const oldCard = {
-          ...oldState,
-          trafficService: {
-            ...oldState.trafficService,
-            pilot: {
-              ...oldState.trafficService?.pilot,
-              places: oldState.trafficService?.pilot?.places?.map((place) => {
-                return { id: place.id, pilotJourney: place.pilotJourney };
-              }),
-            },
-          },
-          status: Status.Removed,
-        };
         setState({ ...oldState, status: Status.Removed });
-        saveFairwayCard({ card: oldCard as FairwayCardInput });
+        saveFairwayCard({ card: { ...newInput, status: Status.Removed } as FairwayCardInput });
+      } else if (!!origin?.length && !!state.pictures?.length) {
+        saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: origin });
       } else {
-        const currentCard = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              places: state.trafficService?.pilot?.places?.map((place) => {
-                return { id: place.id, pilotJourney: place.pilotJourney };
-              }),
-            },
-          },
-        };
-        saveFairwayCard({ card: currentCard as FairwayCardInput });
+        saveFairwayCard({ card: newInput as FairwayCardInput });
       }
     },
-    [state, oldState, saveFairwayCard]
+    [state, oldState, origin, saveFairwayCard]
   );
 
   const formValid = (): boolean => {
@@ -322,6 +313,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 harbourOptions={harbourOptions}
                 isLoadingPilotRoutes={isLoadingPilotRoutes}
                 pilotRouteOptions={pilotRouteList}
+                origin={origin}
               />
               <NotificationSection
                 state={state}

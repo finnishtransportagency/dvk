@@ -45,8 +45,6 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   const curLang = i18n.resolvedLanguage as Lang;
   const dvkMap = getMap();
 
-  const copiedPictures = origin && origin.length > 0;
-
   const mainPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && (pic.lang === curLang || !pic.lang));
   const secondaryPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && pic.lang !== curLang);
   const groupedPicTexts: PictureGroup[] = [];
@@ -104,7 +102,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
       <IonRow>
         {mainPictures?.map((pic, idx) => {
           const groupedPics = secondaryPictures?.filter((p) => p.groupId && p.groupId === pic.groupId);
-          const imgSource = `${imageUrl}${copiedPictures ? origin : fairwayCardInput.id}/`;
+          const imgSource = `${imageUrl}${origin?.length ? origin : fairwayCardInput.id}/`;
 
           return (
             <IonCol key={pic.id} size="auto">
@@ -119,7 +117,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                         setShowPicture(pic);
                       }}
                     >
-                      <img src={imgSource + pic.id} alt={copiedPictures ? `${t('fairwaycard.pic-copy')}-${pic.id}` : pic.id} />
+                      <img src={imgSource + pic.id} alt={origin?.length ? `${t('fairwaycard.pic-copy')}-${pic.id}` : pic.id} />
                       <IonButton
                         slot="end"
                         onClick={(ev) => {
@@ -165,7 +163,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                             >
                               <img
                                 src={imgSource + groupedPic.id}
-                                alt={copiedPictures ? `${t('fairwaycard.pic-copy')}-${groupedPic.id}` : groupedPic.id}
+                                alt={origin?.length ? `${t('fairwaycard.pic-copy')}-${groupedPic.id}` : groupedPic.id}
                                 className="small"
                               />
                             </a>
