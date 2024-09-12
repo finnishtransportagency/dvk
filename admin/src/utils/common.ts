@@ -337,3 +337,7 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
     };
   });
 }
+
+export const isDigitsOnly = (s: string) => {
+  return /^\d+$/.test(s);
+};

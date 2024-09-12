@@ -529,7 +529,6 @@ export const harbourReducer = (
             : '',
         })
     );
-    console.log(validationErrors);
   }
 
   return newState;
