@@ -333,9 +333,7 @@ ion-select.selectInput.select-expanded {
   border-image-width: 2px;
 }
 
-/* Hide default focus outline when focused on keyboard */
 ion-select.selectInput.ion-focused {
-  outline: none;
   /* Use same background color as ion-item when focused (ion-color-dark with opacity 0.12) */
   background-color: rgba(51, 51, 51, 0.12);
 }
