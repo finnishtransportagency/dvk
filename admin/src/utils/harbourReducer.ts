@@ -448,18 +448,6 @@ export const harbourReducer = (
           msg: !currentQuay?.geometry?.lat?.trim() ? t(ErrorMessageKeys?.required) || '' : '',
         })
     );
-  } else if ((actionType === 'quayLat' || actionType === 'quayLon') && actionTarget !== undefined) {
-    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
-    setValidationErrors(
-      validationErrors
-        .filter((error) => error.id !== 'quayLocation-' + actionTarget)
-        .concat({
-          id: 'quayLocation-' + actionTarget,
-          msg: locationError(Number(actionTarget), newState.quays, currentQuay?.geometry?.lat, currentQuay?.geometry?.lon)
-            ? t(ErrorMessageKeys?.duplicateLocation) || ''
-            : '',
-        })
-    );
   } else if (
     actionType === 'quayLon' &&
     actionTarget !== undefined &&
@@ -472,6 +460,22 @@ export const harbourReducer = (
         .concat({
           id: 'quayLon-' + actionTarget,
           msg: !currentQuay?.geometry?.lon?.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if ((actionType === 'quayLat' || actionType === 'quayLon') && actionTarget !== undefined) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'quayLocation-' + actionTarget)
+        .concat({
+          id: 'quayLocation-' + actionTarget,
+          msg: locationError(
+            Number(actionTarget),
+            newState.quays?.map((q) => q?.geometry),
+            currentQuay?.geometry
+          )
+            ? t(ErrorMessageKeys?.duplicateLocation) || ''
+            : '',
         })
     );
   } else if (actionType === 'section' && actionTarget !== undefined && actionOuterTarget !== undefined) {
@@ -508,6 +512,24 @@ export const harbourReducer = (
           msg: currentSection?.geometry?.lat.trim() || currentSection?.geometry?.lon.trim() ? t(ErrorMessageKeys?.required) || '' : '',
         })
     );
+  } else if ((actionType === 'sectionLat' || actionType === 'sectionLon') && actionTarget !== undefined && actionOuterTarget !== undefined) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionOuterTarget);
+    const currentSection = currentQuay?.sections?.find((sectionItem, jdx) => jdx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'sectionLocation-' + actionOuterTarget + '-' + actionTarget)
+        .concat({
+          id: 'sectionLocation-' + actionOuterTarget + '-' + actionTarget,
+          msg: locationError(
+            Number(actionTarget),
+            newState.quays?.flatMap((q) => q?.sections?.map((s) => s?.geometry)),
+            currentSection?.geometry
+          )
+            ? t(ErrorMessageKeys?.duplicateLocation) || ''
+            : '',
+        })
+    );
+    console.log(validationErrors);
   }
 
   return newState;

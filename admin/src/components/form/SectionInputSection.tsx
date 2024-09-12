@@ -80,9 +80,9 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
             required={!!section.geometry?.lat || !!section.geometry?.lon}
             inputType="latitude"
             error={
-              !section.geometry?.lat && section.geometry?.lon
+              (!section.geometry?.lat && section.geometry?.lon
                 ? validationErrors?.find((error) => error.id === 'sectionGeometry-' + actionOuterTarget + '-' + idx)?.msg
-                : undefined
+                : undefined) ?? validationErrors?.find((error) => error.id === 'sectionLocation-' + actionOuterTarget + '-' + idx)?.msg
             }
             disabled={disabled}
           />
@@ -98,9 +98,9 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
             required={!!section.geometry?.lat || !!section.geometry?.lon}
             inputType="longitude"
             error={
-              section.geometry?.lat && !section.geometry?.lon
+              (section.geometry?.lat && !section.geometry?.lon
                 ? validationErrors?.find((error) => error.id === 'sectionGeometry-' + actionOuterTarget + '-' + idx)?.msg
-                : undefined
+                : undefined) ?? validationErrors?.find((error) => error.id === 'sectionLocation-' + actionOuterTarget + '-' + idx)?.msg
             }
             disabled={disabled}
           />
