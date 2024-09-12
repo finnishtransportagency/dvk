@@ -1,6 +1,7 @@
 import { t } from 'i18next';
 import { HarborInput, Operation, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
+import { locationError } from './formValidations';
 
 export const harbourReducer = (
   state: HarborInput,
@@ -443,6 +444,22 @@ export const harbourReducer = (
         .concat({
           id: 'quayLat-' + actionTarget,
           msg: !currentQuay?.geometry?.lat?.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if (
+    (actionType === 'quayLat' || actionType === 'quayLon') &&
+    actionTarget !== undefined &&
+    validationErrors.find((error) => error.id === 'quayLocation-' + actionTarget)?.msg
+  ) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'quayLocation-' + actionTarget)
+        .concat({
+          id: 'quayLocation-' + actionTarget,
+          msg: locationError(Number(actionTarget), newState.quays, currentQuay?.geometry?.lat, currentQuay?.geometry?.lon)
+            ? t(ErrorMessageKeys?.duplicateLocation) || ''
+            : '',
         })
     );
   } else if (

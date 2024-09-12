@@ -21,12 +21,14 @@ export type ErrorMessageType = {
   invalid: string;
   duplicateId: string;
   endDateError: string;
+  duplicateLocation: string;
 };
 export const ErrorMessageKeys: ErrorMessageType = {
   required: 'general.required-field',
   invalid: 'general.check-input',
   duplicateId: 'fairwaycard.error-duplicate-id',
   endDateError: 'general.end-date-error',
+  duplicateLocation: 'harbour.error-duplicate-location',
 };
 
 export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput[];

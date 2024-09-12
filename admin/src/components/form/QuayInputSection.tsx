@@ -79,7 +79,10 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
             actionTarget={idx}
             inputType="latitude"
             required
-            error={validationErrors?.find((error) => error.id === 'quayLat-' + idx)?.msg}
+            error={
+              validationErrors?.find((error) => error.id === 'quayLat-' + idx)?.msg ??
+              validationErrors?.find((error) => error.id === 'quayLocation-' + idx)?.msg
+            }
             disabled={disabled}
           />
         </IonCol>
@@ -92,7 +95,10 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
             actionTarget={idx}
             inputType="longitude"
             required
-            error={validationErrors?.find((error) => error.id === 'quayLon-' + idx)?.msg}
+            error={
+              validationErrors?.find((error) => error.id === 'quayLon-' + idx)?.msg ??
+              validationErrors?.find((error) => error.id === 'quayLocation-' + idx)?.msg
+            }
             disabled={disabled}
           />
         </IonCol>

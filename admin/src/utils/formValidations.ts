@@ -1,5 +1,5 @@
 import { diff } from 'deep-object-diff';
-import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text } from '../graphql/generated';
+import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, QuayInput, InputMaybe } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
 import { dateError, endDateError } from './common';
 
@@ -13,6 +13,10 @@ export function translationError(input?: TextInput | Text | null): boolean {
 
 function geometryError(input?: GeometryInput | null): boolean {
   return (!!input?.lat.trim() || !!input?.lon.trim()) && (!input?.lat.trim() || !input.lon.trim());
+}
+
+export function locationError(quayIdx: number, quays?: InputMaybe<Array<InputMaybe<QuayInput>>>, lat?: string, lon?: string) {
+  return quays?.some((q, i) => quayIdx !== i && q?.geometry?.lat === lat && q?.geometry?.lon === lon);
 }
 
 function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
@@ -229,7 +233,7 @@ export function validateFairwayCardForm(
   );
 }
 
-function validateQuay(state: HarborInput, requiredMsg: string) {
+function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocationMsg: string) {
   const quayNameErrors =
     state.quays
       ?.flatMap((quay, i) => (translationError(quay?.name) ? i : null))
@@ -270,6 +274,16 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
           msg: requiredMsg,
         };
       }) ?? [];
+  const quayLocationErrors =
+    state.quays
+      ?.flatMap((quay, i) => (locationError(i, state?.quays, quay?.geometry?.lat, quay?.geometry?.lon) ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((qIndex) => {
+        return {
+          id: 'quayLocation-' + qIndex,
+          msg: duplicateLocationMsg,
+        };
+      }) ?? [];
   const sectionGeometryErrors =
     state.quays
       ?.map((quay) => quay?.sections?.flatMap((section, j) => (geometryError(section?.geometry) ? j : null)).filter((val) => Number.isInteger(val)))
@@ -283,10 +297,15 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
           }) ?? []
         );
       }) ?? [];
-  return { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, sectionGeometryErrors };
+  return { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, quayLocationErrors, sectionGeometryErrors };
 }
 
-export function validateHarbourForm(state: HarborInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
+export function validateHarbourForm(
+  state: HarborInput,
+  requiredMsg: string,
+  primaryIdErrorMsg: string,
+  duplicateLocationErrorMsg: string
+): ValidationType[] {
   const manualValidations = [
     { id: 'name', msg: requiredError(state.name) ? requiredMsg : '' },
     {
@@ -310,8 +329,12 @@ export function validateHarbourForm(state: HarborInput, requiredMsg: string, pri
     { id: 'lon', msg: !state.geometry?.lon ? requiredMsg : '' },
   ];
 
-  const { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, sectionGeometryErrors } = validateQuay(state, requiredMsg);
-  return manualValidations.concat(quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, sectionGeometryErrors);
+  const { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, quayLocationErrors, sectionGeometryErrors } = validateQuay(
+    state,
+    requiredMsg,
+    duplicateLocationErrorMsg
+  );
+  return manualValidations.concat(quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, quayLocationErrors, sectionGeometryErrors);
 }
 
 export function hasUnsavedChanges(oldState: FairwayCardInput | HarborInput, currentState: FairwayCardInput | HarborInput) {
