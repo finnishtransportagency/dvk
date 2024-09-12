@@ -375,7 +375,8 @@ export const harbourReducer = (
           error.id.startsWith('quayExtraInfo-') ||
           error.id.startsWith('quayLat-') ||
           error.id.startsWith('quayLon-') ||
-          error.id.startsWith('sectionGeometry-')
+          error.id.startsWith('sectionGeometry-') ||
+          error.id.startsWith('quayLocation-')
       )
       .forEach((error) => {
         const errorSplitted = error.id.split('-');
@@ -396,7 +397,8 @@ export const harbourReducer = (
             !error.id.startsWith('quayExtraInfo-') &&
             !error.id.startsWith('quayLat-') &&
             !error.id.startsWith('quayLon-') &&
-            !error.id.startsWith('sectionGeometry-')
+            !error.id.startsWith('sectionGeometry-') &&
+            !error.id.startsWith('quayLocation-')
         )
         .concat(quayFieldErrors)
     );
@@ -446,11 +448,7 @@ export const harbourReducer = (
           msg: !currentQuay?.geometry?.lat?.trim() ? t(ErrorMessageKeys?.required) || '' : '',
         })
     );
-  } else if (
-    (actionType === 'quayLat' || actionType === 'quayLon') &&
-    actionTarget !== undefined &&
-    validationErrors.find((error) => error.id === 'quayLocation-' + actionTarget)?.msg
-  ) {
+  } else if ((actionType === 'quayLat' || actionType === 'quayLon') && actionTarget !== undefined) {
     const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
     setValidationErrors(
       validationErrors

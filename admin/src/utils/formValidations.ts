@@ -274,9 +274,20 @@ function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocation
           msg: requiredMsg,
         };
       }) ?? [];
+  let firstMatchFound = false;
   const quayLocationErrors =
     state.quays
-      ?.flatMap((quay, i) => (locationError(i, state?.quays, quay?.geometry?.lat, quay?.geometry?.lon) ? i : null))
+      ?.flatMap((quay, i) => {
+        const hasError = locationError(i, state?.quays, quay?.geometry?.lat, quay?.geometry?.lon);
+        if (hasError) {
+          if (!firstMatchFound) {
+            firstMatchFound = true;
+            return null;
+          }
+          return i;
+        }
+        return null;
+      })
       .filter((val) => Number.isInteger(val))
       .map((qIndex) => {
         return {
