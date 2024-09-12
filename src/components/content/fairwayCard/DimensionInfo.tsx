@@ -120,7 +120,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                   {numberOfFairways > 1 && (
                     <>
                       {idx > 0 && <br />}
-                      {getFairwayName(fairway, lang)}:
+                      {getFairwayName(fairway, lang)}&nbsp;{fairway.id}:
                       <br />
                     </>
                   )}

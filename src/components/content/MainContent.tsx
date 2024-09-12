@@ -227,7 +227,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                       </button>
                     </IonCol>
                     <IonCol className="ion-margin-start ion-margin-end">
-                      <div className="dropdownWrapper">
+                      <div className={'dropdownWrapper' + (widePane ? '' : ' placeholderSmallerFont')}>
                         <IonInput
                           disabled={state.preview}
                           aria-disabled={state.preview}
