@@ -22,7 +22,7 @@ interface PrintImageProps {
   isLoading?: boolean;
   validationErrors?: ValidationType[];
   isProcessingCurLang?: boolean;
-  origin?: string;
+  sourceCard?: string;
 }
 
 export const PrintImages: React.FC<PrintImageProps> = ({
@@ -32,7 +32,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
   disabled,
   validationErrors,
   isProcessingCurLang,
-  origin,
+  sourceCard,
 }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
@@ -47,10 +47,18 @@ export const PrintImages: React.FC<PrintImageProps> = ({
   const savedPicturesLandscape = fairwayCardInput.pictures?.filter(
     (pic) => pic.orientation === Orientation.Landscape && (pic.lang === curLang || !pic.lang)
   );
+
   return (
     <>
       <HelpModal orientation={showOrientationHelp} setIsOpen={setShowOrientationHelp} />
-      <ImageModal fairwayCardInput={fairwayCardInput} picture={showPicture} setIsOpen={setShowPicture} setPicture={setPicture} />
+      <ImageModal
+        fairwayCardInput={fairwayCardInput}
+        picture={showPicture}
+        setIsOpen={setShowPicture}
+        setPicture={setPicture}
+        disabled={disabled}
+        sourceCard={sourceCard}
+      />
 
       <IonText>
         <h4>
@@ -80,7 +88,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         isLoading={dvkMap.getOrientationType() === Orientation.Portrait && isLoading}
         isProcessingCurLang={isProcessingCurLang}
         validationErrors={validationErrors}
-        origin={origin}
+        sourceCard={sourceCard}
       />
 
       <IonText>
@@ -111,7 +119,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         isLoading={dvkMap.getOrientationType() === Orientation.Landscape && isLoading}
         isProcessingCurLang={isProcessingCurLang}
         validationErrors={validationErrors}
-        origin={origin}
+        sourceCard={sourceCard}
       />
     </>
   );

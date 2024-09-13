@@ -46,11 +46,11 @@ interface FormProps {
   modifier?: string;
   creator?: string;
   created?: number;
-  origin?: string;
+  sourceCard?: string;
   isError?: boolean;
 }
 
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, origin, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, sourceCard, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -163,13 +163,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (isRemove) {
         setState({ ...oldState, status: Status.Removed });
         saveFairwayCard({ card: { ...newInput, status: Status.Removed } as FairwayCardInput });
-      } else if (!!origin?.length && !!state.pictures?.length) {
-        saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: origin });
+      } else if (!!sourceCard?.length && !!state.pictures?.length) {
+        saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: sourceCard });
       } else {
         saveFairwayCard({ card: newInput as FairwayCardInput });
       }
     },
-    [state, oldState, origin, saveFairwayCard]
+    [state, oldState, sourceCard, saveFairwayCard]
   );
 
   const formValid = (): boolean => {
@@ -313,7 +313,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 harbourOptions={harbourOptions}
                 isLoadingPilotRoutes={isLoadingPilotRoutes}
                 pilotRouteOptions={pilotRouteList}
-                origin={origin}
+                origin={sourceCard}
               />
               <NotificationSection
                 state={state}
@@ -368,7 +368,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 setPicture={updateState}
                 fairways={fairwaySelection}
                 harbours={harbourSelection}
-                origin={origin}
+                sourceCard={sourceCard}
               />
             </form>
           </>

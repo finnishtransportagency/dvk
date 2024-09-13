@@ -27,7 +27,7 @@ interface PrintImagesByModeProps {
   isLoading?: boolean;
   isProcessingCurLang?: boolean;
   validationErrors?: ValidationType[];
-  origin?: string;
+  sourceCard?: string;
 }
 
 export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
@@ -39,7 +39,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   isLoading,
   isProcessingCurLang,
   validationErrors,
-  origin,
+  sourceCard,
 }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
@@ -102,7 +102,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
       <IonRow>
         {mainPictures?.map((pic, idx) => {
           const groupedPics = secondaryPictures?.filter((p) => p.groupId && p.groupId === pic.groupId);
-          const imgSource = `${imageUrl}${origin?.length ? origin : fairwayCardInput.id}/`;
+          const imgSource = `${imageUrl}${sourceCard?.length ? sourceCard : fairwayCardInput.id}/`;
 
           return (
             <IonCol key={pic.id} size="auto">
@@ -117,7 +117,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                         setShowPicture(pic);
                       }}
                     >
-                      <img src={imgSource + pic.id} alt={origin?.length ? `${t('fairwaycard.pic-copy')}-${pic.id}` : pic.id} />
+                      <img src={imgSource + pic.id} alt={sourceCard?.length ? `${t('fairwaycard.pic-copy')}-${pic.id}` : pic.id} />
                       <IonButton
                         slot="end"
                         onClick={(ev) => {
@@ -163,7 +163,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                             >
                               <img
                                 src={imgSource + groupedPic.id}
-                                alt={origin?.length ? `${t('fairwaycard.pic-copy')}-${groupedPic.id}` : groupedPic.id}
+                                alt={sourceCard?.length ? `${t('fairwaycard.pic-copy')}-${groupedPic.id}` : groupedPic.id}
                                 className="small"
                               />
                             </a>
@@ -223,7 +223,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           actionType="pictureDescription"
                           actionTarget={pic.groupId ?? ''}
                           required={!!pic.text || !!groupedPics?.filter((gPic) => gPic.text).length}
-                          disabled={false}
+                          disabled={disabled}
                           error={
                             pic.text || groupedPics?.filter((gPic) => gPic.text).length
                               ? validationErrors?.find((error) => error.id === 'pictureText-' + pic.groupId)?.msg
