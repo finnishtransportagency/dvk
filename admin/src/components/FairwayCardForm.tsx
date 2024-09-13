@@ -361,7 +361,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <IonText>
                 <h2>
                   {t('fairwaycard.print-images')}
-                  {!!sourceCard?.length && <span className="print-images-warning">{t('fairwaycard.print-images-warning')}</span>}
+                  {!!sourceCard?.length && !!state.pictures?.length && (
+                    <span className="print-images-warning">{t('fairwaycard.print-images-warning')}</span>
+                  )}
                 </h2>
               </IonText>
 
