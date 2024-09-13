@@ -313,7 +313,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 harbourOptions={harbourOptions}
                 isLoadingPilotRoutes={isLoadingPilotRoutes}
                 pilotRouteOptions={pilotRouteList}
-                origin={sourceCard}
+                sourceCard={sourceCard}
               />
               <NotificationSection
                 state={state}
