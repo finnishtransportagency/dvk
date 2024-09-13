@@ -78,6 +78,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
     setIsValid(required ? validity && !error : true);
     setIsTouched(true);
   };
+
   const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
     if (isTouched) checkValidity(event);
     setSelected(event.detail.value, actionType);
