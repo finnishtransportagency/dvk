@@ -215,6 +215,7 @@
     "tug-heading": "Hinaaja",
     "tug-name": "Hinaajan nimi",
     "print-images": "Väyläkortin tuloste",
+    "print-images-warning": "Kopioidut kuvat tulevat käyttöösi vasta kun tallennat luonnoksen yksilöivällä tunnisteella.",
     "print-images-portrait": "Väyläkortin tulosteet, pysty",
     "print-images-landscape": "Väyläkortin tulosteet, vaaka",
     "print-images-info-ingress-1-PORTRAIT": "Et ole asettanut väyläkortille vielä yhtään pystysuuntaista tulostekuvaa.",

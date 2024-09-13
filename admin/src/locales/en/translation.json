@@ -207,6 +207,7 @@
     "tug-heading": "Tug",
     "tug-name": "Tugboat name",
     "print-images": "Fairway card print",
+    "print-images-warning": "[en] Kopioidut kuvat tulevat käyttöösi vasta kun tallennat luonnoksen yksilöivällä tunnisteella.",
     "print-images-portrait": "Fairway card prints, portrait",
     "print-images-landscape": "Fairway card prints, landscape",
     "print-images-info-ingress-1-PORTRAIT": "[en] Et ole asettanut väyläkortille vielä yhtään pystysuuntaista tulostekuvaa.",

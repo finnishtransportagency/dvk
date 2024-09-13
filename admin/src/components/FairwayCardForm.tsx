@@ -359,8 +359,12 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               />
 
               <IonText>
-                <h2>{t('fairwaycard.print-images')}</h2>
+                <h2>
+                  {t('fairwaycard.print-images')}
+                  {!!sourceCard?.length && <span className="print-images-warning">{t('fairwaycard.print-images-warning')}</span>}
+                </h2>
               </IonText>
+
               <MapExportTool
                 fairwayCardInput={state}
                 disabled={state.status === Status.Removed}

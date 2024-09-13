@@ -207,6 +207,7 @@
     "tug-heading": "Bogserbåt",
     "tug-name": "Bogserbåt namn",
     "print-images": "[sv] Väyläkortin tuloste",
+    "print-images-warning": "[sv] Kopioidut kuvat tulevat käyttöösi vasta kun tallennat luonnoksen yksilöivällä tunnisteella.",
     "print-images-portrait": "[sv] Väyläkortin tulosteet, pysty",
     "print-images-landscape": "[sv] Väyläkortin tulosteet, vaaka",
     "print-images-info-ingress-1-PORTRAIT": "[sv] Et ole asettanut väyläkortille vielä yhtään pystysuuntaista tulostekuvaa.",
