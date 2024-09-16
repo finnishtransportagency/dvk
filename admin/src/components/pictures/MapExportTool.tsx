@@ -336,7 +336,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
               setPicture={setPicture}
               isLoading={isLoadingMutation}
               isProcessingCurLang={isProcessingCurLang}
-              disabled={!fairwayCardInput.id || disabled}
+              disabled={disabled}
               validationErrors={validationErrors}
               sourceCard={sourceCard}
             />

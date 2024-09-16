@@ -73,7 +73,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
             }}
             title={t('general.show-help') ?? ''}
             aria-label={t('general.show-help') ?? ''}
-            disabled={!savedPicturesPortrait?.length}
+            disabled={!fairwayCardInput.id || !savedPicturesPortrait?.length}
           >
             <IonIcon icon={helpIcon} />
           </IonButton>
@@ -104,7 +104,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
             }}
             title={t('general.show-help') ?? ''}
             aria-label={t('general.show-help') ?? ''}
-            disabled={!savedPicturesLandscape?.length}
+            disabled={!fairwayCardInput.id || !savedPicturesLandscape?.length}
           >
             <IonIcon icon={helpIcon} />
           </IonButton>

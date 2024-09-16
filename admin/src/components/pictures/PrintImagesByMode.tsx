@@ -45,6 +45,8 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   const curLang = i18n.resolvedLanguage as Lang;
   const dvkMap = getMap();
 
+  const previewDisabled = !fairwayCardInput.id;
+
   const mainPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && (pic.lang === curLang || !pic.lang));
   const secondaryPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && pic.lang !== curLang);
   const groupedPicTexts: PictureGroup[] = [];
@@ -110,7 +112,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                 <IonRow>
                   <IonCol size="auto">
                     <a
-                      className={'picLink' + (pic.sequenceNumber ? ' selected' : '')}
+                      className={`picLink${pic.sequenceNumber ? ' selected' : ''}${previewDisabled ? ' disabled' : ''}`}
                       href={imgSource + pic.id}
                       onClick={(ev) => {
                         ev.preventDefault();
@@ -126,7 +128,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           toggleSequence(pic);
                         }}
                         fill="clear"
-                        disabled={disabled}
+                        disabled={previewDisabled || disabled}
                         className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
                         title={t('fairwaycard.toggle-sequence') ?? ''}
                         aria-label={t('fairwaycard.toggle-sequence') ?? ''}
@@ -136,7 +138,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                       <IonButton
                         slot="end"
                         fill="clear"
-                        disabled={disabled}
+                        disabled={previewDisabled || disabled}
                         className="icon-only x-small deletePicture"
                         onClick={(ev) => {
                           ev.preventDefault();
@@ -154,7 +156,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                         {groupedPics?.map((groupedPic) => (
                           <IonCol key={groupedPic.id + groupedPic.groupId} size="auto">
                             <a
-                              className={'picLink' + (pic.sequenceNumber ? ' selected' : '')}
+                              className={`picLink${pic.sequenceNumber ? ' selected' : ''}${previewDisabled ? ' disabled' : ''}`}
                               href={imgSource + groupedPic.id}
                               onClick={(ev) => {
                                 ev.preventDefault();
@@ -223,7 +225,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           actionType="pictureDescription"
                           actionTarget={pic.groupId ?? ''}
                           required={!!pic.text || !!groupedPics?.filter((gPic) => gPic.text).length}
-                          disabled={disabled}
+                          disabled={previewDisabled || disabled}
                           error={
                             pic.text || groupedPics?.filter((gPic) => gPic.text).length
                               ? validationErrors?.find((error) => error.id === 'pictureText-' + pic.groupId)?.msg
