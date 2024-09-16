@@ -32,6 +32,8 @@
         "layer": {
           "tipLabel": "Valitse tasot",
           "header": "Kartan tasot",
+          "saveSelection": "Muista valintani",
+          "selectAll": "Valitse kaikki tasot",
           "class1": "Kauppamerenkulku",
           "class2": "Muu vesiliikenne",
           "lines": "Navigointilinjat",

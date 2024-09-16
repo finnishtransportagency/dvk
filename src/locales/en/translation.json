@@ -32,6 +32,8 @@
         "layer": {
           "tipLabel": "Select layers",
           "header": "Map layers",
+          "saveSelection": "[en] Muista valintani",
+          "selectAll": "[en] Valitse kaikki tasot",
           "class1": "Merchant shipping",
           "class2": "Other waterborne traffic",
           "lines": "Navigation lines",

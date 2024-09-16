@@ -52,6 +52,12 @@ ion-modal#layerModalContainer::part(content) {
   }
 }
 
+#layerModalContainer ion-row.divider-bottom {
+  border-bottom: 1px solid var(--ion-color-lighter);
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+}
+
 #layerModalContainer ion-item {
   --padding-start: 0;
   --inner-padding-end: 0;
