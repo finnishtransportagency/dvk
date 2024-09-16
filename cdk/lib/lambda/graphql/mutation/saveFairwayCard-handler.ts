@@ -160,10 +160,11 @@ export function mapFairwayCardToModel(
 }
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
-const bucketName = getNewStaticBucketName();
 
 async function tagPictures(cardId: string, pictures: InputMaybe<PictureInput[]> | undefined, oldPictures: Maybe<Picture[]> | undefined) {
+  const bucketName = getNewStaticBucketName();
   const promises = [];
+
   for (const picture of pictures ?? []) {
     const command = new PutObjectTaggingCommand({
       Key: `${cardId}/${picture.id}`,
@@ -188,6 +189,7 @@ async function tagPictures(cardId: string, pictures: InputMaybe<PictureInput[]> 
 }
 
 async function copyPictures(cardId: string, sourceId: string, pictures: PictureInput[]): Promise<PictureInput[]> {
+  const bucketName = getNewStaticBucketName();
   const promises = [];
   const newPictures: PictureInput[] = [];
 
