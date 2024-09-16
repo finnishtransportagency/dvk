@@ -46,11 +46,12 @@ interface FormProps {
   modifier?: string;
   creator?: string;
   created?: number;
-  sourceCard?: string;
+  sourceCardId?: string;
+  sourceCardVersion?: string;
   isError?: boolean;
 }
 
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, sourceCard, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, sourceCardId, sourceCardVersion, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -163,13 +164,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (isRemove) {
         setState({ ...oldState, status: Status.Removed });
         saveFairwayCard({ card: { ...newInput, status: Status.Removed } as FairwayCardInput });
-      } else if (!!sourceCard?.length && !!state.pictures?.length) {
-        saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: sourceCard });
+      } else if (!!sourceCardId?.length && !!state.pictures?.length) {
+        saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: sourceCardId, pictureSourceVersion: sourceCardVersion });
       } else {
         saveFairwayCard({ card: newInput as FairwayCardInput });
       }
     },
-    [state, oldState, sourceCard, saveFairwayCard]
+    [state, oldState, sourceCardId, sourceCardVersion, saveFairwayCard]
   );
 
   const formValid = (): boolean => {
@@ -313,7 +314,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 harbourOptions={harbourOptions}
                 isLoadingPilotRoutes={isLoadingPilotRoutes}
                 pilotRouteOptions={pilotRouteList}
-                sourceCard={sourceCard}
+                sourceCard={sourceCardId}
               />
               <NotificationSection
                 state={state}
@@ -361,7 +362,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <IonText>
                 <h2>
                   {t('fairwaycard.print-images')}
-                  {!!sourceCard?.length && !!state.pictures?.length && (
+                  {!!sourceCardId?.length && !!state.pictures?.length && (
                     <span className="print-images-warning">{t('fairwaycard.print-images-warning')}</span>
                   )}
                 </h2>
@@ -374,7 +375,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 setPicture={updateState}
                 fairways={fairwaySelection}
                 harbours={harbourSelection}
-                sourceCard={sourceCard}
+                sourceCard={sourceCardId}
               />
             </form>
           </>

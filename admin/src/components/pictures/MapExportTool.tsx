@@ -201,8 +201,9 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
     const picUploadObject = {
       base64Data: base64Data.replace('data:image/png;base64,', ''),
       cardId: fairwayCardInput.id,
+      cardVersion: fairwayCardInput.version,
       contentType: 'image/png',
-      id: fairwayCardInput.id + '-' + groupId + '-' + lang,
+      id: `${fairwayCardInput.id}/${fairwayCardInput.version}-${groupId}-${lang}`,
     };
     const picInputObject = {
       orientation,

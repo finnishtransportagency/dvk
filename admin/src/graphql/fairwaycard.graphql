@@ -193,8 +193,8 @@ query fairwayCardPublicById($id: String!, $status: [Status!]!) {
   }
 }
 
-mutation saveFairwayCard($card: FairwayCardInput!, $pictureSourceId: String) {
-  saveFairwayCard(card: $card, pictureSourceId: $pictureSourceId) {
+mutation saveFairwayCard($card: FairwayCardInput!, $pictureSourceId: String, $pictureSourceVersion: String) {
+  saveFairwayCard(card: $card, pictureSourceId: $pictureSourceId, pictureSourceVersion: $pictureSourceVersion) {
     ...FairwayCardById
   }
 }
