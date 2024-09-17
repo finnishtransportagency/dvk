@@ -20,7 +20,7 @@ const InfoModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, header, message })
   };
 
   return (
-    <IonModal ref={modal} isOpen={isOpen} className="infoModal" onDidDismiss={() => closeModal()}>
+    <IonModal ref={modal} isOpen={isOpen} id="infoModal" onDidDismiss={() => closeModal()}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">

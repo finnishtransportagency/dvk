@@ -192,6 +192,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         bgMapType={backgroundMapType}
         setBgMapType={setBgMapType}
         setMarineWarningNotificationLayer={setShowMarineWarningNotification}
+        infoModalOpen={infoModalOpen}
         setInfoModalOpen={setInfoModalOpen}
       />
       <InfoModal isOpen={infoModalOpen} setIsOpen={setInfoModalOpen} header="" message="" />

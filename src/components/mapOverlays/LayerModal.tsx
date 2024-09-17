@@ -18,6 +18,7 @@ interface ModalProps {
   bgMapType: BackgroundMapType;
   setBgMapType: (bgMapType: BackgroundMapType) => void;
   setMarineWarningNotificationLayer: (marineWarningLayer: boolean) => void;
+  infoModalOpen: boolean;
   setInfoModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -28,7 +29,15 @@ export type LayerType = {
   hidden?: boolean;
 };
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer, setInfoModalOpen }) => {
+const LayerModal: React.FC<ModalProps> = ({
+  isOpen,
+  setIsOpen,
+  bgMapType,
+  setBgMapType,
+  setMarineWarningNotificationLayer,
+  infoModalOpen,
+  setInfoModalOpen,
+}) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -202,7 +211,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
 
   return (
-    <IonModal id="layerModalContainer" isOpen={isOpen} onDidDismiss={() => closeLayerModal()}>
+    <IonModal id="layerModalContainer" isOpen={isOpen} onDidDismiss={() => closeLayerModal()} showBackdrop={!infoModalOpen}>
       <div id="layerModalContent">
         <IonGrid className="mainGrid ion-no-padding">
           <IonRow className="ion-align-items-center">
