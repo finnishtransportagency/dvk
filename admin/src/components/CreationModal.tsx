@@ -80,13 +80,6 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
     return o1 && o2 ? o1.id === o2.id && o1.version === o2.version : o1 === o2;
   };
 
-  const keyDownAction = (event: React.KeyboardEvent<HTMLIonSelectElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      focusVersionSelect();
-    }
-  };
-
   return (
     <IonModal ref={modal} isOpen={isOpen} className="prompt" canDismiss={!isDropdownOpen} onDidDismiss={() => closeModal()}>
       <IonHeader>
@@ -130,7 +123,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             </IonLabel>
             <IonSelect
               ref={selectVersionRef}
-              className="selectInput version-select"
+              className="selectInput"
               disabled={!source}
               placeholder={t('general.choose')}
               interface="popover"
@@ -140,10 +133,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               }}
               labelPlacement="stacked"
               fill="outline"
-              tabIndex={source ? 0 : -1}
               value={version}
               onIonChange={(ev) => setVersion(ev.detail.value)}
-              onKeyDown={(e) => keyDownAction(e)}
               compareWith={compareOptions}
             >
               {source?.items

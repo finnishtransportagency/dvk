@@ -118,7 +118,7 @@ export const harbourReducer = (
           quays: state.quays?.concat([
             {
               name: { fi: '', sv: '', en: '' },
-              length: undefined,
+              length: '',
               geometry: { lat: '', lon: '' },
               extraInfo: { fi: '', sv: '', en: '' },
               sections: undefined,
