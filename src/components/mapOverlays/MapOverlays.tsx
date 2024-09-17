@@ -32,6 +32,7 @@ import PilotageLimitPopupContent, { PilotageLimitProperties } from '../popup/Pil
 import DirwayPopupContent, { DirwayProperties } from '../popup/DirwayPopupContent';
 import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup/RestrictionPortPopupContent';
 import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup/ProhibitionAreaPopupContent';
+import InfoModal from '../InfoModal';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -77,6 +78,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const [showMarineWarningNotification, setShowMarineWarningNotification] = useState(false);
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
   const [popupProperties, setPopupProperties] = useState<PopupProperties>();
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
 
   const openMapLayersModal = () => {
     setIsOpen(true);
@@ -190,7 +192,9 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         bgMapType={backgroundMapType}
         setBgMapType={setBgMapType}
         setMarineWarningNotificationLayer={setShowMarineWarningNotification}
+        setInfoModalOpen={setInfoModalOpen}
       />
+      <InfoModal isOpen={infoModalOpen} setIsOpen={setInfoModalOpen} header="" message="" />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
       <div className="no-print">

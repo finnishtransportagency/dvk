@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { Dispatch, Fragment, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon, IonCheckbox, CheckboxCustomEvent } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
@@ -18,6 +18,7 @@ interface ModalProps {
   bgMapType: BackgroundMapType;
   setBgMapType: (bgMapType: BackgroundMapType) => void;
   setMarineWarningNotificationLayer: (marineWarningLayer: boolean) => void;
+  setInfoModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export type LayerType = {
@@ -27,7 +28,7 @@ export type LayerType = {
   hidden?: boolean;
 };
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
+const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer, setInfoModalOpen }) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -37,6 +38,11 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
+  };
+
+  const closeLayerModal = () => {
+    setIsOpen(false);
+    setInfoModalOpen(false);
   };
 
   const saveLayerSelection = (event: CheckboxCustomEvent) => {
@@ -196,13 +202,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
 
   return (
-    <IonModal
-      id="layerModalContainer"
-      isOpen={isOpen}
-      onDidDismiss={() => {
-        setIsOpen(false);
-      }}
-    >
+    <IonModal id="layerModalContainer" isOpen={isOpen} onDidDismiss={() => closeLayerModal()}>
       <div id="layerModalContent">
         <IonGrid className="mainGrid ion-no-padding">
           <IonRow className="ion-align-items-center">
@@ -215,7 +215,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               <IonButton
                 fill="clear"
                 className="closeButton"
-                onClick={() => setIsOpen(false)}
+                onClick={() => closeLayerModal()}
                 data-testid="closeMenu"
                 title={t('common.close')}
                 aria-label={t('common.close')}
@@ -234,6 +234,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
                 className="icon-only small"
                 title={t('homePage.map.controls.layer.info')}
                 aria-label={t('homePage.map.controls.layer.info')}
+                onClick={() => setInfoModalOpen(true)}
               >
                 <HelpIcon />
               </IonButton>
