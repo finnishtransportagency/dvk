@@ -162,13 +162,8 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     return ids;
   }, [layerStructure]);
 
-  const selectAllChecked = () => {
-    return layerIds.every((layerId) => layers.includes(layerId));
-  };
-
-  const selectAllIndeterminate = () => {
-    return layerIds.some((layerId) => layers.includes(layerId)) && !selectAllChecked();
-  };
+  const selectAllChecked = layerIds.every((layerId) => layers.includes(layerId));
+  const selectAllIndeterminate = layerIds.some((layerId) => layers.includes(layerId)) && !selectAllChecked;
 
   const handleSelectAll = (event: CheckboxCustomEvent) => {
     const { checked } = event.detail;
@@ -225,12 +220,11 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
           </IonRow>
           <IonRow className="divider-bottom">
             <IonCol>
-              {/* TODO disabled logic */}
               <IonCheckbox
                 labelPlacement="end"
                 justify="start"
-                checked={selectAllChecked()}
-                indeterminate={selectAllIndeterminate()}
+                checked={selectAllChecked}
+                indeterminate={selectAllIndeterminate}
                 onIonChange={(e) => handleSelectAll(e)}
               >
                 {t('homePage.map.controls.layer.selectAll')}
