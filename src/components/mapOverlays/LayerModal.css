@@ -21,6 +21,18 @@ ion-app:not(.mobile) ion-modal#layerModalContainer {
   min-width: auto !important;
 }
 
+ion-modal#layerModalContainer ion-button.icon-only.small {
+  height: 18px;
+  width: 18px;
+  min-height: 18px;
+  margin: 2px 0 0 8px;
+}
+
+ion-modal#layerModalContainer ion-button.icon-only.small::part(native) {
+  min-width: 18px;
+  min-height: 18px;
+}
+
 ion-modal#layerModalContainer .divider {
   border-bottom: 1px solid var(--ion-color-light);
 }
@@ -53,8 +65,8 @@ ion-modal#layerModalContainer::part(content) {
 }
 
 #layerModalContainer ion-row.divider-bottom {
+  margin: 6px 0 8px 0;
   border-bottom: 1px solid var(--ion-color-lighter);
-  margin-bottom: 8px;
   padding-bottom: 8px;
 }
 

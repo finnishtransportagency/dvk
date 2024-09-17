@@ -33,6 +33,7 @@
           "tipLabel": "Välj lager",
           "header": "Kartlager",
           "saveSelection": "[sv] Muista valintani",
+          "info": "Ytterligare information",
           "selectAll": "[sv] Valitse kaikki tasot",
           "class1": "Handelssjöfart",
           "class2": "Annan vattentrafik",

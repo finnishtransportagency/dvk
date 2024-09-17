@@ -10,6 +10,7 @@ import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
 import { useDvkContext } from '../../hooks/dvkContext';
+import HelpIcon from '../../theme/img/help.svg?react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -31,10 +32,15 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
+  const [saveSelection, setSaveSelection] = useState(false);
 
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
+  };
+
+  const saveLayerSelection = (event: CheckboxCustomEvent) => {
+    setSaveSelection(event.detail.checked);
   };
 
   const layerStructure: LayerType[] = useMemo(() => {
@@ -215,6 +221,21 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
                 aria-label={t('common.close')}
               >
                 <IonIcon className="otherIconLarge" src={closeIcon} />
+              </IonButton>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonCheckbox labelPlacement="end" justify="start" checked={saveSelection} onIonChange={(e) => saveLayerSelection(e)}>
+                {t('homePage.map.controls.layer.saveSelection')}
+              </IonCheckbox>
+              <IonButton
+                fill="clear"
+                className="icon-only small"
+                title={t('homePage.map.controls.layer.info')}
+                aria-label={t('homePage.map.controls.layer.info')}
+              >
+                <HelpIcon />
               </IonButton>
             </IonCol>
           </IonRow>
