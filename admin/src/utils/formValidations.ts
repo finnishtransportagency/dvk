@@ -15,13 +15,22 @@ export function geometryError(input?: GeometryInput | null): boolean {
   return (!!input?.lat.trim() || !!input?.lon.trim()) && (!input?.lat.trim() || !input.lon.trim());
 }
 
-export function locationError(quayIdx: number, geometrysToCompare?: (InputMaybe<GeometryInput> | undefined)[], geometry?: InputMaybe<GeometryInput>) {
+export type QuayOrSection = {
+  geometry: InputMaybe<GeometryInput>;
+  actionTarget: string;
+};
+
+export function locationError(actionTarget: string, geometrysToCompare?: QuayOrSection[] | undefined, geometry?: InputMaybe<GeometryInput>) {
   return (
     isNumber(geometry?.lat ?? '') &&
     isNumber(geometry?.lon ?? '') &&
     geometry?.lat &&
     geometry?.lon &&
-    geometrysToCompare?.some((g, i) => quayIdx !== i && g?.lat === geometry?.lat && g?.lon === geometry?.lon)
+    geometrysToCompare?.some((g) => {
+      const isIt = actionTarget !== g.actionTarget && g?.geometry?.lat === geometry?.lat && g?.geometry.lon === geometry?.lon;
+      console.log(actionTarget === g.actionTarget);
+      return isIt;
+    })
   );
 }
 
@@ -285,8 +294,8 @@ function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocation
     state.quays
       ?.flatMap((quay, i) => {
         const hasError = locationError(
-          i,
-          state?.quays?.map((q) => q?.geometry),
+          String(i),
+          state?.quays?.map((q, idx) => ({ geometry: q?.geometry, actionTarget: String(idx) }) as QuayOrSection),
           quay?.geometry
         );
         if (hasError) {
@@ -308,12 +317,15 @@ function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocation
   let sectionFirstMatchFound = false;
   const sectionLocationErrors =
     state.quays
-      ?.map((quay) =>
+      ?.map((quay, i) =>
         quay?.sections
           ?.flatMap((section, j) => {
+            const target = i + '-' + j;
             const hasError = locationError(
-              j,
-              state?.quays?.flatMap((q) => q?.sections?.map((s) => s?.geometry)),
+              target,
+              state?.quays?.flatMap(
+                (q, qIdx) => q?.sections?.map((s, sIdx) => ({ geometry: s?.geometry, actionTarget: qIdx + '-' + sIdx }) as QuayOrSection) ?? []
+              ),
               section?.geometry
             );
             if (hasError) {

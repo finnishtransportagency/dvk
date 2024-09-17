@@ -1,7 +1,7 @@
 import { t } from 'i18next';
 import { HarborInput, Operation, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
-import { locationError } from './formValidations';
+import { locationError, QuayOrSection } from './formValidations';
 
 export const harbourReducer = (
   state: HarborInput,
@@ -472,8 +472,8 @@ export const harbourReducer = (
         .concat({
           id: 'quayLocation-' + actionTarget,
           msg: locationError(
-            Number(actionTarget),
-            newState.quays?.map((q) => q?.geometry),
+            String(actionTarget),
+            newState.quays?.map((q, i) => ({ geometry: q?.geometry, actionTarget: String(i) }) as QuayOrSection),
             currentQuay?.geometry
           )
             ? t(ErrorMessageKeys?.duplicateLocation) || ''
@@ -517,14 +517,17 @@ export const harbourReducer = (
   } else if ((actionType === 'sectionLat' || actionType === 'sectionLon') && actionTarget !== undefined && actionOuterTarget !== undefined) {
     const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionOuterTarget);
     const currentSection = currentQuay?.sections?.find((sectionItem, jdx) => jdx === actionTarget);
+    console.log(currentSection?.geometry);
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'sectionLocation-' + actionOuterTarget + '-' + actionTarget)
         .concat({
           id: 'sectionLocation-' + actionOuterTarget + '-' + actionTarget,
           msg: locationError(
-            Number(actionTarget),
-            newState.quays?.flatMap((q) => q?.sections?.map((s) => s?.geometry)),
+            actionOuterTarget + '-' + actionTarget,
+            newState.quays?.flatMap(
+              (q, qIdx) => q?.sections?.map((s, sIdx) => ({ geometry: s?.geometry, actionTarget: qIdx + '-' + sIdx }) as QuayOrSection) ?? []
+            ),
             currentSection?.geometry
           )
             ? t(ErrorMessageKeys?.duplicateLocation) || ''
