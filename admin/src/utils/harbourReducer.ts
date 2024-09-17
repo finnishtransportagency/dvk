@@ -472,9 +472,8 @@ export const harbourReducer = (
         .concat({
           id: 'quayLocation-' + actionTarget,
           msg: locationError(
-            String(actionTarget),
-            newState.quays?.map((q, i) => ({ geometry: q?.geometry, actionTarget: String(i) }) as QuayOrSection),
-            currentQuay?.geometry
+            { actionTarget: String(actionTarget), geometry: currentQuay?.geometry } as QuayOrSection,
+            newState.quays?.map((q, i) => ({ geometry: q?.geometry, actionTarget: String(i) }) as QuayOrSection)
           )
             ? t(ErrorMessageKeys?.duplicateLocation) || ''
             : '',
@@ -517,18 +516,17 @@ export const harbourReducer = (
   } else if ((actionType === 'sectionLat' || actionType === 'sectionLon') && actionTarget !== undefined && actionOuterTarget !== undefined) {
     const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionOuterTarget);
     const currentSection = currentQuay?.sections?.find((sectionItem, jdx) => jdx === actionTarget);
-    console.log(currentSection?.geometry);
+    const target = actionOuterTarget + '-' + actionTarget;
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'sectionLocation-' + actionOuterTarget + '-' + actionTarget)
         .concat({
-          id: 'sectionLocation-' + actionOuterTarget + '-' + actionTarget,
+          id: 'sectionLocation-' + target,
           msg: locationError(
-            actionOuterTarget + '-' + actionTarget,
+            { actionTarget: target, geometry: currentSection?.geometry } as QuayOrSection,
             newState.quays?.flatMap(
               (q, qIdx) => q?.sections?.map((s, sIdx) => ({ geometry: s?.geometry, actionTarget: qIdx + '-' + sIdx }) as QuayOrSection) ?? []
-            ),
-            currentSection?.geometry
+            )
           )
             ? t(ErrorMessageKeys?.duplicateLocation) || ''
             : '',

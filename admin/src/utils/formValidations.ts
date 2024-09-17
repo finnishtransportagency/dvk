@@ -20,17 +20,17 @@ export type QuayOrSection = {
   actionTarget: string;
 };
 
-export function locationError(actionTarget: string, geometrysToCompare?: QuayOrSection[] | undefined, geometry?: InputMaybe<GeometryInput>) {
+export function locationError(comparable?: QuayOrSection, geometrysToCompare?: QuayOrSection[] | undefined) {
+  // action target checks that quay or section is not compared with itself
   return (
-    isNumber(geometry?.lat ?? '') &&
-    isNumber(geometry?.lon ?? '') &&
-    geometry?.lat &&
-    geometry?.lon &&
-    geometrysToCompare?.some((g) => {
-      const isIt = actionTarget !== g.actionTarget && g?.geometry?.lat === geometry?.lat && g?.geometry.lon === geometry?.lon;
-      console.log(actionTarget === g.actionTarget);
-      return isIt;
-    })
+    isNumber(comparable?.geometry?.lat ?? '') &&
+    isNumber(comparable?.geometry?.lon ?? '') &&
+    comparable?.geometry?.lat &&
+    comparable?.geometry?.lon &&
+    geometrysToCompare?.some(
+      (g) =>
+        comparable.actionTarget !== g.actionTarget && g?.geometry?.lat === comparable.geometry?.lat && g?.geometry?.lon === comparable?.geometry?.lon
+    )
   );
 }
 
@@ -294,9 +294,8 @@ function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocation
     state.quays
       ?.flatMap((quay, i) => {
         const hasError = locationError(
-          String(i),
-          state?.quays?.map((q, idx) => ({ geometry: q?.geometry, actionTarget: String(idx) }) as QuayOrSection),
-          quay?.geometry
+          { actionTarget: String(i), geometry: quay?.geometry } as QuayOrSection,
+          state?.quays?.map((q, idx) => ({ geometry: q?.geometry, actionTarget: String(idx) }) as QuayOrSection)
         );
         if (hasError) {
           if (!quayFirstMatchFound) {
@@ -322,11 +321,10 @@ function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocation
           ?.flatMap((section, j) => {
             const target = i + '-' + j;
             const hasError = locationError(
-              target,
+              { actionTarget: target, geometry: section?.geometry } as QuayOrSection,
               state?.quays?.flatMap(
                 (q, qIdx) => q?.sections?.map((s, sIdx) => ({ geometry: s?.geometry, actionTarget: qIdx + '-' + sIdx }) as QuayOrSection) ?? []
-              ),
-              section?.geometry
+              )
             );
             if (hasError) {
               if (!sectionFirstMatchFound) {
@@ -408,6 +406,8 @@ export function validateHarbourForm(
 }
 
 export function hasUnsavedChanges(oldState: FairwayCardInput | HarborInput, currentState: FairwayCardInput | HarborInput) {
+  console.log(oldState);
+  console.log(currentState);
   const diffObj = diff(oldState, currentState);
   return JSON.stringify(diffObj) !== '{}';
 }
