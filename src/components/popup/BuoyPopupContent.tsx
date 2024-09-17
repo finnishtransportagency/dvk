@@ -31,7 +31,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
   };
 
   const isDataOutdated12Hours = getTimeDifference(buoy.properties.dateTime) > hourInMilliseconds * 12;
-  const isDataOutdated1Hour = getTimeDifference(buoy.properties.dateTime) > hourInMilliseconds;
+  const isDataOutdated3Hours = getTimeDifference(buoy.properties.dateTime) > hourInMilliseconds * 3;
 
   return (
     <IonGrid className="ion-no-padding">
@@ -49,7 +49,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
       <IonRow>
         <IonCol>{coordinatesToStringHDM(buoy.coordinates) || <InfoParagraph title={t('common.noData')} />}</IonCol>
       </IonRow>
-      <div className={isDataOutdated1Hour ? 'outdatedData' : ''}>
+      <div className={isDataOutdated3Hours ? 'outdatedData' : ''}>
         <IonRow>
           <IonCol className="header">{t('popup.buoy.dateTime')}</IonCol>
         </IonRow>

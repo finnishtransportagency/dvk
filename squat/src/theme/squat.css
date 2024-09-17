@@ -1,3 +1,7 @@
+/* Disable dynamic font scaling */
+html {
+  --ion-dynamic-font: initial;
+}
 .squat ion-text h1 {
   font-size: 2.2rem;
 }
@@ -198,10 +202,6 @@ ion-item.item-interactive {
 }
 ion-item.item-interactive.item-select {
   --padding-start: 10px;
-}
-
-ion-item.item-interactive.ion-invalid {
-  --border-color: var(--highlight-color-invalid);
 }
 
 ion-item.item-static {

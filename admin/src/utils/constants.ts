@@ -1,5 +1,10 @@
 import { GeometryPoint, PictureInput, PilotPlaceInput, Text, TextInput } from '../graphql/generated';
 
+export const VERSION = {
+  PUBLIC: 'v0_public',
+  LATEST: 'v0_latest',
+};
+
 export type Lang = 'fi' | 'sv' | 'en';
 
 export type ItemType = '' | 'CARD' | 'HARBOR';
@@ -209,7 +214,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'pilotagelimit', url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'), staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz') },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts' | 'piloting';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts' | 'piloting' | 'specialarea';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -217,7 +222,6 @@ export type FeatureDataLayerId =
   | 'line12'
   | 'line3456'
   | 'speedlimit'
-  | 'specialarea'
   | 'pilot'
   | 'harbor'
   | 'quay'

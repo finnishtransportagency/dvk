@@ -100,7 +100,6 @@ button.icon:focus-visible:hover {
   border-radius: 0;
   --min-height: 43px;
   --background: var(--ion-color-primary-contrast);
-  --highlight-color-focused: transparent;
   --padding-top: 1px;
   --padding-bottom: 1px;
 }
@@ -150,6 +149,7 @@ button.icon:focus-visible:hover {
 
 .dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:hover {
   background-color: var(--ion-color-light);
+  font-size: 14px;
 }
 
 .dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:focus-visible {
@@ -160,6 +160,14 @@ button.icon:focus-visible:hover {
 
 .dropdownWrapper ion-input.searchBar:not(.has-value) + button.input-clear-icon {
   display: none;
+}
+
+.placeholderSmallerFont {
+  font-size: 11.25px;
+}
+/* Only placeholder text needs to be smaller since it's longer now */
+.placeholderSmallerFont ion-input.searchBar.has-value {
+  font-size: 16px;
 }
 
 #fairwayCardsContainer .closeButton {
@@ -259,6 +267,9 @@ ion-text .info svg {
   width: 12px;
   height: 12px;
   margin-right: 8px;
+}
+ion-text .info.inline svg {
+  margin-left: 8px;
 }
 ion-text .hoverText {
   display: block;
@@ -517,4 +528,14 @@ ion-text.previewText > * {
 
 .mareographsTitle {
   font-size: 12px;
+}
+
+.fairwayCardInfoIcon {
+  position: relative;
+  max-height: 12px;
+  max-width: 12px;
+  margin-right: 6px;
+  margin-left: 6px;
+  top: 4px;
+  color: var(--ion-color-primary);
 }

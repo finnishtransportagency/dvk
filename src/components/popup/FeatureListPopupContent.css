@@ -209,11 +209,18 @@
 }
 
 .featureList ion-item .harbor,
-.featureList ion-item .quay {
+.featureList ion-item .quay,
+.featureList ion-item .restrictionport {
   width: 18px;
   height: 23px;
   margin: 0 2px;
+}
+.featureList ion-item .harbor,
+.featureList ion-item .quay {
   background: url('../../theme/img/dock_icon.svg') no-repeat center / cover;
+}
+.featureList ion-item .restrictionport {
+  background: url('../../theme/img/restriction_port.svg') no-repeat center / cover;
 }
 .featureList ion-item .section {
   width: 15px;

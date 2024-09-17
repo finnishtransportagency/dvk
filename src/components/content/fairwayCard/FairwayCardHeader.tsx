@@ -12,8 +12,17 @@ interface FairwayCardHeaderProps {
   isPending: boolean;
   isFetching: boolean;
   printDisabled: boolean;
+  fairwayIds?: number[];
 }
-export const FairwayCardHeader: React.FC<FairwayCardHeaderProps> = ({ fairwayTitle, infoText1, infoText2, isPending, isFetching, printDisabled }) => {
+export const FairwayCardHeader: React.FC<FairwayCardHeaderProps> = ({
+  fairwayTitle,
+  infoText1,
+  infoText2,
+  isPending,
+  isFetching,
+  printDisabled,
+  fairwayIds,
+}) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { state } = useDvkContext();
 
@@ -51,6 +60,20 @@ export const FairwayCardHeader: React.FC<FairwayCardHeaderProps> = ({ fairwayTit
       </IonRow>
       <IonRow>
         <IonCol>
+          <IonText className="fairwayTitle">
+            <em>
+              {fairwayIds && fairwayIds.length > 1 ? (
+                <>
+                  {t('fairwayNumbers')}:&nbsp;{fairwayIds.join(', ')}
+                </>
+              ) : (
+                <>
+                  {t('fairwayNumber')}&nbsp;{fairwayIds}
+                </>
+              )}
+            </em>
+          </IonText>
+          <br />
           <IonText className={'fairwayTitle' + (state.preview ? ' previewText' : '')}>
             <em>{infoText1}</em>
             <br />

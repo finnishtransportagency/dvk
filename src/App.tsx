@@ -33,6 +33,7 @@ import {
   useNameLayer,
   usePilotageAreaBorderLayer,
   useDirwayLayer,
+  useRestrictionPortLayer,
 } from './components/FeatureLoader';
 import { useObservationLayer, useObservationFeatures } from './components/ObservationFeatureLoader';
 import {
@@ -207,6 +208,7 @@ const DvkIonApp: React.FC = () => {
   usePilotageLimitLayer();
   usePilotageAreaBorderLayer();
   useDirwayLayer();
+  useRestrictionPortLayer();
   /* Initialize observation and merograph data for offline use, needed in fairway cards */
   useObservationFeatures();
   useMareographFeatures();
@@ -214,6 +216,7 @@ const DvkIonApp: React.FC = () => {
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
+  const [centering, setCentering] = useState(false);
 
   const { state } = useDvkContext();
 
@@ -278,6 +281,7 @@ const DvkIonApp: React.FC = () => {
   }, [modalContent]);
 
   const dvkMap = getMap();
+  dvkMap.getCenterToOwnLocationControl().setLoadingState = setCentering;
 
   useEffect(() => {
     if (dvkMap.initialized) {
@@ -301,11 +305,11 @@ const DvkIonApp: React.FC = () => {
       {initDone && <OfflineStatus />}
       <IonReactRouter basename={state.preview ? '/esikatselu' : '/vaylakortti'}>
         <SidebarMenu setIsSourceOpen={setIsSourceOpen} />
-        {(!!isFetching || !initDone) && (
+        {(!!isFetching || !initDone || centering) && (
           <IonProgressBar
             value={percentDone}
             buffer={percentDone}
-            type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
+            type={(!!isFetching && initDone) || centering ? 'indeterminate' : 'determinate'}
             className={fetchError ? 'danger' : ''}
           />
         )}
@@ -350,7 +354,7 @@ const DvkIonApp: React.FC = () => {
             </Switch>
           </IonRouterOutlet>
         </IonContent>
-        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} isOffline={state.isOffline} />
+        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
       {fetchError && (

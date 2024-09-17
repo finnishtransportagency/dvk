@@ -47,14 +47,16 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
     <>
       {fairways.map((fairway) => {
         const fairwayAreas = getFairwayAreas(fairway).filter((area) => {
-          return area.typeCode && area.typeCode !== 2 && area.typeCode !== 15;
-        }); // special areas and prohibition areas moved to separate lists
+          return area.typeCode && area.typeCode !== 2;
+        }); // special areas moved to separate lists
         startIndex += fairwayAreas.length;
         return (
           <div key={uniqueId()}>
             {numberOfFairways > 1 && (
               <IonText>
-                <h5 className="fairwayAreasFairwayName">{getFairwayName(fairway, lang)}:</h5>
+                <h5 className="fairwayAreasFairwayName">
+                  {getFairwayName(fairway, lang)}&nbsp;{fairway.id}:
+                </h5>
               </IonText>
             )}
             <ol start={startIndex - fairwayAreas.length}>

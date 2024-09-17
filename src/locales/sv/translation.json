@@ -79,6 +79,7 @@
           "aisShowPredictor": "Fartvektor",
           "winterTraffic": "Vintersjöfart",
           "dirway": "Isruttens waypointer",
+          "restrictionPort": "Assistansrestriktioner",
           "ice": "Iskarta",
           "mapStyle": {
             "header": "Kartans stil",
@@ -109,7 +110,7 @@
           "mousePositionLabel": "Kursorns koordinat:"
         },
         "searchbar": {
-          "placeholder": "Sök med farledsnamn",
+          "placeholder": "Sök med farledsnamn eller nummer",
           "title": "Farledssökning",
           "clearTitle": "Töm",
           "no-search-results": "Med sökning '{{query}}' ingen farled hittades"
@@ -231,6 +232,7 @@
     "areaType11": "Djupsäkrat tilläggsområde",
     "areaType14": "STS-operationsområde",
     "areaType15": "Området med mötes- och omkörningsförbud",
+    "extraInfo": "Tilläggsuppgift",
     "noDataSet": "Uppgifter finns inte.",
     "noRestrictions": "Inga begränsningar i kraft",
     "notForNavigation": "Ej för navigation",
@@ -265,7 +267,10 @@
     "pilotageLimitDimensions": "Längd / bredd / djup (m)",
     "inForce": "Gällande",
     "mareograph": "Mareograf",
-    "mareographLocation": "Mareografens plats"
+    "mareographLocation": "Mareografens plats",
+    "observationLocation": "Observationsstations läge",
+    "fairwayNumber": "Farleds nummer",
+    "fairwayNumbers": "Farleds nummer"
   },
   "routes": {
     "title": "Lotsningsrutter",
@@ -354,7 +359,6 @@
     },
     "area": {
       "info": "Farledsområdets uppgifter",
-      "overtake": "Farledsområdet har ett kontinuerligt omkörningsförbud.",
       "depth": "Ramningsdjup {{val, number}}",
       "draft": "Dimensionerande djup {{val, number}}",
       "speedLimit": "Hastighetsbegränsning {{val}}",
@@ -474,6 +478,10 @@
     "dirway": {
       "points": "Isruttens waypointer"
     },
+    "restriction": {
+      "current": "Gällande assistansrestriktioner",
+      "upcoming": "Förhandsuppgifter om assistansrestriktioner"
+    },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",
       "featureType": {
@@ -490,6 +498,7 @@
         "pilotagelimit": "Lotspliktslinje",
         "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
+        "restrictionport": "Assistansrestriktion",
         "safetyequipment": "Säkerhetsanordning",
         "safetyequipmentfault": "Säkerhetsanordningsfel",
         "section": "Kajplats",
@@ -508,7 +517,7 @@
     "general": "Allmänt",
     "openDescription": "Öppna",
     "closeDescription": "Stäng",
-    "search": "Sök med farledsnamn",
+    "search": "Sök med farledsnamn eller nummer",
     "searchTitle": "Farledssökning",
     "clearTitle": "Töm",
     "expandPane": "Utöka",

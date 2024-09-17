@@ -84,7 +84,7 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
                   {numberOfFairways > 1 && (
                     <>
                       {idx > 0 && <br />}
-                      {getFairwayName(fairway, lang)}:
+                      {getFairwayName(fairway, lang)}&nbsp;{fairway.id}:
                       <br />
                     </>
                   )}

@@ -8,12 +8,12 @@ import { mapToFairwayCardInput } from '../utils/dataMapper';
 
 interface FairwayCardEditProps {
   fairwayCardId: string;
-  fairwaycardVersion?: string;
+  fairwayCardVersion?: string;
   origin?: boolean;
 }
 
-const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fairwaycardVersion = 'v1', origin }) => {
-  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwaycardVersion, false);
+const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fairwayCardVersion = 'v1', origin }) => {
+  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwayCardVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const fairwayCard = mapToFairwayCardInput(origin, data);
@@ -25,7 +25,9 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fa
         <FairwayCardForm
           fairwayCard={fairwayCard}
           modified={origin ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
-          modifier={origin ? userData?.currentUser?.name : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
+          modifier={origin ? '-' : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
+          creator={origin ? userData?.currentUser?.name : (data?.fairwayCard?.creator ?? undefined)}
+          created={origin ? 0 : (data?.fairwayCard?.creationTimestamp ?? undefined)}
           isError={isError}
         />
       )}
@@ -88,9 +90,11 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
   return (
     <>
       {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
-      {locationState?.origin && <FairwayCardEditForm fairwayCardId={locationState.origin.id} origin />}
-      {!fairwayCardId && !locationState.origin && (
-        <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier={data?.currentUser?.name ?? ''} />
+      {locationState?.origin && (
+        <FairwayCardEditForm fairwayCardId={locationState.origin.id} fairwayCardVersion={locationState.origin.version} origin />
+      )}
+      {!fairwayCardId && !locationState?.origin && (
+        <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier="-" creator={data?.currentUser?.name} created={0} />
       )}
     </>
   );

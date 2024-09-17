@@ -120,7 +120,7 @@ export function getSpeedLimitIconStyle(feature: FeatureLike) {
       const flattened = turf_flatten(intersected);
       const multiPolygon = new MultiPolygon([]);
       for (const fg of flattened.features) {
-        const geom = format.readFeature(fg).getGeometry() as Polygon;
+        const geom = (format.readFeature(fg) as Feature<Geometry>).getGeometry() as Polygon;
         multiPolygon.appendPolygon(geom);
       }
       if (speedLimits.length === 1) {

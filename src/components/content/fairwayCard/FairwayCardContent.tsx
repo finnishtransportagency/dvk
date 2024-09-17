@@ -199,6 +199,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             isPending={isPending}
             isFetching={isFetching}
             printDisabled={printDisabled}
+            fairwayIds={fairwayCard.fairways.map((ff) => ff.id)}
           />
           {fairwayCard?.temporaryNotifications?.map((notification, idx) => {
             if (notification.content && isValidToDisplay(notification.startDate, notification.endDate)) {

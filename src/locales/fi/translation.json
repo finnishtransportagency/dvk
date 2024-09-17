@@ -79,6 +79,7 @@
           "aisShowPredictor": "Nopeusvektorit",
           "winterTraffic": "Talvimerenkulku",
           "dirway": "Jääreittipisteet",
+          "restrictionPort": "Avustusrajoitukset",
           "ice": "Jääkartta",
           "mapStyle": {
             "header": "Kartan tyyli",
@@ -109,7 +110,7 @@
           "mousePositionLabel": "Hiiren koordinaatti:"
         },
         "searchbar": {
-          "placeholder": "Hae väylän nimellä",
+          "placeholder": "Hae väylän nimellä tai numerolla",
           "title": "Väylähaku",
           "clearTitle": "Tyhjennä",
           "no-search-results": "Haulla '{{query}}' ei löydy yhtään väylää"
@@ -231,6 +232,7 @@
     "areaType11": "Varmistettu lisäalue",
     "areaType14": "STS-alue",
     "areaType15": "Kohtaamis- ja ohittamiskieltoalue",
+    "extraInfo": "Lisätieto",
     "noDataSet": "Tietoa ei ole asetettu.",
     "noRestrictions": "Ei voimassa olevia rajoituksia.",
     "notForNavigation": "Ei navigointikäyttöön",
@@ -265,7 +267,10 @@
     "pilotageLimitDimensions": "Pituus / leveys / syväys (m)",
     "inForce": "Voimassa",
     "mareograph": "Mareografi",
-    "mareographLocation": "Mareografin sijainti"
+    "mareographLocation": "Mareografin sijainti",
+    "observationLocation": "Säähavaintoaseman sijainti",
+    "fairwayNumber": "Väylän numero",
+    "fairwayNumbers": "Väylän numerot"
   },
   "routes": {
     "title": "Luotsausreitit",
@@ -354,7 +359,6 @@
     },
     "area": {
       "info": "Väyläalueen tiedot",
-      "overtake": "Väyläalueella jatkuva ohituskielto",
       "depth": "Haraussyvyys {{val, number}}",
       "draft": "Mitoitussyväys {{val, number}}",
       "speedLimit": "Nopeusrajoitus {{val}}",
@@ -474,6 +478,10 @@
     "dirway": {
       "points": "Jääreittipisteet"
     },
+    "restriction": {
+      "current": "Voimassaolevat avustusrajoitukset",
+      "upcoming": "Tulevat avustusrajoitukset"
+    },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",
       "featureType": {
@@ -490,6 +498,7 @@
         "pilotagelimit": "Luotsinkäyttölinja",
         "pilotroute": "Luotsausreitti",
         "quay": "Laituri",
+        "restrictionport": "Avustusrajoitus",
         "safetyequipment": "Turvalaite",
         "safetyequipmentfault": "Turvalaitevika",
         "section": "Laituripaikka",
@@ -508,7 +517,7 @@
     "general": "Yleistä",
     "openDescription": "Avaa",
     "closeDescription": "Sulje",
-    "search": "Hae väylän nimellä",
+    "search": "Hae väylän nimellä tai numerolla",
     "searchTitle": "Väylähaku",
     "clearTitle": "Tyhjennä",
     "expandPane": "Laajenna",

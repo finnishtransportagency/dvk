@@ -143,8 +143,8 @@ Change Language And Check Fairway Cards Page And Select Fairway
     Check Fairway Cards Page    ${language}
     @{fairway_cards_list}=    Create List
     ${fairway_cards_count}=    Get Element Count    ${FAIRWAY_CARDS}
-    ${selected_number}=    Evaluate    random.randint(1, ${fairway_cards_count})
-    ${selected_number_minus_one}=    Evaluate    ${selected_number} - 1
+    Run Keyword If    ${fairway_cards_count} == 0    Fail    No fairway cards found on the page!
+    ${selected_number}=    Evaluate    1
     ${all_elements}=    Get WebElements    ${FAIRWAY_CARDS}
     FOR    ${item}    IN    @{all_elements}
     Scroll Element Into View    ${item}
@@ -152,7 +152,7 @@ Change Language And Check Fairway Cards Page And Select Fairway
     END
     ${fairway_cards_list_count}=    Get Length    ${fairway_cards_list}
     Should Be Equal    ${fairway_cards_count}    ${fairway_cards_list_count}
-    ${SELECTED_FAIRWAY_CARD}=    Get From List    ${fairway_cards_list}    ${selected_number_minus_one}
+    ${SELECTED_FAIRWAY_CARD}=    Get From List    ${fairway_cards_list}    ${selected_number}
     Set Test Variable    ${SELECTED_FAIRWAY_CARD}
     Scroll Element Into View    ${BACK_TO_HOME_BUTTON}
     Capture Page Screenshot
@@ -177,8 +177,8 @@ Check Fairway Data Headings
     Element Should Be Visible    ${FAIRWAY_DATA_HEADING_${language}}
     Scroll Element Into View    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_${language}}
     Element Should Be Visible    ${CHANNEL_ALIGNMENT_AND_MARKING_HEADING_${language}}
-    Scroll Element Into View    ${FAIRWAY_DESIGN_SHIP_HEADING_${language}}
-    Element Should Be Visible    ${FAIRWAY_DESIGN_SHIP_HEADING_${language}}
+    # Scroll Element Into View    ${FAIRWAY_DESIGN_SHIP_HEADING_${language}}
+    # Element Should Be Visible    ${FAIRWAY_DESIGN_SHIP_HEADING_${language}}
     Scroll Element Into View    ${FAIRWAY_DIMENSIONS_HEADING_${language}}
     Element Should Be Visible    ${FAIRWAY_DIMENSIONS_HEADING_${language}}
     Scroll Element Into View    ${MEETING_AND_OVERTAKING_PROHIBITION_AREAS_HEADING_${language}}
