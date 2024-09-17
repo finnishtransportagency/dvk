@@ -138,7 +138,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
       if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
     }
-    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg);
+    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg, t(ErrorMessageKeys?.duplicateLocation));
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
