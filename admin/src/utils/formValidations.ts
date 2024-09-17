@@ -1,7 +1,7 @@
 import { diff } from 'deep-object-diff';
 import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, InputMaybe } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
-import { dateError, endDateError, isDigitsOnly } from './common';
+import { dateError, endDateError, isNumber } from './common';
 
 function requiredError(input?: TextInput | Text | null): boolean {
   return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
@@ -17,8 +17,8 @@ export function geometryError(input?: GeometryInput | null): boolean {
 
 export function locationError(quayIdx: number, geometrysToCompare?: (InputMaybe<GeometryInput> | undefined)[], geometry?: InputMaybe<GeometryInput>) {
   return (
-    isDigitsOnly(geometry?.lat ?? '') &&
-    isDigitsOnly(geometry?.lon ?? '') &&
+    isNumber(geometry?.lat ?? '') &&
+    isNumber(geometry?.lon ?? '') &&
     geometry?.lat &&
     geometry?.lon &&
     geometrysToCompare?.some((g, i) => quayIdx !== i && g?.lat === geometry?.lat && g?.lon === geometry?.lon)

@@ -338,6 +338,6 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
   });
 }
 
-export const isDigitsOnly = (s: string) => {
-  return /^\d+$/.test(s);
+export const isNumber = (s: string) => {
+  return /^-?\d*\.?\d+$/.test(s);
 };

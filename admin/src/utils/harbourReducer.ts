@@ -376,7 +376,8 @@ export const harbourReducer = (
           error.id.startsWith('quayLat-') ||
           error.id.startsWith('quayLon-') ||
           error.id.startsWith('sectionGeometry-') ||
-          error.id.startsWith('quayLocation-')
+          error.id.startsWith('quayLocation-') ||
+          error.id.startsWith('sectionLocation-')
       )
       .forEach((error) => {
         const errorSplitted = error.id.split('-');
@@ -398,7 +399,8 @@ export const harbourReducer = (
             !error.id.startsWith('quayLat-') &&
             !error.id.startsWith('quayLon-') &&
             !error.id.startsWith('sectionGeometry-') &&
-            !error.id.startsWith('quayLocation-')
+            !error.id.startsWith('quayLocation-') &&
+            !error.id.startsWith('sectionLocation-')
         )
         .concat(quayFieldErrors)
     );
