@@ -205,7 +205,7 @@ async function copyPictures(
   const newPictures: PictureInput[] = [];
 
   for (const picture of pictures) {
-    const newPictureId = `${cardId}/${cardVersion}-${picture.groupId}-${picture.lang}`;
+    const newPictureId = `${cardId}-${picture.groupId}-${picture.lang}`;
     const newKey = `${cardId}/${cardVersion}/${newPictureId}`;
 
     const command = new CopyObjectCommand({
