@@ -203,7 +203,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
       cardId: fairwayCardInput.id,
       cardVersion: fairwayCardInput.version,
       contentType: 'image/png',
-      id: `${fairwayCardInput.id}/${fairwayCardInput.version}-${groupId}-${lang}`,
+      id: `${fairwayCardInput.id}-${groupId}-${lang}`,
     };
     const picInputObject = {
       orientation,
