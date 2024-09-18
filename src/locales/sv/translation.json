@@ -32,6 +32,8 @@
         "layer": {
           "tipLabel": "Välj lager",
           "header": "Kartlager",
+          "saveSelection": "[sv] Muista valintani",
+          "selectAll": "[sv] Valitse kaikki tasot",
           "class1": "Handelssjöfart",
           "class2": "Annan vattentrafik",
           "lines": "Navigationslinjer",

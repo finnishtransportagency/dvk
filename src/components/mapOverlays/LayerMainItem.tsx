@@ -102,15 +102,17 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
       <IonRow className={'toggle mainToggle ' + (legendOpen ? 'show' : 'hide')}>
         <IonCol>
           <IonList lines="none" className="ion-no-padding" aria-label={currentLayer.title}>
-            {currentLayer.childLayers?.map((child) => (
-              <LayerItem
-                key={child.id}
-                id={child.id as FeatureDataLayerId}
-                title={child.title}
-                mainLegendOpen={legendOpen}
-                aria-hidden={!legendOpen}
-              />
-            ))}
+            {currentLayer.childLayers
+              ?.filter((l) => !l.hidden)
+              ?.map((child) => (
+                <LayerItem
+                  key={child.id}
+                  id={child.id as FeatureDataLayerId}
+                  title={child.title}
+                  mainLegendOpen={legendOpen}
+                  aria-hidden={!legendOpen}
+                />
+              ))}
           </IonList>
         </IonCol>
       </IonRow>

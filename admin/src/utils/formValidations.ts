@@ -1,7 +1,7 @@
 import { diff } from 'deep-object-diff';
-import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text } from '../graphql/generated';
+import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, InputMaybe } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
-import { dateError, endDateError } from './common';
+import { dateError, endDateError, isNumber } from './common';
 
 function requiredError(input?: TextInput | Text | null): boolean {
   return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
@@ -11,8 +11,27 @@ export function translationError(input?: TextInput | Text | null): boolean {
   return (!!input?.fi?.trim() || !!input?.sv?.trim() || !!input?.en?.trim()) && requiredError(input);
 }
 
-function geometryError(input?: GeometryInput | null): boolean {
+export function geometryError(input?: GeometryInput | null): boolean {
   return (!!input?.lat.trim() || !!input?.lon.trim()) && (!input?.lat.trim() || !input.lon.trim());
+}
+
+export type QuayOrSection = {
+  geometry: InputMaybe<GeometryInput>;
+  actionTarget: string;
+};
+
+export function locationError(comparable?: QuayOrSection, geometrysToCompare?: QuayOrSection[] | undefined) {
+  // action target checks that quay or section is not compared with itself
+  return (
+    isNumber(comparable?.geometry?.lat ?? '') &&
+    isNumber(comparable?.geometry?.lon ?? '') &&
+    comparable?.geometry?.lat &&
+    comparable?.geometry?.lon &&
+    geometrysToCompare?.some(
+      (g) =>
+        comparable.actionTarget !== g.actionTarget && g?.geometry?.lat === comparable.geometry?.lat && g?.geometry?.lon === comparable?.geometry?.lon
+    )
+  );
 }
 
 function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
@@ -229,7 +248,7 @@ export function validateFairwayCardForm(
   );
 }
 
-function validateQuay(state: HarborInput, requiredMsg: string) {
+function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocationMsg: string) {
   const quayNameErrors =
     state.quays
       ?.flatMap((quay, i) => (translationError(quay?.name) ? i : null))
@@ -270,6 +289,64 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
           msg: requiredMsg,
         };
       }) ?? [];
+  let quayFirstMatchFound = false;
+  const quayLocationErrors =
+    state.quays
+      ?.flatMap((quay, i) => {
+        const hasError = locationError(
+          { actionTarget: String(i), geometry: quay?.geometry } as QuayOrSection,
+          state?.quays?.map((q, idx) => ({ geometry: q?.geometry, actionTarget: String(idx) }) as QuayOrSection)
+        );
+        if (hasError) {
+          if (!quayFirstMatchFound) {
+            quayFirstMatchFound = true;
+            return null;
+          }
+          return i;
+        }
+        return null;
+      })
+      .filter((val) => Number.isInteger(val))
+      .map((qIndex) => {
+        return {
+          id: 'quayLocation-' + qIndex,
+          msg: duplicateLocationMsg,
+        };
+      }) ?? [];
+  let sectionFirstMatchFound = false;
+  const sectionLocationErrors =
+    state.quays
+      ?.map((quay, i) =>
+        quay?.sections
+          ?.flatMap((section, j) => {
+            const target = i + '-' + j;
+            const hasError = locationError(
+              { actionTarget: target, geometry: section?.geometry } as QuayOrSection,
+              state?.quays?.flatMap(
+                (q, qIdx) => q?.sections?.map((s, sIdx) => ({ geometry: s?.geometry, actionTarget: qIdx + '-' + sIdx }) as QuayOrSection) ?? []
+              )
+            );
+            if (hasError) {
+              if (!sectionFirstMatchFound) {
+                sectionFirstMatchFound = true;
+                return null;
+              }
+              return j;
+            }
+            return null;
+          })
+          .filter((val) => Number.isInteger(val))
+      )
+      .flatMap((sIndices, qIndex) => {
+        return (
+          sIndices?.map((sIndex) => {
+            return {
+              id: 'sectionLocation-' + qIndex + '-' + sIndex,
+              msg: duplicateLocationMsg,
+            };
+          }) ?? []
+        );
+      }) ?? [];
   const sectionGeometryErrors =
     state.quays
       ?.map((quay) => quay?.sections?.flatMap((section, j) => (geometryError(section?.geometry) ? j : null)).filter((val) => Number.isInteger(val)))
@@ -283,10 +360,15 @@ function validateQuay(state: HarborInput, requiredMsg: string) {
           }) ?? []
         );
       }) ?? [];
-  return { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, sectionGeometryErrors };
+  return { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, quayLocationErrors, sectionLocationErrors, sectionGeometryErrors };
 }
 
-export function validateHarbourForm(state: HarborInput, requiredMsg: string, primaryIdErrorMsg: string): ValidationType[] {
+export function validateHarbourForm(
+  state: HarborInput,
+  requiredMsg: string,
+  primaryIdErrorMsg: string,
+  duplicateLocationErrorMsg: string
+): ValidationType[] {
   const manualValidations = [
     { id: 'name', msg: requiredError(state.name) ? requiredMsg : '' },
     {
@@ -310,8 +392,17 @@ export function validateHarbourForm(state: HarborInput, requiredMsg: string, pri
     { id: 'lon', msg: !state.geometry?.lon ? requiredMsg : '' },
   ];
 
-  const { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, sectionGeometryErrors } = validateQuay(state, requiredMsg);
-  return manualValidations.concat(quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, sectionGeometryErrors);
+  const { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, quayLocationErrors, sectionLocationErrors, sectionGeometryErrors } =
+    validateQuay(state, requiredMsg, duplicateLocationErrorMsg);
+  return manualValidations.concat(
+    quayNameErrors,
+    quayExtraInfoErrors,
+    quayLatErrors,
+    quayLonErrors,
+    quayLocationErrors,
+    sectionLocationErrors,
+    sectionGeometryErrors
+  );
 }
 
 export function hasUnsavedChanges(oldState: FairwayCardInput | HarborInput, currentState: FairwayCardInput | HarborInput) {
