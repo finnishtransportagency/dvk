@@ -197,14 +197,6 @@ ion-footer.small ion-toolbar {
   --min-height: 30px;
 }
 
-/* Modal */
-ion-modal#infoModal {
-  --box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
-  --backdrop-opacity: var(--ion-backdrop-opacity, 0.32);
-  /* Must be higher than ion-modal#layerModalContainer */
-  z-index: 21001 !important;
-}
-
 /* General alerts */
 ion-grid.top-margin {
   margin-top: 1em;

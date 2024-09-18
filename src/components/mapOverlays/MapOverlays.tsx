@@ -8,7 +8,7 @@ import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useTranslation } from 'react-i18next';
 import { filterFairways, updateIceLayerOpacity } from '../../utils/common';
 import { Lang } from '../../utils/constants';
-import { SourceModal } from './CommonModal';
+import { CommonModal, SourceModal } from './CommonModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 import LinePopupContent, { LineProperties } from '../popup/LinePopupContent';
 import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPopupContent';
@@ -32,7 +32,7 @@ import PilotageLimitPopupContent, { PilotageLimitProperties } from '../popup/Pil
 import DirwayPopupContent, { DirwayProperties } from '../popup/DirwayPopupContent';
 import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup/RestrictionPortPopupContent';
 import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup/ProhibitionAreaPopupContent';
-import InfoModal from '../InfoModal';
+import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -195,12 +195,22 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         infoModalOpen={infoModalOpen}
         setInfoModalOpen={setInfoModalOpen}
       />
-      <InfoModal
+      <CommonModal
         isOpen={infoModalOpen}
         setIsOpen={setInfoModalOpen}
-        header={t('homePage.map.controls.layer.saveSelection')}
-        message={t('homePage.map.controls.layer.modal.description')}
-      />
+        title={t('homePage.map.controls.layer.saveSelection')}
+        showBackdrop
+        size="large"
+        htmlId="layerInfoModal"
+      >
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonText>{t('homePage.map.controls.layer.modal.description')}</IonText>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </CommonModal>
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
       <div className="no-print">
