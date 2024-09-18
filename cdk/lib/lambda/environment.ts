@@ -87,15 +87,15 @@ async function readParameterForEnv(path: string): Promise<string> {
 }
 
 export async function getVatuUsername() {
-  return readParameterForEnv('VatuUsername');
+  return readParameterForEnv('TEMPVatuUsername');
 }
 
 export async function getVatuPassword() {
-  return readParameterForEnv('VatuPassword');
+  return readParameterForEnv('TEMPVatuPassword');
 }
 
 export async function getVatuUrl() {
-  return readParameterForEnv('VatuUrl');
+  return readParameterForEnv('TEMPVatuUrl');
 }
 
 export async function getVatuPilotRoutesUrl() {

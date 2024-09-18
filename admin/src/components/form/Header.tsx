@@ -21,6 +21,7 @@ interface HeaderProps {
   handleSubmit: (isRemove: boolean) => void;
   handleCancel: () => void;
   handlePreview: () => void;
+  createNewVersion: () => void;
   isError?: boolean;
 }
 
@@ -34,6 +35,7 @@ const Header: React.FC<HeaderProps> = ({
   handleSubmit,
   handleCancel,
   handlePreview,
+  createNewVersion,
   isError,
 }) => {
   const { t } = useTranslation();
@@ -89,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({
                 <IonButton id="publishingDetails" shape="round" disabled={isError || isLoading}>
                   {t('general.publishing-details')}
                 </IonButton>
-                <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading}>
+                <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => createNewVersion()}>
                   {t('general.create-new-version')}
                 </IonButton>
               </>

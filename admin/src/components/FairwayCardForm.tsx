@@ -238,6 +238,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
+  const createNewVersion = () => {
+    history.push({ pathname: '/vaylakortti/', state: { origin: fairwayCard, copyPictures: true } });
+  };
+
   useEffect(() => {
     setState(fairwayCard);
     setOldState(structuredClone(fairwayCard));
@@ -285,6 +289,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         handlePreview={handlePreview}
+        createNewVersion={createNewVersion}
         isError={isError}
       />
 
