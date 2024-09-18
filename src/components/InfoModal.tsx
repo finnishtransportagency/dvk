@@ -23,7 +23,7 @@ const InfoModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, header, message })
     <IonModal ref={modal} isOpen={isOpen} id="infoModal" onDidDismiss={() => closeModal()}>
       <IonHeader>
         <div className="gradient-top" />
-        <IonToolbar className="titleBar">
+        <IonToolbar className="titleBar ion-margin-top">
           <IonTitle>
             <div className="wrappable-title">{header}</div>
           </IonTitle>
@@ -48,7 +48,7 @@ const InfoModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, header, message })
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" onClick={() => closeModal()} shape="round" aria-label="Sulje">
+          <IonButton slot="end" onClick={() => closeModal()} shape="round" size="large" aria-label="Sulje">
             {'Sulje'}
           </IonButton>
         </IonToolbar>

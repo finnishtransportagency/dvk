@@ -241,8 +241,8 @@ const LayerModal: React.FC<ModalProps> = ({
               <IonButton
                 fill="clear"
                 className="icon-only small"
-                title={t('homePage.map.controls.layer.info')}
-                aria-label={t('homePage.map.controls.layer.info')}
+                title={t('homePage.map.controls.layer.modal.info')}
+                aria-label={t('homePage.map.controls.layer.modal.info')}
                 onClick={() => setInfoModalOpen(true)}
               >
                 <HelpIcon />

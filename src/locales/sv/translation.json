@@ -33,7 +33,6 @@
           "tipLabel": "Välj lager",
           "header": "Kartlager",
           "saveSelection": "[sv] Muista valintani",
-          "info": "Ytterligare information",
           "selectAll": "[sv] Valitse kaikki tasot",
           "class1": "Handelssjöfart",
           "class2": "Annan vattentrafik",
@@ -107,6 +106,10 @@
             "depth4": "Djup 0 - 3m",
             "depth5": "Djup 3 - 6m",
             "depth6": "Djup över 10m"
+          },
+          "modal": {
+            "info": "Ytterligare information",
+            "description": "[sv] Muista valintani -ominaisuus tallentaa tekemäsi tasovalinnat selaimeesi. Mikäli ominaisuus on käytössä, valitaan sivustolle saapuessasi näkyviin automaattisesti viimeksi käyttämäsi tasot. Jos haluat, että tasovalintojasi ei enää muisteta, ota Muista valintani -ominaisuus pois käytöstä ja päivitä sivusto."
           }
         },
         "mapDetails": {

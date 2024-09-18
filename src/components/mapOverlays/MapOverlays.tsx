@@ -65,7 +65,7 @@ type MapOverlaysProps = {
 };
 
 const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen }) => {
-  const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { state, dispatch } = useDvkContext();
   const [isOpen, setIsOpen] = useState(window.location.hash === '#layerModal');
@@ -195,7 +195,12 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         infoModalOpen={infoModalOpen}
         setInfoModalOpen={setInfoModalOpen}
       />
-      <InfoModal isOpen={infoModalOpen} setIsOpen={setInfoModalOpen} header="" message="" />
+      <InfoModal
+        isOpen={infoModalOpen}
+        setIsOpen={setInfoModalOpen}
+        header={t('homePage.map.controls.layer.saveSelection')}
+        message={t('homePage.map.controls.layer.modal.description')}
+      />
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
       <div className="no-print">

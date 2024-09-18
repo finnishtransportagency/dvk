@@ -33,7 +33,6 @@
           "tipLabel": "Valitse tasot",
           "header": "Kartan tasot",
           "saveSelection": "Muista valintani",
-          "info": "Lisätietoja",
           "selectAll": "Valitse kaikki tasot",
           "class1": "Kauppamerenkulku",
           "class2": "Muu vesiliikenne",
@@ -107,6 +106,10 @@
             "depth4": "Syvyys 0 - 3m",
             "depth5": "Syvyys 3 - 6m",
             "depth6": "Syvyys yli 10m"
+          },
+          "modal": {
+            "info": "Lisätietoja",
+            "description": "Muista valintani -ominaisuus tallentaa tekemäsi tasovalinnat selaimeesi. Mikäli ominaisuus on käytössä, valitaan sivustolle saapuessasi näkyviin automaattisesti viimeksi käyttämäsi tasot. Jos haluat, että tasovalintojasi ei enää muisteta, ota Muista valintani -ominaisuus pois käytöstä ja päivitä sivusto."
           }
         },
         "mapDetails": {
