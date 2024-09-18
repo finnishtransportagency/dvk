@@ -129,6 +129,7 @@
     "description-new-HARBOR": "Voit valita halutessasi olemassa olevan sataman pohjaksi uuden luontia varten.",
     "create-CARD": "Luo väyläkortti",
     "create-HARBOR": "Luo satama",
+    "copy-pictures": "Kopioi kuvat aiemmasta versiosta",
     "logout-title": "Olet kirjautumassa ulos",
     "logout-description": "Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella.",
     "cancel-fairwaycard-title": "Poistu tallentamatta",
@@ -214,6 +215,7 @@
     "tug-heading": "Hinaaja",
     "tug-name": "Hinaajan nimi",
     "print-images": "Väyläkortin tuloste",
+    "print-images-warning": "Kopioidut kuvat tulevat käyttöösi vasta kun tallennat luonnoksen yksilöivällä tunnisteella.",
     "print-images-portrait": "Väyläkortin tulosteet, pysty",
     "print-images-landscape": "Väyläkortin tulosteet, vaaka",
     "print-images-info-ingress-1-PORTRAIT": "Et ole asettanut väyläkortille vielä yhtään pystysuuntaista tulostekuvaa.",
@@ -246,6 +248,7 @@
     "print-images-card-id-required": "Kelvollinen väyläkortin tunniste pitää olla syötettynä ennen kuin tulostekuvia voidaan ottaa/asettaa. Kuvan asettamisen jälkeen tunnistetta ei voi enää muuttaa ilman, että kaikki asetetut kuvat ensin poistetaan.",
     "notForNavigation": "Ei navigointikäyttöön",
     "toggle-sequence": "Aseta järjestysnumero",
+    "pic-copy": "kopio",
     "fairway-additional-info": "Lisätiedot",
     "fairway-additional-info-notification-header": "Lisätietojen lisääminen väyläkortille",
     "fairway-additional-info-notification-body": "Väyläkortille on mahdollista lisätä lisätietoja, esimerkiksi selite tulosteelle lisätyistä järjestelmän ulkopuolisista kuvista.",
@@ -278,7 +281,8 @@
     "linked-fairwaycards-exist-cannot-remove-harbour_one": "Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman poistamista.",
     "linked-fairwaycards-exist-cannot-remove-harbour_other": "Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
     "linked-fairwaycards-exist-cannot-draft-harbour_one": "Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
-    "linked-fairwaycards-exist-cannot-draft-harbour_other": "Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan."
+    "linked-fairwaycards-exist-cannot-draft-harbour_other": "Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
+    "error-duplicate-location": "Sijainti on jo käytössä"
   },
   "homePage": {
     "map": {

@@ -20,7 +20,7 @@ type Query {
 }
 
 type Mutation {
-  saveFairwayCard(card: FairwayCardInput!): FairwayCard
+  saveFairwayCard(card: FairwayCardInput!, pictureSourceId: String): FairwayCard
   saveHarbor(harbor: HarborInput!): Harbor
   uploadPicture(picture: PictureUploadInput!): Boolean
 }

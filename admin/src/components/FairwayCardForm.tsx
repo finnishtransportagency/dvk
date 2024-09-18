@@ -25,7 +25,7 @@ import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import NotificationModal from './NotificationModal';
-import MapExportTool from './MapExportTool';
+import MapExportTool from './pictures/MapExportTool';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';
 import MainSection from './form/fairwayCard/MainSection';
@@ -46,10 +46,11 @@ interface FormProps {
   modifier?: string;
   creator?: string;
   created?: number;
+  sourceCard?: string;
   isError?: boolean;
 }
 
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, sourceCard, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -78,7 +79,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
-      setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
+      setOldState(mapToFairwayCardInput(undefined, { fairwayCard: data.saveFairwayCard }));
       setNotificationOpen(true);
       if (previewPending) {
         handleOpenPreview();
@@ -145,39 +146,30 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const saveCard = useCallback(
     (isRemove?: boolean) => {
+      const cardInput = isRemove ? oldState : state;
+      const newInput = {
+        ...cardInput,
+        trafficService: {
+          ...cardInput.trafficService,
+          pilot: {
+            ...cardInput.trafficService?.pilot,
+            places: cardInput.trafficService?.pilot?.places?.map((place) => {
+              return { id: place.id, pilotJourney: place.pilotJourney };
+            }),
+          },
+        },
+      };
+
       if (isRemove) {
-        const oldCard = {
-          ...oldState,
-          trafficService: {
-            ...oldState.trafficService,
-            pilot: {
-              ...oldState.trafficService?.pilot,
-              places: oldState.trafficService?.pilot?.places?.map((place) => {
-                return { id: place.id, pilotJourney: place.pilotJourney };
-              }),
-            },
-          },
-          status: Status.Removed,
-        };
         setState({ ...oldState, status: Status.Removed });
-        saveFairwayCard({ card: oldCard as FairwayCardInput });
+        saveFairwayCard({ card: { ...newInput, status: Status.Removed } as FairwayCardInput });
+      } else if (!!sourceCard?.length && !!state.pictures?.length) {
+        saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: sourceCard });
       } else {
-        const currentCard = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              places: state.trafficService?.pilot?.places?.map((place) => {
-                return { id: place.id, pilotJourney: place.pilotJourney };
-              }),
-            },
-          },
-        };
-        saveFairwayCard({ card: currentCard as FairwayCardInput });
+        saveFairwayCard({ card: newInput as FairwayCardInput });
       }
     },
-    [state, oldState, saveFairwayCard]
+    [state, oldState, sourceCard, saveFairwayCard]
   );
 
   const formValid = (): boolean => {
@@ -321,6 +313,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 harbourOptions={harbourOptions}
                 isLoadingPilotRoutes={isLoadingPilotRoutes}
                 pilotRouteOptions={pilotRouteList}
+                sourceCard={sourceCard}
               />
               <NotificationSection
                 state={state}
@@ -366,8 +359,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               />
 
               <IonText>
-                <h2>{t('fairwaycard.print-images')}</h2>
+                <h2>
+                  {t('fairwaycard.print-images')}
+                  {!!sourceCard?.length && !!state.pictures?.length && (
+                    <span className="print-images-warning">{t('fairwaycard.print-images-warning')}</span>
+                  )}
+                </h2>
               </IonText>
+
               <MapExportTool
                 fairwayCardInput={state}
                 disabled={state.status === Status.Removed}
@@ -375,6 +374,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 setPicture={updateState}
                 fairways={fairwaySelection}
                 harbours={harbourSelection}
+                sourceCard={sourceCard}
               />
             </form>
           </>

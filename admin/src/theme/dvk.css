@@ -976,6 +976,12 @@ ion-grid.alert ion-icon.error {
   position: relative;
   display: inline-block;
 }
+.mapExportTool ion-grid.print-images a.picLink.disabled {
+  pointer-events: none;
+}
+.mapExportTool ion-grid.print-images a.picLink.disabled img {
+  filter: grayscale(100%);
+}
 .mapExportTool ion-grid.print-images a.picLink:not(.selected) img {
   filter: grayscale(1);
 }
@@ -1244,6 +1250,16 @@ span.screen-reader-only {
 dd {
   display: inline;
   margin: 0;
+}
+
+.print-images-warning {
+  background: url('./img/error_icon.svg') no-repeat 1px center;
+  background-size: 14px;
+  padding-left: 18px;
+  margin-left: 8px;
+  color: var(--ion-color-danger);
+  font-weight: normal;
+  text-transform: none;
 }
 
 /* Status bar */

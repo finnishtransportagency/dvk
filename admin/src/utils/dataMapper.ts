@@ -6,9 +6,32 @@ const stringValueOrDefault = (value: string | null | undefined): string => {
   return value ?? '';
 };
 
-export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined) {
+function mapPictures(sourceCard: string | undefined, data: FairwayCardByIdQuery | undefined, copyPictures: boolean | undefined) {
+  // If card is based on another card, copying pictures is optional
+  return sourceCard && !copyPictures
+    ? []
+    : sortPictures(
+        data?.fairwayCard?.pictures?.map((picture) => {
+          return {
+            id: picture.id,
+            text: picture.text,
+            lang: picture.lang,
+            orientation: picture.orientation,
+            rotation: picture.rotation,
+            modificationTimestamp: copyPictures ? 0 : picture.modificationTimestamp,
+            sequenceNumber: picture.sequenceNumber,
+            scaleLabel: picture.scaleLabel,
+            scaleWidth: picture.scaleWidth,
+            groupId: picture.groupId,
+            legendPosition: picture.legendPosition ?? POSITION.bottomLeft,
+          };
+        }) ?? []
+      );
+}
+
+export function mapToFairwayCardInput(sourceCard: string | undefined, data: FairwayCardByIdQuery | undefined, copyPictures?: boolean) {
   return {
-    id: origin ? '' : stringValueOrDefault(data?.fairwayCard?.id),
+    id: sourceCard ? '' : stringValueOrDefault(data?.fairwayCard?.id),
     // v1 is just for now, since proper version control not in use
     version: data?.fairwayCard?.version ?? 'v1',
     group: stringValueOrDefault(data?.fairwayCard?.group),
@@ -18,7 +41,7 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       en: stringValueOrDefault(data?.fairwayCard?.name?.en),
     },
     n2000HeightSystem: data?.fairwayCard?.n2000HeightSystem ?? false,
-    status: origin ? Status.Draft : (data?.fairwayCard?.status ?? Status.Draft),
+    status: sourceCard ? Status.Draft : (data?.fairwayCard?.status ?? Status.Draft),
     fairwayIds: data?.fairwayCard?.fairways.flatMap((fairway) => fairway.id).sort() ?? [],
     harbors: data?.fairwayCard?.harbors?.flatMap((harbor) => harbor.id) ?? [],
     pilotRoutes: data?.fairwayCard?.pilotRoutes?.map((route) => route.id) ?? [],
@@ -132,26 +155,8 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
         };
       }),
     },
-    operation: origin ? Operation.Create : Operation.Update,
-    pictures: origin
-      ? []
-      : sortPictures(
-          data?.fairwayCard?.pictures?.map((picture) => {
-            return {
-              id: picture.id,
-              text: picture.text,
-              lang: picture.lang,
-              orientation: picture.orientation,
-              rotation: picture.rotation,
-              modificationTimestamp: picture.modificationTimestamp,
-              sequenceNumber: picture.sequenceNumber,
-              scaleLabel: picture.scaleLabel,
-              scaleWidth: picture.scaleWidth,
-              groupId: picture.groupId,
-              legendPosition: picture.legendPosition ?? POSITION.bottomLeft,
-            };
-          }) ?? []
-        ),
+    operation: sourceCard ? Operation.Create : Operation.Update,
+    pictures: mapPictures(sourceCard, data, copyPictures),
     temporaryNotifications: data?.fairwayCard?.temporaryNotifications?.map((notification) => {
       return {
         content: {
