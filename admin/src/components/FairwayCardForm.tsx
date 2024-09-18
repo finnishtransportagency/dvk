@@ -186,7 +186,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
 
-  const handleSubmit = (isRemove?: boolean) => {
+  const handleSubmit = (isRemove: boolean) => {
     if (isRemove) {
       setConfirmationType('remove');
     } else if (formValid()) {

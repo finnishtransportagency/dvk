@@ -18,7 +18,7 @@ interface HeaderProps {
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => void;
-  handleSubmit: (isRemove?: boolean) => void;
+  handleSubmit: (isRemove: boolean) => void;
   handleCancel: () => void;
   handlePreview: () => void;
   isError?: boolean;
@@ -84,17 +84,7 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
               </IonButton>
             )}
-            {status === Status.Draft && (
-              <>
-                <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit()}>
-                  {operation === Operation.Update ? t('general.save') : t('general.create-new')}
-                </IonButton>
-                <IonButton id="checkAndPublish" shape="round" disabled={isError || isLoading}>
-                  {t('general.check-and-publish')}
-                </IonButton>
-              </>
-            )}
-            {status === Status.Public && (
+            {status === Status.Public ? (
               <>
                 <IonButton id="publishingDetails" shape="round" disabled={isError || isLoading}>
                   {t('general.publishing-details')}
@@ -103,6 +93,10 @@ const Header: React.FC<HeaderProps> = ({
                   {t('general.create-new-version')}
                 </IonButton>
               </>
+            ) : (
+              <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
+                {operation === Operation.Update ? t('general.save') : t('general.create-new')}
+              </IonButton>
             )}
           </IonCol>
         </IonRow>

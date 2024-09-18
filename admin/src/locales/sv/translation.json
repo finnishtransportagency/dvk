@@ -173,7 +173,9 @@
     "starting-fairway-title": "[sv] Aloittavat väylät järjestyksen valinta",
     "starting-fairway-description": "[sv] Voit valita useita aloittavia väyliä. Aloittavien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "ending-fairway-title": "[sv] Päättävät väylät järjestyksen valinta",
-    "ending-fairway-description": "[sv] Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa."
+    "ending-fairway-description": "[sv] Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
+    "fairwaycard-publish-details": "[sv] Väyläkortin julkaisutiedot",
+    "harbor-publish-details": "[sv] Sataman julkaisutiedot"
   },
   "fairwaycard": {
     "name": "Farledskortets namn",

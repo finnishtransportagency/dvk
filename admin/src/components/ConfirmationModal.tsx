@@ -15,7 +15,7 @@ export type SaveType = 'fairwaycard' | 'harbor';
 interface ModalProps {
   confirmationType: ConfirmationType;
   setConfirmationType: (isOpen: ConfirmationType) => void;
-  action: (isRemove?: boolean) => void;
+  action: (isRemove: boolean) => void;
   oldState: StatusName;
   newStatus: Status;
   saveType: SaveType;
