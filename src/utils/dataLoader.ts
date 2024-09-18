@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { FeatureDataId, FeatureDataSources, OFFLINE_STORAGE } from './constants';
+import { FeatureDataId, FeatureDataSources } from './constants';
 import {
   Status,
   useFairwayCardPreviewQuery,
@@ -15,9 +15,7 @@ export function useFeatureData(
   featureDataId: FeatureDataId,
   refetchOnMount: 'always' | boolean = true,
   refetchInterval: number | false = false,
-  enabled: boolean = true,
-  staleTime: number = OFFLINE_STORAGE.staleTime,
-  gcTime: number = OFFLINE_STORAGE.cacheTime
+  enabled: boolean = true
 ) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
@@ -31,8 +29,8 @@ export function useFeatureData(
     meta: { persist: fds?.persist },
     refetchOnMount,
     refetchInterval,
-    staleTime: fds?.staleTime ?? staleTime,
-    gcTime,
+    staleTime: fds?.staleTime,
+    gcTime: fds?.gcTime,
     queryFn: async () => {
       // get headers to get the real time of fetching from api
       const { data, headers } = await axios.get(urlStr);
