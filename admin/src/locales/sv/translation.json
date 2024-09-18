@@ -116,7 +116,10 @@
     "temporary-notifications": "[sv] Huomiot(t)",
     "item-created-date": "[sv] Lisäyspäivämäärä",
     "search-placeholder-mainPage": "[sv] Hae nimellä tai tunnisteella",
-    "search-title-mainPage": "[sv] Hae nimellä tai tunnisteella"
+    "search-title-mainPage": "[sv] Hae nimellä tai tunnisteella",
+    "check-and-publish": "[sv] Tarkasta muutokset ja julkaise",
+    "publishing-details": "[sv] Julkaisutiedot",
+    "create-new-version": "[sv] Luo uusi versio"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",

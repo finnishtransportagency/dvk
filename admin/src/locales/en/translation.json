@@ -116,7 +116,10 @@
     "temporary-notifications": "[en] Huomio(t)",
     "item-created-date": "[en] Lisäyspäivämäärä",
     "search-placeholder-mainPage": "[en] Hae nimellä tai tunnisteella",
-    "search-title-mainPage": "[en] Hae nimellä tai tunnisteella"
+    "search-title-mainPage": "[en] Hae nimellä tai tunnisteella",
+    "check-and-publish": "[en] Tarkasta muutokset ja julkaise",
+    "publishing-details": "[en] Julkaisutiedot",
+    "create-new-version": "[en] Luo uusi versio"
   },
   "modal": {
     "title-new-CARD": "New fairway card",
