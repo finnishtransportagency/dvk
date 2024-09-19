@@ -35,12 +35,11 @@ function useDataLayer(
   featureDataId: FeatureDataId,
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
-  refetchOnMount: 'always' | boolean = true,
   enabled: boolean = true,
   filterMethod?: (features: Feature<Geometry>[]) => Feature<Geometry>[]
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, enabled);
+  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, enabled);
   useEffect(() => {
     // if no features, still set for layer when api was called
     if (
@@ -74,11 +73,10 @@ export function useConditionsDataLayer(
   featureDataId: FeatureDataId,
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
-  refetchOnMount: 'always' | boolean = true,
   enabled: boolean = true
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, enabled);
+  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, enabled);
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(featureLayerId);
     layer.set('fetchedDate', headers?.['fetcheddate']);
@@ -272,7 +270,7 @@ export function useBuoyLayer() {
     });
     setInitialized(true);
   }
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', visible);
+  return useDataLayer('buoy', 'buoy', 'EPSG:4258', visible);
 }
 
 export function useVtsLineLayer() {
@@ -457,15 +455,15 @@ export function usePilotLayer() {
 }
 
 export function useCoastalWarningLayer() {
-  return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', 'always', true, filterMarineWarnings('coastalwarning'));
+  return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', true, filterMarineWarnings('coastalwarning'));
 }
 
 export function useLocalWarningLayer() {
-  return useDataLayer('marinewarning', 'localwarning', 'EPSG:3395', 'always', true, filterMarineWarnings('localwarning'));
+  return useDataLayer('marinewarning', 'localwarning', 'EPSG:3395', true, filterMarineWarnings('localwarning'));
 }
 
 export function useBoaterWarningLayer() {
-  return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', 'always', true, filterMarineWarnings('boaterwarning'));
+  return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', true, filterMarineWarnings('boaterwarning'));
 }
 
 export function useVaylaWaterAreaData() {
