@@ -139,7 +139,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
   },
   {
     id: 'line12',
@@ -157,7 +157,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
   },
   {
     id: 'restrictionarea',
@@ -166,7 +166,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'specialarea2',
@@ -175,7 +175,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'specialarea15',
@@ -184,7 +184,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'harbor',
@@ -193,7 +193,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'safetyequipment',
@@ -202,7 +202,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'depth12',
@@ -211,7 +211,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'safetyequipmentfault',
@@ -238,15 +238,15 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'mareograph',
     url: new URL(featureLoaderUrl + '?type=mareograph'),
     staticUrl: new URL(staticUrl + '/mareograph.json.gz'),
     persist: false,
-    staleTime: 60 * 1000,
-    gcTime: 60 * 1000,
+    staleTime: 60 * 1000, // 1 minute
+    gcTime: 60 * 1000, // 1 minute
     refetchInterval: 1000 * 60 * 5, // 5 minutes
   },
   {
@@ -254,8 +254,8 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=observation'),
     staticUrl: new URL(staticUrl + '/observation.json.gz'),
     persist: true,
-    staleTime: 60 * 1000,
-    gcTime: 60 * 1000,
+    staleTime: 60 * 1000, // 1 minute
+    gcTime: 60 * 1000, // 1 minute
     refetchInterval: 1000 * 60 * 5, // 5 minutes
   },
   {
@@ -263,9 +263,9 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=buoy'),
     staticUrl: new URL(staticUrl + '/buoy.json.gz'),
     persist: false,
-    staleTime: 60 * 1000,
-    gcTime: 60 * 1000,
-    refetchInterval: 1000 * 60 * 5,
+    staleTime: 60 * 1000, // 1 minute
+    gcTime: 60 * 1000, // 1 minute
+    refetchInterval: 5 * 60 * 1000, // 5 minutes
   },
   {
     id: 'vtsline',
@@ -274,7 +274,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'vtspoint',
@@ -283,7 +283,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'circle',
@@ -292,7 +292,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'aislocation',
@@ -319,7 +319,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
   },
   {
     id: 'pilot',
@@ -328,7 +328,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'pilotroute',
@@ -346,7 +346,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'pilotagelimit',
@@ -355,7 +355,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'dirway',
@@ -364,7 +364,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'restrictionport',
@@ -373,7 +373,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'name',
@@ -382,7 +382,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: false,
+    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
   },
 ];
 
