@@ -6,15 +6,17 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { LayerType } from './LayerModal';
 import LayerItem from './LayerItem';
-import { FeatureDataLayerId } from '../../utils/constants';
+import { FeatureDataLayerId, LAYER_IDB_KEY } from '../../utils/constants';
 import { hasOfflineSupport } from '../../utils/common';
 import AisPredictorControl from './AisPredictorControl';
+import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
+  saveSelection: boolean;
 }
 
-const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
+const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, saveSelection }) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -23,7 +25,13 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
     setLegendOpen(!legendOpen);
   };
 
-  const updateLayers = (updatedLayers: string[]) => dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
+  const updateLayers = (updatedLayers: string[]) => {
+    getIdbVal(LAYER_IDB_KEY).then((val) => console.log(val));
+    if (saveSelection) {
+      setIdbVal(LAYER_IDB_KEY, updatedLayers);
+    }
+    dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
+  };
 
   const isDisabled = () => {
     return isOffline && !!currentLayer.childLayers?.every((child) => !hasOfflineSupport(child.id as FeatureDataLayerId));
@@ -108,6 +116,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
                 <LayerItem
                   key={child.id}
                   id={child.id as FeatureDataLayerId}
+                  saveSelection={saveSelection}
                   title={child.title}
                   mainLegendOpen={legendOpen}
                   aria-hidden={!legendOpen}

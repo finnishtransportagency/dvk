@@ -535,3 +535,5 @@ export const equipmentAreasStructure: SafetyEquipmentFaultFilter[] = [
 ];
 
 export const hourInMilliseconds = 3600000;
+
+export const LAYER_IDB_KEY = 'layer-selection';

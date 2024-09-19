@@ -8,17 +8,19 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
-import { FeatureDataLayerId } from '../../utils/constants';
+import { FeatureDataLayerId, LAYER_IDB_KEY } from '../../utils/constants';
 import type { CheckboxCustomEvent } from '@ionic/react';
 import { LegendSpeedlimits, LegendIce, LegendDepth, LegendArea, LegendContour } from './LayerLegends';
+import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
 
 interface LayerItemProps {
   id: FeatureDataLayerId;
+  saveSelection: boolean;
   title: string;
   mainLegendOpen?: boolean;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, saveSelection, title, mainLegendOpen }) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -37,6 +39,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
       });
     }, 250);
   };
+
   let alertProps:
     | {
         duration: number;
@@ -92,8 +95,12 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
   }, [alertProps, t]);
 
   const handleChange = (event: CheckboxCustomEvent) => {
+    getIdbVal(LAYER_IDB_KEY).then((val) => console.log(val));
     const { checked } = event.detail;
     const updatedLayers = checked ? [...layers, id] : layers.filter((l) => l !== id);
+    if (saveSelection) {
+      setIdbVal(LAYER_IDB_KEY, updatedLayers);
+    }
     dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     // Set ice layer opacity depending on current view resolution
     if (checked && id === 'ice') {

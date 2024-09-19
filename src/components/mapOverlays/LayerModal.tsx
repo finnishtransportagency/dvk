@@ -3,13 +3,14 @@ import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon
 import { useTranslation } from 'react-i18next';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
 import './LayerModal.css';
-import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../utils/constants';
+import { FeatureDataLayerId, FeatureDataMainLayerId, LAYER_IDB_KEY, MAP } from '../../utils/constants';
 import { hasOfflineSupport, updateIceLayerOpacity } from '../../utils/common';
 import LayerItem from './LayerItem';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
 import { useDvkContext } from '../../hooks/dvkContext';
+import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
 import HelpIcon from '../../theme/img/help.svg?react';
 
 interface ModalProps {
@@ -52,10 +53,6 @@ const LayerModal: React.FC<ModalProps> = ({
   const closeLayerModal = () => {
     setIsOpen(false);
     setInfoModalOpen(false);
-  };
-
-  const saveLayerSelection = (event: CheckboxCustomEvent) => {
-    setSaveSelection(event.detail.checked);
   };
 
   const layerStructure: LayerType[] = useMemo(() => {
@@ -183,15 +180,27 @@ const LayerModal: React.FC<ModalProps> = ({
     return ids;
   }, [layerStructure]);
 
+  const saveLayerSelection = (event: CheckboxCustomEvent) => {
+    const checked = event.detail.checked;
+    setSaveSelection(checked);
+    if (!checked) {
+      setIdbVal(LAYER_IDB_KEY, []);
+    }
+  };
+
   const selectAllChecked = layerIds.every((layerId) => layers.includes(layerId));
   const selectAllIndeterminate = layerIds.some((layerId) => layers.includes(layerId)) && !selectAllChecked;
 
   const handleSelectAll = (event: CheckboxCustomEvent) => {
+    getIdbVal(LAYER_IDB_KEY).then((val) => console.log(val));
     const { checked } = event.detail;
     const modalOptions: string[] = layerIds.map((id) => id as string);
     // All default layers are not included in layer modal
     const baseLayers = layers.filter((l) => !modalOptions.includes(l));
     const updatedLayers = checked ? [...baseLayers, ...layerIds] : [...baseLayers];
+    if (saveSelection) {
+      setIdbVal(LAYER_IDB_KEY, updatedLayers);
+    }
     dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     // Set ice layer opacity depending on current view resolution
     if (checked) {
@@ -268,8 +277,8 @@ const LayerModal: React.FC<ModalProps> = ({
               .map((layer) => {
                 return (
                   <Fragment key={layer.id}>
-                    {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} />}
-                    {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} />}
+                    {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} saveSelection={saveSelection} />}
+                    {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} saveSelection={saveSelection} />}
                   </Fragment>
                 );
               })}
