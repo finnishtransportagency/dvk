@@ -1,55 +1,172 @@
 import { test, expect, Page, Locator } from '@playwright/test';
-import { fill } from 'lodash';
 
 const PORT = process.env.PORT ?? '3000';
 
+interface TestCase {
+  name: string;
+  additionalSetup: (page: Page) => Promise<void>;
+  expectedResults: Record<string, string>;
+}
+const testCases: TestCase[] = [
+  {
+    name: 'Open Water',
+    additionalSetup: async (page: Page) => {},
+    expectedResults: {
+      'heel-due-wind': '0,54',
+      'constant-heel-during-turn': '2,12',
+      'corrected-draught': '12,19',
+      'corrected-draught-during-turn': '12,63',
+      'UKC-vessel-motions': '−0,96',
+      'UKC-straight-course': '−0,96',
+      'UKC-during-turn': '−1,98',
+      'squat-result': '1,37',
+      'relative-wind-direction': '35',
+      'wind-force': '2,7',
+      'wave-force': '9,6',
+      'bow-thruster-force': '13,4',
+      'remaining-safety-margin': '108,4',
+      'minimum-external-force-required': '-',
+      'drift-relative-wind-direction': '35',
+      'drift-relative-wind-speed': '9',
+      'estimated-drift-angle': '0,02',
+      'estimated-vessel-breadth-due-drift': '32,32',
+    },
+  },
+  {
+    name: 'Sloped Channel',
+    additionalSetup: async (page: Page) => {
+      await setLocatorValue(page.getByTestId('channelWidth').locator('input'), '200');
+      await setLocatorValue(page.getByTestId('slopeHeight').locator('input'), '12', true);
+    },
+    expectedResults: {
+      // Add Sloped Channel specific expected results here
+      'heel-due-wind': '0,54',
+      'constant-heel-during-turn': '2,12',
+      'corrected-draught': '12,19',
+      'corrected-draught-during-turn': '12,63',
+      'UKC-vessel-motions': '−1,27',
+      'UKC-straight-course': '−1,27',
+      'UKC-during-turn': '−2,3',
+      'squat-result': '1,68',
+      'relative-wind-direction': '35',
+      'wind-force': '2,7',
+      'wave-force': '9,6',
+      'bow-thruster-force': '13,4',
+      'remaining-safety-margin': '108,4',
+      'minimum-external-force-required': '-',
+      'drift-relative-wind-direction': '35',
+      'drift-relative-wind-speed': '9',
+      'estimated-drift-angle': '0,02',
+      'estimated-vessel-breadth-due-drift': '32,32',
+    },
+  },
+  {
+    name: 'Channel',
+    additionalSetup: async (page: Page) => {
+      await setLocatorValue(page.getByTestId('channelWidth').locator('input'), '200');
+    },
+    expectedResults: {
+      // Add Channel specific expected results here
+      'heel-due-wind': '0,54',
+      'constant-heel-during-turn': '2,12',
+      'corrected-draught': '12,19',
+      'corrected-draught-during-turn': '12,63',
+      'UKC-vessel-motions': '−1,58',
+      'UKC-straight-course': '−1,58',
+      'UKC-during-turn': '−2,61',
+      'squat-result': '1,99',
+      'relative-wind-direction': '35',
+      'wind-force': '2,7',
+      'wave-force': '9,6',
+      'bow-thruster-force': '13,4',
+      'remaining-safety-margin': '108,4',
+      'minimum-external-force-required': '-',
+      'drift-relative-wind-direction': '35',
+      'drift-relative-wind-speed': '9',
+      'estimated-drift-angle': '0,02',
+      'estimated-vessel-breadth-due-drift': '32,32',
+    },
+  },
+];
+
 test.describe('Squat calculations for bulker vessel', () => {
   test('should calculate correct values for bulker + open water', async ({ page }) => {
+    const testCase = testCases.find(tc => tc.name === 'Open Water')!;
     await page.goto(`http://localhost:${PORT}/`);
     await fillForm(page);
-    // TODO: move to fill form
-    await page.getByTestId('Open Water').click();
-    // END TODO
-    await checkResults(page, 'Open Water');
+    await page.getByTestId(testCase.name).click();
+    await testCase.additionalSetup(page);
+    await checkResults(page, testCase.expectedResults);
   });
 
   test('should calculate correct values for bulker + sloped', async ({ page }) => {
+    const testCase = testCases.find(tc => tc.name === 'Sloped Channel')!;
     await page.goto(`http://localhost:${PORT}/`);
     await fillForm(page);
-    //TODO: move to fill form
-    await page.getByTestId('Sloped Channel').click();
-    const channelWidth = page.getByTestId('channelWidth').locator('input');
-    await channelWidth.fill('200');
-    await channelWidth.press('Tab');
-    const slopeHeight = page.getByTestId('slopeHeight').locator('input');
-    await slopeHeight.clear();
-    await slopeHeight.fill('12');
-    await slopeHeight.press('Tab');
-    // END TODO
-    await checkResults(page, 'Sloped Channel');
+    await page.getByTestId(testCase.name).click();
+    await testCase.additionalSetup(page);
+    await checkResults(page, testCase.expectedResults);
   });
 
   test('should calculate correct values for bulker + channel', async ({ page }) => {
+    const testCase = testCases.find(tc => tc.name === 'Channel')!;
     await page.goto(`http://localhost:${PORT}/`);
     await fillForm(page);
-    //TODO: move to fill form
-    await page.getByTestId('Channel').click();
-    const channelWidth = page.getByTestId('channelWidth').locator('input');
-    await channelWidth.fill('200');
-    await channelWidth.press('Tab');
-    // END TODO
-    await checkResults(page, 'Channel');
+    await page.getByTestId(testCase.name).click();
+    await testCase.additionalSetup(page);
+    await checkResults(page, testCase.expectedResults);
   });
 });
 
 async function fillForm(page: Page) {
-  // default is bulker and open water
-  await fillGeneralSection(page);
-  await fillWeatherSection(page);
-  await fillDetailedSection(page);
-  await fillFairwaySection(page);
-  await fillStabilitySection(page);
-  await fillVesselSection(page);
+  const sections = [
+    {
+      name: 'General',
+      fields: [
+        { name: 'lengthBPP', value: '189.90' },
+        { name: 'breadth', value: '32.26' },
+        { name: 'draught', value: '12.04' },
+      ],
+    },
+    {
+      name: 'Weather',
+      fields: [
+        { name: 'windSpeed', value: '5', clear: true },
+        { name: 'waveHeight', value: '1', clear: true },
+        { name: 'wavePeriod', value: '10', clear: true },
+      ],
+    },
+    {
+      name: 'Detailed',
+      fields: [
+        { name: 'windSurface', value: '2500' },
+        { name: 'deckCargo', value: '8000' },
+        { name: 'bowThruster', value: '1000' },
+      ],
+    },
+    {
+      name: 'Fairway',
+      fields: [
+        { name: 'sweptDepth', value: '12.5', clear: true },
+        { name: 'waterLevel', value: '10' },
+        { name: 'waterDepth', value: '23' },
+      ],
+    },
+    { name: 'Stability', fields: [{ name: 'KG', value: '8' }] },
+    {
+      name: 'Vessel',
+      fields: [
+        { name: 'vesselCourse', value: '10', clear: true },
+        { name: 'vesselSpeed', value: '12' },
+      ],
+    },
+  ];
+
+  for (const section of sections) {
+    for (const field of section.fields) {
+      await setLocatorValue(page.getByTestId(field.name).locator('input'), field.value, field.clear);
+    }
+  }
 }
 
 async function setLocatorValue(locator: Locator, value: string, clear: boolean = false) {
@@ -58,113 +175,8 @@ async function setLocatorValue(locator: Locator, value: string, clear: boolean =
   await locator.press('Tab');
 }
 
-async function fillGeneralSection(page: Page) {
-  const lengthBPP = page.getByTestId('lengthBPP').locator('input');
-  await lengthBPP.fill('189.90');
-  await lengthBPP.press('Tab');
-  const breadth = page.getByTestId('breadth').locator('input');
-  await breadth.fill('32.26');
-  await breadth.press('Tab');
-  const draught = page.getByTestId('draught').locator('input');
-  await draught.fill('12.04');
-  await draught.press('Tab');
-}
-
-async function fillWeatherSection(page: Page) {
-  const windSpeed = page.getByTestId('windSpeed').locator('input');
-  await windSpeed.clear(); // some fields or values are not always updating without clear
-  await windSpeed.fill('5');
-  await windSpeed.press('Tab');
-  const waveHeight = page.getByTestId('waveHeight').locator('input');
-  await waveHeight.clear();
-  await waveHeight.fill('1');
-  await waveHeight.press('Tab');
-  const wavePeriod = page.getByTestId('wavePeriod').locator('input');
-  await wavePeriod.clear();
-  await wavePeriod.fill('10');
-  await wavePeriod.press('Tab');
-}
-
-async function fillDetailedSection(page: Page) {
-  const windSurface = page.getByTestId('windSurface').locator('input');
-  await windSurface.fill('2500');
-  await windSurface.press('Tab');
-  const deckCargo = page.getByTestId('deckCargo').locator('input');
-  await deckCargo.fill('8000');
-  await deckCargo.press('Tab');
-  const bowThruster = page.getByTestId('bowThruster').locator('input');
-  await bowThruster.fill('1000');
-  await bowThruster.press('Tab');
-}
-
-async function fillFairwaySection(page: Page) {
-  const sweptDepth = page.getByTestId('sweptDepth').locator('input');
-  await sweptDepth.clear();
-  await sweptDepth.fill('12.5');
-  await sweptDepth.press('Tab');
-  const waterLevel = page.getByTestId('waterLevel').locator('input');
-  await waterLevel.fill('10');
-  await waterLevel.press('Tab');
-  const waterDepth = page.getByTestId('waterDepth').locator('input');
-  await waterDepth.fill('23');
-  await waterDepth.press('Tab');
-}
-
-async function fillStabilitySection(page: Page) {
-  const kg = page.getByTestId('KG').locator('input');
-  await kg.fill('8');
-  await kg.press('Tab');
-}
-
-async function fillVesselSection(page: Page) {
-  const vesselCourse = page.getByTestId('vesselCourse').locator('input');
-  await vesselCourse.clear();
-  await vesselCourse.fill('10');
-  await vesselCourse.press('Tab');
-  const vesselSpeed = page.getByTestId('vesselSpeed').locator('input');
-  await vesselSpeed.fill('12');
-  await vesselSpeed.press('Tab');
-}
-
-async function checkResults(page: Page, fairwayType: 'Open Water' | 'Sloped Channel' | 'Channel') {
-  // TODO get expected values from static helper
-  const heelDueWind = page.getByTestId('heel-due-wind');
-  await expect(heelDueWind).toHaveText('0,54');
-  const constantHeelDuringTurn = page.getByTestId('constant-heel-during-turn');
-  await expect(constantHeelDuringTurn).toHaveText('2,12');
-  const correctedDraught = page.getByTestId('corrected-draught');
-  await expect(correctedDraught).toHaveText('12,19');
-  const correctedDraughtDuringTurn = page.getByTestId('corrected-draught-during-turn');
-  await expect(correctedDraughtDuringTurn).toHaveText('12,63');
-  const UKCVesselMotions = page.getByTestId('UKC-vessel-motions');
-  await expect(UKCVesselMotions).toHaveText('−0,96');
-  const UKCStraightCourse = page.getByTestId('UKC-straight-course');
-  await expect(UKCStraightCourse).toHaveText('−0,96');
-  const UKCDuringTurn = page.getByTestId('UKC-during-turn');
-  await expect(UKCDuringTurn).toHaveText('−1,98');
-  const squatResult = page.getByTestId('squat-result');
-  await expect(squatResult).toHaveText('1,37');
-  const relativeWindDirection = page.getByTestId('relative-wind-direction');
-  await expect(relativeWindDirection).toHaveText('35');
-  // this data-testid for some reason does not appear
-  // const relativeWindSpeed = page.getByTestId('relative-wind-speed');
-  // await expect(relativeWindSpeed).toHaveText('9');
-  const windForce = page.getByTestId('wind-force');
-  await expect(windForce).toHaveText('2,7');
-  const waveForce = page.getByTestId('wave-force');
-  await expect(waveForce).toHaveText('9,6');
-  const bowThrusterForce = page.getByTestId('bow-thruster-force');
-  await expect(bowThrusterForce).toHaveText('13,4');
-  const remainingSafetyMargin = page.getByTestId('remaining-safety-margin');
-  await expect(remainingSafetyMargin).toHaveText('108,4');
-  const minimumExternalForceRequired = page.getByTestId('minimum-external-force-required');
-  await expect(minimumExternalForceRequired).toHaveText('-');
-  const driftRelativeWindDirection = page.getByTestId('drift-relative-wind-direction');
-  await expect(driftRelativeWindDirection).toHaveText('35');
-  const driftRelativeWindSpeed = page.getByTestId('drift-relative-wind-speed');
-  await expect(driftRelativeWindSpeed).toHaveText('9');
-  const estimatedDriftAngle = page.getByTestId('estimated-drift-angle');
-  await expect(estimatedDriftAngle).toHaveText('0,02');
-  const estimatedVesselBreadthDueDrift = page.getByTestId('estimated-vessel-breadth-due-drift');
-  await expect(estimatedVesselBreadthDueDrift).toHaveText('32,32');
+async function checkResults(page: Page, expectedResults: Record<string, string>) {
+  for (const [testId, expectedValue] of Object.entries(expectedResults)) {
+    await expect(page.getByTestId(testId)).toHaveText(expectedValue);
+  }
 }
