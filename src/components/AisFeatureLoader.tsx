@@ -13,6 +13,7 @@ import VectorSource from 'ol/source/Vector';
 import { AisFeatureProperties } from './features';
 import { Coordinate } from 'ol/coordinate';
 import { fromCircle } from 'ol/geom/Polygon';
+import { getFeatureDataSourceProjection } from '../utils/common';
 
 type VesselData = {
   name: string;
@@ -97,7 +98,10 @@ function useAisFeatures() {
     const locationData = locationQuery.data;
     if (vesselData && locationData) {
       const format = new GeoJSON();
-      const locationFeatures = format.readFeatures(locationData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const locationFeatures = format.readFeatures(locationData, {
+        dataProjection: getFeatureDataSourceProjection('aislocation'),
+        featureProjection: MAP.EPSG,
+      });
       addVesselData(locationFeatures, vesselData);
       setAisFeatures(locationFeatures);
       setReady(true);

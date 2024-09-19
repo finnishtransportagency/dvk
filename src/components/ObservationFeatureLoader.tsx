@@ -6,6 +6,7 @@ import { Geometry } from 'ol/geom';
 import { useFeatureData } from '../utils/dataLoader';
 import dvkMap from './DvkMap';
 import { featuresVisible, useConditionsDataLayer } from './FeatureLoader';
+import { getFeatureDataSourceProjection } from '../utils/common';
 
 export function useObservationFeatures() {
   const [ready, setReady] = useState(false);
@@ -16,7 +17,7 @@ export function useObservationFeatures() {
     if (data) {
       const format = new GeoJSON();
       const oFeatures = format.readFeatures(data, {
-        dataProjection: 'EPSG:4326',
+        dataProjection: getFeatureDataSourceProjection('observation'),
         featureProjection: MAP.EPSG,
       });
       setObservationFeatures(oFeatures);
@@ -47,5 +48,5 @@ export function useObservationLayer() {
     });
     setInitialized(true);
   }
-  return useConditionsDataLayer('observation', 'observation', 'EPSG:4258', fetchingEnabled);
+  return useConditionsDataLayer('observation', 'observation', fetchingEnabled);
 }

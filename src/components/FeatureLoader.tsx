@@ -20,7 +20,7 @@ import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../speedlimitworker/SpeedlimitUtils';
 import axios from 'axios';
 import { get, setMany, delMany } from 'idb-keyval';
-import { filterMarineWarnings } from '../utils/common';
+import { filterMarineWarnings, getFeatureDataSourceProjection } from '../utils/common';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 
 export type DvkLayerState = {
@@ -34,7 +34,6 @@ export type DvkLayerState = {
 function useDataLayer(
   featureDataId: FeatureDataId,
   featureLayerId: FeatureDataLayerId,
-  dataProjection = 'EPSG:4326',
   enabled: boolean = true,
   filterMethod?: (features: Feature<Geometry>[]) => Feature<Geometry>[]
 ): DvkLayerState {
@@ -54,7 +53,7 @@ function useDataLayer(
       layer.set('fetchedDate', headers?.['fetcheddate']);
       if (!layer.get('dataUpdatedAt') || dataUpdatedAt > layer.get('dataUpdatedAt')) {
         const format = new GeoJSON();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+        const features = format.readFeatures(data, { dataProjection: getFeatureDataSourceProjection(featureDataId), featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);
         source.clear();
         features.forEach((f) => f.set('dataSource', featureLayerId, true));
@@ -63,18 +62,13 @@ function useDataLayer(
       }
       setReady(true);
     }
-  }, [featureLayerId, featureDataId, headers, data, dataUpdatedAt, dataProjection, filterMethod]);
+  }, [featureLayerId, featureDataId, headers, data, dataUpdatedAt, filterMethod]);
   const layer = dvkMap.getFeatureLayer(featureLayerId);
   layer.set('errorUpdatedAt', errorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
-export function useConditionsDataLayer(
-  featureDataId: FeatureDataId,
-  featureLayerId: FeatureDataLayerId,
-  dataProjection = 'EPSG:4326',
-  enabled: boolean = true
-): DvkLayerState {
+export function useConditionsDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId, enabled: boolean = true): DvkLayerState {
   const [ready, setReady] = useState(false);
   const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, enabled);
   useEffect(() => {
@@ -84,7 +78,7 @@ export function useConditionsDataLayer(
     if (data) {
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+        const features = format.readFeatures(data, { dataProjection: getFeatureDataSourceProjection(featureDataId), featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);
 
         features.forEach((f) => {
@@ -105,7 +99,7 @@ export function useConditionsDataLayer(
       }
       setReady(true);
     }
-  }, [featureLayerId, headers, data, dataUpdatedAt, dataProjection, isError]);
+  }, [featureDataId, featureLayerId, headers, data, dataUpdatedAt, isError]);
   const layer = dvkMap.getFeatureLayer(featureLayerId);
   layer.set('errorUpdatedAt', errorUpdatedAt);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
@@ -119,7 +113,7 @@ export function featuresVisible(featureLayer: FeatureLayerId): boolean {
 }
 
 export function useNameLayer() {
-  return useDataLayer('name', 'name', MAP.EPSG);
+  return useDataLayer('name', 'name');
 }
 
 export function useLine12Layer() {
@@ -270,15 +264,15 @@ export function useBuoyLayer() {
     });
     setInitialized(true);
   }
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', visible);
+  return useDataLayer('buoy', 'buoy', visible);
 }
 
 export function useVtsLineLayer() {
-  return useDataLayer('vtsline', 'vtsline', 'EPSG:4258');
+  return useDataLayer('vtsline', 'vtsline');
 }
 
 export function useVtsPointLayer() {
-  return useDataLayer('vtspoint', 'vtspoint', 'EPSG:4258');
+  return useDataLayer('vtspoint', 'vtspoint');
 }
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
@@ -329,8 +323,8 @@ export function useArea12Layer(): DvkLayerState {
       const layer = dvkMap.getFeatureLayer('area12');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const afs = format.readFeatures(aData, { dataProjection: getFeatureDataSourceProjection('area12'), featureProjection: MAP.EPSG });
+        const rafs = format.readFeatures(raData, { dataProjection: getFeatureDataSourceProjection('restrictionarea'), featureProjection: MAP.EPSG });
         addSpeedLimits(afs, rafs);
         afs.forEach((f) => f.set('dataSource', 'area12', true));
         const source = dvkMap.getVectorSource('area12');
@@ -371,7 +365,7 @@ export function useArea3456Layer() {
       const layer = dvkMap.getFeatureLayer('area3456');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const afs = format.readFeatures(aData, { dataProjection: getFeatureDataSourceProjection('area3456'), featureProjection: MAP.EPSG });
         afs.forEach((f) => f.set('dataSource', 'area3456', true));
         const source = dvkMap.getVectorSource('area3456');
         source.clear();
@@ -447,23 +441,23 @@ export function useSpecialArea2Layer() {
 }
 
 export function useSpecialArea15Layer() {
-  return useDataLayer('specialarea15', 'specialarea15', 'EPSG:3067');
+  return useDataLayer('specialarea15', 'specialarea15');
 }
 
 export function usePilotLayer() {
-  return useDataLayer('pilot', 'pilot', 'EPSG:4258');
+  return useDataLayer('pilot', 'pilot');
 }
 
 export function useCoastalWarningLayer() {
-  return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', true, filterMarineWarnings('coastalwarning'));
+  return useDataLayer('marinewarning', 'coastalwarning', true, filterMarineWarnings('coastalwarning'));
 }
 
 export function useLocalWarningLayer() {
-  return useDataLayer('marinewarning', 'localwarning', 'EPSG:3395', true, filterMarineWarnings('localwarning'));
+  return useDataLayer('marinewarning', 'localwarning', true, filterMarineWarnings('localwarning'));
 }
 
 export function useBoaterWarningLayer() {
-  return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', true, filterMarineWarnings('boaterwarning'));
+  return useDataLayer('marinewarning', 'boaterwarning', true, filterMarineWarnings('boaterwarning'));
 }
 
 export function useVaylaWaterAreaData() {
@@ -471,7 +465,7 @@ export function useVaylaWaterAreaData() {
 }
 
 export function usePilotageAreaBorderLayer() {
-  return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
+  return useDataLayer('pilotageareaborder', 'pilotageareaborder');
 }
 
 export function useDirwayLayer() {

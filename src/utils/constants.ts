@@ -112,8 +112,11 @@ export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit-20240719.json.gz') },
 ];
 
+export type FeatureDataProjection = 'EPSG:3067' | 'EPSG:4326' | 'EPSG:3395' | 'EPSG:4258';
+
 export type FeatureDataSource = {
   id: FeatureDataId;
+  projection: FeatureDataProjection;
   url: URL;
   staticUrl: URL;
   persist: boolean;
@@ -126,6 +129,7 @@ export type FeatureDataSource = {
 export const FeatureDataSources: Array<FeatureDataSource> = [
   {
     id: 'area12',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/area12.json.gz'),
     persist: true,
@@ -136,6 +140,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'area3456',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6'),
     staticUrl: new URL(staticUrl + '/area3456.json.gz'),
     persist: true,
@@ -146,6 +151,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'line12',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/line12.json.gz'),
     persist: true,
@@ -156,6 +162,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'line3456',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6'),
     staticUrl: new URL(staticUrl + '/line3456.json.gz'),
     persist: true,
@@ -166,6 +173,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'restrictionarea',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/restrictionarea.json.gz'),
     persist: true,
@@ -176,6 +184,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'specialarea2',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea2.json.gz'),
     persist: true,
@@ -186,6 +195,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'specialarea15',
+    projection: 'EPSG:3067',
     url: new URL(featureLoaderUrl + '?type=specialarea15&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea15.json.gz'),
     persist: true,
@@ -196,6 +206,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'harbor',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=harbor'),
     staticUrl: new URL(staticUrl + '/harbor.json.gz'),
     persist: true,
@@ -206,6 +217,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'safetyequipment',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99'),
     staticUrl: new URL(staticUrl + '/safetyequipment.json.gz'),
     persist: true,
@@ -216,6 +228,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'depth12',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/depth12.json.gz'),
     persist: true,
@@ -226,6 +239,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'safetyequipmentfault',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=safetyequipmentfault'),
     staticUrl: new URL(staticUrl + '/safetyequipmentfault.json.gz'),
     persist: true,
@@ -236,6 +250,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'marinewarning',
+    projection: 'EPSG:3395',
     url: new URL(featureLoaderUrl + '?type=marinewarning'),
     staticUrl: new URL(staticUrl + '/marinewarning.json.gz'),
     persist: true,
@@ -246,6 +261,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'boardline12',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/boardline12.json.gz'),
     persist: true,
@@ -256,6 +272,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'mareograph',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=mareograph'),
     staticUrl: new URL(staticUrl + '/mareograph.json.gz'),
     persist: false,
@@ -266,6 +283,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'observation',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=observation'),
     staticUrl: new URL(staticUrl + '/observation.json.gz'),
     persist: true,
@@ -276,6 +294,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'buoy',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=buoy'),
     staticUrl: new URL(staticUrl + '/buoy.json.gz'),
     persist: false,
@@ -286,6 +305,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'vtsline',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=vtsline'),
     staticUrl: new URL(staticUrl + '/vtsline.json.gz'),
     persist: true,
@@ -296,6 +316,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'vtspoint',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=vtspoint'),
     staticUrl: new URL(staticUrl + '/vtspoint.json.gz'),
     persist: true,
@@ -306,6 +327,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'circle',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=circle'),
     staticUrl: new URL(staticUrl + '/circle.json.gz'),
     persist: true,
@@ -316,6 +338,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'aislocation',
+    projection: 'EPSG:4326',
     url: new URL(aisLocationsUrl),
     staticUrl: new URL(staticUrl + '/aislocations.json.gz'),
     persist: false,
@@ -326,6 +349,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'aisvessel',
+    projection: 'EPSG:4326',
     url: new URL(aisVesselsUrl),
     staticUrl: new URL(staticUrl + '/aisvessels.json.gz'),
     persist: false,
@@ -336,6 +360,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'vayla_water_area',
+    projection: 'EPSG:3067',
     url: new URL(staticUrl + '/vayla-merialueet.json.gz'),
     staticUrl: new URL(staticUrl + '/vayla-merialueet.json.gz'),
     persist: true,
@@ -346,6 +371,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'pilot',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=pilot'),
     staticUrl: new URL(staticUrl + '/pilot.json.gz'),
     persist: true,
@@ -356,6 +382,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'pilotroute',
+    projection: 'EPSG:4326',
     url: new URL(pilotRoutesUrl),
     staticUrl: new URL(staticUrl + '/pilotroutes.json.gz'),
     persist: true,
@@ -366,6 +393,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'pilotageareaborder',
+    projection: 'EPSG:3067',
     url: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
     staticUrl: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
     persist: true,
@@ -376,6 +404,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'pilotagelimit',
+    projection: 'EPSG:3067',
     url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
     staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
     persist: true,
@@ -386,6 +415,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'dirway',
+    projection: 'EPSG:4326',
     url: new URL(dirwaysUrl),
     staticUrl: new URL(staticUrl + '/dirways.json.gz'),
     persist: true,
@@ -396,6 +426,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'restrictionport',
+    projection: 'EPSG:4326',
     url: new URL(restrictionPortUrl),
     staticUrl: new URL(staticUrl + '/restrictions.json.gz'),
     persist: true,
@@ -406,6 +437,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   {
     id: 'name',
+    projection: 'EPSG:3067',
     url: new URL(staticUrl + '/names.json.gz'),
     staticUrl: new URL(staticUrl + '/names.json.gz'),
     persist: true,

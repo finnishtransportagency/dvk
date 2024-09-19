@@ -27,7 +27,7 @@ export function useMareographLayer() {
     });
     setInitialized(true);
   }
-  return useConditionsDataLayer('mareograph', 'mareograph', 'EPSG:4258', fetchingEnabled);
+  return useConditionsDataLayer('mareograph', 'mareograph', fetchingEnabled);
 }
 
 export function useMareographFeatures() {
