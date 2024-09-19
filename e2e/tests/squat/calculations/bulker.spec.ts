@@ -144,4 +144,27 @@ async function checkResults(page: Page, fairwayType: 'Open Water' | 'Sloped Chan
   await expect(UKCDuringTurn).toHaveText('−1,98');
   const squatResult = page.getByTestId('squat-result');
   await expect(squatResult).toHaveText('1,37');
+  const relativeWindDirection = page.getByTestId('relative-wind-direction');
+  await expect(relativeWindDirection).toHaveText('35');
+  // this data-testid for some reason does not appear
+  // const relativeWindSpeed = page.getByTestId('relative-wind-speed');
+  // await expect(relativeWindSpeed).toHaveText('9');
+  const windForce = page.getByTestId('wind-force');
+  await expect(windForce).toHaveText('2,7');
+  const waveForce = page.getByTestId('wave-force');
+  await expect(waveForce).toHaveText('9,6');
+  const bowThrusterForce = page.getByTestId('bow-thruster-force');
+  await expect(bowThrusterForce).toHaveText('13,4');
+  const remainingSafetyMargin = page.getByTestId('remaining-safety-margin');
+  await expect(remainingSafetyMargin).toHaveText('108,4');
+  const minimumExternalForceRequired = page.getByTestId('minimum-external-force-required');
+  await expect(minimumExternalForceRequired).toHaveText('-');
+  const driftRelativeWindDirection = page.getByTestId('drift-relative-wind-direction');
+  await expect(driftRelativeWindDirection).toHaveText('35');
+  const driftRelativeWindSpeed = page.getByTestId('drift-relative-wind-speed');
+  await expect(driftRelativeWindSpeed).toHaveText('9');
+  const estimatedDriftAngle = page.getByTestId('estimated-drift-angle');
+  await expect(estimatedDriftAngle).toHaveText('0,02');
+  const estimatedVesselBreadthDueDrift = page.getByTestId('estimated-vessel-breadth-due-drift');
+  await expect(estimatedVesselBreadthDueDrift).toHaveText('32,32');
 }
