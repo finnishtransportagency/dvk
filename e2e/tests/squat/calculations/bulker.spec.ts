@@ -1,12 +1,8 @@
-import { test, expect, Page, Locator } from '@playwright/test';
+import { test, Page } from '@playwright/test';
+import { checkResults, fillForm, setLocatorValue, TestCase } from './testUtils';
 
 const PORT = process.env.PORT ?? '3000';
 
-interface TestCase {
-  name: string;
-  additionalSetup: (page: Page) => Promise<void>;
-  expectedResults: Record<string, string>;
-}
 const testCases: TestCase[] = [
   {
     name: 'Open Water',
@@ -39,7 +35,6 @@ const testCases: TestCase[] = [
       await setLocatorValue(page.getByTestId('slopeHeight').locator('input'), '12', true);
     },
     expectedResults: {
-      // Add Sloped Channel specific expected results here
       'heel-due-wind': '0,54',
       'constant-heel-during-turn': '2,12',
       'corrected-draught': '12,19',
@@ -66,7 +61,6 @@ const testCases: TestCase[] = [
       await setLocatorValue(page.getByTestId('channelWidth').locator('input'), '200');
     },
     expectedResults: {
-      // Add Channel specific expected results here
       'heel-due-wind': '0,54',
       'constant-heel-during-turn': '2,12',
       'corrected-draught': '12,19',
@@ -89,94 +83,74 @@ const testCases: TestCase[] = [
   },
 ];
 
+const bulkerSections = [
+  {
+    name: 'General',
+    fields: [
+      { name: 'lengthBPP', value: '189.90' },
+      { name: 'breadth', value: '32.26' },
+      { name: 'draught', value: '12.04' },
+    ],
+  },
+  {
+    name: 'Weather',
+    fields: [
+      { name: 'windSpeed', value: '5', clear: true },
+      { name: 'waveHeight', value: '1', clear: true },
+      { name: 'wavePeriod', value: '10', clear: true },
+    ],
+  },
+  {
+    name: 'Detailed',
+    fields: [
+      { name: 'windSurface', value: '2500' },
+      { name: 'deckCargo', value: '8000' },
+      { name: 'bowThruster', value: '1000' },
+    ],
+  },
+  {
+    name: 'Fairway',
+    fields: [
+      { name: 'sweptDepth', value: '12.5', clear: true },
+      { name: 'waterLevel', value: '10' },
+      { name: 'waterDepth', value: '23' },
+    ],
+  },
+  { name: 'Stability', fields: [{ name: 'KG', value: '8' }] },
+  {
+    name: 'Vessel',
+    fields: [
+      { name: 'vesselCourse', value: '10', clear: true },
+      { name: 'vesselSpeed', value: '12' },
+    ],
+  },
+];
+
 test.describe('Squat calculations for bulker vessel', () => {
   test('should calculate correct values for bulker + open water', async ({ page }) => {
-    const testCase = testCases.find(tc => tc.name === 'Open Water')!;
+    const testCase = testCases.find((tc) => tc.name === 'Open Water')!;
     await page.goto(`http://localhost:${PORT}/`);
-    await fillForm(page);
+    await fillForm(page, bulkerSections);
     await page.getByTestId(testCase.name).click();
     await testCase.additionalSetup(page);
     await checkResults(page, testCase.expectedResults);
   });
 
   test('should calculate correct values for bulker + sloped', async ({ page }) => {
-    const testCase = testCases.find(tc => tc.name === 'Sloped Channel')!;
+    const testCase = testCases.find((tc) => tc.name === 'Sloped Channel')!;
     await page.goto(`http://localhost:${PORT}/`);
-    await fillForm(page);
+    await fillForm(page, bulkerSections);
     await page.getByTestId(testCase.name).click();
     await testCase.additionalSetup(page);
     await checkResults(page, testCase.expectedResults);
   });
 
   test('should calculate correct values for bulker + channel', async ({ page }) => {
-    const testCase = testCases.find(tc => tc.name === 'Channel')!;
+    const testCase = testCases.find((tc) => tc.name === 'Channel')!;
     await page.goto(`http://localhost:${PORT}/`);
-    await fillForm(page);
+    await fillForm(page, bulkerSections);
     await page.getByTestId(testCase.name).click();
     await testCase.additionalSetup(page);
     await checkResults(page, testCase.expectedResults);
   });
 });
-
-async function fillForm(page: Page) {
-  const sections = [
-    {
-      name: 'General',
-      fields: [
-        { name: 'lengthBPP', value: '189.90' },
-        { name: 'breadth', value: '32.26' },
-        { name: 'draught', value: '12.04' },
-      ],
-    },
-    {
-      name: 'Weather',
-      fields: [
-        { name: 'windSpeed', value: '5', clear: true },
-        { name: 'waveHeight', value: '1', clear: true },
-        { name: 'wavePeriod', value: '10', clear: true },
-      ],
-    },
-    {
-      name: 'Detailed',
-      fields: [
-        { name: 'windSurface', value: '2500' },
-        { name: 'deckCargo', value: '8000' },
-        { name: 'bowThruster', value: '1000' },
-      ],
-    },
-    {
-      name: 'Fairway',
-      fields: [
-        { name: 'sweptDepth', value: '12.5', clear: true },
-        { name: 'waterLevel', value: '10' },
-        { name: 'waterDepth', value: '23' },
-      ],
-    },
-    { name: 'Stability', fields: [{ name: 'KG', value: '8' }] },
-    {
-      name: 'Vessel',
-      fields: [
-        { name: 'vesselCourse', value: '10', clear: true },
-        { name: 'vesselSpeed', value: '12' },
-      ],
-    },
-  ];
-
-  for (const section of sections) {
-    for (const field of section.fields) {
-      await setLocatorValue(page.getByTestId(field.name).locator('input'), field.value, field.clear);
-    }
-  }
-}
-
-async function setLocatorValue(locator: Locator, value: string, clear: boolean = false) {
-  if (clear) await locator.clear();
-  await locator.fill(value);
-  await locator.press('Tab');
-}
-
-async function checkResults(page: Page, expectedResults: Record<string, string>) {
-  for (const [testId, expectedValue] of Object.entries(expectedResults)) {
-    await expect(page.getByTestId(testId)).toHaveText(expectedValue);
-  }
-}
