@@ -234,12 +234,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     setSaveError('');
     setNotificationOpen(false);
     if (!saveError && !!savedCard && state.operation === Operation.Create) {
-      history.push({ pathname: '/vaylakortti/' + savedCard.id });
+      history.push({ pathname: '/vaylakortti/' + savedCard.id + '/' + savedCard.version });
     }
   };
 
   const createNewVersion = () => {
-    history.push({ pathname: '/vaylakortti/', state: { origin: fairwayCard, copyPictures: true } });
+    const newVersion = 'v' + (Number(state.version.slice(1)) + 1);
+    history.push({ pathname: '/vaylakortti/' + state.id + '/' + newVersion, state: { origin: state, copyPictures: true, newVersion: true } });
   };
 
   useEffect(() => {

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
+import { FairwayCardInput, FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
 import { useCurrentUserQueryData, useFairwayCardByIdQueryData } from '../graphql/api';
 import FairwayCardForm from '../components/FairwayCardForm';
 import { IonProgressBar } from '@ionic/react';
-import { mapToFairwayCardInput } from '../utils/dataMapper';
+import { mapOriginToFairwayCardInput, mapToFairwayCardInput } from '../utils/dataMapper';
 
 interface FairwayCardEditProps {
   fairwayCardId: string;
@@ -42,8 +42,10 @@ interface FairwayCardProps {
 }
 
 type LocationState = {
-  origin?: FairwayCardOrHarbor;
+  //fairwayCardInput when creating a new version since the whole card data is copied initially
+  origin?: FairwayCardOrHarbor | FairwayCardInput;
   copyPictures?: boolean;
+  newVersion?: boolean;
 };
 
 const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
@@ -92,14 +94,17 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
 
   return (
     <>
-      {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
-      {locationState?.origin && (
+      {fairwayCardId && !locationState?.newVersion && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
+      {locationState?.origin && !locationState?.newVersion && (
         <FairwayCardEditForm
           fairwayCardId={locationState.origin.id}
           fairwayCardVersion={locationState.origin.version}
           sourceCard={locationState.origin.id}
           copyPictures={locationState?.copyPictures}
         />
+      )}
+      {fairwayCardId && locationState?.origin && locationState?.newVersion && (
+        <FairwayCardForm fairwayCard={mapOriginToFairwayCardInput(locationState.origin.id, locationState.origin as FairwayCardInput, true)} />
       )}
       {!fairwayCardId && !locationState?.origin && (
         <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier="-" creator={data?.currentUser?.name} created={0} />
