@@ -47,5 +47,5 @@ export function useObservationLayer() {
     });
     setInitialized(true);
   }
-  return useConditionsDataLayer('observation', 'observation', 'EPSG:4258', 'always', 1000 * 60 * 5, fetchingEnabled);
+  return useConditionsDataLayer('observation', 'observation', 'EPSG:4258', 'always', fetchingEnabled);
 }

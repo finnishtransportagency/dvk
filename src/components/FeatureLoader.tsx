@@ -36,12 +36,11 @@ function useDataLayer(
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
   refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false,
   enabled: boolean = true,
   filterMethod?: (features: Feature<Geometry>[]) => Feature<Geometry>[]
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
+  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, enabled);
   useEffect(() => {
     // if no features, still set for layer when api was called
     if (
@@ -76,11 +75,10 @@ export function useConditionsDataLayer(
   featureLayerId: FeatureDataLayerId,
   dataProjection = 'EPSG:4326',
   refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false,
   enabled: boolean = true
 ): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval, enabled);
+  const { data, headers, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, enabled);
   useEffect(() => {
     const layer = dvkMap.getFeatureLayer(featureLayerId);
     layer.set('fetchedDate', headers?.['fetcheddate']);
@@ -131,7 +129,7 @@ export function useLine12Layer() {
 }
 
 export function useLine3456Layer() {
-  return useDataLayer('line3456', 'line3456', 'EPSG:4326', true, 1000 * 60 * 60 * 6);
+  return useDataLayer('line3456', 'line3456');
 }
 
 export function useCircleLayer() {
@@ -274,7 +272,7 @@ export function useBuoyLayer() {
     });
     setInitialized(true);
   }
-  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', 1000 * 60 * 5, visible);
+  return useDataLayer('buoy', 'buoy', 'EPSG:4258', 'always', visible);
 }
 
 export function useVtsLineLayer() {
@@ -363,7 +361,7 @@ export function useArea12Layer(): DvkLayerState {
 
 export function useArea3456Layer() {
   const [ready, setReady] = useState(false);
-  const aQuery = useFeatureData('area3456', true, 1000 * 60 * 60 * 6);
+  const aQuery = useFeatureData('area3456');
   const dataUpdatedAt = aQuery.dataUpdatedAt;
   const errorUpdatedAt = aQuery.errorUpdatedAt;
   const isPaused = aQuery.isPaused;
@@ -459,15 +457,15 @@ export function usePilotLayer() {
 }
 
 export function useCoastalWarningLayer() {
-  return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, true, filterMarineWarnings('coastalwarning'));
+  return useDataLayer('marinewarning', 'coastalwarning', 'EPSG:3395', 'always', true, filterMarineWarnings('coastalwarning'));
 }
 
 export function useLocalWarningLayer() {
-  return useDataLayer('marinewarning', 'localwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, true, filterMarineWarnings('localwarning'));
+  return useDataLayer('marinewarning', 'localwarning', 'EPSG:3395', 'always', true, filterMarineWarnings('localwarning'));
 }
 
 export function useBoaterWarningLayer() {
-  return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', 'always', 1000 * 60 * 15, true, filterMarineWarnings('boaterwarning'));
+  return useDataLayer('marinewarning', 'boaterwarning', 'EPSG:3395', 'always', true, filterMarineWarnings('boaterwarning'));
 }
 
 export function useVaylaWaterAreaData() {

@@ -81,8 +81,8 @@ function useAisFeatures() {
   const [ready, setReady] = useState(false);
   const [enabled, setEnabled] = useState(aisLayers.some((layer) => state.layers.includes(layer.id)));
   const [aisFeatures, setAisFeatures] = useState<Feature<Geometry>[]>([]);
-  const vesselQuery = useFeatureData('aisvessel', true, 10 * 60 * 1000, enabled);
-  const locationQuery = useFeatureData('aislocation', true, 10 * 1000, enabled);
+  const vesselQuery = useFeatureData('aisvessel', true, enabled);
+  const locationQuery = useFeatureData('aislocation', true, enabled);
   const dataUpdatedAt = Math.max(vesselQuery.dataUpdatedAt, locationQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(vesselQuery.errorUpdatedAt, locationQuery.errorUpdatedAt);
   const isPaused = vesselQuery.isPaused || locationQuery.isPaused;

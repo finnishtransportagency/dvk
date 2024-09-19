@@ -22,7 +22,7 @@ function addFairwayCardData(features: Feature<Geometry>[], cards: FairwayCardPar
 export function usePilotRouteFeatures() {
   const [ready, setReady] = useState(false);
   const [pilotRouteFeatures, setPilotRouteFeatures] = useState<Feature<Geometry>[]>([]);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching } = useFeatureData('pilotroute', true, 60 * 60 * 1000);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching } = useFeatureData('pilotroute');
   const { data: fairwayCardData } = useFairwayCardListData();
 
   useEffect(() => {

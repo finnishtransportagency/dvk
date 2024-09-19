@@ -54,7 +54,7 @@ export function useSafetyEquipmentAndFaultFeatures() {
     errorUpdatedAt: fErrorUpdatedAt,
     isPaused: fIsPaused,
     isError: fIsError,
-  } = useFeatureData('safetyequipmentfault', true, 1000 * 60 * 15);
+  } = useFeatureData('safetyequipmentfault');
   const { data: fairwayCardData } = useFairwayCardListData();
 
   useEffect(() => {

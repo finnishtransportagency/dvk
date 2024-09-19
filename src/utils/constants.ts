@@ -112,7 +112,15 @@ export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit-20240719.json.gz') },
 ];
 
-export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL; persist: boolean; staleTime: number; gcTime: number };
+export type FeatureDataSource = {
+  id: FeatureDataId;
+  url: URL;
+  staticUrl: URL;
+  persist: boolean;
+  staleTime: number;
+  gcTime: number;
+  refetchInterval: number | false;
+};
 
 export const FeatureDataSources: Array<FeatureDataSource> = [
   {
@@ -122,6 +130,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'area3456',
@@ -130,6 +139,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'line12',
@@ -138,6 +148,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'line3456',
@@ -146,6 +157,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
   },
   {
     id: 'restrictionarea',
@@ -154,6 +166,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'specialarea2',
@@ -162,6 +175,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'specialarea15',
@@ -170,6 +184,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'harbor',
@@ -178,6 +193,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'safetyequipment',
@@ -186,6 +202,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'depth12',
@@ -194,6 +211,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'safetyequipmentfault',
@@ -202,6 +220,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 1000 * 60 * 15, // 15 minutes
   },
   {
     id: 'marinewarning',
@@ -210,6 +229,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 1000 * 60 * 15, // 15 minutes
   },
   {
     id: 'boardline12',
@@ -218,6 +238,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'mareograph',
@@ -226,6 +247,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: false,
     staleTime: 60 * 1000,
     gcTime: 60 * 1000,
+    refetchInterval: 1000 * 60 * 5, // 5 minutes
   },
   {
     id: 'observation',
@@ -234,6 +256,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: 60 * 1000,
     gcTime: 60 * 1000,
+    refetchInterval: 1000 * 60 * 5, // 5 minutes
   },
   {
     id: 'buoy',
@@ -242,6 +265,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: false,
     staleTime: 60 * 1000,
     gcTime: 60 * 1000,
+    refetchInterval: 1000 * 60 * 5,
   },
   {
     id: 'vtsline',
@@ -250,6 +274,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'vtspoint',
@@ -258,6 +283,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'circle',
@@ -266,6 +292,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'aislocation',
@@ -274,6 +301,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: false,
     staleTime: 5 * 60 * 1000, // 5 minutes
     gcTime: 5 * 60 * 1000, // 5 minutes
+    refetchInterval: 10 * 1000, // 10 seconds
   },
   {
     id: 'aisvessel',
@@ -282,6 +310,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: false,
     staleTime: 2 * 60 * 60 * 1000, // 2 hours
     gcTime: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: 10 * 60 * 1000, // 10 minutes
   },
   {
     id: 'vayla_water_area',
@@ -290,6 +319,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'pilot',
@@ -298,6 +328,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'pilotroute',
@@ -306,6 +337,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 60 * 60 * 1000, // 1 hour
   },
   {
     id: 'pilotageareaborder',
@@ -314,6 +346,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'pilotagelimit',
@@ -322,6 +355,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'dirway',
@@ -330,6 +364,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'restrictionport',
@@ -338,6 +373,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
   {
     id: 'name',
@@ -346,6 +382,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: false,
   },
 ];
 

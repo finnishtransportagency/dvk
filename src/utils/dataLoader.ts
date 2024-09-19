@@ -11,12 +11,7 @@ import {
 } from '../graphql/generated';
 import { useEffect } from 'react';
 
-export function useFeatureData(
-  featureDataId: FeatureDataId,
-  refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false,
-  enabled: boolean = true
-) {
+export function useFeatureData(featureDataId: FeatureDataId, refetchOnMount: 'always' | boolean = true, enabled: boolean = true) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
   if (import.meta.env.VITE_APP_USE_STATIC_FEATURES === 'true') {
@@ -28,7 +23,7 @@ export function useFeatureData(
     queryKey: [fds?.id],
     meta: { persist: fds?.persist },
     refetchOnMount,
-    refetchInterval,
+    refetchInterval: fds?.refetchInterval,
     staleTime: fds?.staleTime,
     gcTime: fds?.gcTime,
     queryFn: async () => {
