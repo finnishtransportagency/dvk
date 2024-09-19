@@ -209,11 +209,10 @@ const LayerModal: React.FC<ModalProps> = ({
     getIdbVal(LAYER_IDB_KEY).then((savedLayers) => {
       if (savedLayers?.length) {
         dispatch({ type: 'setLayers', payload: { value: savedLayers } });
+        setSaveSelection(true);
       }
-      // Clear previous selection, since saveSelection is false by default
-      setIdbVal(LAYER_IDB_KEY, []);
     });
-  }, [dispatch]);
+  }, [dispatch, setSaveSelection]);
 
   useEffect(() => {
     setMarineWarningNotificationLayer(layers.includes('coastalwarning') || layers.includes('localwarning') || layers.includes('boaterwarning'));
