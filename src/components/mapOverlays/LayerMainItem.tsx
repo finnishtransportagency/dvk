@@ -9,7 +9,7 @@ import LayerItem from './LayerItem';
 import { FeatureDataLayerId, LAYER_IDB_KEY } from '../../utils/constants';
 import { hasOfflineSupport } from '../../utils/common';
 import AisPredictorControl from './AisPredictorControl';
-import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
+import { set as setIdbVal } from 'idb-keyval';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
@@ -26,7 +26,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, saveSelecti
   };
 
   const updateLayers = (updatedLayers: string[]) => {
-    getIdbVal(LAYER_IDB_KEY).then((val) => console.log(val));
     if (saveSelection) {
       setIdbVal(LAYER_IDB_KEY, updatedLayers);
     }

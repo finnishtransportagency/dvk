@@ -183,16 +183,13 @@ const LayerModal: React.FC<ModalProps> = ({
   const saveLayerSelection = (event: CheckboxCustomEvent) => {
     const checked = event.detail.checked;
     setSaveSelection(checked);
-    if (!checked) {
-      setIdbVal(LAYER_IDB_KEY, []);
-    }
+    setIdbVal(LAYER_IDB_KEY, checked ? layers : []);
   };
 
   const selectAllChecked = layerIds.every((layerId) => layers.includes(layerId));
   const selectAllIndeterminate = layerIds.some((layerId) => layers.includes(layerId)) && !selectAllChecked;
 
   const handleSelectAll = (event: CheckboxCustomEvent) => {
-    getIdbVal(LAYER_IDB_KEY).then((val) => console.log(val));
     const { checked } = event.detail;
     const modalOptions: string[] = layerIds.map((id) => id as string);
     // All default layers are not included in layer modal
@@ -207,6 +204,16 @@ const LayerModal: React.FC<ModalProps> = ({
       updateIceLayerOpacity();
     }
   };
+
+  useEffect(() => {
+    getIdbVal(LAYER_IDB_KEY).then((savedLayers) => {
+      if (savedLayers?.length) {
+        dispatch({ type: 'setLayers', payload: { value: savedLayers } });
+      }
+      // Clear previous selection, since saveSelection is false by default
+      setIdbVal(LAYER_IDB_KEY, []);
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     setMarineWarningNotificationLayer(layers.includes('coastalwarning') || layers.includes('localwarning') || layers.includes('boaterwarning'));

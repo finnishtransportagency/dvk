@@ -11,7 +11,7 @@ import alertIcon from '../../theme/img/alert_icon.svg';
 import { FeatureDataLayerId, LAYER_IDB_KEY } from '../../utils/constants';
 import type { CheckboxCustomEvent } from '@ionic/react';
 import { LegendSpeedlimits, LegendIce, LegendDepth, LegendArea, LegendContour } from './LayerLegends';
-import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
+import { set as setIdbVal } from 'idb-keyval';
 
 interface LayerItemProps {
   id: FeatureDataLayerId;
@@ -95,7 +95,6 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, saveSelection, title, mainLeg
   }, [alertProps, t]);
 
   const handleChange = (event: CheckboxCustomEvent) => {
-    getIdbVal(LAYER_IDB_KEY).then((val) => console.log(val));
     const { checked } = event.detail;
     const updatedLayers = checked ? [...layers, id] : layers.filter((l) => l !== id);
     if (saveSelection) {
