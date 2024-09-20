@@ -54,21 +54,18 @@ export function useCircleLayer() {
   return useDataLayer('circle', 'circle');
 }
 
-function useStaticDataLayer(
-  featureDataId: FeatureDataId,
-  featureLayerId: FeatureDataLayerId | BackgroundLayerId,
-  dataProjection = MAP.EPSG,
-  refetchOnMount: 'always' | boolean = false,
-  refetchInterval: number | false = false
-): DvkLayerState {
+function useStaticDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId | BackgroundLayerId): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useStaticFeatureData(featureDataId, refetchOnMount, refetchInterval);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useStaticFeatureData(featureDataId);
   useEffect(() => {
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON({ featureClass: Feature });
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
+        const features = format.readFeatures(data, {
+          dataProjection: getFeatureDataSourceProjection(featureDataId),
+          featureProjection: MAP.EPSG,
+        }) as unknown as Feature<Geometry>[];
         layer.setSource(
           new VectorSource<Feature<Geometry>>({
             features: features,
@@ -79,7 +76,7 @@ function useStaticDataLayer(
       }
       setReady(true);
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  }, [featureDataId, featureLayerId, data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -189,7 +186,7 @@ export function useArea12Layer(): DvkLayerState {
 
 export function useArea3456Layer() {
   const [ready, setReady] = useState(false);
-  const aQuery = useFeatureData('area3456', true, 1000 * 60 * 60 * 6);
+  const aQuery = useFeatureData('area3456');
   const dataUpdatedAt = aQuery.dataUpdatedAt;
   const errorUpdatedAt = aQuery.errorUpdatedAt;
   const isPaused = aQuery.isPaused;
