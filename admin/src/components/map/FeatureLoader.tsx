@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../../speedlimitworker/SpeedlimitUtils';
 import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
+import { getFeatureDataSourceProjection } from '../../utils/common';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -20,21 +21,15 @@ export type DvkLayerState = {
   isError: boolean;
 };
 
-function useDataLayer(
-  featureDataId: FeatureDataId,
-  featureLayerId: FeatureDataLayerId,
-  dataProjection = 'EPSG:4326',
-  refetchOnMount: 'always' | boolean = false,
-  refetchInterval: number | false = false
-): DvkLayerState {
+function useDataLayer(featureDataId: FeatureDataId, featureLayerId: FeatureDataLayerId): DvkLayerState {
   const [ready, setReady] = useState(false);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId, refetchOnMount, refetchInterval);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError } = useFeatureData(featureDataId);
   useEffect(() => {
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
+        const features = format.readFeatures(data, { dataProjection: getFeatureDataSourceProjection(featureDataId), featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);
         source.clear();
         features.forEach((f) => f.set('dataSource', featureLayerId, true));
@@ -43,7 +38,7 @@ function useDataLayer(
       }
       setReady(true);
     }
-  }, [featureLayerId, data, dataUpdatedAt, dataProjection]);
+  }, [featureDataId, featureLayerId, data, dataUpdatedAt]);
   return { ready, dataUpdatedAt, errorUpdatedAt, isPaused, isError };
 }
 
@@ -89,7 +84,7 @@ function useStaticDataLayer(
 }
 
 export function useNameLayer() {
-  return useDataLayer('name', 'name', MAP.EPSG);
+  return useDataLayer('name', 'name');
 }
 
 export function useBackgroundFinlandLayer(): DvkLayerState {
@@ -109,11 +104,11 @@ export function useBoardLine12Layer() {
 }
 
 export function useVtsLineLayer() {
-  return useDataLayer('vtsline', 'vtsline', 'EPSG:4258');
+  return useDataLayer('vtsline', 'vtsline');
 }
 
 export function useVtsPointLayer() {
-  return useDataLayer('vtspoint', 'vtspoint', 'EPSG:4258');
+  return useDataLayer('vtspoint', 'vtspoint');
 }
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
@@ -164,8 +159,8 @@ export function useArea12Layer(): DvkLayerState {
       const layer = dvkMap.getFeatureLayer('area12');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
-        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const afs = format.readFeatures(aData, { dataProjection: getFeatureDataSourceProjection('area12'), featureProjection: MAP.EPSG });
+        const rafs = format.readFeatures(raData, { dataProjection: getFeatureDataSourceProjection('restrictionarea'), featureProjection: MAP.EPSG });
         addSpeedLimits(afs, rafs);
         afs.forEach((f) => f.set('dataSource', 'area12', true));
         const source = dvkMap.getVectorSource('area12');
@@ -206,7 +201,7 @@ export function useArea3456Layer() {
       const layer = dvkMap.getFeatureLayer('area3456');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const afs = format.readFeatures(aData, { dataProjection: getFeatureDataSourceProjection('area3456'), featureProjection: MAP.EPSG });
         afs.forEach((f) => f.set('dataSource', 'area3456', true));
         const source = dvkMap.getVectorSource('area3456');
         source.clear();
@@ -282,11 +277,11 @@ export function useSpecialArea2Layer() {
 }
 
 export function useSpecialArea15Layer() {
-  return useDataLayer('specialarea15', 'specialarea15', 'EPSG:3067');
+  return useDataLayer('specialarea15', 'specialarea15');
 }
 
 export function usePilotLayer() {
-  return useDataLayer('pilot', 'pilot', 'EPSG:4258');
+  return useDataLayer('pilot', 'pilot');
 }
 
 export function useHarborLayer() {
@@ -298,9 +293,9 @@ export function useSafetyEquipmentLayer(): DvkLayerState {
 }
 
 export function usePilotageAreaBorderLayer() {
-  return useDataLayer('pilotageareaborder', 'pilotageareaborder', 'EPSG:3067');
+  return useDataLayer('pilotageareaborder', 'pilotageareaborder');
 }
 
 export function usePilotageLimitLayer() {
-  return useDataLayer('pilotagelimit', 'pilotagelimit', 'EPSG:3067');
+  return useDataLayer('pilotagelimit', 'pilotagelimit');
 }

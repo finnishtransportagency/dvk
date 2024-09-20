@@ -5,11 +5,12 @@ import { GeoJSON } from 'ol/format';
 import dvkMap from './DvkMap';
 import { useFeatureData } from '../../utils/dataLoader';
 import { MAP } from '../../utils/constants';
+import { getFeatureDataSourceProjection } from '../../utils/common';
 
 function usePilotRouteFeatures() {
   const [ready, setReady] = useState(false);
   const [pilotRouteFeatures, setPilotRouteFeatures] = useState<Feature<Geometry>[]>([]);
-  const pilotRouteQuery = useFeatureData('pilotroute', true, 60 * 60 * 1000, 2 * 60 * 60 * 1000, 2 * 60 * 60 * 1000);
+  const pilotRouteQuery = useFeatureData('pilotroute');
   const dataUpdatedAt = pilotRouteQuery.dataUpdatedAt;
   const errorUpdatedAt = pilotRouteQuery.errorUpdatedAt;
   const isPaused = pilotRouteQuery.isPaused;
@@ -20,7 +21,7 @@ function usePilotRouteFeatures() {
     if (pilotRouteData) {
       const format = new GeoJSON();
       const pilotRouteFeatures = format.readFeatures(pilotRouteData, {
-        dataProjection: 'EPSG:4326',
+        dataProjection: getFeatureDataSourceProjection('pilotroute'),
         featureProjection: MAP.EPSG,
       });
       setPilotRouteFeatures(pilotRouteFeatures);
