@@ -102,7 +102,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   };
 
   const cardId = sourceCardId?.length ? sourceCardId : fairwayCardInput.id;
-  const cardVersion = sourceCardVersion?.length ? sourceCardVersion : fairwayCardInput.version;
+  const cardVersion = sourceCardId?.length ? sourceCardVersion : fairwayCardInput.version;
 
   return (
     <IonGrid className={'print-images ' + orientation.toLowerCase()}>

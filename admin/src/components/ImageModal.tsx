@@ -104,7 +104,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
   };
 
   const cardId = sourceCardId?.length ? sourceCardId : fairwayCardInput.id;
-  const cardVersion = sourceCardVersion?.length ? sourceCardVersion : fairwayCardInput.version;
+  const cardVersion = sourceCardId?.length ? sourceCardVersion : fairwayCardInput.version;
 
   return (
     <IonModal ref={modal} isOpen={!!picture} className={'image ' + (picture ? picture.orientation : '')} onDidDismiss={() => closeModal()}>
