@@ -109,7 +109,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
       <IonRow>
         {mainPictures?.map((pic, idx) => {
           const groupedPics = secondaryPictures?.filter((p) => p.groupId && p.groupId === pic.groupId);
-          const imgSource = `${imageUrl}${cardId}/${cardVersion}`;
+          const imgSource = `${imageUrl}${cardId}/${cardVersion}/`;
 
           return (
             <IonCol key={pic.id} size="auto">
