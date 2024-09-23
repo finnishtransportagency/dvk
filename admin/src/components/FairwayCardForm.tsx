@@ -375,7 +375,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 setPicture={updateState}
                 fairways={fairwaySelection}
                 harbours={harbourSelection}
-                sourceCard={sourceCardId}
+                sourceCardId={sourceCardId}
+                sourceCardVersion={sourceCardVersion}
               />
             </form>
           </>

@@ -35,10 +35,11 @@ interface ModalProps {
     actionOuterTarget?: string | number
   ) => void;
   disabled: boolean;
-  sourceCard?: string;
+  sourceCardId?: string;
+  sourceCardVersion?: string;
 }
 
-const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen, setPicture, disabled, sourceCard }) => {
+const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen, setPicture, disabled, sourceCardId, sourceCardVersion }) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
@@ -102,6 +103,9 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
     }, 150);
   };
 
+  const cardId = sourceCardId?.length ? sourceCardId : fairwayCardInput.id;
+  const cardVersion = sourceCardVersion?.length ? sourceCardVersion : fairwayCardInput.version;
+
   return (
     <IonModal ref={modal} isOpen={!!picture} className={'image ' + (picture ? picture.orientation : '')} onDidDismiss={() => closeModal()}>
       <IonHeader>
@@ -129,8 +133,8 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
               {picture && (
                 <div className="imageWrapper">
                   <img
-                    src={`${imageUrl}${sourceCard?.length ? sourceCard : fairwayCardInput.id}/${picture.id}`}
-                    alt={sourceCard?.length ? `${t('fairwaycard.pic-copy')}-${picture.id}` : picture.id}
+                    src={`${imageUrl}${cardId}/${cardVersion}/${picture.id}`}
+                    alt={sourceCardId?.length ? `${t('fairwaycard.pic-copy')}-${picture.id}` : picture.id}
                     onLoad={() => setIsLoading(false)}
                   />
                   {!isLoading && (
