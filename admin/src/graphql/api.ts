@@ -8,6 +8,7 @@ import {
   UploadMapPictureMutationVariables,
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
+  useFairwayCardLatestByIdQuery,
   useFairwayCardsAndHarborsQuery,
   useFairwayCardsQuery,
   useFairwaysQuery,
@@ -40,6 +41,10 @@ export function useFairwayCardsAndHarborsQueryData(getAllVersions: boolean) {
 
 export function useFairwayCardByIdQueryData(id: string, version: string = 'v0_latest', refetchOnWindowFocus?: boolean) {
   return useFairwayCardByIdQuery(datasourceClient, { id, version }, { refetchOnWindowFocus: refetchOnWindowFocus });
+}
+
+export function useFairwayCardLatestByIdQueryData(id: string) {
+  return useFairwayCardLatestByIdQuery(datasourceClient, { id }, { refetchOnWindowFocus: false });
 }
 
 export function useFairwaysQueryData() {

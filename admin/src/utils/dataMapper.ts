@@ -171,16 +171,11 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
   };
 }
 
-export function mapOriginToFairwayCardInput(
-  sourceCard: string | undefined,
-  origin: FairwayCardInput | undefined,
-  copyPictures?: boolean,
-  newVersion?: boolean
-) {
+export function mapOriginToFairwayCardInput(sourceCard: string | undefined, origin: FairwayCardInput | undefined, copyPictures?: boolean) {
   return {
     id: stringValueOrDefault(origin?.id),
     // v1 is just for now, since proper version control not in use
-    version: newVersion ? (origin?.version ?? 'v1') : 'v' + (Number(origin?.version.slice(1)) + 1),
+    version: origin?.version ?? 'v1',
     group: stringValueOrDefault(origin?.group),
     name: {
       fi: stringValueOrDefault(origin?.name?.fi),
@@ -260,7 +255,8 @@ export function mapOriginToFairwayCardInput(
       vts: origin?.trafficService?.vts,
       tugs: origin?.trafficService?.tugs,
     },
-    operation: Operation.Update,
+    // this function is for now only used for creating new version
+    operation: Operation.Createversion,
     pictures: copyPictures ? origin?.pictures : [],
     temporaryNotifications: origin?.temporaryNotifications,
   };

@@ -67,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({
             <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
               {t('general.cancel')}
             </IonButton>
-            {operation === Operation.Update && oldStatus !== Status.Removed && (
+            {(operation === Operation.Update || operation === Operation.Createversion) && oldStatus !== Status.Removed && (
               <IonButton
                 id="deleteButton"
                 shape="round"
@@ -97,7 +97,7 @@ const Header: React.FC<HeaderProps> = ({
               </>
             ) : (
               <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
-                {operation === Operation.Update ? t('general.save') : t('general.create-new')}
+                {operation === Operation.Update || operation === Operation.Createversion ? t('general.save') : t('general.create-new')}
               </IonButton>
             )}
           </IonCol>

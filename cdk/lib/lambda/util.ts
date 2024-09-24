@@ -146,9 +146,8 @@ export async function handleAisCall(
   };
 }
 
-export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableName: string, operation: Operation) {
+export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableName: string, operation: Operation, newVersionNumber?: number | null) {
   const updateCommands = [];
-
   // creating a new item
   if (operation === Operation.Create) {
     // latest item
@@ -175,6 +174,20 @@ export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableNa
         TableName: tableName,
         Item: { ...data, version: 'v1' },
         ConditionExpression: 'attribute_not_exists(id)',
+      })
+    );
+  } else if (operation === Operation.Createversion) {
+    // set latest version to new version
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v0_latest', latest: newVersionNumber },
+      })
+    );
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v' + newVersionNumber },
       })
     );
   } else if (operation === Operation.Update) {

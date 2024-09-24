@@ -300,6 +300,7 @@ export function mapFairwayCardDBModelToGraphqlType(
     fairwayIds: mapFairwayIds(dbModel),
     pictures: dbModel.pictures,
     temporaryNotifications: mapTemporaryNotifications(dbModel.temporaryNotifications ?? []),
+    latest: dbModel.latest,
   };
 
   for (const fairway of dbModel.fairways || []) {

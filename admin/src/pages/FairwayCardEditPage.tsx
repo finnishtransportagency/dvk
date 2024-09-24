@@ -41,6 +41,7 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fa
           modifier={data?.fairwayCard?.modifier ?? ''}
           creator={data?.fairwayCard?.creator ?? data?.fairwayCard?.modifier ?? undefined}
           created={data?.fairwayCard?.creationTimestamp ?? 0}
+          sourceCard={sourceCard}
         />
       )}
     </>
@@ -60,7 +61,7 @@ type LocationState = {
 };
 
 const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
-  const { fairwayCardId } = useParams<FairwayCardProps>();
+  const { fairwayCardId, version } = useParams<FairwayCardProps>();
   const location = useLocation();
   const locationState = location.state as LocationState;
 
@@ -105,7 +106,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
 
   return (
     <>
-      {fairwayCardId && !locationState?.newVersion && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
+      {fairwayCardId && !locationState?.newVersion && <FairwayCardEditForm fairwayCardId={fairwayCardId} fairwayCardVersion={version} />}
       {locationState?.origin && !locationState?.newVersion && (
         <FairwayCardEditForm
           fairwayCardId={locationState.origin.id}
@@ -118,7 +119,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
         <FairwayCardEditForm
           fairwayCardId={locationState.origin.id}
           fairwayCardVersion={locationState.origin.version}
-          origin={mapOriginToFairwayCardInput(locationState.origin.id, locationState.origin as FairwayCardInput, true, true)}
+          origin={mapOriginToFairwayCardInput(locationState.origin.id, locationState.origin as FairwayCardInput, true)}
         />
       )}
       {!fairwayCardId && !locationState?.origin && (

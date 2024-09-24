@@ -154,6 +154,8 @@ class FairwayCardDBModel {
 
   temporaryNotifications?: Maybe<TemporaryNotification[]>;
 
+  latest?: Maybe<number>;
+
   private static getLatestSortKey() {
     return 'v0_latest';
   }
@@ -268,7 +270,15 @@ class FairwayCardDBModel {
   }
 
   static async save(data: FairwayCardDBModel, operation: Operation) {
-    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation);
+    let latestVersionNumber;
+    let newVersionNumber;
+
+    if (operation === Operation.Createversion) {
+      latestVersionNumber = await FairwayCardDBModel.getLatest(data.id).then((fairwayCard) => fairwayCard?.latest);
+      newVersionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
+    }
+
+    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation, newVersionNumber);
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }
