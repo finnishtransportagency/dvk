@@ -2,11 +2,21 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
-import { ContentType, FairwayCardByIdFragment, FairwayCardInput, Operation, Status, TugInput, VtsInput } from '../graphql/generated';
+import {
+  ContentType,
+  FairwayCardByIdFragment,
+  FairwayCardInput,
+  Operation,
+  Status,
+  TemporaryNotificationInput,
+  TugInput,
+  VtsInput,
+} from '../graphql/generated';
 import {
   useFairwayCardsAndHarborsQueryData,
   useFairwaysQueryData,
   useHarboursQueryData,
+  useMareographQueryData,
   usePilotPlacesQueryData,
   useSaveFairwayCardMutationQuery,
 } from '../graphql/api';
@@ -15,7 +25,7 @@ import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import NotificationModal from './NotificationModal';
-import MapExportTool from './MapExportTool';
+import MapExportTool from './pictures/MapExportTool';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';
 import MainSection from './form/fairwayCard/MainSection';
@@ -27,15 +37,20 @@ import Header from './form/Header';
 import { openPreview } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
+import NotificationSection from './form/fairwayCard/NotificationSection';
+import InfoHeader from './InfoHeader';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
   modified?: number;
   modifier?: string;
+  creator?: string;
+  created?: number;
+  sourceCard?: string;
   isError?: boolean;
 }
 
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, sourceCard, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -55,14 +70,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
   const { data: pilotPlaceList, isLoading: isLoadingPilotPlaces } = usePilotPlacesQueryData();
-  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
+  const { data: mareographList, isLoading: isLoadingMareographs } = useMareographQueryData();
+
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
   // these are derived straight from featureData unlike others through graphQL
   // the graphQL approach's motives are a bit unclear so possible refactor in the future
   const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
-      setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
+      setOldState(mapToFairwayCardInput(undefined, { fairwayCard: data.saveFairwayCard }));
       setNotificationOpen(true);
       if (previewPending) {
         handleOpenPreview();
@@ -77,13 +94,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
   const harbourSelection = harbourList?.harbors.filter((item) => state.harbors?.includes(item.id));
-  const harbourOptions = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem && item.status === Status.Public);
+  const harbourOptions = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem);
 
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
     .filter((item) => item.type === ContentType.Card)
     .flatMap((item) => item.id);
 
-  const isLoading = isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces;
+  const isLoading = isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces || isLoadingMareographs;
 
   const updateState = (
     value: ValueType,
@@ -109,7 +126,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const setValidity = (actionType: ActionType, val: boolean) => {
     setInnerValidationErrors(
-      innerValidationErrors.filter((error) => error.id !== actionType).concat({ id: actionType, msg: !val ? t(ErrorMessageKeys?.invalid) ?? '' : '' })
+      innerValidationErrors
+        .filter((error) => error.id !== actionType)
+        .concat({ id: actionType, msg: !val ? (t(ErrorMessageKeys?.invalid) ?? '') : '' })
     );
   };
 
@@ -127,39 +146,30 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const saveCard = useCallback(
     (isRemove?: boolean) => {
+      const cardInput = isRemove ? oldState : state;
+      const newInput = {
+        ...cardInput,
+        trafficService: {
+          ...cardInput.trafficService,
+          pilot: {
+            ...cardInput.trafficService?.pilot,
+            places: cardInput.trafficService?.pilot?.places?.map((place) => {
+              return { id: place.id, pilotJourney: place.pilotJourney };
+            }),
+          },
+        },
+      };
+
       if (isRemove) {
-        const oldCard = {
-          ...oldState,
-          trafficService: {
-            ...oldState.trafficService,
-            pilot: {
-              ...oldState.trafficService?.pilot,
-              places: oldState.trafficService?.pilot?.places?.map((place) => {
-                return { id: place.id, pilotJourney: place.pilotJourney };
-              }),
-            },
-          },
-          status: Status.Removed,
-        };
         setState({ ...oldState, status: Status.Removed });
-        saveFairwayCard({ card: oldCard as FairwayCardInput });
+        saveFairwayCard({ card: { ...newInput, status: Status.Removed } as FairwayCardInput });
+      } else if (!!sourceCard?.length && !!state.pictures?.length) {
+        saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: sourceCard });
       } else {
-        const currentCard = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              places: state.trafficService?.pilot?.places?.map((place) => {
-                return { id: place.id, pilotJourney: place.pilotJourney };
-              }),
-            },
-          },
-        };
-        saveFairwayCard({ card: currentCard as FairwayCardInput });
+        saveFairwayCard({ card: newInput as FairwayCardInput });
       }
     },
-    [state, oldState, saveFairwayCard]
+    [state, oldState, sourceCard, saveFairwayCard]
   );
 
   const formValid = (): boolean => {
@@ -169,7 +179,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
       if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
     }
-    const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg);
+    const invalidErrorMsg = t(ErrorMessageKeys?.invalid);
+    const endDateErrorMsg = t(ErrorMessageKeys.endDateError);
+    const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg, invalidErrorMsg, endDateErrorMsg);
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -203,9 +215,19 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
-  const getModifiedInfo = () => {
-    if (savedCard) return t('general.datetimeFormat', { val: savedCard.modificationTimestamp ?? savedCard.creationTimestamp });
-    return modified ? t('general.datetimeFormat', { val: modified }) : '-';
+  const getDateTimeInfo = (isModifiedInfo: boolean) => {
+    if (savedCard) {
+      return t('general.datetimeFormat', {
+        val: isModifiedInfo
+          ? (savedCard.modificationTimestamp ?? savedCard.creationTimestamp)
+          : (savedCard.creationTimestamp ?? savedCard.modificationTimestamp),
+      });
+    }
+    if (isModifiedInfo) {
+      return modified ? t('general.datetimeFormat', { val: modified }) : '-';
+    } else {
+      return created ? t('general.datetimeFormat', { val: created }) : '-';
+    }
   };
 
   const closeNotification = () => {
@@ -263,8 +285,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         handlePreview={handlePreview}
-        modifiedInfo={getModifiedInfo()}
-        modifierInfo={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
         isError={isError}
       />
 
@@ -272,62 +292,92 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         {isError && <p>{t('general.loading-error')}</p>}
 
         {!isError && (
-          <form ref={formRef}>
-            <MainSection
-              state={state}
-              updateState={updateState}
-              validationErrors={validationErrors}
-              setValidity={setValidity}
-              isLoadingFairways={isLoadingFairways}
-              isLoadingHarbours={isLoadingHarbours}
-              fairwayOptions={fairwayList?.fairways}
-              fairwaySelection={fairwaySelection}
-              harbourOptions={harbourOptions}
-              isLoadingPilotRoutes={isLoadingPilotRoutes}
-              pilotRouteOptions={pilotRouteList}
+          <>
+            <InfoHeader
+              status={state.status}
+              modified={getDateTimeInfo(true)}
+              modifier={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
+              creator={savedCard?.creator ?? creator}
+              created={getDateTimeInfo(false)}
             />
-            <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <RecommendationsSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <TrafficServiceSection
-              state={state}
-              updateState={updateState}
-              validationErrors={validationErrors}
-              isLoadingPilotPlaces={isLoadingPilotPlaces}
-              pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
-            />
+            <form ref={formRef}>
+              <MainSection
+                state={state}
+                updateState={updateState}
+                validationErrors={validationErrors}
+                setValidity={setValidity}
+                isLoadingFairways={isLoadingFairways}
+                isLoadingHarbours={isLoadingHarbours}
+                fairwayOptions={fairwayList?.fairways}
+                fairwaySelection={fairwaySelection}
+                harbourOptions={harbourOptions}
+                isLoadingPilotRoutes={isLoadingPilotRoutes}
+                pilotRouteOptions={pilotRouteList}
+                sourceCard={sourceCard}
+              />
+              <NotificationSection
+                state={state}
+                sections={state.temporaryNotifications as TemporaryNotificationInput[]}
+                updateState={updateState}
+                sectionType="temporaryNotifications"
+                validationErrors={validationErrors}
+              />
+              <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <RecommendationsSection
+                state={state}
+                updateState={updateState}
+                validationErrors={validationErrors}
+                isLoadingMareographs={isLoadingMareographs}
+                mareographOptions={mareographList?.mareographs}
+              />
+              <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <TrafficServiceSection
+                state={state}
+                updateState={updateState}
+                validationErrors={validationErrors}
+                isLoadingPilotPlaces={isLoadingPilotPlaces}
+                pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
+              />
 
-            <Section
-              title={t('fairwaycard.vts-heading')}
-              sections={state.trafficService?.vts as VtsInput[]}
-              updateState={updateState}
-              sectionType="vts"
-              validationErrors={validationErrors}
-              disabled={state.status === Status.Removed}
-            />
+              <Section
+                title={t('fairwaycard.vts-heading')}
+                sections={state.trafficService?.vts as VtsInput[]}
+                updateState={updateState}
+                sectionType="vts"
+                validationErrors={validationErrors}
+                disabled={state.status === Status.Removed}
+              />
 
-            <Section
-              title={t('fairwaycard.tug-heading')}
-              sections={state.trafficService?.tugs as TugInput[]}
-              updateState={updateState}
-              sectionType="tug"
-              validationErrors={validationErrors}
-              disabled={state.status === Status.Removed}
-            />
+              <Section
+                title={t('fairwaycard.tug-heading')}
+                sections={state.trafficService?.tugs as TugInput[]}
+                updateState={updateState}
+                sectionType="tug"
+                validationErrors={validationErrors}
+                disabled={state.status === Status.Removed}
+              />
 
-            <IonText>
-              <h2>{t('fairwaycard.print-images')}</h2>
-            </IonText>
-            <MapExportTool
-              fairwayCardInput={state}
-              disabled={state.status === Status.Removed}
-              validationErrors={validationErrors.concat(innerValidationErrors)}
-              setPicture={updateState}
-              fairways={fairwaySelection}
-              harbours={harbourSelection}
-            />
-          </form>
+              <IonText>
+                <h2>
+                  {t('fairwaycard.print-images')}
+                  {!!sourceCard?.length && !!state.pictures?.length && (
+                    <span className="print-images-warning">{t('fairwaycard.print-images-warning')}</span>
+                  )}
+                </h2>
+              </IonText>
+
+              <MapExportTool
+                fairwayCardInput={state}
+                disabled={state.status === Status.Removed}
+                validationErrors={validationErrors.concat(innerValidationErrors)}
+                setPicture={updateState}
+                fairways={fairwaySelection}
+                harbours={harbourSelection}
+                sourceCard={sourceCard}
+              />
+            </form>
+          </>
         )}
       </IonContent>
     </IonPage>

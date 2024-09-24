@@ -38,11 +38,6 @@
     "sv": "Alla fartyg bör ha en sikt på minst 300 m. Därtill bör ett fartyg som är över 200 m långt ha en sikt på minst 1,0 nm.",
     "en": "All ships should have a visibility of at least 300 m. In addition, for ships of more than 200 m in length, visibility should be at least 1.0 nm."
   },
-  "seaLevel": {
-    "fi": "Vertaustaso on teoreettinen keskivesi MSL (Mean Sea Level) / MW (Mean Water).",
-    "sv": "Som referensnivå för djupuppgifter är teoretisk medelvattenstånd MSL (Mean Sea Level) / MW (Mean Water).",
-    "en": "The reference level used in depth information is the theoretical mean sea level MSL / mean sea level MW."
-  },
   "windRecommendation": {
     "fi": "Yli 215 m:n pituisilla aluksilla maksimituulennopeus 15 m/s.",
     "sv": "Max. vindhastighet för fartyg med en längd av 215 m eller mera 15 m/s.",

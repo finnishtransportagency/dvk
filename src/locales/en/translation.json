@@ -32,6 +32,8 @@
         "layer": {
           "tipLabel": "Select layers",
           "header": "Map layers",
+          "saveSelection": "[en] Muista valintani",
+          "selectAll": "[en] Valitse kaikki tasot",
           "class1": "Merchant shipping",
           "class2": "Other waterborne traffic",
           "lines": "Navigation lines",
@@ -51,7 +53,6 @@
           "conditions": "Conditions",
           "seaLevel": "Sea level",
           "weatherStation": "Weather stations",
-          "ice": "Ice map",
           "buoys": "Wave buoys",
           "vts": "VTS",
           "vtsline": "VTS areas",
@@ -78,6 +79,10 @@
           "aisVesselPleasureCraft": "Pleasure crafts",
           "aisUnspecified": "Unspecified vessels",
           "aisShowPredictor": "Velocity vectors",
+          "winterTraffic": "Winter navigation",
+          "dirway": "Ice waypoints",
+          "restrictionPort": "Assistance restrictions",
+          "ice": "Ice map",
           "mapStyle": {
             "header": "Map style",
             "landButtonLabel": "Land",
@@ -107,7 +112,7 @@
           "mousePositionLabel": "Mouse coordinates:"
         },
         "searchbar": {
-          "placeholder": "Search fairway by name",
+          "placeholder": "Search fairway by name or number",
           "title": "Fairway search",
           "clearTitle": "Clear",
           "no-search-results": "Search '{{query}}' did not match any fairway"
@@ -229,6 +234,7 @@
     "areaType11": "Additional swept area",
     "areaType14": "STS area",
     "areaType15": "Meeting and overtaking prohibition area",
+    "extraInfo": "Additional information",
     "noDataSet": "Data is not set.",
     "noRestrictions": "No effective restrictions.",
     "notForNavigation": "Not for navigational use",
@@ -259,15 +265,21 @@
     "pilotPlaceLocation": "Location of pilotage boarding position",
     "pilotageLimit": "Compulsory pilotage limit",
     "pilotageLimitLocation": "Limit location",
-    "pilotageLimitMaxDimensions": "Maximum dimensions of vessels the limit applies to",
-    "draught": "Draught",
-    "width": "Width"
+    "pilotageLimitLimit": "Limit of compulsory pilotage in fairways when one of the following is exceeded",
+    "pilotageLimitDimensions": "Length / breadth / draught (m)",
+    "inForce": "In force",
+    "mareograph": "Mareograph",
+    "mareographLocation": "Location of the measurement site",
+    "observationLocation": "Location of the observation station",
+    "fairwayNumber": "Fairway ID",
+    "fairwayNumbers": "Fairway IDs"
   },
   "routes": {
     "info": "The provided pilotage routes do not as such account for a vessel spesific pilotage plan referred to in the Pilotage Act (561/2023). Pilotage routes are presented as general indicative presentations and the correctness of an individual pilotage route cannot be guaranteed.  Any possible use of a pilotage route provided in the Digital Fairway Card for navigational purposes of a specific vessel falls exclusively under the responsibility of the master of the vessel.",
     "title": "Pilot routes",
     "route": "Route",
-    "rtz": "[en] Reitin rtz tiedosto"
+    "rtz": "Route file in RTZ-format",
+    "linkedFairwayCards": "Fairway cards for the pilot route"
   },
   "faults": {
     "title": "Defective navigation aids",
@@ -318,7 +330,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "No fairway cards"
+      "noFairwayCards": "No fairway cards",
+      "outdatedData": "The data is more than 12 hours old"
     },
     "pilotPlace": {
       "header": "Pilot boarding position {{val}}",
@@ -328,11 +341,13 @@
     "pilotageLimit": {
       "header": "Compulsory pilotage limit {{val}}",
       "location": "Limit location",
-      "limit": "Maximum dimensions of vessels the limit applies to length / width / draught (m)",
+      "limit": "Limit of compulsory pilotage in fairways when one of the following is exceeded",
+      "dimensions": "Length / breadth / draught (m)",
       "fairways": "Fairway cards for the compulsory pilotage limit"
     },
     "pilotRoute": {
-      "header": "ROUTE: {{val}}"
+      "header": "ROUTE: {{val}}",
+      "fairwayCards": "Pilot route is part of the fairway card"
     },
     "quay": {
       "length": "Length of the quay",
@@ -347,7 +362,6 @@
     },
     "area": {
       "info": "Fairway area information",
-      "overtake": "Continuous overtaking prohibition on the fairway area",
       "depth": "Swept depth {{val, number}}",
       "draft": "Design draught {{val, number}}",
       "speedLimit": "Speed limit {{val}}",
@@ -464,11 +478,19 @@
       "aisvesselpleasurecraft": "Pleasure craft",
       "aisunspecified": "Unspecified vessel"
     },
+    "dirway": {
+      "points": "Ice waypoints"
+    },
+    "restriction": {
+      "current": "The assistance restrictions in force",
+      "upcoming": "Forthcoming assistance restrictions"
+    },
     "featureList": {
       "multipleFeatures": "Multiple items to select",
       "featureType": {
         "area": "Fairway area",
         "buoy": "Wave buoy",
+        "dirway": "Ice waypoints",
         "calculated": "Calculated sea level",
         "harbor": "Harbour",
         "line": "Navigation line",
@@ -479,6 +501,7 @@
         "pilotagelimit": "Compulsory pilotage limit",
         "pilotroute": "Pilot route",
         "quay": "Quay",
+        "restrictionport": "Assistance restriction",
         "safetyequipment": "Navigational aid",
         "safetyequipmentfault": "Defective navigation aid",
         "section": "Berth position",
@@ -497,7 +520,7 @@
     "general": "General",
     "openDescription": "Open",
     "closeDescription": "Close",
-    "search": "Search by fairway name",
+    "search": "Search by fairway name or number",
     "searchTitle": "Fairway search",
     "clearTitle": "Clear",
     "expandPane": "Expand",

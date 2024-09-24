@@ -14,6 +14,7 @@ import {
   AisFeatureProperties,
   AreaFeatureProperties,
   BuoyFeatureProperties,
+  DirwayFeatureProperties,
   EquipmentFeatureProperties,
   HarborFeatureProperties,
   LineFeatureProperties,
@@ -24,6 +25,7 @@ import {
   PilotRouteFeatureProperties,
   PilotageLimitFeatureProperties,
   QuayFeatureProperties,
+  RestrictionPortFeatureProperties,
   VtsFeatureProperties,
 } from '../features';
 import { getMarineWarningDataLayerId } from '../../utils/common';
@@ -110,6 +112,7 @@ export function showFeaturePopup(
     }
     setPopupProperties({
       [selectedFeature.getProperties().featureType]: {
+        id: selectedFeature.getId(),
         coordinates: geom.getCoordinates() as number[],
         properties: selectedFeature.getProperties(),
         width: fairwayWidth,
@@ -118,6 +121,7 @@ export function showFeaturePopup(
   } else {
     setPopupProperties({
       [selectedFeature.getProperties().featureType]: {
+        id: selectedFeature.getId(),
         coordinates: geom.getCoordinates() as number[],
         geometry: geom,
         properties: selectedFeature.getProperties(),
@@ -125,6 +129,15 @@ export function showFeaturePopup(
     });
   }
   setPopupPosition(popup, coordinate, selectedFeature, popupPositioningCoordinate);
+}
+
+function singleNavigationLineOnArea(features: FeatureLike[]): boolean {
+  if (features.length === 2) {
+    return (
+      features.filter((f) => f.get('featureType') === 'line').length === 1 && features.filter((f) => f.get('featureType') === 'area').length === 1
+    );
+  }
+  return false;
 }
 
 export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
@@ -146,12 +159,14 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'quay',
     'section',
     'harbor',
+    'restrictionport',
     'marinewarning',
     'safetyequipment',
     'safetyequipmentfault',
     'observation',
     'buoy',
     'mareograph',
+    'dirway',
     'vtsline',
     'line',
     'specialarea2',
@@ -165,6 +180,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     });
     container.addEventListener('touchmove', (e) => {
       e.preventDefault();
+    });
+    container.addEventListener('pointermove', (e) => {
+      e.stopPropagation();
     });
   }
 
@@ -183,14 +201,25 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     map.forEachFeatureAtPixel(
       evt.pixel,
       function (f) {
-        if (types.includes(f.getProperties().featureType)) {
-          features.push(f);
+        if (
+          types.includes(f.getProperties().featureType) &&
+          features.findIndex((feat) => feat.get('featureType') === f.get('featureType') && feat.getId() == f.getId()) < 0
+        ) {
+          if (f.get('cluster') === true) {
+            /* If we clicked cluster feature, add all features in the cluster */
+            features.push(...f.get('features'));
+          } else {
+            features.push(f);
+          }
         }
       },
       { hitTolerance: 3 }
     );
 
-    if (features.length > 1) {
+    if (singleNavigationLineOnArea(features)) {
+      const feature = features.find((f) => f.get('featureType') === 'line');
+      showFeaturePopup(features, feature as FeatureLike, evt.coordinate, setPopupProperties, overlay);
+    } else if (features.length > 1) {
       features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
       showFeatureListPopup(features, evt.coordinate, setPopupProperties, overlay);
     } else {
@@ -241,7 +270,7 @@ function getSectionDetails(t: TFunction, lang: Lang, feature: FeatureLike) {
   const props = feature.getProperties() as QuayFeatureProperties;
   const quayName = props.quay?.[lang];
   const sectionName = props.name ?? '';
-  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : quayName ?? sectionName;
+  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : (quayName ?? sectionName);
   return {
     header: [headerText],
     featureType: t('featureList.featureType.section'),
@@ -276,6 +305,8 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       };
     case 'buoy':
       return { header: [(props as BuoyFeatureProperties).name], featureType: t('featureList.featureType.buoy'), className: type };
+    case 'dirway':
+      return { header: [(props as DirwayFeatureProperties).name], featureType: t('featureList.featureType.dirway'), className: type };
     case 'harbor':
       return { header: [(props as HarborFeatureProperties).name?.[lang] ?? ''], featureType: t('featureList.featureType.harbor'), className: type };
     case 'line':
@@ -310,8 +341,13 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       };
     case 'quay':
       return { header: [(props as QuayFeatureProperties).quay?.[lang] ?? ''], featureType: t('featureList.featureType.quay'), className: type };
+    case 'restrictionport':
+      return {
+        header: [(props as RestrictionPortFeatureProperties).name ?? ''],
+        featureType: t('featureList.featureType.restrictionport'),
+        className: type,
+      };
     case 'safetyequipment':
-      return getSafetyEquipmentDetails(t, lang, feature);
     case 'safetyequipmentfault':
       return getSafetyEquipmentDetails(t, lang, feature);
     case 'section':

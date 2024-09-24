@@ -108,12 +108,12 @@ export async function fetchMareoGraphs(): Promise<Mareograph[]> {
 export async function fetchWeatherObservations(): Promise<Observation[]> {
   return (
     await fetchWeatherApi<WeatherObservation>(
-      'timeseries?param=fmisid,geoid,latlon,name,localtime,WG_PT10M_MAX,WD_PT10M_AVG,WS_PT10M_AVG,TA_PT1M_AVG,VIS_PT1M_AVG&fmisid=101256,151028,151048,151029,101252,101436,101628,101580,105430&keyword=virpo_sea_all&endtime=now&precision=double&producer=observations_fmi&timeformat=sql&format=json'
+      'timeseries?param=fmisid,geoid,latlon,stationname,localtime,WG_PT10M_MAX,WD_PT10M_AVG,WS_PT10M_AVG,TA_PT1M_AVG,VIS_PT1M_AVG&fmisid=101256,151028,151048,151029,101252,101436,101628,101580,105430&keyword=virpo_sea_all&endtime=now&precision=double&producer=observations_fmi&timeformat=sql&format=json'
     )
   ).map((measure) => {
     return {
       id: measure.fmisid,
-      name: measure.name,
+      name: measure.stationname,
       windSpeedAvg: measure.WS_PT10M_AVG,
       windSpeedMax: measure.WG_PT10M_MAX,
       windDirection: measure.WD_PT10M_AVG,

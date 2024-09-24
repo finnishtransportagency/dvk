@@ -1,5 +1,10 @@
 import { GeometryPoint, PictureInput, PilotPlaceInput, Text, TextInput } from '../graphql/generated';
 
+export const VERSION = {
+  PUBLIC: 'v0_public',
+  LATEST: 'v0_latest',
+};
+
 export type Lang = 'fi' | 'sv' | 'en';
 
 export type ItemType = '' | 'CARD' | 'HARBOR';
@@ -15,11 +20,15 @@ export type ErrorMessageType = {
   required: string;
   invalid: string;
   duplicateId: string;
+  endDateError: string;
+  duplicateLocation: string;
 };
 export const ErrorMessageKeys: ErrorMessageType = {
   required: 'general.required-field',
   invalid: 'general.check-input',
   duplicateId: 'fairwaycard.error-duplicate-id',
+  endDateError: 'general.end-date-error',
+  duplicateLocation: 'harbour.error-duplicate-location',
 };
 
 export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput[];
@@ -61,8 +70,7 @@ export type FairwayCardActionType =
   | 'windRecommendation'
   | 'vesselRecommendation'
   | 'visibility'
-  | 'windGauge'
-  | 'seaLevel'
+  | 'mareographs'
   | 'pilotEmail'
   | 'pilotExtraInfo'
   | 'pilotPhone'
@@ -85,7 +93,11 @@ export type FairwayCardActionType =
   | 'pictureLegendPosition'
   | 'getState'
   | 'additionalInfo'
-  | 'pilotRoutes';
+  | 'pilotRoutes'
+  | 'temporaryNotifications'
+  | 'temporaryNotificationContent'
+  | 'temporaryNotificationStartDate'
+  | 'temporaryNotificationEndDate';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'
@@ -190,7 +202,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20230712.json.gz') },
+  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20240719.json.gz') },
   { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
   { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
   { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
@@ -204,7 +216,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'pilotagelimit', url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'), staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz') },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts' | 'piloting';
+export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts' | 'piloting' | 'specialarea';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -212,7 +224,6 @@ export type FeatureDataLayerId =
   | 'line12'
   | 'line3456'
   | 'speedlimit'
-  | 'specialarea'
   | 'pilot'
   | 'harbor'
   | 'quay'
@@ -298,3 +309,5 @@ export const POSITION = {
   topRight: 'topRight',
   bottomRight: 'bottomRight',
 };
+
+export type DropdownType = 'filter' | 'sequence';

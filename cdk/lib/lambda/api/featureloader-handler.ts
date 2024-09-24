@@ -2,47 +2,46 @@ import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aw
 import { getHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
-import FairwayCardDBModel, { FairwayCardIdName } from '../db/fairwayCardDBModel';
 import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
-import { fetchPilotPoints, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { getFeatureCacheDuration, getFromCache } from '../graphql/cache';
+import { fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
+import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-import { handleLoaderError, getNumberValue, saveResponseToS3, invertDegrees, roundDecimals } from '../util';
+import { getNumberValue, invertDegrees, roundDecimals, toBase64Response } from '../util';
 import {
   AlueAPIModel,
   KaantoympyraAPIModel,
   NavigointiLinjaAPIModel,
-  PilotPlace,
   RajoitusAlueAPIModel,
   TaululinjaAPIModel,
   TurvalaiteAPIModel,
   TurvalaiteVikatiedotAPIModel,
 } from './apiModels';
 
-async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
+interface FeaturesWithMaxFetchTime {
+  featureArray: Feature<Geometry, GeoJsonProperties>[];
+  fetchedDate?: string;
+}
+
+async function addHarborFeatures(features: FeaturesWithMaxFetchTime) {
   const harbors = await HarborDBModel.getAllPublic();
-  const harborMap = new Map<string, HarborDBModel & { fairwayCards: FairwayCardIdName[] }>();
+  const harborMap = new Map<string, HarborDBModel>();
+
   for (const harbor of harbors) {
-    harborMap.set(harbor.id, { ...harbor, fairwayCards: [] });
+    harborMap.set(harbor.id, { ...harbor });
   }
-  const cards = await FairwayCardDBModel.getAllPublic();
-  for (const card of cards) {
-    for (const h of card.harbors ?? []) {
-      harborMap.get(h.id)?.fairwayCards.push({ id: card.id, name: card.name });
-    }
-  }
+
   const ids: string[] = [];
   for (const harbor of harborMap.values()) {
     const cardHarbor = harborMap.get(harbor.id);
-    if (harbor?.geometry?.coordinates?.length === 2 && cardHarbor && cardHarbor.fairwayCards.length > 0) {
+    if (harbor?.geometry?.coordinates?.length === 2 && cardHarbor) {
       const id = harbor.geometry.coordinates.join(';');
       // MW/N2000 Harbors should have same location
       if (!ids.includes(id)) {
         ids.push(id);
-        features.push({
+        features.featureArray.push({
           type: 'Feature',
           id,
           geometry: harbor.geometry as Geometry,
@@ -56,65 +55,36 @@ async function addHarborFeatures(features: Feature<Geometry, GeoJsonProperties>[
             fax: harbor.fax,
             internet: harbor.internet,
             quays: harbor.quays?.length ?? 0,
-            fairwayCards: harbor.fairwayCards,
             extraInfo: harbor.extraInfo,
           },
         });
-      } else {
-        const harborFeature = features.find((feature) => feature.id === id);
-        harborFeature?.properties?.fairwayCards.push(...harbor.fairwayCards);
       }
     }
   }
 }
 
-async function addPilotFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const placeMap = new Map<number, PilotPlace>();
-  const cards = await FairwayCardDBModel.getAllPublic();
-  const pilots = await fetchPilotPoints();
-  for (const pilot of pilots) {
-    placeMap.set(pilot.id, { ...pilot, fairwayCards: [] });
-  }
-  for (const card of cards) {
-    for (const place of card.trafficService?.pilot?.places ?? []) {
-      placeMap.get(place.id)?.fairwayCards.push({ id: card.id, name: card.name });
-    }
-  }
-  for (const place of placeMap.values()) {
-    features.push({
+async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
+  const pilotPlaces = await fetchPilotPoints();
+  for (const place of pilotPlaces) {
+    features.featureArray.push({
       type: 'Feature',
       geometry: place.geometry as Geometry,
       id: place.id,
       properties: {
         featureType: 'pilot',
         name: place.name,
-        fairwayCards: place.fairwayCards,
       },
     });
   }
 }
 
-async function getCardMap() {
-  const cardMap = new Map<number, FairwayCardIdName[]>();
-  const cards = await FairwayCardDBModel.getAllPublic();
-  for (const card of cards) {
-    for (const id of card.fairways.map((f) => f.id)) {
-      if (!cardMap.has(id)) {
-        cardMap.set(id, []);
-      }
-      cardMap.get(id)?.push({ id: card.id, name: card.name });
-    }
-  }
-  return cardMap;
-}
-
-async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
+async function addDepthFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
+  const areas = (await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event)).data as AlueAPIModel[];
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter(
     (a) => a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11 || a.tyyppiKoodi === 2
   )) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: area.id,
       geometry: area.geometria as Geometry,
@@ -134,36 +104,24 @@ async function addDepthFeatures(features: Feature<Geometry, GeoJsonProperties>[]
 }
 
 // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
-// 2 = Ankkurointialue, 15 = Kohtaamis- ja ohittamiskieltoalue
+// 2 = Ankkurointialue
 const navigationAreaFilter = (a: AlueAPIModel) =>
   a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11;
-const specialAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2 || a.tyyppiKoodi === 15;
 const anchoringAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2;
-const meetRestrictionAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 15;
-function getAreaFilter(type: 'area' | 'specialarea' | 'specialarea2' | 'specialarea15') {
+function getAreaFilter(type: 'area' | 'specialarea2') {
   if (type === 'area') {
     return navigationAreaFilter;
-  } else if (type === 'specialarea2') {
-    return anchoringAreaFilter;
-  } else if (type === 'specialarea15') {
-    return meetRestrictionAreaFilter;
   } else {
-    return specialAreaFilter;
+    return anchoringAreaFilter;
   }
 }
 
-async function addAreaFeatures(
-  features: Feature<Geometry, GeoJsonProperties>[],
-  event: ALBEvent,
-  featureType: string,
-  areaFilter: (a: AlueAPIModel) => boolean
-) {
-  const cardMap = await getCardMap();
-  const areas = await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event);
+async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent, featureType: string, areaFilter: (a: AlueAPIModel) => boolean) {
+  const areas = (await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event)).data as AlueAPIModel[];
   log.debug('areas: %d', areas.length);
 
   for (const area of areas.filter(areaFilter)) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: area.id,
       geometry: area.geometria as Geometry,
@@ -187,7 +145,6 @@ async function addAreaFeatures(
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
-            fairwayCards: cardMap.get(v.jnro),
             status: v.status,
             line: v.linjaus,
             sizingSpeed: v.mitoitusNopeus,
@@ -199,8 +156,14 @@ async function addAreaFeatures(
   }
 }
 
-async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const areas = await fetchVATUByFairwayClass<RajoitusAlueAPIModel>('rajoitusalueet', event);
+async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
+  const areas = await fetchProhibitionAreas();
+  log.debug('prohibition areas: %d', areas.length);
+  features.featureArray.push(...areas);
+}
+
+async function addRestrictionAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
+  const areas = (await fetchVATUByFairwayClass<RajoitusAlueAPIModel>('rajoitusalueet', event)).data as RajoitusAlueAPIModel[];
   log.debug('areas: %d', areas.length);
   for (const area of areas.filter(
     (a) => a.rajoitustyyppi === 'Nopeusrajoitus' || (a.rajoitustyypit?.filter((b) => b.rajoitustyyppi === 'Nopeusrajoitus')?.length ?? 0) > 0
@@ -232,16 +195,15 @@ async function addRestrictionAreaFeatures(features: Feature<Geometry, GeoJsonPro
     if (area.rajoitustyyppi) {
       feature.properties?.types.push({ text: area.rajoitustyyppi });
     }
-    features.push(feature);
+    features.featureArray.push(feature);
   }
 }
 
-async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const lines = await fetchVATUByFairwayClass<TaululinjaAPIModel>('taululinjat', event);
-  const cardMap = await getCardMap();
+async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
+  const lines = (await fetchVATUByFairwayClass<TaululinjaAPIModel>('taululinjat', event)).data as TaululinjaAPIModel[];
   log.debug('board lines: %d', lines.length);
   for (const line of lines) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: line.taululinjaId,
       geometry: line.geometria as Geometry,
@@ -256,7 +218,6 @@ async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonPropertie
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
-            fairwayCards: cardMap.get(v.jnro),
           };
         }),
       },
@@ -264,12 +225,11 @@ async function addBoardLineFeatures(features: Feature<Geometry, GeoJsonPropertie
   }
 }
 
-async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const lines = await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event);
-  const cardMap = await getCardMap();
+async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
+  const lines = (await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event)).data as NavigointiLinjaAPIModel[];
   log.debug('lines: %d', lines.length);
   for (const line of lines) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: line.id,
       geometry: line.geometria as Geometry,
@@ -293,7 +253,6 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
               fi: v.nimiFI,
               sv: v.nimiSV,
             },
-            fairwayCards: cardMap.get(v.jnro),
             status: v.status,
             line: v.linjaus,
           };
@@ -303,12 +262,11 @@ async function addLineFeatures(features: Feature<Geometry, GeoJsonProperties>[],
   }
 }
 
-async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent) {
-  const equipments = await fetchVATUByFairwayClass<TurvalaiteAPIModel>('turvalaitteet', event);
-  const cardMap = await getCardMap();
+async function addSafetyEquipmentFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
+  const equipments = (await fetchVATUByFairwayClass<TurvalaiteAPIModel>('turvalaitteet', event)).data as TurvalaiteAPIModel[];
   log.debug('equipments: %d', equipments.length);
   for (const equipment of equipments) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: equipment.turvalaitenumero,
       geometry: equipment.geometria as Geometry,
@@ -325,7 +283,7 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
         aisType: equipment.AISTyyppi,
         remoteControl: equipment.kaukohallinta,
         fairways: equipment.vayla?.map((v) => {
-          return { fairwayId: v.jnro, primary: v.paavayla === 'P', fairwayCards: cardMap.get(v.jnro) };
+          return { fairwayId: v.jnro, primary: v.paavayla === 'P' };
         }),
         distances: equipment.reunaetaisyys?.map((v) => {
           return { areaId: v.vaylaalueID, distance: v.etaisyys };
@@ -335,11 +293,13 @@ async function addSafetyEquipmentFeatures(features: Feature<Geometry, GeoJsonPro
   }
 }
 
-async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const faults = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
+async function addSafetyEquipmentFaultFeatures(features: FeaturesWithMaxFetchTime) {
+  const resp = await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot');
+  const faults = resp.data as TurvalaiteVikatiedotAPIModel[];
+  features.fetchedDate = String(Date.parse(resp.headers.date));
   log.debug('faults: %d', faults.length);
   for (const fault of faults) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: fault.vikaId,
       geometry: fault.geometria as Geometry,
@@ -355,11 +315,12 @@ async function addSafetyEquipmentFaultFeatures(features: Feature<Geometry, GeoJs
   }
 }
 
-async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addMarineWarnings(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchMarineWarnings();
-  for (const feature of resp.features) {
+  features.fetchedDate = String(Date.parse(resp.headers.date));
+  for (const feature of (resp.data as FeatureCollection).features) {
     const dates = parseDateTimes(feature);
-    features.push({
+    features.featureArray.push({
       type: feature.type,
       id: feature.properties?.ID,
       geometry: feature.geometry,
@@ -385,10 +346,10 @@ async function addMarineWarnings(features: Feature<Geometry, GeoJsonProperties>[
   }
 }
 
-async function addVTSPointsOrLines(features: Feature<Geometry, GeoJsonProperties>[], isPoint: boolean) {
+async function addVTSPointsOrLines(features: FeaturesWithMaxFetchTime, isPoint: boolean) {
   const resp = isPoint ? await fetchVTSPoints() : await fetchVTSLines();
   for (const feature of resp) {
-    features.push({
+    features.featureArray.push({
       type: feature.type,
       id: feature.id,
       geometry: feature.geometry,
@@ -403,10 +364,17 @@ async function addVTSPointsOrLines(features: Feature<Geometry, GeoJsonProperties
   }
 }
 
-async function addMareoGraphs(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addMareoGraphs(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchMareoGraphs();
+  // dateTime is got straight from backend, so it can determine when last time data was fetched
+  features.fetchedDate = String(
+    resp.reduce((max, feature) => {
+      return feature.dateTime > max ? feature.dateTime : max;
+    }, -1)
+  );
+
   for (const mareograph of resp) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: mareograph.id,
       geometry: mareograph.geometry,
@@ -422,10 +390,17 @@ async function addMareoGraphs(features: Feature<Geometry, GeoJsonProperties>[]) 
   }
 }
 
-async function addWeatherObservations(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addWeatherObservations(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchWeatherObservations();
+  // dateTime is got straight from backend, so it can determine when last time data was fetched
+  features.fetchedDate = String(
+    resp.reduce((max, feature) => {
+      return feature.dateTime > max ? feature.dateTime : max;
+    }, -1)
+  );
+
   for (const observation of resp) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: observation.id,
       geometry: observation.geometry,
@@ -443,10 +418,17 @@ async function addWeatherObservations(features: Feature<Geometry, GeoJsonPropert
   }
 }
 
-async function addBuoys(features: Feature<Geometry, GeoJsonProperties>[]) {
+async function addBuoys(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchBuoys();
+  // dateTime is got straight from backend, so it can determine when last time data was fetched
+  features.fetchedDate = String(
+    resp.reduce((max, feature) => {
+      return feature.dateTime > max ? feature.dateTime : max;
+    }, -1)
+  );
+
   for (const buoy of resp) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: buoy.id,
       geometry: buoy.geometry,
@@ -462,11 +444,11 @@ async function addBuoys(features: Feature<Geometry, GeoJsonProperties>[]) {
   }
 }
 
-async function addTurningCircleFeatures(features: Feature<Geometry, GeoJsonProperties>[]) {
-  const circles = await fetchVATUByApi<KaantoympyraAPIModel>('kaantoympyrat');
+async function addTurningCircleFeatures(features: FeaturesWithMaxFetchTime) {
+  const circles = (await fetchVATUByApi<KaantoympyraAPIModel>('kaantoympyrat')).data as KaantoympyraAPIModel[];
   log.debug('circles: %d', circles.length);
   for (const circle of circles) {
-    features.push({
+    features.featureArray.push({
       type: 'Feature',
       id: circle.kaantoympyraID,
       geometry: circle.geometria as Geometry,
@@ -488,17 +470,7 @@ function getKey(queryString: ALBEventMultiValueQueryStringParameters | undefined
   return 'noquerystring';
 }
 
-const noCache = ['safetyequipmentfault', 'marinewarning', 'mareograph', 'observation', 'buoy', 'harbor'];
-
-function isCacheEnabled(type: string, key: string): boolean {
-  const cacheDuration = getFeatureCacheDuration(key);
-  log.debug('cacheDuration: %d', cacheDuration);
-  const cacheEnabled = cacheDuration > 0 && !noCache.includes(type);
-  log.debug('cacheEnabled: %s', cacheEnabled);
-  return cacheEnabled;
-}
-
-async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProperties>[], event: ALBEvent): Promise<boolean> {
+async function addFeatures(type: string, features: FeaturesWithMaxFetchTime, event: ALBEvent): Promise<boolean> {
   switch (type) {
     case 'pilot':
       await addPilotFeatures(features);
@@ -507,10 +479,11 @@ async function addFeatures(type: string, features: Feature<Geometry, GeoJsonProp
       await addHarborFeatures(features);
       return true;
     case 'area':
-    case 'specialarea':
     case 'specialarea2':
-    case 'specialarea15':
       await addAreaFeatures(features, event, type, getAreaFilter(type));
+      return true;
+    case 'specialarea15':
+      await addProhibitionAreaFeatures(features);
       return true;
     case 'restrictionarea':
       await addRestrictionAreaFeatures(features, event);
@@ -562,30 +535,27 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   const type = event.multiValueQueryStringParameters?.type?.join(',') ?? '';
   let base64Response: string | undefined;
   let statusCode = 200;
-  const cacheEnabled = isCacheEnabled(type, key);
-  const response = await getFromCache(key);
-  if (cacheEnabled && !response.expired && response.data) {
-    base64Response = response.data;
-  } else {
-    try {
-      const features: Feature<Geometry, GeoJsonProperties>[] = [];
-      const validType = await addFeatures(type, features, event);
-      if (!validType) {
-        log.info('Invalid type: %s', type);
-        base64Response = undefined;
-        statusCode = 400;
-      } else {
-        const collection: FeatureCollection = {
-          type: 'FeatureCollection',
-          features,
-        };
-        base64Response = await saveResponseToS3(collection, key);
-      }
-    } catch (e) {
-      const errorResult = handleLoaderError(response, e);
-      base64Response = errorResult.body;
-      statusCode = errorResult.statusCode;
+  let fetchedDate = '';
+  try {
+    // fetched is the real time the data is fetched from api. Needed for observations, buyos,
+    // mareographs, marine warnings and safety equipment faults
+    const features: FeaturesWithMaxFetchTime = { featureArray: [], fetchedDate: '' };
+    const validType = await addFeatures(type, features, event);
+    if (!validType) {
+      log.info('Invalid type: %s', type);
+      base64Response = undefined;
+      statusCode = 400;
+    } else {
+      const collection: FeatureCollection = {
+        type: 'FeatureCollection',
+        features: features.featureArray,
+      };
+      fetchedDate = features.fetchedDate ?? '';
+      base64Response = await toBase64Response(collection);
     }
+  } catch (e) {
+    base64Response = undefined;
+    statusCode = 503;
   }
   return {
     statusCode,
@@ -593,7 +563,9 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
+      ...getFeatureCacheControlHeaders(key),
       'Content-Type': ['application/geo+json'],
+      fetchedDate: [fetchedDate],
     },
   };
 };

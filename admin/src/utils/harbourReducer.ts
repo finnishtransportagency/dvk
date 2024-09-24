@@ -1,6 +1,7 @@
 import { t } from 'i18next';
 import { HarborInput, Operation, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
+import { locationError, QuayOrSection } from './formValidations';
 
 export const harbourReducer = (
   state: HarborInput,
@@ -117,8 +118,10 @@ export const harbourReducer = (
           quays: state.quays?.concat([
             {
               name: { fi: '', sv: '', en: '' },
-              length: undefined,
+              length: '',
               geometry: { lat: '', lon: '' },
+              extraInfo: { fi: '', sv: '', en: '' },
+              sections: undefined,
             },
           ]),
         };
@@ -209,7 +212,7 @@ export const harbourReducer = (
             i === actionOuterTarget
               ? {
                   ...quayItem,
-                  sections: (quayItem?.sections ?? []).concat([{ name: '', depth: undefined, geometry: { lat: '', lon: '' } }]),
+                  sections: (quayItem?.sections ?? []).concat([{ name: '', depth: '', geometry: { lat: '', lon: '' } }]),
                 }
               : quayItem
           ),
@@ -372,7 +375,9 @@ export const harbourReducer = (
           error.id.startsWith('quayExtraInfo-') ||
           error.id.startsWith('quayLat-') ||
           error.id.startsWith('quayLon-') ||
-          error.id.startsWith('sectionGeometry-')
+          error.id.startsWith('sectionGeometry-') ||
+          error.id.startsWith('quayLocation-') ||
+          error.id.startsWith('sectionLocation-')
       )
       .forEach((error) => {
         const errorSplitted = error.id.split('-');
@@ -393,7 +398,9 @@ export const harbourReducer = (
             !error.id.startsWith('quayExtraInfo-') &&
             !error.id.startsWith('quayLat-') &&
             !error.id.startsWith('quayLon-') &&
-            !error.id.startsWith('sectionGeometry-')
+            !error.id.startsWith('sectionGeometry-') &&
+            !error.id.startsWith('quayLocation-') &&
+            !error.id.startsWith('sectionLocation-')
         )
         .concat(quayFieldErrors)
     );
@@ -457,6 +464,21 @@ export const harbourReducer = (
           msg: !currentQuay?.geometry?.lon?.trim() ? t(ErrorMessageKeys?.required) || '' : '',
         })
     );
+  } else if ((actionType === 'quayLat' || actionType === 'quayLon') && actionTarget !== undefined) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'quayLocation-' + actionTarget)
+        .concat({
+          id: 'quayLocation-' + actionTarget,
+          msg: locationError(
+            { actionTarget: String(actionTarget), geometry: currentQuay?.geometry } as QuayOrSection,
+            newState.quays?.map((q, i) => ({ geometry: q?.geometry, actionTarget: String(i) }) as QuayOrSection)
+          )
+            ? t(ErrorMessageKeys?.duplicateLocation) || ''
+            : '',
+        })
+    );
   } else if (actionType === 'section' && actionTarget !== undefined && actionOuterTarget !== undefined) {
     const sectionFieldErrors: ValidationType[] = [];
     validationErrors
@@ -489,6 +511,25 @@ export const harbourReducer = (
         .concat({
           id: 'sectionGeometry-' + actionOuterTarget + '-' + actionTarget,
           msg: currentSection?.geometry?.lat.trim() || currentSection?.geometry?.lon.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  } else if ((actionType === 'sectionLat' || actionType === 'sectionLon') && actionTarget !== undefined && actionOuterTarget !== undefined) {
+    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionOuterTarget);
+    const currentSection = currentQuay?.sections?.find((sectionItem, jdx) => jdx === actionTarget);
+    const target = actionOuterTarget + '-' + actionTarget;
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'sectionLocation-' + actionOuterTarget + '-' + actionTarget)
+        .concat({
+          id: 'sectionLocation-' + target,
+          msg: locationError(
+            { actionTarget: target, geometry: currentSection?.geometry } as QuayOrSection,
+            newState.quays?.flatMap(
+              (q, qIdx) => q?.sections?.map((s, sIdx) => ({ geometry: s?.geometry, actionTarget: qIdx + '-' + sIdx }) as QuayOrSection) ?? []
+            )
+          )
+            ? t(ErrorMessageKeys?.duplicateLocation) || ''
+            : '',
         })
     );
   }

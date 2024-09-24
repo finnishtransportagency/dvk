@@ -17,14 +17,10 @@ import {
   useDepth12Layer,
   useSpeedLimitLayer,
   usePilotLayer,
-  useHarborLayer,
-  useSafetyEquipmentAndFaultLayer,
   useCoastalWarningLayer,
   useLocalWarningLayer,
   useBoaterWarningLayer,
   useBoardLine12Layer,
-  useMareographLayer,
-  useObservationLayer,
   useBuoyLayer,
   DvkLayerState,
   useVtsLineLayer,
@@ -35,9 +31,11 @@ import {
   useInitStaticDataLayer,
   useVaylaWaterAreaData,
   useNameLayer,
-  usePilotageLimitLayer,
   usePilotageAreaBorderLayer,
+  useDirwayLayer,
+  useRestrictionPortLayer,
 } from './components/FeatureLoader';
+import { useObservationLayer, useObservationFeatures } from './components/ObservationFeatureLoader';
 import {
   useAisVesselCargoLayer,
   useAisVesselTankerLayer,
@@ -47,7 +45,9 @@ import {
   useAisVesselPleasureCraftLayer,
   useAisUnspecifiedLayer,
 } from './components/AisFeatureLoader';
+import { usePilotageLimitLayer } from './components/PilotageLimitFeatureLoader';
 import { usePilotRouteLayer } from './components/PilotRouteFeatureLoader';
+import { useSafetyEquipmentAndFaultLayer } from './components/SafetyEquipmentFeatureLoader';
 import { useFairwayCardList } from './components/FairwayDataLoader';
 import { register as registerSwiper } from 'swiper/element/bundle';
 
@@ -74,7 +74,7 @@ import './theme/print.css';
 import HomePage from './pages/HomePage';
 import SidebarMenu from './components/SidebarMenu';
 import MapOverlays from './components/mapOverlays/MapOverlays';
-import { isMobile } from './utils/common';
+import { isMobile, refreshPrintableMap } from './utils/common';
 import FairwayCardPage from './pages/FairwayCardPage';
 import FairwayCardListPage from './pages/FairwayCardListPage';
 import SafetyEquipmentFaultPage from './pages/SafetyEquipmentFaultPage';
@@ -86,6 +86,8 @@ import { ContentModal } from './components/content/MainContentWithModal';
 import SquatCalculatorPage from './pages/SquatCalculatorPage';
 import HarborPreviewPage from './pages/HarborPreviewPage';
 import PilotRoutePage from './pages/PilotRoutePage';
+import { useHarborLayer } from './components/HarborFeatureLoader';
+import { useMareographFeatures, useMareographLayer } from './components/MareographFeatureLoader';
 
 setupIonicReact({
   mode: 'md',
@@ -205,10 +207,16 @@ const DvkIonApp: React.FC = () => {
   useVaylaWaterAreaData();
   usePilotageLimitLayer();
   usePilotageAreaBorderLayer();
+  useDirwayLayer();
+  useRestrictionPortLayer();
+  /* Initialize observation and merograph data for offline use, needed in fairway cards */
+  useObservationFeatures();
+  useMareographFeatures();
 
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
+  const [centering, setCentering] = useState(false);
 
   const { state } = useDvkContext();
 
@@ -273,6 +281,7 @@ const DvkIonApp: React.FC = () => {
   }, [modalContent]);
 
   const dvkMap = getMap();
+  dvkMap.getCenterToOwnLocationControl().setLoadingState = setCentering;
 
   useEffect(() => {
     if (dvkMap.initialized) {
@@ -284,17 +293,23 @@ const DvkIonApp: React.FC = () => {
     }
   }, [dvkMap, state.isOffline]);
 
+  useEffect(() => {
+    window.onbeforeprint = () => {
+      refreshPrintableMap();
+    };
+  }, []);
+
   const [isSourceOpen, setIsSourceOpen] = useState(false);
   return (
     <IonApp className={appClasses.join(' ')}>
       {initDone && <OfflineStatus />}
       <IonReactRouter basename={state.preview ? '/esikatselu' : '/vaylakortti'}>
         <SidebarMenu setIsSourceOpen={setIsSourceOpen} />
-        {(!!isFetching || !initDone) && (
+        {(!!isFetching || !initDone || centering) && (
           <IonProgressBar
             value={percentDone}
             buffer={percentDone}
-            type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
+            type={(!!isFetching && initDone) || centering ? 'indeterminate' : 'determinate'}
             className={fetchError ? 'danger' : ''}
           />
         )}
@@ -339,7 +354,7 @@ const DvkIonApp: React.FC = () => {
             </Switch>
           </IonRouterOutlet>
         </IonContent>
-        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} isOffline={state.isOffline} />
+        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
       {fetchError && (

@@ -46,10 +46,14 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
     // Check previous state
     if (isChecked() || isIndeterminate()) {
       updateLayers(layersWOCurrentChildLayers);
-      dispatch({ type: 'setShowAisPredictor', payload: { value: false } });
+      if (currentLayer.id === 'ais') {
+        dispatch({ type: 'setShowAisPredictor', payload: { value: false } });
+      }
     } else {
       updateLayers(layersWOCurrentChildLayers.concat(currentLayer.childLayers?.flatMap((child) => child.id) ?? []));
-      dispatch({ type: 'setShowAisPredictor', payload: { value: true } });
+      if (currentLayer.id === 'ais') {
+        dispatch({ type: 'setShowAisPredictor', payload: { value: true } });
+      }
       setLegendOpen(true);
     }
   };
@@ -98,15 +102,17 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
       <IonRow className={'toggle mainToggle ' + (legendOpen ? 'show' : 'hide')}>
         <IonCol>
           <IonList lines="none" className="ion-no-padding" aria-label={currentLayer.title}>
-            {currentLayer.childLayers?.map((child) => (
-              <LayerItem
-                key={child.id}
-                id={child.id as FeatureDataLayerId}
-                title={child.title}
-                mainLegendOpen={legendOpen}
-                aria-hidden={!legendOpen}
-              />
-            ))}
+            {currentLayer.childLayers
+              ?.filter((l) => !l.hidden)
+              ?.map((child) => (
+                <LayerItem
+                  key={child.id}
+                  id={child.id as FeatureDataLayerId}
+                  title={child.title}
+                  mainLegendOpen={legendOpen}
+                  aria-hidden={!legendOpen}
+                />
+              ))}
           </IonList>
         </IonCol>
       </IonRow>

@@ -3,10 +3,12 @@ import { CurrentUser } from '../lib/lambda/api/login';
 import { mapFairwayCardToModel } from '../lib/lambda/graphql/mutation/saveFairwayCard-handler';
 
 const currentUser: CurrentUser = { firstName: 'Test', lastName: 'Test', uid: 'test', roles: [] };
+
 test('test mapFairwayCardToModel minimal', () => {
   expect(() => mapFairwayCardToModel({} as FairwayCardInput, undefined, currentUser)).toThrow(OperationError.InvalidInput);
   const input: FairwayCardInput = {
     id: 'a1',
+    version: 'v0',
     name: { fi: 'test', sv: 'testsv', en: 'testen' },
     n2000HeightSystem: false,
     operation: Operation.Create,
@@ -14,6 +16,7 @@ test('test mapFairwayCardToModel minimal', () => {
     group: '1',
     fairwayIds: [1],
   };
+
   expect(mapFairwayCardToModel(input, undefined, currentUser)).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -23,6 +26,7 @@ test('test mapFairwayCardToModel minimal', () => {
 test('test mapFairwayCardToModel all', () => {
   const input: FairwayCardInput = {
     id: 'a2',
+    version: 'v0',
     name: { fi: 'test2', sv: 'testsv2', en: 'testen2' },
     n2000HeightSystem: true,
     operation: Operation.Update,
@@ -65,13 +69,15 @@ test('test mapFairwayCardToModel all', () => {
       sv: 'navigationConditionsv',
       en: 'navigationConditionen',
     },
-    primaryFairwayId: 1,
-    seaLevel: {
-      fi: 'seaLevel',
-      sv: 'seaLevelsv',
-      en: 'seaLevelen',
-    },
-    secondaryFairwayId: 1,
+    primaryFairwayId: [
+      { id: 1, sequenceNumber: 1 },
+      { id: 2, sequenceNumber: 2 },
+    ],
+    mareographs: [1, 2, 3, 4],
+    secondaryFairwayId: [
+      { id: 1, sequenceNumber: 1 },
+      { id: 2, sequenceNumber: 2 },
+    ],
     speedLimit: {
       fi: 'speedLimit',
       sv: 'speedLimitsv',
@@ -134,17 +140,13 @@ test('test mapFairwayCardToModel all', () => {
       sv: 'visibilitysv',
       en: 'visibilityen',
     },
-    windGauge: {
-      fi: 'windGauge',
-      sv: 'windGaugesv',
-      en: 'windGaugeen',
-    },
     windRecommendation: {
       fi: 'windRecommendation',
       sv: 'windRecommendationsv',
       en: 'windRecommendationen',
     },
   };
+
   expect(mapFairwayCardToModel(input, undefined, currentUser)).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),

@@ -43,11 +43,6 @@
     "sv": "Vädret vid kuststationerna, Malax Strömmingsbådan, Korsholm Valsörarna.",
     "en": "Marine weather observations, Maalahti Strömmingsbådan, Mustasaari Valassaaret."
   },
-  "seaLevel": {
-    "fi": "Vaasa mareografi on satama-alueella, Vaasan väyläasemalla.",
-    "sv": "Vasa mareograf är inom hamnområdet vid Vasa farledsdepå.",
-    "en": "Vaasa mareograph (mareograph is located in Port of Vaasa area at Vaasa fairway depot)."
-  },
   "windRecommendation": {
     "fi": "Välillä Nygrund-Vaasan satama mitoitusalukselle kriittinen tuulennopeus 15 m/s kaikilla tuulen suunnilla avovesiaikana.",
     "sv": "I avsnittet mellan Nygrund och Vasa hamn är den kritiska vindhastigheten för det dimensionerande fartyget 15 m/s för alla vindriktningar under den isfria perioden.",

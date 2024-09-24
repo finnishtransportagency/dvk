@@ -26,7 +26,9 @@ exports[`test mapFairwayCardToModel all 1`] = `
     {
       "id": 1,
       "primary": true,
+      "primarySequenceNumber": 1,
       "secondary": true,
+      "secondarySequenceNumber": 1,
     },
   ],
   "generalInfo": {
@@ -51,6 +53,20 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "fi": "lineText",
     "sv": "lineTextsv",
   },
+  "mareographs": [
+    {
+      "id": 1,
+    },
+    {
+      "id": 2,
+    },
+    {
+      "id": 3,
+    },
+    {
+      "id": 4,
+    },
+  ],
   "modificationTimestamp": Any<Number>,
   "modifier": "Test Test",
   "n2000HeightSystem": true,
@@ -66,17 +82,13 @@ exports[`test mapFairwayCardToModel all 1`] = `
   },
   "pictures": null,
   "pilotRoutes": null,
-  "seaLevel": {
-    "en": "seaLevelen",
-    "fi": "seaLevel",
-    "sv": "seaLevelsv",
-  },
   "speedLimit": {
     "en": "speedLimiten",
     "fi": "speedLimit",
     "sv": "speedLimitsv",
   },
   "status": "PUBLIC",
+  "temporaryNotifications": null,
   "trafficService": {
     "pilot": {
       "email": "i@fi",
@@ -133,6 +145,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
       },
     ],
   },
+  "version": "v0",
   "vesselRecommendation": {
     "en": "vesselRecommendationen",
     "fi": "vesselRecommendation",
@@ -142,11 +155,6 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "en": "visibilityen",
     "fi": "visibility",
     "sv": "visibilitysv",
-  },
-  "windGauge": {
-    "en": "windGaugeen",
-    "fi": "windGauge",
-    "sv": "windGaugesv",
   },
   "windRecommendation": {
     "en": "windRecommendationen",
@@ -169,8 +177,10 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "fairways": [
     {
       "id": 1,
-      "primary": true,
-      "secondary": true,
+      "primary": false,
+      "primarySequenceNumber": undefined,
+      "secondary": false,
+      "secondarySequenceNumber": undefined,
     },
   ],
   "generalInfo": null,
@@ -179,6 +189,7 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "iceCondition": null,
   "id": "a1",
   "lineText": null,
+  "mareographs": undefined,
   "modificationTimestamp": Any<Number>,
   "modifier": "Test Test",
   "n2000HeightSystem": false,
@@ -190,9 +201,9 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "navigationCondition": null,
   "pictures": null,
   "pilotRoutes": null,
-  "seaLevel": null,
   "speedLimit": null,
   "status": "DRAFT",
+  "temporaryNotifications": null,
   "trafficService": {
     "pilot": {
       "email": null,
@@ -205,9 +216,9 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
     "tugs": null,
     "vts": null,
   },
+  "version": "v0",
   "vesselRecommendation": null,
   "visibility": null,
-  "windGauge": null,
   "windRecommendation": null,
 }
 `;

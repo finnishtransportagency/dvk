@@ -8,11 +8,12 @@ import { mapToHarborInput } from '../utils/dataMapper';
 
 interface HarbourEditProps {
   harbourId: string;
+  harbourVersion?: string;
   origin?: boolean;
 }
 
-const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
-  const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, false);
+const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion = 'v1', origin }) => {
+  const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, harbourVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const harbour = mapToHarborInput(origin, data);
@@ -23,8 +24,10 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, origin }) => {
       {!isLoading && (
         <HarbourForm
           harbour={harbour}
-          modified={origin ? 0 : data?.harbor?.modificationTimestamp ?? data?.harbor?.creationTimestamp ?? 0}
-          modifier={(origin ? userData?.currentUser?.name : data?.harbor?.modifier ?? data?.harbor?.creator) ?? ''}
+          modified={origin ? 0 : (data?.harbor?.modificationTimestamp ?? data?.harbor?.creationTimestamp ?? 0)}
+          modifier={(origin ? '-' : (data?.harbor?.modifier ?? data?.harbor?.creator)) ?? ''}
+          creator={origin ? userData?.currentUser?.name : (data?.harbor?.creator ?? undefined)}
+          created={origin ? 0 : (data?.harbor?.creationTimestamp ?? undefined)}
           isError={isError}
         />
       )}
@@ -50,6 +53,7 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
   const emptyHarbourInput: HarborInput = {
     geometry: { lat: '', lon: '' },
     id: '',
+    version: 'v1',
     n2000HeightSystem: false,
     name: { fi: '', sv: '', en: '' },
     extraInfo: { fi: '', sv: '', en: '' },
@@ -68,8 +72,10 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
   return (
     <>
       {harbourId && <HarbourEditForm harbourId={harbourId} />}
-      {locationState?.origin && <HarbourEditForm harbourId={locationState.origin.id} origin />}
-      {!harbourId && !locationState.origin && <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={data?.currentUser?.name ?? ''} />}
+      {locationState?.origin && <HarbourEditForm harbourId={locationState.origin.id} harbourVersion={locationState.origin.version} origin />}
+      {!harbourId && !locationState?.origin && (
+        <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={'-'} creator={data?.currentUser?.name} created={0} />
+      )}
     </>
   );
 };

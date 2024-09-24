@@ -1,5 +1,6 @@
 fragment HarborById on Harbor {
   id
+  version
   name {
     fi
     sv
@@ -63,8 +64,20 @@ fragment HarborById on Harbor {
   }
 }
 
-query harbourById($id: String!) {
+query harbourById($id: String!, $version: String!) {
+  harbor(id: $id, version: $version) {
+    ...HarborById
+  }
+}
+
+query harbourLatestById($id: String!) {
   harbor(id: $id) {
+    ...HarborById
+  }
+}
+
+query harbourPublicById($id: String!, $status: [Status!]!) {
+  harbor(id: $id, status: $status) {
     ...HarborById
   }
 }

@@ -12,7 +12,7 @@ export const handler: AppSyncResolverHandler<QueryHarborPreviewArgs, Harbor | un
   const user = await getOptionalCurrentUser(event);
 
   if (user?.roles.includes(ADMIN_ROLE)) {
-    const dbModel = await HarborDBModel.get(event.arguments.id);
+    const dbModel = await HarborDBModel.getVersion(event.arguments.id, event.arguments.version);
 
     if (dbModel?.status === Status.Draft || dbModel?.status === Status.Public) {
       return mapHarborDBModelToGraphqlType(dbModel, user);

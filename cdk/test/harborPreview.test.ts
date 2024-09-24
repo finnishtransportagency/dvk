@@ -4,7 +4,7 @@ import { handler as previewHandler } from '../lib/lambda/graphql/query/harborPre
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
 import { Status } from '../graphql/generated';
 import { ADMIN_ROLE, getOptionalCurrentUser } from '../lib/lambda/api/login';
-import { mockContext, mockQueryByIdEvent } from './mocks';
+import { mockContext, mockQueryPreviewEvent } from './mocks';
 
 const adminUser = {
   uid: 'K123456',
@@ -22,6 +22,7 @@ const otherUser = {
 
 const harbor1: HarborDBModel = {
   id: 'public',
+  version: 'v1',
   name: {
     fi: 'Harbor1fi',
     sv: 'Harbor1sv',
@@ -85,6 +86,7 @@ const harbor1: HarborDBModel = {
 
 const harbor2: HarborDBModel = {
   id: 'draft',
+  version: 'v1',
   name: {
     fi: 'Harbor2fi',
     sv: 'Harbor2sv',
@@ -99,6 +101,7 @@ const harbor2: HarborDBModel = {
 
 const harbor3: HarborDBModel = {
   id: 'removed',
+  version: 'v1',
   name: {
     fi: 'Harbor3fi',
     sv: 'Harbor3sv',
@@ -134,7 +137,7 @@ it('should get public harbor preview from the DynamoDB', async () => {
     .resolves({
       Item: harbor1,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -149,7 +152,7 @@ it('should get draft harbor preview from the DynamoDB', async () => {
     .resolves({
       Item: harbor2,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -164,7 +167,7 @@ it('should filter removed harbor preview from the DynamoDB', async () => {
     .resolves({
       Item: harbor3,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toBe(undefined);
 });
 
@@ -177,6 +180,6 @@ it('should return nothing when admin role missing', async () => {
     .resolves({
       Item: harbor1,
     });
-  const response = await previewHandler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await previewHandler(mockQueryPreviewEvent, mockContext, () => {});
   expect(response).toBe(undefined);
 });

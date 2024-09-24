@@ -38,11 +38,6 @@
     "sv": "I den trånga passagen ca 3 km SV från fyren Oulu 1 bör fartyg som går i dimensionerat djupgående ta hänsyn till squat-effekten.",
     "en": "Vessels sailing at design draught should beware of the squat-effect in the narrow passage 3 km SW of the Oulu 1 lighthouse."
   },
-  "seaLevel": {
-    "fi": "Raahe mareografi.",
-    "sv": "Brahestad mareograf.",
-    "en": "Raahe mareograph."
-  },
   "trafficService": {
     "pilot": {
       "email": "pilotdispatch.bothnia@finnpilot.fi",

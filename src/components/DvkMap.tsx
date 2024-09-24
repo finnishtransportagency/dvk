@@ -38,6 +38,8 @@ import { Icon, Stroke } from 'ol/style';
 import locationIcon from '../theme/img/user_location_indicator.svg';
 import { Dispatch } from 'react';
 import { Action } from '../hooks/dvkReducer';
+import { FeatureLike } from 'ol/Feature';
+import { Cluster } from 'ol/source';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -171,10 +173,6 @@ class DvkMap {
 
     const bgFinlandLayer = new VectorImageLayer({
       properties: { id: 'finland' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 1,
       renderOrder: undefined,
       renderBuffer: 0,
@@ -184,10 +182,6 @@ class DvkMap {
 
     const bgMmlmeriLayer = new VectorImageLayer({
       properties: { id: 'mml_meri' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 2,
       renderOrder: undefined,
       renderBuffer: 0,
@@ -197,10 +191,6 @@ class DvkMap {
 
     const bgMmlmerirantaviivaLayer = new VectorImageLayer({
       properties: { id: 'mml_meri_rantaviiva' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       maxResolution: 32,
       zIndex: 3,
       renderOrder: undefined,
@@ -211,10 +201,6 @@ class DvkMap {
 
     const bgMmljarviLayer = new VectorImageLayer({
       properties: { id: 'mml_jarvi' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 4,
       renderOrder: undefined,
       renderBuffer: 0,
@@ -224,10 +210,6 @@ class DvkMap {
 
     const bgMmljarvirantaviivaLayer = new VectorImageLayer({
       properties: { id: 'mml_jarvi_rantaviiva' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       maxResolution: 32,
       zIndex: 5,
       renderOrder: undefined,
@@ -238,10 +220,6 @@ class DvkMap {
 
     const bgBalticseaLayer = new VectorImageLayer({
       properties: { id: 'balticsea' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 6,
       imageRatio: 3,
     });
@@ -249,7 +227,6 @@ class DvkMap {
 
     const bgMmlsatamatLayer = new VectorLayer({
       properties: { id: 'mml_satamat' },
-      source: new VectorSource(),
       maxResolution: 30,
       zIndex: 104,
       renderBuffer: 1,
@@ -261,7 +238,6 @@ class DvkMap {
 
     const bgMmllaituritLayer = new VectorLayer({
       properties: { id: 'mml_laiturit' },
-      source: new VectorSource(),
       maxResolution: 4,
       zIndex: 105,
       renderBuffer: 1,
@@ -275,8 +251,9 @@ class DvkMap {
 
     const userLocationLayer = new VectorLayer({
       properties: { id: 'userlocation' },
-      source: new VectorSource({
+      source: new VectorSource<FeatureLike>({
         features: [],
+        overlaps: false,
       }),
       zIndex: 300,
     });
@@ -319,7 +296,7 @@ class DvkMap {
           } else {
             throw new Error(`Error: ${response.status} ${response.statusText}`);
           }
-        } catch (error) {
+        } catch {
           tile.setState(3);
           if (response) {
             this.setResponseState(dispatch, response.status, response.statusText, this.t('tileLoadWarning.vectorTileError'));
@@ -395,7 +372,7 @@ class DvkMap {
       backLayers.push(layer);
     });
 
-    const bgFiLayer = this.getFeatureLayer('finland') as VectorLayer<VectorSource>;
+    const bgFiLayer = this.getFeatureLayer('finland') as VectorLayer;
     bgFiLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -404,7 +381,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlmeriLayer = this.getFeatureLayer('mml_meri') as VectorLayer<VectorSource>;
+    const bgMmlmeriLayer = this.getFeatureLayer('mml_meri') as VectorLayer;
     bgMmlmeriLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -413,7 +390,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlmerirantaviivaLayer = this.getFeatureLayer('mml_meri_rantaviiva') as VectorLayer<VectorSource>;
+    const bgMmlmerirantaviivaLayer = this.getFeatureLayer('mml_meri_rantaviiva') as VectorLayer;
     bgMmlmerirantaviivaLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -423,7 +400,7 @@ class DvkMap {
       })
     );
 
-    const bgMmljarviLayer = this.getFeatureLayer('mml_jarvi') as VectorLayer<VectorSource>;
+    const bgMmljarviLayer = this.getFeatureLayer('mml_jarvi') as VectorLayer;
     bgMmljarviLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -432,7 +409,7 @@ class DvkMap {
       })
     );
 
-    const bgMmljarvirantaviivaLayer = this.getFeatureLayer('mml_jarvi_rantaviiva') as VectorLayer<VectorSource>;
+    const bgMmljarvirantaviivaLayer = this.getFeatureLayer('mml_jarvi_rantaviiva') as VectorLayer;
     bgMmljarvirantaviivaLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -442,7 +419,7 @@ class DvkMap {
       })
     );
 
-    const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer<VectorSource>;
+    const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer;
     bgBsLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -451,7 +428,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer<VectorSource>;
+    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer;
     bgMmlsatamatLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -464,7 +441,7 @@ class DvkMap {
       })
     );
 
-    const bgMmllaituritLayer = this.getFeatureLayer('mml_laiturit') as VectorLayer<VectorSource>;
+    const bgMmllaituritLayer = this.getFeatureLayer('mml_laiturit') as VectorLayer;
     bgMmllaituritLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -474,7 +451,7 @@ class DvkMap {
       })
     );
 
-    const userLocationLayer = this.getFeatureLayer('userlocation') as VectorLayer<VectorSource>;
+    const userLocationLayer = this.getFeatureLayer('userlocation') as VectorLayer;
     userLocationLayer.setStyle(
       new Style({
         image: new Icon({
@@ -645,9 +622,18 @@ class DvkMap {
     return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
   }
 
+  public getFeatureLayers(layerId: FeatureLayerId | BackgroundLayerId) {
+    return this.olMap?.getAllLayers().filter((layerObj) => layerId === layerObj.getProperties().id) as Layer[];
+  }
+
   public getVectorSource(layerId: FeatureLayerId | BackgroundLayerId) {
     const layer = this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
-    return layer.getSource() as VectorSource;
+    const layerSource = layer.getSource();
+    /* If Cluster source, return wrapped source that contains original features */
+    if (layerSource instanceof Cluster) {
+      return (layerSource as Cluster<FeatureLike>).getSource() as VectorSource;
+    }
+    return layerSource as VectorSource;
   }
 }
 

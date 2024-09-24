@@ -5,6 +5,7 @@ import {
   Fairway,
   FairwayCard,
   NavigationLine,
+  ProhibitionArea,
   QueryFairwayCardArgs,
   RestrictionArea,
   TurningCircle,
@@ -20,6 +21,7 @@ import {
   TaululinjaAPIModel,
   VaylaAPIModel,
 } from '../../api/apiModels';
+import { fetchProhibitionAreas } from '../../api/traficom';
 
 export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
   const fairway: Fairway = {
@@ -80,7 +82,7 @@ export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
 }
 
 async function getNavigationLineMap(fairwayIds: number[]) {
-  const lines = await fetchVATUByFairwayId<NavigointiLinjaAPIModel>(fairwayIds, 'navigointilinjat');
+  const lines = (await fetchVATUByFairwayId<NavigointiLinjaAPIModel>(fairwayIds, 'navigointilinjat')).data as NavigointiLinjaAPIModel[];
   log.debug('lines: %d', lines.length);
   const lineMap = new Map<number, NavigointiLinjaAPIModel[]>();
   for (const line of lines) {
@@ -127,7 +129,8 @@ function mapNavigationLines(lines: NavigointiLinjaAPIModel[]) {
 }
 
 async function getAreaMap(fairwayIds: number[]) {
-  const areas = await fetchVATUByFairwayId<AlueAPIModel>(fairwayIds, 'vaylaalueet');
+  const apiAreas = (await fetchVATUByFairwayId<AlueAPIModel>(fairwayIds, 'vaylaalueet')).data as AlueAPIModel[];
+  const areas = apiAreas.filter((a) => a.tyyppiKoodi !== 15); // Filter specialarea15, fetched separately from Traficom
   log.debug('areas: %d', areas.length);
   const areaMap = new Map<number, AlueAPIModel[]>();
   for (const area of areas) {
@@ -218,7 +221,7 @@ function mapRestrictionAreas(areas: RajoitusAlueAPIModel[]) {
 }
 
 async function getRestrictionAreaMap(fairwayIds: number[]) {
-  const areas = await fetchVATUByFairwayId<RajoitusAlueAPIModel>(fairwayIds, 'rajoitusalueet');
+  const areas = (await fetchVATUByFairwayId<RajoitusAlueAPIModel>(fairwayIds, 'rajoitusalueet')).data as RajoitusAlueAPIModel[];
   log.debug('restriction areas: %d', areas.length);
   const areaMap = new Map<number, RajoitusAlueAPIModel[]>();
   for (const area of areas) {
@@ -228,6 +231,25 @@ async function getRestrictionAreaMap(fairwayIds: number[]) {
       }
       areaMap.get(areaFairway.jnro)?.push(area);
     }
+  }
+  return areaMap;
+}
+
+async function getProhibitionAreaMap() {
+  const areas = await fetchProhibitionAreas();
+  log.debug('prohibition areas: %d', areas.length);
+  const areaMap = new Map<number, ProhibitionArea[]>();
+  for (const area of areas) {
+    const fairway = area.properties?.fairway;
+    if (!areaMap.has(fairway.fairwayId)) {
+      areaMap.set(fairway.fairwayId, []);
+    }
+    areaMap.get(fairway.fairwayId)?.push({
+      id: area.id as number,
+      typeCode: area.properties?.typeCode,
+      extraInfo: area.properties?.extraInfo,
+      fairway: area.properties?.fairway,
+    });
   }
   return areaMap;
 }
@@ -249,7 +271,7 @@ function mapBoardLines(lines: TaululinjaAPIModel[]): Boardline[] {
 }
 
 async function getBoardLineMap(fairwayIds: number[]) {
-  const lines = await fetchVATUByFairwayId<TaululinjaAPIModel>(fairwayIds, 'taululinjat');
+  const lines = (await fetchVATUByFairwayId<TaululinjaAPIModel>(fairwayIds, 'taululinjat')).data as TaululinjaAPIModel[];
   log.debug('board lines: %d', lines.length);
   const lineMap = new Map<number, TaululinjaAPIModel[]>();
   for (const line of lines) {
@@ -280,7 +302,7 @@ function mapTurningCircles(circles: KaantoympyraAPIModel[]): TurningCircle[] {
 }
 
 async function getCircleMap(fairwayIds: number[]) {
-  const circles = await fetchVATUByFairwayId<KaantoympyraAPIModel>(fairwayIds, 'kaantoympyrat');
+  const circles = (await fetchVATUByFairwayId<KaantoympyraAPIModel>(fairwayIds, 'kaantoympyrat')).data as KaantoympyraAPIModel[];
   log.debug('circles: %d', circles.length);
   const circleMap = new Map<number, KaantoympyraAPIModel[]>();
   for (const circle of circles) {
@@ -318,9 +340,10 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
       const lineMap = await getNavigationLineMap(fairwayIds);
       const areaMap = await getAreaMap(fairwayIds);
       const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);
+      const prohibitionAreaMap = await getProhibitionAreaMap();
       const boardLineMap = await getBoardLineMap(fairwayIds);
       const circleMap = await getCircleMap(fairwayIds);
-      const fairways = await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat');
+      const fairways = (await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat')).data as VaylaAPIModel[];
       const response = fairways.map((apiFairway) => {
         const fairway = fairwayMap.get(apiFairway.jnro);
         log.debug('Fairway: %o', apiFairway);
@@ -330,6 +353,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
           navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) ?? []),
           areas: mapAreas(areaMap.get(apiFairway.jnro) ?? []),
           restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) ?? []),
+          prohibitionAreas: prohibitionAreaMap.get(apiFairway.jnro) ?? [],
           boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) ?? []),
           turningCircles: mapTurningCircles(circleMap.get(apiFairway.jnro) ?? []),
         };

@@ -32,7 +32,7 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
 
   const quayName = quay.properties.quay?.[lang];
   const sectionName = quay.properties.name ?? '';
-  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : quayName ?? sectionName;
+  const headerText = quayName && sectionName ? quayName.concat(' - ', sectionName) : (quayName ?? sectionName);
 
   return (
     <IonGrid className="ion-no-padding">

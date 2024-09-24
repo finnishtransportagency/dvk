@@ -32,6 +32,8 @@
         "layer": {
           "tipLabel": "Valitse tasot",
           "header": "Kartan tasot",
+          "saveSelection": "Muista valintani",
+          "selectAll": "Valitse kaikki tasot",
           "class1": "Kauppamerenkulku",
           "class2": "Muu vesiliikenne",
           "lines": "Navigointilinjat",
@@ -51,7 +53,6 @@
           "conditions": "Olosuhteet",
           "seaLevel": "Merivedenkorkeus",
           "weatherStation": "Säähavaintoasemat",
-          "ice": "Jääkartta",
           "buoys": "Aaltopoijut",
           "vts": "VTS",
           "vtsline": "VTS-alueet",
@@ -78,6 +79,10 @@
           "aisVesselPleasureCraft": "Huviveneet",
           "aisUnspecified": "Määrittelemättömät alukset",
           "aisShowPredictor": "Nopeusvektorit",
+          "winterTraffic": "Talvimerenkulku",
+          "dirway": "Jääreittipisteet",
+          "restrictionPort": "Avustusrajoitukset",
+          "ice": "Jääkartta",
           "mapStyle": {
             "header": "Kartan tyyli",
             "landButtonLabel": "Maa",
@@ -107,7 +112,7 @@
           "mousePositionLabel": "Hiiren koordinaatti:"
         },
         "searchbar": {
-          "placeholder": "Hae väylän nimellä",
+          "placeholder": "Hae väylän nimellä tai numerolla",
           "title": "Väylähaku",
           "clearTitle": "Tyhjennä",
           "no-search-results": "Haulla '{{query}}' ei löydy yhtään väylää"
@@ -229,6 +234,7 @@
     "areaType11": "Varmistettu lisäalue",
     "areaType14": "STS-alue",
     "areaType15": "Kohtaamis- ja ohittamiskieltoalue",
+    "extraInfo": "Lisätieto",
     "noDataSet": "Tietoa ei ole asetettu.",
     "noRestrictions": "Ei voimassa olevia rajoituksia.",
     "notForNavigation": "Ei navigointikäyttöön",
@@ -259,15 +265,21 @@
     "pilotPlaceLocation": "Luotsipaikan sijainti",
     "pilotageLimit": "Luotsinkäyttölinja",
     "pilotageLimitLocation": "Linjan sijainti",
-    "pilotageLimitMaxDimensions": "Alusten enimmäismitat joita linja koskee",
-    "draught": "Syväys",
-    "width": "Leveys"
+    "pilotageLimitLimit": "Luotsinkäyttövelvollisuuden raja väylällä, kun jokin seuraavista ylittyy",
+    "pilotageLimitDimensions": "Pituus / leveys / syväys (m)",
+    "inForce": "Voimassa",
+    "mareograph": "Mareografi",
+    "mareographLocation": "Mareografin sijainti",
+    "observationLocation": "Säähavaintoaseman sijainti",
+    "fairwayNumber": "Väylän numero",
+    "fairwayNumbers": "Väylän numerot"
   },
   "routes": {
     "info": "Esitetyt luotsausreitit eivät sellaisenaan sovellu luotsauslain (561/2023) tarkoittamaksi yksittäisen aluksen luotsaussuunnitelmaksi. Luotsausreitit on laadittu suuntaa-antavina yleisesityksinä ja yksittäisen luotsausreitin virheettömyyttä ei voida taata. Digitaalisessa väyläkortissa esitetyn luotsausreitin mahdollinen hyödyntäminen aluksen navigointiin on aina aluksen päällikön vastuulla.",
     "title": "Luotsausreitit",
     "route": "Reitti",
-    "rtz": "Reitin rtz tiedosto"
+    "rtz": "Reitin RTZ-tiedosto",
+    "linkedFairwayCards": "Luotsausreittiin liittyvät väyläkortit"
   },
   "faults": {
     "title": "Turvalaiteviat",
@@ -318,7 +330,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Ei väyläkorttia"
+      "noFairwayCards": "Ei väyläkorttia",
+      "outdatedData": "Tieto on yli 12h vanhaa"
     },
     "pilotPlace": {
       "header": "Luotsipaikka {{val}}",
@@ -328,11 +341,13 @@
     "pilotageLimit": {
       "header": "Luotsinkäyttölinja {{val}}",
       "location": "Linjan sijainti",
-      "limit": "Alusten enimmäismitat joita linja koskee pituus / leveys / syväys (m)",
+      "limit": "Luotsinkäyttövelvollisuuden raja väylällä, kun jokin seuraavista ylittyy",
+      "dimensions": "Pituus / leveys / syväys (m)",
       "fairways": "Linjaan liittyvät väyläkortit"
     },
     "pilotRoute": {
-      "header": "REITTI: {{val}}"
+      "header": "REITTI: {{val}}",
+      "fairwayCards": "Luotsausreitti on osa väyläkorttia"
     },
     "quay": {
       "length": "Laiturin pituus",
@@ -347,7 +362,6 @@
     },
     "area": {
       "info": "Väyläalueen tiedot",
-      "overtake": "Väyläalueella jatkuva ohituskielto",
       "depth": "Haraussyvyys {{val, number}}",
       "draft": "Mitoitussyväys {{val, number}}",
       "speedLimit": "Nopeusrajoitus {{val}}",
@@ -464,11 +478,19 @@
       "aisvesselpleasurecraft": "Huvivene",
       "aisunspecified": "Määrittelemätön alus"
     },
+    "dirway": {
+      "points": "Jääreittipisteet"
+    },
+    "restriction": {
+      "current": "Voimassaolevat avustusrajoitukset",
+      "upcoming": "Tulevat avustusrajoitukset"
+    },
     "featureList": {
       "multipleFeatures": "Useita valittavia kohteita",
       "featureType": {
         "area": "Väyläalue",
         "buoy": "Aaltopoiju",
+        "dirway": "Jääreittipisteet",
         "calculated": "Laskennallinen vedenkorkeus",
         "harbor": "Satama",
         "line": "Navigointilinja",
@@ -479,6 +501,7 @@
         "pilotagelimit": "Luotsinkäyttölinja",
         "pilotroute": "Luotsausreitti",
         "quay": "Laituri",
+        "restrictionport": "Avustusrajoitus",
         "safetyequipment": "Turvalaite",
         "safetyequipmentfault": "Turvalaitevika",
         "section": "Laituripaikka",
@@ -497,7 +520,7 @@
     "general": "Yleistä",
     "openDescription": "Avaa",
     "closeDescription": "Sulje",
-    "search": "Hae väylän nimellä",
+    "search": "Hae väylän nimellä tai numerolla",
     "searchTitle": "Väylähaku",
     "clearTitle": "Tyhjennä",
     "expandPane": "Laajenna",

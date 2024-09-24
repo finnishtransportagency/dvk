@@ -29,6 +29,9 @@ import AisVesselPopupContent, { AisVesselProperties } from '../popup/AisVesselPo
 import FeatureListPopupContent, { FeatureListProperties } from '../popup/FeatureListPopupContent';
 import PilotRoutePopupContent, { PilotRouteProperties } from '../popup/PilotRoutePopupContent';
 import PilotageLimitPopupContent, { PilotageLimitProperties } from '../popup/PilotageLimitPopupContent';
+import DirwayPopupContent, { DirwayProperties } from '../popup/DirwayPopupContent';
+import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup/RestrictionPortPopupContent';
+import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup/ProhibitionAreaPopupContent';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -38,9 +41,10 @@ export type PopupProperties = {
   section?: QuayProperties;
   area?: AreaProperties;
   specialarea2?: AreaProperties;
-  specialarea15?: AreaProperties;
+  specialarea15?: ProhibitionAreaProperties;
   line?: LineProperties;
   safetyequipment?: EquipmentProperties;
+  safetyequipmentfault?: EquipmentProperties;
   marinewarning?: MarineWarningProperties;
   mareograph?: MareographProperties;
   observation?: ObservationProperties;
@@ -49,16 +53,17 @@ export type PopupProperties = {
   vtspoint?: VtsProperties;
   vtsline?: VtsProperties;
   aisvessel?: AisVesselProperties;
+  dirway?: DirwayProperties;
+  restrictionport?: RestrictionPortProperties;
   featureList?: FeatureListProperties;
 };
 
 type MapOverlaysProps = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  isOffline: boolean;
 };
 
-const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen, isOffline }) => {
+const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen }) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
   const { state, dispatch } = useDvkContext();
@@ -71,7 +76,6 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const { data } = useFairwayCardListData();
   const [showMarineWarningNotification, setShowMarineWarningNotification] = useState(false);
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
-
   const [popupProperties, setPopupProperties] = useState<PopupProperties>();
 
   const openMapLayersModal = () => {
@@ -148,16 +152,17 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.pilotroute && <PilotRoutePopupContent pilotroute={popupProperties.pilotroute} setPopupProperties={setPopupProperties} />}
         {popupProperties?.quay && <QuayPopupContent quay={popupProperties.quay} setPopupProperties={setPopupProperties} />}
         {popupProperties?.section && <QuayPopupContent quay={popupProperties.section} setPopupProperties={setPopupProperties} />}
-        {popupProperties?.area && <AreaPopupContent area={popupProperties.area} setPopupProperties={setPopupProperties} isOffline={isOffline} />}
-        {popupProperties?.specialarea2 && (
-          <AreaPopupContent area={popupProperties.specialarea2} setPopupProperties={setPopupProperties} isOffline={isOffline} />
-        )}
+        {popupProperties?.area && <AreaPopupContent area={popupProperties.area} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.specialarea2 && <AreaPopupContent area={popupProperties.specialarea2} setPopupProperties={setPopupProperties} />}
         {popupProperties?.specialarea15 && (
-          <AreaPopupContent area={popupProperties.specialarea15} setPopupProperties={setPopupProperties} isOffline={isOffline} />
+          <ProhibitionAreaPopupContent area={popupProperties.specialarea15} setPopupProperties={setPopupProperties} />
         )}
         {popupProperties?.line && <LinePopupContent line={popupProperties.line} setPopupProperties={setPopupProperties} />}
         {popupProperties?.safetyequipment && (
           <EquipmentPopupContent equipment={popupProperties.safetyequipment} setPopupProperties={setPopupProperties} />
+        )}
+        {popupProperties?.safetyequipmentfault && (
+          <EquipmentPopupContent equipment={popupProperties.safetyequipmentfault} setPopupProperties={setPopupProperties} />
         )}
         {popupProperties?.marinewarning && (
           <MarineWarningPopupContent marine={popupProperties.marinewarning} setPopupProperties={setPopupProperties} />
@@ -171,6 +176,10 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.vtspoint && <VtsPointPopupContent vts={popupProperties.vtspoint} setPopupProperties={setPopupProperties} />}
         {popupProperties?.vtsline && <VtsLinePopupContent vts={popupProperties.vtsline} setPopupProperties={setPopupProperties} />}
         {popupProperties?.aisvessel && <AisVesselPopupContent vessel={popupProperties.aisvessel} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.dirway && <DirwayPopupContent dirway={popupProperties.dirway} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.restrictionport && (
+          <RestrictionPortPopupContent restrictionPort={popupProperties.restrictionport} setPopupProperties={setPopupProperties} />
+        )}
         {popupProperties?.featureList && (
           <FeatureListPopupContent featureList={popupProperties.featureList} setPopupProperties={setPopupProperties} />
         )}

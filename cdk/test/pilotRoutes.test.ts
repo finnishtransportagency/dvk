@@ -1,14 +1,12 @@
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { S3Client } from '@aws-sdk/client-s3';
 import { mockClient } from 'aws-sdk-client-mock';
-import { gunzip, gzip } from 'zlib';
-import { Readable } from 'stream';
-import { sdkStreamMixin } from '@smithy/util-stream';
+import { gunzip } from 'zlib';
 import { handler } from '../lib/lambda/api/pilotroute-handler';
-import { mockPilotRoutesALBEvent } from './mocks';
+import { mockALBEvent } from './mocks';
 import assert from 'assert';
-import pilotRoutesJson from './data/pilotroutes.json';
 import { FeatureCollection } from 'geojson';
 import { RtzData } from '../lib/lambda/api/apiModels';
+import { getPilotRouteCacheControlHeaders } from '../lib/lambda/graphql/cache';
 
 const s3Mock = mockClient(S3Client);
 const path = 'pilotroutes';
@@ -349,22 +347,6 @@ async function parseResponse(body: string): Promise<FeatureCollection> {
   return JSON.parse((await response).toString()) as FeatureCollection;
 }
 
-async function createCacheResponse(collectionJson: object) {
-  const collection = JSON.stringify(collectionJson);
-  const zippedString = new Promise<Error | Buffer>((resolve, reject) =>
-    gzip(Buffer.from(collection), (err, data) => {
-      if (err) {
-        reject(err);
-      }
-      resolve(data);
-    })
-  );
-  const body = new Readable();
-  body.push((await zippedString).toString('base64'));
-  body.push(null);
-  return body;
-}
-
 let throwError = false;
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchPilotRoutesApi: () => {
@@ -381,42 +363,23 @@ beforeEach(() => {
   throwError = false;
 });
 
-it('should get pilotroutes from cache', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)), ExpiresString: expires.toString() });
-  const response = await handler(mockPilotRoutesALBEvent(path));
-  assert(response.body);
-  const responseObj = await parseResponse(response.body);
-  expect(responseObj.features.length).toBe(2);
-  expect(responseObj).toMatchSnapshot();
-});
-
-it('should get pilotroutes from api when cache expired', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)), ExpiresString: expires.toString() });
-  const response = await handler(mockPilotRoutesALBEvent(path));
+it('should get pilotroutes from api', async () => {
+  const response = await handler(mockALBEvent(path));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
   expect(responseObj.features.length).toBe(3);
   expect(responseObj).toMatchSnapshot();
 });
 
-it('should get pilotroutes from cache when api call fails', async () => {
-  const expires = new Date();
-  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand).resolves({ Body: sdkStreamMixin(await createCacheResponse(pilotRoutesJson)), ExpiresString: expires.toString() });
+it('should get internal server error when api call fails', async () => {
   throwError = true;
-  const response = await handler(mockPilotRoutesALBEvent(path));
-  assert(response.body);
-  const responseObj = await parseResponse(response.body);
-  expect(responseObj.features.length).toBe(2);
-  expect(responseObj).toMatchSnapshot();
+  const response = await handler(mockALBEvent(path));
+  expect(response.statusCode).toBe(503);
 });
 
-it('should get internal server error when api call fails and no cached response', async () => {
-  throwError = true;
-  const response = await handler(mockPilotRoutesALBEvent(path));
-  expect(response.statusCode).toBe(503);
+it('should return right cache headers for pilotroutes', async () => {
+  const response = await handler(mockALBEvent(path));
+  assert(response.body);
+  const headers = getPilotRouteCacheControlHeaders()?.['Cache-Control'];
+  expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });

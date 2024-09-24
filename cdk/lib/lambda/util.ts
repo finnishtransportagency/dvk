@@ -1,10 +1,14 @@
 import { FeatureCollection, Geometry, Position } from 'geojson';
 import { gzip } from 'zlib';
 import { log } from './logger';
-import { CacheResponse, cacheResponse, getCacheControlHeaders, getFromCache } from './graphql/cache';
+import { CacheResponse, cacheResponse, getAisCacheControlHeaders } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
 import { Vessel } from './api/apiModels';
 import { getHeaders } from './environment';
+import FairwayCardDBModel from './db/fairwayCardDBModel';
+import HarborDBModel from './db/harborDBModel';
+import { Operation, Status } from '../../graphql/generated';
+import { PutCommand } from '@aws-sdk/lib-dynamodb';
 
 const GEOMETRY_DECIMALS = 5;
 
@@ -76,7 +80,7 @@ export async function gzipString(input: string): Promise<Buffer> {
   );
 }
 
-export async function saveResponseToS3(features: FeatureCollection | Vessel[], key: string): Promise<string> {
+export async function toBase64Response(features: FeatureCollection | Vessel[]): Promise<string> {
   let start = Date.now();
   const body = JSON.stringify(features);
   log.debug('stringify duration: %d ms', Date.now() - start);
@@ -86,6 +90,11 @@ export async function saveResponseToS3(features: FeatureCollection | Vessel[], k
   start = Date.now();
   const base64Response = gzippedResponse.toString('base64');
   log.debug('base64 duration: %d ms', Date.now() - start);
+  return base64Response;
+}
+
+export async function saveResponseToS3(features: FeatureCollection, key: string): Promise<string> {
+  const base64Response = await toBase64Response(features);
   await cacheResponse(key, base64Response);
   return base64Response;
 }
@@ -116,28 +125,86 @@ export async function handleAisCall(
 ): Promise<ALBResult> {
   let base64Response: string | undefined;
   let statusCode = 200;
-  const cacheResponse = await getFromCache(key);
-  if (!cacheResponse.expired && cacheResponse.data) {
-    base64Response = cacheResponse.data;
-  } else {
-    try {
-      const aisData = await fetchAisData();
-      log.debug('ais data: %d', Array.isArray(aisData) ? aisData.length : aisData.features.length);
-      base64Response = await saveResponseToS3(aisData, key);
-    } catch (e) {
-      const errorResult = handleLoaderError(cacheResponse, e);
-      base64Response = errorResult.body;
-      statusCode = errorResult.statusCode;
-    }
+  try {
+    const aisData = await fetchAisData();
+    log.debug('ais data: %d', Array.isArray(aisData) ? aisData.length : aisData.features.length);
+    base64Response = await toBase64Response(aisData);
+  } catch (e) {
+    base64Response = undefined;
+    statusCode = 503;
   }
+
   return {
     statusCode,
     body: base64Response,
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getCacheControlHeaders(key),
+      ...getAisCacheControlHeaders(key),
       'Content-Type': contentType,
     },
   };
+}
+
+export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableName: string, operation: Operation) {
+  const updateCommands = [];
+
+  // creating a new item
+  if (operation === Operation.Create) {
+    // latest item
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v0_latest', latest: 1 },
+        ConditionExpression: 'attribute_not_exists(id)',
+      })
+    );
+    // set currentPublic to null and no data except id if not public
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item:
+          data.status === Status.Public
+            ? { ...data, version: 'v0_public', currentPublic: 1 }
+            : { id: data.id, version: 'v0_public', currentPublic: null },
+        ConditionExpression: 'attribute_not_exists(id)',
+      })
+    );
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v1' },
+        ConditionExpression: 'attribute_not_exists(id)',
+      })
+    );
+  } else if (operation === Operation.Update) {
+    // updating existing item
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        // when versioning is used properly, increment latest by version number
+        Item: { ...data, version: 'v0_latest', latest: 1 },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item:
+          data.status === Status.Public
+            ? { ...data, version: 'v0_public', currentPublic: 1 }
+            : { id: data.id, version: 'v0_public', currenPublic: null },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v1' },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+  }
+
+  return updateCommands;
 }

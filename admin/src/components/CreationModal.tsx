@@ -1,11 +1,27 @@
-import React, { useRef, useState } from 'react';
-import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useMemo, useRef, useState } from 'react';
+import {
+  IonButton,
+  IonCheckbox,
+  IonCol,
+  IonFooter,
+  IonGrid,
+  IonHeader,
+  IonLabel,
+  IonModal,
+  IonRow,
+  IonSelect,
+  IonSelectOption,
+  IonText,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardOrHarbor } from '../graphql/generated';
-import { ItemType } from '../utils/constants';
+import { ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
+import { FairwayCardOrHarborGroup, sortItemGroups } from '../utils/common';
 
 interface ModalProps {
   itemList: FairwayCardOrHarbor[];
@@ -15,25 +31,55 @@ interface ModalProps {
 }
 
 const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIsOpen }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const history = useHistory();
 
   const modal = useRef<HTMLIonModalElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [origin, setOrigin] = useState<FairwayCardOrHarbor | undefined>();
+  const [source, setSource] = useState<FairwayCardOrHarborGroup | undefined>();
+  const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
+  const [copyPics, setCopyPics] = useState(false);
+
+  const selectVersionRef = useRef<HTMLIonSelectElement>(null);
+
+  const focusVersionSelect = () => {
+    selectVersionRef.current?.click();
+  };
 
   const createNewItem = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
-    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: origin } });
-    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: origin } });
+    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version, copyPictures: copyPics } });
+    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version } });
   };
+
+  const groupedItemList = useMemo(() => {
+    const lang = i18n.language as Lang;
+    const filtered = itemList.filter((item) => item.type === itemType) || [];
+    const groupedItems: FairwayCardOrHarborGroup[] = [];
+    for (const item of filtered) {
+      const group = groupedItems.find((g) => g.id === item.id);
+      if (group) {
+        group.items.push(item);
+      } else {
+        groupedItems.push({ id: item.id, items: [item] });
+      }
+    }
+    return sortItemGroups(groupedItems, lang);
+  }, [i18n.language, itemList, itemType]);
 
   const closeModal = () => {
     setIsOpen(false);
     modal.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {
-      if (!isDropdownOpen) setOrigin(undefined);
+      if (!isDropdownOpen) {
+        setSource(undefined);
+        setVersion(undefined);
+      }
     }, 150);
+  };
+
+  const compareOptions = (o1: FairwayCardOrHarbor, o2: FairwayCardOrHarbor) => {
+    return o1 && o2 ? o1.id === o2.id && o1.version === o2.version : o1 === o2;
   };
 
   return (
@@ -63,21 +109,65 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               <p>{t('modal.description-new-' + itemType)}</p>
             </IonText>
             <SearchInput
-              itemList={itemList.filter((item) => item.type === itemType) || []}
-              selectedItem={origin}
-              setSelectedItem={setOrigin}
+              itemList={groupedItemList}
+              selectedItem={source}
+              setSelectedItem={setSource}
               isDropdownOpen={isDropdownOpen}
               setIsDropdownOpen={setIsDropdownOpen}
+              setVersion={setVersion}
             />
           </IonCol>
         </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonLabel className={`formLabel ion-margin-top${!source ? ' disabled' : ''}`} onClick={() => focusVersionSelect()}>
+              {t('general.version-number')}
+            </IonLabel>
+            <IonSelect
+              ref={selectVersionRef}
+              className="selectInput"
+              disabled={!source}
+              placeholder={t('general.choose')}
+              interface="popover"
+              interfaceOptions={{
+                className: 'version-select',
+                size: 'cover',
+              }}
+              labelPlacement="stacked"
+              fill="outline"
+              value={version}
+              onIonChange={(ev) => setVersion(ev.detail.value)}
+              compareWith={compareOptions}
+            >
+              {source?.items
+                .filter((item) => item.version !== VERSION.PUBLIC && item.version !== VERSION.LATEST)
+                .sort((a, b) => Number(b.version.slice(1)) - Number(a.version.slice(1)))
+                .map((item) => {
+                  return (
+                    <IonSelectOption key={`${item.id}-${item.version}`} value={item}>
+                      {`${item.version.slice(1)} (${t('general.item-status-' + item.status).toLocaleLowerCase()})`}
+                    </IonSelectOption>
+                  );
+                })}
+            </IonSelect>
+          </IonCol>
+        </IonRow>
+        {itemType === 'CARD' && (
+          <IonRow className="ion-margin-top">
+            <IonCol>
+              <IonCheckbox labelPlacement="end" disabled={!source || !version} checked={copyPics} onIonChange={(e) => setCopyPics(e.detail.checked)}>
+                {t('modal.copy-pictures')}
+              </IonCheckbox>
+            </IonCol>
+          </IonRow>
+        )}
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
           <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert">
             {t('general.cancel')}
           </IonButton>
-          <IonButton slot="end" onClick={() => createNewItem()} shape="round">
+          <IonButton slot="end" onClick={() => createNewItem()} shape="round" disabled={source && !version}>
             {t('modal.create-' + itemType)}
           </IonButton>
         </IonToolbar>

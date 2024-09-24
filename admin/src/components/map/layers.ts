@@ -2,31 +2,18 @@ import VectorSource from 'ol/source/Vector';
 import VectorLayer from 'ol/layer/Vector';
 import Style, { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
-import { Fill, Icon } from 'ol/style';
+import { Fill } from 'ol/style';
 import Map from 'ol/Map';
-import quayIcon from '../../theme/img/dock_icon.svg';
-import quayIconActive from '../../theme/img/dock_icon_active.svg';
-import quaySectionIcon from '../../theme/img/quay_section.svg';
-import quaySectionIconActive from '../../theme/img/quay_section_active.svg';
-import CircleStyle from 'ol/style/Circle';
-import Text from 'ol/style/Text';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
 import { FairwayCardPartsFragment, HarborPartsFragment, Orientation, Quay, Section } from '../../graphql/generated';
-import { FeatureDataLayerId, FeatureLayerId, Lang, MAP } from '../../utils/constants';
-import { HarborFeatureProperties, QuayFeatureProperties } from './features';
+import { FeatureDataLayerId, FeatureLayerId, MAP } from '../../utils/constants';
 import * as olExtent from 'ol/extent';
-import anchorage from '../../theme/img/ankkurointialue.svg';
-import meet from '../../theme/img/kohtaamiskielto_ikoni.svg';
-import specialarea from '../../theme/img/erityisalue_tausta.svg';
-import specialareaSelected from '../../theme/img/erityisalue_tausta_active.svg';
-import specialareaSelected2 from '../../theme/img/erityisalue_tausta_active2.svg';
-import Polygon from 'ol/geom/Polygon';
 import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
 import { getFairwayArea3456Style } from './layerStyles/fairwayArea3456Styles';
 import { getPilotStyle } from './layerStyles/pilotStyles';
 import { getDepthStyle } from './layerStyles/depthStyles';
-import { getSpeedLimitStyle } from './layerStyles/speedLimitStyles';
+import { getSpeedLimitIconStyle, getSpeedLimitPolygonStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
 import { GeoJSON } from 'ol/format';
@@ -38,47 +25,10 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
-
-const specialAreaImage = new Image();
-specialAreaImage.src = specialarea;
-const specialAreaSelectedImage = new Image();
-specialAreaSelectedImage.src = specialareaSelected;
-const specialAreaSelectedImage2 = new Image();
-specialAreaSelectedImage2.src = specialareaSelected2;
-
-export function getSpecialAreaStyle(feature: FeatureLike, color: string, width: number, selected: boolean, selected2 = false) {
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-  let gradient;
-  if (selected2) {
-    gradient = context.createPattern(specialAreaSelectedImage2, 'repeat');
-  } else {
-    gradient = context.createPattern(selected ? specialAreaSelectedImage : specialAreaImage, 'repeat');
-  }
-  return [
-    new Style({
-      image: new Icon({
-        src: feature.getProperties().typeCode === 2 ? anchorage : meet,
-        opacity: 1,
-      }),
-      zIndex: 100,
-      geometry: function (feat) {
-        const geometry = feat.getGeometry() as Polygon;
-        return geometry.getInteriorPoint();
-      },
-    }),
-    new Style({
-      stroke: new Stroke({
-        color,
-        width,
-      }),
-      zIndex: 99,
-      fill: new Fill({
-        color: gradient,
-      }),
-    }),
-  ];
-}
+import { anchorageAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle, meetAreaIconStyle } from './layerStyles/specialAreaStyles';
+import { getHarborStyle } from './layerStyles/harborStyles';
+import { getQuayStyle } from './layerStyles/quayStyles';
+import { getBoardLineStyle } from './layerStyles/boardLineStyles';
 
 export function getAreaStyle(color: string, width: number, fillColor: string, resolution?: number) {
   let strokeWidth = width;
@@ -114,188 +64,6 @@ export function getLineStyle(color: string, width: number) {
   });
 }
 
-export function getBoardLineStyle(color: string, width: number) {
-  return new Style({
-    stroke: new Stroke({
-      color,
-      width,
-      lineDash: [15, 10],
-    }),
-    zIndex: 202,
-  });
-}
-
-function getSectionStyle(selected: boolean, props: QuayFeatureProperties) {
-  const color = selected ? '#0064AF' : '#000000';
-  const depth = props.depth ? `${props.depth[0]} m` : '';
-  const image = new Icon({
-    src: quaySectionIcon,
-    anchor: [0.5, 19],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const activeImage = new Icon({
-    src: quaySectionIconActive,
-    anchor: [0.5, 19],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-
-  return new Style({
-    image: selected ? activeImage : image,
-    text: new Text({
-      font: '14px "Exo2"',
-      placement: 'line',
-      offsetY: -29,
-      text: depth,
-      fill: new Fill({
-        color: color,
-      }),
-      stroke: new Stroke({
-        width: 2,
-        color: '#ffffff',
-      }),
-    }),
-  });
-}
-
-export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
-  if (resolution > 3) {
-    return undefined;
-  }
-  if (feature.get('hoverStyle')) {
-    selected = true;
-  }
-
-  const featureType = feature.get('featureType');
-  const props = feature.getProperties() as QuayFeatureProperties;
-  if (featureType === 'section') {
-    return getSectionStyle(selected, props);
-  }
-
-  const dvkMap = getMap();
-  const lang = (dvkMap.getMapLanguage() || dvkMap.i18n.resolvedLanguage) as Lang;
-  const quayName = props.quay?.[lang] ?? '';
-  const depthText =
-    props.depth && props.depth.length > 0 ? `${props.depth.map((d) => dvkMap.t('homePage.map.numberFormat', { val: d })).join(' m / ')} m` : '';
-
-  const image = new Icon({
-    src: quayIcon,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const activeImage = new Icon({
-    src: quayIconActive,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const labelFill = new Fill({
-    color: selected ? '#0064AF' : '#000000',
-  });
-  const labelStroke = new Stroke({
-    width: 3,
-    color: '#ffffff',
-  });
-  const labelZIndex = selected ? 10 : 1;
-
-  const quayStyle = [
-    new Style({
-      image: selected ? activeImage : image,
-      text: new Text({
-        font: 'bold 18px "Exo2"',
-        placement: 'line',
-        offsetY: props.showDepth ? -72 : -55,
-        text: quayName,
-        fill: labelFill,
-        stroke: labelStroke,
-      }),
-      zIndex: labelZIndex,
-    }),
-    new Style({
-      image: new CircleStyle({
-        radius: 20,
-        displacement: [0, 20],
-        fill: new Fill({
-          color: 'rgba(0,0,0,0)',
-        }),
-      }),
-      zIndex: selected ? 11 : 2,
-    }),
-  ];
-
-  if (props.showDepth) {
-    quayStyle.push(
-      new Style({
-        text: new Text({
-          font: '12px "Exo2"',
-          placement: 'line',
-          offsetY: -53,
-          text: depthText,
-          fill: labelFill,
-          stroke: labelStroke,
-        }),
-        zIndex: labelZIndex,
-      })
-    );
-  }
-
-  return quayStyle;
-}
-
-export function getHarborStyle(feature: FeatureLike, resolution: number, minResolution = 0, selected = false) {
-  if (minResolution && resolution < minResolution) {
-    return undefined;
-  }
-
-  if (feature.get('hoverStyle')) {
-    selected = true;
-  }
-
-  const image = new Icon({
-    src: quayIcon,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const activeImage = new Icon({
-    src: quayIconActive,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  });
-  const props = feature.getProperties() as HarborFeatureProperties;
-  let text;
-  const dvkMap = getMap();
-  if (props.name) {
-    if (dvkMap.getMapLanguage()) {
-      text = props.name[dvkMap.getMapLanguage() as Lang] as string;
-    } else {
-      text = props.name[dvkMap.i18n.resolvedLanguage as Lang] as string;
-    }
-  } else {
-    text = '';
-  }
-  return new Style({
-    image: selected ? activeImage : image,
-    text: new Text({
-      font: `bold ${resolution < 50 ? '18' : '13'}px "Exo2"`,
-      placement: 'line',
-      offsetY: -55,
-      text,
-      fill: new Fill({
-        color: selected ? '#0064AF' : '#000000',
-      }),
-      stroke: new Stroke({
-        width: 3,
-        color: '#ffffff',
-      }),
-    }),
-    zIndex: selected ? 10 : 1,
-  });
-}
-
 function getArea12BorderLineStyle(feature: FeatureLike) {
   const props = feature.getProperties();
   const a1Props = props.area1Properties;
@@ -325,13 +93,13 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return resolution <= 100 ? getAreaStyleBySource('area3456', highlighted) : undefined;
     case 'specialarea2':
     case 'specialarea15':
-      return getSpecialAreaStyle(feature, '#C57A11', 2, true, highlighted);
+      return getSpecialAreaStyle(feature, true, highlighted);
     case 'boardline12':
-      return getBoardLineStyle('#000000', 1);
+      return getBoardLineStyle(true);
     case 'safetyequipment':
       return getSafetyEquipmentStyle(feature, 1, false);
     case 'harbor':
-      return getHarborStyle(feature, resolution, 3);
+      return getHarborStyle(feature, resolution, false, 3);
     case 'circle':
       return getCircleStyle(feature, resolution);
     default:
@@ -348,29 +116,31 @@ function getSelectedStyle(feature: FeatureLike, resolution: number) {
 interface FeatureVectorLayerProps {
   map: Map;
   id: FeatureLayerId;
-  maxResolution: number | undefined;
+  maxResolution?: number;
   renderBuffer: number;
   style: StyleLike;
-  minResolution: number | undefined; //= undefined
-  opacity: number; // = 1
-  declutter: boolean; // = false
+  minResolution?: number;
+  opacity?: number;
+  declutter?: boolean;
   zIndex: number | undefined; //= undefined
+  source?: VectorSource<FeatureLike>;
 }
 
 function addFeatureVectorLayer({
   map,
   id,
-  maxResolution,
+  maxResolution = undefined,
   renderBuffer,
   style,
   minResolution = undefined,
   opacity = 1,
   declutter = false,
   zIndex = undefined,
+  source = undefined,
 }: FeatureVectorLayerProps) {
   map.addLayer(
     new VectorLayer({
-      source: new VectorSource(),
+      source: source || new VectorSource<FeatureLike>(),
       declutter,
       style,
       properties: { id },
@@ -391,13 +161,10 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'name',
-    maxResolution: undefined,
     renderBuffer: 1,
     style: getNameStyle,
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
-    zIndex: 102,
+    zIndex: 106,
   });
 
   // Kauppamerenkulku
@@ -407,32 +174,23 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 1,
     style: getFairwayArea12Style,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
-    zIndex: 201,
+    zIndex: 202,
   });
   addFeatureVectorLayer({
     map: map,
     id: 'boardline12',
     maxResolution: 75,
     renderBuffer: 1,
-    style: getBoardLineStyle('#000000', 0.5),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
-    zIndex: 202,
+    style: getBoardLineStyle(false),
+    zIndex: 204,
   });
   addFeatureVectorLayer({
     map: map,
     id: 'line12',
-    maxResolution: undefined,
     renderBuffer: 1,
     style: (feature, resolution) => getNavigationLine12Style(feature, resolution, false),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
-    zIndex: 203,
+    declutter: true,
+    zIndex: 205,
   });
   // Muu vesiliikenne
   addFeatureVectorLayer({
@@ -441,10 +199,7 @@ export function addAPILayers(map: Map) {
     maxResolution: 30,
     renderBuffer: 1,
     style: getFairwayArea3456Style,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
-    zIndex: 204,
+    zIndex: 201,
   });
   addFeatureVectorLayer({
     map: map,
@@ -452,57 +207,81 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 1,
     style: getNavigationLine3456Style(false),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
-    zIndex: 205,
+    zIndex: 203,
   });
 
   // Nopeusrajoitus
+  const speedLimitSource = new VectorSource<FeatureLike>({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'speedlimit',
+    source: speedLimitSource,
     maxResolution: 15,
     renderBuffer: 2,
-    style: getSpeedLimitStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: true,
-    zIndex: 301,
+    style: getSpeedLimitPolygonStyle,
+    zIndex: 202,
   });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'speedlimit',
+    source: speedLimitSource,
+    maxResolution: 15,
+    renderBuffer: 2,
+    style: getSpeedLimitIconStyle,
+    declutter: true,
+    zIndex: 305,
+  });
+
   // Ankkurointialue
+  const anchorageSource = new VectorSource<FeatureLike>({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea2',
+    source: anchorageSource,
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: true,
-    zIndex: 302,
+    style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
+    zIndex: 202,
   });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea2',
+    source: anchorageSource,
+    maxResolution: 75,
+    renderBuffer: 2,
+    style: anchorageAreaIconStyle,
+    declutter: true,
+    zIndex: 305,
+  });
+
   // Kohtaamis- ja ohittamiskieltoalue
+  const meetSource = new VectorSource<FeatureLike>({ overlaps: false });
   addFeatureVectorLayer({
     map: map,
     id: 'specialarea15',
+    source: meetSource,
     maxResolution: 75,
     renderBuffer: 2,
-    style: (feature) => getSpecialAreaStyle(feature, '#C57A11', 2, false),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: true,
-    zIndex: 302,
+    style: (feature) => getSpecialAreaPolygonStyle(feature, !!feature.get('hoverStyle')),
+    zIndex: 202,
   });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea15',
+    source: meetSource,
+    maxResolution: 75,
+    renderBuffer: 2,
+    style: meetAreaIconStyle,
+    declutter: true,
+    zIndex: 305,
+  });
+
   // Valitun väyläkortin navigointilinjat ja väyläalueet
   addFeatureVectorLayer({
     map: map,
     id: 'selectedfairwaycard',
-    maxResolution: undefined,
     renderBuffer: 100,
     style: getSelectedFairwayCardStyle,
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 303,
   });
@@ -512,9 +291,6 @@ export function addAPILayers(map: Map) {
     maxResolution: 30,
     renderBuffer: 2,
     style: getCircleStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 303,
   });
   // Haraussyvyydet
@@ -524,21 +300,15 @@ export function addAPILayers(map: Map) {
     maxResolution: 10,
     renderBuffer: 50,
     style: getDepthStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 304,
+    declutter: true,
   });
   // Laiturit
   addFeatureVectorLayer({
     map: map,
     id: 'quay',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: getSelectedStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 304,
   });
   // Satamat
@@ -548,8 +318,6 @@ export function addAPILayers(map: Map) {
     maxResolution: 300,
     renderBuffer: 50,
     style: getHarborStyle,
-    minResolution: undefined,
-    opacity: 1,
     declutter: true,
     zIndex: 305,
   });
@@ -558,12 +326,8 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'safetyequipment',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 306,
   });
 
@@ -571,12 +335,8 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'vtsline',
-    maxResolution: undefined,
     renderBuffer: 2,
     style: (feature) => getVtsStyle(feature, false),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 311,
   });
   addFeatureVectorLayer({
@@ -585,57 +345,38 @@ export function addAPILayers(map: Map) {
     maxResolution: 75,
     renderBuffer: 50,
     style: (feature) => getVtsStyle(feature, false),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 312,
   });
   // Luotsipaikat
   addFeatureVectorLayer({
     map: map,
     id: 'pilot',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: (feature) => getPilotStyle(feature.get('hoverStyle')),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 313,
   });
   //Luotsausreitit
   addFeatureVectorLayer({
     map: map,
     id: 'pilotroute',
-    maxResolution: undefined,
     renderBuffer: 50,
     style: getPilotRouteStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
-    zIndex: 314,
+    zIndex: 303,
   });
   // Luotsinkäyttölinjat
   addFeatureVectorLayer({
     map: map,
     id: 'pilotagelimit',
-    maxResolution: undefined,
     renderBuffer: 15,
     style: getPilotageLimitStyle,
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 304,
   });
   // Luotsauskäyttöalueen ulkorajat
   addFeatureVectorLayer({
     map: map,
     id: 'pilotageareaborder',
-    maxResolution: undefined,
     renderBuffer: 2,
     style: getLineStyle('#FE7C00', 4),
-    minResolution: undefined,
-    opacity: 1,
-    declutter: false,
     zIndex: 104,
   });
 }
@@ -848,13 +589,12 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
             feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
           }
         }
-        if (!feature) {
-          feature = specialArea15Source.getFeatureById(area.id) as Feature<Geometry>;
-          if (feature) {
-            specialArea15Source.removeFeature(feature);
-            fairwayFeatures.push(feature);
-            feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-          }
+      }
+      for (const prohibitionArea of fairway.prohibitionAreas ?? []) {
+        const feature = specialArea15Source.getFeatureById(prohibitionArea.id) as Feature<Geometry>;
+        if (feature) {
+          specialArea15Source.removeFeature(feature);
+          fairwayFeatures.push(feature);
         }
       }
       for (const line of fairway.boardLines ?? []) {

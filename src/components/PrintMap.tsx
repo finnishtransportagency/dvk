@@ -3,9 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { Orientation, Picture, PicturePartsFragment, Text } from '../graphql/generated';
 import { Lang, imageUrl } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
-import { debounce } from 'lodash';
-import { refreshPrintableMap } from '../utils/common';
-import dvkMap from './DvkMap';
 import { IonText } from '@ionic/react';
 
 type FairwayCardProps = {
@@ -21,22 +18,6 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
   const lang = i18n.resolvedLanguage as Lang;
 
   const picturesByLang = pictures?.filter((pic) => pic.lang === lang || !pic.lang || (lang !== 'fi' && !pic.groupId));
-
-  const debouncedPrintImageRefresh = debounce(() => {
-    refreshPrintableMap();
-  }, 500);
-
-  useEffect(() => {
-    dvkMap.olMap?.on('moveend', debouncedPrintImageRefresh);
-    dvkMap.olMap?.on('loadend', debouncedPrintImageRefresh);
-    dvkMap.olMap?.on('rendercomplete', debouncedPrintImageRefresh);
-
-    return () => {
-      dvkMap.olMap?.un('moveend', debouncedPrintImageRefresh);
-      dvkMap.olMap?.un('loadend', debouncedPrintImageRefresh);
-      dvkMap.olMap?.un('rendercomplete', debouncedPrintImageRefresh);
-    };
-  }, [debouncedPrintImageRefresh]);
 
   const getPictureTitle = (picture: Picture) => {
     if (picture.text) {
@@ -78,7 +59,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
             </div>
             <div className="cardInfo">
               <IonText>
-                <h3 id="exportFairwayName">{name ? name[lang] ?? name.fi : t('documentTitle')}</h3>
+                <h3 id="exportFairwayName">{name ? (name[lang] ?? name.fi) : t('documentTitle')}</h3>
               </IonText>
               {modified && (
                 <em>

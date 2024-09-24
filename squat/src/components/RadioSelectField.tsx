@@ -88,7 +88,7 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
                     <IonRow>
                       <IonCol>
                         <IonText className="ion-text-wrap radio">
-                          {option.img && <IonImg className={option.opaque ? 'opaque' : ''} src={option.img} alt={removeSoftHyphen(optionName)} />}
+                          {option.img && <IonImg aria-hidden className={option.opaque ? 'opaque' : ''} src={option.img} />}
                           <p>{optionName}</p>
                         </IonText>
                       </IonCol>

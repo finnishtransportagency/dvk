@@ -304,6 +304,7 @@ export class SquatSite extends Construct {
         accessControlAllowMethods: ['ALL'],
         accessControlAllowOrigins: ['*'],
         accessControlAllowHeaders: ['*'],
+        accessControlExposeHeaders: ['fetchedDate'],
         originOverride: false,
         accessControlMaxAge: Duration.seconds(3600),
       },
@@ -374,26 +375,42 @@ export class SquatSite extends Construct {
     const proxyBehavior = this.useProxy()
       ? this.createProxyBehavior(config.getStringParameter('DMZProxyEndpoint'), authFunction, true, false, strictTransportSecurityResponsePolicy)
       : undefined;
-    const apiProxyBehavior = proxyBehavior ? proxyBehavior : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
+    const apiProxyBehavior = proxyBehavior || this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false);
     // add type and vaylaluokka as cache keys
-    // set default ttl to same as current s3 cache, feature handler does not return cache-control header as of yet
+    // set default ttl to same as current s3 cache, feature handler returns cache-control headers for mareographs, observations and buoys
     const featureLoaderQueryStringCachePolicy = this.createApiCachePolicy('DvkFeatureCachePolicy-' + props.env, ['type', 'vaylaluokka'], {
       defaultTtl: Duration.seconds(FEATURE_CACHE_DURATION),
       minTtl: Duration.seconds(0),
       maxTtl: Duration.seconds(FEATURE_CACHE_DURATION),
     });
-    const featureLoaderProxyBehavior = proxyBehavior
-      ? proxyBehavior
+    const featureLoaderProxyBehavior = this.useProxy()
+      ? this.createProxyBehavior(
+          config.getStringParameter('DMZProxyEndpoint'),
+          authFunction,
+          true,
+          false,
+          strictTransportSecurityResponsePolicy,
+          undefined,
+          featureLoaderQueryStringCachePolicy
+        )
       : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false, false, undefined, undefined, featureLoaderQueryStringCachePolicy);
     const aisCachePolicy = this.createApiCachePolicy('DvkAisCachePolicy-' + props.env);
-    const aisProxyBehavior = proxyBehavior
-      ? proxyBehavior
+    const aisProxyBehavior = this.useProxy()
+      ? this.createProxyBehavior(
+          config.getStringParameter('DMZProxyEndpoint'),
+          authFunction,
+          true,
+          false,
+          strictTransportSecurityResponsePolicy,
+          undefined,
+          aisCachePolicy
+        )
       : this.createProxyBehavior(importedLoadBalancerDnsName, authFunction, false, false, undefined, undefined, aisCachePolicy);
-    const graphqlProxyBehavior = proxyBehavior
-      ? proxyBehavior
-      : this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, true, corsResponsePolicy, {
-          'x-api-key': importedAppSyncAPIKey,
-        });
+    const graphqlProxyBehavior =
+      proxyBehavior ||
+      this.createProxyBehavior(cdk.Fn.parseDomainName(importedAppSyncAPIURL), authFunction, true, true, corsResponsePolicy, {
+        'x-api-key': importedAppSyncAPIKey,
+      });
 
     // separate behaviors for featureloader and ais api paths so they can have different cache policies
     const additionalBehaviors: Record<string, BehaviorOptions> = {
@@ -416,6 +433,18 @@ export class SquatSite extends Construct {
       '/oauth2/*': apiProxyBehavior,
       '/sso/*': apiProxyBehavior,
     };
+    // github webhook for cicd pipelines only in 'dev'
+    if (Config.getEnvironment() === 'dev') {
+      // has to be routed through 'vaylapilvi' proxies to a dedicated internal alb
+      // no basic authentication
+      additionalBehaviors['/webhook*'] = this.createProxyBehavior(
+        config.getStringParameter('DMZProxyEndpoint'),
+        undefined,
+        true,
+        false,
+        strictTransportSecurityResponsePolicy
+      );
+    }
 
     // CloudFront webacl reader and id
     const customSSMParameterReader = new SSMParameterReader(this, 'DVKWebAclReader' + Config.getEnvironment(), {

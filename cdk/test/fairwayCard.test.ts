@@ -2,18 +2,17 @@ import { mockClient } from 'aws-sdk-client-mock';
 import { DynamoDBDocumentClient, GetCommand } from '@aws-sdk/lib-dynamodb';
 import { handler } from '../lib/lambda/graphql/query/fairwayCard-handler';
 import { Status } from '../graphql/generated';
-import { mockContext, mockQueryByIdEvent } from './mocks';
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { sdkStreamMixin } from '@smithy/util-stream';
-import { createReadStream } from 'fs';
+import { mockContext, mockQueryByIdAndStatusPublicEvent, mockQueryByIdAndVersionEvent, mockQueryByIdEvent } from './mocks';
 import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
+import { RtzData } from '../lib/lambda/api/apiModels';
+import { ADMIN_ROLE, getOptionalCurrentUser } from '../lib/lambda/api/login';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
-const s3Mock = mockClient(S3Client);
 
-const card: FairwayCardDBModel = {
+const card1: FairwayCardDBModel = {
   id: 'test',
+  version: 'v0_public',
   name: {
     fi: 'Testfi',
     sv: 'Testsv',
@@ -24,7 +23,7 @@ const card: FairwayCardDBModel = {
   modifier: 'test2',
   modificationTimestamp: Date.now(),
   status: Status.Public,
-  fairways: [{ id: 1, primary: true, secondary: false }],
+  fairways: [{ id: 1, primary: true, primarySequenceNumber: 1, secondary: false, secondarySequenceNumber: 1 }],
   trafficService: {
     pilot: {
       places: [
@@ -34,30 +33,61 @@ const card: FairwayCardDBModel = {
       ],
     },
   },
+  pilotRoutes: [{ id: 1 }],
 };
+
 const card2: FairwayCardDBModel = {
   id: 'test',
+  version: 'v2',
   name: {
-    fi: 'Testfi2',
-    sv: 'Testsv2',
-    en: 'Testen2',
+    fi: 'Testfi',
+    sv: 'Testsv',
+    en: 'Testen',
   },
-  creator: 'test2',
+  creator: 'test',
   creationTimestamp: Date.now(),
-  modifier: 'test',
+  modifier: 'test2',
   modificationTimestamp: Date.now(),
   status: Status.Draft,
-  fairways: [{ id: 1, primary: true, secondary: false }],
+  fairways: [{ id: 1, primary: true, primarySequenceNumber: 1, secondary: false, secondarySequenceNumber: 1 }],
   trafficService: {
     pilot: {
       places: [
         {
-          id: 3458100305,
+          id: 681017200,
         },
       ],
     },
   },
+  pilotRoutes: [{ id: 2 }],
 };
+
+const card3: FairwayCardDBModel = {
+  id: 'test',
+  version: 'v0_latest',
+  name: {
+    fi: 'Testfi',
+    sv: 'Testsv',
+    en: 'Testen',
+  },
+  creator: 'test',
+  creationTimestamp: Date.now(),
+  modifier: 'test2',
+  modificationTimestamp: Date.now(),
+  status: Status.Draft,
+  fairways: [{ id: 1, primary: true, primarySequenceNumber: 1, secondary: false, secondarySequenceNumber: 1 }],
+  trafficService: {
+    pilot: {
+      places: [
+        {
+          id: 681017200,
+        },
+      ],
+    },
+  },
+  pilotRoutes: [{ id: 2 }],
+};
+
 const points = {
   features: [
     {
@@ -94,6 +124,91 @@ const points = {
   ],
 };
 
+const routes: RtzData[] = [
+  {
+    tunnus: 1,
+    tila: 1,
+    nimi: 'Reitti 1',
+    tunniste: 'a',
+    rtz: 'xml',
+    reittipisteet: [
+      {
+        tunnus: 10,
+        nimi: 'A',
+        rtzTunniste: 10,
+        reittitunnus: 10,
+        kaarresade: 0.1,
+        geometria: {
+          type: 'Point',
+          coordinates: [26.9, 60.4],
+        },
+        leveysVasen: 0.01,
+        leveysOikea: 0.01,
+        geometriaTyyppi: 'Loxodrome',
+        muutosaikaleima: '2024-01-01T01:01:01.000000+02:00',
+        jarjestys: 1,
+      },
+    ],
+  },
+  {
+    tunnus: 2,
+    tila: 1,
+    nimi: 'Reitti 2',
+    tunniste: 'b',
+    rtz: 'xml',
+    reittipisteet: [
+      {
+        tunnus: 20,
+        nimi: 'B',
+        rtzTunniste: 20,
+        reittitunnus: 20,
+        kaarresade: 0.2,
+        geometria: {
+          type: 'Point',
+          coordinates: [26.9, 60.4],
+        },
+        leveysVasen: 0.02,
+        leveysOikea: 0.02,
+        geometriaTyyppi: 'Loxodrome',
+        muutosaikaleima: '2024-02-02T02:02:02.000000+02:00',
+        jarjestys: 1,
+      },
+      {
+        tunnus: 21,
+        nimi: 'BB',
+        rtzTunniste: 21,
+        reittitunnus: 21,
+        kaarresade: 0.2,
+        geometria: {
+          type: 'Point',
+          coordinates: [26.91, 60.41],
+        },
+        leveysVasen: 0.02,
+        leveysOikea: 0.02,
+        geometriaTyyppi: 'Loxodrome',
+        muutosaikaleima: '2024-02-02T02:02:02.000000+02:00',
+        jarjestys: 2,
+      },
+    ],
+  },
+];
+
+const adminUser = {
+  uid: 'K123456',
+  firstName: 'Developer',
+  lastName: 'X',
+  roles: [ADMIN_ROLE],
+};
+
+const otherUser = {
+  uid: 'K654321',
+  firstName: 'User',
+  lastName: 'X',
+  roles: ['DVK_Kayttaja'],
+};
+
+jest.mock('../lib/lambda/api/login');
+
 jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
@@ -102,69 +217,133 @@ jest.mock('../lib/lambda/environment', () => ({
 
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchTraficomApi: () => points,
+  fetchPilotRoutesApi: () => routes,
+}));
+
+jest.mock('../lib/lambda/graphql/cache', () => ({
+  getFromCache: () => {
+    return { expired: true };
+  },
+  cacheResponse: () => Promise.resolve(),
 }));
 
 beforeEach(() => {
   jest.resetAllMocks();
   ddbMock.reset();
-  s3Mock.reset();
   pilotPlaceMap.clear();
+  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => adminUser);
 });
 
-it('should get card by id from the DynamoDB', async () => {
+it('should get public card by id from the DynamoDB', async () => {
   ddbMock
     .on(GetCommand, {
-      Key: { id: 'test' },
+      Key: { id: 'test', version: 'v0_public' },
     })
     .resolves({
-      Item: card,
+      Item: card1,
     });
-  const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
-  const expires = new Date();
-  expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand, {
-    Key: 'test',
-  }).resolves({ Body: stream, ExpiresString: expires.toString() });
-
-  const stream2 = sdkStreamMixin(createReadStream('./test/data/pilotroutes.json'));
-  const expires2 = new Date();
-  expires2.setTime(expires2.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand, {
-    Key: 'test',
-  }).resolves({ Body: stream2, ExpiresString: expires2.toString() });
-
-  const response = await handler(mockQueryByIdEvent, mockContext, () => {});
+  const response = await handler(mockQueryByIdAndStatusPublicEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
   });
-});
+}, 60000);
 
-it('should get card by id from the DynamoDB when cache expired', async () => {
+it('should get card by id and version by id from the DynamoDB', async () => {
   ddbMock
     .on(GetCommand, {
-      Key: { id: 'test' },
+      Key: { id: 'test', version: 'v2' },
     })
     .resolves({
       Item: card2,
     });
-  const stream = sdkStreamMixin(createReadStream('./test/data/pilotplaces.json'));
-  const expires = new Date();
-  expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand, {
-    Key: 'test',
-  }).resolves({ Body: stream, ExpiresString: expires.toString() });
+  const response = await handler(mockQueryByIdAndVersionEvent, mockContext, () => {});
+  expect(response).toMatchSnapshot({
+    modificationTimestamp: expect.any(Number),
+    creationTimestamp: expect.any(Number),
+  });
+}, 60000);
 
-  const stream2 = sdkStreamMixin(createReadStream('./test/data/pilotroutes.json'));
-  const expires2 = new Date();
-  expires2.setTime(expires2.getTime() + 1 * 60 * 60 * 1000);
-  s3Mock.on(GetObjectCommand, {
-    Key: 'test',
-  }).resolves({ Body: stream2, ExpiresString: expires2.toString() });
+it('should get latest card by id from the DynamoDB', async () => {
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v0_latest' },
+    })
+    .resolves({
+      Item: card3,
+    });
+  const response = await handler(mockQueryByIdEvent, mockContext, () => {});
+  expect(response).toMatchSnapshot({
+    modificationTimestamp: expect.any(Number),
+    creationTimestamp: expect.any(Number),
+  });
+}, 60000);
 
+it('should get latest card by id from the DynamoDB when cache expired', async () => {
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v0_latest' },
+    })
+    .resolves({
+      Item: card3,
+    });
   const response = await handler(mockQueryByIdEvent, mockContext, () => {});
   expect(response).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
   });
 });
+
+it('should get undefined when version not present', async () => {
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v2' },
+    })
+    .resolves({
+      Item: undefined,
+    });
+  const response = await handler(mockQueryByIdAndVersionEvent, mockContext, () => {});
+  expect(response).toBe(undefined);
+}, 60000);
+
+it('should get public card when admin role missing', async () => {
+  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => otherUser);
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v0_public' },
+    })
+    .resolves({
+      Item: card1,
+    });
+  const response = await handler(mockQueryByIdAndStatusPublicEvent, mockContext, () => {});
+  expect(response).toMatchSnapshot({
+    modificationTimestamp: expect.any(Number),
+    creationTimestamp: expect.any(Number),
+  });
+}, 60000);
+
+it('should get undefined from version when admin role missing', async () => {
+  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => otherUser);
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v2' },
+    })
+    .resolves({
+      Item: card2,
+    });
+  const response = await handler(mockQueryByIdAndVersionEvent, mockContext, () => {});
+  expect(response).toBe(undefined);
+}, 60000);
+
+it('should get undefined from latest when admin role missing', async () => {
+  (getOptionalCurrentUser as jest.Mock).mockImplementation(() => otherUser);
+  ddbMock
+    .on(GetCommand, {
+      Key: { id: 'test', version: 'v0_latest' },
+    })
+    .resolves({
+      Item: card3,
+    });
+  const response = await handler(mockQueryByIdEvent, mockContext, () => {});
+  expect(response).toBe(undefined);
+}, 60000);

@@ -1,6 +1,10 @@
 import { Point } from 'ol/geom';
 import { Text } from '../graphql/generated';
-import { EquipmentFault } from './FeatureLoader';
+
+export type Card = {
+  id: string;
+  name: Text;
+};
 
 export type HarborFeatureProperties = {
   featureType: string;
@@ -28,14 +32,8 @@ export type QuayFeatureProperties = {
   internet?: string;
 };
 
-export type Card = {
-  id: string;
-  name: Text;
-};
-
 export type PilotFeatureProperties = {
   name: Text;
-  fairwayCards: Card[];
 };
 
 export type PilotRouteFeatureProperties = {
@@ -44,6 +42,7 @@ export type PilotRouteFeatureProperties = {
   name: string;
   status: number;
   rtz: string;
+  fairwayCards: Card[];
 };
 
 export type PilotageLimitFeatureProperties = {
@@ -77,13 +76,18 @@ export type AreaFairway = {
   name: Text;
   sizingSpeed?: number;
   sizingSpeed2?: number;
-  fairwayCards?: Card[];
+};
+
+export type ProhibitionAreaFeatureProperties = {
+  typeCode: number;
+  type?: string;
+  extraInfo?: Text;
+  fairway: AreaFairway;
 };
 
 export type LineFairway = {
   fairwayId: number;
   name: Text;
-  fairwayCards?: Card[];
 };
 
 export type LineFeatureProperties = {
@@ -103,10 +107,16 @@ export type LineFeatureProperties = {
   fairways?: LineFairway[];
 };
 
-type EquipmentFairway = {
+export type EquipmentFairway = {
   fairwayId: number;
   primary: boolean;
-  fairwayCards?: Card[];
+};
+
+export type EquipmentFault = {
+  faultId: number;
+  faultType: Text;
+  faultTypeCode: number;
+  recordTime: number;
 };
 
 type EquipmentDistance = {
@@ -121,7 +131,7 @@ export type EquipmentFeatureProperties = {
   navigationCode?: string;
   name?: Text;
   symbol?: string;
-  typeCode?: string;
+  typeCode?: number;
   typeName?: Text;
   lightning: boolean;
   aisType?: number;
@@ -129,6 +139,7 @@ export type EquipmentFeatureProperties = {
   fairways?: EquipmentFairway[];
   faults?: EquipmentFault[];
   distances?: EquipmentDistance[];
+  fairwayCards?: Card[];
 };
 
 export type MarineWarningFeatureProperties = {
@@ -219,4 +230,34 @@ export type AisFeaturePathPredictorProperties = {
   cog: number;
   vesselLength?: number;
   vesselWidth?: number;
+};
+
+type DirwayPoint = {
+  orderNumber: number;
+  coordinates: number[];
+};
+
+export type DirwayFeatureProperties = {
+  featureType: 'dirway';
+  id: string;
+  name: string;
+  description: string;
+  updated: string;
+  points: DirwayPoint[];
+};
+
+type Restriction = {
+  id: string;
+  description: string;
+  startTime: string;
+  endTime: string | undefined;
+  updated: string;
+};
+
+export type RestrictionPortFeatureProperties = {
+  featureType: 'restrictionport';
+  id: string;
+  name: string;
+  updated: string;
+  restrictions: Restriction[];
 };

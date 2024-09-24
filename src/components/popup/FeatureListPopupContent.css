@@ -82,7 +82,8 @@
 .featureList ion-item .specialarea2,
 .featureList ion-item .specialarea15,
 .featureList ion-item .pilotagelimit,
-.featureList ion-item .pilotroute {
+.featureList ion-item .pilotroute,
+.featureList ion-item .dirway {
   width: 18px;
   height: 18px;
   margin: 0 2px;
@@ -98,10 +99,13 @@
   background-image: url('../../theme/img/kohtaamiskielto_ikoni.svg');
 }
 .featureList ion-item .pilotagelimit {
-  background: url('../../theme/img/pilotageLimit.svg') no-repeat center;
+  background-image: url('../../theme/img/pilotageLimit.svg');
 }
 .featureList ion-item .pilotroute {
-  background: url('../../theme/img/pilotRoute.svg') no-repeat center;
+  background-image: url('../../theme/img/pilotRoute.svg');
+}
+.featureList ion-item .dirway {
+  background-image: url('../../theme/img/dirway_icon.svg');
 }
 
 .featureList ion-item .line,
@@ -205,11 +209,18 @@
 }
 
 .featureList ion-item .harbor,
-.featureList ion-item .quay {
+.featureList ion-item .quay,
+.featureList ion-item .restrictionport {
   width: 18px;
   height: 23px;
   margin: 0 2px;
+}
+.featureList ion-item .harbor,
+.featureList ion-item .quay {
   background: url('../../theme/img/dock_icon.svg') no-repeat center / cover;
+}
+.featureList ion-item .restrictionport {
+  background: url('../../theme/img/restriction_port.svg') no-repeat center / cover;
 }
 .featureList ion-item .section {
   width: 15px;

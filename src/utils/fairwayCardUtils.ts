@@ -1,10 +1,17 @@
 import { TFunction } from 'i18next';
-import { Fairway, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, SafetyEquipmentFault } from '../graphql/generated';
+import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, ProhibitionFairway } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
-import { MAP } from './constants';
-import { Geometry, LineString, SimpleGeometry } from 'ol/geom';
+import { Geometry, Point, Polygon } from 'ol/geom';
 import { Feature } from 'ol';
-import { PilotageLimit } from '../components/content/fairwayCard/PilotInfo';
+import {
+  AreaFairway,
+  EquipmentFairway,
+  EquipmentFeatureProperties,
+  LineFairway,
+  PilotRouteFeatureProperties,
+  PilotageLimitFeatureProperties,
+} from '../components/features';
+import * as olExtent from 'ol/extent';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -34,107 +41,135 @@ export function getTabLabel(t: TFunction, tabId: number): string {
   }
 }
 
-export function getSafetyEquipmentFaultsByFairwayCardId(id: string): SafetyEquipmentFault[] {
-  const faultSource = dvkMap.getVectorSource('safetyequipmentfault');
-  const equipmentFaults: SafetyEquipmentFault[] = [];
+export function getFairwayCardSafetyEquipmentFaults(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  return features.filter((f) => {
+    const fairwayCards = (f.getProperties() as EquipmentFeatureProperties).fairwayCards ?? [];
+    return fairwayCards.some((card) => card.id === fairwayCard.id);
+  });
+}
 
-  faultSource.getFeatures().forEach((f) => {
-    const props = f.getProperties();
-    const fairways = props.fairways;
-    // check if fault is part of any fairwaycard, if true push fault to array
-    for (const fairway of fairways) {
-      const fairwayCards = fairway.fairwayCards;
-      if (fairwayCards) {
-        for (const fairwaycard of fairwayCards) {
-          if (fairwaycard.id === id) {
-            const faults = props.faults;
-            // create new safetyequipmentfault objects
-            for (const fault of faults) {
-              const convertedGeometry = f.getGeometry()?.clone().transform(MAP.EPSG, 'EPSG:4326') as SimpleGeometry;
-              const faultObject: SafetyEquipmentFault = {
-                equipmentId: Number(f.getId()),
-                geometry: { type: 'Point', coordinates: convertedGeometry.getFlatCoordinates() },
-                id: fault.faultId,
-                name: props.name,
-                recordTime: fault.recordTime,
-                type: fault.faultType,
-                typeCode: fault.faultTypeCode,
-              };
-              equipmentFaults.push(faultObject);
-            }
+export function getFairwayCardPilotPlaces(fairwayCard: FairwayCardPartsFragment) {
+  const pilotPlaceSource = dvkMap.getVectorSource('pilot');
+  const pilotPlaces: Feature<Geometry>[] = [];
+  const placeIds: number[] = fairwayCard.trafficService?.pilot?.places?.map((place) => place.id) ?? [];
+  placeIds.forEach((id) => {
+    const feature = pilotPlaceSource.getFeatureById(id) as Feature<Geometry>;
+    if (feature) pilotPlaces.push(feature);
+  });
+  return pilotPlaces;
+}
+
+export function getFairwayCardPilotageLimits(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  const fairwayIds = fairwayCard.fairways?.map((fairway) => String(fairway.id)) ?? [];
+
+  return features.filter((pilotageLimit) => {
+    const limitProperties = pilotageLimit.getProperties() as PilotageLimitFeatureProperties;
+    // related fairways are in one string where commas separate different ids
+    const relatedIds = limitProperties.liittyyVayliin.split(',');
+    return relatedIds.some((id) => fairwayIds.includes(id));
+  });
+}
+
+export function getFairwayCardPilotRoutes(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  const pilotRoutes = features.filter((f) => {
+    const properties = f.getProperties() as PilotRouteFeatureProperties;
+    return fairwayCard.pilotRoutes?.find((pr) => properties?.id === pr?.id) ?? false;
+  });
+  return pilotRoutes?.toSorted((a, b) => a?.getProperties()?.name.localeCompare(b?.getProperties()?.name, 'fi', { ignorePunctuation: true })) ?? [];
+}
+
+function getFairwayCardFairwayAreas(fairwayCard: FairwayCardPartsFragment) {
+  const area12Source = dvkMap.getVectorSource('area12');
+  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
+  const fairwayAreas: Feature<Geometry>[] = [];
+  for (const fairway of fairwayCard?.fairways || []) {
+    for (const area of fairway.areas ?? []) {
+      if (fairwayAreas.findIndex((f) => f.getId() === area.id) === -1) {
+        const feature = area12Source.getFeatureById(area.id) as Feature<Geometry>;
+        if (feature) {
+          fairwayAreas.push(feature);
+        } else if (!feature) {
+          const selectedFairwayCardFeature = selectedFairwayCardSource.getFeatureById(area.id) as Feature<Geometry>;
+          if (selectedFairwayCardFeature && selectedFairwayCardFeature.get('featureType') === 'area') {
+            fairwayAreas.push(selectedFairwayCardFeature);
           }
         }
       }
     }
-  });
-  return equipmentFaults;
-}
-
-export const handleSafetyEquipmentLayerChange = () => {
-  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
-
-  if (selectedFairwayCardSource.getFeatures().length > 0) {
-    for (const f of selectedFairwayCardSource.getFeatures()) {
-      if (f.getProperties().featureType == 'safetyequipment') {
-        const feature = safetyEquipmentFaultSource.getFeatureById(f.getProperties().id) as Feature<Geometry>;
-        safetyEquipmentFaultSource.removeFeature(feature);
-      }
-    }
-    safetyEquipmentFaultSource.dispatchEvent('change');
   }
-};
-
-// returns features since actual pilot objects are not needed anywhere else (yet?)
-export function getPilotPlacesByFairwayCardId(id: string) {
-  const pilotPlaceSource = dvkMap.getVectorSource('pilot');
-  const pilotPlaces: Feature<Geometry>[] = [];
-
-  pilotPlaceSource.getFeatures().forEach((f) => {
-    const props = f.getProperties();
-    const fairwayCards = props.fairwayCards;
-    for (const fairwayCard of fairwayCards) {
-      if (fairwayCard.name.fi === id) {
-        pilotPlaces.push(f);
-      }
-    }
-  });
-
-  return pilotPlaces;
+  return fairwayAreas;
 }
 
-export function getPilotageLimitsByFairways(fairways: Fairway[] | undefined, getOnlyNumber?: boolean) {
-  const source = dvkMap.getVectorSource('pilotagelimit');
-  const pilotageLimitFeatures = source.getFeatures();
-  const pilotageLimits: PilotageLimit[] = [];
+export function getFairwayCardObservations(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  const fairwayAreas: Feature<Geometry>[] = getFairwayCardFairwayAreas(fairwayCard);
+  const maxDist = 21000; // 21km
 
-  fairways?.forEach((fairway) => {
-    pilotageLimitFeatures.forEach((pilotageLimit) => {
-      const limitProperties = pilotageLimit.getProperties();
-      const limitGeometry = pilotageLimit.getGeometry() as Geometry;
-      // related fairways are in one string where commas separate different ids
-      const relatedIds = limitProperties.liittyyVayliin.split(',');
-      if (relatedIds.includes(String(fairway.id))) {
-        let pilotageLimitObject;
-        // added to avoid unnecessary heavy transforming function when only numero is needed
-        if (getOnlyNumber) {
-          pilotageLimitObject = {
-            numero: limitProperties.numero,
-          };
-        } else {
-          pilotageLimitObject = {
-            fid: limitProperties.fid,
-            numero: limitProperties.numero,
-            liittyyVayliin: limitProperties.liittyyVayliin,
-            raja_fi: limitProperties.raja_fi,
-            raja_sv: limitProperties.raja_sv,
-            raja_en: limitProperties.raja_en,
-            koordinaatit: limitGeometry.clone().transform(MAP.EPSG, 'EPSG:4326') as LineString,
-          };
-        }
-        pilotageLimits.push(pilotageLimitObject);
-      }
+  const extent = olExtent.createEmpty();
+  for (const fa of fairwayAreas) {
+    const geom = fa.getGeometry();
+    if (geom) {
+      olExtent.extend(extent, geom.getExtent());
+    }
+  }
+  if (!olExtent.isEmpty(extent)) {
+    olExtent.buffer(extent, maxDist, extent);
+    const featuresInExtent = features.filter((f) => {
+      const point = f.getGeometry() as Point;
+      return olExtent.containsCoordinate(extent, point.getCoordinates());
     });
+
+    const closestFeatures: Array<{ feat: Feature<Geometry>; dist: number }> = [];
+
+    for (const f of featuresInExtent) {
+      const point = f.getGeometry() as Point;
+      const coord = point.getCoordinates();
+      let dist = maxDist;
+      for (const fa of fairwayAreas) {
+        const area = fa.getGeometry() as Polygon;
+        const closestCoord = area.getClosestPoint(coord);
+        const pointDistance = Math.sqrt(Math.pow(coord[0] - closestCoord[0], 2) + Math.pow(coord[1] - closestCoord[1], 2));
+        dist = Math.min(pointDistance, dist);
+      }
+      if (dist <= maxDist) {
+        closestFeatures.push({ feat: f, dist: dist });
+      }
+    }
+    closestFeatures.sort((a, b) => a.dist - b.dist);
+    return closestFeatures.map((cf) => cf.feat);
+  }
+  return [];
+}
+
+export function getFairwayCardMareographs(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  const mareographs = features.filter((f) => {
+    return fairwayCard?.mareographs?.find((mareograph) => f.getId() === mareograph?.id) ?? false;
   });
-  return pilotageLimits;
+  return mareographs;
+}
+
+export function getPilotPlaceFairwayCards(pilotPlaceId: number, fairwayCards: FairwayCardPartsFragment[]) {
+  return fairwayCards.filter((card) => {
+    return card.trafficService?.pilot?.places?.some((place) => place.id === pilotPlaceId) ?? false;
+  });
+}
+
+export function getPilotageLimitFairwayCards(pilotageLimitProperties: PilotageLimitFeatureProperties, fairwayCards: FairwayCardPartsFragment[]) {
+  const fairwayIds = pilotageLimitProperties.liittyyVayliin.split(',');
+  return fairwayCards.filter((fc) => {
+    const fcIds = fc.fairways.map((f) => f.id);
+    for (const element of fcIds) {
+      if (fairwayIds.includes('' + element)) {
+        return true;
+      }
+    }
+    return false;
+  });
+}
+
+export function getFairwayListFairwayCards(
+  fairways: AreaFairway[] | LineFairway[] | EquipmentFairway[] | ProhibitionFairway[],
+  fairwayCards: FairwayCardPartsFragment[]
+) {
+  const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
+  return fairwayCards.filter((card) => card.fairways.some((fairway) => fairwayIds.includes(fairway.id)));
 }

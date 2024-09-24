@@ -32,6 +32,8 @@
         "layer": {
           "tipLabel": "Välj lager",
           "header": "Kartlager",
+          "saveSelection": "[sv] Muista valintani",
+          "selectAll": "[sv] Valitse kaikki tasot",
           "class1": "Handelssjöfart",
           "class2": "Annan vattentrafik",
           "lines": "Navigationslinjer",
@@ -51,7 +53,6 @@
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
           "weatherStation": "Kustväderstationerna",
-          "ice": "Iskarta",
           "buoys": "Vågbojar",
           "vts": "VTS",
           "vtsline": "VTS-områden",
@@ -78,6 +79,10 @@
           "aisVesselPleasureCraft": "Fritidsbåtar",
           "aisUnspecified": "Odefinierade fartyg",
           "aisShowPredictor": "Fartvektor",
+          "winterTraffic": "Vintersjöfart",
+          "dirway": "Isruttens waypointer",
+          "restrictionPort": "Assistansrestriktioner",
+          "ice": "Iskarta",
           "mapStyle": {
             "header": "Kartans stil",
             "landButtonLabel": "Fastland",
@@ -107,7 +112,7 @@
           "mousePositionLabel": "Kursorns koordinat:"
         },
         "searchbar": {
-          "placeholder": "Sök med farledsnamn",
+          "placeholder": "Sök med farledsnamn eller nummer",
           "title": "Farledssökning",
           "clearTitle": "Töm",
           "no-search-results": "Med sökning '{{query}}' ingen farled hittades"
@@ -229,6 +234,7 @@
     "areaType11": "Djupsäkrat tilläggsområde",
     "areaType14": "STS-operationsområde",
     "areaType15": "Området med mötes- och omkörningsförbud",
+    "extraInfo": "Tilläggsuppgift",
     "noDataSet": "Uppgifter finns inte.",
     "noRestrictions": "Inga begränsningar i kraft",
     "notForNavigation": "Ej för navigation",
@@ -259,15 +265,21 @@
     "pilotPlaceLocation": "Lotsplatsens läge",
     "pilotageLimit": "Lotspliktslinje",
     "pilotageLimitLocation": "Linjens läge",
-    "pilotageLimitMaxDimensions": "Gäller för fartyg med maximala mått",
-    "draught": "Djupgående",
-    "width": "Bredd"
+    "pilotageLimitLimit": "Gränsen för lotsplikt i farleden när något av följande överskrids",
+    "pilotageLimitDimensions": "Längd / bredd / djup (m)",
+    "inForce": "Gällande",
+    "mareograph": "Mareograf",
+    "mareographLocation": "Mareografens plats",
+    "observationLocation": "Observationsstations läge",
+    "fairwayNumber": "Farleds nummer",
+    "fairwayNumbers": "Farleds nummer"
   },
   "routes": {
     "info": "De presenterade lotsningsrutterna är inte som sådana lämpade som enligt lotslagen (561/2023) hänvisade individuella lotsningsplaner för ett enskilt fartyg. Lotsningsrutterna har utarbetats som vägledande allmänna presentationer och felfriheten i enskilda lotsleder kan inte garanteras. Användning av lotsningsrutt, som presenteras i det digitala farledskortet, för navigering av ett fartyg är alltid på befälhavarens ansvar.",
     "title": "Lotsningsrutter",
     "route": "Rutt",
-    "rtz": "[sv] Reitin rtz tiedosto"
+    "rtz": "Ruttfil i RTZ-format",
+    "linkedFairwayCards": "Farledskort angående lotsningsrutt"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
@@ -318,7 +330,8 @@
   },
   "popup": {
     "common": {
-      "noFairwayCards": "Inget farledskort"
+      "noFairwayCards": "Inget farledskort",
+      "outdatedData": "Informationen är mer än 12 timmar gammal"
     },
     "pilotPlace": {
       "header": "Lotsplats {{val}}",
@@ -328,11 +341,13 @@
     "pilotageLimit": {
       "header": "Lotspliktslinje {{val}}",
       "location": "Linjens läge",
-      "limit": "Gäller för fartyg med maximala mått längd / bredd / djupgående (m)",
+      "limit": "Gränsen för lotsplikt i farleden när något av följande överskrids",
+      "dimensions": "Längd / bredd / djup (m)",
       "fairways": "Farledskort angående lotspliktslinje"
     },
     "pilotRoute": {
-      "header": "RUTT: {{val}}"
+      "header": "RUTT: {{val}}",
+      "fairwayCards": "Lotsningsrutten är en del av farledskortet"
     },
     "quay": {
       "length": "Kajens längd",
@@ -347,7 +362,6 @@
     },
     "area": {
       "info": "Farledsområdets uppgifter",
-      "overtake": "Farledsområdet har ett kontinuerligt omkörningsförbud.",
       "depth": "Ramningsdjup {{val, number}}",
       "draft": "Dimensionerande djup {{val, number}}",
       "speedLimit": "Hastighetsbegränsning {{val}}",
@@ -464,11 +478,19 @@
       "aisvesselpleasurecraft": "Fritidsbåt",
       "aisunspecified": "Odefinierade fartyg"
     },
+    "dirway": {
+      "points": "Isruttens waypointer"
+    },
+    "restriction": {
+      "current": "Gällande assistansrestriktioner",
+      "upcoming": "Förhandsuppgifter om assistansrestriktioner"
+    },
     "featureList": {
       "multipleFeatures": "Flera valbara objekt",
       "featureType": {
         "area": "Farledsområde",
         "buoy": "Vågboj",
+        "dirway": "Isruttens waypointer",
         "calculated": "Beräknat vattenstånd",
         "harbor": "Hamn",
         "line": "Navigationslinje",
@@ -479,6 +501,7 @@
         "pilotagelimit": "Lotspliktslinje",
         "pilotroute": "Lotsningsrutt",
         "quay": "Kaj",
+        "restrictionport": "Assistansrestriktion",
         "safetyequipment": "Säkerhetsanordning",
         "safetyequipmentfault": "Säkerhetsanordningsfel",
         "section": "Kajplats",
@@ -497,7 +520,7 @@
     "general": "Allmänt",
     "openDescription": "Öppna",
     "closeDescription": "Stäng",
-    "search": "Sök med farledsnamn",
+    "search": "Sök med farledsnamn eller nummer",
     "searchTitle": "Farledssökning",
     "clearTitle": "Töm",
     "expandPane": "Utöka",

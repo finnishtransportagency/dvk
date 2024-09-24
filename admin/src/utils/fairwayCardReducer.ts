@@ -1,7 +1,7 @@
 import { t } from 'i18next';
-import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, Status } from '../graphql/generated';
+import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, SelectedFairwayInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
-import { sortPictures } from './common';
+import { dateError, endDateError, removeSequence, sortPictures } from './common';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -31,6 +31,18 @@ export const fairwayCardReducer = (
       validationErrors
         .filter((error) => error.id !== 'fairwayIds')
         .concat({ id: 'fairwayIds', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
+    );
+  } else if (actionType === 'fairwayPrimary' && validationErrors.find((error) => error.id === 'fairwayPrimary')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'fairwayPrimary')
+        .concat({ id: 'fairwayPrimary', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
+    );
+  } else if (actionType === 'fairwaySecondary' && validationErrors.find((error) => error.id === 'fairwaySecondary')?.msg) {
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'fairwaySecondary')
+        .concat({ id: 'fairwaySecondary', msg: (value as number[]).length < 1 ? t(ErrorMessageKeys?.required) || '' : '' })
     );
   } else if (actionType === 'group' && validationErrors.find((error) => error.id === 'group')?.msg) {
     setValidationErrors(
@@ -64,23 +76,47 @@ export const fairwayCardReducer = (
     case 'status':
       newState = { ...state, status: value as Status };
       break;
-    case 'fairwayIds':
+    case 'fairwayIds': {
       newState = {
         ...state,
-        fairwayIds: value as number[],
+        fairwayIds: (value as number[]).sort((a, b) => a - b),
       };
-      if (!(value as number[]).includes(state.primaryFairwayId || -1)) delete newState.primaryFairwayId;
-      if (!(value as number[]).includes(state.secondaryFairwayId || -1)) delete newState.secondaryFairwayId;
       if ((value as number[]).length === 1) {
-        newState.primaryFairwayId = (value as number[])[0];
-        newState.secondaryFairwayId = (value as number[])[0];
+        const onlyLinkedFairwayInArray = [{ id: (value as number[])[0], sequenceNumber: 1 }] as SelectedFairwayInput[];
+        newState.primaryFairwayId = onlyLinkedFairwayInArray;
+        newState.secondaryFairwayId = onlyLinkedFairwayInArray;
+      }
+      // this monster of a conditional clause is to update sequencing when one of the linked fairways are removed
+      if (state.fairwayIds.length > newState.fairwayIds.length) {
+        const removedId = state.fairwayIds.find((id) => !(value as number[]).includes(id));
+        const removedStartingFairway = state.primaryFairwayId?.find((fairway) => fairway.id === removedId) as SelectedFairwayInput;
+        const newPrimaryValues = state.primaryFairwayId?.filter((f) => f.id !== removedId) as SelectedFairwayInput[];
+
+        const removedEndingFairway = state.secondaryFairwayId?.find((fairway) => fairway.id === removedId) as SelectedFairwayInput;
+        const newSecondaryValues = state.secondaryFairwayId?.filter((f) => f.id !== removedId) as SelectedFairwayInput[];
+
+        if (removedStartingFairway) {
+          newState.primaryFairwayId = removeSequence(
+            removedStartingFairway,
+            newPrimaryValues,
+            removedStartingFairway?.sequenceNumber
+          ) as SelectedFairwayInput[];
+        }
+        if (removedEndingFairway) {
+          newState.secondaryFairwayId = removeSequence(
+            removedEndingFairway,
+            newSecondaryValues,
+            removedEndingFairway?.sequenceNumber
+          ) as SelectedFairwayInput[];
+        }
       }
       break;
+    }
     case 'fairwayPrimary':
-      newState = { ...state, primaryFairwayId: Number(value) };
+      newState = { ...state, primaryFairwayId: (value as SelectedFairwayInput[]).sort((a, b) => a.sequenceNumber - b.sequenceNumber) };
       break;
     case 'fairwaySecondary':
-      newState = { ...state, secondaryFairwayId: Number(value) };
+      newState = { ...state, secondaryFairwayId: (value as SelectedFairwayInput[]).sort((a, b) => a.sequenceNumber - b.sequenceNumber) };
       break;
     case 'harbours':
       newState = { ...state, harbors: value as string[] };
@@ -194,25 +230,8 @@ export const fairwayCardReducer = (
         },
       };
       break;
-    case 'windGauge':
-      if (!actionLang) return state;
-      newState = {
-        ...state,
-        windGauge: {
-          ...(state.windGauge ?? { fi: '', sv: '', en: '' }),
-          [actionLang as string]: value as string,
-        },
-      };
-      break;
-    case 'seaLevel':
-      if (!actionLang) return state;
-      newState = {
-        ...state,
-        seaLevel: {
-          ...(state.seaLevel ?? { fi: '', sv: '', en: '' }),
-          [actionLang as string]: value as string,
-        },
-      };
+    case 'mareographs':
+      newState = { ...state, mareographs: value as number[] };
       break;
     case 'pilotEmail':
       newState = {
@@ -583,6 +602,56 @@ export const fairwayCardReducer = (
         pictures: state.pictures?.map((pic) => (pic.groupId === actionTarget ? { ...pic, legendPosition: value as string } : pic)),
       };
       break;
+    case 'temporaryNotifications':
+      // Add and delete
+      if (value && !actionTarget) {
+        newState = {
+          ...state,
+          temporaryNotifications: state.temporaryNotifications?.concat({
+            content: { fi: '', sv: '', en: '' },
+            startDate: '',
+            endDate: '',
+          }),
+        };
+      } else {
+        newState = {
+          ...state,
+          temporaryNotifications: state.temporaryNotifications?.filter((_, idx) => idx !== actionTarget),
+        };
+      }
+      break;
+    case 'temporaryNotificationContent':
+      newState = {
+        ...state,
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget
+            ? {
+                ...notification,
+                content: {
+                  ...(notification?.content ?? { fi: '', sv: '', en: '' }),
+                  [actionLang as string]: value as string,
+                },
+              }
+            : notification
+        ),
+      };
+      break;
+    case 'temporaryNotificationStartDate':
+      newState = {
+        ...state,
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget ? { ...notification, startDate: value as string } : notification
+        ),
+      };
+      break;
+    case 'temporaryNotificationEndDate':
+      newState = {
+        ...state,
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget ? { ...notification, endDate: value as string } : notification
+        ),
+      };
+      break;
     default:
       console.warn(`Unknown action type, state not updated.`);
       return state;
@@ -693,28 +762,6 @@ export const fairwayCardReducer = (
             newState.visibility?.fi.trim() || newState.visibility?.sv.trim() || newState.visibility?.en.trim()
               ? t(ErrorMessageKeys?.required) || ''
               : '',
-        })
-    );
-  } else if (actionType === 'windGauge' && validationErrors.find((error) => error.id === 'windGauge')?.msg) {
-    setValidationErrors(
-      validationErrors
-        .filter((error) => error.id !== 'windGauge')
-        .concat({
-          id: 'windGauge',
-          msg:
-            newState.windGauge?.fi.trim() || newState.windGauge?.sv.trim() || newState.windGauge?.en.trim()
-              ? t(ErrorMessageKeys?.required) || ''
-              : '',
-        })
-    );
-  } else if (actionType === 'seaLevel' && validationErrors.find((error) => error.id === 'seaLevel')?.msg) {
-    setValidationErrors(
-      validationErrors
-        .filter((error) => error.id !== 'seaLevel')
-        .concat({
-          id: 'seaLevel',
-          msg:
-            newState.seaLevel?.fi.trim() || newState.seaLevel?.sv.trim() || newState.seaLevel?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
         })
     );
   } else if (actionType === 'pilotExtraInfo' && validationErrors.find((error) => error.id === 'pilotExtraInfo')?.msg) {
@@ -847,6 +894,50 @@ export const fairwayCardReducer = (
         .concat({
           id: 'tugName-' + actionTarget,
           msg: currentTug?.name?.fi.trim() || currentTug?.name?.sv.trim() || currentTug?.name?.en.trim() ? t(ErrorMessageKeys?.required) || '' : '',
+        })
+    );
+  }
+
+  // manual validations for temporary notifications (errors that shows before trying to save the whole card)
+  if (actionType === 'temporaryNotificationStartDate' && actionTarget !== undefined) {
+    const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
+    let errorMsg = '';
+
+    if (!notification?.startDate) {
+      errorMsg = t(ErrorMessageKeys?.required);
+    } else if (dateError(notification?.startDate)) {
+      errorMsg = t(ErrorMessageKeys?.invalid);
+    }
+
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'temporaryNotificationStartDate-' + actionTarget)
+        .concat({
+          id: 'temporaryNotificationStartDate-' + actionTarget,
+          msg: errorMsg,
+        })
+    );
+  } else if (actionType === 'temporaryNotificationEndDate' && actionTarget !== undefined) {
+    const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
+    let errorMsg = '';
+
+    if (notification?.endDate && dateError(notification?.endDate)) {
+      errorMsg = t(ErrorMessageKeys?.invalid);
+      // only if there's valid start date check if end date is same/after start date
+    } else if (
+      notification?.endDate &&
+      notification?.startDate &&
+      !dateError(notification?.startDate) &&
+      endDateError(notification?.startDate ?? '', notification?.endDate ?? '')
+    ) {
+      errorMsg = t(ErrorMessageKeys?.endDateError);
+    }
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'temporaryNotificationEndDate-' + actionTarget)
+        .concat({
+          id: 'temporaryNotificationEndDate-' + actionTarget,
+          msg: errorMsg,
         })
     );
   }

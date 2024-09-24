@@ -146,10 +146,6 @@ class DvkMap {
 
     const bgFinlandLayer = new VectorImageLayer({
       properties: { id: 'finland' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 1,
       imageRatio: 3,
     });
@@ -157,10 +153,6 @@ class DvkMap {
     this.olMap.addLayer(bgFinlandLayer);
     const bgBalticseaLayer = new VectorImageLayer({
       properties: { id: 'balticsea' },
-      source: new VectorSource({
-        features: [],
-        overlaps: false,
-      }),
       zIndex: 4,
       imageRatio: 3,
     });
@@ -168,7 +160,6 @@ class DvkMap {
 
     const bgMmlsatamatLayer = new VectorLayer({
       properties: { id: 'mml_satamat' },
-      source: new VectorSource(),
       maxResolution: 30,
       zIndex: 104,
       renderBuffer: 1,
@@ -232,7 +223,7 @@ class DvkMap {
       backLayers.push(layer);
     });
 
-    const bgFiLayer = this.getFeatureLayer('finland') as VectorLayer<VectorSource>;
+    const bgFiLayer = this.getFeatureLayer('finland') as VectorLayer;
     bgFiLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -241,7 +232,7 @@ class DvkMap {
       })
     );
 
-    const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer<VectorSource>;
+    const bgBsLayer = this.getFeatureLayer('balticsea') as VectorLayer;
     bgBsLayer.setStyle(
       new Style({
         fill: new Fill({
@@ -250,7 +241,7 @@ class DvkMap {
       })
     );
 
-    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer<VectorSource>;
+    const bgMmlsatamatLayer = this.getFeatureLayer('mml_satamat') as VectorLayer;
     bgMmlsatamatLayer.setStyle(
       new Style({
         stroke: new Stroke({
@@ -345,6 +336,10 @@ class DvkMap {
 
   public getFeatureLayer(layerId: FeatureLayerId | BackgroundLayerId) {
     return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
+  }
+
+  public getFeatureLayers(layerId: FeatureLayerId | BackgroundLayerId) {
+    return this.olMap?.getAllLayers().filter((layerObj) => layerId === layerObj.getProperties().id) as Layer[];
   }
 
   public getVectorSource(layerId: FeatureLayerId | BackgroundLayerId) {

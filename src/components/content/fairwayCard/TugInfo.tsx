@@ -24,27 +24,31 @@ export const TugInfo: React.FC<TugInfoProps> = ({ data }) => {
               const uuid = uniqueId('tug_');
               return (
                 <span key={uuid}>
+                  {(tug?.email || tug?.phoneNumber || tug?.fax) && <br />}
+                  {!tug?.email && !tug?.phoneNumber && !tug?.fax && <>&nbsp;</>}
+                  {tug?.name?.[lang]}
                   <br />
-                  {tug?.name && tug.name[lang]}
-                  <br />
-                  {t('email')}: {tug?.email && <a href={'mailto:' + tug?.email}>{tug?.email}</a>}
-                  {!tug?.email && '-'}
-                  <br />
-                  {t('phone')}:{' '}
-                  {tug?.phoneNumber &&
-                    tug?.phoneNumber.map((phone, jdx) => {
-                      const phoneUuid = uniqueId('phone_');
-                      return (
-                        <span key={phoneUuid}>
-                          <PhoneNumber number={phone} />
-                          {Number(tug.phoneNumber?.length) > jdx + 1 ? ', ' : ' '}
-                        </span>
-                      );
-                    })}
-                  {(!tug?.phoneNumber || (tug?.phoneNumber && tug?.phoneNumber.length < 1)) && '-'}
-                  <br />
-                  <PhoneNumber title={t('fax')} showEmpty number={tug?.fax} />
-                  <br />
+                  {(tug?.email || tug?.phoneNumber || tug?.fax) && (
+                    <>
+                      {t('email')}: {tug?.email && <a href={'mailto:' + tug?.email}>{tug?.email}</a>}
+                      {!tug?.email && '-'}
+                      <br />
+                      {t('phone')}:{' '}
+                      {tug?.phoneNumber?.map((phone, jdx) => {
+                        const phoneUuid = uniqueId('phone_');
+                        return (
+                          <span key={phoneUuid}>
+                            <PhoneNumber number={phone} primaryColorLink={true} />
+                            {Number(tug.phoneNumber?.length) > jdx + 1 ? ', ' : ' '}
+                          </span>
+                        );
+                      })}
+                      {(!tug?.phoneNumber || (tug?.phoneNumber && tug?.phoneNumber.length < 1)) && '-'}
+                      <br />
+                      {t('fax')}: {tug?.fax || '-'}
+                      <br />
+                    </>
+                  )}
                 </span>
               );
             })}

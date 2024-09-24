@@ -5,21 +5,22 @@ schema {
 
 type Query {
   fairwayCards(status: [Status!]): [FairwayCard!]!
-  fairwayCard(id: String!): FairwayCard
-  fairwayCardPreview(id: String!): FairwayCard
+  fairwayCard(id: String!, version: String, status: [Status!]): FairwayCard
+  fairwayCardPreview(id: String!, version: String!): FairwayCard
   safetyEquipmentFaults: [SafetyEquipmentFault!]!
   marineWarnings: [MarineWarning!]!
   currentUser: CurrentUser
   pilotPlaces: [PilotPlace!]!
   harbors: [Harbor!]!
-  harbor(id: String!): Harbor
-  harborPreview(id: String!): Harbor
+  harbor(id: String!, version: String, status: [Status!]): Harbor
+  harborPreview(id: String!, version: String!): Harbor
   fairways: [Fairway!]!
-  fairwayCardsAndHarbors: [FairwayCardOrHarbor!]!
+  fairwayCardsAndHarbors(getAllVersions: Boolean!): [FairwayCardOrHarbor!]!
+  mareographs: [Mareograph!]!
 }
 
 type Mutation {
-  saveFairwayCard(card: FairwayCardInput!): FairwayCard
+  saveFairwayCard(card: FairwayCardInput!, pictureSourceId: String): FairwayCard
   saveHarbor(harbor: HarborInput!): Harbor
   uploadPicture(picture: PictureUploadInput!): Boolean
 }
@@ -49,14 +50,15 @@ enum OperationError {
 
 input FairwayCardInput {
   id: String!
+  version: String!
   operation: Operation!
   name: TextInput!
   n2000HeightSystem: Boolean!
   group: String!
   status: Status!
   fairwayIds: [Float!]!
-  primaryFairwayId: Float
-  secondaryFairwayId: Float
+  primaryFairwayId: [SelectedFairwayInput!]
+  secondaryFairwayId: [SelectedFairwayInput!]
   additionalInfo: TextInput
   lineText: TextInput
   designSpeed: TextInput
@@ -67,14 +69,14 @@ input FairwayCardInput {
   attention: TextInput
   speedLimit: TextInput
   visibility: TextInput
-  windGauge: TextInput
   vesselRecommendation: TextInput
-  seaLevel: TextInput
+  mareographs: [Int!]
   windRecommendation: TextInput
   trafficService: TrafficServiceInput
   harbors: [String!]
   pictures: [PictureInput!]
   pilotRoutes: [Int!]
+  temporaryNotifications: [TemporaryNotificationInput!]
 }
 
 input PictureInput {
@@ -137,6 +139,7 @@ input PilotPlaceInput {
 
 input HarborInput {
   id: String!
+  version: String!
   n2000HeightSystem: Boolean!
   operation: Operation!
   status: Status!
@@ -184,8 +187,20 @@ input SectionInput {
   geometry: GeometryInput
 }
 
+input TemporaryNotificationInput {
+  content: TextInput!
+  startDate: String!
+  endDate: String
+}
+
+input SelectedFairwayInput {
+  id: Int!
+  sequenceNumber: Int!
+}
+
 type FairwayCardOrHarbor {
   id: String!
+  version: String!
   type: ContentType!
   name: Text!
   group: String
@@ -195,6 +210,7 @@ type FairwayCardOrHarbor {
   creator: String
   modifier: String
   modificationTimestamp: Float
+  temporaryNotifications: [TemporaryNotification]
 }
 
 enum ContentType {
@@ -210,6 +226,7 @@ type CurrentUser {
 
 type FairwayCard {
   id: String!
+  version: String!
   name: Text!
   n2000HeightSystem: Boolean!
   group: String
@@ -230,14 +247,14 @@ type FairwayCard {
   attention: Text
   speedLimit: Text
   visibility: Text
-  windGauge: Text
   vesselRecommendation: Text
-  seaLevel: Text
+  mareographs: [Mareograph!]
   windRecommendation: Text
   trafficService: TrafficService
   harbors: [Harbor!]
   pictures: [Picture!]
   pilotRoutes: [PilotRoute!]
+  temporaryNotifications: [TemporaryNotification!]
 }
 
 type Picture {
@@ -297,6 +314,7 @@ type PilotPlace {
 
 type Harbor {
   id: String!
+  version: String
   status: Status
   n2000HeightSystem: Boolean
   creator: String
@@ -334,7 +352,9 @@ type Fairway {
   id: Int!
   name: Text
   primary: Boolean
+  primarySequenceNumber: Int
   secondary: Boolean
+  secondarySequenceNumber: Int
   startText: String
   endText: String
   lightingCode: String
@@ -349,6 +369,7 @@ type Fairway {
   navigationLines: [NavigationLine!]
   areas: [Area!]
   restrictionAreas: [RestrictionArea!]
+  prohibitionAreas: [ProhibitionArea!]
   boardLines: [Boardline!]
   turningCircles: [TurningCircle!]
 }
@@ -422,6 +443,18 @@ type RestrictionType {
 
 type RestrictionFairway {
   fairwayId: Int!
+}
+
+type ProhibitionArea {
+  id: Int!
+  typeCode: Int!
+  extraInfo: Text
+  fairway: ProhibitionFairway!
+}
+
+type ProhibitionFairway {
+  fairwayId: Int!
+  name: Text
 }
 
 type BoardlineFairway {
@@ -542,4 +575,19 @@ type MarineWarning {
 type PilotRoute {
   id: Int!
   name: String
+}
+
+type TemporaryNotification {
+  content: Text
+  startDate: String
+  endDate: String
+}
+
+type Mareograph {
+  id: Int!
+  name: String
+  dateTime: Float
+  waterLevel: Float
+  n2000WaterLevel: Float
+  calculated: Boolean
 }

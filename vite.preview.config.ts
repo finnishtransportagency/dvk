@@ -59,7 +59,7 @@ export default defineConfig((env) => ({
       workbox: {
         globPatterns: ['**/*'],
         globIgnores: ['assets/icon/vayla_v_rgb_*.png', '**/node_modules/**/*'],
-        maximumFileSizeToCacheInBytes: 3000000,
+        maximumFileSizeToCacheInBytes: 4000000,
         cleanupOutdatedCaches: true,
       },
     }),

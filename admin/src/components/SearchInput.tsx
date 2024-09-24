@@ -1,29 +1,30 @@
-import React, { useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { IonInput, IonItem } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import SearchDropdown from './SearchDropdown';
-import { FairwayCardOrHarbor } from '../graphql/generated';
-import { filterItemList } from '../utils/common';
+import { FairwayCardOrHarborGroup, filterItemGroups, getDefiningVersionName } from '../utils/common';
 import { Lang } from '../utils/constants';
 import './SearchInput.css';
 import ClearSearchButton from './ClearSearchButton';
+import { FairwayCardOrHarbor } from '../graphql/generated';
 
 interface SearchProps {
-  itemList: FairwayCardOrHarbor[];
-  selectedItem: FairwayCardOrHarbor | undefined;
-  setSelectedItem: (item: FairwayCardOrHarbor | undefined) => void;
+  itemList: FairwayCardOrHarborGroup[];
+  selectedItem: FairwayCardOrHarborGroup | undefined;
+  setSelectedItem: (item: FairwayCardOrHarborGroup | undefined) => void;
   isDropdownOpen: boolean;
   setIsDropdownOpen: (isOpen: boolean) => void;
+  setVersion: Dispatch<SetStateAction<FairwayCardOrHarbor | undefined>>;
 }
 
-const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelectedItem, isDropdownOpen, setIsDropdownOpen }) => {
+const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelectedItem, isDropdownOpen, setIsDropdownOpen, setVersion }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.language as Lang;
 
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSelection, setActiveSelection] = useState(0);
   const inputRef = useRef<HTMLIonInputElement>(null);
-  const filteredList = filterItemList(itemList, lang, searchQuery, [], 'name', false);
+  const filteredList = filterItemGroups(itemList, lang, searchQuery);
 
   const closeDropdown = () => {
     setIsDropdownOpen(false);
@@ -41,9 +42,10 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
     setSearchQuery(String(val));
     setActiveSelection(0);
   };
-  const selectAction = (item: FairwayCardOrHarbor | undefined) => {
+  const selectAction = (item: FairwayCardOrHarborGroup | undefined) => {
     setSelectedItem(item);
     setSearchQuery('');
+    setVersion(undefined);
     closeDropdown();
   };
   const blurAction = () => {
@@ -77,6 +79,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
   };
 
   const searchHasInput = searchQuery.length > 0 || !!selectedItem;
+  const selectedItemName = selectedItem ? getDefiningVersionName(selectedItem?.items, lang) : '';
 
   return (
     <div id="fairwayCardOrHarborSearch" className="searchWrapper">
@@ -85,7 +88,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
           className="searchBar"
           placeholder={t('search-placeholder') ?? ''}
           title={t('search-title') ?? ''}
-          value={isDropdownOpen ? searchQuery : selectedItem?.name[lang] ?? selectedItem?.name.fi ?? ''}
+          value={isDropdownOpen ? searchQuery : selectedItemName}
           onIonFocus={openDropdown}
           onIonInput={(e) => changeAction(e.detail.value)}
           onIonBlur={blurAction}
@@ -98,7 +101,7 @@ const SearchInput: React.FC<SearchProps> = ({ itemList, selectedItem, setSelecte
       <SearchDropdown
         isOpen={isDropdownOpen}
         searchQuery={searchQuery.trim()}
-        items={filteredList}
+        itemList={filteredList}
         selected={activeSelection}
         setSelectedItem={selectAction}
       />

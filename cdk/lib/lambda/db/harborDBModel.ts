@@ -1,9 +1,10 @@
-import { GetCommand, PutCommand, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, ScanCommand, ScanCommandInput } from '@aws-sdk/lib-dynamodb';
 import { GeometryPoint, Maybe, Operation, Status } from '../../../graphql/generated';
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { Text } from './fairwayCardDBModel';
 import { getHarborTableName } from '../environment';
+import { getPutCommands } from '../util';
 
 export type Quay = {
   name?: Maybe<Text>;
@@ -21,6 +22,8 @@ export type Section = {
 
 class HarborDBModel {
   id: string;
+
+  version: string;
 
   status?: Maybe<Status>;
 
@@ -58,16 +61,58 @@ class HarborDBModel {
 
   expires?: Maybe<number>;
 
-  static async get(id: string): Promise<HarborDBModel | undefined> {
-    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id } }));
-    const harbor = response.Item as HarborDBModel | undefined;
-    log.debug('Harbor name: %s', harbor?.name?.fi);
+  private static getLatestSortKey() {
+    return 'v0_latest';
+  }
+
+  private static getPublicSortKey() {
+    return 'v0_public';
+  }
+
+  static async getVersion(id: string, version: string = 'v1'): Promise<HarborDBModel | undefined> {
+    const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
+    const harbor = response?.Item as HarborDBModel | undefined;
+    log.debug('Harbor card name: %s', harbor?.name?.fi);
     return harbor;
   }
 
-  static async getAll(): Promise<HarborDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(new ScanCommand({ TableName: getHarborTableName() }));
-    const harbors = response.Items as HarborDBModel[] | undefined;
+  static async getLatest(id: string): Promise<HarborDBModel | undefined> {
+    // v0 always the latest
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: this.getLatestSortKey() } })
+    );
+    const harbor = response?.Item as HarborDBModel | undefined;
+    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    return harbor;
+  }
+
+  static async getPublic(id: string): Promise<HarborDBModel | undefined> {
+    // v0 always the public version
+    const response = await getDynamoDBDocumentClient().send(
+      new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: this.getPublicSortKey() } })
+    );
+    const harbor = response?.Item as HarborDBModel | undefined;
+    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    return harbor;
+  }
+
+  static async getAllLatest(): Promise<HarborDBModel[]> {
+    const harbors: HarborDBModel[] | undefined = [];
+    let response;
+
+    const params: ScanCommandInput = {
+      TableName: getHarborTableName(),
+      FilterExpression: '#version = :vVersion',
+      ExpressionAttributeNames: { '#version': 'version' },
+      ExpressionAttributeValues: { ':vVersion': this.getLatestSortKey() },
+    };
+
+    do {
+      response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
+      response.Items?.forEach((item) => harbors.push(item as HarborDBModel));
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
+
     if (harbors) {
       log.debug('%d harbor(s) found', harbors.length);
       return harbors;
@@ -77,15 +122,22 @@ class HarborDBModel {
   }
 
   static async getAllPublic(): Promise<HarborDBModel[]> {
-    const response = await getDynamoDBDocumentClient().send(
-      new ScanCommand({
-        TableName: getHarborTableName(),
-        FilterExpression: '#status = :vStatus',
-        ExpressionAttributeNames: { '#status': 'status' },
-        ExpressionAttributeValues: { ':vStatus': Status.Public },
-      })
-    );
-    const harbors = response.Items as HarborDBModel[] | undefined;
+    const harbors: HarborDBModel[] | undefined = [];
+    let response;
+
+    const params: ScanCommandInput = {
+      TableName: getHarborTableName(),
+      FilterExpression: '#version = :vVersion AND attribute_exists(#currentPublic)',
+      ExpressionAttributeNames: { '#version': 'version', '#currentPublic': 'currentPublic' },
+      ExpressionAttributeValues: { ':vVersion': this.getPublicSortKey() },
+    };
+
+    do {
+      response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
+      response.Items?.forEach((item) => harbors.push(item as HarborDBModel));
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
+
     if (harbors) {
       log.debug('%d public harbor(s) found', harbors.length);
       return harbors;
@@ -94,9 +146,35 @@ class HarborDBModel {
     return [];
   }
 
+  static async getVersions(): Promise<HarborDBModel[]> {
+    const harbors: HarborDBModel[] | undefined = [];
+    let response;
+
+    const params: ScanCommandInput = {
+      TableName: getHarborTableName(),
+      FilterExpression: 'attribute_exists(#status)',
+      ExpressionAttributeNames: {
+        '#status': 'status',
+      },
+    };
+
+    do {
+      response = await getDynamoDBDocumentClient().send(new ScanCommand(params));
+      response.Items?.forEach((item) => harbors.push(item as HarborDBModel));
+      params.ExclusiveStartKey = response.LastEvaluatedKey;
+    } while (typeof response.LastEvaluatedKey !== 'undefined');
+
+    if (harbors) {
+      log.debug('%d Harbor(s) found', harbors.length);
+      return harbors;
+    }
+    log.debug('No harbors found');
+    return [];
+  }
+
   static async save(data: HarborDBModel, operation: Operation) {
-    const expr = operation === Operation.Create ? 'attribute_not_exists(id)' : 'attribute_exists(id)';
-    await getDynamoDBDocumentClient().send(new PutCommand({ TableName: getHarborTableName(), Item: data, ConditionExpression: expr }));
+    const putCommands = getPutCommands(data, getHarborTableName(), operation);
+    await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }
 

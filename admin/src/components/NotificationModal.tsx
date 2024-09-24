@@ -1,6 +1,6 @@
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import React, { useRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 
 interface ModalProps {
@@ -9,14 +9,16 @@ interface ModalProps {
   closeTitle: string;
   header: string;
   subHeader?: string;
-  message: string;
+  message?: string;
   itemList?: string[];
+  i18nkey?: string;
 }
 
-const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTitle, header, subHeader, message, itemList }) => {
+const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTitle, header, subHeader, message, itemList, i18nkey }) => {
   const { t } = useTranslation();
 
   const modal = useRef<HTMLIonModalElement>(null);
+  const messages = message?.split('\n') ?? [];
 
   const closeModal = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
@@ -50,7 +52,13 @@ const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTit
           <IonCol>
             <IonText>
               {header && subHeader && <p>{subHeader}</p>}
-              <p>{message}</p>
+              {i18nkey && (
+                /*Changed because of bold text needed for notices modal, but components part can be refactored if more diverse need arises*/
+                <p>
+                  <Trans t={t} i18nKey={i18nkey} components={{ strong: <strong />, span: <span /> }} />
+                </p>
+              )}
+              {messages?.map((str, i) => <p key={`${i}-${str.length}`}>{str}</p>)}
               {itemList && (
                 <ul>
                   {itemList.map((item) => (

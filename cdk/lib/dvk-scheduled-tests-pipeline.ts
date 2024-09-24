@@ -1,15 +1,5 @@
 import * as cdk from 'aws-cdk-lib';
-import {
-  Artifacts,
-  BuildSpec,
-  Cache,
-  ComputeType,
-  GitHubSourceProps,
-  LinuxBuildImage,
-  LocalCacheMode,
-  Project,
-  Source,
-} from 'aws-cdk-lib/aws-codebuild';
+import * as codebuild from 'aws-cdk-lib/aws-codebuild';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { Duration, Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
@@ -32,7 +22,12 @@ export class DvkScheduledTestsPipelineStack extends Stack {
     const importedSiteURL = cdk.Fn.importValue('DvkSiteUrl' + env);
     const importedCloudFrontURL = Config.isDeveloperEnvironment() ? 'https://' + cdk.Fn.importValue('CloudFrontDomainName' + env) : importedSiteURL; // Kehittajaymparistoista ei loydy certia, jolloin kaytetaan cloudfrontin dns-tietoa
 
-    const sourceProps: GitHubSourceProps = {
+    // The fine-grained access token works when using a Github source for CodePipeline, but apparently not when configuring it as a source for a plain CodeBuild
+    new codebuild.GitHubSourceCredentials(this, 'DvkCodeBuildGitHub' + env, {
+      accessToken: cdk.SecretValue.secretsManager('dev/dvk/github'),
+    });
+
+    const sourceProps: codebuild.GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
       branchOrRef: 'prod',
@@ -52,11 +47,11 @@ export class DvkScheduledTestsPipelineStack extends Stack {
       lifecycleRules: [{ expiration: Duration.days(7) }],
       ...s3DeletePolicy,
     });
-    const gitHubSource = Source.gitHub(sourceProps);
-    const project = new Project(this, 'DvkScheduledTests', {
+    const gitHubSource = codebuild.Source.gitHub(sourceProps);
+    const project = new codebuild.Project(this, 'DvkScheduledTests', {
       projectName: 'DvkScheduledTests-' + env,
       concurrentBuildLimit: 1,
-      buildSpec: BuildSpec.fromObject({
+      buildSpec: codebuild.BuildSpec.fromObject({
         version: '0.2',
         phases: {
           build: {
@@ -77,13 +72,13 @@ export class DvkScheduledTestsPipelineStack extends Stack {
         },
       }),
       source: gitHubSource,
-      cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
+      cache: codebuild.Cache.local(codebuild.LocalCacheMode.CUSTOM, codebuild.LocalCacheMode.SOURCE, codebuild.LocalCacheMode.DOCKER_LAYER),
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.3'),
-        computeType: ComputeType.MEDIUM,
+        buildImage: codebuild.LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkRobotImage', 'dvk-robotimage'), '1.0.4'),
+        computeType: codebuild.ComputeType.MEDIUM,
       },
       grantReportGroupPermissions: true,
-      artifacts: Artifacts.s3({
+      artifacts: codebuild.Artifacts.s3({
         bucket: testBucket,
         includeBuildId: false,
         packageZip: false,
@@ -106,7 +101,7 @@ export class DvkScheduledTestsPipelineStack extends Stack {
 
     const projectTarget = new CodeBuildProject(project);
     const hourlyRule = new Rule(this, 'TestScheduleRule-' + env, {
-      schedule: Schedule.rate(Duration.hours(1)),
+      schedule: Schedule.rate(Duration.hours(12)),
       targets: [projectTarget],
     });
 

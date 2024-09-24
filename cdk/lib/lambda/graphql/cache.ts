@@ -15,6 +15,31 @@ const AIS_VESSEL_CACHE = {
   STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 300, // 5 minutes (do not return vessel data more than 10 minutes old)
 };
+const MAREOGRAPH_CACHE = {
+  MAX_AGE: 60, // 1 minute
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
+const OBSERVATION_CACHE = {
+  MAX_AGE: 60, // 1 minute
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
+const BUOY_CACHE = {
+  MAX_AGE: 60, // 1 minute
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
+const FEATURE_CACHE = {
+  MAX_AGE: 7140, // 1 hour 59 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
+const PILOTROUTE_CACHE = {
+  MAX_AGE: 7140, // 1 hour 59 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
 
 export const FEATURE_CACHE_DURATION = 7200; // 2 hours
 
@@ -32,7 +57,7 @@ export function getFeatureCacheDuration(key: string) {
   }
 }
 
-export function getCacheControlHeaders(key: string): Record<string, string[]> {
+export function getAisCacheControlHeaders(key: string): Record<string, string[]> {
   if (key === 'aislocations') {
     return {
       'Cache-Control': [
@@ -43,7 +68,7 @@ export function getCacheControlHeaders(key: string): Record<string, string[]> {
           AIS_LOCATION_CACHE.STALE_WHILE_REVALIDATE +
           ', ' +
           'stale-if-error=' +
-          AIS_LOCATION_CACHE.STALE_WHILE_REVALIDATE,
+          AIS_LOCATION_CACHE.STALE_IF_ERROR,
       ],
     };
   } else if (key === 'aisvessels') {
@@ -56,12 +81,51 @@ export function getCacheControlHeaders(key: string): Record<string, string[]> {
           AIS_VESSEL_CACHE.STALE_WHILE_REVALIDATE +
           ', ' +
           'stale-if-error=' +
-          AIS_VESSEL_CACHE.STALE_WHILE_REVALIDATE,
+          AIS_VESSEL_CACHE.STALE_IF_ERROR,
       ],
     };
   } else {
     return {};
   }
+}
+
+export function getFeatureCacheControlHeaders(key: string): Record<string, string[]> {
+  let maxAge = FEATURE_CACHE.MAX_AGE;
+  let staleWhileRevalidate = FEATURE_CACHE.STALE_WHILE_REVALIDATE;
+  let staleIfError = FEATURE_CACHE.STALE_IF_ERROR;
+
+  if (key === 'mareograph') {
+    maxAge = MAREOGRAPH_CACHE.MAX_AGE;
+    staleWhileRevalidate = MAREOGRAPH_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = MAREOGRAPH_CACHE.STALE_IF_ERROR;
+  } else if (key === 'observation') {
+    maxAge = OBSERVATION_CACHE.MAX_AGE;
+    staleWhileRevalidate = OBSERVATION_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = OBSERVATION_CACHE.STALE_IF_ERROR;
+  } else if (key === 'buoy') {
+    maxAge = BUOY_CACHE.MAX_AGE;
+    staleWhileRevalidate = BUOY_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = BUOY_CACHE.STALE_IF_ERROR;
+  }
+
+  return {
+    'Cache-Control': ['max-age=' + maxAge + ', ' + 'stale-while-revalidate=' + staleWhileRevalidate + ', ' + 'stale-if-error=' + staleIfError],
+  };
+}
+
+export function getPilotRouteCacheControlHeaders() {
+  return {
+    'Cache-Control': [
+      'max-age=' +
+        PILOTROUTE_CACHE.MAX_AGE +
+        ', ' +
+        'stale-while-revalidate=' +
+        PILOTROUTE_CACHE.STALE_WHILE_REVALIDATE +
+        ', ' +
+        'stale-if-error=' +
+        PILOTROUTE_CACHE.STALE_IF_ERROR,
+    ],
+  };
 }
 
 export async function cacheResponse(key: string, response: object | string) {
@@ -113,6 +177,9 @@ export async function getFromCache(key: string): Promise<CacheResponse> {
   return { expired: true };
 }
 
+// delete when more sophisticated caching is implemented
+// only needed to get updated starting and ending fairways for fairwaycard
+// parameter left as an array just in case if more cache clearing needs arise
 export async function deleteCacheObjects(keys: string[]) {
   const objects: ObjectIdentifier[] = keys.map((key) => {
     return { Key: key };

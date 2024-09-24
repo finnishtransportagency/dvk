@@ -261,7 +261,7 @@ export type WeatherObservation = {
   fmisid: number;
   geoid: number;
   latlon: string;
-  name: string;
+  stationname: string;
   localtime: string;
   WG_PT10M_MAX: number;
   WD_PT10M_AVG: number;
@@ -398,4 +398,56 @@ export type RtzData = {
   tunniste: string;
   rtz: string;
   reittipisteet: Array<RtzReittipiste>;
+};
+
+/* IBNet */
+export type IBNetApiResponse = {
+  rvEndpoints: string[];
+  toRv: string;
+};
+
+export type Dirway = {
+  id: string;
+  name: string;
+  description: string;
+  rv: number | null;
+  change_time: string;
+  deleted?: boolean | null;
+};
+
+export type DirwayPoint = {
+  id: string;
+  dirway_id: string;
+  order_num: number;
+  name: string;
+  latitude: number;
+  longitude: number;
+  rv: number | null;
+  change_time: string;
+  deleted?: boolean | null;
+};
+
+export type LocationApiModel = {
+  id: string;
+  name: string;
+  type: 'PORT' | 'FAIRWAY';
+  locode_list: string;
+  nationality: string;
+  latitude: number;
+  longitude: number;
+  winterport: boolean;
+  rv: number | null;
+  change_time: string;
+  deleted?: boolean | null;
+};
+
+export type RestrictionApiModel = {
+  id: string;
+  location_id: string;
+  start_time: string;
+  end_time?: string | null;
+  text_compilation: string;
+  rv: number | null;
+  change_time: string;
+  deleted?: boolean | null;
 };

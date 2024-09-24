@@ -1,4 +1,3 @@
-import { Coordinate } from 'ol/coordinate';
 import { Maybe } from '../graphql/generated';
 
 export const APP_CONFIG_DVK = 'DVK';
@@ -19,6 +18,14 @@ const aisLocationsUrl = import.meta.env.VITE_APP_REST_API_URL
 const pilotRoutesUrl = import.meta.env.VITE_APP_REST_API_URL
   ? import.meta.env.VITE_APP_REST_API_URL + '/pilotroutes'
   : globalThis.location.origin + '/api/pilotroutes';
+
+const dirwaysUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/dirways'
+  : globalThis.location.origin + '/api/dirways';
+
+const restrictionPortUrl = import.meta.env.VITE_APP_REST_API_URL
+  ? import.meta.env.VITE_APP_REST_API_URL + '/restrictions'
+  : globalThis.location.origin + '/api/restrictions';
 
 const staticUrl = import.meta.env.VITE_APP_STATIC_URL
   ? `https://${import.meta.env.VITE_APP_STATIC_URL}/s3static`
@@ -80,6 +87,8 @@ export type FeatureDataId =
   | 'pilot'
   | 'pilotageareaborder'
   | 'pilotagelimit'
+  | 'dirway'
+  | 'restrictionport'
   | 'name';
 
 export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
@@ -87,15 +96,15 @@ export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
 export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20231213.json.gz') },
-  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20231213.json.gz') },
-  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20231219.json.gz') },
-  { id: 'mml_jarvi_rantaviiva', url: new URL(staticUrl + '/mml-jarvi-rantaviiva-20231219.json.gz') },
-  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20230712.json.gz') },
-  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit.json.gz') },
+  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20240724.json.gz') },
+  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20240724.json.gz') },
+  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20240724.json.gz') },
+  { id: 'mml_jarvi_rantaviiva', url: new URL(staticUrl + '/mml-jarvi-rantaviiva-20240724.json.gz') },
+  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20240719.json.gz') },
+  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit-20240719.json.gz') },
 ];
 
-export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL; persist: boolean };
+export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL; persist: boolean; staleTime?: number };
 
 export const FeatureDataSources: Array<FeatureDataSource> = [
   {
@@ -181,18 +190,21 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=mareograph'),
     staticUrl: new URL(staticUrl + '/mareograph.json.gz'),
     persist: false,
+    staleTime: 60 * 1000,
   },
   {
     id: 'observation',
     url: new URL(featureLoaderUrl + '?type=observation'),
     staticUrl: new URL(staticUrl + '/observation.json.gz'),
-    persist: false,
+    persist: true,
+    staleTime: 60 * 1000,
   },
   {
     id: 'buoy',
     url: new URL(featureLoaderUrl + '?type=buoy'),
     staticUrl: new URL(staticUrl + '/buoy.json.gz'),
     persist: false,
+    staleTime: 60 * 1000,
   },
   {
     id: 'vtsline',
@@ -255,6 +267,18 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
   },
   {
+    id: 'dirway',
+    url: new URL(dirwaysUrl),
+    staticUrl: new URL(staticUrl + '/dirways.json.gz'),
+    persist: true,
+  },
+  {
+    id: 'restrictionport',
+    url: new URL(restrictionPortUrl),
+    staticUrl: new URL(staticUrl + '/restrictions.json.gz'),
+    persist: true,
+  },
+  {
     id: 'name',
     url: new URL(staticUrl + '/names.json.gz'),
     staticUrl: new URL(staticUrl + '/names.json.gz'),
@@ -262,7 +286,17 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
 ];
 
-export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'conditions' | 'vts' | 'depths' | 'marinewarning' | 'ais' | 'piloting';
+export type FeatureDataMainLayerId =
+  | 'merchant'
+  | 'othertraffic'
+  | 'conditions'
+  | 'vts'
+  | 'depths'
+  | 'marinewarning'
+  | 'ais'
+  | 'piloting'
+  | 'specialarea'
+  | 'wintertraffic';
 
 export type FeatureDataLayerId =
   | 'area12'
@@ -270,7 +304,6 @@ export type FeatureDataLayerId =
   | 'line12'
   | 'line3456'
   | 'speedlimit'
-  | 'specialarea'
   | 'harbor'
   | 'quay'
   | 'safetyequipment'
@@ -282,7 +315,6 @@ export type FeatureDataLayerId =
   | 'name'
   | 'boardline12'
   | 'mareograph'
-  | 'ice'
   | 'observation'
   | 'buoy'
   | 'vtsline'
@@ -303,7 +335,10 @@ export type FeatureDataLayerId =
   | 'pilot'
   | 'pilotroute'
   | 'pilotageareaborder'
-  | 'pilotagelimit';
+  | 'pilotagelimit'
+  | 'dirway'
+  | 'restrictionport'
+  | 'ice';
 
 export type SelectedFairwayCardLayerId = 'selectedfairwaycard';
 export type FairwayWidthLayerId = 'fairwaywidth';
@@ -371,6 +406,8 @@ export const MAP: MapType = {
     { id: 'pilotroute', offlineSupport: true, localizedStyle: false },
     { id: 'pilotageareaborder', offlineSupport: true, localizedStyle: false },
     { id: 'pilotagelimit', offlineSupport: true, localizedStyle: false },
+    { id: 'dirway', offlineSupport: true, localizedStyle: false },
+    { id: 'restrictionport', offlineSupport: true, localizedStyle: false },
   ],
 };
 
@@ -497,13 +534,4 @@ export const equipmentAreasStructure: SafetyEquipmentFaultFilter[] = [
   },
 ];
 
-export type PilotageLimit = {
-  fid: number;
-  numero: number;
-  liittyyVayliin: string;
-  raja_fi: string;
-  raja_sv: string;
-  raja_en: string;
-  alkukoordinaatti: Coordinate;
-  loppukoordinaatti: Coordinate;
-};
+export const hourInMilliseconds = 3600000;

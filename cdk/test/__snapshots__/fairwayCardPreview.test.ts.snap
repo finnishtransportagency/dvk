@@ -13,7 +13,9 @@ exports[`should get draft card from the DynamoDB 1`] = `
     {
       "id": 1,
       "primary": true,
+      "primarySequenceNumber": undefined,
       "secondary": false,
+      "secondarySequenceNumber": undefined,
     },
   ],
   "generalInfo": undefined,
@@ -22,6 +24,7 @@ exports[`should get draft card from the DynamoDB 1`] = `
   "iceCondition": undefined,
   "id": "draft",
   "lineText": undefined,
+  "mareographs": undefined,
   "modificationTimestamp": Any<Number>,
   "modifier": "test",
   "n2000HeightSystem": false,
@@ -32,10 +35,15 @@ exports[`should get draft card from the DynamoDB 1`] = `
   },
   "navigationCondition": undefined,
   "pictures": undefined,
-  "pilotRoutes": [],
-  "seaLevel": undefined,
+  "pilotRoutes": [
+    {
+      "id": 2,
+      "name": "Reitti 2",
+    },
+  ],
   "speedLimit": undefined,
   "status": "DRAFT",
+  "temporaryNotifications": [],
   "trafficService": {
     "pilot": {
       "email": undefined,
@@ -43,14 +51,31 @@ exports[`should get draft card from the DynamoDB 1`] = `
       "fax": undefined,
       "internet": undefined,
       "phoneNumber": undefined,
-      "places": [],
+      "places": [
+        {
+          "geometry": {
+            "coordinates": [
+              25.001,
+              60.21,
+            ],
+            "type": "Point",
+          },
+          "id": 2,
+          "name": {
+            "en": "Luotsipaikka 2",
+            "fi": "Luotsipaikka 2",
+            "sv": "Luotsipaikka 2",
+          },
+          "pilotJourney": 2,
+        },
+      ],
     },
     "tugs": null,
     "vts": null,
   },
+  "version": "v0",
   "vesselRecommendation": undefined,
   "visibility": undefined,
-  "windGauge": undefined,
   "windRecommendation": undefined,
 }
 `;
@@ -68,7 +93,9 @@ exports[`should get public card from the DynamoDB 1`] = `
     {
       "id": 1,
       "primary": true,
+      "primarySequenceNumber": 1,
       "secondary": false,
+      "secondarySequenceNumber": 1,
     },
   ],
   "generalInfo": undefined,
@@ -77,6 +104,7 @@ exports[`should get public card from the DynamoDB 1`] = `
   "iceCondition": undefined,
   "id": "public",
   "lineText": undefined,
+  "mareographs": undefined,
   "modificationTimestamp": Any<Number>,
   "modifier": "test2",
   "n2000HeightSystem": false,
@@ -87,10 +115,15 @@ exports[`should get public card from the DynamoDB 1`] = `
   },
   "navigationCondition": undefined,
   "pictures": undefined,
-  "pilotRoutes": [],
-  "seaLevel": undefined,
+  "pilotRoutes": [
+    {
+      "id": 1,
+      "name": "Reitti 1",
+    },
+  ],
   "speedLimit": undefined,
   "status": "PUBLIC",
+  "temporaryNotifications": [],
   "trafficService": {
     "pilot": {
       "email": undefined,
@@ -98,14 +131,31 @@ exports[`should get public card from the DynamoDB 1`] = `
       "fax": undefined,
       "internet": undefined,
       "phoneNumber": undefined,
-      "places": [],
+      "places": [
+        {
+          "geometry": {
+            "coordinates": [
+              26.43,
+              60.28,
+            ],
+            "type": "Point",
+          },
+          "id": 1,
+          "name": {
+            "en": "Luotsipaikka 1",
+            "fi": "Luotsipaikka 1",
+            "sv": "Luotsipaikka 1",
+          },
+          "pilotJourney": 1,
+        },
+      ],
     },
     "tugs": null,
     "vts": null,
   },
+  "version": "v0",
   "vesselRecommendation": undefined,
   "visibility": undefined,
-  "windGauge": undefined,
   "windRecommendation": undefined,
 }
 `;

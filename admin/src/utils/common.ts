@@ -1,7 +1,18 @@
 import { TFunction } from 'i18next';
-import { FairwayCardOrHarbor, Maybe, Orientation, PictureInput, Text } from '../graphql/generated';
-import { ActionType, ItemType, Lang, SelectOption } from './constants';
+import {
+  FairwayCardOrHarbor,
+  Mareograph,
+  Maybe,
+  Orientation,
+  PictureInput,
+  SelectedFairwayInput,
+  Status,
+  TemporaryNotification,
+  Text,
+} from '../graphql/generated';
+import { ItemType, Lang, SelectOption, VERSION } from './constants';
 import { FeatureCollection } from 'geojson';
+import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
 const sortByString = (a: Maybe<string> | undefined, b: Maybe<string> | undefined, sortDescending: boolean) => {
   const valA = a ?? '';
@@ -20,11 +31,19 @@ const sortByNumber = (a: number, b: number, sortDescending: boolean) => {
   return sortDescending ? b - a : a - b;
 };
 
+function searchQueryMatches(searchQuery: string, lang: Lang, name: Text, id: string) {
+  return (
+    (name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 ||
+    (id ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1
+  );
+}
+
 export const filterItemList = (
   data: FairwayCardOrHarbor[] | undefined,
   lang: Lang,
   searchQuery: string,
   itemTypes: ItemType[],
+  itemStatus: Status[],
   sortBy: string,
   sortDescending: boolean,
   t?: TFunction
@@ -34,8 +53,11 @@ export const filterItemList = (
     data
       ?.filter(
         (item) =>
-          (item.name[lang] ?? '').toLowerCase().indexOf(searchQuery.trim().toLowerCase()) > -1 &&
-          (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true)
+          item.version !== VERSION.LATEST &&
+          item.version !== VERSION.PUBLIC &&
+          searchQueryMatches(searchQuery, lang, item.name, item.id) &&
+          (itemTypes.length > 0 ? itemTypes.indexOf(item.type) > -1 : true) &&
+          (itemStatus.length > 0 ? itemStatus.indexOf(item.status) > -1 : true)
       )
       .sort((a, b) => {
         switch (sortBy) {
@@ -56,6 +78,13 @@ export const filterItemList = (
           case 'modified':
             // should be newest first when arrow down hence "!sortDescending"
             return sortByNumber(Number(a.modificationTimestamp), Number(b.modificationTimestamp), !sortDescending);
+          case 'notice':
+            return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sortDescending);
+          case 'identifier':
+            return sortByString(a.id, b.id, sortDescending);
+          case 'version':
+            // should be newest first when arrow down hence "!sortDescending"
+            return sortByNumber(Number(a.version.slice(1)), Number(b.version.slice(1)), !sortDescending);
           default:
             return 1;
         }
@@ -63,30 +92,30 @@ export const filterItemList = (
   );
 };
 
-export const checkInputValidity = (
-  inputRef: React.RefObject<HTMLIonInputElement>,
-  setIsValid: React.Dispatch<React.SetStateAction<boolean>>,
-  actionType: ActionType,
-  setValidity?: (actionType: ActionType, val: boolean) => void,
-  error?: string
-) => {
-  if (error) {
-    setIsValid(false);
-    if (setValidity) setValidity(actionType, false);
-  } else {
-    inputRef.current
-      ?.getInputElement()
-      .then((textinput) => {
-        if (textinput) {
-          setIsValid(textinput.checkValidity());
-          if (setValidity) setValidity(actionType, textinput.checkValidity());
-        }
-      })
-      .catch((err) => {
-        console.error(err.message);
-      });
-  }
+export type FairwayCardOrHarborGroup = {
+  id: string;
+  items: FairwayCardOrHarbor[];
 };
+
+export function filterItemGroups(data: FairwayCardOrHarborGroup[], lang: Lang, searchQuery: string) {
+  return data.filter((value) => {
+    return value.items.some((item) => searchQueryMatches(searchQuery, lang, item.name, item.id));
+  });
+}
+
+export function getDefiningVersionName(items: FairwayCardOrHarbor[], lang: Lang) {
+  // Use name from version: 1. public 2.latest 3.first from list (precaution)
+  const item = items.find((val) => val.version === VERSION.PUBLIC) ?? items.find((val) => val.version === VERSION.LATEST);
+  return item ? (item?.name[lang] ?? item?.name.fi) : (items[0].name[lang] ?? items[0].name.fi);
+}
+
+export function sortItemGroups(data: FairwayCardOrHarborGroup[], lang: Lang) {
+  return data.sort((a, b) => {
+    const nameA = getDefiningVersionName(a.items, lang);
+    const nameB = getDefiningVersionName(b.items, lang);
+    return sortByString(nameA, nameB, false);
+  });
+}
 
 export const isInputOk = (isValid: boolean, error: string | undefined) => {
   return isValid && (!error || error === '');
@@ -144,28 +173,36 @@ export function openPreview(id: string, isCard: boolean) {
   window.open(path + '/esikatselu/' + (isCard ? 'kortit/' : 'satamat/') + id, '_blank');
 }
 
-export function removeSequence(picture: PictureInput, pictures: PictureInput[], currentSequenceNumber: number) {
-  return pictures.map((pic) => {
-    if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) {
-      pic.sequenceNumber = null;
-    } else if (pic.sequenceNumber && pic.sequenceNumber > currentSequenceNumber) {
-      pic.sequenceNumber--;
+function hasGroupId(sequenceObject: PictureInput | SelectedFairwayInput): sequenceObject is PictureInput {
+  return (sequenceObject as PictureInput).groupId !== undefined;
+}
+
+export function removeSequence(
+  option: PictureInput | SelectedFairwayInput,
+  options: PictureInput[] | SelectedFairwayInput[],
+  currentSequenceNumber: number
+) {
+  return options.map((o) => {
+    if (o.id === option.id || (hasGroupId(o) && hasGroupId(option) && option.groupId && o.groupId === option.groupId)) {
+      o.sequenceNumber = null;
+    } else if (o.sequenceNumber && o.sequenceNumber > currentSequenceNumber) {
+      o.sequenceNumber--;
     }
-    return pic;
+    return o;
   });
 }
 
-export function addSequence(picture: PictureInput, pictures: PictureInput[]) {
-  const sequencedPictures = pictures.filter((pic) => !!pic.sequenceNumber);
-  const maxSequenceNumber = sequencedPictures.reduce((acc, pic) => {
-    return acc > (pic.sequenceNumber ?? 0) ? acc : pic.sequenceNumber ?? 0;
+export function addSequence(option: PictureInput | SelectedFairwayInput, options: PictureInput[] | SelectedFairwayInput[]) {
+  const sequencedPictures = options.filter((o) => !!o.sequenceNumber);
+  const maxSequenceNumber = sequencedPictures.reduce((acc, o) => {
+    return acc > (o.sequenceNumber ?? 0) ? acc : (o.sequenceNumber ?? 0);
   }, 0);
 
-  return pictures.map((pic) => {
-    if (pic.id === picture.id || (picture.groupId && pic.groupId === picture.groupId)) {
-      pic.sequenceNumber = (maxSequenceNumber ?? 0) + 1;
+  return options.map((o) => {
+    if (o.id === option.id || (hasGroupId(o) && hasGroupId(option) && o.groupId === option.groupId)) {
+      o.sequenceNumber = (maxSequenceNumber ?? 0) + 1;
     }
-    return pic;
+    return o;
   });
 }
 
@@ -198,3 +235,109 @@ export function featureCollectionToSelectOptions(collection: FeatureCollection |
 
   return propertyArray;
 }
+
+export function checkIfValidAndChangeFormatToLocal(value: string | undefined | null) {
+  if (value && !dateError(value)) {
+    const date = value.split('T')[0];
+    const parsedDate = parseISO(date);
+    if (isValid(parsedDate)) {
+      return format(parsedDate, 'dd.MM.yyyy');
+    }
+  }
+
+  return value;
+}
+
+export function checkIfValidAndChangeFormatToISO(value: string | undefined | null) {
+  if (value && !dateError(value)) {
+    const parsedDate = parse(value, 'dd.MM.yyyy', new Date());
+    if (isValid(parsedDate)) {
+      return format(parsedDate, 'yyyy-MM-dd');
+    }
+  }
+
+  return value;
+}
+
+export function dateError(date?: string | null): boolean {
+  // might return time as well, so split just in case
+  date = date?.split('T')[0];
+  if (date?.match('\\d{2}\\.\\d{2}\\.\\d{4}')) {
+    return !isValid(parse(date, 'dd.MM.yyyy', new Date()));
+  } else if (date?.match('\\d{4}\\-\\d{2}\\-\\d{2}')) {
+    return !isValid(parse(date, 'yyyy-MM-dd', new Date()));
+  }
+  return true;
+}
+
+export function endDateError(startDate: string, endDate: string): boolean {
+  if (!startDate || !endDate) {
+    return false;
+  }
+  endDate = endDate?.split('T')[0];
+  startDate = startDate?.split('T')[0];
+  const result = compareAsc(startDate, endDate);
+  // result = -1 startDate is before endDate, result = 0 equal dates, result = 1 startDate is after endDate
+  if (result === -1 || result === 0) {
+    return false;
+  }
+
+  return true;
+}
+
+export type NoticeListingTypes = {
+  active: number;
+  incoming: number;
+};
+
+export function getNotificationListingTypesCount(notifications: TemporaryNotification[]): NoticeListingTypes {
+  const currentDate = new Date().setHours(0, 0, 0, 0);
+
+  const active = notifications?.filter((notification) => {
+    if (!notification.startDate) {
+      return false;
+    }
+    const startDate = new Date(notification?.startDate).setHours(0, 0, 0, 0);
+    // if not endDate, give it a current date so it's counted as an active
+    const endDate = new Date(notification?.endDate ?? currentDate).setHours(0, 0, 0, 0);
+
+    return compareAsc(currentDate, startDate) >= 0 && compareAsc(endDate, currentDate) >= 0;
+  });
+
+  const incoming = notifications?.filter((notification) => {
+    if (!notification.startDate) {
+      return false;
+    }
+    const startDate = new Date(notification?.startDate).setHours(0, 0, 0, 0);
+
+    return compareAsc(currentDate, startDate) === -1;
+  });
+
+  return {
+    active: active.length,
+    incoming: incoming.length,
+  };
+}
+
+// when api returns language versions this can be deleted (db changes necessary too)
+// when deleted, remember that filtering should be happening somewhere else
+export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefined) {
+  if (!mareographs) {
+    return [];
+  }
+
+  const nonCalculatedMareographs = mareographs.filter((mareograph) => !mareograph.calculated);
+
+  return nonCalculatedMareographs.map((mareograph) => {
+    return {
+      id: mareograph.id,
+      name: {
+        fi: mareograph.name,
+      },
+    };
+  });
+}
+
+export const isNumber = (s: string) => {
+  return /^-?\d*\.?\d+$/.test(s);
+};

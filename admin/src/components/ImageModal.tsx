@@ -6,6 +6,23 @@ import { FairwayCardInput, PictureInput } from '../graphql/generated';
 import { imageUrl, Lang, POSITION, ActionType, ValueType } from '../utils/constants';
 import north_arrow from '../theme/img/north_arrow.svg';
 
+interface PositionButtonProps {
+  position: string;
+  legendPosition: string;
+  setLegendPosition: (position: string) => void;
+}
+
+const LegendPositionButton: React.FC<PositionButtonProps> = ({ position, legendPosition, setLegendPosition }) => {
+  return (
+    <button
+      className={`legendPositionButton ${position} ${legendPosition === position ? 'colorGreen' : 'colorRed'}`}
+      onClick={() => {
+        setLegendPosition(position);
+      }}
+    />
+  );
+};
+
 interface ModalProps {
   picture: PictureInput | '';
   fairwayCardInput: FairwayCardInput;
@@ -17,16 +34,17 @@ interface ModalProps {
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => void;
+  disabled: boolean;
+  sourceCard?: string;
 }
 
-const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen, setPicture }) => {
+const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen, setPicture, disabled, sourceCard }) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
   const en = i18n.getFixedT('en');
   const [isLoading, setIsLoading] = useState(true);
   const [legendPosition, setLegendPosition] = useState<string>(POSITION.bottomLeft);
-
   const modal = useRef<HTMLIonModalElement>(null);
   const compassInfo = useRef<HTMLDivElement>(null);
   const compassNeedle = useRef<HTMLImageElement>(null);
@@ -110,7 +128,11 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
             <IonCol className="imageWrapperParent">
               {picture && (
                 <div className="imageWrapper">
-                  <img src={imageUrl + fairwayCardInput.id + '/' + picture.id} alt={picture.id} onLoad={() => setIsLoading(false)} />
+                  <img
+                    src={`${imageUrl}${sourceCard?.length ? sourceCard : fairwayCardInput.id}/${picture.id}`}
+                    alt={sourceCard?.length ? `${t('fairwaycard.pic-copy')}-${picture.id}` : picture.id}
+                    onLoad={() => setIsLoading(false)}
+                  />
                   {!isLoading && (
                     <div className={`mapLegend ${legendPosition}`}>
                       <div className="bg"></div>
@@ -144,37 +166,26 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                             {picture.scaleLabel}
                           </div>
                         )}
-                        {/* buttons for changing legend position, could be useful to refactor to its own component */}
-                        <button
-                          className={
-                            'legendPositionButton ' + POSITION.bottomLeft + (legendPosition === POSITION.bottomLeft ? ' colorGreen' : ' colorRed')
-                          }
-                          onClick={() => {
-                            setLegendPosition(POSITION.bottomLeft);
-                          }}
-                        />
-                        <button
-                          className={'legendPositionButton ' + POSITION.topLeft + (legendPosition === POSITION.topLeft ? ' colorGreen' : ' colorRed')}
-                          onClick={() => {
-                            setLegendPosition(POSITION.topLeft);
-                          }}
-                        />
-                        <button
-                          className={
-                            'legendPositionButton ' + POSITION.topRight + (legendPosition === POSITION.topRight ? ' colorGreen' : ' colorRed')
-                          }
-                          onClick={() => {
-                            setLegendPosition(POSITION.topRight);
-                          }}
-                        />
-                        <button
-                          className={
-                            'legendPositionButton ' + POSITION.bottomRight + (legendPosition === POSITION.bottomRight ? ' colorGreen' : ' colorRed')
-                          }
-                          onClick={() => {
-                            setLegendPosition(POSITION.bottomRight);
-                          }}
-                        />
+                        {!disabled && (
+                          <>
+                            <LegendPositionButton
+                              position={POSITION.bottomLeft}
+                              legendPosition={legendPosition}
+                              setLegendPosition={setLegendPosition}
+                            />
+                            <LegendPositionButton position={POSITION.topLeft} legendPosition={legendPosition} setLegendPosition={setLegendPosition} />
+                            <LegendPositionButton
+                              position={POSITION.topRight}
+                              legendPosition={legendPosition}
+                              setLegendPosition={setLegendPosition}
+                            />
+                            <LegendPositionButton
+                              position={POSITION.bottomRight}
+                              legendPosition={legendPosition}
+                              setLegendPosition={setLegendPosition}
+                            />
+                          </>
+                        )}
                       </div>
                     </div>
                   )}

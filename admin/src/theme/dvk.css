@@ -1,3 +1,8 @@
+/* Disable dynamic font scaling */
+html {
+  --ion-dynamic-font: initial;
+}
+
 /* Common typography */
 ion-text > * {
   color: var(--ion-color-dark);
@@ -262,8 +267,7 @@ ion-button.plainButton.button-disabled {
   margin: 1px;
 }
 
-.searchWrapper ion-input,
-.searchWrapper .sc-ion-input-md-h:not(.legacy-input) {
+.searchWrapper ion-input {
   min-height: 41px;
 }
 
@@ -327,6 +331,11 @@ ion-select.selectInput.select-expanded {
   border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
   border-image-slice: 20%;
   border-image-width: 2px;
+}
+
+ion-select.selectInput.ion-focused {
+  /* Use same background color as ion-item when focused (ion-color-dark with opacity 0.12) */
+  background-color: rgba(51, 51, 51, 0.12);
 }
 
 .selectWrapper.invalid ion-select.selectInput,
@@ -399,7 +408,9 @@ ion-popover.multiSelect::part(content) {
   overflow-y: auto;
 }
 
-ion-popover.multiSelect.fairwayIds::part(content) {
+ion-popover.multiSelect.fairwayIds::part(content),
+ion-popover.multiSelect.pilotRoutes::part(content),
+ion-popover.multiSelect.mareographs::part(content) {
   bottom: 0;
 }
 
@@ -428,6 +439,10 @@ ion-popover.multiSelect ion-icon.searchIcon {
 ion-popover.multiSelect ion-icon.closeIcon {
   width: 18px;
   height: 18px;
+}
+
+ion-popover.version-select ion-list {
+  padding: 0;
 }
 
 .dropdownSearchWrapper {
@@ -521,6 +536,25 @@ ion-label.formLabel.disabled,
 
 .formGrid .formInput.invalid .helper-text {
   font-style: italic;
+}
+
+.formGrid .formInput .input-wrapper.sc-ion-input-md {
+  max-height: 43px;
+}
+
+ion-modal.datetimeModal::part(content) {
+  height: fit-content;
+  width: fit-content;
+}
+
+ion-datetime::part(month-year-button) {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.dateIcon {
+  width: 24px;
+  height: 24px;
 }
 
 ion-item.invalid {
@@ -873,13 +907,6 @@ ion-modal.prompt .ion-page {
   overflow: visible;
 }
 
-ion-modal ion-button.button-disabled {
-  text-decoration: none;
-  font-weight: bold;
-  color: var(--ion-color-dark);
-  opacity: 1;
-}
-
 /* Alert */
 ion-grid.alert {
   font-size: 14px;
@@ -948,6 +975,12 @@ ion-grid.alert ion-icon.error {
 .mapExportTool ion-grid.print-images a.picLink {
   position: relative;
   display: inline-block;
+}
+.mapExportTool ion-grid.print-images a.picLink.disabled {
+  pointer-events: none;
+}
+.mapExportTool ion-grid.print-images a.picLink.disabled img {
+  filter: grayscale(100%);
 }
 .mapExportTool ion-grid.print-images a.picLink:not(.selected) img {
   filter: grayscale(1);
@@ -1217,4 +1250,42 @@ span.screen-reader-only {
 dd {
   display: inline;
   margin: 0;
+}
+
+.print-images-warning {
+  background: url('./img/error_icon.svg') no-repeat 1px center;
+  background-size: 14px;
+  padding-left: 18px;
+  margin-left: 8px;
+  color: var(--ion-color-danger);
+  font-weight: normal;
+  text-transform: none;
+}
+
+/* Status bar */
+
+ion-row.infoHeaderRow {
+  padding-bottom: 4px;
+}
+ion-header.infoHeader .infoHeaderDivider {
+  border-top: 1px solid var(--ion-color-light);
+  border-bottom: 1px solid var(--ion-color-light);
+}
+.infoContent ion-text {
+  font-size: 14px;
+}
+.infoContent .item-status-PUBLIC {
+  color: var(--ion-color-success);
+  font-weight: bold;
+}
+.infoContent .item-status-REMOVED {
+  color: var(--ion-color-danger);
+  opacity: 0.75;
+  text-decoration: line-through;
+  font-size: 14px;
+}
+.infoContent .item-status-DRAFT {
+  color: var(--ion-color-medium);
+  font-style: italic;
+  font-size: 14px;
 }

@@ -16,6 +16,7 @@ import {
   mapPhoneNumbers,
   mapString,
   mapText,
+  mapVersion,
 } from '../../db/modelMapper';
 import { diff } from 'deep-object-diff';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
@@ -24,6 +25,7 @@ import { getExpires } from '../../environment';
 export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undefined, user: CurrentUser): HarborDBModel {
   return {
     id: mapId(harbor.id),
+    version: mapVersion(harbor.version),
     name: mapMandatoryText(harbor.name),
     n2000HeightSystem: !!harbor.n2000HeightSystem,
     status: harbor.status,
@@ -66,7 +68,7 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
 ): Promise<Harbor> => {
   const user = await getCurrentUser(event);
   log.info(`saveHarbor(${event.arguments.harbor?.id}, ${user.uid})`);
-  const dbModel = await HarborDBModel.get(event.arguments.harbor.id);
+  const dbModel = await HarborDBModel.getVersion(event.arguments.harbor.id, event.arguments.harbor.version);
   const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
   log.debug('harbor: %o', newModel);
   try {

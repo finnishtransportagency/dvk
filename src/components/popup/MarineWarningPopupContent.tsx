@@ -40,6 +40,11 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
   const lang = i18n.resolvedLanguage as Lang;
   const dvkMap = getMap();
 
+  const equipmentFeature = marine.properties.equipmentId
+    ? ((dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>) ??
+      (dvkMap.getVectorSource('safetyequipmentfault').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>))
+    : undefined;
+
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
@@ -93,10 +98,7 @@ const MarineWarningPopupContent: React.FC<MarineWarningPopupContentProps> = ({ m
       {marine.properties.equipmentId && (
         <IonRow>
           <IonCol>
-            {(dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>)?.getProperties().name[
-              lang
-            ] ||
-              (dvkMap.getVectorSource('safetyequipment').getFeatureById(marine.properties.equipmentId) as Feature<Geometry>)?.getProperties().name.fi}
+            {equipmentFeature?.getProperties().name[lang] || equipmentFeature?.getProperties().name.fi}
             {' - '}
             {marine.properties.equipmentId}
           </IonCol>

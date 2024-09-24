@@ -11,10 +11,8 @@ import {
   useBoardLine12Layer,
   useCircleLayer,
   useDepth12Layer,
-  useHarborLayer,
   useLine12Layer,
   useLine3456Layer,
-  useSafetyEquipmentAndFaultLayer,
   useSpecialArea15Layer,
   useSpecialArea2Layer,
 } from '../components/FeatureLoader';
@@ -25,6 +23,8 @@ import { setFairwayCardByPreview } from '../utils/fairwayCardUtils';
 import MainContentWithModal from '../components/content/MainContentWithModal';
 import { useDvkContext } from '../hooks/dvkContext';
 import { FairwayCardPartsFragment } from '../graphql/generated';
+import { useSafetyEquipmentAndFaultLayer } from '../components/SafetyEquipmentFeatureLoader';
+import { useHarborLayer } from '../components/HarborFeatureLoader';
 
 interface ModalProps {
   setModalContent: Dispatch<SetStateAction<string>>;

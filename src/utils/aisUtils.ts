@@ -2,7 +2,7 @@ import { TFunction } from 'i18next';
 import { CountryCode, countryTable } from './countryCodes';
 import { Point } from 'ol/geom';
 import { point as turf_point } from '@turf/helpers';
-import transformTranslate from '@turf/transform-translate';
+import { transformTranslate as turf_transformTranslate } from '@turf/transform-translate';
 import { MAP } from './constants';
 
 export const getAisVesselShipType = (typeNumber?: number): string => {
@@ -24,22 +24,6 @@ export const getAisVesselShipType = (typeNumber?: number): string => {
   } else {
     return 'aisunspecified';
   }
-};
-
-export const reformatAisVesselDataUpdatedTime = (dateTimeString: Date): string => {
-  const dateTime = new Date(dateTimeString);
-
-  const options: Intl.DateTimeFormatOptions = {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
-  };
-
-  const formattedDatetime = new Intl.DateTimeFormat('fi', options).format(dateTime);
-
-  return formattedDatetime.replace(' ', ', ');
 };
 
 export const getNavState = (t: TFunction, navState: number): string | undefined => {
@@ -114,10 +98,10 @@ export function getVesselHeading(aisHeading?: number, aisCog?: number): number |
 /* Translate point to heading direction distance meters */
 export function translatePoint(point: Point, heading: number, distance: number) {
   const geom = point.clone();
-  const wgs84Point = geom.transform(MAP.EPSG, 'EPSG:4326') as Point;
+  const wgs84Point = geom.transform(MAP.EPSG, 'EPSG:4326');
   const turfPoint = turf_point(wgs84Point.getCoordinates());
   // Transform given point 1km to headng direction
-  const turfPoint2 = transformTranslate(turfPoint, distance / 1000, heading);
+  const turfPoint2 = turf_transformTranslate(turfPoint, distance / 1000, heading);
   const point2 = new Point(turfPoint2.geometry.coordinates);
   point2.transform('EPSG:4326', MAP.EPSG);
   return point2;

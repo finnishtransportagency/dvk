@@ -5,10 +5,10 @@ import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../..
 import { FairwayCardInput, Operation, Status } from '../../../graphql/generated';
 import TextInput from '../TextInput';
 import SelectInput from '../SelectInput';
-import SelectWithFilter from '../SelectWithFilter';
 import TextInputRow from '../TextInputRow';
 import { FeatureCollection } from 'geojson';
 import { featureCollectionToSelectOptions } from '../../../utils/common';
+import SelectWithCustomDropdown from '../SelectWithCustomDropdown';
 
 interface MainSectionProps {
   state: FairwayCardInput;
@@ -28,6 +28,7 @@ interface MainSectionProps {
   harbourOptions?: SelectOption[];
   fairwaySelection?: SelectOption[];
   pilotRouteOptions?: FeatureCollection;
+  sourceCard?: string;
 }
 
 const MainSection: React.FC<MainSectionProps> = ({
@@ -42,6 +43,7 @@ const MainSection: React.FC<MainSectionProps> = ({
   harbourOptions,
   fairwaySelection,
   pilotRouteOptions,
+  sourceCard,
 }) => {
   const { t } = useTranslation();
 
@@ -66,14 +68,15 @@ const MainSection: React.FC<MainSectionProps> = ({
             actionType="primaryId"
             name="primaryId"
             required
-            disabled={state.operation === Operation.Update || !!state.pictures?.length}
+            disabled={state.operation === Operation.Update || (!sourceCard?.length && !!state.pictures?.length)}
             error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
             helperText={t('fairwaycard.primary-id-help-text')}
             setValidity={setValidity}
           />
         </IonCol>
         <IonCol sizeMd="3">
-          <SelectWithFilter
+          <SelectWithCustomDropdown
+            dropdownType="filter"
             label={t('fairwaycard.linked-fairways')}
             options={fairwayOptions ?? []}
             selected={state.fairwayIds || []}
@@ -87,31 +90,39 @@ const MainSection: React.FC<MainSectionProps> = ({
           />
         </IonCol>
         <IonCol sizeMd="3">
-          <SelectInput
-            label={t('fairwaycard.starting-fairway')}
-            selected={state.primaryFairwayId ?? ''}
+          <SelectWithCustomDropdown
+            dropdownType="sequence"
             options={fairwaySelection ?? []}
+            label={t('fairwaycard.starting-fairways')}
+            selected={state.primaryFairwayId ?? []}
             setSelected={updateState}
             actionType="fairwayPrimary"
+            helperText={t('fairwaycard.fairway-order-help-text') + ' ' + t('general.multiple-values-supported')}
+            isLoading={isLoadingFairways}
+            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
+            error={validationErrors.find((error) => error.id === 'fairwayPrimary')?.msg}
+            infoTitle={t('modal.starting-fairway-title')}
+            infoDescription={t('modal.starting-fairway-description')}
             required
             showId
-            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
-            helperText={t('fairwaycard.fairway-order-help-text')}
-            isLoading={isLoadingFairways}
           />
         </IonCol>
         <IonCol sizeMd="3">
-          <SelectInput
-            label={t('fairwaycard.ending-fairway')}
-            selected={state.secondaryFairwayId ?? ''}
+          <SelectWithCustomDropdown
+            dropdownType="sequence"
             options={fairwaySelection ?? []}
+            label={t('fairwaycard.ending-fairways')}
+            selected={state.secondaryFairwayId ?? []}
             setSelected={updateState}
             actionType="fairwaySecondary"
+            helperText={t('fairwaycard.fairway-order-help-text') + ' ' + t('general.multiple-values-supported')}
+            isLoading={isLoadingFairways}
+            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
+            error={validationErrors.find((error) => error.id === 'fairwaySecondary')?.msg}
+            infoTitle={t('modal.ending-fairway-title')}
+            infoDescription={t('modal.ending-fairway-description')}
             required
             showId
-            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
-            helperText={t('fairwaycard.fairway-order-help-text')}
-            isLoading={isLoadingFairways}
           />
         </IonCol>
       </IonRow>
@@ -158,7 +169,8 @@ const MainSection: React.FC<MainSectionProps> = ({
           />
         </IonCol>
         <IonCol sizeMd="3">
-          <SelectWithFilter
+          <SelectWithCustomDropdown
+            dropdownType="filter"
             label={t('fairwaycard.linked-pilot-routes')}
             options={featureCollectionToSelectOptions(pilotRouteOptions) ?? []}
             selected={state.pilotRoutes ?? []}

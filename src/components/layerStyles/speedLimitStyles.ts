@@ -5,10 +5,10 @@ import speedLimitIcon from '../../theme/img/rajoitus_pohja.svg';
 import speedLimitMultiIcon from '../../theme/img/rajoitus_multi_pohja.svg';
 import specialarea from '../../theme/img/erityisalue_tausta.svg';
 import { Geometry, MultiPolygon, Polygon } from 'ol/geom';
-import intersect from '@turf/intersect';
-import flatten from '@turf/flatten';
-import { polygon } from '@turf/helpers';
-import { Polygon as turf_Polygon } from 'geojson';
+import { intersect as turf_intersect } from '@turf/intersect';
+import { flatten as turf_flatten } from '@turf/flatten';
+import { featureCollection, polygon } from '@turf/helpers';
+import { Polygon as turf_Polygon, Feature as turf_Feature, FeatureCollection as turf_FeatureCollection } from 'geojson';
 import { getTopLeft, getBottomRight } from 'ol/extent';
 import { GeoJSON } from 'ol/format';
 
@@ -61,7 +61,7 @@ const multiLabelStyle = new Style({
   }),
 });
 
-function getFillStyle(feature: FeatureLike) {
+export function getSpeedLimitPolygonStyle(feature: FeatureLike) {
   const speedLimits = feature.get('speedLimits');
   if (speedLimits.length === 1) {
     labelStyle.getText()?.setText('' + speedLimits[0]);
@@ -95,7 +95,7 @@ function getFillStyle(feature: FeatureLike) {
   return fillStyle;
 }
 
-export function getSpeedLimitStyle(feature: FeatureLike) {
+export function getSpeedLimitIconStyle(feature: FeatureLike) {
   const speedLimits = feature.get('speedLimits');
   const dvkMap = getMap();
   const bbox = dvkMap.olMap?.getView().calculateExtent();
@@ -112,11 +112,12 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
         [topLeft[0], topLeft[1]],
       ],
     ]);
-    const geomPoly = format.writeGeometryObject(feature.getGeometry() as Geometry);
-    const intersected = intersect(geomPoly as turf_Polygon, turfBBoxPolygon.geometry);
+    const geomPoly = format.writeFeatureObject(feature as Feature<Geometry>) as turf_Feature<turf_Polygon>;
+    const features: turf_FeatureCollection<turf_Polygon> = featureCollection([geomPoly, turfBBoxPolygon]);
+    const intersected = turf_intersect(features);
 
     if (intersected) {
-      const flattened = flatten(intersected);
+      const flattened = turf_flatten(intersected);
       const multiPolygon = new MultiPolygon([]);
       for (const fg of flattened.features) {
         const geom = (format.readFeature(fg) as Feature<Geometry>).getGeometry() as Polygon;
@@ -125,7 +126,7 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
       if (speedLimits.length === 1) {
         labelStyle.setGeometry(multiPolygon.getInteriorPoints());
         labelStyle.getText()?.setText('' + speedLimits[0]);
-        return [getFillStyle(feature), labelStyle];
+        return labelStyle;
       } else {
         multiLabelStyle.setGeometry(multiPolygon.getInteriorPoints());
         multiLabelStyle.getText()?.setText(
@@ -136,9 +137,9 @@ export function getSpeedLimitStyle(feature: FeatureLike) {
               })
               .join(' / ')
         );
-        return [getFillStyle(feature), multiLabelStyle];
+        return multiLabelStyle;
       }
     }
   }
-  return [getFillStyle(feature)];
+  return undefined;
 }

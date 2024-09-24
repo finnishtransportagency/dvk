@@ -1,3 +1,7 @@
+/* Disable dynamic font scaling */
+html {
+  --ion-dynamic-font: initial;
+}
 ion-text > * {
   color: var(--ion-color-dark);
 }
@@ -284,4 +288,8 @@ span.screen-reader-only {
 dd {
   display: inline;
   margin: 0;
+}
+
+.primaryColorLink {
+  color: var(--ion-color-primary);
 }

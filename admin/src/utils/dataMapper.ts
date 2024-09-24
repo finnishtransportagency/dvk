@@ -6,9 +6,34 @@ const stringValueOrDefault = (value: string | null | undefined): string => {
   return value ?? '';
 };
 
-export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined) {
+function mapPictures(sourceCard: string | undefined, data: FairwayCardByIdQuery | undefined, copyPictures: boolean | undefined) {
+  // If card is based on another card, copying pictures is optional
+  return sourceCard && !copyPictures
+    ? []
+    : sortPictures(
+        data?.fairwayCard?.pictures?.map((picture) => {
+          return {
+            id: picture.id,
+            text: picture.text,
+            lang: picture.lang,
+            orientation: picture.orientation,
+            rotation: picture.rotation,
+            modificationTimestamp: copyPictures ? 0 : picture.modificationTimestamp,
+            sequenceNumber: picture.sequenceNumber,
+            scaleLabel: picture.scaleLabel,
+            scaleWidth: picture.scaleWidth,
+            groupId: picture.groupId,
+            legendPosition: picture.legendPosition ?? POSITION.bottomLeft,
+          };
+        }) ?? []
+      );
+}
+
+export function mapToFairwayCardInput(sourceCard: string | undefined, data: FairwayCardByIdQuery | undefined, copyPictures?: boolean) {
   return {
-    id: origin ? '' : stringValueOrDefault(data?.fairwayCard?.id),
+    id: sourceCard ? '' : stringValueOrDefault(data?.fairwayCard?.id),
+    // v1 is just for now, since proper version control not in use
+    version: data?.fairwayCard?.version ?? 'v1',
     group: stringValueOrDefault(data?.fairwayCard?.group),
     name: {
       fi: stringValueOrDefault(data?.fairwayCard?.name?.fi),
@@ -16,12 +41,30 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       en: stringValueOrDefault(data?.fairwayCard?.name?.en),
     },
     n2000HeightSystem: data?.fairwayCard?.n2000HeightSystem ?? false,
-    status: origin ? Status.Draft : data?.fairwayCard?.status ?? Status.Draft,
-    fairwayIds: data?.fairwayCard?.fairways.flatMap((fairway) => fairway.id) ?? [],
+    status: sourceCard ? Status.Draft : (data?.fairwayCard?.status ?? Status.Draft),
+    fairwayIds: data?.fairwayCard?.fairways.flatMap((fairway) => fairway.id).sort() ?? [],
     harbors: data?.fairwayCard?.harbors?.flatMap((harbor) => harbor.id) ?? [],
     pilotRoutes: data?.fairwayCard?.pilotRoutes?.map((route) => route.id) ?? [],
-    primaryFairwayId: data?.fairwayCard?.fairways.find((fairway) => fairway.primary)?.id ?? 0,
-    secondaryFairwayId: data?.fairwayCard?.fairways.find((fairway) => fairway.secondary)?.id ?? 0,
+    primaryFairwayId:
+      data?.fairwayCard?.fairways
+        .filter((fairway) => fairway.primary)
+        ?.map((fairway) => {
+          return {
+            id: fairway.id,
+            sequenceNumber: fairway.primarySequenceNumber ?? 1,
+          };
+        })
+        .sort((a, b) => a.sequenceNumber - b.sequenceNumber) ?? [],
+    secondaryFairwayId:
+      data?.fairwayCard?.fairways
+        .filter((fairway) => fairway.secondary)
+        ?.map((fairway) => {
+          return {
+            id: fairway.id,
+            sequenceNumber: fairway.secondarySequenceNumber ?? 1,
+          };
+        })
+        .sort((a, b) => a.sequenceNumber - b.sequenceNumber) ?? [],
     additionalInfo: {
       fi: stringValueOrDefault(data?.fairwayCard?.additionalInfo?.fi),
       sv: stringValueOrDefault(data?.fairwayCard?.additionalInfo?.sv),
@@ -72,16 +115,7 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       sv: stringValueOrDefault(data?.fairwayCard?.visibility?.sv),
       en: stringValueOrDefault(data?.fairwayCard?.visibility?.en),
     },
-    windGauge: {
-      fi: stringValueOrDefault(data?.fairwayCard?.windGauge?.fi),
-      sv: stringValueOrDefault(data?.fairwayCard?.windGauge?.sv),
-      en: stringValueOrDefault(data?.fairwayCard?.windGauge?.en),
-    },
-    seaLevel: {
-      fi: stringValueOrDefault(data?.fairwayCard?.seaLevel?.fi),
-      sv: stringValueOrDefault(data?.fairwayCard?.seaLevel?.sv),
-      en: stringValueOrDefault(data?.fairwayCard?.seaLevel?.en),
-    },
+    mareographs: data?.fairwayCard?.mareographs?.map((mareograph) => mareograph.id) ?? [],
     trafficService: {
       pilot: {
         email: stringValueOrDefault(data?.fairwayCard?.trafficService?.pilot?.email),
@@ -121,26 +155,19 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
         };
       }),
     },
-    operation: origin ? Operation.Create : Operation.Update,
-    pictures: origin
-      ? []
-      : sortPictures(
-          data?.fairwayCard?.pictures?.map((picture) => {
-            return {
-              id: picture.id,
-              text: picture.text,
-              lang: picture.lang,
-              orientation: picture.orientation,
-              rotation: picture.rotation,
-              modificationTimestamp: picture.modificationTimestamp,
-              sequenceNumber: picture.sequenceNumber,
-              scaleLabel: picture.scaleLabel,
-              scaleWidth: picture.scaleWidth,
-              groupId: picture.groupId,
-              legendPosition: picture.legendPosition ?? POSITION.bottomLeft,
-            };
-          }) ?? []
-        ),
+    operation: sourceCard ? Operation.Create : Operation.Update,
+    pictures: mapPictures(sourceCard, data, copyPictures),
+    temporaryNotifications: data?.fairwayCard?.temporaryNotifications?.map((notification) => {
+      return {
+        content: {
+          fi: stringValueOrDefault(notification.content?.fi),
+          sv: stringValueOrDefault(notification.content?.sv),
+          en: stringValueOrDefault(notification.content?.en),
+        },
+        startDate: stringValueOrDefault(notification.startDate),
+        endDate: stringValueOrDefault(notification.endDate),
+      };
+    }),
   };
 }
 
@@ -148,6 +175,8 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
   const coordinates = data?.harbor?.geometry?.coordinates ?? ['', ''];
   return {
     id: origin ? '' : stringValueOrDefault(data?.harbor?.id),
+    // v1 is just for now, since proper version control not in use
+    version: data?.harbor?.version ?? 'v1',
     name: {
       fi: stringValueOrDefault(data?.harbor?.name?.fi),
       sv: stringValueOrDefault(data?.harbor?.name?.sv),
@@ -200,7 +229,7 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
         }),
       };
     }),
-    status: origin ? Status.Draft : data?.harbor?.status ?? Status.Draft,
+    status: origin ? Status.Draft : (data?.harbor?.status ?? Status.Draft),
     operation: origin ? Operation.Create : Operation.Update,
   };
 }

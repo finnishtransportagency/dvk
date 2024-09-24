@@ -22,7 +22,7 @@ export function useFeatureData(
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
   if (import.meta.env.VITE_APP_USE_STATIC_FEATURES === 'true') {
-    urlStr = fds?.staticUrl ? fds.staticUrl.toString() : fds?.url.toString() ?? '';
+    urlStr = fds?.staticUrl ? fds.staticUrl.toString() : (fds?.url.toString() ?? '');
   } else {
     urlStr = fds?.url ? fds.url.toString() : '';
   }
@@ -31,20 +31,21 @@ export function useFeatureData(
     meta: { persist: fds?.persist },
     refetchOnMount,
     refetchInterval,
-    staleTime,
+    staleTime: fds?.staleTime ?? staleTime,
     gcTime,
     queryFn: async () => {
-      const { data } = await axios.get(urlStr);
-      return data;
+      // get headers to get the real time of fetching from api
+      const { data, headers } = await axios.get(urlStr);
+      return { data, headers };
     },
     enabled,
   });
   return {
     ...response,
     data: response.data?.data ? response.data.data : response.data,
+    headers: response.data?.headers,
   };
 }
-
 const fetchParams = {
   headers: {
     'content-type': 'application/json;charset=UTF-8',
@@ -67,18 +68,18 @@ export function useFairwayCardListData() {
   return useFindAllFairwayCardsQuery(datasourceClient, { status: [Status.Public] });
 }
 
-export function useFairwayCardPreviewData(id: string, isPreview: boolean) {
+export function useFairwayCardPreviewData(id: string, isPreview: boolean, version: string = 'v0_latest') {
   return useFairwayCardPreviewQuery(
     previewDataSourceClient,
-    { id: id },
+    { id: id, version: version },
     { staleTime: 0, gcTime: 5 * 60 * 1000, enabled: isPreview, meta: { persist: false } }
   );
 }
 
-export function useHarborPreviewData(id: string) {
+export function useHarborPreviewData(id: string, version: string = 'v0_latest') {
   return useHarborPreviewQuery(
     previewDataSourceClient,
-    { id: id },
+    { id: id, version: version },
     { staleTime: 0, gcTime: 5 * 60 * 1000, enabled: id.length > 0, meta: { persist: false } }
   );
 }

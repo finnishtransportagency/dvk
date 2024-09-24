@@ -1,6 +1,7 @@
 query fairwayCards {
   fairwayCards {
     id
+    version
     name {
       fi
       sv
@@ -92,7 +93,9 @@ fragment FairwayCardParts on FairwayCard {
       en
     }
     primary
+    primarySequenceNumber
     secondary
+    secondarySequenceNumber
     startText
     endText
     lightingCode
@@ -147,6 +150,23 @@ fragment FairwayCardParts on FairwayCard {
     }
     boardLines {
       id
+    }
+    prohibitionAreas {
+      id
+      typeCode
+      extraInfo {
+        fi
+        sv
+        en
+      }
+      fairway {
+        fairwayId
+        name {
+          fi
+          sv
+          en
+        }
+      }
     }
     restrictionAreas {
       id
@@ -211,20 +231,13 @@ fragment FairwayCardParts on FairwayCard {
     sv
     en
   }
-  windGauge {
-    fi
-    sv
-    en
-  }
   vesselRecommendation {
     fi
     sv
     en
   }
-  seaLevel {
-    fi
-    sv
-    en
+  mareographs {
+    id
   }
   windRecommendation {
     fi
@@ -289,5 +302,14 @@ fragment FairwayCardParts on FairwayCard {
   pilotRoutes {
     id
     name
+  }
+  temporaryNotifications {
+    content {
+      fi
+      sv
+      en
+    }
+    startDate
+    endDate
   }
 }

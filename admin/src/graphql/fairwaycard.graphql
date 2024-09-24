@@ -1,183 +1,200 @@
 fragment FairwayCardById on FairwayCard {
   id
+  version
+  name {
+    fi
+    sv
+    en
+  }
+  n2000HeightSystem
+  group
+  status
+  creator
+  creationTimestamp
+  modifier
+  modificationTimestamp
+  fairwayIds
+  fairways {
+    id
     name {
       fi
       sv
       en
     }
-    n2000HeightSystem
-    group
+    primary
+    primarySequenceNumber
+    secondary
+    secondarySequenceNumber
+  }
+  additionalInfo {
+    fi
+    sv
+    en
+  }
+  lineText {
+    fi
+    sv
+    en
+  }
+  designSpeed {
+    fi
+    sv
+    en
+  }
+  generalInfo {
+    fi
+    sv
+    en
+  }
+  anchorage {
+    fi
+    sv
+    en
+  }
+  navigationCondition {
+    fi
+    sv
+    en
+  }
+  iceCondition {
+    fi
+    sv
+    en
+  }
+  attention {
+    fi
+    sv
+    en
+  }
+  speedLimit {
+    fi
+    sv
+    en
+  }
+  visibility {
+    fi
+    sv
+    en
+  }
+  vesselRecommendation {
+    fi
+    sv
+    en
+  }
+  mareographs {
+    id
+  }
+  windRecommendation {
+    fi
+    sv
+    en
+  }
+  trafficService {
+    pilot {
+      email
+      phoneNumber
+      fax
+      internet
+      extraInfo {
+        fi
+        sv
+        en
+      }
+      places {
+        id
+        name {
+          fi
+          sv
+          en
+        }
+        pilotJourney
+      }
+    }
+    vts {
+      name {
+        fi
+        sv
+        en
+      }
+      phoneNumber
+      email
+      vhf {
+        name {
+          fi
+          sv
+          en
+        }
+        channel
+      }
+    }
+    tugs {
+      name {
+        fi
+        sv
+        en
+      }
+      phoneNumber
+      fax
+      email
+    }
+  }
+  harbors {
+    id
     status
-    creator
-    creationTimestamp
-    modifier
+    name {
+      fi
+      sv
+      en
+    }
+  }
+  pictures {
+    id
+    text
+    lang
+    orientation
+    rotation
     modificationTimestamp
-    fairwayIds
-    fairways {
-      id
-      name {
-        fi
-        sv
-        en
-      }
-      primary
-      secondary
-    }
-    additionalInfo {
+    sequenceNumber
+    scaleLabel
+    scaleWidth
+    groupId
+    legendPosition
+  }
+  pilotRoutes {
+    id
+    name
+  }
+  temporaryNotifications {
+    content {
       fi
       sv
       en
     }
-    lineText {
-      fi
-      sv
-      en
-    }
-    designSpeed {
-      fi
-      sv
-      en
-    }
-    generalInfo {
-      fi
-      sv
-      en
-    }
-    anchorage {
-      fi
-      sv
-      en
-    }
-    navigationCondition {
-      fi
-      sv
-      en
-    }
-    iceCondition {
-      fi
-      sv
-      en
-    }
-    attention {
-      fi
-      sv
-      en
-    }
-    speedLimit {
-      fi
-      sv
-      en
-    }
-    visibility {
-      fi
-      sv
-      en
-    }
-    windGauge {
-      fi
-      sv
-      en
-    }
-    vesselRecommendation {
-      fi
-      sv
-      en
-    }
-    seaLevel {
-      fi
-      sv
-      en
-    }
-    windRecommendation {
-      fi
-      sv
-      en
-    }
-    trafficService {
-      pilot {
-        email
-        phoneNumber
-        fax
-        internet
-        extraInfo {
-          fi
-          sv
-          en
-        }
-        places {
-          id
-          name {
-            fi
-            sv
-            en
-          }
-          pilotJourney
-        }
-      }
-      vts {
-        name {
-          fi
-          sv
-          en
-        }
-        phoneNumber
-        email
-        vhf {
-          name {
-            fi
-            sv
-            en
-          }
-          channel
-        }
-      }
-      tugs {
-        name {
-          fi
-          sv
-          en
-        }
-        phoneNumber
-        fax
-        email
-      }
-    }
-    harbors {
-      id
-      status
-      name {
-        fi
-        sv
-        en
-      }
-    }
-    pictures {
-      id
-      text
-      lang
-      orientation
-      rotation
-      modificationTimestamp
-      sequenceNumber
-      scaleLabel
-      scaleWidth
-      groupId
-      legendPosition
-    }
-    pilotRoutes {
-      id
-      name 
-    }
+    startDate
+    endDate
+  }
 }
 
-query fairwayCardById($id: String!) {
+query fairwayCardById($id: String!, $version: String!) {
+  fairwayCard(id: $id, version: $version) {
+    ...FairwayCardById
+  }
+}
+
+query fairwayCardLatestById($id: String!) {
   fairwayCard(id: $id) {
     ...FairwayCardById
   }
 }
 
-mutation saveFairwayCard($card: FairwayCardInput!) {
-  saveFairwayCard(card: $card) {
+query fairwayCardPublicById($id: String!, $status: [Status!]!) {
+  fairwayCard(id: $id, status: $status) {
+    ...FairwayCardById
+  }
+}
+
+mutation saveFairwayCard($card: FairwayCardInput!, $pictureSourceId: String) {
+  saveFairwayCard(card: $card, pictureSourceId: $pictureSourceId) {
     ...FairwayCardById
   }
 }

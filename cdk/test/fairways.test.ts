@@ -5,6 +5,7 @@ import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { sdkStreamMixin } from '@smithy/util-stream';
 import { createReadStream } from 'fs';
 import { pilotPlaceMap } from '../lib/lambda/db/modelMapper';
+import { StreamingBlobPayloadOutputTypes } from '@smithy/types';
 
 const s3Mock = mockClient(S3Client);
 
@@ -276,7 +277,7 @@ const boardLines = [
   },
 ];
 
-const restrictionAres = [
+const restrictionAreas = [
   {
     id: 154814,
     rajoitustyyppi: null,
@@ -415,23 +416,58 @@ const restrictionAres = [
   },
 ];
 
+const prohibitionAreas = {
+  type: 'FeatureCollection',
+  features: [
+    {
+      type: 'Feature',
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [118615.13697811, 6667254.34387074],
+            [118607.57144377, 6667077.39860421],
+            [119056.32001752, 6667065.07649735],
+            [119430.96165268, 6666980.25399899],
+            [119458.54593377, 6667158.83712926],
+            [119424.31313345, 6667152.82494862],
+            [119018.31102416, 6667208.05956297],
+            [118632.18081231, 6667247.56113973],
+            [118615.13697811, 6667254.34387074],
+          ],
+        ],
+      },
+      properties: {
+        ALUENRO: 24,
+        RAJOITE_TYYPPI: 'kohtaamiskieltoalue, ohittamiskieltoalue',
+        VTS_ALUE: 'Archipelago VTS',
+        LISATIETO: 'Lisätieto',
+        LISATIETO_SV: 'Lisätieto sv',
+        JNRO: 10,
+        VAYLA_NIMI: 'Lieteniemi - Lietesalmi venereitti',
+      },
+    },
+  ],
+};
+
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchVATUByApi: (api: string) => {
     if (api === 'navigointilinjat') {
-      return lines;
+      return { data: lines };
     } else if (api === 'vaylat') {
-      return fairways;
+      return { data: fairways };
     } else if (api === 'vaylaalueet') {
-      return areas;
+      return { data: areas };
     } else if (api === 'kaantoympyrat') {
-      return circles;
+      return { data: circles };
     } else if (api === 'taululinjat') {
-      return boardLines;
+      return { data: boardLines };
     } else if (api === 'rajoitusalueet') {
-      return restrictionAres;
+      return { data: restrictionAreas };
     }
     return [];
   },
+  fetchTraficomApi: () => prohibitionAreas,
 }));
 
 beforeEach(() => {
@@ -441,7 +477,7 @@ beforeEach(() => {
 });
 
 it('should get fairways from cache', async () => {
-  const stream = sdkStreamMixin(createReadStream('./test/data/fairways2.json'));
+  const stream = sdkStreamMixin(createReadStream('./test/data/fairways2.json')) as StreamingBlobPayloadOutputTypes;
   const expires = new Date();
   expires.setTime(expires.getTime() + 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });
@@ -450,7 +486,7 @@ it('should get fairways from cache', async () => {
 });
 
 it('should get fairways from api when cache expired', async () => {
-  const stream = sdkStreamMixin(createReadStream('./test/data/fairways2.json'));
+  const stream = sdkStreamMixin(createReadStream('./test/data/fairways2.json')) as StreamingBlobPayloadOutputTypes;
   const expires = new Date();
   expires.setTime(expires.getTime() - 1 * 60 * 60 * 1000);
   s3Mock.on(GetObjectCommand).resolves({ Body: stream, ExpiresString: expires.toString() });

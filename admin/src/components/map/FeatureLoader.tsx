@@ -8,11 +8,9 @@ import dvkMap from './DvkMap';
 import { intersects } from 'ol/extent';
 import { useFeatureData, useStaticFeatureData } from '../../utils/dataLoader';
 import { useEffect, useState } from 'react';
-import { Text } from '../../graphql/generated';
 import VectorSource from 'ol/source/Vector';
 import { getSpeedLimitFeatures } from '../../speedlimitworker/SpeedlimitUtils';
 import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
-import RenderFeature from 'ol/render/Feature';
 
 export type DvkLayerState = {
   ready: boolean;
@@ -36,7 +34,7 @@ function useDataLayer(
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);
         source.clear();
         features.forEach((f) => f.set('dataSource', featureLayerId, true));
@@ -74,11 +72,14 @@ function useStaticDataLayer(
     if (data) {
       const layer = dvkMap.getFeatureLayer(featureLayerId);
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
-        const format = new GeoJSON({ featureClass: RenderFeature });
-        const source = layer.getSource() as VectorSource;
-        source.clear();
-        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as Feature<Geometry>[];
-        source.addFeatures(features);
+        const format = new GeoJSON({ featureClass: Feature });
+        const features = format.readFeatures(data, { dataProjection, featureProjection: MAP.EPSG }) as unknown as Feature<Geometry>[];
+        layer.setSource(
+          new VectorSource<Feature<Geometry>>({
+            features: features,
+            overlaps: false,
+          })
+        );
         layer.set('dataUpdatedAt', dataUpdatedAt);
       }
       setReady(true);
@@ -163,8 +164,8 @@ export function useArea12Layer(): DvkLayerState {
       const layer = dvkMap.getFeatureLayer('area12');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
-        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+        const rafs = format.readFeatures(raData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
         addSpeedLimits(afs, rafs);
         afs.forEach((f) => f.set('dataSource', 'area12', true));
         const source = dvkMap.getVectorSource('area12');
@@ -174,7 +175,7 @@ export function useArea12Layer(): DvkLayerState {
         if (window.Worker) {
           const faWorker: Worker = new Worker(new URL('../../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
           faWorker.onmessage = (e) => {
-            const borderlineFeatures = format.readFeatures(e.data as string) as Feature<Geometry>[];
+            const borderlineFeatures = format.readFeatures(e.data as string);
             borderlineFeatures.forEach((f) => f.set('dataSource', 'area12Borderline', true));
             source.addFeatures(borderlineFeatures);
           };
@@ -205,7 +206,7 @@ export function useArea3456Layer() {
       const layer = dvkMap.getFeatureLayer('area3456');
       if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
         const format = new GeoJSON();
-        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>[];
+        const afs = format.readFeatures(aData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
         afs.forEach((f) => f.set('dataSource', 'area3456', true));
         const source = dvkMap.getVectorSource('area3456');
         source.clear();
@@ -214,7 +215,7 @@ export function useArea3456Layer() {
         if (window.Worker) {
           const faWorker: Worker = new Worker(new URL('../../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
           faWorker.onmessage = (e) => {
-            const borderlineFeatures = format.readFeatures(e.data as string) as Feature<Geometry>[];
+            const borderlineFeatures = format.readFeatures(e.data as string);
             borderlineFeatures.forEach((f) => f.set('dataSource', 'area3456Borderline', true));
             source.addFeatures(borderlineFeatures);
           };
@@ -255,15 +256,15 @@ export function useSpeedLimitLayer(): DvkLayerState {
         if (window.Worker) {
           const slWorker: Worker = new Worker(new URL('../../speedlimitworker/SpeedlimitWorker.ts', import.meta.url), { type: 'module' });
           slWorker.onmessage = (e) => {
-            const features = format.readFeatures(e.data as string) as Feature<Geometry>[];
+            const features = format.readFeatures(e.data as string);
             const source = dvkMap.getVectorSource('speedlimit');
             source.clear();
             source.addFeatures(features);
           };
           slWorker.postMessage({ raData: JSON.stringify(raData), aData: JSON.stringify(aData) });
         } else {
-          const afs = format.readFeatures(aData) as Feature<Geometry>[];
-          const rafs = format.readFeatures(raData) as Feature<Geometry>[];
+          const afs = format.readFeatures(aData);
+          const rafs = format.readFeatures(raData);
           const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
           const source = dvkMap.getVectorSource('speedlimit');
           source.clear();
@@ -281,7 +282,7 @@ export function useSpecialArea2Layer() {
 }
 
 export function useSpecialArea15Layer() {
-  return useDataLayer('specialarea15', 'specialarea15');
+  return useDataLayer('specialarea15', 'specialarea15', 'EPSG:3067');
 }
 
 export function usePilotLayer() {
@@ -291,13 +292,6 @@ export function usePilotLayer() {
 export function useHarborLayer() {
   return useDataLayer('harbor', 'harbor');
 }
-
-export type EquipmentFault = {
-  faultId: number;
-  faultType: Text;
-  faultTypeCode: string;
-  recordTime: number;
-};
 
 export function useSafetyEquipmentLayer(): DvkLayerState {
   return useDataLayer('safetyequipment', 'safetyequipment');

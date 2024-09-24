@@ -14,7 +14,7 @@ export const ProhibitionInfo: React.FC<ProhibitionInfoProps> = ({ data, inlineLa
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
 
-  const prohibitionAreas = data?.flatMap((fairway) => fairway.areas?.filter((area) => area.typeCode === 15)) ?? [];
+  const prohibitionAreas = data?.flatMap((fairway) => fairway.prohibitionAreas) ?? [];
 
   return (
     <>
@@ -30,7 +30,6 @@ export const ProhibitionInfo: React.FC<ProhibitionInfoProps> = ({ data, inlineLa
                   {MASTERSGUIDE_URLS[lang]}
                   <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
                 </a>
-                {' .'}
               </span>
             )}
             {prohibitionAreas?.length < 1 && t('noDataSet')}

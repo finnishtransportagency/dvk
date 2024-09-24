@@ -15,8 +15,8 @@ s3_prefix="$CF_DISTRIBUTION.$(date +'%Y-%m')-*"
 
 mkdir cflogs
 
-echo "aws s3 cp "s3://$LOG_BUCKET" cflogs/ --exclude "*" --include $s3_prefix --recursive"
-aws s3 cp "s3://$LOG_BUCKET" cflogs/ --exclude "*" --include $s3_prefix --recursive
+echo "aws s3 cp "s3://$LOG_BUCKET" /analytics/cflogs/ --exclude "*" --include $s3_prefix --recursive"
+aws s3 cp "s3://$LOG_BUCKET" /analytics/cflogs/ --exclude "*" --include $s3_prefix --recursive
 
 if [ $? -ne 0 ]; then
     echo "Could not download files from s3"
@@ -26,7 +26,7 @@ else
 fi
 
 echo "Creating report"
-gunzip -c cflogs/*.gz | goaccess -a -o report.html --std-geoip --anonymize-ip --ignore-crawlers --unknowns-as-crawlers --time-format=%H:%M:%S --date-format=%Y-%m-%d --log-format=CLOUDFRONT -
+gunzip -c /analytics/cflogs/*.gz | goaccess -a -o /analytics/report.html --std-geoip --anonymize-ip --ignore-crawlers --unknowns-as-crawlers --time-format=%H:%M:%S --date-format=%Y-%m-%d --log-format=CLOUDFRONT -
 if [ $? -ne 0 ]; then
     echo "Error creating report"
     exit 1
@@ -41,8 +41,8 @@ if [ -z "$REPORT_BUCKET" ]; then
     echo "REPORT_BUCKET environment variable is not set. Skipping report upload."
     exit 0
 else
-    echo "Uploading report to S3"
-    aws s3 cp report.html s3://$REPORT_BUCKET/reports/$year_number/$month_number/
+    echo "Uploading /analytics/report to S3"
+    aws s3 cp /analytics/report.html s3://$REPORT_BUCKET/reports/$year_number/$month_number/
     if [ $? -ne 0 ]; then
         echo "Error uploading report"
         exit 1

@@ -52,6 +52,12 @@ ion-modal#layerModalContainer::part(content) {
   }
 }
 
+#layerModalContainer ion-row.divider-bottom {
+  border-bottom: 1px solid var(--ion-color-lighter);
+  margin-bottom: 8px;
+  padding-bottom: 8px;
+}
+
 #layerModalContainer ion-item {
   --padding-start: 0;
   --inner-padding-end: 0;
@@ -400,6 +406,23 @@ ion-modal#layerModalContainer::part(content) {
   width: 18px;
   height: 18px;
   background: url('../../theme/img/speed_vector.svg') no-repeat center;
+  background-size: cover;
+  margin-right: 2px;
+}
+
+#layerModalContainer ion-item .dirway {
+  width: 16px;
+  height: 16px;
+  background: url('../../theme/img/dirway_icon.svg') no-repeat center;
+  background-size: cover;
+  margin-top: 4px;
+  margin-right: 2px;
+}
+
+#layerModalContainer ion-item .restrictionport {
+  width: 16px;
+  height: 20px;
+  background: url('../../theme/img/restriction_port.svg') no-repeat center;
   background-size: cover;
   margin-right: 2px;
 }

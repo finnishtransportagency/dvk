@@ -60,6 +60,15 @@ exports[`should get fairways from api when cache expired 1`] = `
       },
     ],
     "owner": "Väylävirasto",
+    "prohibitionAreas": [
+      {
+        "fairway": {
+          "fairwayId": 10,
+        },
+        "id": 24,
+        "typeCode": 15,
+      },
+    ],
     "restrictionAreas": [
       {
         "id": 154814,

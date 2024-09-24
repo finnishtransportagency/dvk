@@ -3,20 +3,21 @@ import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
 import { Link } from 'react-router-dom';
-import { Lang, MASTERSGUIDE_URLS } from '../../utils/constants';
+import { Lang } from '../../utils/constants';
 import { AreaFeatureProperties } from '../features';
-import { Text } from '../../graphql/generated';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { isShowN2000HeightSystem } from '../layerStyles/depthStyles';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import { useDvkContext } from '../../hooks/dvkContext';
+import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
+import { useFairwayCardListData } from '../../utils/dataLoader';
+import { TFunction } from 'i18next';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
   setPopupProperties?: (properties: PopupProperties) => void;
-  isOffline: boolean;
 };
 
 export type AreaProperties = {
@@ -24,23 +25,21 @@ export type AreaProperties = {
   properties: AreaFeatureProperties;
 };
 
-type FairwayCardIdName = {
-  id: string;
-  name: Text;
-};
+export function getAreaName(area: AreaProperties, t: TFunction) {
+  const name = area.properties.name;
+  const type = t('fairwayCards.areaType' + area.properties.typeCode);
+  // ankkurointialueet pitkässä muodossa esim. osa 'c' -> 'ankkurointialue c'
+  if (area.properties.typeCode == 2) {
+    return name ? type + ' ' + name : type;
+  }
+  return name ?? type;
+}
 
-const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties, isOffline }) => {
+const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { state } = useDvkContext();
-
-  let fairwayCards: FairwayCardIdName[] = [];
-  area.properties?.fairways?.forEach((f) => {
-    if (f.fairwayCards) {
-      fairwayCards.push(...f.fairwayCards);
-    }
-  });
-  fairwayCards = fairwayCards.filter((card, index, self) => self.findIndex((inner) => inner?.id === card?.id) === index);
+  const { data } = useFairwayCardListData();
 
   const sizingSpeeds = [
     ...Array.from(
@@ -55,6 +54,8 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
     new Set((Array.isArray(area.properties.speedLimit) ? area.properties.speedLimit : [area.properties.speedLimit ?? 0]).filter((val) => val > 0))
   ).sort((a, b) => a - b);
   const showN2000HeightSystem = isShowN2000HeightSystem(area.properties);
+
+  const fairwayCards = data ? getFairwayListFairwayCards(area.properties.fairways ?? [], data.fairwayCards) : [];
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
@@ -80,23 +81,15 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
         <IonRow>
           <IonCol>
-            <em>{showN2000HeightSystem ? area.properties.n2000ReferenceLevel ?? area.properties.referenceLevel : area.properties.referenceLevel}</em>
+            <em>
+              {showN2000HeightSystem ? (area.properties.n2000ReferenceLevel ?? area.properties.referenceLevel) : area.properties.referenceLevel}
+            </em>
           </IonCol>
         </IonRow>
       )}
       <IonRow>
-        <IonCol size="auto">{area.properties.name ?? t('fairwayCards.areaType' + area.properties.typeCode)}</IonCol>
+        <IonCol size="auto">{getAreaName(area, t)}</IonCol>
       </IonRow>
-      {area.properties.typeCode === 15 && (
-        <IonRow>
-          <IonCol>
-            <p className="info use-flex ion-align-items-center">
-              <InfoIcon />
-              {t('popup.area.overtake')}
-            </p>
-          </IonCol>
-        </IonRow>
-      )}
       {(area.properties.n2000draft ||
         area.properties.draft ||
         area.properties.n2000depth ||
@@ -110,10 +103,10 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       {(area.properties.n2000draft || area.properties.draft) && (
         <IonRow>
           <IonCol>
-            {t('popup.area.draft', { val: showN2000HeightSystem ? area.properties.n2000draft ?? area.properties.draft : area.properties.draft })}{' '}
+            {t('popup.area.draft', { val: showN2000HeightSystem ? (area.properties.n2000draft ?? area.properties.draft) : area.properties.draft })}{' '}
             <dd
               aria-label={t('fairwayCards.unit.mDesc', {
-                count: showN2000HeightSystem ? area.properties.n2000draft ?? area.properties.draft : area.properties.draft,
+                count: showN2000HeightSystem ? (area.properties.n2000draft ?? area.properties.draft) : area.properties.draft,
               })}
             >
               m
@@ -124,10 +117,10 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       {(area.properties.n2000depth || area.properties.depth) && (
         <IonRow>
           <IonCol>
-            {t('popup.area.depth', { val: showN2000HeightSystem ? area.properties.n2000depth ?? area.properties.depth : area.properties.depth })}{' '}
+            {t('popup.area.depth', { val: showN2000HeightSystem ? (area.properties.n2000depth ?? area.properties.depth) : area.properties.depth })}{' '}
             <dd
               aria-label={t('fairwayCards.unit.mDesc', {
-                count: showN2000HeightSystem ? area.properties.n2000depth ?? area.properties.depth : area.properties.depth,
+                count: showN2000HeightSystem ? (area.properties.n2000depth ?? area.properties.depth) : area.properties.depth,
               })}
             >
               m
@@ -173,25 +166,6 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
             </p>
           </IonCol>
         </IonRow>
-      )}
-      {area.properties.typeCode === 15 && (
-        <>
-          <IonRow>
-            <IonCol className="header">{t('popup.area.extra')}</IonCol>
-          </IonRow>
-          <IonRow>
-            <IonCol>
-              <>
-                {t('popup.area.prohibitionText')}{' '}
-                <a href={'//' + MASTERSGUIDE_URLS[lang]} target="_blank" rel="noreferrer" tabIndex={isOffline ? -1 : undefined}>
-                  {MASTERSGUIDE_URLS[lang]}
-                  <span className="screen-reader-only">{t('opens-in-a-new-tab')}</span>
-                </a>
-                {'.'}
-              </>
-            </IonCol>
-          </IonRow>
-        </>
       )}
     </IonGrid>
   );

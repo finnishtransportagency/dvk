@@ -55,6 +55,16 @@ export class DvkBackendStack extends Stack {
       },
       xrayEnabled: false,
     });
+    // Configure the appsync cache using CfnApiCache
+    new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
+      apiCachingBehavior: 'PER_RESOLVER_CACHING',
+      apiId: api.apiId,
+      type: 'SMALL',
+      transitEncryptionEnabled: true,
+      atRestEncryptionEnabled: true,
+      ttl: 3600,
+      healthMetricsConfig: 'ENABLED',
+    });
     const config = new Config(this);
     if (Config.isPermanentEnvironment()) {
       try {
@@ -64,8 +74,11 @@ export class DvkBackendStack extends Stack {
         console.log('WAF config failed: %s', e);
       }
     }
-    const fairwayCardTable = this.createFairwayCardTable();
-    const harborTable = this.createHarborTable();
+    // called so data migration can be made from old table to new table, otherwise old table is deleted
+    this.createFairwayCardTable();
+    const fairwayCardWithVersionsTable = this.createFairwayCardWithVersionsTable();
+    this.createHarborTable();
+    const harborWithVersionsTable = this.createHarborWithVersionsTable();
 
     const layer = LayerVersion.fromLayerVersionArn(
       this,
@@ -93,12 +106,12 @@ export class DvkBackendStack extends Stack {
     });
 
     dbStreamHandler.addEventSource(
-      new DynamoEventSource(fairwayCardTable, {
+      new DynamoEventSource(fairwayCardWithVersionsTable, {
         startingPosition: lambda.StartingPosition.LATEST,
       })
     );
     dbStreamHandler.addEventSource(
-      new DynamoEventSource(harborTable, {
+      new DynamoEventSource(harborWithVersionsTable, {
         startingPosition: lambda.StartingPosition.LATEST,
       })
     );
@@ -124,8 +137,8 @@ export class DvkBackendStack extends Stack {
         layers: [layer],
         vpc: lambdaFunc.useVpc ? vpc : undefined,
         environment: {
-          FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
-          HARBOR_TABLE: Config.getHarborTableName(),
+          FAIRWAY_CARD_TABLE: Config.getFairwayCardWithVersionsTableName(),
+          HARBOR_TABLE: Config.getHarborWithVersionsTableName(),
           ENVIRONMENT: Config.getEnvironment(),
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           TZ: 'Europe/Helsinki',
@@ -145,28 +158,32 @@ export class DvkBackendStack extends Stack {
           minify: true,
         },
       });
+
       const lambdaDataSource = api.addLambdaDataSource(`lambdaDatasource_${typeName}_${fieldName}`, backendLambda);
       lambdaDataSource.createResolver(`${typeName}${fieldName}Resolver`, {
         typeName: typeName,
         fieldName: fieldName,
+        cachingConfig: lambdaFunc.useCaching ? { cachingKeys: ['$context.arguments'], ttl: cdk.Duration.minutes(60) } : undefined,
       });
       if (typeName === 'Mutation') {
-        fairwayCardTable.grantReadWriteData(backendLambda);
-        harborTable.grantReadWriteData(backendLambda);
+        fairwayCardWithVersionsTable.grantReadWriteData(backendLambda);
+        harborWithVersionsTable.grantReadWriteData(backendLambda);
         staticBucket.grantPut(backendLambda);
+        // delete when more sophisticated caching is implemented
+        // only needed to get updated starting and ending fairways for fairwaycard
         cacheBucket.grantDelete(backendLambda);
       } else {
-        fairwayCardTable.grantReadData(backendLambda);
-        harborTable.grantReadData(backendLambda);
+        fairwayCardWithVersionsTable.grantReadData(backendLambda);
+        harborWithVersionsTable.grantReadData(backendLambda);
       }
       cacheBucket.grantPut(backendLambda);
       cacheBucket.grantRead(backendLambda);
       staticBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
     }
-    Tags.of(fairwayCardTable).add('Backups-' + Config.getEnvironment(), 'true');
-    Tags.of(harborTable).add('Backups-' + Config.getEnvironment(), 'true');
-    const alb = this.createALB(env, fairwayCardTable, harborTable, cacheBucket, staticBucket, layer, vpc);
+    Tags.of(fairwayCardWithVersionsTable).add('Backups-' + Config.getEnvironment(), 'true');
+    Tags.of(harborWithVersionsTable).add('Backups-' + Config.getEnvironment(), 'true');
+    const alb = this.createALB(env, fairwayCardWithVersionsTable, harborWithVersionsTable, cacheBucket, staticBucket, layer, vpc);
     try {
       new cdk.CfnOutput(this, 'LoadBalancerDnsName', {
         value: alb.loadBalancerDnsName || '',
@@ -259,12 +276,57 @@ export class DvkBackendStack extends Stack {
     return table;
   }
 
+  private createFairwayCardWithVersionsTable(): Table {
+    const table = new Table(this, 'FairwayCardTableWithVersions', {
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      tableName: Config.getFairwayCardWithVersionsTableName(),
+      partitionKey: {
+        name: 'id',
+        type: AttributeType.STRING,
+      },
+      sortKey: {
+        name: 'version',
+        type: AttributeType.STRING,
+      },
+      pointInTimeRecovery: true,
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      stream: StreamViewType.NEW_AND_OLD_IMAGES,
+      timeToLiveAttribute: 'expires',
+    });
+    table.addGlobalSecondaryIndex({
+      indexName: 'FairwayCardByFairwayIdIndex',
+      partitionKey: { name: 'id', type: AttributeType.STRING },
+      projectionType: ProjectionType.KEYS_ONLY,
+      sortKey: { name: 'fairwayIds', type: AttributeType.STRING },
+    });
+    return table;
+  }
+
   private createHarborTable(): Table {
     return new Table(this, 'HarborTable', {
       billingMode: BillingMode.PAY_PER_REQUEST,
       tableName: Config.getHarborTableName(),
       partitionKey: {
         name: 'id',
+        type: AttributeType.STRING,
+      },
+      pointInTimeRecovery: true,
+      removalPolicy: Config.isPermanentEnvironment() ? cdk.RemovalPolicy.RETAIN : cdk.RemovalPolicy.DESTROY,
+      stream: StreamViewType.NEW_AND_OLD_IMAGES,
+      timeToLiveAttribute: 'expires',
+    });
+  }
+
+  private createHarborWithVersionsTable(): Table {
+    return new Table(this, 'HarborTableWithVersions', {
+      billingMode: BillingMode.PAY_PER_REQUEST,
+      tableName: Config.getHarborWithVersionsTableName(),
+      partitionKey: {
+        name: 'id',
+        type: AttributeType.STRING,
+      },
+      sortKey: {
+        name: 'version',
         type: AttributeType.STRING,
       },
       pointInTimeRecovery: true,
@@ -391,8 +453,8 @@ export class DvkBackendStack extends Stack {
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
           ENVIRONMENT: Config.getEnvironment(),
-          FAIRWAY_CARD_TABLE: Config.getFairwayCardTableName(),
-          HARBOR_TABLE: Config.getHarborTableName(),
+          FAIRWAY_CARD_TABLE: Config.getFairwayCardWithVersionsTableName(),
+          HARBOR_TABLE: Config.getHarborWithVersionsTableName(),
           TZ: 'Europe/Helsinki',
           PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
           PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',

@@ -20,9 +20,21 @@ export const getCurrentDecimalSeparator = () => {
   return sep;
 };
 
+export const isDigitsOnly = (s: string) => {
+  return /^\d+$/.test(s);
+};
+
 export const filterFairways = (data: FairwayCardPartsFragment[] | undefined, lang: 'fi' | 'sv' | 'en', searchQuery: string) => {
-  if (searchQuery.length < MINIMUM_QUERYLENGTH) return [];
-  const filtered = data?.filter((card) => (card.name[lang] ?? '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1).slice(0, MAX_HITS) ?? [];
+  if (searchQuery.length < MINIMUM_QUERYLENGTH && !isDigitsOnly(searchQuery)) return [];
+  const filtered =
+    data
+      ?.filter((card) => {
+        const nameMatches = (card.name[lang] ?? '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1;
+        const fairwayMatches = card.fairways.find((ff) => ff.id.toString().includes(searchQuery));
+
+        return nameMatches || fairwayMatches;
+      })
+      .slice(0, MAX_HITS) ?? [];
   return filtered.sort((a, b) => {
     const nameA = a.name[lang] ?? '';
     const nameB = b.name[lang] ?? '';
@@ -123,8 +135,10 @@ export function getDuration(dataUpdatedAt: number, decimals = 1) {
 export function getAlertProperties(dataUpdatedAt: number, layer: FeatureDataLayerId) {
   const duration = getDuration(dataUpdatedAt);
   let warningDurationHours = 2;
-  if (layer === 'buoy' || layer === 'mareograph' || layer === 'observation') {
+  if (layer === 'mareograph' || layer === 'observation') {
     warningDurationHours = 1;
+  } else if (layer === 'buoy') {
+    warningDurationHours = 3;
   }
   if (duration < warningDurationHours) {
     return undefined;
@@ -225,3 +239,24 @@ export function goToFeature(id: number | string | undefined, layerId: FeatureLay
     }
   }
 }
+
+export function getTimeDifference(dataUpdatedAt: number) {
+  const current = Date.now();
+  return current - dataUpdatedAt;
+}
+
+export const formatDate = (dateTimeString: Date | string, formatTime: boolean = false): string => {
+  const dateTime = new Date(dateTimeString);
+
+  const options: Intl.DateTimeFormatOptions = {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: formatTime ? '2-digit' : undefined,
+    minute: formatTime ? '2-digit' : undefined,
+  };
+
+  const formattedDatetime = new Intl.DateTimeFormat('fi', options).format(dateTime);
+
+  return formattedDatetime.replace(' ', ', ');
+};

@@ -100,7 +100,6 @@ button.icon:focus-visible:hover {
   border-radius: 0;
   --min-height: 43px;
   --background: var(--ion-color-primary-contrast);
-  --highlight-color-focused: transparent;
   --padding-top: 1px;
   --padding-bottom: 1px;
 }
@@ -127,6 +126,7 @@ button.icon:focus-visible:hover {
 }
 
 .dropdownWrapper ion-input.searchBar.has-focus input {
+  caret-color: auto;
   background-position: right 11px center;
   padding-inline-start: 9px;
 }
@@ -149,6 +149,7 @@ button.icon:focus-visible:hover {
 
 .dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:hover {
   background-color: var(--ion-color-light);
+  font-size: 14px;
 }
 
 .dropdownWrapper ion-input.searchBar.has-value + button.input-clear-icon:focus-visible {
@@ -159,6 +160,14 @@ button.icon:focus-visible:hover {
 
 .dropdownWrapper ion-input.searchBar:not(.has-value) + button.input-clear-icon {
   display: none;
+}
+
+.placeholderSmallerFont {
+  font-size: 11.25px;
+}
+/* Only placeholder text needs to be smaller since it's longer now */
+.placeholderSmallerFont ion-input.searchBar.has-value {
+  font-size: 16px;
 }
 
 #fairwayCardsContainer .closeButton {
@@ -233,6 +242,7 @@ ion-text .h4 {
   margin-top: 24px;
   line-height: 1.5rem;
   break-after: avoid;
+  margin-bottom: 0.5rem;
 }
 ion-text h4 span,
 ion-text .h4 span {
@@ -241,17 +251,25 @@ ion-text .h4 span {
 ion-text h5,
 ion-text .h5 {
   font-size: 12px;
-  margin: 12px 0 6px;
+  margin: 12px 0 0px;
   font-weight: bold;
   line-height: 1.125rem;
   text-transform: none;
   break-after: avoid;
 }
+
+.fairwayAreasFairwayName {
+  margin-bottom: 0;
+}
+
 ion-text .info svg {
   color: var(--ion-color-primary);
-  width: 16px;
-  height: 16px;
+  width: 12px;
+  height: 12px;
   margin-right: 8px;
+}
+ion-text .info.inline svg {
+  margin-left: 8px;
 }
 ion-text .hoverText {
   display: block;
@@ -506,4 +524,18 @@ ion-text.previewText > * {
 .disabled {
   pointer-events: none;
   opacity: 50%;
+}
+
+.mareographsTitle {
+  font-size: 12px;
+}
+
+.fairwayCardInfoIcon {
+  position: relative;
+  max-height: 12px;
+  max-width: 12px;
+  margin-right: 6px;
+  margin-left: 6px;
+  top: 4px;
+  color: var(--ion-color-primary);
 }

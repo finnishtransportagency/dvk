@@ -17,15 +17,18 @@ import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
 import { openPreview } from '../utils/common';
+import InfoHeader from './InfoHeader';
 
 interface FormProps {
   harbour: HarborInput;
   modified?: number;
   modifier?: string;
+  creator?: string;
+  created?: number;
   isError?: boolean;
 }
 
-const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError }) => {
+const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator, created, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -44,7 +47,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
   const [previewPending, setPreviewPending] = useState(false);
 
   const queryClient = useQueryClient();
-  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData();
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
   const { data: fairwayCardList } = useFairwayCardsQueryData();
   const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
@@ -103,20 +106,20 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
               ...quay,
               geometry:
                 !quay?.geometry?.lat || !quay?.geometry?.lon
-                  ? undefined
+                  ? ''
                   : {
                       lat: quay?.geometry?.lat,
                       lon: quay?.geometry?.lon,
                     },
-              length: quay?.length ?? undefined,
+              length: quay?.length ?? '',
               sections: quay?.sections?.map((quaySection) => {
                 return {
                   ...quaySection,
                   geometry:
                     !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
-                      ? undefined
+                      ? { lat: '', lon: '' }
                       : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
-                  depth: quaySection?.depth ?? undefined,
+                  depth: quaySection?.depth ?? '',
                 };
               }),
             };
@@ -135,7 +138,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
       if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
       if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
     }
-    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg);
+    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg, t(ErrorMessageKeys?.duplicateLocation));
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -198,9 +201,19 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
     }
   };
 
-  const getModifiedInfo = () => {
-    if (savedHarbour) return t('general.datetimeFormat', { val: savedHarbour.modificationTimestamp ?? savedHarbour.creationTimestamp });
-    return modified ? t('general.datetimeFormat', { val: modified }) : '-';
+  const getDateTimeInfo = (isModifiedInfo: boolean) => {
+    if (savedHarbour) {
+      return t('general.datetimeFormat', {
+        val: isModifiedInfo
+          ? (savedHarbour.modificationTimestamp ?? savedHarbour.creationTimestamp)
+          : (savedHarbour.creationTimestamp ?? savedHarbour.modificationTimestamp),
+      });
+    }
+    if (isModifiedInfo) {
+      return modified ? t('general.datetimeFormat', { val: modified }) : '-';
+    } else {
+      return created ? t('general.datetimeFormat', { val: created }) : '-';
+    }
   };
 
   const closeNotification = () => {
@@ -251,10 +264,11 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         subHeader={
           (saveError
             ? t('general.error-' + saveError)
-            : t('modal.saved-harbor-by-name', { name: savedHarbour?.name ? savedHarbour?.name[lang] ?? savedHarbour.name.fi : savedHarbour?.id })) ??
-          ''
+            : t('modal.saved-harbor-by-name', {
+                name: savedHarbour?.name ? (savedHarbour?.name[lang] ?? savedHarbour.name.fi) : savedHarbour?.id,
+              })) ?? ''
         }
-        message={saveError ? saveErrorMsg ?? t('general.fix-errors-try-again') ?? '' : ''}
+        message={saveError ? (saveErrorMsg ?? t('general.fix-errors-try-again') ?? '') : ''}
         itemList={saveErrorItems}
       />
       <Header
@@ -267,8 +281,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         handlePreview={handlePreview}
-        modifiedInfo={getModifiedInfo()}
-        modifierInfo={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
         isError={isError}
       />
 
@@ -276,19 +288,28 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, isError
         {isError && <p>{t('general.loading-error')}</p>}
 
         {!isError && (
-          <form ref={formRef}>
-            <MainSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
-            <Section
-              title={t('harbour.quay-heading')}
-              sections={state.quays as QuayInput[]}
-              updateState={updateState}
-              sectionType="quay"
-              validationErrors={validationErrors}
-              disabled={state.status === Status.Removed}
+          <>
+            <InfoHeader
+              status={state.status}
+              modified={getDateTimeInfo(true)}
+              modifier={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
+              creator={savedHarbour?.creator ?? creator}
+              created={getDateTimeInfo(false)}
             />
-          </form>
+            <form ref={formRef}>
+              <MainSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <Section
+                title={t('harbour.quay-heading')}
+                sections={state.quays as QuayInput[]}
+                updateState={updateState}
+                sectionType="quay"
+                validationErrors={validationErrors}
+                disabled={state.status === Status.Removed}
+              />
+            </form>
+          </>
         )}
       </IonContent>
     </IonPage>
