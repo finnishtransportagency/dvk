@@ -270,15 +270,15 @@ class FairwayCardDBModel {
   }
 
   static async save(data: FairwayCardDBModel, operation: Operation) {
-    let latestVersionNumber;
-    let newVersionNumber;
+    const latestVersionNumber = await FairwayCardDBModel.getLatest(data.id).then((fairwayCard) => fairwayCard?.latest);
+    // get only number out of the string
+    let versionNumber = Number(data.version.slice(1));
 
     if (operation === Operation.Createversion) {
-      latestVersionNumber = await FairwayCardDBModel.getLatest(data.id).then((fairwayCard) => fairwayCard?.latest);
-      newVersionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
+      versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
     }
 
-    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation, newVersionNumber);
+    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation, versionNumber, latestVersionNumber);
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }

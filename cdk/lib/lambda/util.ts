@@ -146,7 +146,7 @@ export async function handleAisCall(
   };
 }
 
-export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableName: string, operation: Operation, newVersionNumber?: number | null) {
+export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableName: string, operation: Operation, versionNumber?: number | null, latestVersionNumber?: number | null) {
   const updateCommands = [];
   // creating a new item
   if (operation === Operation.Create) {
@@ -181,39 +181,31 @@ export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableNa
     updateCommands.push(
       new PutCommand({
         TableName: tableName,
-        Item: { ...data, version: 'v0_latest', latest: newVersionNumber },
+        Item: { ...data, version: 'v0_latest', latest: versionNumber },
       })
     );
     updateCommands.push(
       new PutCommand({
         TableName: tableName,
-        Item: { ...data, version: 'v' + newVersionNumber },
+        Item: { ...data, version: 'v' + versionNumber },
       })
     );
   } else if (operation === Operation.Update) {
     // updating existing item
+    // this check because latest can be public and only one draft can be ready to be updated at a time
+    if (versionNumber === latestVersionNumber) {
+      updateCommands.push(
+        new PutCommand({
+          TableName: tableName,
+          Item: { ...data, version: 'v0_latest', latest: versionNumber },
+          ConditionExpression: 'attribute_exists(id)',
+        })
+      );
+    }
     updateCommands.push(
       new PutCommand({
         TableName: tableName,
-        // when versioning is used properly, increment latest by version number
-        Item: { ...data, version: 'v0_latest', latest: 1 },
-        ConditionExpression: 'attribute_exists(id)',
-      })
-    );
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item:
-          data.status === Status.Public
-            ? { ...data, version: 'v0_public', currentPublic: 1 }
-            : { id: data.id, version: 'v0_public', currenPublic: null },
-        ConditionExpression: 'attribute_exists(id)',
-      })
-    );
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...data, version: 'v1' },
+        Item: { ...data, version: 'v' + versionNumber },
         ConditionExpression: 'attribute_exists(id)',
       })
     );
