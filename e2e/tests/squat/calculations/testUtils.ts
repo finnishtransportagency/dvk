@@ -2,6 +2,7 @@ import { Page, Locator, expect } from '@playwright/test';
 
 export interface TestCase {
     name: string;
+    vessel: string;
     additionalSetup: (page: Page) => Promise<void>;
     expectedResults: Record<string, string>;
   }

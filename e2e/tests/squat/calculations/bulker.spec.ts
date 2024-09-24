@@ -6,7 +6,10 @@ const PORT = process.env.PORT ?? '3000';
 const testCases: TestCase[] = [
   {
     name: 'Open Water',
-    additionalSetup: async (page: Page) => {},
+    vessel: 'Bulker',
+    additionalSetup: async function (page: Page) {
+      await page.getByTestId(this.name).click();
+    },
     expectedResults: {
       'heel-due-wind': '0,54',
       'constant-heel-during-turn': '2,12',
@@ -30,7 +33,9 @@ const testCases: TestCase[] = [
   },
   {
     name: 'Sloped Channel',
-    additionalSetup: async (page: Page) => {
+    vessel: 'Bulker',
+    additionalSetup: async function (page: Page) {
+      await page.getByTestId(this.name).click();
       await setLocatorValue(page.getByTestId('channelWidth').locator('input'), '200');
       await setLocatorValue(page.getByTestId('slopeHeight').locator('input'), '12', true);
     },
@@ -57,7 +62,9 @@ const testCases: TestCase[] = [
   },
   {
     name: 'Channel',
-    additionalSetup: async (page: Page) => {
+    vessel: 'Bulker',
+    additionalSetup: async function (page: Page) {
+      await page.getByTestId(this.name).click();
       await setLocatorValue(page.getByTestId('channelWidth').locator('input'), '200');
     },
     expectedResults: {
@@ -131,7 +138,6 @@ test.describe('Squat calculations for bulker vessel', () => {
     const testCase = testCases.find((tc) => tc.name === 'Open Water')!;
     await page.goto(`http://localhost:${PORT}/`);
     await fillForm(page, bulkerSections);
-    await page.getByTestId(testCase.name).click();
     await testCase.additionalSetup(page);
     await checkResults(page, testCase.expectedResults);
   });
@@ -140,7 +146,6 @@ test.describe('Squat calculations for bulker vessel', () => {
     const testCase = testCases.find((tc) => tc.name === 'Sloped Channel')!;
     await page.goto(`http://localhost:${PORT}/`);
     await fillForm(page, bulkerSections);
-    await page.getByTestId(testCase.name).click();
     await testCase.additionalSetup(page);
     await checkResults(page, testCase.expectedResults);
   });
@@ -149,7 +154,6 @@ test.describe('Squat calculations for bulker vessel', () => {
     const testCase = testCases.find((tc) => tc.name === 'Channel')!;
     await page.goto(`http://localhost:${PORT}/`);
     await fillForm(page, bulkerSections);
-    await page.getByTestId(testCase.name).click();
     await testCase.additionalSetup(page);
     await checkResults(page, testCase.expectedResults);
   });
