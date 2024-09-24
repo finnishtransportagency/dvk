@@ -6,6 +6,7 @@ import { Geometry } from 'ol/geom';
 import dvkMap from './DvkMap';
 import { useFeatureData } from '../utils/dataLoader';
 import { PilotageLimitFeatureProperties } from './features';
+import { getFeatureDataSourceProjection } from '../utils/common';
 
 export function usePilotageLimitFeatures() {
   const [ready, setReady] = useState(false);
@@ -16,7 +17,7 @@ export function usePilotageLimitFeatures() {
     if (data) {
       const format = new GeoJSON();
       const plFeatures = format.readFeatures(data, {
-        dataProjection: 'EPSG:3067',
+        dataProjection: getFeatureDataSourceProjection('pilotagelimit'),
         featureProjection: MAP.EPSG,
       });
       setPilotageLimitFeatures(plFeatures);

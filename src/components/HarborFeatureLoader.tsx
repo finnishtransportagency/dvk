@@ -8,6 +8,7 @@ import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { FairwayCardPartsFragment } from '../graphql/generated';
 import { Card } from './features';
+import { getFeatureDataSourceProjection } from '../utils/common';
 
 function addFairwayCardData(features: Feature<Geometry>[], cards: FairwayCardPartsFragment[]) {
   features.forEach((f) => {
@@ -29,7 +30,7 @@ export function useHarborFeatures() {
   useEffect(() => {
     if (data && fairwayCardData) {
       const format = new GeoJSON();
-      const harborFeatures = format.readFeatures(data, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const harborFeatures = format.readFeatures(data, { dataProjection: getFeatureDataSourceProjection('harbor'), featureProjection: MAP.EPSG });
       addFairwayCardData(harborFeatures, fairwayCardData.fairwayCards);
       setHarborFeatures(harborFeatures);
       setReady(true);
