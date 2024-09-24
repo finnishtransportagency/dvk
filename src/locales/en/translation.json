@@ -264,7 +264,7 @@
     "width": "Width"
   },
   "routes": {
-    "info": "[en] info",
+    "info": "The provided pilotage routes do not as such account for a vessel spesific pilotage plan referred to in the Pilotage Act (561/2023). Pilotage routes are presented as general indicative presentations and the correctness of an individual pilotage route cannot be guaranteed.  Any possible use of a pilotage route provided in the Digital Fairway Card for navigational purposes of a specific vessel falls exclusively under the responsibility of the master of the vessel.",
     "title": "Pilot routes",
     "route": "Route",
     "rtz": "[en] Reitin rtz tiedosto"
