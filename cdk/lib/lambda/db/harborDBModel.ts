@@ -61,6 +61,8 @@ class HarborDBModel {
 
   expires?: Maybe<number>;
 
+  latest?: Maybe<number>;
+
   private static getLatestSortKey() {
     return 'v0_latest';
   }
@@ -173,7 +175,15 @@ class HarborDBModel {
   }
 
   static async save(data: HarborDBModel, operation: Operation) {
-    const putCommands = getPutCommands(data, getHarborTableName(), operation);
+    const latestVersionNumber = await HarborDBModel.getLatest(data.id).then((harbor) => harbor?.latest);
+    //get only number out of the string
+    let versionNumber = Number(data.version.slice(1));
+
+    if (operation === Operation.Createversion) {
+      versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
+    }
+
+    const putCommands = getPutCommands(data, getHarborTableName(), operation, versionNumber, latestVersionNumber);
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }

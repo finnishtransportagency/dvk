@@ -330,6 +330,7 @@ export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: Curr
     phoneNumber: dbModel.phoneNumber,
     quays: dbModel.quays,
     status: dbModel.status,
+    latest: dbModel.latest,
   };
 }
 

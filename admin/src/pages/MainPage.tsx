@@ -83,7 +83,7 @@ const MainPage: React.FC = () => {
 
   const selectItem = (id: string, type: string, version: string) => {
     if (type === 'CARD') history.push('/vaylakortti/' + id + '/' + version);
-    if (type === 'HARBOR') history.push('/satama/' + id);
+    if (type === 'HARBOR') history.push('/satama/' + id + '/' + version);
   };
 
   const keyDownAction = (event: React.KeyboardEvent<HTMLIonRowElement>, id: string, type: string, version: string) => {

@@ -4,15 +4,16 @@ import { FairwayCardOrHarbor, HarborInput, Operation, Status } from '../graphql/
 import { useCurrentUserQueryData, useHarbourByIdQueryData } from '../graphql/api';
 import HarbourForm from '../components/HarbourForm';
 import { IonProgressBar } from '@ionic/react';
-import { mapToHarborInput } from '../utils/dataMapper';
+import { mapOriginToHarborInput, mapToHarborInput } from '../utils/dataMapper';
 
 interface HarbourEditProps {
   harbourId: string;
   harbourVersion?: string;
   origin?: boolean;
+  originInput?: HarborInput;
 }
 
-const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion = 'v1', origin }) => {
+const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion = 'v1', origin, originInput }) => {
   const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, harbourVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
@@ -21,7 +22,7 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion
   return (
     <>
       {isLoading && <IonProgressBar type="indeterminate" />}
-      {!isLoading && (
+      {!isLoading && !originInput && (
         <HarbourForm
           harbour={harbour}
           modified={origin ? 0 : (data?.harbor?.modificationTimestamp ?? data?.harbor?.creationTimestamp ?? 0)}
@@ -31,20 +32,32 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion
           isError={isError}
         />
       )}
+      {!isLoading && originInput && (
+        <HarbourForm
+          harbour={originInput}
+          modified={0}
+          modifier={data?.harbor?.modifier ?? ''}
+          creator={data?.harbor?.creator ?? data?.harbor?.modifier ?? undefined}
+          created={data?.harbor?.creationTimestamp ?? 0}
+        />
+      )}
     </>
   );
 };
 
 interface HarbourProps {
   harbourId?: string;
+  version?: string;
 }
 
 type LocationState = {
-  origin?: FairwayCardOrHarbor;
+  // harborInput when creating a new version since the whole harbor data is copied initially
+  origin?: FairwayCardOrHarbor | HarborInput;
+  newVersion?: boolean;
 };
 
 const HarbourEditPage: React.FC<HarbourProps> = () => {
-  const { harbourId } = useParams<HarbourProps>();
+  const { harbourId, version } = useParams<HarbourProps>();
   const location = useLocation();
   const locationState = location.state as LocationState;
 
@@ -71,8 +84,17 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
 
   return (
     <>
-      {harbourId && <HarbourEditForm harbourId={harbourId} />}
-      {locationState?.origin && <HarbourEditForm harbourId={locationState.origin.id} harbourVersion={locationState.origin.version} origin />}
+      {harbourId && !locationState?.newVersion && <HarbourEditForm harbourId={harbourId} harbourVersion={version} />}
+      {locationState?.origin && !locationState?.newVersion && (
+        <HarbourEditForm harbourId={locationState.origin.id} harbourVersion={locationState.origin.version} origin />
+      )}
+      {harbourId && locationState?.origin && locationState?.newVersion && (
+        <HarbourEditForm
+          harbourId={locationState.origin.id}
+          harbourVersion={locationState.origin.version}
+          originInput={mapOriginToHarborInput(locationState.origin as HarborInput)}
+        />
+      )}
       {!harbourId && !locationState?.origin && (
         <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={'-'} creator={data?.currentUser?.name} created={0} />
       )}

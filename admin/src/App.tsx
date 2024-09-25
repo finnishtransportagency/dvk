@@ -52,7 +52,7 @@ const AdminIonApp: React.FC = () => {
               <Route path="/vaylakortti/">
                 <FairwayCardEditPage />
               </Route>
-              <Route path="/satama/:harbourId">
+              <Route path="/satama/:harbourId/:version">
                 <HarbourEditPage />
               </Route>
               <Route path="/satama/">

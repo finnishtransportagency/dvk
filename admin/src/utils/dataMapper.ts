@@ -1,4 +1,4 @@
-import { FairwayCardByIdQuery, Status, Operation, HarbourByIdQuery, FairwayCardInput } from '../graphql/generated';
+import { FairwayCardByIdQuery, Status, Operation, HarbourByIdQuery, FairwayCardInput, HarborInput } from '../graphql/generated';
 import { sortPictures } from './common';
 import { POSITION } from './constants';
 
@@ -322,5 +322,48 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
     }),
     status: origin ? Status.Draft : (data?.harbor?.status ?? Status.Draft),
     operation: origin ? Operation.Create : Operation.Update,
+  };
+}
+
+export function mapOriginToHarborInput(originInput: HarborInput) {
+  return {
+    id: stringValueOrDefault(originInput?.id),
+    // v1 is just for now, since proper version control not in use
+    version: originInput.version,
+    name: {
+      fi: stringValueOrDefault(originInput.name.fi),
+      sv: stringValueOrDefault(originInput.name.sv),
+      en: stringValueOrDefault(originInput.name.en),
+    },
+    extraInfo: {
+      fi: stringValueOrDefault(originInput.extraInfo?.fi),
+      sv: stringValueOrDefault(originInput.extraInfo?.sv),
+      en: stringValueOrDefault(originInput.extraInfo?.en),
+    },
+    cargo: {
+      fi: stringValueOrDefault(originInput.cargo?.fi),
+      sv: stringValueOrDefault(originInput.cargo?.sv),
+      en: stringValueOrDefault(originInput.cargo?.en),
+    },
+    harborBasin: {
+      fi: stringValueOrDefault(originInput.harborBasin?.fi),
+      sv: stringValueOrDefault(originInput.harborBasin?.sv),
+      en: stringValueOrDefault(originInput.harborBasin?.en),
+    },
+    n2000HeightSystem: originInput.n2000HeightSystem ?? false,
+    geometry: { lat: stringValueOrDefault(originInput.geometry.lat), lon: stringValueOrDefault(originInput.geometry.lon) },
+    company: {
+      fi: stringValueOrDefault(originInput.company?.fi),
+      sv: stringValueOrDefault(originInput.company?.sv),
+      en: stringValueOrDefault(originInput.company?.en),
+    },
+    email: stringValueOrDefault(originInput.email),
+    fax: stringValueOrDefault(originInput.fax),
+    internet: stringValueOrDefault(originInput.internet),
+    phoneNumber: originInput.phoneNumber ?? [],
+    quays: originInput.quays,
+    // this mapper is only used for new version, so status is always 'Draft' and operation 'Createversion'
+    status: Status.Draft,
+    operation: Operation.Createversion,
   };
 }

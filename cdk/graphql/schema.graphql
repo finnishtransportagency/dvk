@@ -334,6 +334,7 @@ type Harbor {
   harborBasin: Text
   cargo: Text
   geometry: GeometryPoint
+  latest: Float
 }
 
 type Quay {
