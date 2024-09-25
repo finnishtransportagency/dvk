@@ -21,7 +21,7 @@ const HarborPreview: React.FC<HarborPreviewProps> = ({ widePane }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { state } = useDvkContext();
   const [tab, setTab] = useState(2);
-  const { data, isPending, isFetching } = useHarborPreviewData(state.harborId);
+  const { data, isPending, isFetching } = useHarborPreviewData(state.harborId, state.version);
   const { ready: layerReady } = useHarborLayer();
 
   const path = [{ title: t('title', { count: 0 }), route: '/kortit/' }, { title: '-' }, { title: t('harboursTitle') }];

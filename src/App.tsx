@@ -343,7 +343,7 @@ const DvkIonApp: React.FC = () => {
               )}
               {state.preview && (
                 <Switch>
-                  <Route path="/satamat/:harborId">
+                  <Route path="/satamat/:harborId/:version">
                     <HarborPreviewPage setModalContent={setModalContent} />
                   </Route>
                   <Route path="/">

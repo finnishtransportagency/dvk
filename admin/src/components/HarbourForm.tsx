@@ -250,7 +250,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     if (formValid()) {
       setState(mapOriginToHarborInput(state));
       setIsSubmittingVersion(true);
-    } else {
+    } else if (!saveError && !saveErrorMsg) {
       setSaveError('OPERATION-BLOCKED');
       setSaveErrorMsg(t('general.fix-errors-try-again'));
     }

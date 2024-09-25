@@ -83,7 +83,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
-      console.log(data);
       setSavedCard(data.saveFairwayCard);
       setOldState(mapToFairwayCardInput(undefined, { fairwayCard: data.saveFairwayCard }));
       setNotificationOpen(true);
@@ -177,7 +176,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       } else if (!!sourceCard?.length && !!state.pictures?.length) {
         saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: sourceCard });
       } else {
-        console.log(newInput);
         saveFairwayCard({ card: newInput as FairwayCardInput });
       }
     },

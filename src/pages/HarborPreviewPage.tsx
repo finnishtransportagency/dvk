@@ -14,11 +14,12 @@ interface ModalProps {
 
 type HarborPreviewParams = {
   harborId: string;
+  version: string;
 };
 
 const HarborPreviewPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const { t } = useTranslation();
-  const { harborId } = useParams<HarborPreviewParams>();
+  const { harborId, version } = useParams<HarborPreviewParams>();
   const { dispatch } = useDvkContext();
   const title = t('common.documentTitle') + ' - ' + t('fairwayCards.harboursTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
@@ -38,7 +39,13 @@ const HarborPreviewPage: React.FC<ModalProps> = ({ setModalContent }) => {
         value: harborId,
       },
     });
-  }, [dispatch, harborId]);
+    dispatch({
+      type: 'version',
+      payload: {
+        value: version,
+      },
+    });
+  }, [dispatch, harborId, version]);
 
   return (
     <IonPage id="mainContent">
