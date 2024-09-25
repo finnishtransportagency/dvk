@@ -216,7 +216,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
 
   const handleOpenPreview = () => {
-    openPreview(fairwayCard.id, true);
+    openPreview(fairwayCard.id, fairwayCard.version, true);
     setPreviewPending(false);
   };
 

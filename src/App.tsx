@@ -316,7 +316,7 @@ const DvkIonApp: React.FC = () => {
         <IonContent id="MainContent">
           <IonRouterOutlet>
             <Switch>
-              <Route path="/kortit/:fairwayCardId">
+              <Route path={state.preview ? '/kortit/:fairwayCardId/:version' : '/kortit/:fairwayCardId'}>
                 <FairwayCardPage setModalContent={setModalContent} />
               </Route>
               <Route path="/kortit">
