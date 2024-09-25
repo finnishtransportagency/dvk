@@ -253,8 +253,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
 
   const createNewVersion = () => {
-    setState(mapOriginToFairwayCardInput(fairwayCard.id, state));
-    setIsSubmittingVersion(true);
+    if (formValid()) {
+      setState(mapOriginToFairwayCardInput(fairwayCard.id, state));
+      setIsSubmittingVersion(true);
+    }
   };
 
   useEffect(() => {
