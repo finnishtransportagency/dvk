@@ -26,10 +26,10 @@ export async function fillForm(page: Page, sections: Section[]) {
   }
 }
 
-export async function setLocatorValue(locator: Locator, value: string, clear: boolean = false) {
+export async function setLocatorValue(locator: Locator, value: string, clear: boolean = true) {
   if (clear) await locator.clear();
-  await locator.fill(value);
-  await locator.press('Tab');
+  await locator.pressSequentially(value, { delay: 100 });
+  await locator.press('Tab', { delay: 100 });
 }
 
 export async function checkResults(page: Page, expectedResults: Record<string, string>) {
