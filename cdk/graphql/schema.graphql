@@ -228,6 +228,7 @@ type CurrentUser {
 type FairwayCard {
   id: String!
   version: String!
+  currentPublic: Int
   name: Text!
   n2000HeightSystem: Boolean!
   group: String

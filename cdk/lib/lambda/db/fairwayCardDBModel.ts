@@ -100,6 +100,8 @@ class FairwayCardDBModel {
 
   status: Status;
 
+  currentPublic?: Maybe<number>;
+
   n2000HeightSystem?: Maybe<boolean>;
 
   modifier?: Maybe<string>;
