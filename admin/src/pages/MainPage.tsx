@@ -61,7 +61,7 @@ const MainPage: React.FC = () => {
   const searchRef = useRef<HTMLIonInputElement>(null);
 
   const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, itemStatus, sortBy, sortDescending, t);
-
+  console.log(filteredItemList);
   const changeAction = (val?: string | number | null) => {
     setSearchQuery(String(val));
   };
@@ -333,7 +333,7 @@ const MainPage: React.FC = () => {
             filteredItemList.map((item) => {
               return (
                 <IonRow
-                  key={item.id + item.type}
+                  key={item.id + item.type + item.version}
                   tabIndex={0}
                   onClick={() => selectItem(item.id, item.type, item.version)}
                   onKeyDown={(e) => keyDownAction(e, item.id, item.type, item.version)}
