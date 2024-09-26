@@ -255,6 +255,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     if (formValid()) {
       setState(mapOriginToFairwayCardInput(fairwayCard.id, state));
       setIsSubmittingVersion(true);
+    } else if (!saveError) {
+      setSaveError('OPERATION-BLOCKED');
     }
   };
 
