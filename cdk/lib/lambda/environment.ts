@@ -60,6 +60,19 @@ export function getHeaders(): Record<string, string[]> {
   };
 }
 
+export function getWeatherResponseHeaders(): Record<string, string[]> {
+  if (isPermanentEnvironment()) {
+    return { 'Content-Type': ['application/json'] };
+  }
+  return {
+    'Content-Type': ['application/json'],
+    'Access-Control-Allow-Origin': ['*'],
+    'Access-Control-Allow-Methods': ['*'],
+    'Access-Control-Allow-Headers': ['*'],
+    'Access-Control-Expose-Headers': ['fetchedDate'],
+  };
+}
+
 export function getPilotRoutesHeaders(): Record<string, string[]> {
   // identical to getHeaders() for now, but could change in future
   if (isPermanentEnvironment()) {
