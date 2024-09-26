@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 
-const url = 'http://localhost:3000/vaylakortti';
+const PORT = process.env.PORT ?? '3000';
+const url = `http://localhost:${PORT}/vaylakortti`;
 
 test.describe('Open front page and go to fairway cards', () => {
   test('should open fairway card list in finnish', async ({ page }) => {
