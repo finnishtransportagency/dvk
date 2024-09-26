@@ -8,12 +8,13 @@ import { IonText } from '@ionic/react';
 type FairwayCardProps = {
   pictures?: PicturePartsFragment[];
   id?: string;
+  version?: string;
   name?: Text;
   modified?: number;
   isN2000?: boolean;
 };
 
-const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pictures }) => {
+const PrintMap: React.FC<FairwayCardProps> = ({ id, version, name, modified, isN2000, pictures }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const lang = i18n.resolvedLanguage as Lang;
 
@@ -84,7 +85,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, name, modified, isN2000, pic
             <div className="mapWrapper">
               <div className="mapContent">
                 <div className="mapExport" id={`mapExport${index}`}>
-                  <img src={imageUrl + id + '/' + picture.id} alt={picture.id} />
+                  <img src={`${imageUrl}${id}/${version}/${picture.id}`} alt={picture.id} />
                 </div>
                 <div className={mapLegendClass}>
                   <div className="bg"></div>

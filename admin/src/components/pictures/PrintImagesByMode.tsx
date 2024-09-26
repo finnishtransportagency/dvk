@@ -27,7 +27,8 @@ interface PrintImagesByModeProps {
   isLoading?: boolean;
   isProcessingCurLang?: boolean;
   validationErrors?: ValidationType[];
-  sourceCard?: string;
+  sourceCardId?: string;
+  sourceCardVersion?: string;
 }
 
 export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
@@ -39,7 +40,8 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   isLoading,
   isProcessingCurLang,
   validationErrors,
-  sourceCard,
+  sourceCardId,
+  sourceCardVersion,
 }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
@@ -99,12 +101,15 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
     }
   };
 
+  const cardId = sourceCardId?.length ? sourceCardId : fairwayCardInput.id;
+  const cardVersion = sourceCardId?.length ? sourceCardVersion : fairwayCardInput.version;
+
   return (
     <IonGrid className={'print-images ' + orientation.toLowerCase()}>
       <IonRow>
         {mainPictures?.map((pic, idx) => {
           const groupedPics = secondaryPictures?.filter((p) => p.groupId && p.groupId === pic.groupId);
-          const imgSource = `${imageUrl}${sourceCard?.length ? sourceCard : fairwayCardInput.id}/`;
+          const imgSource = `${imageUrl}${cardId}/${cardVersion}/`;
 
           return (
             <IonCol key={pic.id} size="auto">
@@ -119,7 +124,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                         setShowPicture(pic);
                       }}
                     >
-                      <img src={imgSource + pic.id} alt={sourceCard?.length ? `${t('fairwaycard.pic-copy')}-${pic.id}` : pic.id} />
+                      <img src={imgSource + pic.id} alt={sourceCardId?.length ? `${t('fairwaycard.pic-copy')}-${pic.id}` : pic.id} />
                       <IonButton
                         slot="end"
                         onClick={(ev) => {
@@ -165,7 +170,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                             >
                               <img
                                 src={imgSource + groupedPic.id}
-                                alt={sourceCard?.length ? `${t('fairwaycard.pic-copy')}-${groupedPic.id}` : groupedPic.id}
+                                alt={sourceCardId?.length ? `${t('fairwaycard.pic-copy')}-${groupedPic.id}` : groupedPic.id}
                                 className="small"
                               />
                             </a>
