@@ -138,11 +138,11 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: OFFLINE_STORAGE.staleTime,
-      gcTime: OFFLINE_STORAGE.cacheTime,
+      gcTime: OFFLINE_STORAGE.gcTime,
       persister: experimental_createPersister({
         storage: idbAsyncStorage,
         buster: import.meta.env.VITE_APP_VERSION,
-        maxAge: OFFLINE_STORAGE.staleTime,
+        maxAge: OFFLINE_STORAGE.cacheTime,
         prefix: 'DVK_STORAGE',
         filters: { predicate: queryFilter },
         serialize: (persistedQuery) => {

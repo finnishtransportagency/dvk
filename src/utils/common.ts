@@ -1,7 +1,7 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap, { getMap } from '../components/DvkMap';
 import { FairwayCardPartsFragment, Text } from '../graphql/generated';
-import { FeatureDataLayerId, FeatureLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+import { FeatureDataId, FeatureDataLayerId, FeatureDataSources, FeatureLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { MarineWarningFeatureProperties } from '../components/features';
@@ -260,3 +260,8 @@ export const formatDate = (dateTimeString: Date | string, formatTime: boolean = 
 
   return formattedDatetime.replace(' ', ', ');
 };
+
+export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
+  const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
+  return fds?.projection;
+}
