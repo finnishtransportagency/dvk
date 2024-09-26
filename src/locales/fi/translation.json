@@ -279,6 +279,7 @@
     "fairwayNumbers": "Väylän numerot"
   },
   "routes": {
+    "info": "Esitetyt luotsausreitit eivät sellaisenaan sovellu luotsauslain (561/2023) tarkoittamaksi yksittäisen aluksen luotsaussuunnitelmaksi. Luotsausreitit on laadittu suuntaa-antavina yleisesityksinä ja yksittäisen luotsausreitin virheettömyyttä ei voida taata. Digitaalisessa väyläkortissa esitetyn luotsausreitin mahdollinen hyödyntäminen aluksen navigointiin on aina aluksen päällikön vastuulla.",
     "title": "Luotsausreitit",
     "route": "Reitti",
     "rtz": "Reitin RTZ-tiedosto",
