@@ -161,13 +161,18 @@ export function mapFairwayCardToModel(
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
-async function tagPictures(cardId: string, pictures: InputMaybe<PictureInput[]> | undefined, oldPictures: Maybe<Picture[]> | undefined) {
+async function tagPictures(
+  cardId: string,
+  version: string,
+  pictures: InputMaybe<PictureInput[]> | undefined,
+  oldPictures: Maybe<Picture[]> | undefined
+) {
   const bucketName = getNewStaticBucketName();
   const promises = [];
 
   for (const picture of pictures ?? []) {
     const command = new PutObjectTaggingCommand({
-      Key: `${cardId}/${picture.id}`,
+      Key: `${cardId}/${version}/${picture.id}`,
       Bucket: bucketName,
       Tagging: { TagSet: [{ Key: 'InUse', Value: 'true' }] },
     });
@@ -177,7 +182,7 @@ async function tagPictures(cardId: string, pictures: InputMaybe<PictureInput[]> 
   for (const oldPicture of oldPictures ?? []) {
     if (!pictures?.find((p) => p.id === oldPicture.id)) {
       const command = new PutObjectTaggingCommand({
-        Key: `${cardId}/${oldPicture.id}`,
+        Key: `${cardId}/${version}/${oldPicture.id}`,
         Bucket: bucketName,
         Tagging: { TagSet: [{ Key: 'InUse', Value: 'false' }] },
       });
@@ -188,19 +193,25 @@ async function tagPictures(cardId: string, pictures: InputMaybe<PictureInput[]> 
   await Promise.all(promises);
 }
 
-async function copyPictures(cardId: string, sourceId: string, pictures: PictureInput[]): Promise<PictureInput[]> {
+async function copyPictures(
+  cardId: string,
+  cardVersion: string,
+  sourceId: string,
+  sourceVersion: string,
+  pictures: PictureInput[]
+): Promise<PictureInput[]> {
   const bucketName = getNewStaticBucketName();
   const promises = [];
   const newPictures: PictureInput[] = [];
 
   for (const picture of pictures) {
-    const newPictureId = cardId + '-' + picture.groupId + '-' + picture.lang;
-    const newKey = `${cardId}/${newPictureId}`;
+    const newPictureId = `${cardId}-${picture.groupId}-${picture.lang}`;
+    const newKey = `${cardId}/${cardVersion}/${newPictureId}`;
 
     const command = new CopyObjectCommand({
       Key: newKey,
       Bucket: bucketName,
-      CopySource: `${bucketName}/${sourceId}/${picture.id}`,
+      CopySource: `${bucketName}/${sourceId}/${sourceVersion}/${picture.id}`,
     });
     promises.push(s3Client.send(command));
     newPictures.push({
@@ -219,17 +230,19 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   const user = await getCurrentUser(event);
   const card = event.arguments.card;
   const pictureSourceId = event.arguments.pictureSourceId;
-  log.info(`saveFairwayCard(${card.id}, ${pictureSourceId}, ${user.uid})`);
+  const pictureSourceVersion = event.arguments.pictureSourceVersion;
+
+  log.info(`saveFairwayCard(${card.id}/${card.version}, ${pictureSourceId}/${pictureSourceVersion}, ${user.uid})`);
 
   let dbModel;
   let pictures;
 
   if (card.operation !== Operation.Create) {
     dbModel = await FairwayCardDBModel.getVersion(card.id, card.version);
-    await tagPictures(card.id, card.pictures, dbModel?.pictures);
-  } else if (pictureSourceId && !!card.pictures?.length) {
+    await tagPictures(card.id, card.version, card.pictures, dbModel?.pictures);
+  } else if (pictureSourceId && pictureSourceVersion && !!card.pictures?.length) {
     // Copy pictures from source card
-    pictures = await copyPictures(card.id, pictureSourceId, card.pictures);
+    pictures = await copyPictures(card.id, card.version, pictureSourceId, pictureSourceVersion, card.pictures);
   }
 
   const newModel = mapFairwayCardToModel(card, dbModel, user, pictures);
