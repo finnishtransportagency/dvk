@@ -43,7 +43,6 @@ const LayerModal: React.FC<ModalProps> = ({
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
   const [bgMap, setBgMap] = useState<BackgroundMapType>(bgMapType);
-  const [saveSelection, setSaveSelection] = useState(false);
 
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
@@ -182,7 +181,7 @@ const LayerModal: React.FC<ModalProps> = ({
 
   const saveLayerSelection = (event: CheckboxCustomEvent) => {
     const checked = event.detail.checked;
-    setSaveSelection(checked);
+    dispatch({ type: 'setSaveLayerSelection', payload: { value: checked } });
     setIdbVal(LAYER_IDB_KEY, checked ? layers : []);
   };
 
@@ -195,7 +194,7 @@ const LayerModal: React.FC<ModalProps> = ({
     // All default layers are not included in layer modal
     const baseLayers = layers.filter((l) => !modalOptions.includes(l));
     const updatedLayers = checked ? [...baseLayers, ...layerIds] : [...baseLayers];
-    if (saveSelection) {
+    if (state.saveLayerSelection) {
       setIdbVal(LAYER_IDB_KEY, updatedLayers);
     }
     dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
@@ -209,10 +208,10 @@ const LayerModal: React.FC<ModalProps> = ({
     getIdbVal(LAYER_IDB_KEY).then((savedLayers) => {
       if (savedLayers?.length) {
         dispatch({ type: 'setLayers', payload: { value: savedLayers } });
-        setSaveSelection(true);
+        dispatch({ type: 'setSaveLayerSelection', payload: { value: true } });
       }
     });
-  }, [dispatch, setSaveSelection]);
+  }, [dispatch]);
 
   useEffect(() => {
     setMarineWarningNotificationLayer(layers.includes('coastalwarning') || layers.includes('localwarning') || layers.includes('boaterwarning'));
@@ -250,7 +249,7 @@ const LayerModal: React.FC<ModalProps> = ({
           </IonRow>
           <IonRow>
             <IonCol>
-              <IonCheckbox labelPlacement="end" justify="start" checked={saveSelection} onIonChange={(e) => saveLayerSelection(e)}>
+              <IonCheckbox labelPlacement="end" justify="start" checked={state.saveLayerSelection} onIonChange={(e) => saveLayerSelection(e)}>
                 {t('homePage.map.controls.layer.saveSelection')}
               </IonCheckbox>
               <IonButton
@@ -283,8 +282,8 @@ const LayerModal: React.FC<ModalProps> = ({
               .map((layer) => {
                 return (
                   <Fragment key={layer.id}>
-                    {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} saveSelection={saveSelection} />}
-                    {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} saveSelection={saveSelection} />}
+                    {layer.childLayers && layer.childLayers.length > 0 && <LayerMainItem currentLayer={layer} />}
+                    {!layer.childLayers && <LayerItem id={layer.id as FeatureDataLayerId} title={layer.title} />}
                   </Fragment>
                 );
               })}

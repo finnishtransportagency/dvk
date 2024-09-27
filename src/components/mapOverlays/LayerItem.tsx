@@ -15,12 +15,11 @@ import { set as setIdbVal } from 'idb-keyval';
 
 interface LayerItemProps {
   id: FeatureDataLayerId;
-  saveSelection: boolean;
   title: string;
   mainLegendOpen?: boolean;
 }
 
-const LayerItem: React.FC<LayerItemProps> = ({ id, saveSelection, title, mainLegendOpen }) => {
+const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -97,7 +96,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, saveSelection, title, mainLeg
   const handleChange = (event: CheckboxCustomEvent) => {
     const { checked } = event.detail;
     const updatedLayers = checked ? [...layers, id] : layers.filter((l) => l !== id);
-    if (saveSelection) {
+    if (state.saveLayerSelection) {
       setIdbVal(LAYER_IDB_KEY, updatedLayers);
     }
     dispatch({ type: 'setLayers', payload: { value: updatedLayers } });

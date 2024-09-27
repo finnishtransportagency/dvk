@@ -13,10 +13,9 @@ import { set as setIdbVal } from 'idb-keyval';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
-  saveSelection: boolean;
 }
 
-const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, saveSelection }) => {
+const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -26,7 +25,7 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, saveSelecti
   };
 
   const updateLayers = (updatedLayers: string[]) => {
-    if (saveSelection) {
+    if (state.saveLayerSelection) {
       setIdbVal(LAYER_IDB_KEY, updatedLayers);
     }
     dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
@@ -115,7 +114,6 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer, saveSelecti
                 <LayerItem
                   key={child.id}
                   id={child.id as FeatureDataLayerId}
-                  saveSelection={saveSelection}
                   title={child.title}
                   mainLegendOpen={legendOpen}
                   aria-hidden={!legendOpen}
