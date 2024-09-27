@@ -20,13 +20,14 @@ type Query {
 }
 
 type Mutation {
-  saveFairwayCard(card: FairwayCardInput!, pictureSourceId: String): FairwayCard
+  saveFairwayCard(card: FairwayCardInput!, pictureSourceId: String, pictureSourceVersion: String): FairwayCard
   saveHarbor(harbor: HarborInput!): Harbor
   uploadPicture(picture: PictureUploadInput!): Boolean
 }
 
 input PictureUploadInput {
   cardId: String!
+  cardVersion: String!
   id: String!
   base64Data: String!
   contentType: String!
@@ -228,6 +229,7 @@ type CurrentUser {
 type FairwayCard {
   id: String!
   version: String!
+  currentPublic: Int
   name: Text!
   n2000HeightSystem: Boolean!
   group: String

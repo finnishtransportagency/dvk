@@ -54,8 +54,8 @@ ion-modal#layerModalContainer::part(content) {
 
 #layerModalContainer ion-row.divider-bottom {
   border-bottom: 1px solid var(--ion-color-lighter);
-  margin-bottom: 8px;
-  padding-bottom: 8px;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
 }
 
 #layerModalContainer ion-item {
@@ -431,6 +431,7 @@ ion-modal#layerModalContainer::part(content) {
   --size: 20px;
   --border-width: 1px;
   --checkmark-width: 3px;
+  height: 30px;
 }
 
 #layerModalContainer ion-checkbox::part(label) {
