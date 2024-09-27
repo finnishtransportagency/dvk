@@ -4,7 +4,7 @@ import { FairwayCardInput, FairwayCardOrHarbor, Operation, Status } from '../gra
 import { useCurrentUserQueryData, useFairwayCardByIdQueryData } from '../graphql/api';
 import FairwayCardForm from '../components/FairwayCardForm';
 import { IonProgressBar } from '@ionic/react';
-import { mapOriginToFairwayCardInput, mapToFairwayCardInput } from '../utils/dataMapper';
+import { mapToFairwayCardInput } from '../utils/dataMapper';
 
 interface FairwayCardEditProps {
   fairwayCardId: string;
@@ -12,7 +12,6 @@ interface FairwayCardEditProps {
   sourceCardId?: string;
   sourceCardVersion?: string;
   copyPictures?: boolean;
-  origin?: FairwayCardInput;
 }
 
 const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
@@ -21,17 +20,16 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
   sourceCardId,
   sourceCardVersion,
   copyPictures,
-  origin,
 }) => {
   const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwayCardVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const fairwayCard = mapToFairwayCardInput(sourceCardId, data, copyPictures);
-  console.log(fairwayCard);
+
   return (
     <>
       {isLoading && <IonProgressBar type="indeterminate" />}
-      {!isLoading && !origin && (
+      {!isLoading && (
         <FairwayCardForm
           fairwayCard={fairwayCard}
           modified={sourceCardId ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
@@ -41,16 +39,6 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
           sourceCardId={sourceCardId}
           sourceCardVersion={sourceCardVersion}
           isError={isError}
-        />
-      )}
-      {!isLoading && origin && (
-        <FairwayCardForm
-          fairwayCard={origin}
-          modified={0}
-          modifier={data?.fairwayCard?.modifier ?? ''}
-          creator={data?.fairwayCard?.creator ?? data?.fairwayCard?.modifier ?? undefined}
-          created={data?.fairwayCard?.creationTimestamp ?? 0}
-          sourceCardId={sourceCardId}
         />
       )}
     </>
@@ -115,7 +103,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
 
   return (
     <>
-      {fairwayCardId && !locationState?.newVersion && <FairwayCardEditForm fairwayCardId={fairwayCardId} fairwayCardVersion={version} />}
+      {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} fairwayCardVersion={version} />}
       {locationState?.origin && !locationState?.newVersion && (
         <FairwayCardEditForm
           fairwayCardId={locationState.origin.id}
@@ -123,13 +111,6 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
           sourceCardId={locationState.origin.id}
           sourceCardVersion={locationState.origin.version}
           copyPictures={locationState?.copyPictures}
-        />
-      )}
-      {fairwayCardId && locationState?.origin && locationState?.newVersion && (
-        <FairwayCardEditForm
-          fairwayCardId={locationState.origin.id}
-          fairwayCardVersion={locationState.origin.version}
-          origin={mapOriginToFairwayCardInput(locationState.origin.id, locationState.origin as FairwayCardInput, true)}
         />
       )}
       {!fairwayCardId && !locationState?.origin && (
