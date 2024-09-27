@@ -193,7 +193,7 @@ export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableNa
         Item:
           data.status === Status.Public
             ? { ...data, version: 'v0_public', currentPublic: 1 }
-            : { id: data.id, version: 'v0_public', currenPublic: null },
+            : { id: data.id, version: 'v0_public', currentPublic: null },
         ConditionExpression: 'attribute_exists(id)',
       })
     );
