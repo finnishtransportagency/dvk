@@ -6,6 +6,7 @@ import {
   IonFooter,
   IonGrid,
   IonHeader,
+  IonInput,
   IonLabel,
   IonModal,
   IonRow,
@@ -17,11 +18,11 @@ import {
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardOrHarbor } from '../graphql/generated';
-import { ItemType, Lang, VERSION } from '../utils/constants';
+import { INPUT_MAXLENGTH, ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
-import { FairwayCardOrHarborGroup, sortItemGroups } from '../utils/common';
+import { FairwayCardOrHarborGroup, getCombinedErrorAndHelperText, sortItemGroups } from '../utils/common';
 
 interface ModalProps {
   itemList: FairwayCardOrHarbor[];
@@ -38,12 +39,21 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [source, setSource] = useState<FairwayCardOrHarborGroup | undefined>();
   const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
+  const [identifier, setIdentifier] = useState<string>('');
+  const [identifierValid, setIdentifierValid] = useState(true);
   const [copyPics, setCopyPics] = useState(false);
 
   const selectVersionRef = useRef<HTMLIonSelectElement>(null);
+  const identifierInputRef = useRef<HTMLIonInputElement>(null);
 
   const focusVersionSelect = () => {
     selectVersionRef.current?.click();
+  };
+
+  const focusIdentifierInput = () => {
+    identifierInputRef.current?.setFocus().catch((err) => {
+      console.error(err.message);
+    });
   };
 
   const createNewItem = () => {
@@ -69,6 +79,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const closeModal = () => {
     setIsOpen(false);
+    setIdentifier('');
+    setIdentifierValid(true);
     modal.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {
       if (!isDropdownOpen) {
@@ -80,6 +92,26 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const compareOptions = (o1: FairwayCardOrHarbor, o2: FairwayCardOrHarbor) => {
     return o1 && o2 ? o1.id === o2.id && o1.version === o2.version : o1 === o2;
+  };
+
+  const checkIdentifierValidity = () => {
+    identifierInputRef.current
+      ?.getInputElement()
+      .then((textinput) => {
+        if (textinput) {
+          setIdentifierValid(textinput.checkValidity());
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  };
+
+  const getErrorText = (val?: string) => {
+    if (!identifierValid) {
+      return !val?.trim()?.length ? t('general.required-field') : t('general.check-input');
+    }
+    return '';
   };
 
   return (
@@ -121,7 +153,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
         <IonRow>
           <IonCol>
             <IonLabel className={`formLabel ion-margin-top${!source ? ' disabled' : ''}`} onClick={() => focusVersionSelect()}>
-              {t('general.version-number')}
+              {t('general.version-number')} {'*'}
             </IonLabel>
             <IonSelect
               ref={selectVersionRef}
@@ -152,8 +184,35 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             </IonSelect>
           </IonCol>
         </IonRow>
+        <IonRow className="ion-margin-top formGrid">
+          <IonCol>
+            <IonLabel className="formLabel">
+              <IonText onClick={() => focusIdentifierInput()}>
+                {itemType === 'CARD' ? t('modal.card-identifier') : t('modal.harbor-identifier')} {'*'}
+              </IonText>
+            </IonLabel>
+            <IonInput
+              ref={identifierInputRef}
+              className={'formInput' + (identifierValid ? '' : ' invalid')}
+              errorText={getCombinedErrorAndHelperText(t('fairwaycard.primary-id-help-text'), getErrorText())}
+              fill="outline"
+              helperText={identifierValid ? t('fairwaycard.primary-id-help-text') : ''}
+              inputMode="text"
+              maxlength={INPUT_MAXLENGTH}
+              name="primaryId"
+              onIonBlur={() => {
+                checkIdentifierValidity();
+              }}
+              onIonChange={(ev) => setIdentifier(ev.target.value as string)}
+              pattern="[a-z]+[a-z\\d]*"
+              required
+              type="text"
+              value={identifier}
+            ></IonInput>
+          </IonCol>
+        </IonRow>
         {itemType === 'CARD' && (
-          <IonRow className="ion-margin-top">
+          <IonRow>
             <IonCol>
               <IonCheckbox labelPlacement="end" disabled={!source || !version} checked={copyPics} onIonChange={(e) => setCopyPics(e.detail.checked)}>
                 {t('modal.copy-pictures')}
@@ -167,7 +226,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
           <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert">
             {t('general.cancel')}
           </IonButton>
-          <IonButton slot="end" onClick={() => createNewItem()} shape="round" disabled={source && !version}>
+          <IonButton slot="end" onClick={() => createNewItem()} shape="round" disabled={!identifier || !identifierValid || (source && !version)}>
             {t('modal.create-' + itemType)}
           </IonButton>
         </IonToolbar>
