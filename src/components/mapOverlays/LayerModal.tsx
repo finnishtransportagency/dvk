@@ -1,15 +1,17 @@
-import React, { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { Dispatch, Fragment, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon, IonCheckbox, CheckboxCustomEvent } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
 import './LayerModal.css';
-import { FeatureDataLayerId, FeatureDataMainLayerId, MAP } from '../../utils/constants';
+import { FeatureDataLayerId, FeatureDataMainLayerId, LAYER_IDB_KEY, MAP } from '../../utils/constants';
 import { hasOfflineSupport, updateIceLayerOpacity } from '../../utils/common';
 import LayerItem from './LayerItem';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
 import { Maybe } from '../../graphql/generated';
 import LayerMainItem from './LayerMainItem';
 import { useDvkContext } from '../../hooks/dvkContext';
+import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
+import HelpIcon from '../../theme/img/help.svg?react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -17,6 +19,8 @@ interface ModalProps {
   bgMapType: BackgroundMapType;
   setBgMapType: (bgMapType: BackgroundMapType) => void;
   setMarineWarningNotificationLayer: (marineWarningLayer: boolean) => void;
+  infoModalOpen: boolean;
+  setInfoModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
 export type LayerType = {
@@ -26,7 +30,15 @@ export type LayerType = {
   hidden?: boolean;
 };
 
-const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgMapType, setMarineWarningNotificationLayer }) => {
+const LayerModal: React.FC<ModalProps> = ({
+  isOpen,
+  setIsOpen,
+  bgMapType,
+  setBgMapType,
+  setMarineWarningNotificationLayer,
+  infoModalOpen,
+  setInfoModalOpen,
+}) => {
   const { t } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
@@ -35,6 +47,11 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   const setBackgroundMap = (type: BackgroundMapType) => {
     setBgMapType(type);
     setBgMap(type);
+  };
+
+  const closeLayerModal = () => {
+    setIsOpen(false);
+    setInfoModalOpen(false);
   };
 
   const layerStructure: LayerType[] = useMemo(() => {
@@ -162,6 +179,12 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     return ids;
   }, [layerStructure]);
 
+  const saveLayerSelection = (event: CheckboxCustomEvent) => {
+    const checked = event.detail.checked;
+    dispatch({ type: 'setSaveLayerSelection', payload: { value: checked } });
+    setIdbVal(LAYER_IDB_KEY, checked ? layers : []);
+  };
+
   const selectAllChecked = layerIds.every((layerId) => layers.includes(layerId));
   const selectAllIndeterminate = layerIds.some((layerId) => layers.includes(layerId)) && !selectAllChecked;
 
@@ -171,12 +194,24 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
     // All default layers are not included in layer modal
     const baseLayers = layers.filter((l) => !modalOptions.includes(l));
     const updatedLayers = checked ? [...baseLayers, ...layerIds] : [...baseLayers];
+    if (state.saveLayerSelection) {
+      setIdbVal(LAYER_IDB_KEY, updatedLayers);
+    }
     dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     // Set ice layer opacity depending on current view resolution
     if (checked) {
       updateIceLayerOpacity();
     }
   };
+
+  useEffect(() => {
+    getIdbVal(LAYER_IDB_KEY).then((savedLayers) => {
+      if (savedLayers?.length) {
+        dispatch({ type: 'setLayers', payload: { value: savedLayers } });
+        dispatch({ type: 'setSaveLayerSelection', payload: { value: true } });
+      }
+    });
+  }, [dispatch]);
 
   useEffect(() => {
     setMarineWarningNotificationLayer(layers.includes('coastalwarning') || layers.includes('localwarning') || layers.includes('boaterwarning'));
@@ -190,13 +225,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
 
   return (
-    <IonModal
-      id="layerModalContainer"
-      isOpen={isOpen}
-      onDidDismiss={() => {
-        setIsOpen(false);
-      }}
-    >
+    <IonModal id="layerModalContainer" isOpen={isOpen} onDidDismiss={() => closeLayerModal()} showBackdrop={!infoModalOpen}>
       <div id="layerModalContent">
         <IonGrid className="mainGrid ion-no-padding">
           <IonRow className="ion-align-items-center">
@@ -209,12 +238,28 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, bgMapType, setBgM
               <IonButton
                 fill="clear"
                 className="closeButton"
-                onClick={() => setIsOpen(false)}
+                onClick={() => closeLayerModal()}
                 data-testid="closeMenu"
                 title={t('common.close')}
                 aria-label={t('common.close')}
               >
                 <IonIcon className="otherIconLarge" src={closeIcon} />
+              </IonButton>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol>
+              <IonCheckbox labelPlacement="end" justify="start" checked={state.saveLayerSelection} onIonChange={(e) => saveLayerSelection(e)}>
+                {t('homePage.map.controls.layer.saveSelection')}
+              </IonCheckbox>
+              <IonButton
+                fill="clear"
+                className="icon-only small"
+                title={t('homePage.map.controls.layer.modal.info')}
+                aria-label={t('homePage.map.controls.layer.modal.info')}
+                onClick={() => setInfoModalOpen(true)}
+              >
+                <HelpIcon />
               </IonButton>
             </IonCol>
           </IonRow>

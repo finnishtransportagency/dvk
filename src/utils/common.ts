@@ -1,7 +1,16 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap, { getMap } from '../components/DvkMap';
 import { FairwayCardPartsFragment, Text } from '../graphql/generated';
-import { FeatureDataId, FeatureDataLayerId, FeatureDataSources, FeatureLayerId, MAP, MAX_HITS, MINIMUM_QUERYLENGTH } from './constants';
+import {
+  FeatureDataId,
+  FeatureDataLayerId,
+  FeatureDataSources,
+  FeatureLayerId,
+  LAYER_IDB_KEY,
+  MAP,
+  MAX_HITS,
+  MINIMUM_QUERYLENGTH,
+} from './constants';
 import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { MarineWarningFeatureProperties } from '../components/features';
@@ -9,6 +18,8 @@ import coastal from '../theme/img/coastal_warning_icon.svg';
 import local from '../theme/img/local_warning_icon.svg';
 import boaters from '../theme/img/warning_to_boaters_icon.svg';
 import * as olExtent from 'ol/extent';
+import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
+import { Action } from '../hooks/dvkReducer';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -264,4 +275,29 @@ export const formatDate = (dateTimeString: Date | string, formatTime: boolean = 
 export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   return fds?.projection;
+}
+
+export function updateLayerSelection(initialLayers: string[], requiredLayers: FeatureDataLayerId[], dispatch: (value: Action) => void) {
+  const updateLayers = (layers: string[]) => {
+    const hiddenLayers = requiredLayers.filter((l) => !layers.includes(l));
+    if (hiddenLayers.length > 0) {
+      const updatedLayers = [...layers, ...hiddenLayers];
+      dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
+      return updatedLayers;
+    }
+    return null;
+  };
+
+  getIdbVal(LAYER_IDB_KEY).then((savedLayers) => {
+    if (savedLayers?.length) {
+      const layers = savedLayers as string[];
+      const updated = updateLayers(layers);
+      if (updated) {
+        setIdbVal(LAYER_IDB_KEY, updated);
+      }
+      dispatch({ type: 'setSaveLayerSelection', payload: { value: true } });
+    } else {
+      updateLayers(initialLayers);
+    }
+  });
 }

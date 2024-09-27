@@ -6,9 +6,10 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { LayerType } from './LayerModal';
 import LayerItem from './LayerItem';
-import { FeatureDataLayerId } from '../../utils/constants';
+import { FeatureDataLayerId, LAYER_IDB_KEY } from '../../utils/constants';
 import { hasOfflineSupport } from '../../utils/common';
 import AisPredictorControl from './AisPredictorControl';
+import { set as setIdbVal } from 'idb-keyval';
 
 interface LayerMainItemProps {
   currentLayer: LayerType;
@@ -23,7 +24,12 @@ const LayerMainItem: React.FC<LayerMainItemProps> = ({ currentLayer }) => {
     setLegendOpen(!legendOpen);
   };
 
-  const updateLayers = (updatedLayers: string[]) => dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
+  const updateLayers = (updatedLayers: string[]) => {
+    if (state.saveLayerSelection) {
+      setIdbVal(LAYER_IDB_KEY, updatedLayers);
+    }
+    dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
+  };
 
   const isDisabled = () => {
     return isOffline && !!currentLayer.childLayers?.every((child) => !hasOfflineSupport(child.id as FeatureDataLayerId));

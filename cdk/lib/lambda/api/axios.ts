@@ -154,11 +154,11 @@ export async function fetchMarineWarnings() {
 }
 
 export async function fetchWeatherApi<T>(path: string) {
-  const url = `https://${await getSOAApiUrl()}/fmi/${path}`;
+  const [soaApiUrl, weatherHeaders] = await Promise.all([getSOAApiUrl(), getWeatherHeaders()]);
   const start = Date.now();
   const response = await axios
-    .get(url, {
-      headers: await getWeatherHeaders(),
+    .get(`https://${soaApiUrl}/fmi/${path}`, {
+      headers: weatherHeaders,
       timeout: getTimeout(),
     })
     .catch(function (error) {
@@ -172,15 +172,21 @@ export async function fetchWeatherApi<T>(path: string) {
 }
 
 export async function fetchIlmanetApi(): Promise<string> {
+  const [url, username, password, weatherHeaders] = await Promise.all([
+    getIlmanetUrl(),
+    getIlmanetUsername(),
+    getIlmanetPassword(),
+    getWeatherHeaders(),
+  ]);
   const start = Date.now();
   const response = await axios
-    .get(await getIlmanetUrl(), {
+    .get(url, {
       params: {
-        username: await getIlmanetUsername(),
-        password: await getIlmanetPassword(),
+        username: username,
+        password: password,
         orderId: 165689,
       },
-      headers: await getWeatherHeaders(),
+      headers: weatherHeaders,
       timeout: getTimeout(),
     })
     .catch(function (error) {
