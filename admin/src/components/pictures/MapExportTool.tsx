@@ -60,7 +60,8 @@ interface MapExportToolProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors?: ValidationType[];
-  sourceCard?: string;
+  sourceCardId?: string;
+  sourceCardVersion?: string;
 }
 
 const MapExportTool: React.FC<MapExportToolProps> = ({
@@ -70,7 +71,8 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
   setPicture,
   validationErrors,
   disabled,
-  sourceCard,
+  sourceCardId,
+  sourceCardVersion,
 }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
@@ -201,8 +203,9 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
     const picUploadObject = {
       base64Data: base64Data.replace('data:image/png;base64,', ''),
       cardId: fairwayCardInput.id,
+      cardVersion: fairwayCardInput.version,
       contentType: 'image/png',
-      id: fairwayCardInput.id + '-' + groupId + '-' + lang,
+      id: `${fairwayCardInput.id}-${groupId}-${lang}`,
     };
     const picInputObject = {
       orientation,
@@ -338,7 +341,8 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
               isProcessingCurLang={isProcessingCurLang}
               disabled={disabled}
               validationErrors={validationErrors}
-              sourceCard={sourceCard}
+              sourceCardId={sourceCardId}
+              sourceCardVersion={sourceCardVersion}
             />
           </IonCol>
         </IonRow>

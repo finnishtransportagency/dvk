@@ -275,6 +275,7 @@
     "fairwayNumbers": "Farleds nummer"
   },
   "routes": {
+    "info": "De presenterade lotsningsrutterna är inte som sådana lämpade som enligt lotslagen (561/2023) hänvisade individuella lotsningsplaner för ett enskilt fartyg. Lotsningsrutterna har utarbetats som vägledande allmänna presentationer och felfriheten i enskilda lotsleder kan inte garanteras. Användning av lotsningsrutt, som presenteras i det digitala farledskortet, för navigering av ett fartyg är alltid på befälhavarens ansvar.",
     "title": "Lotsningsrutter",
     "route": "Rutt",
     "rtz": "Ruttfil i RTZ-format",

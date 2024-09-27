@@ -268,6 +268,7 @@ export function mapFairwayCardDBModelToGraphqlType(
   const card: FairwayCard = {
     id: dbModel.id,
     version: dbModel.version,
+    currentPublic: dbModel.currentPublic,
     name: {
       fi: dbModel.name?.fi,
       sv: dbModel.name?.sv,

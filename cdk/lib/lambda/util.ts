@@ -187,21 +187,13 @@ export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableNa
     updateCommands.push(
       new PutCommand({
         TableName: tableName,
-        Item: { ...data, version: 'v' + versionNumber },
+        Item:
+          data.status === Status.Public
+            ? { ...data, version: 'v0_public', currentPublic: 1 }
+            : { id: data.id, version: 'v0_public', currentPublic: null },
+        ConditionExpression: 'attribute_exists(id)',
       })
     );
-  } else if (operation === Operation.Update) {
-    // updating existing item
-    // this check because latest can be public and only one draft can be ready to be updated at a time
-    if (versionNumber === latestVersionNumber) {
-      updateCommands.push(
-        new PutCommand({
-          TableName: tableName,
-          Item: { ...data, version: 'v0_latest', latest: versionNumber },
-          ConditionExpression: 'attribute_exists(id)',
-        })
-      );
-    }
     updateCommands.push(
       new PutCommand({
         TableName: tableName,
