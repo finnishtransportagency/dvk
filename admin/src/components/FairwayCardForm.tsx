@@ -174,8 +174,12 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (isRemove) {
         setState({ ...oldState, status: Status.Removed });
         saveFairwayCard({ card: { ...newInput, status: Status.Removed } as FairwayCardInput });
-      } else if (!!sourceCardId?.length && !!state.pictures?.length) {
-        saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: sourceCardId, pictureSourceVersion: sourceCardVersion });
+      } else if ((!!sourceCardId?.length || state.operation === Operation.Createversion) && !!state.pictures?.length) {
+        saveFairwayCard({
+          card: newInput as FairwayCardInput,
+          pictureSourceId: sourceCardId ?? state.id,
+          pictureSourceVersion: sourceCardVersion ?? state.version,
+        });
       } else {
         saveFairwayCard({ card: newInput as FairwayCardInput });
       }
@@ -254,7 +258,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const createNewVersion = () => {
     if (formValid()) {
-      setState(mapOriginToFairwayCardInput(fairwayCard.id, state));
+      setState(mapOriginToFairwayCardInput(fairwayCard.id, state, true));
       setIsSubmittingVersion(true);
     } else if (!saveError) {
       setSaveError('OPERATION-BLOCKED');

@@ -207,7 +207,10 @@ async function copyPictures(
   for (const picture of pictures) {
     const newPictureId = `${cardId}-${picture.groupId}-${picture.lang}`;
     const newKey = `${cardId}/${cardVersion}/${newPictureId}`;
-
+    console.log('NEW PICTURE ID');
+    console.log(newPictureId);
+    console.log('NEW KEY');
+    console.log(newKey);
     const command = new CopyObjectCommand({
       Key: newKey,
       Bucket: bucketName,
@@ -236,13 +239,14 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
 
   let dbModel;
   let pictures;
+  
+  const newVersionNumber = await FairwayCardDBModel.getLatest(card.id).then((fairwayCard) => fairwayCard?.latest);
 
-  if (card.operation !== Operation.Create) {
+  if (card.operation === Operation.Update) {
     dbModel = await FairwayCardDBModel.getVersion(card.id, card.version);
     await tagPictures(card.id, card.version, card.pictures, dbModel?.pictures);
   } else if (pictureSourceId && pictureSourceVersion && !!card.pictures?.length) {
-    // Copy pictures from source card
-    pictures = await copyPictures(card.id, card.version, pictureSourceId, pictureSourceVersion, card.pictures);
+    pictures = await copyPictures(card.id, card.operation === Operation.Createversion ? ('v' + (Number(newVersionNumber) + 1)) : card.version, pictureSourceId, pictureSourceVersion, card.pictures);
   }
 
   const newModel = mapFairwayCardToModel(card, dbModel, user, pictures);
