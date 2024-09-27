@@ -11,12 +11,13 @@ type ModalProps = {
   showBackdrop: boolean;
   size: string;
   children: ReactElement;
+  htmlId?: string;
 };
 
-const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, size, children }) => {
+export const CommonModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, size, children, htmlId }) => {
   const { t } = useTranslation();
   return (
-    <IonModal isOpen={isOpen} className={size} showBackdrop={showBackdrop} onDidDismiss={() => setIsOpen(false)}>
+    <IonModal id={htmlId ?? 'commonModal'} isOpen={isOpen} className={size} showBackdrop={showBackdrop} onDidDismiss={() => setIsOpen(false)}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">
@@ -38,8 +39,8 @@ const Modal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, s
       </IonHeader>
       {children}
       <IonFooter>
-        <IonToolbar className="buttonBar">
-          <IonButton slot="end" size="large" onClick={() => setIsOpen(false)} shape="round">
+        <IonToolbar className="buttonBar ion-margin-top">
+          <IonButton slot="end" onClick={() => setIsOpen(false)} shape="round">
             {t('common.close')}
           </IonButton>
         </IonToolbar>
@@ -56,7 +57,7 @@ type SourceModalProps = {
 export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
   return (
-    <Modal size="large" showBackdrop={false} isOpen={isOpen} setIsOpen={setIsOpen} title={t('source.title')}>
+    <CommonModal size="large" showBackdrop={false} isOpen={isOpen} setIsOpen={setIsOpen} title={t('source.title')}>
       <IonGrid className="linkBar content">
         <IonRow>
           <IonCol> {t('source.content1')}</IonCol>
@@ -67,7 +68,7 @@ export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) =
         <IonRow>
           <IonCol>
             <a href="https://creativecommons.org/licenses/by/4.0/deed.fi" rel="noreferrer" target="_blank" className="ion-no-padding external">
-              https://creativecommons.org/licenses/by/4.0/deed.fi
+              {'https://creativecommons.org/licenses/by/4.0/deed.fi'}
               <span className="screen-reader-only">{t('common.opens-in-a-new-tab')}</span>
             </a>{' '}
             {t('source.content3')}
@@ -84,6 +85,6 @@ export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) =
           </IonCol>
         </IonRow>
       </IonGrid>
-    </Modal>
+    </CommonModal>
   );
 };

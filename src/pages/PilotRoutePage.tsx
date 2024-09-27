@@ -3,7 +3,7 @@ import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import MainContent from '../components/content/MainContent';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
-import { isMobile } from '../utils/common';
+import { isMobile, updateLayerSelection } from '../utils/common';
 import MainContentWithModal from '../components/content/MainContentWithModal';
 import { useDvkContext } from '../hooks/dvkContext';
 
@@ -29,10 +29,8 @@ const PilotRoutePage: React.FC<ModalProps> = ({ setModalContent }) => {
   }, [setModalContent]);
 
   useEffect(() => {
-    if (!initialLayers.includes(layerId)) {
-      dispatch({ type: 'setLayers', payload: { value: [...initialLayers, layerId] } });
-    }
-  }, [initialLayers, dispatch]);
+    updateLayerSelection(initialLayers, [layerId], dispatch);
+  }, [dispatch, initialLayers]);
 
   return (
     <IonPage id="mainContent">
