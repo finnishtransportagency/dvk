@@ -4,16 +4,15 @@ import { FairwayCardOrHarbor, HarborInput, Operation, Status } from '../graphql/
 import { useCurrentUserQueryData, useHarbourByIdQueryData } from '../graphql/api';
 import HarbourForm from '../components/HarbourForm';
 import { IonProgressBar } from '@ionic/react';
-import { mapOriginToHarborInput, mapToHarborInput } from '../utils/dataMapper';
+import { mapToHarborInput } from '../utils/dataMapper';
 
 interface HarbourEditProps {
   harbourId: string;
   harbourVersion?: string;
   origin?: boolean;
-  originInput?: HarborInput;
 }
 
-const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion = 'v1', origin, originInput }) => {
+const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion = 'v1', origin }) => {
   const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId, harbourVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
@@ -22,7 +21,7 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion
   return (
     <>
       {isLoading && <IonProgressBar type="indeterminate" />}
-      {!isLoading && !originInput && (
+      {!isLoading && (
         <HarbourForm
           harbour={harbour}
           modified={origin ? 0 : (data?.harbor?.modificationTimestamp ?? data?.harbor?.creationTimestamp ?? 0)}
@@ -30,15 +29,6 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion
           creator={origin ? userData?.currentUser?.name : (data?.harbor?.creator ?? undefined)}
           created={origin ? 0 : (data?.harbor?.creationTimestamp ?? undefined)}
           isError={isError}
-        />
-      )}
-      {!isLoading && originInput && (
-        <HarbourForm
-          harbour={originInput}
-          modified={0}
-          modifier={data?.harbor?.modifier ?? ''}
-          creator={data?.harbor?.creator ?? data?.harbor?.modifier ?? undefined}
-          created={data?.harbor?.creationTimestamp ?? 0}
         />
       )}
     </>
@@ -52,8 +42,7 @@ interface HarbourProps {
 
 type LocationState = {
   // harborInput when creating a new version since the whole harbor data is copied initially
-  origin?: FairwayCardOrHarbor | HarborInput;
-  newVersion?: boolean;
+  origin?: FairwayCardOrHarbor;
 };
 
 const HarbourEditPage: React.FC<HarbourProps> = () => {
@@ -84,17 +73,8 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
 
   return (
     <>
-      {harbourId && !locationState?.newVersion && <HarbourEditForm harbourId={harbourId} harbourVersion={version} />}
-      {locationState?.origin && !locationState?.newVersion && (
-        <HarbourEditForm harbourId={locationState.origin.id} harbourVersion={locationState.origin.version} origin />
-      )}
-      {harbourId && locationState?.origin && locationState?.newVersion && (
-        <HarbourEditForm
-          harbourId={locationState.origin.id}
-          harbourVersion={locationState.origin.version}
-          originInput={mapOriginToHarborInput(locationState.origin as HarborInput)}
-        />
-      )}
+      {harbourId && <HarbourEditForm harbourId={harbourId} harbourVersion={version} />}
+      {locationState?.origin && <HarbourEditForm harbourId={locationState.origin.id} harbourVersion={locationState.origin.version} origin />}
       {!harbourId && !locationState?.origin && (
         <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={'-'} creator={data?.currentUser?.name} created={0} />
       )}

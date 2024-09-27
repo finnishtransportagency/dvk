@@ -146,7 +146,13 @@ export async function handleAisCall(
   };
 }
 
-export function getPutCommands(data: FairwayCardDBModel | HarborDBModel, tableName: string, operation: Operation, versionNumber?: number | null, latestVersionNumber?: number | null) {
+export function getPutCommands(
+  data: FairwayCardDBModel | HarborDBModel,
+  tableName: string,
+  operation: Operation,
+  versionNumber?: number | null,
+  latestVersionNumber?: number | null
+) {
   const updateCommands = [];
   // creating a new item
   if (operation === Operation.Create) {

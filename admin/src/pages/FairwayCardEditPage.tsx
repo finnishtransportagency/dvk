@@ -104,7 +104,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
   return (
     <>
       {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} fairwayCardVersion={version} />}
-      {locationState?.origin && !locationState?.newVersion && (
+      {locationState?.origin && (
         <FairwayCardEditForm
           fairwayCardId={locationState.origin.id}
           fairwayCardVersion={locationState.origin.version}
