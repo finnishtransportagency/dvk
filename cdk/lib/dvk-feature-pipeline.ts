@@ -5,12 +5,14 @@ import {
   ComputeType,
   EventAction,
   FilterGroup,
+  GitHubSourceCredentials,
   GitHubSourceProps,
   LinuxBuildImage,
   LocalCacheMode,
   Project,
   Source,
 } from 'aws-cdk-lib/aws-codebuild';
+import * as cdk from 'aws-cdk-lib';
 import { Repository } from 'aws-cdk-lib/aws-ecr';
 import { Stack } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
@@ -26,6 +28,10 @@ export class DvkFeaturePipelineStack extends Stack {
       },
     });
     const config = new Config(this);
+    // The fine-grained access token works when using a Github source for CodePipeline, but apparently not when configuring it as a source for a plain CodeBuild
+    new GitHubSourceCredentials(this, 'DvkFeaturePipelineGitHubCredentials', {
+      accessToken: cdk.SecretValue.secretsManager('dev/dvk/github'),
+    });
     const sourceProps: GitHubSourceProps = {
       owner: 'finnishtransportagency',
       repo: 'dvk',
