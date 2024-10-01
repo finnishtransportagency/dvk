@@ -22,7 +22,6 @@ import CustomSelectDropdown from './CustomSelectDropdown';
 import sortArrow from '../../theme/img/back_arrow-1.svg';
 import PageHeader from './PageHeader';
 import VectorSource from 'ol/source/Vector';
-import { useSafetyEquipmentAndFaultLayer } from '../SafetyEquipmentFeatureLoader';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
@@ -179,9 +178,8 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
   const { t } = useTranslation();
   // both data fetched for the sake of same data on list and map
   const { data, isPending, dataUpdatedAt, isFetching } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
-  const { ready: layerReady } = useSafetyEquipmentAndFaultLayer();
   const path = [{ title: t('faults.title') }];
-  const { dispatch, state } = useDvkContext();
+  const { state } = useDvkContext();
   const [areaFilter, setAreaFilter] = useState<string[]>([]);
   const [sortNewFirst, setSortNewFirst] = useState<boolean>(true);
   const areaPolygons = useVaylaWaterAreaData();
@@ -201,15 +199,6 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
       fairwayCardLayer.setVisible(false);
     };
   }, []);
-
-  useEffect(() => {
-    if (!state.layers.includes('safetyequipmentfault') && !isPending && !isFetching && layerReady) {
-      const updatedLayers = [...state.layers, 'safetyequipmentfault'];
-      dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
-    }
-    // disable because of unnecessary callbacks
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isFetching, isPending, layerReady]);
 
   useEffect(() => {
     // If fault layer is not visible, show selected safety equipment on fairway card layer

@@ -1,7 +1,7 @@
 import { diff } from 'deep-object-diff';
 import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, InputMaybe } from '../graphql/generated';
 import { PictureGroup, ValidationType } from './constants';
-import { dateError, endDateError, isNumber, removeTrailingZerosAfterDecimal } from './common';
+import { dateError, endDateError, isNumber } from './common';
 
 function requiredError(input?: TextInput | Text | null): boolean {
   return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
@@ -22,7 +22,6 @@ export type QuayOrSection = {
 
 export function locationError(comparable?: QuayOrSection, geometrysToCompare?: QuayOrSection[] | undefined) {
   // action target checks that quay or section is not compared with itself
-
   return (
     isNumber(comparable?.geometry?.lat ?? '') &&
     isNumber(comparable?.geometry?.lon ?? '') &&
@@ -30,9 +29,7 @@ export function locationError(comparable?: QuayOrSection, geometrysToCompare?: Q
     comparable?.geometry?.lon &&
     geometrysToCompare?.some(
       (g) =>
-        comparable.actionTarget !== g.actionTarget &&
-        removeTrailingZerosAfterDecimal(g?.geometry?.lat ?? '') === removeTrailingZerosAfterDecimal(comparable.geometry?.lat ?? '') &&
-        removeTrailingZerosAfterDecimal(g?.geometry?.lon ?? '') === removeTrailingZerosAfterDecimal(comparable?.geometry?.lon ?? '')
+        comparable.actionTarget !== g.actionTarget && g?.geometry?.lat === comparable.geometry?.lat && g?.geometry?.lon === comparable?.geometry?.lon
     )
   );
 }

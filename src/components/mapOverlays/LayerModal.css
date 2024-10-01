@@ -2,6 +2,7 @@ ion-modal#layerModalContainer {
   --min-width: 225px;
   z-index: 21000 !important;
 }
+
 ion-app:not(.mobile) ion-modal#layerModalContainer {
   --width: fit-content;
   --height: auto;
@@ -19,6 +20,18 @@ ion-app:not(.mobile) ion-modal#layerModalContainer {
   max-height: none;
   height: 100% !important;
   min-width: auto !important;
+}
+
+ion-modal#layerModalContainer ion-button.icon-only.small {
+  height: 18px;
+  width: 18px;
+  min-height: 18px;
+  margin: 6px 0 0 8px;
+}
+
+ion-modal#layerModalContainer ion-button.icon-only.small::part(native) {
+  min-width: 18px;
+  min-height: 18px;
 }
 
 ion-modal#layerModalContainer .divider {
@@ -50,6 +63,12 @@ ion-modal#layerModalContainer::part(content) {
     column-count: 3;
     column-gap: 16px;
   }
+}
+
+#layerModalContainer ion-row.divider-bottom {
+  border-bottom: 1px solid var(--ion-color-lighter);
+  margin-bottom: 4px;
+  padding-bottom: 4px;
 }
 
 #layerModalContainer ion-item {
@@ -425,6 +444,7 @@ ion-modal#layerModalContainer::part(content) {
   --size: 20px;
   --border-width: 1px;
   --checkmark-width: 3px;
+  height: 30px;
 }
 
 #layerModalContainer ion-checkbox::part(label) {

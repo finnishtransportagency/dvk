@@ -28,7 +28,8 @@ ion-modal ion-header ion-title {
   letter-spacing: 0;
 }
 
-ion-modal.small ion-grid, ion-modal.large ion-grid {
+ion-modal.small ion-grid,
+ion-modal.large ion-grid {
   margin: 0 24px 0 24px;
   padding: 0 0 0 0;
 }
@@ -38,14 +39,17 @@ ion-modal ion-header ion-toolbar.titleBar {
 }
 
 ion-modal ion-footer ion-toolbar.buttonBar {
-  --min-height: 60px;
+  --min-height: 42px;
 }
 
 ion-modal ion-footer ion-toolbar.buttonBar ion-button {
-  height: 48px;
-  width: 175px;
-  margin-right: 28px;
-  margin-bottom: 0px;
+  height: 42px;
+  width: 150px;
+  font-size: 18px;
+  letter-spacing: normal;
+  margin: 0 28px 0 0;
+  --padding-start: 16px;
+  --padding-end: 16px;
 }
 
 ion-modal .closeButton {
@@ -58,9 +62,11 @@ ion-modal .closeButton {
   height: 30px;
   margin: 0 12px 12px 0;
 }
+
 ion-modal .closeButton.ion-focused {
   outline: 1px solid var(--ion-color-dark);
 }
+
 ion-modal .closeButton ion-icon {
   width: 24px;
   height: 24px;
@@ -111,4 +117,12 @@ ion-modal .buttonBar {
 .linkBar a:hover {
   text-decoration: none;
   background-color: var(--ion-color-primary-contrast);
+}
+
+ion-modal#layerInfoModal {
+  /* Backdrop and box shadow are removed by default on stacked modals, must add them manually */
+  --box-shadow: 0 2px 8px 2px rgba(0, 0, 0, 0.2);
+  --backdrop-opacity: var(--ion-backdrop-opacity, 0.32);
+  /* Must be higher than ion-modal#layerModalContainer */
+  z-index: 21001 !important;
 }

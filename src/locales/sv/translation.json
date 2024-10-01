@@ -32,6 +32,8 @@
         "layer": {
           "tipLabel": "Välj lager",
           "header": "Kartlager",
+          "saveSelection": "[sv] Muista valintani",
+          "selectAll": "[sv] Valitse kaikki tasot",
           "class1": "Handelssjöfart",
           "class2": "Annan vattentrafik",
           "lines": "Navigationslinjer",
@@ -104,6 +106,10 @@
             "depth4": "Djup 0 - 3m",
             "depth5": "Djup 3 - 6m",
             "depth6": "Djup över 10m"
+          },
+          "modal": {
+            "info": "Ytterligare information",
+            "description": "[sv] Muista valintani -ominaisuus tallentaa tekemäsi tasovalinnat selaimeesi. Mikäli ominaisuus on käytössä, valitaan sivustolle saapuessasi näkyviin automaattisesti viimeksi käyttämäsi tasot. Jos haluat, että tasovalintojasi ei enää muisteta, ota Muista valintani -ominaisuus pois käytöstä ja päivitä sivusto."
           }
         },
         "mapDetails": {
@@ -273,6 +279,7 @@
     "fairwayNumbers": "Farleds nummer"
   },
   "routes": {
+    "info": "De presenterade lotsningsrutterna är inte som sådana lämpade som enligt lotslagen (561/2023) hänvisade individuella lotsningsplaner för ett enskilt fartyg. Lotsningsrutterna har utarbetats som vägledande allmänna presentationer och felfriheten i enskilda lotsleder kan inte garanteras. Användning av lotsningsrutt, som presenteras i det digitala farledskortet, för navigering av ett fartyg är alltid på befälhavarens ansvar.",
     "title": "Lotsningsrutter",
     "route": "Rutt",
     "rtz": "Ruttfil i RTZ-format",

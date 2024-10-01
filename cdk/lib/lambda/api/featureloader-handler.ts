@@ -1,5 +1,5 @@
 import { ALBEvent, ALBEventMultiValueQueryStringParameters, ALBResult } from 'aws-lambda';
-import { getHeaders } from '../environment';
+import { getHeaders, getWeatherResponseHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
@@ -551,6 +551,20 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
         features: features.featureArray,
       };
       fetchedDate = features.fetchedDate ?? '';
+      if (type === 'observation' || type === 'mareograph' || type === 'buoy') {
+        const responseData = JSON.stringify(collection);
+        return {
+          statusCode,
+          body: responseData,
+          isBase64Encoded: false,
+          multiValueHeaders: {
+            ...getWeatherResponseHeaders(),
+            ...getFeatureCacheControlHeaders(key),
+            'Content-Length': ['"' + new Blob([responseData]).size + '"'],
+            fetchedDate: [fetchedDate],
+          },
+        };
+      }
       base64Response = await toBase64Response(collection);
     }
   } catch (e) {

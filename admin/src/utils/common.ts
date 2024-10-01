@@ -10,7 +10,7 @@ import {
   TemporaryNotification,
   Text,
 } from '../graphql/generated';
-import { ItemType, Lang, SelectOption, VERSION } from './constants';
+import { FeatureDataId, FeatureDataSources, ItemType, Lang, SelectOption, VERSION } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
@@ -338,10 +338,11 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
   });
 }
 
-export function isNumber(s: string) {
+export const isNumber = (s: string) => {
   return /^-?\d*\.?\d+$/.test(s);
-}
+};
 
-export function removeTrailingZerosAfterDecimal(input: string): string {
-  return input.replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
+export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
+  const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
+  return fds?.projection;
 }

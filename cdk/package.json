@@ -40,6 +40,7 @@
     "mapname": "ts-node bin/mapname.ts",
     "featuresync": "ts-node bin/featuresync.ts",
     "datamigration": "ts-node bin/datamigration.ts",
+    "picturemigration": "ts-node bin/picturemigration.ts",
     "cleancache": "cross-env-shell aws s3 rm s3://featurecache-$ENVIRONMENT --recursive",
     "ecr:login": "cross-env-shell aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com",
     "lint": "eslint --max-warnings 0 --config .eslintrc.json --ext .js,.ts ."

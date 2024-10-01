@@ -9,14 +9,22 @@ import { mapToFairwayCardInput } from '../utils/dataMapper';
 interface FairwayCardEditProps {
   fairwayCardId: string;
   fairwayCardVersion?: string;
-  origin?: boolean;
+  sourceCardId?: string;
+  sourceCardVersion?: string;
+  copyPictures?: boolean;
 }
 
-const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fairwayCardVersion = 'v1', origin }) => {
+const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
+  fairwayCardId,
+  fairwayCardVersion = 'v1',
+  sourceCardId,
+  sourceCardVersion,
+  copyPictures,
+}) => {
   const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwayCardVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
-  const fairwayCard = mapToFairwayCardInput(origin, data);
+  const fairwayCard = mapToFairwayCardInput(sourceCardId, data, copyPictures);
 
   return (
     <>
@@ -24,10 +32,12 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({ fairwayCardId, fa
       {!isLoading && (
         <FairwayCardForm
           fairwayCard={fairwayCard}
-          modified={origin ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
-          modifier={origin ? '-' : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
-          creator={origin ? userData?.currentUser?.name : (data?.fairwayCard?.creator ?? undefined)}
-          created={origin ? 0 : (data?.fairwayCard?.creationTimestamp ?? undefined)}
+          modified={sourceCardId ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
+          modifier={sourceCardId ? '-' : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
+          creator={sourceCardId ? userData?.currentUser?.name : (data?.fairwayCard?.creator ?? undefined)}
+          created={sourceCardId ? 0 : (data?.fairwayCard?.creationTimestamp ?? undefined)}
+          sourceCardId={sourceCardId}
+          sourceCardVersion={sourceCardVersion}
           isError={isError}
         />
       )}
@@ -41,6 +51,7 @@ interface FairwayCardProps {
 
 type LocationState = {
   origin?: FairwayCardOrHarbor;
+  copyPictures?: boolean;
 };
 
 const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
@@ -91,7 +102,13 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     <>
       {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} />}
       {locationState?.origin && (
-        <FairwayCardEditForm fairwayCardId={locationState.origin.id} fairwayCardVersion={locationState.origin.version} origin />
+        <FairwayCardEditForm
+          fairwayCardId={locationState.origin.id}
+          fairwayCardVersion={locationState.origin.version}
+          sourceCardId={locationState.origin.id}
+          sourceCardVersion={locationState.origin.version}
+          copyPictures={locationState?.copyPictures}
+        />
       )}
       {!fairwayCardId && !locationState?.origin && (
         <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier="-" creator={data?.currentUser?.name} created={0} />
