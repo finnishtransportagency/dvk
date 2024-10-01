@@ -248,10 +248,12 @@ const LayerModal: React.FC<ModalProps> = ({
             </IonCol>
           </IonRow>
           <IonRow>
-            <IonCol>
+            <IonCol size="auto">
               <IonCheckbox labelPlacement="end" justify="start" checked={state.saveLayerSelection} onIonChange={(e) => saveLayerSelection(e)}>
                 {t('homePage.map.controls.layer.saveSelection')}
               </IonCheckbox>
+            </IonCol>
+            <IonCol>
               <IonButton
                 fill="clear"
                 className="icon-only small"
