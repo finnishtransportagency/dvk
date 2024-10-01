@@ -338,6 +338,10 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
   });
 }
 
-export const isNumber = (s: string) => {
+export function isNumber(s: string) {
   return /^-?\d*\.?\d+$/.test(s);
-};
+}
+
+export function removeTrailingZerosAfterDecimal(input: string): string {
+  return input.replace(/(\.\d*?)0+$/, '$1').replace(/\.$/, '');
+}
