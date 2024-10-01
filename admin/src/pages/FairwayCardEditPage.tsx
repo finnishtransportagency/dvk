@@ -1,6 +1,6 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { FairwayCardInput, FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
+import { FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
 import { useCurrentUserQueryData, useFairwayCardByIdQueryData } from '../graphql/api';
 import FairwayCardForm from '../components/FairwayCardForm';
 import { IonProgressBar } from '@ionic/react';
@@ -52,7 +52,7 @@ interface FairwayCardProps {
 
 type LocationState = {
   //fairwayCardInput when creating a new version since the whole card data is copied initially
-  origin?: FairwayCardOrHarbor | FairwayCardInput;
+  origin?: FairwayCardOrHarbor;
   copyPictures?: boolean;
   newVersion?: boolean;
 };
