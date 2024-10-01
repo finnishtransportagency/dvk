@@ -271,8 +271,7 @@ class FairwayCardDBModel {
     return [];
   }
 
-  static async save(data: FairwayCardDBModel, operation: Operation) {
-    const latestVersionNumber = await FairwayCardDBModel.getLatest(data.id).then((fairwayCard) => fairwayCard?.latest);
+  static async save(data: FairwayCardDBModel, operation: Operation, latestVersionNumber: number | undefined | null) {
     // get only number out of the string
     let versionNumber = Number(data.version.slice(1));
 

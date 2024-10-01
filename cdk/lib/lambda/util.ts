@@ -188,6 +188,7 @@ export function getPutCommands(
       new PutCommand({
         TableName: tableName,
         Item: { ...data, version: 'v0_latest', latest: versionNumber },
+        ConditionExpression: 'attribute_exists(id)',
       })
     );
     updateCommands.push(
