@@ -81,13 +81,13 @@ const MainPage: React.FC = () => {
     setSortBy(param);
   };
 
-  const selectItem = (id: string, type: string) => {
-    if (type === 'CARD') history.push('/vaylakortti/' + id);
-    if (type === 'HARBOR') history.push('/satama/' + id);
+  const selectItem = (id: string, type: string, version: string) => {
+    if (type === 'CARD') history.push('/vaylakortti/' + id + '/' + version);
+    if (type === 'HARBOR') history.push('/satama/' + id + '/' + version);
   };
 
-  const keyDownAction = (event: React.KeyboardEvent<HTMLIonRowElement>, id: string, type: string) => {
-    if (event.key === 'Enter') selectItem(id, type);
+  const keyDownAction = (event: React.KeyboardEvent<HTMLIonRowElement>, id: string, type: string, version: string) => {
+    if (event.key === 'Enter') selectItem(id, type, version);
   };
 
   const translatedTextOrEmpty = useCallback(
@@ -333,10 +333,10 @@ const MainPage: React.FC = () => {
             filteredItemList.map((item) => {
               return (
                 <IonRow
-                  key={item.id + item.type}
+                  key={item.id + item.type + item.version}
                   tabIndex={0}
-                  onClick={() => selectItem(item.id, item.type)}
-                  onKeyDown={(e) => keyDownAction(e, item.id, item.type)}
+                  onClick={() => selectItem(item.id, item.type, item.version)}
+                  onKeyDown={(e) => keyDownAction(e, item.id, item.type, item.version)}
                 >
                   <IonCol size="1">{item.id}</IonCol>
                   <IonCol size="1.25">{item.name[lang] ?? item.name.fi}</IonCol>

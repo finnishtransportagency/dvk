@@ -5,11 +5,13 @@ export type State = {
   isOffline: boolean;
   modalBreakpoint: number;
   layers: string[];
+  saveLayerSelection: boolean;
   showAisPredictor: boolean;
   response: string[];
   locationPermission: UserLocationPermission;
   preview: boolean;
   harborId: string;
+  version: string;
 };
 
 // Set initial state
@@ -17,11 +19,13 @@ export const initialState: State = {
   isOffline: false,
   modalBreakpoint: 0.5,
   layers: ['pilot', 'line12', 'harbor', 'name', 'quay'],
+  saveLayerSelection: false,
   showAisPredictor: false,
   response: [],
   locationPermission: 'off',
   preview: VITE_APP_CONFIG === APP_CONFIG_PREVIEW,
   harborId: '',
+  version: '',
 };
 
 export type Action =
@@ -35,6 +39,12 @@ export type Action =
       type: 'setLayers';
       payload: {
         value: string[];
+      };
+    }
+  | {
+      type: 'setSaveLayerSelection';
+      payload: {
+        value: boolean;
       };
     }
   | {
@@ -67,6 +77,12 @@ export type Action =
         value: string;
       };
     }
+  | {
+      type: 'version';
+      payload: {
+        value: string;
+      };
+    }
   | { type: 'reset' };
 
 export const DvkReducer = (state: State, action: Action) => {
@@ -82,6 +98,9 @@ export const DvkReducer = (state: State, action: Action) => {
     case 'setLayers':
       newState = { ...state, layers: action.payload.value };
       break;
+    case 'setSaveLayerSelection':
+      newState = { ...state, saveLayerSelection: action.payload.value };
+      break;
     case 'setShowAisPredictor':
       newState = { ...state, showAisPredictor: action.payload.value };
       break;
@@ -96,6 +115,9 @@ export const DvkReducer = (state: State, action: Action) => {
       break;
     case 'setHarborId':
       newState = { ...state, harborId: action.payload.value };
+      break;
+    case 'version':
+      newState = { ...state, version: action.payload.value };
       break;
     case 'reset':
       return initialState;

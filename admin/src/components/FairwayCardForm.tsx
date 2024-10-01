@@ -13,6 +13,7 @@ import {
   VtsInput,
 } from '../graphql/generated';
 import {
+  useFairwayCardLatestByIdQueryData,
   useFairwayCardsAndHarborsQueryData,
   useFairwaysQueryData,
   useHarboursQueryData,
@@ -26,7 +27,7 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import NotificationModal from './NotificationModal';
 import MapExportTool from './pictures/MapExportTool';
-import { mapToFairwayCardInput } from '../utils/dataMapper';
+import { mapOriginToFairwayCardInput, mapToFairwayCardInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';
 import MainSection from './form/fairwayCard/MainSection';
 import FairwaySection from './form/fairwayCard/FairwaySection';
@@ -67,6 +68,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
+  const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -74,6 +76,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: mareographList, isLoading: isLoadingMareographs } = useMareographQueryData();
 
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
+  // this is for checking the latest version number, so in case creating a new version we get the right url
+  const { data: latestFairwayCard } = useFairwayCardLatestByIdQueryData(fairwayCard.id);
+
   // these are derived straight from featureData unlike others through graphQL
   // the graphQL approach's motives are a bit unclear so possible refactor in the future
   const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
@@ -84,6 +89,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setNotificationOpen(true);
       if (previewPending) {
         handleOpenPreview();
+      }
+      if (isSubmittingVersion) {
+        const nextVersionNumber = latestFairwayCard?.fairwayCard?.latest ? latestFairwayCard.fairwayCard.latest + 1 : 2;
+        history.push({ pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v' + nextVersionNumber });
+        setIsSubmittingVersion(false);
       }
     },
     onError: (error: Error) => {
@@ -164,8 +174,12 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (isRemove) {
         setState({ ...oldState, status: Status.Removed });
         saveFairwayCard({ card: { ...newInput, status: Status.Removed } as FairwayCardInput });
-      } else if (!!sourceCardId?.length && !!state.pictures?.length) {
-        saveFairwayCard({ card: newInput as FairwayCardInput, pictureSourceId: sourceCardId, pictureSourceVersion: sourceCardVersion });
+      } else if ((!!sourceCardId?.length || state.operation === Operation.Createversion) && !!state.pictures?.length) {
+        saveFairwayCard({
+          card: newInput as FairwayCardInput,
+          pictureSourceId: sourceCardId ?? state.id,
+          pictureSourceVersion: sourceCardVersion ?? state.version,
+        });
       } else {
         saveFairwayCard({ card: newInput as FairwayCardInput });
       }
@@ -187,11 +201,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
 
-  const handleSubmit = (isRemove = false) => {
+  const handleSubmit = (isRemove: boolean) => {
     if (isRemove) {
       setConfirmationType('remove');
     } else if (formValid()) {
-      if (state.status === Status.Draft && (oldState.status === Status.Draft || state.operation === Operation.Create)) {
+      if (
+        state.status === Status.Draft &&
+        (oldState.status === Status.Draft || state.operation === Operation.Create || state.operation === Operation.Createversion)
+      ) {
         saveCard(false);
       } else {
         setConfirmationType('save');
@@ -203,7 +220,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
 
   const handleOpenPreview = () => {
-    openPreview(fairwayCard.id, true);
+    openPreview(fairwayCard.id, fairwayCard.version, true);
     setPreviewPending(false);
   };
 
@@ -235,7 +252,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     setSaveError('');
     setNotificationOpen(false);
     if (!saveError && !!savedCard && state.operation === Operation.Create) {
-      history.push({ pathname: '/vaylakortti/' + savedCard.id });
+      history.push({ pathname: '/vaylakortti/' + savedCard.id + '/' + savedCard.version });
+    }
+  };
+
+  const createNewVersion = () => {
+    if (formValid()) {
+      setState(mapOriginToFairwayCardInput(fairwayCard.id, state, true));
+      setIsSubmittingVersion(true);
+    } else if (!saveError) {
+      setSaveError('OPERATION-BLOCKED');
     }
   };
 
@@ -243,6 +269,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     setState(fairwayCard);
     setOldState(structuredClone(fairwayCard));
   }, [fairwayCard]);
+
+  useEffect(() => {
+    if (isSubmittingVersion && state.operation === Operation.Createversion) {
+      handleSubmit(false);
+    }
+    // eslint-disable-next-line
+  }, [isSubmittingVersion]);
 
   return (
     <IonPage>
@@ -286,6 +319,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         handlePreview={handlePreview}
+        createNewVersion={createNewVersion}
         isError={isError}
       />
 

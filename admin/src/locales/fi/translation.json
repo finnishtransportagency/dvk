@@ -120,7 +120,10 @@
     "temporary-notifications": "Huomio(t)",
     "item-created-date": "Lisäyspäivämäärä",
     "search-placeholder-mainPage": "Hae nimellä tai tunnisteella",
-    "search-title-mainPage": "Hae nimellä tai tunnisteella"
+    "search-title-mainPage": "Hae nimellä tai tunnisteella",
+    "check-and-publish": "Tarkasta muutokset ja julkaise",
+    "publishing-details": "Julkaisutiedot",
+    "create-new-version": "Luo uusi versio"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
@@ -180,7 +183,9 @@
     "starting-fairway-title": "Aloittavat väylät järjestyksen valinta",
     "starting-fairway-description": "Voit valita useita aloittavia väyliä. Aloittavien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "ending-fairway-title": "Päättävät väylät järjestyksen valinta",
-    "ending-fairway-description": "Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa."
+    "ending-fairway-description": "Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
+    "fairwaycard-publish-details": "Väyläkortin julkaisutiedot",
+    "harbor-publish-details": "Sataman julkaisutiedot"
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",

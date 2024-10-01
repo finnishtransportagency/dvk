@@ -17,7 +17,7 @@ const FairwayCard: React.FC<FairwayCardProps> = ({ id, widePane }) => {
   const { state } = useDvkContext();
 
   const { data, isPending, dataUpdatedAt, isFetching } = useFairwayCardListData();
-  const { data: previewData, isPending: previewPending, isFetching: previewFetching } = useFairwayCardPreviewData(id, state.preview);
+  const { data: previewData, isPending: previewPending, isFetching: previewFetching } = useFairwayCardPreviewData(id, state.preview, state.version);
 
   const fairwayCard = setFairwayCardByPreview(state.preview, id, data, previewData);
   //for disabling printing icon

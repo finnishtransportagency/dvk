@@ -106,6 +106,10 @@
             "depth4": "Depth 0 - 3m",
             "depth5": "Depth 3 - 6m",
             "depth6": "Depth over 10m"
+          },
+          "modal": {
+            "info": "Additional information",
+            "description": "[en] Muista valintani -ominaisuus tallentaa tekemäsi tasovalinnat selaimeesi. Mikäli ominaisuus on käytössä, valitaan sivustolle saapuessasi näkyviin automaattisesti viimeksi käyttämäsi tasot. Jos haluat, että tasovalintojasi ei enää muisteta, ota Muista valintani -ominaisuus pois käytöstä ja päivitä sivusto."
           }
         },
         "mapDetails": {

@@ -3,14 +3,19 @@ import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
-import { useFairwayCardsAndHarborsQueryData, useFairwayCardsQueryData, useSaveHarborMutationQuery } from '../graphql/api';
+import {
+  useHarbourLatestByIdQueryData,
+  useFairwayCardsAndHarborsQueryData,
+  useFairwayCardsQueryData,
+  useSaveHarborMutationQuery,
+} from '../graphql/api';
 import { harbourReducer } from '../utils/harbourReducer';
 import Section from './form/Section';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NotificationModal';
-import { mapToHarborInput } from '../utils/dataMapper';
+import { mapOriginToHarborInput, mapToHarborInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
@@ -45,10 +50,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
+  const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
   const { data: fairwayCardList } = useFairwayCardsQueryData();
+  const { data: latestHarbor } = useHarbourLatestByIdQueryData(harbour.id);
   const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
       setSavedHarbour(data.saveHarbor);
@@ -56,6 +63,11 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       setNotificationOpen(true);
       if (previewPending) {
         handleOpenPreview();
+      }
+      if (isSubmittingVersion) {
+        const nextVersionNumber = latestHarbor?.harbor?.latest ? latestHarbor.harbor.latest + 1 : 2;
+        history.push({ pathname: '/satama/' + data.saveHarbor?.id + '/v' + nextVersionNumber });
+        setIsSubmittingVersion(false);
       }
     },
     onError: (error: Error) => {
@@ -161,11 +173,11 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     return false;
   };
 
-  const handleSubmit = (isRemove = false) => {
+  const handleSubmit = (isRemove = false, newVersion?: boolean) => {
     queryClient.invalidateQueries({ queryKey: ['fairwayCards'] }).catch((err) => console.error(err));
 
     const isToBeRemoved = isRemove || (harbour.status !== Status.Removed && state.status === Status.Removed);
-    const isToBeDrafted = harbour.status === Status.Public && state.status === Status.Draft;
+    const isToBeDrafted = harbour.status === Status.Public && state.status === Status.Draft && !newVersion;
     const linkedFairways = checkLinkedFairways(isToBeRemoved, isToBeDrafted);
 
     if (linkedFairways) {
@@ -176,7 +188,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     if (isToBeRemoved) {
       setConfirmationType('remove');
     } else if (formValid()) {
-      if (state.status === Status.Draft && (oldState.status === Status.Draft || state.operation === Operation.Create)) {
+      if (
+        state.status === Status.Draft &&
+        (oldState.status === Status.Draft || state.operation === Operation.Create || state.operation === Operation.Createversion)
+      ) {
         saveHarbour(false);
       } else {
         setConfirmationType('save');
@@ -188,7 +203,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   };
 
   const handleOpenPreview = () => {
-    openPreview(harbour.id, false);
+    openPreview(harbour.id, harbour.version, false);
     setPreviewPending(false);
   };
 
@@ -221,8 +236,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     setSaveErrorMsg('');
     setSaveErrorItems([]);
     setNotificationOpen(false);
-    if (!saveError && !!savedHarbour) {
-      if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id });
+    if (!saveError && !!savedHarbour && state.operation === Operation.Create) {
+      if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id + '/' + savedHarbour.version });
     }
   };
 
@@ -231,10 +246,27 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
   };
 
+  const createNewVersion = () => {
+    if (formValid()) {
+      setState(mapOriginToHarborInput(state));
+      setIsSubmittingVersion(true);
+    } else if (!saveError && !saveErrorMsg) {
+      setSaveError('OPERATION-BLOCKED');
+      setSaveErrorMsg(t('general.fix-errors-try-again'));
+    }
+  };
+
   useEffect(() => {
     setState(harbour);
     setOldState(harbour);
   }, [harbour]);
+
+  useEffect(() => {
+    if (isSubmittingVersion && state.operation === Operation.Createversion) {
+      handleSubmit(false, true);
+    }
+    // eslint-disable-next-line
+  }, [isSubmittingVersion])
 
   return (
     <IonPage>
@@ -281,6 +313,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handleSubmit={handleSubmit}
         handleCancel={handleCancel}
         handlePreview={handlePreview}
+        createNewVersion={createNewVersion}
         isError={isError}
       />
 

@@ -173,6 +173,7 @@ fragment FairwayCardById on FairwayCard {
     startDate
     endDate
   }
+  latest
 }
 
 query fairwayCardById($id: String!, $version: String!) {

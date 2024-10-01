@@ -1,4 +1,4 @@
-import { FairwayCardByIdQuery, Status, Operation, HarbourByIdQuery } from '../graphql/generated';
+import { FairwayCardByIdQuery, Status, Operation, HarbourByIdQuery, FairwayCardInput, HarborInput } from '../graphql/generated';
 import { sortPictures } from './common';
 import { POSITION } from './constants';
 
@@ -171,6 +171,97 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
   };
 }
 
+export function mapOriginToFairwayCardInput(sourceCard: string | undefined, origin: FairwayCardInput | undefined, copyPictures?: boolean) {
+  return {
+    id: stringValueOrDefault(origin?.id),
+    // v1 is just for now, since proper version control not in use
+    version: origin?.version ?? 'v1',
+    group: stringValueOrDefault(origin?.group),
+    name: {
+      fi: stringValueOrDefault(origin?.name?.fi),
+      sv: stringValueOrDefault(origin?.name?.sv),
+      en: stringValueOrDefault(origin?.name?.en),
+    },
+    n2000HeightSystem: origin?.n2000HeightSystem ?? false,
+    status: sourceCard ? Status.Draft : (origin?.status ?? Status.Draft),
+    fairwayIds: origin?.fairwayIds ?? [],
+    harbors: origin?.harbors,
+    pilotRoutes: origin?.pilotRoutes,
+    primaryFairwayId: origin?.primaryFairwayId,
+    secondaryFairwayId: origin?.secondaryFairwayId,
+    additionalInfo: {
+      fi: stringValueOrDefault(origin?.additionalInfo?.fi),
+      sv: stringValueOrDefault(origin?.additionalInfo?.sv),
+      en: stringValueOrDefault(origin?.additionalInfo?.en),
+    },
+    lineText: {
+      fi: stringValueOrDefault(origin?.lineText?.fi),
+      sv: stringValueOrDefault(origin?.lineText?.sv),
+      en: stringValueOrDefault(origin?.lineText?.en),
+    },
+    designSpeed: {
+      fi: stringValueOrDefault(origin?.designSpeed?.fi),
+      sv: stringValueOrDefault(origin?.designSpeed?.sv),
+      en: stringValueOrDefault(origin?.designSpeed?.en),
+    },
+    speedLimit: {
+      fi: stringValueOrDefault(origin?.speedLimit?.fi),
+      sv: stringValueOrDefault(origin?.speedLimit?.sv),
+      en: stringValueOrDefault(origin?.speedLimit?.en),
+    },
+    anchorage: {
+      fi: stringValueOrDefault(origin?.anchorage?.fi),
+      sv: stringValueOrDefault(origin?.anchorage?.sv),
+      en: stringValueOrDefault(origin?.anchorage?.en),
+    },
+    navigationCondition: {
+      fi: stringValueOrDefault(origin?.navigationCondition?.fi),
+      sv: stringValueOrDefault(origin?.navigationCondition?.sv),
+      en: stringValueOrDefault(origin?.navigationCondition?.en),
+    },
+    iceCondition: {
+      fi: stringValueOrDefault(origin?.iceCondition?.fi),
+      sv: stringValueOrDefault(origin?.iceCondition?.sv),
+      en: stringValueOrDefault(origin?.iceCondition?.en),
+    },
+    windRecommendation: {
+      fi: stringValueOrDefault(origin?.windRecommendation?.fi),
+      sv: stringValueOrDefault(origin?.windRecommendation?.sv),
+      en: stringValueOrDefault(origin?.windRecommendation?.en),
+    },
+    vesselRecommendation: {
+      fi: stringValueOrDefault(origin?.vesselRecommendation?.fi),
+      sv: stringValueOrDefault(origin?.vesselRecommendation?.sv),
+      en: stringValueOrDefault(origin?.vesselRecommendation?.en),
+    },
+    visibility: {
+      fi: stringValueOrDefault(origin?.visibility?.fi),
+      sv: stringValueOrDefault(origin?.visibility?.sv),
+      en: stringValueOrDefault(origin?.visibility?.en),
+    },
+    mareographs: origin?.mareographs,
+    trafficService: {
+      pilot: {
+        email: stringValueOrDefault(origin?.trafficService?.pilot?.email),
+        phoneNumber: stringValueOrDefault(origin?.trafficService?.pilot?.phoneNumber),
+        fax: stringValueOrDefault(origin?.trafficService?.pilot?.fax),
+        extraInfo: {
+          fi: stringValueOrDefault(origin?.trafficService?.pilot?.extraInfo?.fi),
+          sv: stringValueOrDefault(origin?.trafficService?.pilot?.extraInfo?.sv),
+          en: stringValueOrDefault(origin?.trafficService?.pilot?.extraInfo?.en),
+        },
+        places: origin?.trafficService?.pilot?.places,
+      },
+      vts: origin?.trafficService?.vts,
+      tugs: origin?.trafficService?.tugs,
+    },
+    // this function is for now only used for creating new version
+    operation: Operation.Createversion,
+    pictures: copyPictures ? origin?.pictures : [],
+    temporaryNotifications: origin?.temporaryNotifications,
+  };
+}
+
 export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQuery | undefined) {
   const coordinates = data?.harbor?.geometry?.coordinates ?? ['', ''];
   return {
@@ -231,5 +322,48 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
     }),
     status: origin ? Status.Draft : (data?.harbor?.status ?? Status.Draft),
     operation: origin ? Operation.Create : Operation.Update,
+  };
+}
+
+export function mapOriginToHarborInput(originInput: HarborInput) {
+  return {
+    id: stringValueOrDefault(originInput?.id),
+    // v1 is just for now, since proper version control not in use
+    version: originInput.version,
+    name: {
+      fi: stringValueOrDefault(originInput.name.fi),
+      sv: stringValueOrDefault(originInput.name.sv),
+      en: stringValueOrDefault(originInput.name.en),
+    },
+    extraInfo: {
+      fi: stringValueOrDefault(originInput.extraInfo?.fi),
+      sv: stringValueOrDefault(originInput.extraInfo?.sv),
+      en: stringValueOrDefault(originInput.extraInfo?.en),
+    },
+    cargo: {
+      fi: stringValueOrDefault(originInput.cargo?.fi),
+      sv: stringValueOrDefault(originInput.cargo?.sv),
+      en: stringValueOrDefault(originInput.cargo?.en),
+    },
+    harborBasin: {
+      fi: stringValueOrDefault(originInput.harborBasin?.fi),
+      sv: stringValueOrDefault(originInput.harborBasin?.sv),
+      en: stringValueOrDefault(originInput.harborBasin?.en),
+    },
+    n2000HeightSystem: originInput.n2000HeightSystem ?? false,
+    geometry: { lat: stringValueOrDefault(originInput.geometry.lat), lon: stringValueOrDefault(originInput.geometry.lon) },
+    company: {
+      fi: stringValueOrDefault(originInput.company?.fi),
+      sv: stringValueOrDefault(originInput.company?.sv),
+      en: stringValueOrDefault(originInput.company?.en),
+    },
+    email: stringValueOrDefault(originInput.email),
+    fax: stringValueOrDefault(originInput.fax),
+    internet: stringValueOrDefault(originInput.internet),
+    phoneNumber: originInput.phoneNumber ?? [],
+    quays: originInput.quays,
+    // this mapper is only used for new version, so status is always 'Draft' and operation 'Createversion'
+    status: Status.Draft,
+    operation: Operation.Createversion,
   };
 }

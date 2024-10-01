@@ -30,18 +30,19 @@ interface ModalProps {
   setModalContent: Dispatch<SetStateAction<string>>;
 }
 
-type FairwayCardParams = {
+export type FairwayCardParams = {
   fairwayCardId?: string;
+  version?: string;
 };
 
 const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'common' });
   const lang = i18n.resolvedLanguage as Lang;
-  const { fairwayCardId } = useParams<FairwayCardParams>();
-  const { state } = useDvkContext();
+  const { fairwayCardId, version } = useParams<FairwayCardParams>();
+  const { state, dispatch } = useDvkContext();
 
   const { data, isPending } = useFairwayCardListData();
-  const { data: previewData, isPending: previewPending } = useFairwayCardPreviewData(fairwayCardId!, state.preview);
+  const { data: previewData, isPending: previewPending } = useFairwayCardPreviewData(fairwayCardId!, state.preview, version);
   const line12Layer = useLine12Layer();
   const line3456Layer = useLine3456Layer();
   const area12Layer = useArea12Layer();
@@ -116,6 +117,15 @@ const FairwayCardPage: React.FC<ModalProps> = ({ setModalContent }) => {
   useEffect(() => {
     setModalContent(fairwayCardId ?? 'fairwayCardList');
   }, [setModalContent, fairwayCardId]);
+
+  useEffect(() => {
+    if (version && state.preview) {
+      dispatch({
+        type: 'version',
+        payload: { value: version },
+      });
+    }
+  }, [dispatch, version, state.preview]);
 
   return (
     <IonPage id="mainContent" data-testid="fairwayCard">

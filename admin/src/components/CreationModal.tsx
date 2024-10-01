@@ -58,8 +58,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const createNewItem = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
-    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version, copyPictures: copyPics } });
-    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version } });
+    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version, copyPictures: copyPics, newVersion: false } });
+    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version, newVersion: false } });
   };
 
   const groupedItemList = useMemo(() => {

@@ -8,9 +8,10 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
-import { FeatureDataLayerId } from '../../utils/constants';
+import { FeatureDataLayerId, LAYER_IDB_KEY } from '../../utils/constants';
 import type { CheckboxCustomEvent } from '@ionic/react';
 import { LegendSpeedlimits, LegendIce, LegendDepth, LegendArea, LegendContour } from './LayerLegends';
+import { set as setIdbVal } from 'idb-keyval';
 
 interface LayerItemProps {
   id: FeatureDataLayerId;
@@ -37,6 +38,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
       });
     }, 250);
   };
+
   let alertProps:
     | {
         duration: number;
@@ -94,6 +96,9 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
   const handleChange = (event: CheckboxCustomEvent) => {
     const { checked } = event.detail;
     const updatedLayers = checked ? [...layers, id] : layers.filter((l) => l !== id);
+    if (state.saveLayerSelection) {
+      setIdbVal(LAYER_IDB_KEY, updatedLayers);
+    }
     dispatch({ type: 'setLayers', payload: { value: updatedLayers } });
     // Set ice layer opacity depending on current view resolution
     if (checked && id === 'ice') {

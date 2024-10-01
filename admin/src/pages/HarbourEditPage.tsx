@@ -37,14 +37,16 @@ const HarbourEditForm: React.FC<HarbourEditProps> = ({ harbourId, harbourVersion
 
 interface HarbourProps {
   harbourId?: string;
+  version?: string;
 }
 
 type LocationState = {
+  // harborInput when creating a new version since the whole harbor data is copied initially
   origin?: FairwayCardOrHarbor;
 };
 
 const HarbourEditPage: React.FC<HarbourProps> = () => {
-  const { harbourId } = useParams<HarbourProps>();
+  const { harbourId, version } = useParams<HarbourProps>();
   const location = useLocation();
   const locationState = location.state as LocationState;
 
@@ -71,7 +73,7 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
 
   return (
     <>
-      {harbourId && <HarbourEditForm harbourId={harbourId} />}
+      {harbourId && <HarbourEditForm harbourId={harbourId} harbourVersion={version} />}
       {locationState?.origin && <HarbourEditForm harbourId={locationState.origin.id} harbourVersion={locationState.origin.version} origin />}
       {!harbourId && !locationState?.origin && (
         <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={'-'} creator={data?.currentUser?.name} created={0} />

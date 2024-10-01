@@ -2,6 +2,7 @@ ion-modal#layerModalContainer {
   --min-width: 225px;
   z-index: 21000 !important;
 }
+
 ion-app:not(.mobile) ion-modal#layerModalContainer {
   --width: fit-content;
   --height: auto;
@@ -19,6 +20,18 @@ ion-app:not(.mobile) ion-modal#layerModalContainer {
   max-height: none;
   height: 100% !important;
   min-width: auto !important;
+}
+
+ion-modal#layerModalContainer ion-button.icon-only.small {
+  height: 18px;
+  width: 18px;
+  min-height: 18px;
+  margin: 6px 0 0 8px;
+}
+
+ion-modal#layerModalContainer ion-button.icon-only.small::part(native) {
+  min-width: 18px;
+  min-height: 18px;
 }
 
 ion-modal#layerModalContainer .divider {
