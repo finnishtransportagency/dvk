@@ -265,6 +265,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
+  const publishVersion = () => {
+    if (formValid()) {
+      setConfirmationType('publish');
+    } else {
+      setSaveError('MISSING-INFORMATION');
+    }
+  };
+
   useEffect(() => {
     setState(fairwayCard);
     setOldState(structuredClone(fairwayCard));
@@ -320,6 +328,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handleCancel={handleCancel}
         handlePreview={handlePreview}
         createNewVersion={createNewVersion}
+        publishVersion={publishVersion}
         isError={isError}
       />
 

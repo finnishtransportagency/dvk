@@ -22,6 +22,7 @@ interface HeaderProps {
   handleCancel: () => void;
   handlePreview: () => void;
   createNewVersion: () => void;
+  publishVersion: () => void;
   isError?: boolean;
 }
 
@@ -36,6 +37,7 @@ const Header: React.FC<HeaderProps> = ({
   handleCancel,
   handlePreview,
   createNewVersion,
+  publishVersion,
   isError,
 }) => {
   const { t } = useTranslation();
@@ -80,7 +82,7 @@ const Header: React.FC<HeaderProps> = ({
                 {t('general.delete')}
               </IonButton>
             )}
-            {status !== Status.Removed && (
+            {status !== Status.Removed && status !== Status.Archived && (
               <IonButton shape="round" disabled={isError || isLoading || operation === Operation.Create} onClick={() => handlePreview()}>
                 {t('general.preview')}
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
@@ -88,9 +90,9 @@ const Header: React.FC<HeaderProps> = ({
             )}
             {status === Status.Public ? (
               <>
-                <IonButton id="publishingDetails" shape="round" disabled={isError || isLoading}>
+                {/* <IonButton id="publishingDetails" shape="round" disabled={isError || isLoading}>
                   {t('general.publishing-details')}
-                </IonButton>
+                </IonButton> */}
                 <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => createNewVersion()}>
                   {t('general.create-new-version')}
                 </IonButton>
@@ -98,6 +100,11 @@ const Header: React.FC<HeaderProps> = ({
             ) : (
               <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
                 {operation === Operation.Update || operation === Operation.Createversion ? t('general.save') : t('general.create-new')}
+              </IonButton>
+            )}
+            {status === Status.Draft && (
+              <IonButton id="publishVersion" shape="round" disabled={isError || isLoading} onClick={() => publishVersion()}>
+                {t('general.publish')}
               </IonButton>
             )}
           </IonCol>

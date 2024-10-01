@@ -162,6 +162,7 @@ enum Status {
   DRAFT
   PUBLIC
   REMOVED
+  ARCHIVED
 }
 
 input GeometryInput {

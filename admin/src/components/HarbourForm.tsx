@@ -256,6 +256,14 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     }
   };
 
+  const publishVersion = () => {
+    if (formValid()) {
+      setConfirmationType('publish');
+    } else {
+      setSaveError('MISSING-INFORMATION');
+    }
+  };
+
   useEffect(() => {
     setState(harbour);
     setOldState(harbour);
@@ -266,7 +274,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       handleSubmit(false, true);
     }
     // eslint-disable-next-line
-  }, [isSubmittingVersion])
+  }, [isSubmittingVersion]);
 
   return (
     <IonPage>
@@ -314,6 +322,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handleCancel={handleCancel}
         handlePreview={handlePreview}
         createNewVersion={createNewVersion}
+        publishVersion={publishVersion}
         isError={isError}
       />
 
