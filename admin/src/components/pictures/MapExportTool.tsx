@@ -238,8 +238,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
           processCanvasElements(mapCanvas);
 
           const base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize);
-          console.log('haloo');
-          console.log(mapScale);
+
           await uploadPicture(
             base64Data,
             dvkMap.getOrientationType() || Orientation.Portrait,
