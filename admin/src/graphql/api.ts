@@ -8,11 +8,13 @@ import {
   UploadMapPictureMutationVariables,
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
+  useFairwayCardLatestByIdQuery,
   useFairwayCardsAndHarborsQuery,
   useFairwayCardsQuery,
   useFairwaysQuery,
   useHarborsQuery,
   useHarbourByIdQuery,
+  useHarbourLatestByIdQuery,
   useMareographsQuery,
   usePilotPlacesQuery,
   useSaveFairwayCardMutation,
@@ -42,6 +44,10 @@ export function useFairwayCardByIdQueryData(id: string, version: string = 'v0_la
   return useFairwayCardByIdQuery(datasourceClient, { id, version }, { refetchOnWindowFocus: refetchOnWindowFocus });
 }
 
+export function useFairwayCardLatestByIdQueryData(id: string) {
+  return useFairwayCardLatestByIdQuery(datasourceClient, { id }, { refetchOnWindowFocus: false });
+}
+
 export function useFairwaysQueryData() {
   return useFairwaysQuery(datasourceClient, undefined, { refetchOnWindowFocus: false, refetchOnMount: false });
 }
@@ -56,6 +62,10 @@ export function useHarboursQueryData() {
 
 export function useHarbourByIdQueryData(id: string, version: string = 'v0_latest', refetchOnWindowFocus?: boolean) {
   return useHarbourByIdQuery(datasourceClient, { id, version }, { refetchOnWindowFocus: refetchOnWindowFocus });
+}
+
+export function useHarbourLatestByIdQueryData(id: string) {
+  return useHarbourLatestByIdQuery(datasourceClient, { id }, { refetchOnWindowFocus: false });
 }
 
 export function usePilotPlacesQueryData() {

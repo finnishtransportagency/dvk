@@ -11,6 +11,7 @@ export type State = {
   locationPermission: UserLocationPermission;
   preview: boolean;
   harborId: string;
+  version: string;
 };
 
 // Set initial state
@@ -24,6 +25,7 @@ export const initialState: State = {
   locationPermission: 'off',
   preview: VITE_APP_CONFIG === APP_CONFIG_PREVIEW,
   harborId: '',
+  version: '',
 };
 
 export type Action =
@@ -75,6 +77,12 @@ export type Action =
         value: string;
       };
     }
+  | {
+      type: 'version';
+      payload: {
+        value: string;
+      };
+    }
   | { type: 'reset' };
 
 export const DvkReducer = (state: State, action: Action) => {
@@ -107,6 +115,9 @@ export const DvkReducer = (state: State, action: Action) => {
       break;
     case 'setHarborId':
       newState = { ...state, harborId: action.payload.value };
+      break;
+    case 'version':
+      newState = { ...state, version: action.payload.value };
       break;
     case 'reset':
       return initialState;

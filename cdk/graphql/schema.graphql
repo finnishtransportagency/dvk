@@ -36,6 +36,7 @@ input PictureUploadInput {
 enum Operation {
   CREATE
   UPDATE
+  CREATEVERSION
 }
 
 enum OperationError {
@@ -257,6 +258,7 @@ type FairwayCard {
   pictures: [Picture!]
   pilotRoutes: [PilotRoute!]
   temporaryNotifications: [TemporaryNotification!]
+  latest: Float
 }
 
 type Picture {
@@ -334,6 +336,7 @@ type Harbor {
   harborBasin: Text
   cargo: Text
   geometry: GeometryPoint
+  latest: Float
 }
 
 type Quay {

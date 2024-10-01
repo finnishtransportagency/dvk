@@ -69,7 +69,7 @@ export function useFairwayCardPreviewData(id: string, isPreview: boolean, versio
   );
 }
 
-export function useHarborPreviewData(id: string, version: string = 'v0_latest') {
+export function useHarborPreviewData(id: string, version: string = 'v0_public') {
   return useHarborPreviewQuery(
     previewDataSourceClient,
     { id: id, version: version },

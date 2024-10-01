@@ -21,6 +21,7 @@ interface HeaderProps {
   handleSubmit: (isRemove: boolean) => void;
   handleCancel: () => void;
   handlePreview: () => void;
+  createNewVersion: () => void;
   isError?: boolean;
 }
 
@@ -34,6 +35,7 @@ const Header: React.FC<HeaderProps> = ({
   handleSubmit,
   handleCancel,
   handlePreview,
+  createNewVersion,
   isError,
 }) => {
   const { t } = useTranslation();
@@ -65,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({
             <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
               {t('general.cancel')}
             </IonButton>
-            {operation === Operation.Update && oldStatus !== Status.Removed && (
+            {(operation === Operation.Update || operation === Operation.Createversion) && oldStatus !== Status.Removed && (
               <IonButton
                 id="deleteButton"
                 shape="round"
@@ -84,9 +86,20 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
               </IonButton>
             )}
-            <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
-              {operation === Operation.Update ? t('general.save') : t('general.create-new')}
-            </IonButton>
+            {status === Status.Public ? (
+              <>
+                <IonButton id="publishingDetails" shape="round" disabled={isError || isLoading}>
+                  {t('general.publishing-details')}
+                </IonButton>
+                <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => createNewVersion()}>
+                  {t('general.create-new-version')}
+                </IonButton>
+              </>
+            ) : (
+              <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
+                {operation === Operation.Update || operation === Operation.Createversion ? t('general.save') : t('general.create-new')}
+              </IonButton>
+            )}
           </IonCol>
         </IonRow>
       </IonGrid>
