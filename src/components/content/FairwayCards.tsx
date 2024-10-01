@@ -3,7 +3,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardPartsFragment } from '../../graphql/generated';
 import { Link } from 'react-router-dom';
-import { Lang } from '../../utils/constants';
+import { Lang, PUBLIC_VERSION } from '../../utils/constants';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import GeneralInfoAccordion from './GeneralInfoAccordion';
 import Breadcrumb from './Breadcrumb';
@@ -43,7 +43,7 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loadin
             <IonRow key={uuid} className="fairwayCards">
               <IonCol>
                 <IonLabel>
-                  <Link to={'/kortit/' + fairwayCard.id + '/v0_public'}>{fairwayCard.name[lang]}</Link>
+                  <Link to={'/kortit/' + fairwayCard.id + '/' + PUBLIC_VERSION}>{fairwayCard.name[lang]}</Link>
                 </IonLabel>
               </IonCol>
               <IonCol>
