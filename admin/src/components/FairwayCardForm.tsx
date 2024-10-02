@@ -27,7 +27,7 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import NotificationModal from './NotificationModal';
 import MapExportTool from './pictures/MapExportTool';
-import { mapOriginToFairwayCardInput, mapToFairwayCardInput } from '../utils/dataMapper';
+import { mapToFairwayCardInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';
 import MainSection from './form/fairwayCard/MainSection';
 import FairwaySection from './form/fairwayCard/FairwaySection';
@@ -143,18 +143,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     );
   };
 
-  const backToList = () => {
-    history.push({ pathname: '/' });
-  };
-
-  const handleCancel = () => {
-    if (hasUnsavedChanges(oldState, state)) {
-      setConfirmationType('cancel');
-    } else {
-      backToList();
-    }
-  };
-
   const saveCard = useCallback(
     (isRemove?: boolean) => {
       const cardInput = isRemove ? oldState : state;
@@ -219,6 +207,34 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
+  const backToList = () => {
+    history.push({ pathname: '/' });
+  };
+
+  const handleCancel = () => {
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('cancel');
+    } else {
+      backToList();
+    }
+  };
+
+  const handleSave = () => {
+    if (state.status === Status.Draft) {
+      saveCard(false);
+    } else if (state.status === Status.Public) {
+      setConfirmationType('save');
+    }
+  };
+
+  const handleRemove = () => {
+    if (state.status === Status.Draft) {
+      setConfirmationType('remove');
+    } else if (state.status === Status.Public) {
+      setConfirmationType('archive');
+    }
+  };
+
   const handleOpenPreview = () => {
     openPreview(fairwayCard.id, fairwayCard.version, true);
     setPreviewPending(false);
@@ -230,6 +246,24 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setPreviewConfirmation('preview');
     } else {
       handleOpenPreview();
+    }
+  };
+
+  const handleNewVersion = () => {
+    if (formValid()) {
+      setConfirmationType('version');
+      /* setState(mapOriginToFairwayCardInput(fairwayCard.id, state, true));
+      setIsSubmittingVersion(true); */
+    } else if (!saveError) {
+      setSaveError('OPERATION-BLOCKED');
+    }
+  };
+
+  const handlePublish = () => {
+    if (formValid()) {
+      setConfirmationType('publish');
+    } else {
+      setSaveError('MISSING-INFORMATION');
     }
   };
 
@@ -253,23 +287,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     setNotificationOpen(false);
     if (!saveError && !!savedCard && state.operation === Operation.Create) {
       history.push({ pathname: '/vaylakortti/' + savedCard.id + '/' + savedCard.version });
-    }
-  };
-
-  const createNewVersion = () => {
-    if (formValid()) {
-      setState(mapOriginToFairwayCardInput(fairwayCard.id, state, true));
-      setIsSubmittingVersion(true);
-    } else if (!saveError) {
-      setSaveError('OPERATION-BLOCKED');
-    }
-  };
-
-  const publishVersion = () => {
-    if (formValid()) {
-      setConfirmationType('publish');
-    } else {
-      setSaveError('MISSING-INFORMATION');
     }
   };
 
@@ -318,17 +335,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         message={saveError ? t('general.fix-errors-try-again') || '' : ''}
       />
       <Header
-        operation={state.operation}
-        status={state.status}
-        oldStatus={oldState.status}
+        currentState={state}
+        oldState={oldState}
         isLoading={isLoading}
         isLoadingMutation={isLoadingMutation}
         updateState={updateState}
-        handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handleSave={handleSave}
+        handleRemove={handleRemove}
         handlePreview={handlePreview}
-        createNewVersion={createNewVersion}
-        publishVersion={publishVersion}
+        handleNewVersion={handleNewVersion}
+        handlePublish={handlePublish}
         isError={isError}
       />
 

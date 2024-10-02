@@ -37,6 +37,9 @@ enum Operation {
   CREATE
   UPDATE
   CREATEVERSION
+  PUBLISH
+  ARCHIVE
+  REMOVE
 }
 
 enum OperationError {

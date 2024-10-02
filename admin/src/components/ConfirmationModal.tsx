@@ -36,8 +36,8 @@ const ConfirmationModal: React.FC<ModalProps> = ({
 
   const modal = useRef<HTMLIonModalElement>(null);
   let buttonTitle = t('general.save');
-  let description = t(`modal.save-${saveType}-description`);
-  let title = t(`modal.save-${saveType}-title`);
+  let description = '';
+  let title = '';
 
   if (confirmationType === 'cancel') {
     buttonTitle = t('general.leave');
@@ -47,28 +47,20 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     title = t(`modal.preview-${saveType}-title`);
     description = t(`modal.preview-${saveType}-description`);
   } else if (confirmationType === 'publish') {
+    buttonTitle = t('general.publish');
     title = t(`modal.publish-${saveType}-title`);
-    description = t(`modal.publish-${saveType}-description2`);
-  } else if (confirmationType === 'remove' || newStatus === Status.Removed) {
+    description = t(`modal.publish-${saveType}-description`);
+  } else if (confirmationType === 'version') {
+    title = t('general.create-new-version');
+    description = t(`modal.version-${saveType}-description`);
+  } else if (confirmationType === 'remove') {
     buttonTitle = t('general.delete');
     title = t(`modal.delete-${saveType}-title`);
     description = t(`modal.delete-${saveType}-description`, { name: oldState.name ? oldState.name[lang] : '-' });
-  } else if (oldState.status === Status.Public && newStatus === Status.Draft) {
-    buttonTitle = t('general.update');
-    title = t(`modal.update-${saveType}-title`);
-    description = t(`modal.update-${saveType}-description`);
-  } else if (oldState.status === Status.Removed && newStatus === Status.Draft) {
-    buttonTitle = t('general.update');
-    title = t(`modal.update-${saveType}-title`);
-    description = t(`modal.update2-${saveType}-description`);
-  } else if (oldState.status === Status.Removed && newStatus === Status.Public) {
-    buttonTitle = t('general.update');
-    title = t(`modal.update-${saveType}-title`);
-    description = t(`modal.update3-${saveType}-description`);
-  } else if (oldState.status === Status.Draft && newStatus === Status.Public) {
-    buttonTitle = t('general.update');
-    title = t(`modal.publish-${saveType}-title`);
-    description = t(`modal.publish-${saveType}-description`);
+  } else if (confirmationType === 'archive') {
+    buttonTitle = t('general.archive');
+    title = t(`modal.archive-${saveType}-title`);
+    description = t(`modal.archive-${saveType}-description`, { name: oldState.name ? oldState.name[lang] : '-' });
   }
 
   const closeModal = () => {

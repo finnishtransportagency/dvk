@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { IonButton, IonCol, IonGrid, IonHeader, IonProgressBar, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Operation, Status } from '../../graphql/generated';
+import { FairwayCardInput, HarborInput, Operation, Status } from '../../graphql/generated';
 import SelectInput from './SelectInput';
 import { ValueType, ActionType, Lang } from '../../utils/constants';
+import { hasUnsavedChanges } from '../../utils/formValidations';
 
 interface HeaderProps {
-  operation: Operation;
-  status: Status;
-  oldStatus: Status;
+  currentState: FairwayCardInput | HarborInput;
+  oldState: FairwayCardInput | HarborInput;
   isLoading: boolean;
   isLoadingMutation: boolean;
   updateState: (
@@ -18,26 +18,27 @@ interface HeaderProps {
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => void;
-  handleSubmit: (isRemove: boolean) => void;
   handleCancel: () => void;
+  handleSave: () => void;
+  handleRemove: () => void;
   handlePreview: () => void;
-  createNewVersion: () => void;
-  publishVersion: () => void;
+  handleNewVersion: () => void;
+  handlePublish: () => void;
   isError?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
-  operation,
-  status,
-  oldStatus,
+  currentState,
+  oldState,
   isLoading,
   isLoadingMutation,
   updateState,
-  handleSubmit,
   handleCancel,
+  handleSave,
+  handleRemove,
   handlePreview,
-  createNewVersion,
-  publishVersion,
+  handleNewVersion,
+  handlePublish,
   isError,
 }) => {
   const { t } = useTranslation();
@@ -46,7 +47,13 @@ const Header: React.FC<HeaderProps> = ({
     { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
     { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
   ];
-  if (operation === Operation.Update) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
+
+  if (currentState.operation === Operation.Update)
+    statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
+
+  const unsavedChanges = useMemo(() => {
+    return hasUnsavedChanges(oldState, currentState);
+  }, [oldState, currentState]);
 
   return (
     <IonHeader className="ion-no-border" id="mainPageContent">
@@ -58,54 +65,61 @@ const Header: React.FC<HeaderProps> = ({
           <IonCol size="auto">
             <SelectInput
               label={t('general.item-status')}
-              selected={status}
+              selected={currentState.status}
               options={statusOptions}
               setSelected={updateState}
               actionType="status"
-              disabled={isLoading}
+              disabled
             />
           </IonCol>
           <IonCol size="auto">
             <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
               {t('general.cancel')}
             </IonButton>
-            {(operation === Operation.Update || operation === Operation.Createversion) && oldStatus !== Status.Removed && (
-              <IonButton
-                id="deleteButton"
-                shape="round"
-                color="danger"
-                disabled={isError || isLoading}
-                onClick={() => {
-                  handleSubmit(true);
-                }}
-              >
-                {t('general.delete')}
-              </IonButton>
+            {(currentState.status === Status.Public || currentState.status === Status.Draft) && (
+              <>
+                <IonButton
+                  id="deleteButton"
+                  shape="round"
+                  color="danger"
+                  disabled={isError || isLoading}
+                  onClick={() => {
+                    handleRemove();
+                  }}
+                >
+                  {currentState.status === Status.Draft ? t('general.delete') : t('general.archive')}
+                </IonButton>
+                <IonButton
+                  shape="round"
+                  disabled={isError || isLoading || currentState.operation === Operation.Create}
+                  onClick={() => handlePreview()}
+                >
+                  {t('general.preview')}
+                  <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
+                </IonButton>
+              </>
             )}
-            {status !== Status.Removed && status !== Status.Archived && (
-              <IonButton shape="round" disabled={isError || isLoading || operation === Operation.Create} onClick={() => handlePreview()}>
-                {t('general.preview')}
-                <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
-              </IonButton>
-            )}
-            {status === Status.Public ? (
+            {currentState.status === Status.Public && (
               <>
                 {/* <IonButton id="publishingDetails" shape="round" disabled={isError || isLoading}>
                   {t('general.publishing-details')}
                 </IonButton> */}
-                <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => createNewVersion()}>
+                <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => handleNewVersion()}>
                   {t('general.create-new-version')}
                 </IonButton>
               </>
-            ) : (
-              <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
-                {operation === Operation.Update || operation === Operation.Createversion ? t('general.save') : t('general.create-new')}
-              </IonButton>
             )}
-            {status === Status.Draft && (
-              <IonButton id="publishVersion" shape="round" disabled={isError || isLoading} onClick={() => publishVersion()}>
-                {t('general.publish')}
-              </IonButton>
+            {currentState.status === Status.Draft && (
+              <>
+                <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSave()}>
+                  {currentState.operation === Operation.Update || currentState.operation === Operation.Createversion
+                    ? t('general.save')
+                    : t('general.create-new')}
+                </IonButton>
+                <IonButton id="publishVersion" shape="round" disabled={isError || isLoading || unsavedChanges} onClick={() => handlePublish()}>
+                  {t('general.publish')}
+                </IonButton>
+              </>
             )}
           </IonCol>
         </IonRow>

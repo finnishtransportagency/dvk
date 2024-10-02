@@ -15,7 +15,7 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NotificationModal';
-import { mapOriginToHarborInput, mapToHarborInput } from '../utils/dataMapper';
+import { mapToHarborInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
@@ -90,18 +90,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     setState(
       harbourReducer(state, value, actionType, validationErrors, setValidationErrors, actionLang, actionTarget, actionOuterTarget, reservedHarbourIds)
     );
-  };
-
-  const backToList = () => {
-    history.push({ pathname: '/' });
-  };
-
-  const handleCancel = () => {
-    if (hasUnsavedChanges(oldState, state)) {
-      setConfirmationType('cancel');
-    } else {
-      backToList();
-    }
   };
 
   const saveHarbour = useCallback(
@@ -202,6 +190,34 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     }
   };
 
+  const backToList = () => {
+    history.push({ pathname: '/' });
+  };
+
+  const handleCancel = () => {
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('cancel');
+    } else {
+      backToList();
+    }
+  };
+
+  const handleSave = () => {
+    if (state.status === Status.Draft) {
+      saveHarbour(false);
+    } else if (state.status === Status.Public) {
+      setConfirmationType('save');
+    }
+  };
+
+  const handleRemove = () => {
+    if (state.status === Status.Draft) {
+      setConfirmationType('remove');
+    } else if (state.status === Status.Public) {
+      setConfirmationType('archive');
+    }
+  };
+
   const handleOpenPreview = () => {
     openPreview(harbour.id, harbour.version, false);
     setPreviewPending(false);
@@ -213,6 +229,25 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       setPreviewConfirmation('preview');
     } else {
       handleOpenPreview();
+    }
+  };
+
+  const handleNewVersion = () => {
+    if (formValid()) {
+      /* setState(mapOriginToHarborInput(state));
+      setIsSubmittingVersion(true); */
+      setConfirmationType('version');
+    } else if (!saveError && !saveErrorMsg) {
+      setSaveError('OPERATION-BLOCKED');
+      setSaveErrorMsg(t('general.fix-errors-try-again'));
+    }
+  };
+
+  const handlePublish = () => {
+    if (formValid()) {
+      setConfirmationType('publish');
+    } else {
+      setSaveError('MISSING-INFORMATION');
     }
   };
 
@@ -244,24 +279,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const getNotificationTitle = () => {
     if (saveError === 'OPERATION-BLOCKED') return '';
     return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
-  };
-
-  const createNewVersion = () => {
-    if (formValid()) {
-      setState(mapOriginToHarborInput(state));
-      setIsSubmittingVersion(true);
-    } else if (!saveError && !saveErrorMsg) {
-      setSaveError('OPERATION-BLOCKED');
-      setSaveErrorMsg(t('general.fix-errors-try-again'));
-    }
-  };
-
-  const publishVersion = () => {
-    if (formValid()) {
-      setConfirmationType('publish');
-    } else {
-      setSaveError('MISSING-INFORMATION');
-    }
   };
 
   useEffect(() => {
@@ -312,17 +329,17 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         itemList={saveErrorItems}
       />
       <Header
-        operation={state.operation}
-        status={state.status}
-        oldStatus={oldState.status}
+        currentState={state}
+        oldState={oldState}
         isLoading={isLoadingMutation}
         isLoadingMutation={isLoadingMutation}
         updateState={updateState}
-        handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handleSave={handleSave}
+        handleRemove={handleRemove}
         handlePreview={handlePreview}
-        createNewVersion={createNewVersion}
-        publishVersion={publishVersion}
+        handleNewVersion={handleNewVersion}
+        handlePublish={handlePublish}
         isError={isError}
       />
 
