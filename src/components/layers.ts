@@ -180,7 +180,6 @@ function addFeatureVectorLayer({
       updateWhileInteracting: false,
       updateWhileAnimating: false,
       opacity,
-      renderOrder: undefined,
       zIndex,
       visible: initialState.layers.includes(id),
     })
@@ -530,7 +529,7 @@ export function addAPILayers(map: Map) {
     id: 'safetyequipment',
     renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, !!feature.get('hoverStyle'), feature.get('faultListStyle')),
-    zIndex: 306,
+    zIndex: 380,
   });
 
   // VTS linjat ja ilmoituspisteet
@@ -564,7 +563,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 20,
     style: getFairwayWidthStyle,
     declutter: true,
-    zIndex: 314,
+    zIndex: 400,
   });
   // Turvalaiteviat
   addFeatureVectorLayer({
@@ -572,7 +571,7 @@ export function addAPILayers(map: Map) {
     id: 'safetyequipmentfault',
     renderBuffer: 30,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, feature.get('hoverStyle'), true),
-    zIndex: 315,
+    zIndex: 381,
   });
 
   // Luotsausreitit
