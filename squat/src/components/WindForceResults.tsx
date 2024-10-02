@@ -26,6 +26,7 @@ const WindForceResults: React.FC<WindForceResultProps> = ({ limitedView }) => {
                 value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
                 unit="°"
                 unitId="deg"
+                dataTestid="relative-wind-direction"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -41,6 +42,7 @@ const WindForceResults: React.FC<WindForceResultProps> = ({ limitedView }) => {
                 unit="mt"
                 infoContentTitle={t('wind-force-info-title')}
                 infoContent={<p>{t('wind-force-info')}</p>}
+                dataTestid="wind-force"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -52,6 +54,7 @@ const WindForceResults: React.FC<WindForceResultProps> = ({ limitedView }) => {
                 unit="mt"
                 infoContentTitle={t('wave-force-info-title')}
                 infoContent={<p>{t('wave-force-info')}</p>}
+                dataTestid="wave-force"
               />
             </IonCol>
 
@@ -60,6 +63,7 @@ const WindForceResults: React.FC<WindForceResultProps> = ({ limitedView }) => {
                 title={t('bow-thruster-force')}
                 value={state.calculations.forces.bowThrusterForce.toLocaleString(i18n.language, { maximumFractionDigits: 1 })}
                 unit="mt"
+                dataTestid="bow-thruster-force"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -75,6 +79,7 @@ const WindForceResults: React.FC<WindForceResultProps> = ({ limitedView }) => {
                     ? t('insufficient-safety-margin')
                     : ''
                 }
+                dataTestid="remaining-safety-margin"
               />
             </IonCol>
 
@@ -87,6 +92,7 @@ const WindForceResults: React.FC<WindForceResultProps> = ({ limitedView }) => {
                     : '-'
                 }
                 error={isExternalForceRequired(state.calculations.forces.externalForceRequired) ? t('external-force-required') : ''}
+                dataTestid="minimum-external-force-required"
               />
             </IonCol>
             <IonCol size="6" />
