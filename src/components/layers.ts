@@ -1021,15 +1021,13 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       fairwayFeatures.push(mareograph);
     }
 
-    if (import.meta.env.VITE_APP_ENV !== 'prod') {
-      const pilotRouteFeatures = pilotRouteSource.getFeatures();
-      const cardRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
-      for (const cardRoute of cardRoutes) {
-        const feature = pilotRouteSource.getFeatureById(cardRoute.getProperties()?.id) as Feature<Geometry>;
-        if (feature) {
-          pilotRouteSource.removeFeature(feature);
-          fairwayFeatures.push(feature);
-        }
+    const pilotRouteFeatures = pilotRouteSource.getFeatures();
+    const cardRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
+    for (const cardRoute of cardRoutes) {
+      const feature = pilotRouteSource.getFeatureById(cardRoute.getProperties()?.id) as Feature<Geometry>;
+      if (feature) {
+        pilotRouteSource.removeFeature(feature);
+        fairwayFeatures.push(feature);
       }
     }
 

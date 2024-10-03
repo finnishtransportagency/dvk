@@ -134,7 +134,7 @@ const LayerModal: React.FC<ModalProps> = ({
           { id: 'pilot', title: t('homePage.map.controls.layer.pilot') },
           { id: 'pilotagelimit', title: t('homePage.map.controls.layer.pilotageLimits') },
           { id: 'pilotageareaborder', title: t('homePage.map.controls.layer.pilotageAreaBorders') },
-          { id: 'pilotroute', title: t('homePage.map.controls.layer.pilotroutes'), hidden: import.meta.env.VITE_APP_ENV === 'prod' },
+          { id: 'pilotroute', title: t('homePage.map.controls.layer.pilotroutes') },
         ],
       },
       {
