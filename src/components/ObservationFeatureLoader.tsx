@@ -35,6 +35,7 @@ export function useObservationLayer() {
     const oLayer = dvkMap.getFeatureLayer('observation');
     const sfcLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
     oLayer.on('change:visible', () => {
+      console.log('hei');
       setFetchingEnabled(featuresVisible('observation'));
       if (featuresVisible('observation')) {
         refetch();
