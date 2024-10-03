@@ -272,8 +272,8 @@
     "section-name": "[sv] Laituripaikan nimi",
     "linked-fairwaycards-exist-cannot-remove-harbour_one": "[sv] Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman poistamista.",
     "linked-fairwaycards-exist-cannot-remove-harbour_other": "[sv] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman poistamista.",
-    "linked-fairwaycards-exist-cannot-draft-harbour_one": "[sv] Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
-    "linked-fairwaycards-exist-cannot-draft-harbour_other": "[sv] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman muuttamista \"Luonnos\"-tilaan.",
+    "linked-fairwaycards-exist-cannot-archive-harbour_one": "[sv] Satama on liitetty yhteen väyläkorttiin. Liitos on purettava ennen sataman arkistointia.",
+    "linked-fairwaycards-exist-cannot-archive-harbour_other": "[sv] Satama on liitetty useaan väyläkorttiin. Liitokset on purettava ennen sataman arkistointia.",
     "error-duplicate-location": "[sv] Sijainti on jo käytössä"
   },
   "homePage": {
