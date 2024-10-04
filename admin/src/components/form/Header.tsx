@@ -2,8 +2,6 @@ import React, { useMemo } from 'react';
 import { IonButton, IonCol, IonGrid, IonHeader, IonProgressBar, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardInput, HarborInput, Operation, Status } from '../../graphql/generated';
-import SelectInput from './SelectInput';
-import { ValueType, ActionType, Lang } from '../../utils/constants';
 import { hasUnsavedChanges } from '../../utils/formValidations';
 
 interface HeaderProps {
@@ -11,13 +9,6 @@ interface HeaderProps {
   oldState: FairwayCardInput | HarborInput;
   isLoading: boolean;
   isLoadingMutation: boolean;
-  updateState: (
-    value: ValueType,
-    actionType: ActionType,
-    actionLang?: Lang,
-    actionTarget?: string | number,
-    actionOuterTarget?: string | number
-  ) => void;
   handleCancel: () => void;
   handleSave: () => void;
   handleRemove: () => void;
@@ -32,7 +23,6 @@ const Header: React.FC<HeaderProps> = ({
   oldState,
   isLoading,
   isLoadingMutation,
-  updateState,
   handleCancel,
   handleSave,
   handleRemove,
@@ -42,14 +32,6 @@ const Header: React.FC<HeaderProps> = ({
   isError,
 }) => {
   const { t } = useTranslation();
-
-  const statusOptions = [
-    { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
-    { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
-  ];
-
-  if (currentState.operation === Operation.Update)
-    statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
 
   const unsavedChanges = useMemo(() => {
     return hasUnsavedChanges(oldState, currentState);
@@ -62,16 +44,6 @@ const Header: React.FC<HeaderProps> = ({
         <IonRow className="ion-align-items-end">
           {/* this 'extra' column keeps everything in it's right place */}
           <IonCol className="align-right" />
-          <IonCol size="auto">
-            <SelectInput
-              label={t('general.item-status')}
-              selected={currentState.status}
-              options={statusOptions}
-              setSelected={updateState}
-              actionType="status"
-              disabled
-            />
-          </IonCol>
           <IonCol size="auto">
             <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
               {t('general.cancel')}

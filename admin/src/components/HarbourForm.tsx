@@ -338,7 +338,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         oldState={oldState}
         isLoading={isLoadingMutation}
         isLoadingMutation={isLoadingMutation}
-        updateState={updateState}
         handleCancel={handleCancel}
         handleSave={handleSave}
         handleRemove={handleRemove}

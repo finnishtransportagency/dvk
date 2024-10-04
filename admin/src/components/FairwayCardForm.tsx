@@ -354,7 +354,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         oldState={oldState}
         isLoading={isLoading}
         isLoadingMutation={isLoadingMutation}
-        updateState={updateState}
         handleCancel={handleCancel}
         handleSave={handleSave}
         handleRemove={handleRemove}
