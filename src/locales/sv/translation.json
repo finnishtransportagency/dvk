@@ -32,8 +32,8 @@
         "layer": {
           "tipLabel": "Välj lager",
           "header": "Kartlager",
-          "saveSelection": "[sv] Muista valintani",
-          "selectAll": "[sv] Valitse kaikki tasot",
+          "saveSelection": "Minns mina val",
+          "selectAll": "Välj alla nivåer",
           "class1": "Handelssjöfart",
           "class2": "Annan vattentrafik",
           "lines": "Navigationslinjer",
@@ -109,7 +109,7 @@
           },
           "modal": {
             "info": "Ytterligare information",
-            "description": "[sv] Muista valintani -ominaisuus tallentaa tekemäsi tasovalinnat selaimeesi. Mikäli ominaisuus on käytössä, valitaan sivustolle saapuessasi näkyviin automaattisesti viimeksi käyttämäsi tasot. Jos haluat, että tasovalintojasi ei enää muisteta, ota Muista valintani -ominaisuus pois käytöstä ja päivitä sivusto."
+            "description": "Med funktionen 'Minns mina val' sparas dina nivå val i din webbläsare. Ifall funktionen är aktiverad, väljs de senast använda nivåerna automatiskt då du kommer till websidan. Ifall du inte vill att man skalla komma ihåg dina val , inaktivera funktionen och uppdatera sidan."
           }
         },
         "mapDetails": {
