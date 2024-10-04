@@ -32,7 +32,7 @@
         "layer": {
           "tipLabel": "Välj lager",
           "header": "Kartlager",
-          "saveSelection": "Minns mina val",
+          "saveSelection": "Kom ihåg mina val",
           "selectAll": "Välj alla nivåer",
           "class1": "Handelssjöfart",
           "class2": "Annan vattentrafik",
@@ -109,7 +109,7 @@
           },
           "modal": {
             "info": "Ytterligare information",
-            "description": "Med funktionen 'Minns mina val' sparas dina nivå val i din webbläsare. Ifall funktionen är aktiverad, väljs de senast använda nivåerna automatiskt då du kommer till websidan. Ifall du inte vill att man skalla komma ihåg dina val , inaktivera funktionen och uppdatera sidan."
+            "description": "Funktionen Kom ihåg mina val sparar de nivåer du har valt i din webbläsare. Om funktionen är aktiverad kommer de nivåer du valde senast att visas automatiskt när du besöker webbplatsen. Om du inte längre vill att dina val ska sparas, inaktivera funktionen Kom ihåg mina val och uppdatera webbplatsen."
           }
         },
         "mapDetails": {
