@@ -109,7 +109,7 @@
           },
           "modal": {
             "info": "Additional information",
-            "description": "The 'Remember my choice' feature saves the selected layers to your browser. If the feature is selected, the next time the application is used, the same layers will be pre-selected. If you do not want the layers to be remembered, de-select the feature and refresh the page."
+            "description": "The 'Remember my choice' feature saves the selected layers to your browser. If the feature is selected, the next time the application is used, the same layers will be pre-selected. If you do not want the layers to be remembered, deselect the feature and refresh the page."
           }
         },
         "mapDetails": {
