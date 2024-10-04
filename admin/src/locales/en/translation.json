@@ -29,6 +29,7 @@
     "item-type-HARBOR": "Harbour",
     "item-status-DRAFT": "Draft",
     "item-status-PUBLIC": "Published",
+    "item-status-ARCHIVED": "Archived",
     "item-status-REMOVED": "Removed",
     "archipelagoSea": "Archipelago sea",
     "gulfOfFinland": "Gulf of Finland",

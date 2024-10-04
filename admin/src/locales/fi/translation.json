@@ -29,6 +29,7 @@
     "item-type-HARBOR": "Satama",
     "item-status-DRAFT": "Luonnos",
     "item-status-PUBLIC": "Julkaistu",
+    "item-status-ARCHIVED": "Arkistoitu",
     "item-status-REMOVED": "Poistettu",
     "archipelagoSea": "Saaristomeri",
     "gulfOfFinland": "Suomenlahti",

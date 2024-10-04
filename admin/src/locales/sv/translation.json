@@ -29,6 +29,7 @@
     "item-type-HARBOR": "[sv] Satama",
     "item-status-DRAFT": "[sv] Luonnos",
     "item-status-PUBLIC": "[sv] Julkaistu",
+    "item-status-ARCHIVED": "[sv] Arkistoitu",
     "item-status-REMOVED": "[sv] Poistettu",
     "archipelagoSea": "Skärgårdshavet",
     "gulfOfFinland": "Finska vikens område",

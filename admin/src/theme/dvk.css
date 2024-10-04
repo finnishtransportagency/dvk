@@ -704,6 +704,7 @@ ion-grid.itemList ion-col.item-status-PUBLIC {
   color: var(--ion-color-success);
   font-weight: bold;
 }
+ion-grid.itemList ion-col.item-status-ARCHIVED,
 ion-grid.itemList ion-col.item-status-REMOVED {
   color: var(--ion-color-danger);
   opacity: 0.75;
@@ -1278,6 +1279,7 @@ ion-header.infoHeader .infoHeaderDivider {
   color: var(--ion-color-success);
   font-weight: bold;
 }
+.infoContent .item-status-ARCHIVED,
 .infoContent .item-status-REMOVED {
   color: var(--ion-color-danger);
   opacity: 0.75;

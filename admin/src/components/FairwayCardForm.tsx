@@ -160,13 +160,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         };
       };
 
-      if (operation === Operation.Archive) {
+      if (operation === Operation.Publish) {
+        setState({ ...state, status: Status.Public });
+        saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Public, operation }) as FairwayCardInput });
+      } else if (operation === Operation.Archive) {
         setState({ ...state, status: Status.Archived });
-        saveFairwayCard({ card: { ...state, status: Status.Archived, operation } as FairwayCardInput });
+        saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Archived, operation }) as FairwayCardInput });
       } else if (operation === Operation.Remove) {
         // Ignore unsaved changes if draft card is removed
         setState({ ...oldState, status: Status.Removed });
-        saveFairwayCard({ card: { ...oldState, status: Status.Removed, operation } as FairwayCardInput });
+        saveFairwayCard({ card: mapTrafficService({ ...oldState, status: Status.Removed, operation }) as FairwayCardInput });
       } else if (operation === Operation.Create || operation === Operation.Update) {
         if (!!sourceCardId?.length && !!state.pictures?.length) {
           saveFairwayCard({
@@ -192,7 +195,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
           saveFairwayCard({ card: newCard });
         }
       }
-      // TODO Operation.Publish
     },
     [state, oldState, sourceCardId, sourceCardVersion, saveFairwayCard]
   );
@@ -276,8 +278,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         return saveCard(Operation.Archive);
       case 'cancel':
         return backToList();
-      case 'preview':
-        return saveCard(state.operation);
       case 'publish':
         return saveCard(Operation.Publish);
       case 'remove':
@@ -330,7 +330,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       />
       <ConfirmationModal
         saveType="fairwaycard"
-        action={handleConfirmationSubmit}
+        action={() => saveCard(state.operation)}
         confirmationType={previewConfirmation}
         setConfirmationType={setPreviewConfirmation}
         newStatus={state.status}

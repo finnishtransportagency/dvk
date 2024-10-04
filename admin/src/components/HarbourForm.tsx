@@ -123,13 +123,16 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         };
       };
 
-      if (operation === Operation.Archive) {
+      if (operation === Operation.Publish) {
+        setState({ ...state, status: Status.Public });
+        saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Public, operation }) as HarborInput });
+      } else if (operation === Operation.Archive) {
         setState({ ...state, status: Status.Archived });
-        saveHarbourMutation({ harbor: { ...state, status: Status.Archived, operation } as HarborInput });
+        saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Archived, operation }) as HarborInput });
       } else if (operation === Operation.Remove) {
         // Ignore unsaved changes if draft harbour is removed
         setState({ ...oldState, status: Status.Removed });
-        saveHarbourMutation({ harbor: { ...oldState, status: Status.Removed, operation } as HarborInput });
+        saveHarbourMutation({ harbor: mapQuays({ ...oldState, status: Status.Removed, operation }) as HarborInput });
       } else if (operation === Operation.Create || operation === Operation.Update) {
         saveHarbourMutation({ harbor: mapQuays(state) as HarborInput });
       } else if (operation === Operation.Createversion) {
@@ -138,7 +141,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         setState(newVersion);
         saveHarbourMutation({ harbor: mapQuays(newVersion) as HarborInput });
       }
-      // TODO Operation.Publish
     },
     [state, oldState, saveHarbourMutation]
   );
@@ -250,8 +252,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         return saveHarbour(Operation.Archive);
       case 'cancel':
         return backToList();
-      case 'preview':
-        return saveHarbour(state.operation);
       case 'publish':
         return saveHarbour(Operation.Publish);
       case 'remove':
@@ -311,7 +311,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       />
       <ConfirmationModal
         saveType="harbor"
-        action={handleConfirmationSubmit}
+        action={() => saveHarbour(state.operation)}
         confirmationType={previewConfirmation}
         setConfirmationType={setPreviewConfirmation}
         newStatus={state.status}
