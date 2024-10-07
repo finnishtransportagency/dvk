@@ -54,6 +54,14 @@ class Config {
     return `Harbor-${Config.getEnvironment()}`;
   }
 
+  static getNewStaticBucketName() {
+    if (Config.isProductionEnvironment()) {
+      return 'static2.dvk.vaylapilvi.fi';
+    } else {
+      return `static2.dvk${Config.getEnvironment()}.testivaylapilvi.fi`;
+    }
+  }
+
   private static errorMessage(variable: string): string {
     return `Environment variable ${variable} missing, run '. ${__dirname}/../bin/setenv.sh' to set it`;
   }
