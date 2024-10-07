@@ -11,17 +11,29 @@ const tableName = Config.getFairwayCardWithVersionsTableName();
 const bucketName = getNewStaticBucketName();
 
 async function migratePictures() {
-  const params: ScanCommandInput = {
-    TableName: tableName,
-    FilterExpression: '#version <> :publicVersion AND #version <> :latestVersion',
-    ExpressionAttributeNames: {
-      '#version': 'version',
-    },
-    ExpressionAttributeValues: { ':publicVersion': FairwayCardDBModel.getPublicSortKey(), ':latestVersion': FairwayCardDBModel.getLatestSortKey() },
-  };
+  let cards: FairwayCardDBModel[] = [];
+  let lastEvaluatedKey: Record<string, any> | undefined;
 
-  const table = await dynamoDBClient.send(new ScanCommand(params));
-  const cards = table.Items as FairwayCardDBModel[];
+  do {
+    const params: ScanCommandInput = {
+      TableName: tableName,
+      FilterExpression: '#version <> :publicVersion AND #version <> :latestVersion',
+      ExpressionAttributeNames: {
+        '#version': 'version',
+      },
+      ExpressionAttributeValues: { ':publicVersion': FairwayCardDBModel.getPublicSortKey(), ':latestVersion': FairwayCardDBModel.getLatestSortKey() },
+      ExclusiveStartKey: lastEvaluatedKey,
+    };
+
+    const command = new ScanCommand(params);
+    const response = await dynamoDBClient.send(command);
+
+    if (response.Items) {
+      cards.push(...(response.Items as FairwayCardDBModel[]));
+    }
+
+    lastEvaluatedKey = response.LastEvaluatedKey;
+  } while (lastEvaluatedKey);
 
   let itemsHandled = 0;
   let itemsCopied = 0;
