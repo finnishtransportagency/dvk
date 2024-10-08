@@ -208,7 +208,7 @@ export function getPutCommands(
     updateCommands.push(
       new PutCommand({
         TableName: tableName,
-        Item: { emptyData },
+        Item: emptyData,
         ConditionExpression: 'attribute_exists(id)',
       })
     );
@@ -231,14 +231,16 @@ export function getPutCommands(
       );
     }
   } else if (operation === Operation.Publish) {
-    // archive previous public version
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...publicVersionData, status: Status.Archived },
-        ConditionExpression: 'attribute_exists(version)',
-      })
-    );
+    // archive previous public version if exists
+    if (publicVersionData) {
+      updateCommands.push(
+        new PutCommand({
+          TableName: tableName,
+          Item: { ...publicVersionData, status: Status.Archived },
+          ConditionExpression: 'attribute_exists(version)',
+        })
+      );
+    }
     // save item with public status
     updateCommands.push(
       new PutCommand({
