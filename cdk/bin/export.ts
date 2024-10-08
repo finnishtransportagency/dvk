@@ -7,16 +7,14 @@ import FairwayCardDBModel from '../lib/lambda/db/fairwayCardDBModel';
 import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { Readable } from 'stream';
 
-const PICTUREITEMS = ['flackgrund', 'lansisatama', 'kalajoki', 'raahe'];
+const PICTUREITEMS = ['lansisatama', 'kalajoki', 'raahe'];
 const staticBucketName = Config.getNewStaticBucketName();
 
-// Configure the DynamoDB client
+// Configure the DynamoDB and s3 clients
 const docClient = getDynamoDBDocumentClient();
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
-// create a s3 download function which takes key, and local path as parameter
-// and uses the staticBucketName for bucket
-async function downloadFile(key: string, filePath: string) {
+async function downloadFile(key: string, filePath: string): Promise<void> {
   const params = {
     Bucket: staticBucketName,
     Key: key,
@@ -25,8 +23,32 @@ async function downloadFile(key: string, filePath: string) {
   const command = new GetObjectCommand(params);
   const response = await s3Client.send(command);
 
-  const fileStream = fs.createWriteStream(filePath);
-  if (response.Body instanceof Readable) response.Body?.pipe(fileStream);
+  // Ensure the directory exists
+  const directory = path.dirname(filePath);
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory, { recursive: true });
+  }
+
+  return new Promise((resolve, reject) => {
+    const fileStream = fs.createWriteStream(filePath);
+
+    if (response.Body instanceof Readable) {
+      response.Body.pipe(fileStream);
+    } else {
+      reject(new Error('Response body is not a readable stream'));
+      return;
+    }
+
+    fileStream.on('finish', () => {
+      fileStream.close();
+      resolve();
+    });
+
+    fileStream.on('error', (error) => {
+      fileStream.close();
+      reject(error);
+    });
+  });
 }
 
 async function getAllItemsById(tableName: string, cardId: string) {
@@ -45,6 +67,34 @@ async function getAllItemsById(tableName: string, cardId: string) {
   const response = await docClient.send(command);
 
   return response.Items as FairwayCardDBModel[];
+}
+
+async function listAllPictures(cardIds: string[]): Promise<Array<{ item: FairwayCardDBModel; picture: any }>> {
+  const allItems = await Promise.all(cardIds.map((cardId) => getAllItemsById(Config.getFairwayCardWithVersionsTableName(), cardId)));
+
+  return allItems.flatMap((items, index) => items.flatMap((item) => (item.pictures || []).map((picture) => ({ item, picture }))));
+}
+
+async function downloadAllPictures(pictures: Array<{ item: FairwayCardDBModel; picture: any }>, outputDir: string): Promise<boolean[]> {
+  return Promise.all(
+    pictures.map(async ({ item, picture }) => {
+      let key = '';
+      if (item.version == FairwayCardDBModel.getPublicSortKey() || item.version == FairwayCardDBModel.getLatestSortKey()) {
+        key = `${item.id}/${picture.id}`;
+      } else {
+        key = `${item.id}/${item.version}/${picture.id}`;
+      }
+      const filePath = path.join(outputDir, key);
+      console.log(`Processing picture ${key} for ${item.id}...`);
+      try {
+        await downloadFile(key, filePath);
+        return true;
+      } catch (error) {
+        console.error(`Failed to download picture ${key}:`, error);
+        return false;
+      }
+    })
+  );
 }
 
 async function downloadAndAnonymizeItems(tableName: string, outputDir: string) {
@@ -98,27 +148,9 @@ async function downloadAndAnonymizeItems(tableName: string, outputDir: string) {
 }
 
 async function downloadPictures(tableName: string, outputDir: string) {
-  let processedCount = 0;
-
-  if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir);
-  }
-
-  for (const cardId of PICTUREITEMS) {
-    const items = await getAllItemsById(Config.getFairwayCardWithVersionsTableName(), cardId);
-    for (const item of items) {
-      if (item.pictures?.length) {
-        console.log(`Processing ${item.pictures.length} pictures for ${cardId}...`);
-        for (const picture of item.pictures) {
-          const key = `${item.id}/${item.version}/${picture.id}`;
-          const filePath = path.join(outputDir, key);
-          await downloadFile(key, filePath);
-          processedCount++;
-        }
-      }
-    }
-  }
-
+  const allPictures = await listAllPictures(PICTUREITEMS);
+  const downloadResults = await downloadAllPictures(allPictures, outputDir);
+  const processedCount = downloadResults.filter((result) => result).length;
   console.log(`Downloaded ${processedCount} pictures. Saved files in ${outputDir} directory.`);
 }
 
