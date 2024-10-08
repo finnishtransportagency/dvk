@@ -104,7 +104,7 @@ async function downloadAndAnonymizeItems(tableName: string, outputDir: string) {
 
   // Create output directory if it doesn't exist
   if (!fs.existsSync(outputDir)) {
-    fs.mkdirSync(outputDir);
+    fs.mkdirSync(outputDir, { recursive: true });
   }
 
   do {
@@ -154,10 +154,14 @@ async function downloadPictures(tableName: string, outputDir: string) {
   console.log(`Downloaded ${processedCount} pictures. Saved files in ${outputDir} directory.`);
 }
 
+function getRootDirectory(dir: string): string {
+  return path.join(__dirname, 'data', dir);
+}
+
 async function main() {
-  await downloadAndAnonymizeItems(Config.getFairwayCardWithVersionsTableName(), 'data/cards2').catch(console.error);
-  await downloadAndAnonymizeItems(Config.getHarborWithVersionsTableName(), 'data/harbors2').catch(console.error);
-  await downloadPictures(Config.getFairwayCardWithVersionsTableName(), 'data/pictures').catch(console.error);
+  await downloadAndAnonymizeItems(Config.getFairwayCardWithVersionsTableName(), getRootDirectory('cards2')).catch(console.error);
+  await downloadAndAnonymizeItems(Config.getHarborWithVersionsTableName(), getRootDirectory('harbors2')).catch(console.error);
+  await downloadPictures(Config.getFairwayCardWithVersionsTableName(), getRootDirectory('pictures')).catch(console.error);
 }
 
 main().catch((e) => {
