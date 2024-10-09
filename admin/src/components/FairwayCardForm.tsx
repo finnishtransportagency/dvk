@@ -170,7 +170,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         // Ignore unsaved changes if draft card is removed
         setState({ ...oldState, status: Status.Removed });
         saveFairwayCard({ card: mapTrafficService({ ...oldState, status: Status.Removed, operation }) as FairwayCardInput });
-      } else if (operation === Operation.Create || operation === Operation.Update) {
+      } else if (operation === Operation.Update) {
         if (!!sourceCardId?.length && !!state.pictures?.length) {
           saveFairwayCard({
             card: mapTrafficService(state) as FairwayCardInput,
@@ -179,6 +179,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
           });
         } else {
           saveFairwayCard({ card: mapTrafficService(state) as FairwayCardInput });
+        }
+      } else if (operation === Operation.Create) {
+        if (!!sourceCardId?.length && !!state.pictures?.length) {
+          saveFairwayCard({
+            card: mapTrafficService({ ...state, version: 'v1' }) as FairwayCardInput,
+            pictureSourceId: sourceCardId,
+            pictureSourceVersion: sourceCardVersion,
+          });
+        } else {
+          saveFairwayCard({ card: mapTrafficService({ ...state, version: 'v1' }) as FairwayCardInput });
         }
       } else if (operation === Operation.Createversion) {
         setIsSubmittingVersion(true);
