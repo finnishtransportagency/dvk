@@ -271,7 +271,12 @@ class FairwayCardDBModel {
     return [];
   }
 
-  static async save(data: FairwayCardDBModel, operation: Operation, latestVersionNumber: number | undefined | null) {
+  static async save(
+    data: FairwayCardDBModel,
+    operation: Operation,
+    latestVersionNumber?: number | null,
+    publicVersionData?: FairwayCardDBModel | null
+  ) {
     // get only number out of the string
     let versionNumber = Number(data.version.slice(1));
 
@@ -279,7 +284,7 @@ class FairwayCardDBModel {
       versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
     }
 
-    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation, versionNumber, latestVersionNumber);
+    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation, versionNumber, latestVersionNumber, publicVersionData);
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }

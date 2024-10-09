@@ -27,7 +27,7 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import NotificationModal from './NotificationModal';
 import MapExportTool from './pictures/MapExportTool';
-import { mapOriginToFairwayCardInput, mapToFairwayCardInput } from '../utils/dataMapper';
+import { mapNewFairwayCardVersion, mapToFairwayCardInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';
 import MainSection from './form/fairwayCard/MainSection';
 import FairwaySection from './form/fairwayCard/FairwaySection';
@@ -143,45 +143,57 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     );
   };
 
-  const backToList = () => {
-    history.push({ pathname: '/' });
-  };
-
-  const handleCancel = () => {
-    if (hasUnsavedChanges(oldState, state)) {
-      setConfirmationType('cancel');
-    } else {
-      backToList();
-    }
-  };
-
   const saveCard = useCallback(
-    (isRemove?: boolean) => {
-      const cardInput = isRemove ? oldState : state;
-      const newInput = {
-        ...cardInput,
-        trafficService: {
-          ...cardInput.trafficService,
-          pilot: {
-            ...cardInput.trafficService?.pilot,
-            places: cardInput.trafficService?.pilot?.places?.map((place) => {
-              return { id: place.id, pilotJourney: place.pilotJourney };
-            }),
+    (operation: Operation) => {
+      const mapTrafficService = (card: FairwayCardInput) => {
+        return {
+          ...card,
+          trafficService: {
+            ...card.trafficService,
+            pilot: {
+              ...card.trafficService?.pilot,
+              places: card.trafficService?.pilot?.places?.map((place) => {
+                return { id: place.id, pilotJourney: place.pilotJourney };
+              }),
+            },
           },
-        },
+        };
       };
 
-      if (isRemove) {
+      if (operation === Operation.Publish) {
+        setState({ ...state, status: Status.Public });
+        saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Public, operation }) as FairwayCardInput });
+      } else if (operation === Operation.Archive) {
+        setState({ ...state, status: Status.Archived });
+        saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Archived, operation }) as FairwayCardInput });
+      } else if (operation === Operation.Remove) {
+        // Ignore unsaved changes if draft card is removed
         setState({ ...oldState, status: Status.Removed });
-        saveFairwayCard({ card: { ...newInput, status: Status.Removed } as FairwayCardInput });
-      } else if ((!!sourceCardId?.length || state.operation === Operation.Createversion) && !!state.pictures?.length) {
-        saveFairwayCard({
-          card: newInput as FairwayCardInput,
-          pictureSourceId: sourceCardId ?? state.id,
-          pictureSourceVersion: sourceCardVersion ?? state.version,
-        });
-      } else {
-        saveFairwayCard({ card: newInput as FairwayCardInput });
+        saveFairwayCard({ card: mapTrafficService({ ...oldState, status: Status.Removed, operation }) as FairwayCardInput });
+      } else if (operation === Operation.Create || operation === Operation.Update) {
+        if (!!sourceCardId?.length && !!state.pictures?.length) {
+          saveFairwayCard({
+            card: mapTrafficService(state) as FairwayCardInput,
+            pictureSourceId: sourceCardId,
+            pictureSourceVersion: sourceCardVersion,
+          });
+        } else {
+          saveFairwayCard({ card: mapTrafficService(state) as FairwayCardInput });
+        }
+      } else if (operation === Operation.Createversion) {
+        setIsSubmittingVersion(true);
+        const newVersion = mapNewFairwayCardVersion(state, !!state.pictures?.length);
+        setState(newVersion);
+        const newCard = mapTrafficService(newVersion) as FairwayCardInput;
+        if (state.pictures?.length) {
+          saveFairwayCard({
+            card: newCard,
+            pictureSourceId: state.id,
+            pictureSourceVersion: state.version,
+          });
+        } else {
+          saveFairwayCard({ card: newCard });
+        }
       }
     },
     [state, oldState, sourceCardId, sourceCardVersion, saveFairwayCard]
@@ -201,21 +213,32 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
 
-  const handleSubmit = (isRemove: boolean) => {
-    if (isRemove) {
-      setConfirmationType('remove');
-    } else if (formValid()) {
-      if (
-        state.status === Status.Draft &&
-        (oldState.status === Status.Draft || state.operation === Operation.Create || state.operation === Operation.Createversion)
-      ) {
-        saveCard(false);
-      } else {
-        setConfirmationType('save');
-      }
+  const backToList = () => {
+    history.push({ pathname: '/' });
+  };
+
+  const handleCancel = () => {
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('cancel');
+    } else {
+      backToList();
+    }
+  };
+
+  const handleSave = () => {
+    if (formValid()) {
+      saveCard(state.operation);
     } else {
       setSaveError('MISSING-INFORMATION');
       setPreviewPending(false);
+    }
+  };
+
+  const handleRemove = () => {
+    if (state.status === Status.Draft) {
+      setConfirmationType('remove');
+    } else if (state.status === Status.Public) {
+      setConfirmationType('archive');
     }
   };
 
@@ -230,6 +253,39 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setPreviewConfirmation('preview');
     } else {
       handleOpenPreview();
+    }
+  };
+
+  const handleNewVersion = () => {
+    if (formValid()) {
+      setConfirmationType('version');
+    } else if (!saveError) {
+      setSaveError('OPERATION-BLOCKED');
+    }
+  };
+
+  const handlePublish = () => {
+    if (formValid()) {
+      setConfirmationType('publish');
+    } else {
+      setSaveError('MISSING-INFORMATION');
+    }
+  };
+
+  const handleConfirmationSubmit = () => {
+    switch (confirmationType) {
+      case 'archive':
+        return saveCard(Operation.Archive);
+      case 'cancel':
+        return backToList();
+      case 'publish':
+        return saveCard(Operation.Publish);
+      case 'remove':
+        return saveCard(Operation.Remove);
+      case 'version':
+        return saveCard(Operation.Createversion);
+      default:
+        return;
     }
   };
 
@@ -256,32 +312,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
-  const createNewVersion = () => {
-    if (formValid()) {
-      setState(mapOriginToFairwayCardInput(fairwayCard.id, state, true));
-      setIsSubmittingVersion(true);
-    } else if (!saveError) {
-      setSaveError('OPERATION-BLOCKED');
-    }
-  };
-
   useEffect(() => {
     setState(fairwayCard);
     setOldState(structuredClone(fairwayCard));
   }, [fairwayCard]);
 
-  useEffect(() => {
-    if (isSubmittingVersion && state.operation === Operation.Createversion) {
-      handleSubmit(false);
-    }
-    // eslint-disable-next-line
-  }, [isSubmittingVersion]);
-
   return (
     <IonPage>
       <ConfirmationModal
         saveType="fairwaycard"
-        action={confirmationType === 'cancel' ? backToList : saveCard}
+        action={handleConfirmationSubmit}
         confirmationType={confirmationType}
         setConfirmationType={setConfirmationType}
         newStatus={state.status}
@@ -290,7 +330,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       />
       <ConfirmationModal
         saveType="fairwaycard"
-        action={handleSubmit}
+        action={() => saveCard(state.operation)}
         confirmationType={previewConfirmation}
         setConfirmationType={setPreviewConfirmation}
         newStatus={state.status}
@@ -310,16 +350,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         message={saveError ? t('general.fix-errors-try-again') || '' : ''}
       />
       <Header
-        operation={state.operation}
-        status={state.status}
-        oldStatus={oldState.status}
+        currentState={state}
+        oldState={oldState}
         isLoading={isLoading}
         isLoadingMutation={isLoadingMutation}
-        updateState={updateState}
-        handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handleSave={handleSave}
+        handleRemove={handleRemove}
         handlePreview={handlePreview}
-        createNewVersion={createNewVersion}
+        handleNewVersion={handleNewVersion}
+        handlePublish={handlePublish}
         isError={isError}
       />
 
