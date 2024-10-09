@@ -26,7 +26,6 @@ div.tabs {
   border: 1px solid var(--ion-color-light);
   border-width: 1px 0;
   margin-top: 20px;
-  position: sticky;
 }
 
 .tabs ion-button {
