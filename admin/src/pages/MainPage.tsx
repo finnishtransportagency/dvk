@@ -202,6 +202,7 @@ const MainPage: React.FC = () => {
               >
                 <IonSelectOption value={Status.Public}>{translatedTextOrEmpty('item-status-PUBLIC')}</IonSelectOption>
                 <IonSelectOption value={Status.Draft}>{translatedTextOrEmpty('item-status-DRAFT')}</IonSelectOption>
+                <IonSelectOption value={Status.Archived}>{translatedTextOrEmpty('item-status-ARCHIVED')}</IonSelectOption>
                 <IonSelectOption value={Status.Removed}>{translatedTextOrEmpty('item-status-REMOVED')}</IonSelectOption>
               </IonSelect>
             </IonCol>

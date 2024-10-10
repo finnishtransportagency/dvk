@@ -236,12 +236,18 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
 
   let dbModel;
   let pictures;
+  let currentPublicCard = null;
 
   const latestVersionNumber = await FairwayCardDBModel.getLatest(card.id).then((fairwayCard) => fairwayCard?.latest);
 
   if (card.operation === Operation.Update) {
     dbModel = await FairwayCardDBModel.getVersion(card.id, card.version);
     await tagPictures(card.id, card.version, card.pictures, dbModel?.pictures);
+  } else if (card.operation === Operation.Publish) {
+    const publicVersion = await FairwayCardDBModel.getPublic(card.id).then((fairwayCard) => fairwayCard?.currentPublic);
+    if (publicVersion) {
+      currentPublicCard = await FairwayCardDBModel.getVersion(card.id, 'v' + publicVersion);
+    }
   } else if (pictureSourceId && pictureSourceVersion && !!card.pictures?.length) {
     pictures = await copyPictures(
       card.id,
@@ -265,7 +271,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
       const cacheKey = 'fairways:' + fairways.join(':');
       await deleteCacheObjects([cacheKey]);
     }
-    await FairwayCardDBModel.save(newModel, card.operation, latestVersionNumber);
+    await FairwayCardDBModel.save(newModel, card.operation, latestVersionNumber, currentPublicCard);
   } catch (e) {
     if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
       throw new Error(card.operation === Operation.Create ? OperationError.CardAlreadyExist : OperationError.CardNotExist);

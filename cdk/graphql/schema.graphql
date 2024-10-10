@@ -37,6 +37,9 @@ enum Operation {
   CREATE
   UPDATE
   CREATEVERSION
+  PUBLISH
+  ARCHIVE
+  REMOVE
 }
 
 enum OperationError {
@@ -162,6 +165,7 @@ enum Status {
   DRAFT
   PUBLIC
   REMOVED
+  ARCHIVED
 }
 
 input GeometryInput {
