@@ -40,6 +40,11 @@ const PILOTROUTE_CACHE = {
   STALE_WHILE_REVALIDATE: 60, // 1 minute
   STALE_IF_ERROR: 12 * 3600, // 12 hours
 };
+const MARINEWARNING_CACHE = {
+  MAX_AGE: 540, // 9 minutes
+  STALE_WHILE_REVALIDATE: 60, // 1 minute
+  STALE_IF_ERROR: 12 * 3600, // 12 hours
+};
 
 export const FEATURE_CACHE_DURATION = 7200; // 2 hours
 
@@ -106,6 +111,10 @@ export function getFeatureCacheControlHeaders(key: string): Record<string, strin
     maxAge = BUOY_CACHE.MAX_AGE;
     staleWhileRevalidate = BUOY_CACHE.STALE_WHILE_REVALIDATE;
     staleIfError = BUOY_CACHE.STALE_IF_ERROR;
+  } else if (key === 'marinewarning') {
+    maxAge = MARINEWARNING_CACHE.MAX_AGE;
+    staleWhileRevalidate = MARINEWARNING_CACHE.STALE_WHILE_REVALIDATE;
+    staleIfError = MARINEWARNING_CACHE.STALE_IF_ERROR;
   }
 
   return {

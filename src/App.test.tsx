@@ -86,13 +86,7 @@ vi.mock('./components/FeatureLoader', () => ({
   useSafetyEquipmentAndFaultLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
-  useCoastalWarningLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
-  },
-  useLocalWarningLayer: () => {
-    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
-  },
-  useBoaterWarningLayer: () => {
+  useMarineWarningLayer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
   useBoardLine12Layer: () => {
