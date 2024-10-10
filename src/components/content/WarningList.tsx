@@ -1,5 +1,5 @@
 import { IonGrid, IonRow, IonCol, IonText, IonSkeletonText, IonIcon } from '@ionic/react';
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { MarineWarning } from '../../graphql/generated';
 import { Lang } from '../../utils/constants';
@@ -44,7 +44,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
         const marineWarningDataLayerId = getMarineWarningDataLayerId(warning.type);
         const capitalizedType = warning.type[lang] && warning.type[lang]?.charAt(0) + warning.type[lang]?.slice(1).toLocaleLowerCase();
         return (
-          <>
+          <Fragment key={'warningfragment_' + warning.id}>
             <div style={{ padding: '6px' }} />
             <IonGrid
               className="table light group ion-no-padding inlineHoverText"
@@ -203,7 +203,7 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                 </IonRow>
               )}
             </IonGrid>
-          </>
+          </Fragment>
         );
       })}
     </>
