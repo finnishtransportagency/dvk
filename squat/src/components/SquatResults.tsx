@@ -50,6 +50,7 @@ const SquatCalculationResults: React.FC<SquatResultsProps> = ({ limitedView }) =
                 })}
                 unit="°"
                 unitId="deg"
+                dataTestid="heel-due-wind"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -64,6 +65,7 @@ const SquatCalculationResults: React.FC<SquatResultsProps> = ({ limitedView }) =
                 unitId="deg"
                 infoContentTitle={t('constant-heel-during-turn-info-title')}
                 infoContent={<p>{t('constant-heel-during-turn-info')}</p>}
+                dataTestid="constant-heel-during-turn"
               />
             </IonCol>
 
@@ -76,6 +78,7 @@ const SquatCalculationResults: React.FC<SquatResultsProps> = ({ limitedView }) =
                     : state.calculations.squat.correctedDraught.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
                 }
                 unit="m"
+                dataTestid="corrected-draught"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -87,6 +90,7 @@ const SquatCalculationResults: React.FC<SquatResultsProps> = ({ limitedView }) =
                     : state.calculations.squat.correctedDraughtDuringTurn.toLocaleString(i18n.language, { maximumFractionDigits: 2 })
                 }
                 unit="m"
+                dataTestid="corrected-draught-during-turn"
               />
             </IonCol>
 
@@ -116,6 +120,7 @@ const SquatCalculationResults: React.FC<SquatResultsProps> = ({ limitedView }) =
                     </ul>
                   </>
                 }
+                dataTestid="UKC-vessel-motions"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -134,6 +139,7 @@ const SquatCalculationResults: React.FC<SquatResultsProps> = ({ limitedView }) =
                     ? t('UKC-under-required-minimum')
                     : ''
                 }
+                dataTestid="UKC-straight-course"
               />
             </IonCol>
 
@@ -153,6 +159,7 @@ const SquatCalculationResults: React.FC<SquatResultsProps> = ({ limitedView }) =
                     ? t('UKC-under-required-minimum')
                     : ''
                 }
+                dataTestid="UKC-during-turn"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -163,6 +170,7 @@ const SquatCalculationResults: React.FC<SquatResultsProps> = ({ limitedView }) =
                 })}
                 unit="m"
                 helper={printSquatHelper()}
+                dataTestid="squat-result"
               />
             </IonCol>
             <IonCol size="6" className="hide-portrait" />

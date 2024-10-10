@@ -10,7 +10,7 @@ import {
   TemporaryNotification,
   Text,
 } from '../graphql/generated';
-import { ItemType, Lang, SelectOption, VERSION } from './constants';
+import { FeatureDataId, FeatureDataSources, ItemType, Lang, SelectOption, VERSION } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
@@ -168,9 +168,9 @@ export const radiansToDegrees = (rads: number) => {
   return Math.round(rads * (180 / Math.PI) + (rads < 0 ? 360 : 0));
 };
 
-export function openPreview(id: string, isCard: boolean) {
+export function openPreview(id: string, version: string, isCard: boolean) {
   const path = import.meta.env.VITE_APP_ENV === 'local' ? 'https://' + import.meta.env.VITE_APP_STATIC_URL : '';
-  window.open(path + '/esikatselu/' + (isCard ? 'kortit/' : 'satamat/') + id, '_blank');
+  window.open(path + '/esikatselu/' + (isCard ? 'kortit/' : 'satamat/') + id + '/' + version, '_blank');
 }
 
 function hasGroupId(sequenceObject: PictureInput | SelectedFairwayInput): sequenceObject is PictureInput {
@@ -336,4 +336,9 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
       },
     };
   });
+}
+
+export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
+  const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
+  return fds?.projection;
 }

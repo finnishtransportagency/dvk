@@ -32,6 +32,8 @@
         "layer": {
           "tipLabel": "Valitse tasot",
           "header": "Kartan tasot",
+          "saveSelection": "Muista valintani",
+          "selectAll": "Valitse kaikki tasot",
           "class1": "Kauppamerenkulku",
           "class2": "Muu vesiliikenne",
           "lines": "Navigointilinjat",
@@ -104,6 +106,10 @@
             "depth4": "Syvyys 0 - 3m",
             "depth5": "Syvyys 3 - 6m",
             "depth6": "Syvyys yli 10m"
+          },
+          "modal": {
+            "info": "Lisätietoja",
+            "description": "Muista valintani -ominaisuus tallentaa tekemäsi tasovalinnat selaimeesi. Mikäli ominaisuus on käytössä, valitaan sivustolle saapuessasi näkyviin automaattisesti viimeksi käyttämäsi tasot. Jos haluat, että tasovalintojasi ei enää muisteta, ota Muista valintani -ominaisuus pois käytöstä ja päivitä sivusto."
           }
         },
         "mapDetails": {
@@ -273,6 +279,7 @@
     "fairwayNumbers": "Väylän numerot"
   },
   "routes": {
+    "info": "Esitetyt luotsausreitit eivät sellaisenaan sovellu luotsauslain (561/2023) tarkoittamaksi yksittäisen aluksen luotsaussuunnitelmaksi. Luotsausreitit on laadittu suuntaa-antavina yleisesityksinä ja yksittäisen luotsausreitin virheettömyyttä ei voida taata. Digitaalisessa väyläkortissa esitetyn luotsausreitin mahdollinen hyödyntäminen aluksen navigointiin on aina aluksen päällikön vastuulla.",
     "title": "Luotsausreitit",
     "route": "Reitti",
     "rtz": "Reitin RTZ-tiedosto",

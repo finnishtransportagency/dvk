@@ -173,6 +173,7 @@ fragment FairwayCardById on FairwayCard {
     startDate
     endDate
   }
+  latest
 }
 
 query fairwayCardById($id: String!, $version: String!) {
@@ -193,8 +194,8 @@ query fairwayCardPublicById($id: String!, $status: [Status!]!) {
   }
 }
 
-mutation saveFairwayCard($card: FairwayCardInput!) {
-  saveFairwayCard(card: $card) {
+mutation saveFairwayCard($card: FairwayCardInput!, $pictureSourceId: String, $pictureSourceVersion: String) {
+  saveFairwayCard(card: $card, pictureSourceId: $pictureSourceId, pictureSourceVersion: $pictureSourceVersion) {
     ...FairwayCardById
   }
 }

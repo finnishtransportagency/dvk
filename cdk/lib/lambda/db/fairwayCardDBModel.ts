@@ -100,6 +100,8 @@ class FairwayCardDBModel {
 
   status: Status;
 
+  currentPublic?: Maybe<number>;
+
   n2000HeightSystem?: Maybe<boolean>;
 
   modifier?: Maybe<string>;
@@ -154,11 +156,13 @@ class FairwayCardDBModel {
 
   temporaryNotifications?: Maybe<TemporaryNotification[]>;
 
-  private static getLatestSortKey() {
+  latest?: Maybe<number>;
+
+  static getLatestSortKey() {
     return 'v0_latest';
   }
 
-  private static getPublicSortKey() {
+  static getPublicSortKey() {
     return 'v0_public';
   }
 
@@ -267,8 +271,20 @@ class FairwayCardDBModel {
     return [];
   }
 
-  static async save(data: FairwayCardDBModel, operation: Operation) {
-    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation);
+  static async save(
+    data: FairwayCardDBModel,
+    operation: Operation,
+    latestVersionNumber?: number | null,
+    publicVersionData?: FairwayCardDBModel | null
+  ) {
+    // get only number out of the string
+    let versionNumber = Number(data.version.slice(1));
+
+    if (operation === Operation.Createversion) {
+      versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
+    }
+
+    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation, versionNumber, latestVersionNumber, publicVersionData);
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }

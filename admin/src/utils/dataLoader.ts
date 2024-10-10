@@ -1,14 +1,8 @@
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
-import { FeatureDataId, FeatureDataSources, OFFLINE_STORAGE } from './constants';
+import { FeatureDataId, FeatureDataSources } from './constants';
 
-export function useFeatureData(
-  featureDataId: FeatureDataId,
-  refetchOnMount: 'always' | boolean = false,
-  refetchInterval: number | false = false,
-  staleTime: number = OFFLINE_STORAGE.staleTime,
-  gcTime: number = OFFLINE_STORAGE.cacheTime
-) {
+export function useFeatureData(featureDataId: FeatureDataId) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
   if (import.meta.env.VITE_APP_USE_STATIC_FEATURES === 'true') {
@@ -18,10 +12,6 @@ export function useFeatureData(
   }
   const response = useQuery({
     queryKey: [fds?.id],
-    refetchOnMount,
-    refetchInterval,
-    staleTime,
-    gcTime,
     queryFn: async () => {
       const { data } = await axios.get(urlStr);
       return data;
@@ -33,10 +23,6 @@ export function useFeatureData(
   };
 }
 
-export function useStaticFeatureData(
-  featureDataId: FeatureDataId,
-  refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false
-) {
-  return useFeatureData(featureDataId, refetchOnMount, refetchInterval, OFFLINE_STORAGE.staleTimeStatic, OFFLINE_STORAGE.cacheTimeStatic);
+export function useStaticFeatureData(featureDataId: FeatureDataId) {
+  return useFeatureData(featureDataId);
 }

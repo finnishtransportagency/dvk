@@ -219,6 +219,7 @@ ion-modal#layerModalContainer .divider {
   --size: 20px;
   --border-width: 1px;
   --checkmark-width: 3px;
+  height: 30px;
 }
 
 #layerModalContainer ion-checkbox::part(label) {

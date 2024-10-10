@@ -13,6 +13,7 @@ import {
   VtsInput,
 } from '../graphql/generated';
 import {
+  useFairwayCardLatestByIdQueryData,
   useFairwayCardsAndHarborsQueryData,
   useFairwaysQueryData,
   useHarboursQueryData,
@@ -25,8 +26,8 @@ import { fairwayCardReducer } from '../utils/fairwayCardReducer';
 import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import NotificationModal from './NotificationModal';
-import MapExportTool from './MapExportTool';
-import { mapToFairwayCardInput } from '../utils/dataMapper';
+import MapExportTool from './pictures/MapExportTool';
+import { mapNewFairwayCardVersion, mapToFairwayCardInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';
 import MainSection from './form/fairwayCard/MainSection';
 import FairwaySection from './form/fairwayCard/FairwaySection';
@@ -46,10 +47,12 @@ interface FormProps {
   modifier?: string;
   creator?: string;
   created?: number;
+  sourceCardId?: string;
+  sourceCardVersion?: string;
   isError?: boolean;
 }
 
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, sourceCardId, sourceCardVersion, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -65,6 +68,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
+  const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -72,16 +76,24 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: mareographList, isLoading: isLoadingMareographs } = useMareographQueryData();
 
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
+  // this is for checking the latest version number, so in case creating a new version we get the right url
+  const { data: latestFairwayCard } = useFairwayCardLatestByIdQueryData(fairwayCard.id);
+
   // these are derived straight from featureData unlike others through graphQL
   // the graphQL approach's motives are a bit unclear so possible refactor in the future
   const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
-      setOldState(mapToFairwayCardInput(false, { fairwayCard: data.saveFairwayCard }));
+      setOldState(mapToFairwayCardInput(undefined, { fairwayCard: data.saveFairwayCard }));
       setNotificationOpen(true);
       if (previewPending) {
         handleOpenPreview();
+      }
+      if (isSubmittingVersion) {
+        const nextVersionNumber = latestFairwayCard?.fairwayCard?.latest ? latestFairwayCard.fairwayCard.latest + 1 : 2;
+        history.push({ pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v' + nextVersionNumber });
+        setIsSubmittingVersion(false);
       }
     },
     onError: (error: Error) => {
@@ -131,53 +143,70 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     );
   };
 
-  const backToList = () => {
-    history.push({ pathname: '/' });
-  };
-
-  const handleCancel = () => {
-    if (hasUnsavedChanges(oldState, state)) {
-      setConfirmationType('cancel');
-    } else {
-      backToList();
-    }
-  };
-
   const saveCard = useCallback(
-    (isRemove?: boolean) => {
-      if (isRemove) {
-        const oldCard = {
-          ...oldState,
+    (operation: Operation) => {
+      const mapTrafficService = (card: FairwayCardInput) => {
+        return {
+          ...card,
           trafficService: {
-            ...oldState.trafficService,
+            ...card.trafficService,
             pilot: {
-              ...oldState.trafficService?.pilot,
-              places: oldState.trafficService?.pilot?.places?.map((place) => {
+              ...card.trafficService?.pilot,
+              places: card.trafficService?.pilot?.places?.map((place) => {
                 return { id: place.id, pilotJourney: place.pilotJourney };
               }),
             },
           },
-          status: Status.Removed,
         };
+      };
+
+      if (operation === Operation.Publish) {
+        setState({ ...state, status: Status.Public });
+        saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Public, operation }) as FairwayCardInput });
+      } else if (operation === Operation.Archive) {
+        setState({ ...state, status: Status.Archived });
+        saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Archived, operation }) as FairwayCardInput });
+      } else if (operation === Operation.Remove) {
+        // Ignore unsaved changes if draft card is removed
         setState({ ...oldState, status: Status.Removed });
-        saveFairwayCard({ card: oldCard as FairwayCardInput });
-      } else {
-        const currentCard = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            pilot: {
-              ...state.trafficService?.pilot,
-              places: state.trafficService?.pilot?.places?.map((place) => {
-                return { id: place.id, pilotJourney: place.pilotJourney };
-              }),
-            },
-          },
-        };
-        saveFairwayCard({ card: currentCard as FairwayCardInput });
+        saveFairwayCard({ card: mapTrafficService({ ...oldState, status: Status.Removed, operation }) as FairwayCardInput });
+      } else if (operation === Operation.Update) {
+        if (!!sourceCardId?.length && !!state.pictures?.length) {
+          saveFairwayCard({
+            card: mapTrafficService(state) as FairwayCardInput,
+            pictureSourceId: sourceCardId,
+            pictureSourceVersion: sourceCardVersion,
+          });
+        } else {
+          saveFairwayCard({ card: mapTrafficService(state) as FairwayCardInput });
+        }
+      } else if (operation === Operation.Create) {
+        if (!!sourceCardId?.length && !!state.pictures?.length) {
+          saveFairwayCard({
+            card: mapTrafficService({ ...state, version: 'v1' }) as FairwayCardInput,
+            pictureSourceId: sourceCardId,
+            pictureSourceVersion: sourceCardVersion,
+          });
+        } else {
+          saveFairwayCard({ card: mapTrafficService({ ...state, version: 'v1' }) as FairwayCardInput });
+        }
+      } else if (operation === Operation.Createversion) {
+        setIsSubmittingVersion(true);
+        const newVersion = mapNewFairwayCardVersion(state, !!state.pictures?.length);
+        setState(newVersion);
+        const newCard = mapTrafficService(newVersion) as FairwayCardInput;
+        if (state.pictures?.length) {
+          saveFairwayCard({
+            card: newCard,
+            pictureSourceId: state.id,
+            pictureSourceVersion: state.version,
+          });
+        } else {
+          saveFairwayCard({ card: newCard });
+        }
       }
     },
-    [state, oldState, saveFairwayCard]
+    [state, oldState, sourceCardId, sourceCardVersion, saveFairwayCard]
   );
 
   const formValid = (): boolean => {
@@ -194,23 +223,37 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
 
-  const handleSubmit = (isRemove = false) => {
-    if (isRemove) {
-      setConfirmationType('remove');
-    } else if (formValid()) {
-      if (state.status === Status.Draft && (oldState.status === Status.Draft || state.operation === Operation.Create)) {
-        saveCard(false);
-      } else {
-        setConfirmationType('save');
-      }
+  const backToList = () => {
+    history.push({ pathname: '/' });
+  };
+
+  const handleCancel = () => {
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('cancel');
+    } else {
+      backToList();
+    }
+  };
+
+  const handleSave = () => {
+    if (formValid()) {
+      saveCard(state.operation);
     } else {
       setSaveError('MISSING-INFORMATION');
       setPreviewPending(false);
     }
   };
 
+  const handleRemove = () => {
+    if (state.status === Status.Draft) {
+      setConfirmationType('remove');
+    } else if (state.status === Status.Public) {
+      setConfirmationType('archive');
+    }
+  };
+
   const handleOpenPreview = () => {
-    openPreview(fairwayCard.id, true);
+    openPreview(fairwayCard.id, fairwayCard.version, true);
     setPreviewPending(false);
   };
 
@@ -220,6 +263,39 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setPreviewConfirmation('preview');
     } else {
       handleOpenPreview();
+    }
+  };
+
+  const handleNewVersion = () => {
+    if (formValid()) {
+      setConfirmationType('version');
+    } else if (!saveError) {
+      setSaveError('OPERATION-BLOCKED');
+    }
+  };
+
+  const handlePublish = () => {
+    if (formValid()) {
+      setConfirmationType('publish');
+    } else {
+      setSaveError('MISSING-INFORMATION');
+    }
+  };
+
+  const handleConfirmationSubmit = () => {
+    switch (confirmationType) {
+      case 'archive':
+        return saveCard(Operation.Archive);
+      case 'cancel':
+        return backToList();
+      case 'publish':
+        return saveCard(Operation.Publish);
+      case 'remove':
+        return saveCard(Operation.Remove);
+      case 'version':
+        return saveCard(Operation.Createversion);
+      default:
+        return;
     }
   };
 
@@ -242,7 +318,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     setSaveError('');
     setNotificationOpen(false);
     if (!saveError && !!savedCard && state.operation === Operation.Create) {
-      history.push({ pathname: '/vaylakortti/' + savedCard.id });
+      history.push({ pathname: '/vaylakortti/' + savedCard.id + '/' + savedCard.version });
     }
   };
 
@@ -255,7 +331,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     <IonPage>
       <ConfirmationModal
         saveType="fairwaycard"
-        action={confirmationType === 'cancel' ? backToList : saveCard}
+        action={handleConfirmationSubmit}
         confirmationType={confirmationType}
         setConfirmationType={setConfirmationType}
         newStatus={state.status}
@@ -264,7 +340,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       />
       <ConfirmationModal
         saveType="fairwaycard"
-        action={handleSubmit}
+        action={() => saveCard(state.operation)}
         confirmationType={previewConfirmation}
         setConfirmationType={setPreviewConfirmation}
         newStatus={state.status}
@@ -284,15 +360,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         message={saveError ? t('general.fix-errors-try-again') || '' : ''}
       />
       <Header
-        operation={state.operation}
-        status={state.status}
-        oldStatus={oldState.status}
+        currentState={state}
+        oldState={oldState}
         isLoading={isLoading}
         isLoadingMutation={isLoadingMutation}
-        updateState={updateState}
-        handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handleSave={handleSave}
+        handleRemove={handleRemove}
         handlePreview={handlePreview}
+        handleNewVersion={handleNewVersion}
+        handlePublish={handlePublish}
         isError={isError}
       />
 
@@ -321,6 +398,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 harbourOptions={harbourOptions}
                 isLoadingPilotRoutes={isLoadingPilotRoutes}
                 pilotRouteOptions={pilotRouteList}
+                sourceCard={sourceCardId}
               />
               <NotificationSection
                 state={state}
@@ -366,8 +444,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               />
 
               <IonText>
-                <h2>{t('fairwaycard.print-images')}</h2>
+                <h2>
+                  {t('fairwaycard.print-images')}
+                  {!!sourceCardId?.length && !!state.pictures?.length && (
+                    <span className="print-images-warning">{t('fairwaycard.print-images-warning')}</span>
+                  )}
+                </h2>
               </IonText>
+
               <MapExportTool
                 fairwayCardInput={state}
                 disabled={state.status === Status.Removed}
@@ -375,6 +459,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 setPicture={updateState}
                 fairways={fairwaySelection}
                 harbours={harbourSelection}
+                sourceCardId={sourceCardId}
+                sourceCardVersion={sourceCardVersion}
               />
             </form>
           </>

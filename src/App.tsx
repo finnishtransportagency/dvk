@@ -138,11 +138,11 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: OFFLINE_STORAGE.staleTime,
-      gcTime: OFFLINE_STORAGE.cacheTime,
+      gcTime: OFFLINE_STORAGE.gcTime,
       persister: experimental_createPersister({
         storage: idbAsyncStorage,
         buster: import.meta.env.VITE_APP_VERSION,
-        maxAge: OFFLINE_STORAGE.staleTime,
+        maxAge: OFFLINE_STORAGE.cacheTime,
         prefix: 'DVK_STORAGE',
         filters: { predicate: queryFilter },
         serialize: (persistedQuery) => {
@@ -316,7 +316,7 @@ const DvkIonApp: React.FC = () => {
         <IonContent id="MainContent">
           <IonRouterOutlet>
             <Switch>
-              <Route path="/kortit/:fairwayCardId">
+              <Route path={state.preview ? '/kortit/:fairwayCardId/:version' : '/kortit/:fairwayCardId'}>
                 <FairwayCardPage setModalContent={setModalContent} />
               </Route>
               <Route path="/kortit">
@@ -343,7 +343,7 @@ const DvkIonApp: React.FC = () => {
               )}
               {state.preview && (
                 <Switch>
-                  <Route path="/satamat/:harborId">
+                  <Route path="/satamat/:harborId/:version">
                     <HarborPreviewPage setModalContent={setModalContent} />
                   </Route>
                   <Route path="/">

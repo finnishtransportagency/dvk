@@ -3,6 +3,7 @@ import { CurrentUser } from '../lib/lambda/api/login';
 import { mapFairwayCardToModel } from '../lib/lambda/graphql/mutation/saveFairwayCard-handler';
 
 const currentUser: CurrentUser = { firstName: 'Test', lastName: 'Test', uid: 'test', roles: [] };
+
 test('test mapFairwayCardToModel minimal', () => {
   expect(() => mapFairwayCardToModel({} as FairwayCardInput, undefined, currentUser)).toThrow(OperationError.InvalidInput);
   const input: FairwayCardInput = {
@@ -15,6 +16,7 @@ test('test mapFairwayCardToModel minimal', () => {
     group: '1',
     fairwayIds: [1],
   };
+
   expect(mapFairwayCardToModel(input, undefined, currentUser)).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),
@@ -144,6 +146,7 @@ test('test mapFairwayCardToModel all', () => {
       en: 'windRecommendationen',
     },
   };
+
   expect(mapFairwayCardToModel(input, undefined, currentUser)).toMatchSnapshot({
     modificationTimestamp: expect.any(Number),
     creationTimestamp: expect.any(Number),

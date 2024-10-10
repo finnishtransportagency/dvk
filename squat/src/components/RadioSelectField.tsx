@@ -101,6 +101,7 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
                           aria-label={removeSoftHyphen(optionName)}
                           value={option}
                           className={props.value === option ? 'radio-checked' : 'radio-unchecked'}
+                          data-testid={t(option.name, { lng: 'en' })}
                         />
                       </IonCol>
                     </IonRow>

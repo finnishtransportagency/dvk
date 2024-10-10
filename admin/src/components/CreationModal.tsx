@@ -1,6 +1,7 @@
 import React, { useMemo, useRef, useState } from 'react';
 import {
   IonButton,
+  IonCheckbox,
   IonCol,
   IonFooter,
   IonGrid,
@@ -37,6 +38,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [source, setSource] = useState<FairwayCardOrHarborGroup | undefined>();
   const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
+  const [copyPics, setCopyPics] = useState(false);
 
   const selectVersionRef = useRef<HTMLIonSelectElement>(null);
 
@@ -46,8 +48,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const createNewItem = () => {
     modal.current?.dismiss().catch((err) => console.error(err));
-    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version } });
-    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version } });
+    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version, copyPictures: copyPics, newVersion: false } });
+    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version, newVersion: false } });
   };
 
   const groupedItemList = useMemo(() => {
@@ -78,13 +80,6 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const compareOptions = (o1: FairwayCardOrHarbor, o2: FairwayCardOrHarbor) => {
     return o1 && o2 ? o1.id === o2.id && o1.version === o2.version : o1 === o2;
-  };
-
-  const keyDownAction = (event: React.KeyboardEvent<HTMLIonSelectElement>) => {
-    if (event.key === 'Enter') {
-      event.preventDefault();
-      focusVersionSelect();
-    }
   };
 
   return (
@@ -130,7 +125,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             </IonLabel>
             <IonSelect
               ref={selectVersionRef}
-              className="selectInput version-select"
+              className="selectInput"
               disabled={!source}
               placeholder={t('general.choose')}
               interface="popover"
@@ -140,10 +135,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               }}
               labelPlacement="stacked"
               fill="outline"
-              tabIndex={source ? 0 : -1}
               value={version}
               onIonChange={(ev) => setVersion(ev.detail.value)}
-              onKeyDown={(e) => keyDownAction(e)}
               compareWith={compareOptions}
             >
               {source?.items
@@ -159,6 +152,15 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             </IonSelect>
           </IonCol>
         </IonRow>
+        {itemType === 'CARD' && (
+          <IonRow className="ion-margin-top">
+            <IonCol>
+              <IonCheckbox labelPlacement="end" disabled={!source || !version} checked={copyPics} onIonChange={(e) => setCopyPics(e.detail.checked)}>
+                {t('modal.copy-pictures')}
+              </IonCheckbox>
+            </IonCol>
+          </IonRow>
+        )}
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">

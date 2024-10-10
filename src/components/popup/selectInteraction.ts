@@ -199,7 +199,7 @@ export function clearClickSelectionFeatures() {
   if (interaction) {
     interaction.getFeatures().forEach((f) => {
       const type = f.getProperties().featureType;
-      if (type === 'specialarea2' || type === 'specialarea15' || type === 'observation') {
+      if (type === 'specialarea2' || type === 'specialarea15' || type === 'observation' || type === 'marinewarning') {
         f.set('hoverStyle', false);
       } else {
         // Restore old saved style to the feature
@@ -215,7 +215,7 @@ export function clearClickSelectionFeatures() {
 export function setClickSelectionFeature(feature: FeatureLike) {
   const f = feature as Feature;
   const type = f.getProperties().featureType;
-  if (type === 'specialarea2' || type === 'specialarea15' || type === 'observation') {
+  if (type === 'specialarea2' || type === 'specialarea15' || type === 'observation' || type === 'marinewarning') {
     f.set('hoverStyle', true);
   } else {
     f.set('savedStyle', f.getStyle(), false);

@@ -268,6 +268,7 @@ export function mapFairwayCardDBModelToGraphqlType(
   const card: FairwayCard = {
     id: dbModel.id,
     version: dbModel.version,
+    currentPublic: dbModel.currentPublic,
     name: {
       fi: dbModel.name?.fi,
       sv: dbModel.name?.sv,
@@ -300,6 +301,7 @@ export function mapFairwayCardDBModelToGraphqlType(
     fairwayIds: mapFairwayIds(dbModel),
     pictures: dbModel.pictures,
     temporaryNotifications: mapTemporaryNotifications(dbModel.temporaryNotifications ?? []),
+    latest: dbModel.latest,
   };
 
   for (const fairway of dbModel.fairways || []) {
@@ -329,6 +331,7 @@ export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: Curr
     phoneNumber: dbModel.phoneNumber,
     quays: dbModel.quays,
     status: dbModel.status,
+    latest: dbModel.latest,
   };
 }
 

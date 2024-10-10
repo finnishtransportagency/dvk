@@ -1,4 +1,4 @@
-import { FairwayCardByIdQuery, Status, Operation, HarbourByIdQuery } from '../graphql/generated';
+import { FairwayCardByIdQuery, Status, Operation, HarbourByIdQuery, FairwayCardInput, HarborInput } from '../graphql/generated';
 import { sortPictures } from './common';
 import { POSITION } from './constants';
 
@@ -6,9 +6,32 @@ const stringValueOrDefault = (value: string | null | undefined): string => {
   return value ?? '';
 };
 
-export function mapToFairwayCardInput(origin: boolean | undefined, data: FairwayCardByIdQuery | undefined) {
+function mapPictures(sourceCard: string | undefined, data: FairwayCardByIdQuery | undefined, copyPictures: boolean | undefined) {
+  // If card is based on another card, copying pictures is optional
+  return sourceCard && !copyPictures
+    ? []
+    : sortPictures(
+        data?.fairwayCard?.pictures?.map((picture) => {
+          return {
+            id: picture.id,
+            text: picture.text,
+            lang: picture.lang,
+            orientation: picture.orientation,
+            rotation: picture.rotation,
+            modificationTimestamp: copyPictures ? 0 : picture.modificationTimestamp,
+            sequenceNumber: picture.sequenceNumber,
+            scaleLabel: picture.scaleLabel,
+            scaleWidth: picture.scaleWidth,
+            groupId: picture.groupId,
+            legendPosition: picture.legendPosition ?? POSITION.bottomLeft,
+          };
+        }) ?? []
+      );
+}
+
+export function mapToFairwayCardInput(sourceCard: string | undefined, data: FairwayCardByIdQuery | undefined, copyPictures?: boolean) {
   return {
-    id: origin ? '' : stringValueOrDefault(data?.fairwayCard?.id),
+    id: sourceCard ? '' : stringValueOrDefault(data?.fairwayCard?.id),
     // v1 is just for now, since proper version control not in use
     version: data?.fairwayCard?.version ?? 'v1',
     group: stringValueOrDefault(data?.fairwayCard?.group),
@@ -18,7 +41,7 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
       en: stringValueOrDefault(data?.fairwayCard?.name?.en),
     },
     n2000HeightSystem: data?.fairwayCard?.n2000HeightSystem ?? false,
-    status: origin ? Status.Draft : (data?.fairwayCard?.status ?? Status.Draft),
+    status: sourceCard ? Status.Draft : (data?.fairwayCard?.status ?? Status.Draft),
     fairwayIds: data?.fairwayCard?.fairways.flatMap((fairway) => fairway.id).sort() ?? [],
     harbors: data?.fairwayCard?.harbors?.flatMap((harbor) => harbor.id) ?? [],
     pilotRoutes: data?.fairwayCard?.pilotRoutes?.map((route) => route.id) ?? [],
@@ -132,26 +155,8 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
         };
       }),
     },
-    operation: origin ? Operation.Create : Operation.Update,
-    pictures: origin
-      ? []
-      : sortPictures(
-          data?.fairwayCard?.pictures?.map((picture) => {
-            return {
-              id: picture.id,
-              text: picture.text,
-              lang: picture.lang,
-              orientation: picture.orientation,
-              rotation: picture.rotation,
-              modificationTimestamp: picture.modificationTimestamp,
-              sequenceNumber: picture.sequenceNumber,
-              scaleLabel: picture.scaleLabel,
-              scaleWidth: picture.scaleWidth,
-              groupId: picture.groupId,
-              legendPosition: picture.legendPosition ?? POSITION.bottomLeft,
-            };
-          }) ?? []
-        ),
+    operation: sourceCard ? Operation.Create : Operation.Update,
+    pictures: mapPictures(sourceCard, data, copyPictures),
     temporaryNotifications: data?.fairwayCard?.temporaryNotifications?.map((notification) => {
       return {
         content: {
@@ -163,6 +168,96 @@ export function mapToFairwayCardInput(origin: boolean | undefined, data: Fairway
         endDate: stringValueOrDefault(notification.endDate),
       };
     }),
+  };
+}
+
+export function mapNewFairwayCardVersion(card: FairwayCardInput | undefined, copyPictures?: boolean) {
+  return {
+    id: stringValueOrDefault(card?.id),
+    version: card?.version ?? 'v1',
+    group: stringValueOrDefault(card?.group),
+    name: {
+      fi: stringValueOrDefault(card?.name?.fi),
+      sv: stringValueOrDefault(card?.name?.sv),
+      en: stringValueOrDefault(card?.name?.en),
+    },
+    n2000HeightSystem: card?.n2000HeightSystem ?? false,
+    status: Status.Draft,
+    fairwayIds: card?.fairwayIds ?? [],
+    harbors: card?.harbors,
+    pilotRoutes: card?.pilotRoutes,
+    primaryFairwayId: card?.primaryFairwayId,
+    secondaryFairwayId: card?.secondaryFairwayId,
+    additionalInfo: {
+      fi: stringValueOrDefault(card?.additionalInfo?.fi),
+      sv: stringValueOrDefault(card?.additionalInfo?.sv),
+      en: stringValueOrDefault(card?.additionalInfo?.en),
+    },
+    lineText: {
+      fi: stringValueOrDefault(card?.lineText?.fi),
+      sv: stringValueOrDefault(card?.lineText?.sv),
+      en: stringValueOrDefault(card?.lineText?.en),
+    },
+    designSpeed: {
+      fi: stringValueOrDefault(card?.designSpeed?.fi),
+      sv: stringValueOrDefault(card?.designSpeed?.sv),
+      en: stringValueOrDefault(card?.designSpeed?.en),
+    },
+    speedLimit: {
+      fi: stringValueOrDefault(card?.speedLimit?.fi),
+      sv: stringValueOrDefault(card?.speedLimit?.sv),
+      en: stringValueOrDefault(card?.speedLimit?.en),
+    },
+    anchorage: {
+      fi: stringValueOrDefault(card?.anchorage?.fi),
+      sv: stringValueOrDefault(card?.anchorage?.sv),
+      en: stringValueOrDefault(card?.anchorage?.en),
+    },
+    navigationCondition: {
+      fi: stringValueOrDefault(card?.navigationCondition?.fi),
+      sv: stringValueOrDefault(card?.navigationCondition?.sv),
+      en: stringValueOrDefault(card?.navigationCondition?.en),
+    },
+    iceCondition: {
+      fi: stringValueOrDefault(card?.iceCondition?.fi),
+      sv: stringValueOrDefault(card?.iceCondition?.sv),
+      en: stringValueOrDefault(card?.iceCondition?.en),
+    },
+    windRecommendation: {
+      fi: stringValueOrDefault(card?.windRecommendation?.fi),
+      sv: stringValueOrDefault(card?.windRecommendation?.sv),
+      en: stringValueOrDefault(card?.windRecommendation?.en),
+    },
+    vesselRecommendation: {
+      fi: stringValueOrDefault(card?.vesselRecommendation?.fi),
+      sv: stringValueOrDefault(card?.vesselRecommendation?.sv),
+      en: stringValueOrDefault(card?.vesselRecommendation?.en),
+    },
+    visibility: {
+      fi: stringValueOrDefault(card?.visibility?.fi),
+      sv: stringValueOrDefault(card?.visibility?.sv),
+      en: stringValueOrDefault(card?.visibility?.en),
+    },
+    mareographs: card?.mareographs,
+    trafficService: {
+      pilot: {
+        email: stringValueOrDefault(card?.trafficService?.pilot?.email),
+        phoneNumber: stringValueOrDefault(card?.trafficService?.pilot?.phoneNumber),
+        fax: stringValueOrDefault(card?.trafficService?.pilot?.fax),
+        extraInfo: {
+          fi: stringValueOrDefault(card?.trafficService?.pilot?.extraInfo?.fi),
+          sv: stringValueOrDefault(card?.trafficService?.pilot?.extraInfo?.sv),
+          en: stringValueOrDefault(card?.trafficService?.pilot?.extraInfo?.en),
+        },
+        places: card?.trafficService?.pilot?.places,
+      },
+      vts: card?.trafficService?.vts,
+      tugs: card?.trafficService?.tugs,
+    },
+    // this function is for now only used for creating new version
+    operation: Operation.Createversion,
+    pictures: copyPictures ? card?.pictures : [],
+    temporaryNotifications: card?.temporaryNotifications,
   };
 }
 
@@ -226,5 +321,48 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
     }),
     status: origin ? Status.Draft : (data?.harbor?.status ?? Status.Draft),
     operation: origin ? Operation.Create : Operation.Update,
+  };
+}
+
+export function mapNewHarbourVersion(harbour: HarborInput) {
+  return {
+    id: stringValueOrDefault(harbour?.id),
+    // v1 is just for now, since proper version control not in use
+    version: harbour.version,
+    name: {
+      fi: stringValueOrDefault(harbour.name.fi),
+      sv: stringValueOrDefault(harbour.name.sv),
+      en: stringValueOrDefault(harbour.name.en),
+    },
+    extraInfo: {
+      fi: stringValueOrDefault(harbour.extraInfo?.fi),
+      sv: stringValueOrDefault(harbour.extraInfo?.sv),
+      en: stringValueOrDefault(harbour.extraInfo?.en),
+    },
+    cargo: {
+      fi: stringValueOrDefault(harbour.cargo?.fi),
+      sv: stringValueOrDefault(harbour.cargo?.sv),
+      en: stringValueOrDefault(harbour.cargo?.en),
+    },
+    harborBasin: {
+      fi: stringValueOrDefault(harbour.harborBasin?.fi),
+      sv: stringValueOrDefault(harbour.harborBasin?.sv),
+      en: stringValueOrDefault(harbour.harborBasin?.en),
+    },
+    n2000HeightSystem: harbour.n2000HeightSystem ?? false,
+    geometry: { lat: stringValueOrDefault(harbour.geometry.lat), lon: stringValueOrDefault(harbour.geometry.lon) },
+    company: {
+      fi: stringValueOrDefault(harbour.company?.fi),
+      sv: stringValueOrDefault(harbour.company?.sv),
+      en: stringValueOrDefault(harbour.company?.en),
+    },
+    email: stringValueOrDefault(harbour.email),
+    fax: stringValueOrDefault(harbour.fax),
+    internet: stringValueOrDefault(harbour.internet),
+    phoneNumber: harbour.phoneNumber ?? [],
+    quays: harbour.quays,
+    // this mapper is only used for new version, so status is always 'Draft' and operation 'Createversion'
+    status: Status.Draft,
+    operation: Operation.Createversion,
   };
 }
