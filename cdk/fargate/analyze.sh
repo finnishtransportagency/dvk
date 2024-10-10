@@ -10,10 +10,42 @@ if [ -z "$CF_DISTRIBUTION" ]; then
     exit 1
 fi
 
-#Log filenames start with distribution id.year.month eg. E2GP14WC00IGAB.2023-11-
-s3_prefix="$CF_DISTRIBUTION.$(date +'%Y-%m')-*"
+# CLoudfront access log filenames start with distributionid.year-month eg. E2GP14WC00IGAB.2023-11-
 
-mkdir cflogs
+# Get the current year and month
+CURRENT_YEAR=$(date +'%Y')
+CURRENT_MONTH=$(date +'%m')
+
+# Check if REPORT_YEAR and REPORT_MONTH environment variables exist
+if [ -n "$REPORT_YEAR" ] && [ -n "$REPORT_MONTH" ]; then
+    echo "Using REPORT_YEAR and REPORT_MONTH environment variables."
+else
+    echo "REPORT_YEAR and REPORT_MONTH environment variables not set. Using current year and month."
+    REPORT_YEAR=$CURRENT_YEAR
+    REPORT_MONTH=$CURRENT_MONTH
+fi
+
+# Construct the S3 prefix
+s3_prefix="$CF_DISTRIBUTION.$REPORT_YEAR-$REPORT_MONTH-*"
+echo "S3 prefix: $s3_prefix"
+
+# Check if analytics/cflogs directory exists, if not create it
+if [ ! -d "analytics/cflogs" ]; then
+    echo "Creating cflogs directory"
+    mkdir analytics/cflogs
+    if [ $? -ne 0 ]; then
+        echo "Error creating analytics/cflogs directory"
+        exit 1
+    fi
+else
+    # Remove all files from cflogs directory
+    echo "Removing all files from cflogs directory"
+    rm -rf analytics/cflogs/*
+    if [ $? -ne 0 ]; then
+        echo "Error removing files from analytics/cflogs directory"
+        exit 1
+    fi
+fi
 
 echo "aws s3 cp "s3://$LOG_BUCKET" /analytics/cflogs/ --exclude "*" --include $s3_prefix --recursive"
 aws s3 cp "s3://$LOG_BUCKET" /analytics/cflogs/ --exclude "*" --include $s3_prefix --recursive
@@ -34,21 +66,20 @@ else
     echo "Report ready"
 fi
 
-year_number=$(date +'%Y')
-month_number=$(date +'%m')
+
 #if environment variable REPORT_BUCKET exists
 if [ -z "$REPORT_BUCKET" ]; then
     echo "REPORT_BUCKET environment variable is not set. Skipping report upload."
     exit 0
 else
     echo "Uploading /analytics/report to S3"
-    aws s3 cp /analytics/report.html s3://$REPORT_BUCKET/reports/$year_number/$month_number/
+    aws s3 cp /analytics/report.html s3://$REPORT_BUCKET/reports/$REPORT_YEAR/$REPORT_MONTH/
     if [ $? -ne 0 ]; then
         echo "Error uploading report"
         exit 1
     else
         echo "Report uploaded"
-        echo "Report URL: https://$REPORT_BUCKET.s3.amazonaws.com/reports/$year_number/$month_number/report.html"
+        echo "Report URL: https://$REPORT_BUCKET.s3.amazonaws.com/reports/$REPORT_YEAR/$REPORT_MONTH/report.html"
         exit 0
     fi
 fi
