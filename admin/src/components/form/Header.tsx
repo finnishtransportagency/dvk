@@ -49,27 +49,23 @@ const Header: React.FC<HeaderProps> = ({
               {t('general.cancel')}
             </IonButton>
             {(currentState.status === Status.Public || currentState.status === Status.Draft) && (
-              <>
-                <IonButton
-                  id="deleteButton"
-                  shape="round"
-                  color="danger"
-                  disabled={isError || isLoading}
-                  onClick={() => {
-                    handleRemove();
-                  }}
-                >
-                  {currentState.status === Status.Draft ? t('general.delete') : t('general.archive')}
-                </IonButton>
-                <IonButton
-                  shape="round"
-                  disabled={isError || isLoading || currentState.operation === Operation.Create}
-                  onClick={() => handlePreview()}
-                >
-                  {t('general.preview')}
-                  <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
-                </IonButton>
-              </>
+              <IonButton
+                id="deleteButton"
+                shape="round"
+                color="danger"
+                disabled={isError || isLoading}
+                onClick={() => {
+                  handleRemove();
+                }}
+              >
+                {currentState.status === Status.Draft ? t('general.delete') : t('general.archive')}
+              </IonButton>
+            )}
+            {currentState.status === Status.Draft && (
+              <IonButton shape="round" disabled={isError || isLoading || currentState.operation === Operation.Create} onClick={() => handlePreview()}>
+                {t('general.preview')}
+                <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
+              </IonButton>
             )}
             {currentState.status === Status.Public && (
               <>
