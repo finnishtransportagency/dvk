@@ -6,6 +6,8 @@ export type GeometryModel = {
   geometria: object;
 };
 
+export type VaylaGeojsonFeature = { type?: string; geometry: Geometry };
+
 /* VATU */
 type MitoitusAlusAPIModel = {
   alustyyppiKoodi: string;
@@ -61,7 +63,7 @@ type AlueVaylaAPIModel = {
   nimiSV?: string;
 };
 
-export type AlueAPIModel = {
+type AlueProperties = {
   id: number;
   nimi?: string;
   mitoitusSyvays?: number;
@@ -86,7 +88,9 @@ export type AlueAPIModel = {
   liikenteenTyyppi?: string;
   liikennointiSuuntaKoodi?: number;
   liikennointiSuunta?: string;
-} & GeometryModel;
+};
+
+export type AlueAPIModel = AlueProperties & GeometryModel;
 
 type NavigointiLinjaVaylaAPIModel = {
   jnro: number;
@@ -96,7 +100,7 @@ type NavigointiLinjaVaylaAPIModel = {
   nimiSV?: string;
 };
 
-export type NavigointiLinjaAPIModel = {
+type NavigointiLinjaProperties = {
   id: number;
   mitoitusSyvays?: number;
   harausSyvyys?: number;
@@ -113,7 +117,18 @@ export type NavigointiLinjaAPIModel = {
   tyyppiKoodi?: string;
   tyyppi?: string;
   vayla: NavigointiLinjaVaylaAPIModel[];
-} & GeometryModel;
+};
+
+export type NavigointiLinjaAPIModel = NavigointiLinjaProperties & GeometryModel;
+
+export type NavigointiLinjaFeature = {
+  properties: NavigointiLinjaProperties;
+} & VaylaGeojsonFeature;
+
+export type NavigointiLinjaFeatureCollection = {
+  type?: string;
+  features: NavigointiLinjaFeature[];
+};
 
 type RajoitustyyppiAPIModel = {
   koodi?: string;
@@ -167,7 +182,7 @@ type TurvalaiteReunaetaisyysAPIModel = {
   etaisyys: number;
 };
 
-export type TurvalaiteAPIModel = {
+type TurvalaiteProperties = {
   turvalaitenumero: number;
   nimiFI?: string;
   nimiSV?: string;
@@ -188,7 +203,17 @@ export type TurvalaiteAPIModel = {
   AISTyyppiSeliteSV?: string;
   vayla?: TurvalaiteVaylaAPIModel[];
   reunaetaisyys?: TurvalaiteReunaetaisyysAPIModel[];
-} & GeometryModel;
+};
+
+export type TurvalaiteAPIModel = TurvalaiteProperties & GeometryModel;
+export type TurvalaiteFeature = {
+  properties: TurvalaiteProperties;
+} & VaylaGeojsonFeature;
+
+export type TurvalaiteFeatureCollection = {
+  type?: string;
+  features: TurvalaiteFeature[];
+};
 
 type TaululinjaVaylaAPIModel = {
   jnro: number;

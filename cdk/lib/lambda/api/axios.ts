@@ -15,11 +15,12 @@ import {
   getVatuPilotRoutesUrl,
   getVatuUrl,
   getWeatherHeaders,
+  isProductionEnvironment,
 } from '../environment';
 import { log } from '../logger';
 import { FeatureCollection, Geometry } from 'geojson';
 import { roundGeometry } from '../util';
-import { GeometryModel, RtzData, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
+import { VaylaGeojsonFeature, GeometryModel, RtzData, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
 
 export enum ExternalAPI {
   ILMANET = 'Ilmanet',
@@ -102,8 +103,19 @@ export async function fetchAISFeatureCollection(path: string, params: Record<str
     : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);
 }
 
-export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
-  const url = `${await getVatuUrl()}/${api}`;
+function getVatuAPIVersion(api: string): string {
+  //During transition phase between V1 and V2, separate different environments support for API
+  const version2Apis: string[] = ['navigointilinjat', 'turvalaite'];
+  return !isProductionEnvironment() && version2Apis.includes(api) ? '-v2' : '';
+}
+
+export async function fetchVATUByApi<T extends GeometryModel | VaylaGeojsonFeature | VaylaAPIModel>(
+  api: string,
+  params: Record<string, string> = {}
+) {
+  const url = `${await getVatuUrl()}${getVatuAPIVersion(api)}/${api}`;
+  log.debug({ api, url }, `VATU api: ${api}, url=${url}`);
+
   const start = Date.now();
   const response = await axios
     .get(url, {
@@ -123,9 +135,19 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
       throw new Error(getFetchErrorMessage(ExternalAPI.VATU));
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
-  for (const obj of response.data as T[]) {
-    if ('geometria' in obj) {
-      roundGeometry(obj.geometria as Geometry);
+
+  if ('features' in response.data) {
+    //The type of the response is Geojson
+    for (const obj of response.data.features as T[]) {
+      if ('geometry' in obj) {
+        roundGeometry(obj.geometry);
+      }
+    }
+  } else {
+    for (const obj of response.data as T[]) {
+      if ('geometria' in obj) {
+        roundGeometry(obj.geometria as Geometry);
+      }
     }
   }
   return response;

@@ -17,6 +17,8 @@ import {
   AlueAPIModel,
   KaantoympyraAPIModel,
   NavigointiLinjaAPIModel,
+  NavigointiLinjaFeature,
+  NavigointiLinjaFeatureCollection,
   RajoitusAlueAPIModel,
   TaululinjaAPIModel,
   VaylaAPIModel,
@@ -82,50 +84,76 @@ export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
 }
 
 async function getNavigationLineMap(fairwayIds: number[]) {
-  const lines = (await fetchVATUByFairwayId<NavigointiLinjaAPIModel>(fairwayIds, 'navigointilinjat')).data as NavigointiLinjaAPIModel[];
-  log.debug('lines: %d', lines.length);
-  const lineMap = new Map<number, NavigointiLinjaAPIModel[]>();
-  for (const line of lines) {
-    for (const lineFairway of line.vayla) {
-      if (!lineMap.has(lineFairway.jnro)) {
-        lineMap.set(lineFairway.jnro, []);
+  const apiLines = (await fetchVATUByFairwayId<NavigointiLinjaAPIModel | NavigointiLinjaFeature>(fairwayIds, 'navigointilinjat')).data as
+    | NavigointiLinjaAPIModel[]
+    | NavigointiLinjaFeatureCollection;
+  const isGeoJson = 'features' in apiLines;
+  let lineMap = null;
+  if (isGeoJson) {
+    const lines = apiLines.features;
+    log.debug('lines: %d', lines.length);
+    lineMap = new Map<number, NavigointiLinjaFeature[]>();
+    for (const line of lines) {
+      for (const lineFairway of line.properties.vayla) {
+        if (!lineMap.has(lineFairway.jnro)) {
+          lineMap.set(lineFairway.jnro, []);
+        }
+        lineMap.get(lineFairway.jnro)?.push(line);
       }
-      lineMap.get(lineFairway.jnro)?.push(line);
+    }
+  } else {
+    //For some reason the compiler doesn't like these 2 blocks to be merged. Keep them separate and delete this one when we move to V2 API
+    const lines = apiLines;
+    log.debug('lines: %d', lines.length);
+    lineMap = new Map<number, NavigointiLinjaAPIModel[]>();
+    for (const line of lines) {
+      for (const lineFairway of line.vayla) {
+        if (!lineMap.has(lineFairway.jnro)) {
+          lineMap.set(lineFairway.jnro, []);
+        }
+        lineMap.get(lineFairway.jnro)?.push(line);
+      }
     }
   }
+
   return lineMap;
 }
 
-function mapNavigationLines(lines: NavigointiLinjaAPIModel[]) {
+function mapNavigationLines(lines: NavigointiLinjaAPIModel[] | NavigointiLinjaFeature[]) {
   return lines.map((apiLine) => {
-    const line: NavigationLine = {
-      id: apiLine.id,
-      draft: apiLine.mitoitusSyvays,
-      depth: apiLine.harausSyvyys,
-      referenceLevel: apiLine.vertaustaso,
-      n2000draft: apiLine.n2000MitoitusSyvays,
-      n2000depth: apiLine.n2000HarausSyvyys,
-      n2000ReferenceLevel: apiLine.n2000Vertaustaso,
-      direction: apiLine.tosisuunta,
-      length: apiLine.pituus,
-      additionalInformation: apiLine.lisatieto,
-      owner: apiLine.omistaja,
-      verificationDate: apiLine.vahvistusPaivamaara,
-      journalNumber: apiLine.diaariNumero,
-      type: apiLine.tyyppi,
-      typeCode: apiLine.tyyppiKoodi,
-      geometry: apiLine.geometria,
-      fairways: [],
-    };
-    line.fairways = apiLine.vayla?.map((apiFairway) => {
-      return {
-        fairwayId: apiFairway.jnro,
-        status: apiFairway.status,
-        line: apiFairway.linjaus,
-      };
-    });
-    return line;
+    return mapNavigationLine(apiLine);
   });
+}
+
+function mapNavigationLine(line: NavigointiLinjaAPIModel | NavigointiLinjaFeature) {
+  const apiLine = 'properties' in line ? line.properties : line;
+  let mappedLine: NavigationLine = {
+    id: apiLine.id,
+    draft: apiLine.mitoitusSyvays,
+    depth: apiLine.harausSyvyys,
+    referenceLevel: apiLine.vertaustaso,
+    n2000draft: apiLine.n2000MitoitusSyvays,
+    n2000depth: apiLine.n2000HarausSyvyys,
+    n2000ReferenceLevel: apiLine.n2000Vertaustaso,
+    direction: apiLine.tosisuunta,
+    length: apiLine.pituus,
+    additionalInformation: apiLine.lisatieto,
+    owner: apiLine.omistaja,
+    verificationDate: apiLine.vahvistusPaivamaara,
+    journalNumber: apiLine.diaariNumero,
+    type: apiLine.tyyppi,
+    typeCode: apiLine.tyyppiKoodi,
+    fairways: [],
+  };
+  mappedLine.geometry = 'geometry' in line ? line.geometry : line.geometria;
+  mappedLine.fairways = apiLine.vayla?.map((apiFairway) => {
+    return {
+      fairwayId: apiFairway.jnro,
+      status: apiFairway.status,
+      line: apiFairway.linjaus,
+    };
+  });
+  return mappedLine;
 }
 
 async function getAreaMap(fairwayIds: number[]) {
@@ -350,7 +378,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
         return {
           ...mapAPIModelToFairway(apiFairway),
           ...fairway,
-          navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) ?? []),
+          navigationLines: mapNavigationLines(lineMap?.get(apiFairway.jnro) ?? []),
           areas: mapAreas(areaMap.get(apiFairway.jnro) ?? []),
           restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) ?? []),
           prohibitionAreas: prohibitionAreaMap.get(apiFairway.jnro) ?? [],

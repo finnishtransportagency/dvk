@@ -12,12 +12,19 @@ import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 import { getNumberValue, invertDegrees, roundDecimals, toBase64Response } from '../util';
 import {
   AlueAPIModel,
+  AlueFeature,
+  AlueFeatureCollection,
   KaantoympyraAPIModel,
   NavigointiLinjaAPIModel,
+  NavigointiLinjaFeature,
+  NavigointiLinjaFeatureCollection,
   RajoitusAlueAPIModel,
   TaululinjaAPIModel,
   TurvalaiteAPIModel,
+  TurvalaiteFeature,
+  TurvalaiteFeatureCollection,
   TurvalaiteVikatiedotAPIModel,
+  VaylaGeojsonFeature,
 } from './apiModels';
 
 interface FeaturesWithMaxFetchTime {
@@ -79,35 +86,48 @@ async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
 }
 
 async function addDepthFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-  const areas = (await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event)).data as AlueAPIModel[];
+  const apiAreas = (await fetchVATUByFairwayClass<AlueAPIModel | AlueFeature>('vaylaalueet', event)).data as AlueAPIModel[] | AlueFeatureCollection;
+  const areas = 'features' in apiAreas ? apiAreas.features : apiAreas;
   log.debug('areas: %d', areas.length);
-  for (const area of areas.filter(
-    (a) => a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11 || a.tyyppiKoodi === 2
-  )) {
-    features.featureArray.push({
-      type: 'Feature',
-      id: area.id,
-      geometry: area.geometria as Geometry,
-      properties: {
-        id: area.id,
-        featureType: 'depth',
-        areaType: area.tyyppiKoodi,
-        depth: area.harausSyvyys && area.harausSyvyys > 0 ? area.harausSyvyys : undefined,
-        draft: area.mitoitusSyvays && area.mitoitusSyvays > 0 ? area.mitoitusSyvays : undefined,
-        referenceLevel: area.vertaustaso,
-        n2000draft: area.n2000MitoitusSyvays && area.n2000MitoitusSyvays > 0 ? area.n2000MitoitusSyvays : undefined,
-        n2000depth: area.n2000HarausSyvyys && area.n2000HarausSyvyys > 0 ? area.n2000HarausSyvyys : undefined,
-        n2000ReferenceLevel: area.n2000Vertaustaso,
-      },
-    });
+  for (const area of areas.filter((a) => filterArea(a, [1, 2, 3, 4, 5, 11]))) {
+    features.featureArray.push(mapAreaFeature(area));
   }
+}
+
+function filterArea(area: AlueAPIModel | AlueFeature, types: number[]): boolean {
+  const areaProperties = 'properties' in area ? area.properties : area;
+  return types.includes(areaProperties.tyyppiKoodi as number);
+}
+
+function mapAreaFeature(apiArea: AlueAPIModel | AlueFeature): Feature {
+  const area = 'properties' in apiArea ? apiArea.properties : apiArea;
+  return {
+    type: 'Feature',
+    id: area.id,
+    geometry: 'geometry' in apiArea ? apiArea.geometry : (apiArea.geometria as Geometry),
+    properties: {
+      id: area.id,
+      featureType: 'depth',
+      areaType: area.tyyppiKoodi,
+      depth: area.harausSyvyys && area.harausSyvyys > 0 ? area.harausSyvyys : undefined,
+      draft: area.mitoitusSyvays && area.mitoitusSyvays > 0 ? area.mitoitusSyvays : undefined,
+      referenceLevel: area.vertaustaso,
+      n2000draft: area.n2000MitoitusSyvays && area.n2000MitoitusSyvays > 0 ? area.n2000MitoitusSyvays : undefined,
+      n2000depth: area.n2000HarausSyvyys && area.n2000HarausSyvyys > 0 ? area.n2000HarausSyvyys : undefined,
+      n2000ReferenceLevel: area.n2000Vertaustaso,
+    },
+  };
 }
 
 // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
 // 2 = Ankkurointialue
-const navigationAreaFilter = (a: AlueAPIModel) =>
-  a.tyyppiKoodi === 1 || a.tyyppiKoodi === 3 || a.tyyppiKoodi === 4 || a.tyyppiKoodi === 5 || a.tyyppiKoodi === 11;
-const anchoringAreaFilter = (a: AlueAPIModel) => a.tyyppiKoodi === 2;
+const navigationAreaFilter = (area: AlueAPIModel | AlueFeature) => {
+  return filterArea(area, [1, 3, 4, 5, 11]);
+};
+const anchoringAreaFilter = (area: AlueAPIModel | AlueFeature) => {
+  return filterArea(area, [2]);
+};
+
 function getAreaFilter(type: 'area' | 'specialarea2') {
   if (type === 'area') {
     return navigationAreaFilter;
@@ -116,15 +136,22 @@ function getAreaFilter(type: 'area' | 'specialarea2') {
   }
 }
 
-async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent, featureType: string, areaFilter: (a: AlueAPIModel) => boolean) {
-  const areas = (await fetchVATUByFairwayClass<AlueAPIModel>('vaylaalueet', event)).data as AlueAPIModel[];
+async function addAreaFeatures(
+  features: FeaturesWithMaxFetchTime,
+  event: ALBEvent,
+  featureType: string,
+  areaFilter: (a: AlueAPIModel | AlueFeature) => boolean
+) {
+  const apiAreas = (await fetchVATUByFairwayClass<AlueAPIModel | AlueFeature>('vaylaalueet', event)).data as AlueAPIModel[] | AlueFeatureCollection;
+  const areas = 'features' in apiAreas ? apiAreas.features : apiAreas;
   log.debug('areas: %d', areas.length);
 
-  for (const area of areas.filter(areaFilter)) {
+  for (const a of areas.filter(areaFilter)) {
+    const area = 'properties' in a ? a.properties : a;
     features.featureArray.push({
       type: 'Feature',
       id: area.id,
-      geometry: area.geometria as Geometry,
+      geometry: 'geometry' in a ? a.geometry : (a.geometria as Geometry),
       properties: {
         id: area.id,
         featureType: featureType,
@@ -226,71 +253,88 @@ async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: A
 }
 
 async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-  const lines = (await fetchVATUByFairwayClass<NavigointiLinjaAPIModel>('navigointilinjat', event)).data as NavigointiLinjaAPIModel[];
-  log.debug('lines: %d', lines.length);
-  for (const line of lines) {
-    features.featureArray.push({
-      type: 'Feature',
-      id: line.id,
-      geometry: line.geometria as Geometry,
-      properties: {
-        id: line.id,
-        featureType: 'line',
-        depth: getNumberValue(line.harausSyvyys),
-        direction: roundDecimals(line.tosisuunta, 1) ?? undefined,
-        oppositeDirection: roundDecimals(invertDegrees(line.tosisuunta), 1) ?? undefined,
-        draft: getNumberValue(line.mitoitusSyvays),
-        length: getNumberValue(line.pituus),
-        n2000depth: getNumberValue(line.n2000HarausSyvyys),
-        n2000draft: getNumberValue(line.n2000MitoitusSyvays),
-        referenceLevel: line.vertaustaso,
-        n2000ReferenceLevel: line.n2000Vertaustaso,
-        extra: line.lisatieto?.trim(),
-        fairways: line.vayla?.map((v) => {
-          return {
-            fairwayId: v.jnro,
-            name: {
-              fi: v.nimiFI,
-              sv: v.nimiSV,
-            },
-            status: v.status,
-            line: v.linjaus,
-          };
-        }),
-      },
-    });
+  const lines = (await fetchVATUByFairwayClass<NavigointiLinjaAPIModel | NavigointiLinjaFeature>('navigointilinjat', event)).data as
+    | NavigointiLinjaAPIModel[]
+    | NavigointiLinjaFeatureCollection;
+  const lineFeatures = 'features' in lines ? lines.features : lines;
+  log.debug('lines: %d', lineFeatures.length);
+  for (const line of lineFeatures) {
+    features.featureArray.push(mapLineFeature(line));
   }
 }
 
+function mapLineFeature(apiLine: NavigointiLinjaAPIModel | NavigointiLinjaFeature): Feature {
+  const line = 'properties' in apiLine ? apiLine.properties : apiLine;
+  return {
+    type: 'Feature',
+    id: line.id,
+    geometry: 'geometry' in apiLine ? apiLine.geometry : (apiLine.geometria as Geometry),
+    properties: {
+      id: line.id,
+      featureType: 'line',
+      depth: getNumberValue(line.harausSyvyys),
+      direction: roundDecimals(line.tosisuunta, 1) ?? undefined,
+      oppositeDirection: roundDecimals(invertDegrees(line.tosisuunta), 1) ?? undefined,
+      draft: getNumberValue(line.mitoitusSyvays),
+      length: getNumberValue(line.pituus),
+      n2000depth: getNumberValue(line.n2000HarausSyvyys),
+      n2000draft: getNumberValue(line.n2000MitoitusSyvays),
+      referenceLevel: line.vertaustaso,
+      n2000ReferenceLevel: line.n2000Vertaustaso,
+      extra: line.lisatieto?.trim(),
+      fairways: line.vayla?.map((v) => {
+        return {
+          fairwayId: v.jnro,
+          name: {
+            fi: v.nimiFI,
+            sv: v.nimiSV,
+          },
+          status: v.status,
+          line: v.linjaus,
+        };
+      }),
+    },
+  };
+}
+
 async function addSafetyEquipmentFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-  const equipments = (await fetchVATUByFairwayClass<TurvalaiteAPIModel>('turvalaitteet', event)).data as TurvalaiteAPIModel[];
-  log.debug('equipments: %d', equipments.length);
-  for (const equipment of equipments) {
-    features.featureArray.push({
-      type: 'Feature',
-      id: equipment.turvalaitenumero,
-      geometry: equipment.geometria as Geometry,
-      properties: {
-        id: equipment.turvalaitenumero,
-        featureType: 'safetyequipment',
-        navigation: { fi: equipment.navigointilajiFI, sv: equipment.navigointilajiSV },
-        navigationCode: equipment.navigointilajiKoodi,
-        name: { fi: equipment.nimiFI, sv: equipment.nimiSV },
-        symbol: equipment.symboli,
-        typeCode: equipment.turvalaitetyyppiKoodi,
-        typeName: { fi: equipment.turvalaitetyyppiFI, sv: equipment.turvalaitetyyppiSV },
-        lightning: equipment.valaistu === 'K',
-        aisType: equipment.AISTyyppi,
-        remoteControl: equipment.kaukohallinta,
-        fairways: equipment.vayla?.map((v) => {
-          return { fairwayId: v.jnro, primary: v.paavayla === 'P' };
-        }),
-        distances: equipment.reunaetaisyys?.map((v) => {
-          return { areaId: v.vaylaalueID, distance: v.etaisyys };
-        }),
-      },
-    });
+  const equipments = (await fetchVATUByFairwayClass<TurvalaiteAPIModel | TurvalaiteFeature>('turvalaitteet', event)).data as
+    | TurvalaiteAPIModel[]
+    | TurvalaiteFeatureCollection;
+
+  const equipmentFeatures = 'features' in equipments ? equipments.features : equipments;
+  log.debug('lines: %d', equipmentFeatures.length);
+  for (const equipment of equipmentFeatures) {
+    features.featureArray.push(mapSafetyEquipmentFeature(equipment));
   }
+}
+
+function mapSafetyEquipmentFeature(apiEquipment: TurvalaiteAPIModel | TurvalaiteFeature): Feature {
+  const equipment = 'properties' in apiEquipment ? apiEquipment.properties : apiEquipment;
+  return {
+    type: 'Feature',
+    id: equipment.turvalaitenumero,
+    geometry: 'geometry' in apiEquipment ? apiEquipment.geometry : (apiEquipment.geometria as Geometry),
+    properties: {
+      id: equipment.turvalaitenumero,
+      featureType: 'safetyequipment',
+      navigation: { fi: equipment.navigointilajiFI, sv: equipment.navigointilajiSV },
+      navigationCode: equipment.navigointilajiKoodi,
+      name: { fi: equipment.nimiFI, sv: equipment.nimiSV },
+      symbol: equipment.symboli,
+      typeCode: equipment.turvalaitetyyppiKoodi,
+      typeName: { fi: equipment.turvalaitetyyppiFI, sv: equipment.turvalaitetyyppiSV },
+      lightning: equipment.valaistu === 'K',
+      aisType: equipment.AISTyyppi,
+      remoteControl: equipment.kaukohallinta,
+      fairways: equipment.vayla?.map((v) => {
+        return { fairwayId: v.jnro, primary: v.paavayla === 'P' };
+      }),
+      distances: equipment.reunaetaisyys?.map((v) => {
+        return { areaId: v.vaylaalueID, distance: v.etaisyys };
+      }),
+    },
+  };
 }
 
 async function addSafetyEquipmentFaultFeatures(features: FeaturesWithMaxFetchTime) {
