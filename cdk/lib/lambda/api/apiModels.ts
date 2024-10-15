@@ -52,6 +52,9 @@ export type VaylaAPIModel = {
   luokitus?: LuokitusAPIModel[];
 };
 
+export type VaylaFeature = { properties: VaylaAPIModel };
+export type VaylaFeatureCollection = { type?: string; features: VaylaFeature[] };
+
 type AlueVaylaAPIModel = {
   jnro: number;
   status: number;
@@ -90,7 +93,14 @@ type AlueProperties = {
   liikennointiSuunta?: string;
 };
 
-export type AlueAPIModel = AlueProperties & GeometryModel;
+export type AlueFeature = {
+  properties: AlueProperties;
+} & VaylaGeojsonFeature;
+
+export type AlueFeatureCollection = {
+  type?: string;
+  features: AlueFeature[];
+};
 
 type NavigointiLinjaVaylaAPIModel = {
   jnro: number;
@@ -141,7 +151,7 @@ type RajoitusVaylaAPIModel = {
   nimiSV?: string;
 };
 
-export type RajoitusAlueAPIModel = {
+type RajoitusAlueProperties = {
   id: number;
   rajoitustyyppi?: string;
   rajoitustyypit?: RajoitustyyppiAPIModel[];
@@ -158,14 +168,23 @@ export type RajoitusAlueAPIModel = {
   kunta?: string;
   poikkeus?: string;
   vayla?: RajoitusVaylaAPIModel[];
-} & GeometryModel;
+};
 
-type TurvalaiteVaylaAPIModel = {
+export type RajoitusAlueAPIModel = RajoitusAlueProperties & GeometryModel;
+
+export type RajoitusAlueFeature = { properties: RajoitusAlueProperties } & VaylaGeojsonFeature;
+
+export type RajoitusAlueFeatureCollection = {
+  type?: string;
+  features: RajoitusAlueFeature[];
+};
+
+export type TurvalaiteVaylaAPIModel = {
   jnro: number;
   paavayla?: string;
 };
 
-export type TurvalaiteVikatiedotAPIModel = {
+export type TurvalaiteVikatiedotProperties = {
   vikaId: number;
   turvalaiteNumero: number;
   turvalaiteNimiFI: string;
@@ -175,7 +194,14 @@ export type TurvalaiteVikatiedotAPIModel = {
   vikatyyppiSV?: string;
   vikatyyppiEN?: string;
   kirjausAika: string;
-} & GeometryModel;
+};
+export type TurvalaiteVikatiedotAPIModel = TurvalaiteVikatiedotProperties & GeometryModel;
+
+export type TurvalaiteVikatiedotFeature = { properties: TurvalaiteVikatiedotProperties } & VaylaGeojsonFeature;
+export type TurvalaiteVikatiedotFeatureCollection = {
+  type?: string;
+  features: TurvalaiteVikatiedotFeature[];
+};
 
 type TurvalaiteReunaetaisyysAPIModel = {
   vaylaalueID: number;
@@ -206,29 +232,35 @@ type TurvalaiteProperties = {
 };
 
 export type TurvalaiteAPIModel = TurvalaiteProperties & GeometryModel;
-export type TurvalaiteFeature = {
-  properties: TurvalaiteProperties;
-} & VaylaGeojsonFeature;
+export type TurvalaiteFeature = { properties: TurvalaiteProperties } & VaylaGeojsonFeature;
 
 export type TurvalaiteFeatureCollection = {
   type?: string;
   features: TurvalaiteFeature[];
 };
 
-type TaululinjaVaylaAPIModel = {
+export type TaululinjaVaylaAPIModel = {
   jnro: number;
   nimiFI?: string;
   nimiSV?: string;
 };
 
-export type TaululinjaAPIModel = {
+export type TaululinjaProperties = {
   taululinjaId: number;
   suunta: number;
   etuTLId?: number;
   keskiTLId?: number;
   takaTLId?: number;
   vayla: TaululinjaVaylaAPIModel[];
-} & GeometryModel;
+};
+
+export type TaululinjaAPIModel = TaululinjaProperties & GeometryModel;
+
+export type TaululinjaFeature = { properties: TaululinjaProperties } & VaylaGeojsonFeature;
+export type TaululinjaFeatureCollection = {
+  type?: string;
+  features: TaululinjaFeature[];
+};
 
 type KaantoympyraVaylaAPIModel = {
   jnro: number;
@@ -237,14 +269,20 @@ type KaantoympyraVaylaAPIModel = {
   luokitus: number;
 };
 
-export type KaantoympyraAPIModel = {
+export type KaantoympyraProperties = {
   kaantoympyraID: number;
   halkaisija: number;
   haraussyvyys?: number;
   vertaustaso?: string;
   lisatieto?: string;
   vayla?: KaantoympyraVaylaAPIModel[];
-} & GeometryModel;
+};
+
+export type KaantoympyraAPIModel = KaantoympyraProperties & GeometryModel;
+
+export type KaantoympyraFeature = { properties: KaantoympyraProperties } & VaylaGeojsonFeature;
+
+export type KaantoympyraFeatureCollection = { type?: string; features: KaantoympyraFeature[] };
 
 /* Traficom */
 export type PilotPlace = {

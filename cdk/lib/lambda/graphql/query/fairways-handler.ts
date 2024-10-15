@@ -5,10 +5,10 @@ import { mapAPIModelToFairway } from './fairwayCardFairways-handler';
 import { fetchVATUByFairwayId } from './vatu';
 import { cacheResponse, getFromCache } from '../cache';
 import { fetchVATUByApi } from '../../api/axios';
-import { GeometryModel, VaylaAPIModel } from '../../api/apiModels';
+import { VaylaFeature, VaylaFeatureCollection, VaylaGeojsonFeature } from '../../api/apiModels';
 import { fetchProhibitionAreas } from '../../api/traficom';
 
-function mapIdModels(models: APIModel[]) {
+function mapIdModels(models: APIFeature[]) {
   return models.map((model) => {
     return {
       id: model.id as number,
@@ -16,7 +16,7 @@ function mapIdModels(models: APIModel[]) {
   });
 }
 
-function mapBoardLines(lines: APIModel[]): Boardline[] {
+function mapBoardLines(lines: APIFeature[]): Boardline[] {
   return lines.map((line) => {
     return {
       id: line.taululinjaId as number,
@@ -24,7 +24,7 @@ function mapBoardLines(lines: APIModel[]): Boardline[] {
   });
 }
 
-function mapTurningCircles(circles: APIModel[]): TurningCircle[] {
+function mapTurningCircles(circles: APIFeature[]): TurningCircle[] {
   return circles.map((circle) => {
     return {
       id: circle.kaantoympyraID as number,
@@ -32,7 +32,7 @@ function mapTurningCircles(circles: APIModel[]): TurningCircle[] {
   });
 }
 
-interface APIModel extends GeometryModel {
+interface APIFeature extends VaylaGeojsonFeature {
   vayla: [{ jnro: number }];
   kaantoympyraID?: number;
   taululinjaId?: number;
@@ -40,15 +40,19 @@ interface APIModel extends GeometryModel {
   tyyppiKoodi?: number;
 }
 
+interface APIFeatureCollection {
+  features: APIFeature[];
+}
+
 async function getModelMap(fairwayIds: number[], api: string) {
-  let models = (await fetchVATUByFairwayId<APIModel>(fairwayIds, api)).data as APIModel[];
+  let models = (await fetchVATUByFairwayId<VaylaFeature>(fairwayIds, api)).data as APIFeatureCollection;
   if (api === 'vaylaalueet') {
     // Filter specialarea15, fetched separately from Traficom)
-    models = models.filter((m) => m.tyyppiKoodi !== 15);
+    models.features = models.features.filter((m) => m.tyyppiKoodi !== 15);
   }
-  log.debug('models: %d', models.length);
-  const modelMap = new Map<number, APIModel[]>();
-  for (const model of models) {
+  log.debug('models: %d', models.features.length);
+  const modelMap = new Map<number, APIFeature[]>();
+  for (const model of models.features) {
     for (const fairway of model.vayla ?? []) {
       if (!modelMap.has(fairway.jnro)) {
         modelMap.set(fairway.jnro, []);
@@ -81,24 +85,24 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Fairwa
     log.debug('returning fairways from cache');
     return JSON.parse(cacheResponseData.data);
   } else {
-    const fairways = (await fetchVATUByApi<VaylaAPIModel>('vaylat', { vaylaluokka: '1,2' })).data as VaylaAPIModel[];
-    log.debug('%d fairway(s) found', fairways.length);
-    const fairwayIds = fairways.map((f) => f.jnro);
+    const fairways = (await fetchVATUByApi<VaylaFeature>('vaylat', { vaylaluokka: '1,2' })).data as VaylaFeatureCollection;
+    log.debug('%d fairway(s) found', fairways.features.length);
+    const fairwayIds = fairways.features.map((f) => f.properties.jnro);
     const lines = await getModelMap(fairwayIds, 'navigointilinjat');
     const areas = await getModelMap(fairwayIds, 'vaylaalueet');
     const restrictionAreas = await getModelMap(fairwayIds, 'rajoitusalueet');
     const prohibitionAreas = await getProhibitionAreaMap();
     const circles = await getModelMap(fairwayIds, 'kaantoympyrat');
     const boardLines = await getModelMap(fairwayIds, 'taululinjat');
-    const response = fairways.map((apiFairway) => {
+    const response = fairways.features.map((apiFairway) => {
       return {
         ...mapAPIModelToFairway(apiFairway),
-        navigationLines: mapIdModels(lines.get(apiFairway.jnro) ?? []),
-        areas: mapIdModels(areas.get(apiFairway.jnro) ?? []),
-        restrictionAreas: mapIdModels(restrictionAreas.get(apiFairway.jnro) ?? []),
-        prohibitionAreas: prohibitionAreas.get(apiFairway.jnro) ?? [],
-        boardLines: mapBoardLines(boardLines.get(apiFairway.jnro) ?? []),
-        turningCircles: mapTurningCircles(circles.get(apiFairway.jnro) ?? []),
+        navigationLines: mapIdModels(lines.get(apiFairway.properties.jnro) ?? []),
+        areas: mapIdModels(areas.get(apiFairway.properties.jnro) ?? []),
+        restrictionAreas: mapIdModels(restrictionAreas.get(apiFairway.properties.jnro) ?? []),
+        prohibitionAreas: prohibitionAreas.get(apiFairway.properties.jnro) ?? [],
+        boardLines: mapBoardLines(boardLines.get(apiFairway.properties.jnro) ?? []),
+        turningCircles: mapTurningCircles(circles.get(apiFairway.properties.jnro) ?? []),
       };
     });
     await cacheResponse(key, response);

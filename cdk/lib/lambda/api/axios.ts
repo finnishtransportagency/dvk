@@ -18,9 +18,9 @@ import {
   isProductionEnvironment,
 } from '../environment';
 import { log } from '../logger';
-import { FeatureCollection, Geometry } from 'geojson';
-import { roundGeometry } from '../util';
-import { VaylaGeojsonFeature, GeometryModel, RtzData, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
+import { FeatureCollection } from 'geojson';
+import { convertToGeoJson, roundGeometry } from '../util';
+import { VaylaGeojsonFeature, RtzData, VesselAPIModel, VesselLocationFeatureCollection, VaylaFeature } from './apiModels';
 
 export enum ExternalAPI {
   ILMANET = 'Ilmanet',
@@ -109,10 +109,7 @@ function getVatuAPIVersion(api: string): string {
   return !isProductionEnvironment() && version2Apis.includes(api) ? '-v2' : '';
 }
 
-export async function fetchVATUByApi<T extends GeometryModel | VaylaGeojsonFeature | VaylaAPIModel>(
-  api: string,
-  params: Record<string, string> = {}
-) {
+export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeature>(api: string, params: Record<string, string> = {}) {
   const url = `${await getVatuUrl()}${getVatuAPIVersion(api)}/${api}`;
   log.debug({ api, url }, `VATU api: ${api}, url=${url}`);
 
@@ -136,18 +133,14 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaGeojsonFeatu
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
 
-  if ('features' in response.data) {
-    //The type of the response is Geojson
-    for (const obj of response.data.features as T[]) {
-      if ('geometry' in obj) {
-        roundGeometry(obj.geometry);
-      }
-    }
-  } else {
-    for (const obj of response.data as T[]) {
-      if ('geometria' in obj) {
-        roundGeometry(obj.geometria as Geometry);
-      }
+  if (!('features' in response.data)) {
+    //Convert the data to GeoJson
+    response.data = convertToGeoJson(response.data);
+  }
+
+  for (const obj of response.data.features as T[]) {
+    if ('geometry' in obj) {
+      roundGeometry(obj.geometry);
     }
   }
   return response;
