@@ -14,8 +14,8 @@ import {
   getVatuHeaders,
   getVatuPilotRoutesUrl,
   getVatuUrl,
+  getVatuV2ApiSupport,
   getWeatherHeaders,
-  isProductionEnvironment,
 } from '../environment';
 import { log } from '../logger';
 import { FeatureCollection } from 'geojson';
@@ -103,14 +103,13 @@ export async function fetchAISFeatureCollection(path: string, params: Record<str
     : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);
 }
 
-function getVatuAPIVersion(api: string): string {
+async function getVatuAPIVersion(api: string): Promise<string> {
   //During transition phase between V1 and V2, separate different environments support for API
-  const version2Apis: string[] = ['navigointilinjat', 'turvalaite'];
-  return !isProductionEnvironment() && version2Apis.includes(api) ? '-v2' : '';
+  return (await getVatuV2ApiSupport()).split(';').includes(api) ? '-v2' : '';
 }
 
 export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeature>(api: string, params: Record<string, string> = {}) {
-  const url = `${await getVatuUrl()}${getVatuAPIVersion(api)}/${api}`;
+  const url = `${await getVatuUrl()}${await getVatuAPIVersion(api)}/${api}`;
   log.debug({ api, url }, `VATU api: ${api}, url=${url}`);
 
   const start = Date.now();
