@@ -87,7 +87,7 @@ async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
 
 async function addDepthFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
   const areas = (await fetchVATUByFairwayClass<AlueFeature>('vaylaalueet', event)).data as AlueFeatureCollection;
-  log.debug('areas: %d', areas.features);
+  log.debug('areas: %d', areas.features.length);
   for (const area of areas.features.filter((a) => filterArea(a, [1, 2, 3, 4, 5, 11]))) {
     features.featureArray.push(mapAreaFeature(area));
   }

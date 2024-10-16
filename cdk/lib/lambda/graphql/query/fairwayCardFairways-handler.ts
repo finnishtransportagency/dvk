@@ -26,46 +26,47 @@ import {
   RajoitusAlueFeatureCollection,
   TaululinjaFeature,
   TaululinjaFeatureCollection,
-  VaylaAPIModel,
+  VaylaFeature,
+  VaylaFeatureCollection,
   VaylaGeojsonFeature,
 } from '../../api/apiModels';
 import { fetchProhibitionAreas } from '../../api/traficom';
 
-export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
+export function mapAPIModelToFairway(apiModel: VaylaFeature): Fairway {
   const fairway: Fairway = {
-    id: apiModel.jnro,
+    id: apiModel.properties.jnro,
     name: {
-      fi: apiModel.nimiFI ?? '',
-      sv: apiModel.nimiSV ?? '',
+      fi: apiModel.properties.nimiFI ?? '',
+      sv: apiModel.properties.nimiSV ?? '',
     },
     sizing: {
-      additionalInformation: apiModel.lisatieto,
-      mareograph: apiModel.mareografi,
-      minimumTurningCircle: apiModel.minimiKaantosade,
-      minimumWidth: apiModel.minimiLeveys,
-      normalTurningCircle: apiModel.normaaliKaantosade,
-      normalWidth: apiModel.normaaliLeveys,
-      reserveWater: apiModel.varavesi,
+      additionalInformation: apiModel.properties.lisatieto,
+      mareograph: apiModel.properties.mareografi,
+      minimumTurningCircle: apiModel.properties.minimiKaantosade,
+      minimumWidth: apiModel.properties.minimiLeveys,
+      normalTurningCircle: apiModel.properties.normaaliKaantosade,
+      normalWidth: apiModel.properties.normaaliLeveys,
+      reserveWater: apiModel.properties.varavesi,
     },
-    typeCode: apiModel.vaylalajiKoodi,
+    typeCode: apiModel.properties.vaylalajiKoodi,
     type: {
-      fi: apiModel.vaylaLajiFI,
-      sv: apiModel.vaylaLajiSV,
+      fi: apiModel.properties.vaylaLajiFI,
+      sv: apiModel.properties.vaylaLajiSV,
     },
     area: {
-      fi: apiModel.merialueFI,
-      sv: apiModel.merialueSV,
+      fi: apiModel.properties.merialueFI,
+      sv: apiModel.properties.merialueSV,
     },
-    lightingCode: apiModel.valaistusKoodi,
+    lightingCode: apiModel.properties.valaistusKoodi,
     lighting: {
-      fi: apiModel.valaistusFI,
-      sv: apiModel.valaistusSV,
+      fi: apiModel.properties.valaistusFI,
+      sv: apiModel.properties.valaistusSV,
     },
-    owner: apiModel.omistaja,
-    startText: apiModel.alunSeloste,
-    endText: apiModel.paatepisteenSeloste,
+    owner: apiModel.properties.omistaja,
+    startText: apiModel.properties.alunSeloste,
+    endText: apiModel.properties.paatepisteenSeloste,
   };
-  fairway.sizingVessels = apiModel.mitoitusalus?.map((vesselModel) => {
+  fairway.sizingVessels = apiModel.properties.mitoitusalus?.map((vesselModel) => {
     return {
       typeCode: vesselModel.alustyyppiKoodi,
       type: vesselModel.alustyyppi,
@@ -76,7 +77,7 @@ export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
       size: vesselModel.koko,
     };
   });
-  fairway.classifications = apiModel.luokitus?.map((classificationModel) => {
+  fairway.classifications = apiModel.properties.luokitus?.map((classificationModel) => {
     return {
       type: classificationModel.luokitusTyyppi,
       fairwayClassCode: classificationModel.vaylaluokkaKoodi,
@@ -357,19 +358,19 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
       const prohibitionAreaMap = await getProhibitionAreaMap();
       const boardLineMap = await getBoardLineMap(fairwayIds);
       const circleMap = await getCircleMap(fairwayIds);
-      const fairways = (await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat')).data as VaylaAPIModel[];
-      const response = fairways.map((apiFairway) => {
-        const fairway = fairwayMap.get(apiFairway.jnro);
+      const fairways = (await fetchVATUByFairwayId<VaylaFeature>(fairwayIds, 'vaylat')).data as VaylaFeatureCollection;
+      const response = fairways.features.map((apiFairway) => {
+        const fairway = fairwayMap.get(apiFairway.properties.jnro);
         log.debug('Fairway: %o', apiFairway);
         return {
           ...mapAPIModelToFairway(apiFairway),
           ...fairway,
-          navigationLines: mapNavigationLines(lineMap?.get(apiFairway.jnro) ?? []),
-          areas: mapAreas(areaMap.get(apiFairway.jnro) ?? []),
-          restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) ?? []),
-          prohibitionAreas: prohibitionAreaMap.get(apiFairway.jnro) ?? [],
-          boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) ?? []),
-          turningCircles: mapTurningCircles(circleMap.get(apiFairway.jnro) ?? []),
+          navigationLines: mapNavigationLines(lineMap?.get(apiFairway.properties.jnro) ?? []),
+          areas: mapAreas(areaMap.get(apiFairway.properties.jnro) ?? []),
+          restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.properties.jnro) ?? []),
+          prohibitionAreas: prohibitionAreaMap.get(apiFairway.properties.jnro) ?? [],
+          boardLines: mapBoardLines(boardLineMap.get(apiFairway.properties.jnro) ?? []),
+          turningCircles: mapTurningCircles(circleMap.get(apiFairway.properties.jnro) ?? []),
         };
       });
       await cacheResponse(key, response);

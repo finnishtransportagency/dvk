@@ -11,7 +11,7 @@ import { fetchProhibitionAreas } from '../../api/traficom';
 function mapIdModels(models: APIFeature[]) {
   return models.map((model) => {
     return {
-      id: model.id as number,
+      id: model.properties.id as number,
     };
   });
 }
@@ -19,7 +19,7 @@ function mapIdModels(models: APIFeature[]) {
 function mapBoardLines(lines: APIFeature[]): Boardline[] {
   return lines.map((line) => {
     return {
-      id: line.taululinjaId as number,
+      id: line.properties.taululinjaId as number,
     };
   });
 }
@@ -27,17 +27,19 @@ function mapBoardLines(lines: APIFeature[]): Boardline[] {
 function mapTurningCircles(circles: APIFeature[]): TurningCircle[] {
   return circles.map((circle) => {
     return {
-      id: circle.kaantoympyraID as number,
+      id: circle.properties.kaantoympyraID as number,
     };
   });
 }
 
 interface APIFeature extends VaylaGeojsonFeature {
-  vayla: [{ jnro: number }];
-  kaantoympyraID?: number;
-  taululinjaId?: number;
-  id?: number;
-  tyyppiKoodi?: number;
+  properties: {
+    vayla: [{ jnro: number }];
+    kaantoympyraID?: number;
+    taululinjaId?: number;
+    id?: number;
+    tyyppiKoodi?: number;
+  };
 }
 
 interface APIFeatureCollection {
@@ -45,19 +47,20 @@ interface APIFeatureCollection {
 }
 
 async function getModelMap(fairwayIds: number[], api: string) {
+  let i: number | undefined = 0;
   let models = (await fetchVATUByFairwayId<VaylaFeature>(fairwayIds, api)).data as APIFeatureCollection;
   if (api === 'vaylaalueet') {
     // Filter specialarea15, fetched separately from Traficom)
-    models.features = models.features.filter((m) => m.tyyppiKoodi !== 15);
+    models.features = models.features.filter((m) => m.properties.tyyppiKoodi !== 15);
   }
   log.debug('models: %d', models.features.length);
   const modelMap = new Map<number, APIFeature[]>();
   for (const model of models.features) {
-    for (const fairway of model.vayla ?? []) {
+    for (const fairway of model.properties.vayla ?? []) {
       if (!modelMap.has(fairway.jnro)) {
         modelMap.set(fairway.jnro, []);
       }
-      modelMap.get(fairway.jnro)?.push(model);
+      i = modelMap.get(fairway.jnro)?.push(model);
     }
   }
   return modelMap;

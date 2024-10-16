@@ -1,9 +1,9 @@
-import { SafetyEquipmentFault } from '../../../../graphql/generated';
+import { GeometryPoint, SafetyEquipmentFault } from '../../../../graphql/generated';
 import { AppSyncResolverEvent } from 'aws-lambda';
 import { log } from '../../logger';
 import { cacheResponse, getFromCache } from '../cache';
 import { fetchVATUByApi } from '../../api/axios';
-import { TurvalaiteVikatiedotAPIModel } from '../../api/apiModels';
+import { TurvalaiteVikatiedotFeature, TurvalaiteVikatiedotFeatureCollection } from '../../api/apiModels';
 
 function getKey() {
   return 'safetyequipmentfault-graphql';
@@ -13,24 +13,24 @@ export const handler = async (event: AppSyncResolverEvent<void>): Promise<Safety
   log.info(`safetyEquipmentFaults(${event.identity})`);
   const key = getKey();
   try {
-    const faults = (await fetchVATUByApi<TurvalaiteVikatiedotAPIModel>('vikatiedot')).data as TurvalaiteVikatiedotAPIModel[];
-    log.debug('faults: %d', faults.length);
-    const response = faults.map((apiFault) => {
+    const faults = (await fetchVATUByApi<TurvalaiteVikatiedotFeature>('vikatiedot')).data as TurvalaiteVikatiedotFeatureCollection;
+    log.debug('faults: %d', faults.features.length);
+    const response = faults.features.map((apiFault) => {
       const fault: SafetyEquipmentFault = {
-        id: apiFault.vikaId,
+        id: apiFault.properties.vikaId,
         name: {
-          fi: apiFault.turvalaiteNimiFI,
-          sv: apiFault.turvalaiteNimiSV,
+          fi: apiFault.properties.turvalaiteNimiFI,
+          sv: apiFault.properties.turvalaiteNimiSV,
         },
-        equipmentId: apiFault.turvalaiteNumero,
-        typeCode: apiFault.vikatyyppiKoodi,
+        equipmentId: apiFault.properties.turvalaiteNumero,
+        typeCode: apiFault.properties.vikatyyppiKoodi,
         type: {
-          fi: apiFault.vikatyyppiFI,
-          sv: apiFault.vikatyyppiSV,
-          en: apiFault.vikatyyppiEN,
+          fi: apiFault.properties.vikatyyppiFI,
+          sv: apiFault.properties.vikatyyppiSV,
+          en: apiFault.properties.vikatyyppiEN,
         },
-        recordTime: Date.parse(apiFault.kirjausAika),
-        geometry: apiFault.geometria,
+        recordTime: Date.parse(apiFault.properties.kirjausAika),
+        geometry: apiFault.geometry as GeometryPoint,
       };
       return fault;
     });

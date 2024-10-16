@@ -2,10 +2,6 @@ import { Geometry } from 'geojson';
 import { GeometryPoint, Text } from '../../../graphql/generated';
 import { FairwayCardIdName } from '../db/fairwayCardDBModel';
 
-export type GeometryModel = {
-  geometria: object;
-};
-
 export type VaylaGeojsonFeature = { type?: string; geometry: Geometry };
 
 /* VATU */
@@ -129,8 +125,6 @@ type NavigointiLinjaProperties = {
   vayla: NavigointiLinjaVaylaAPIModel[];
 };
 
-export type NavigointiLinjaAPIModel = NavigointiLinjaProperties & GeometryModel;
-
 export type NavigointiLinjaFeature = {
   properties: NavigointiLinjaProperties;
 } & VaylaGeojsonFeature;
@@ -170,8 +164,6 @@ type RajoitusAlueProperties = {
   vayla?: RajoitusVaylaAPIModel[];
 };
 
-export type RajoitusAlueAPIModel = RajoitusAlueProperties & GeometryModel;
-
 export type RajoitusAlueFeature = { properties: RajoitusAlueProperties } & VaylaGeojsonFeature;
 
 export type RajoitusAlueFeatureCollection = {
@@ -195,8 +187,6 @@ export type TurvalaiteVikatiedotProperties = {
   vikatyyppiEN?: string;
   kirjausAika: string;
 };
-export type TurvalaiteVikatiedotAPIModel = TurvalaiteVikatiedotProperties & GeometryModel;
-
 export type TurvalaiteVikatiedotFeature = { properties: TurvalaiteVikatiedotProperties } & VaylaGeojsonFeature;
 export type TurvalaiteVikatiedotFeatureCollection = {
   type?: string;
@@ -231,7 +221,6 @@ type TurvalaiteProperties = {
   reunaetaisyys?: TurvalaiteReunaetaisyysAPIModel[];
 };
 
-export type TurvalaiteAPIModel = TurvalaiteProperties & GeometryModel;
 export type TurvalaiteFeature = { properties: TurvalaiteProperties } & VaylaGeojsonFeature;
 
 export type TurvalaiteFeatureCollection = {
@@ -254,8 +243,6 @@ export type TaululinjaProperties = {
   vayla: TaululinjaVaylaAPIModel[];
 };
 
-export type TaululinjaAPIModel = TaululinjaProperties & GeometryModel;
-
 export type TaululinjaFeature = { properties: TaululinjaProperties } & VaylaGeojsonFeature;
 export type TaululinjaFeatureCollection = {
   type?: string;
@@ -277,8 +264,6 @@ export type KaantoympyraProperties = {
   lisatieto?: string;
   vayla?: KaantoympyraVaylaAPIModel[];
 };
-
-export type KaantoympyraAPIModel = KaantoympyraProperties & GeometryModel;
 
 export type KaantoympyraFeature = { properties: KaantoympyraProperties } & VaylaGeojsonFeature;
 

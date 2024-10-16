@@ -41,7 +41,7 @@ export function convertToGeoJson(source: any): any {
   const features: any[] = [];
   for (let obj of source) {
     if ('geometria' in obj) {
-      let { geometria, ...rem } = obj;
+      const { geometria, ...rem } = obj;
       features.push({ type: 'Feature', properties: rem, geometry: geometria });
     } else {
       features.push({ type: 'Feature', properties: obj });
