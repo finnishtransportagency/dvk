@@ -133,8 +133,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         // Ignore unsaved changes if draft harbour is removed
         setState({ ...oldState, status: Status.Removed });
         saveHarbourMutation({ harbor: mapQuays({ ...oldState, status: Status.Removed, operation }) as HarborInput });
-      } else if (operation === Operation.Create || operation === Operation.Update) {
+      } else if (operation === Operation.Update) {
         saveHarbourMutation({ harbor: mapQuays(state) as HarborInput });
+      } else if (operation === Operation.Create) {
+        saveHarbourMutation({ harbor: mapQuays({ ...state, version: 'v1' }) as HarborInput });
       } else if (operation === Operation.Createversion) {
         setIsSubmittingVersion(true);
         const newVersion = mapNewHarbourVersion(state);
