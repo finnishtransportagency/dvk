@@ -3,7 +3,7 @@ import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import MainContent from '../components/content/MainContent';
 import { useDocumentTitle } from '../hooks/dvkDocumentTitle';
-import { isMobile } from '../utils/common';
+import { isMobile, updateLayerSelection } from '../utils/common';
 import MainContentWithModal from '../components/content/MainContentWithModal';
 import { marineWarningLayers } from '../utils/constants';
 import { useDvkContext } from '../hooks/dvkContext';
@@ -20,19 +20,16 @@ const MarineWarningPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const [initialLayers] = useState<string[]>(state.layers);
 
   useEffect(() => {
-    const hiddenMarineWarningLayers = marineWarningLayers.filter((l) => !initialLayers.includes(l));
-    if (hiddenMarineWarningLayers.length > 0) {
-      dispatch({ type: 'setLayers', payload: { value: [...initialLayers, ...hiddenMarineWarningLayers] } });
-    }
-  }, [initialLayers, dispatch]);
-
-  useEffect(() => {
     setDocumentTitle(title);
   }, [setDocumentTitle, title]);
 
   useEffect(() => {
     setModalContent('marineWarningList');
   }, [setModalContent]);
+
+  useEffect(() => {
+    updateLayerSelection(initialLayers, marineWarningLayers, dispatch);
+  }, [dispatch, initialLayers]);
 
   return (
     <IonPage id="mainContent">

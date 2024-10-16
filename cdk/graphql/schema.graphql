@@ -20,13 +20,14 @@ type Query {
 }
 
 type Mutation {
-  saveFairwayCard(card: FairwayCardInput!): FairwayCard
+  saveFairwayCard(card: FairwayCardInput!, pictureSourceId: String, pictureSourceVersion: String): FairwayCard
   saveHarbor(harbor: HarborInput!): Harbor
   uploadPicture(picture: PictureUploadInput!): Boolean
 }
 
 input PictureUploadInput {
   cardId: String!
+  cardVersion: String!
   id: String!
   base64Data: String!
   contentType: String!
@@ -35,6 +36,10 @@ input PictureUploadInput {
 enum Operation {
   CREATE
   UPDATE
+  CREATEVERSION
+  PUBLISH
+  ARCHIVE
+  REMOVE
 }
 
 enum OperationError {
@@ -160,6 +165,7 @@ enum Status {
   DRAFT
   PUBLIC
   REMOVED
+  ARCHIVED
 }
 
 input GeometryInput {
@@ -227,6 +233,7 @@ type CurrentUser {
 type FairwayCard {
   id: String!
   version: String!
+  currentPublic: Int
   name: Text!
   n2000HeightSystem: Boolean!
   group: String
@@ -255,6 +262,7 @@ type FairwayCard {
   pictures: [Picture!]
   pilotRoutes: [PilotRoute!]
   temporaryNotifications: [TemporaryNotification!]
+  latest: Float
 }
 
 type Picture {
@@ -332,6 +340,7 @@ type Harbor {
   harborBasin: Text
   cargo: Text
   geometry: GeometryPoint
+  latest: Float
 }
 
 type Quay {

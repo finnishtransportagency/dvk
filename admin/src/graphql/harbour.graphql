@@ -62,6 +62,7 @@ fragment HarborById on Harbor {
       coordinates
     }
   }
+  latest
 }
 
 query harbourById($id: String!, $version: String!) {

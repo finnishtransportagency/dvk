@@ -27,6 +27,8 @@ class HarborDBModel {
 
   status?: Maybe<Status>;
 
+  currentPublic?: Maybe<number>;
+
   n2000HeightSystem?: Maybe<boolean>;
 
   modifier?: Maybe<string>;
@@ -61,6 +63,8 @@ class HarborDBModel {
 
   expires?: Maybe<number>;
 
+  latest?: Maybe<number>;
+
   private static getLatestSortKey() {
     return 'v0_latest';
   }
@@ -72,7 +76,7 @@ class HarborDBModel {
   static async getVersion(id: string, version: string = 'v1'): Promise<HarborDBModel | undefined> {
     const response = await getDynamoDBDocumentClient().send(new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: version } }));
     const harbor = response?.Item as HarborDBModel | undefined;
-    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    log.debug('Harbor name: %s', harbor?.name?.fi);
     return harbor;
   }
 
@@ -82,7 +86,7 @@ class HarborDBModel {
       new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: this.getLatestSortKey() } })
     );
     const harbor = response?.Item as HarborDBModel | undefined;
-    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    log.debug('Harbor name: %s', harbor?.name?.fi);
     return harbor;
   }
 
@@ -92,7 +96,7 @@ class HarborDBModel {
       new GetCommand({ TableName: getHarborTableName(), Key: { id: id, version: this.getPublicSortKey() } })
     );
     const harbor = response?.Item as HarborDBModel | undefined;
-    log.debug('Harbor card name: %s', harbor?.name?.fi);
+    log.debug('Harbor name: %s', harbor?.name?.fi);
     return harbor;
   }
 
@@ -172,8 +176,16 @@ class HarborDBModel {
     return [];
   }
 
-  static async save(data: HarborDBModel, operation: Operation) {
-    const putCommands = getPutCommands(data, getHarborTableName(), operation);
+  static async save(data: HarborDBModel, operation: Operation, currentPublicHarbor?: HarborDBModel | null) {
+    const latestVersionNumber = await HarborDBModel.getLatest(data.id).then((harbor) => harbor?.latest);
+    //get only number out of the string
+    let versionNumber = Number(data.version.slice(1));
+
+    if (operation === Operation.Createversion) {
+      versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
+    }
+
+    const putCommands = getPutCommands(data, getHarborTableName(), operation, versionNumber, latestVersionNumber, currentPublicHarbor);
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }

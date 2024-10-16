@@ -21,7 +21,7 @@ export default defineConfig({
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
-  reporter: [['junit', { outputFile: 'xml-report/results.xml' }]],
+  reporter: [process.env.CI ? ['junit', { outputDir: 'xml-report' }] : ['html']],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     /* Base URL to use in actions like `await page.goto('/')`. */
@@ -31,7 +31,7 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
 
-  timeout: 60000,
+  timeout: 30000,
 
   /* Configure projects for major browsers */
   projects: [
@@ -44,10 +44,10 @@ export default defineConfig({
     //   use: { ...devices['Desktop Firefox'] },
     // },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {

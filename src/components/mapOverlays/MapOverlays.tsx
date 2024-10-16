@@ -8,7 +8,7 @@ import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useTranslation } from 'react-i18next';
 import { filterFairways, updateIceLayerOpacity } from '../../utils/common';
 import { Lang } from '../../utils/constants';
-import { SourceModal } from './CommonModal';
+import { CommonModal, SourceModal } from './CommonModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 import LinePopupContent, { LineProperties } from '../popup/LinePopupContent';
 import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPopupContent';
@@ -32,6 +32,7 @@ import PilotageLimitPopupContent, { PilotageLimitProperties } from '../popup/Pil
 import DirwayPopupContent, { DirwayProperties } from '../popup/DirwayPopupContent';
 import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup/RestrictionPortPopupContent';
 import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup/ProhibitionAreaPopupContent';
+import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -64,7 +65,7 @@ type MapOverlaysProps = {
 };
 
 const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen }) => {
-  const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { state, dispatch } = useDvkContext();
   const [isOpen, setIsOpen] = useState(window.location.hash === '#layerModal');
@@ -77,6 +78,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const [showMarineWarningNotification, setShowMarineWarningNotification] = useState(false);
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
   const [popupProperties, setPopupProperties] = useState<PopupProperties>();
+  const [infoModalOpen, setInfoModalOpen] = useState(false);
 
   const openMapLayersModal = () => {
     setIsOpen(true);
@@ -190,7 +192,25 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         bgMapType={backgroundMapType}
         setBgMapType={setBgMapType}
         setMarineWarningNotificationLayer={setShowMarineWarningNotification}
+        infoModalOpen={infoModalOpen}
+        setInfoModalOpen={setInfoModalOpen}
       />
+      <CommonModal
+        isOpen={infoModalOpen}
+        setIsOpen={setInfoModalOpen}
+        title={t('homePage.map.controls.layer.saveSelection')}
+        showBackdrop
+        size="large"
+        htmlId="layerInfoModal"
+      >
+        <IonGrid>
+          <IonRow>
+            <IonCol>
+              <IonText>{t('homePage.map.controls.layer.modal.description')}</IonText>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </CommonModal>
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
       <div className="no-print">

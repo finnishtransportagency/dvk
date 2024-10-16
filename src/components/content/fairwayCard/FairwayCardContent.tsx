@@ -320,7 +320,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           </div>
 
           <div className={getTabClassName(4)}>
-            {import.meta.env.VITE_APP_ENV !== 'prod' && pilotRoutesReady && (
+            {pilotRoutesReady && (
               <>
                 {pilotRoutes.length > 0 ? (
                   <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
@@ -338,6 +338,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <div className="pagebreak" />
               <PrintMap
                 id={fairwayCard?.id}
+                version={fairwayCard?.currentPublic ? `v${fairwayCard?.currentPublic}` : fairwayCard?.version}
                 pictures={fairwayCard?.pictures
                   ?.filter((p) => p.sequenceNumber !== null && p.sequenceNumber !== undefined)
                   .sort((a, b) => (a.sequenceNumber as number) - (b.sequenceNumber as number))}

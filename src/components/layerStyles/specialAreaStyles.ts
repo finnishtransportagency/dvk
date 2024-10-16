@@ -35,6 +35,7 @@ export function getSpecialAreaPolygonStyle(feature: FeatureLike) {
     fill: new Fill({
       color: gradient,
     }),
+    zIndex: 2,
   });
 }
 

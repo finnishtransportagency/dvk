@@ -39,6 +39,14 @@ export const accessibilityUrl = {
   en: 'https://vayla.fi/en/about/contact-information/accessibility/digital-fairway-card',
 };
 
+export const OFFLINE_STORAGE = {
+  gcTime: 30 * 1000, // 30 seconds to clean from memory
+  staleTime: 2 * 60 * 60 * 1000, // 2 hours before data is stale
+  cacheTime: 24 * 24 * 60 * 60 * 1000, // 24 days between local cache (IndexedDB) carbage collection
+  staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
+  cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
+};
+
 export type BackgroundLayerId =
   | 'finland'
   | 'mml_meri'
@@ -104,185 +112,339 @@ export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit-20240719.json.gz') },
 ];
 
-export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl: URL; persist: boolean; staleTime?: number };
+export type FeatureDataProjection = 'EPSG:3067' | 'EPSG:4326' | 'EPSG:3395' | 'EPSG:4258';
+
+export type FeatureDataSource = {
+  id: FeatureDataId;
+  projection: FeatureDataProjection;
+  url: URL;
+  staticUrl: URL;
+  persist: boolean;
+  staleTime: number;
+  gcTime: number;
+  refetchInterval: number | false;
+  refetchOnMount: boolean | 'always';
+};
 
 export const FeatureDataSources: Array<FeatureDataSource> = [
   {
     id: 'area12',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/area12.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'area3456',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6'),
     staticUrl: new URL(staticUrl + '/area3456.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
+    refetchOnMount: true,
   },
   {
     id: 'line12',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/line12.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'line3456',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6'),
     staticUrl: new URL(staticUrl + '/line3456.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
+    refetchOnMount: true,
   },
   {
     id: 'restrictionarea',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/restrictionarea.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'specialarea2',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea2.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'specialarea15',
+    projection: 'EPSG:3067',
     url: new URL(featureLoaderUrl + '?type=specialarea15&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea15.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'harbor',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=harbor'),
     staticUrl: new URL(staticUrl + '/harbor.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'safetyequipment',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99'),
     staticUrl: new URL(staticUrl + '/safetyequipment.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'depth12',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/depth12.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'safetyequipmentfault',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=safetyequipmentfault'),
     staticUrl: new URL(staticUrl + '/safetyequipmentfault.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 1000 * 60 * 15, // 15 minutes
+    refetchOnMount: true,
   },
   {
     id: 'marinewarning',
+    projection: 'EPSG:3395',
     url: new URL(featureLoaderUrl + '?type=marinewarning'),
     staticUrl: new URL(staticUrl + '/marinewarning.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 1000 * 60 * 15, // 15 minutes
+    refetchOnMount: 'always',
   },
   {
     id: 'boardline12',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/boardline12.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'mareograph',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=mareograph'),
     staticUrl: new URL(staticUrl + '/mareograph.json.gz'),
     persist: false,
-    staleTime: 60 * 1000,
+    staleTime: 60 * 1000, // 1 minute
+    gcTime: 60 * 1000, // 1 minute
+    refetchInterval: 1000 * 60 * 5, // 5 minutes
+    refetchOnMount: 'always',
   },
   {
     id: 'observation',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=observation'),
     staticUrl: new URL(staticUrl + '/observation.json.gz'),
     persist: true,
-    staleTime: 60 * 1000,
+    staleTime: 60 * 1000, // 1 minute
+    gcTime: 60 * 1000, // 1 minute
+    refetchInterval: 1000 * 60 * 5, // 5 minutes
+    refetchOnMount: 'always',
   },
   {
     id: 'buoy',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=buoy'),
     staticUrl: new URL(staticUrl + '/buoy.json.gz'),
     persist: false,
-    staleTime: 60 * 1000,
+    staleTime: 60 * 1000, // 1 minute
+    gcTime: 60 * 1000, // 1 minute
+    refetchInterval: 5 * 60 * 1000, // 5 minutes
+    refetchOnMount: 'always',
   },
   {
     id: 'vtsline',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=vtsline'),
     staticUrl: new URL(staticUrl + '/vtsline.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'vtspoint',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=vtspoint'),
     staticUrl: new URL(staticUrl + '/vtspoint.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'circle',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=circle'),
     staticUrl: new URL(staticUrl + '/circle.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'aislocation',
+    projection: 'EPSG:4326',
     url: new URL(aisLocationsUrl),
     staticUrl: new URL(staticUrl + '/aislocations.json.gz'),
     persist: false,
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    gcTime: 5 * 60 * 1000, // 5 minutes
+    refetchInterval: 10 * 1000, // 10 seconds
+    refetchOnMount: true,
   },
   {
     id: 'aisvessel',
+    projection: 'EPSG:4326',
     url: new URL(aisVesselsUrl),
     staticUrl: new URL(staticUrl + '/aisvessels.json.gz'),
     persist: false,
+    staleTime: 2 * 60 * 60 * 1000, // 2 hours
+    gcTime: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: 10 * 60 * 1000, // 10 minutes
+    refetchOnMount: true,
   },
   {
     id: 'vayla_water_area',
+    projection: 'EPSG:3067',
     url: new URL(staticUrl + '/vayla-merialueet.json.gz'),
     staticUrl: new URL(staticUrl + '/vayla-merialueet.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
+    refetchOnMount: true,
   },
   {
     id: 'pilot',
+    projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=pilot'),
     staticUrl: new URL(staticUrl + '/pilot.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'pilotroute',
+    projection: 'EPSG:4326',
     url: new URL(pilotRoutesUrl),
     staticUrl: new URL(staticUrl + '/pilotroutes.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 60 * 60 * 1000, // 1 hour
+    refetchOnMount: true,
   },
   {
     id: 'pilotageareaborder',
+    projection: 'EPSG:3067',
     url: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
     staticUrl: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'pilotagelimit',
+    projection: 'EPSG:3067',
     url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
     staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'dirway',
+    projection: 'EPSG:4326',
     url: new URL(dirwaysUrl),
     staticUrl: new URL(staticUrl + '/dirways.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'restrictionport',
+    projection: 'EPSG:4326',
     url: new URL(restrictionPortUrl),
     staticUrl: new URL(staticUrl + '/restrictions.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
   },
   {
     id: 'name',
+    projection: 'EPSG:3067',
     url: new URL(staticUrl + '/names.json.gz'),
     staticUrl: new URL(staticUrl + '/names.json.gz'),
     persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
+    refetchOnMount: true,
   },
 ];
 
@@ -428,13 +590,6 @@ export const MASTERSGUIDE_URLS = {
 
 export const PILOTORDER_URL = 'www.pilotonline.fi';
 
-export const OFFLINE_STORAGE = {
-  staleTime: 2 * 60 * 60 * 1000, // 2 hours between server queries
-  cacheTime: 24 * 24 * 60 * 60 * 1000, // 24 days between local cache carbage collection
-  staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
-  cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
-};
-
 export const marineWarningLayers: FeatureDataLayerId[] = ['coastalwarning', 'localwarning', 'boaterwarning'];
 
 export type MarineWarningArea =
@@ -535,3 +690,7 @@ export const equipmentAreasStructure: SafetyEquipmentFaultFilter[] = [
 ];
 
 export const hourInMilliseconds = 3600000;
+
+export const LAYER_IDB_KEY = 'layer-selection';
+
+export const PUBLIC_VERSION = 'v0_public';

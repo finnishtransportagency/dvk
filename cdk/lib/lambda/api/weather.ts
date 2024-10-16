@@ -86,11 +86,14 @@ function parseGeometry(latlonString: string): Geometry {
 }
 
 export async function fetchMareoGraphs(): Promise<Mareograph[]> {
-  return (
-    await fetchWeatherApi<WeatherMareograph>(
+  const [weatherResponse, ilmanetResponse] = await Promise.all([
+    fetchWeatherApi<WeatherMareograph>(
       'timeseries?param=fmisid,geoid,latlon,station_name,localtime,WLEV_PT1S_INSTANT,WLEVN2K_PT1S_INSTANT&precision=double&endtime=now&producer=observations_fmi&timeformat=sql&format=json&keyword=mareografit'
-    )
-  )
+    ),
+    fetchIlmanetApi(),
+  ]);
+
+  return weatherResponse
     .map((measure) => {
       return {
         id: measure.fmisid,
@@ -102,7 +105,7 @@ export async function fetchMareoGraphs(): Promise<Mareograph[]> {
         calculated: false,
       };
     })
-    .concat(parseXml(await fetchIlmanetApi()));
+    .concat(parseXml(ilmanetResponse));
 }
 
 export async function fetchWeatherObservations(): Promise<Observation[]> {

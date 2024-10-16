@@ -13,6 +13,7 @@ import VectorSource from 'ol/source/Vector';
 import { AisFeatureProperties } from './features';
 import { Coordinate } from 'ol/coordinate';
 import { fromCircle } from 'ol/geom/Polygon';
+import { getFeatureDataSourceProjection } from '../utils/common';
 
 type VesselData = {
   name: string;
@@ -81,8 +82,8 @@ function useAisFeatures() {
   const [ready, setReady] = useState(false);
   const [enabled, setEnabled] = useState(aisLayers.some((layer) => state.layers.includes(layer.id)));
   const [aisFeatures, setAisFeatures] = useState<Feature<Geometry>[]>([]);
-  const vesselQuery = useFeatureData('aisvessel', true, 10 * 60 * 1000, enabled, 2 * 60 * 60 * 1000, 2 * 60 * 60 * 1000);
-  const locationQuery = useFeatureData('aislocation', true, 10 * 1000, enabled, 5 * 60 * 1000, 5 * 60 * 1000);
+  const vesselQuery = useFeatureData('aisvessel', enabled);
+  const locationQuery = useFeatureData('aislocation', enabled);
   const dataUpdatedAt = Math.max(vesselQuery.dataUpdatedAt, locationQuery.dataUpdatedAt);
   const errorUpdatedAt = Math.max(vesselQuery.errorUpdatedAt, locationQuery.errorUpdatedAt);
   const isPaused = vesselQuery.isPaused || locationQuery.isPaused;
@@ -97,7 +98,10 @@ function useAisFeatures() {
     const locationData = locationQuery.data;
     if (vesselData && locationData) {
       const format = new GeoJSON();
-      const locationFeatures = format.readFeatures(locationData, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG });
+      const locationFeatures = format.readFeatures(locationData, {
+        dataProjection: getFeatureDataSourceProjection('aislocation'),
+        featureProjection: MAP.EPSG,
+      });
       addVesselData(locationFeatures, vesselData);
       setAisFeatures(locationFeatures);
       setReady(true);

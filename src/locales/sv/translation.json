@@ -32,6 +32,8 @@
         "layer": {
           "tipLabel": "Välj lager",
           "header": "Kartlager",
+          "saveSelection": "Kom ihåg mina val",
+          "selectAll": "Välj alla nivåer",
           "class1": "Handelssjöfart",
           "class2": "Annan vattentrafik",
           "lines": "Navigationslinjer",
@@ -104,6 +106,10 @@
             "depth4": "Djup 0 - 3m",
             "depth5": "Djup 3 - 6m",
             "depth6": "Djup över 10m"
+          },
+          "modal": {
+            "info": "Ytterligare information",
+            "description": "Funktionen Kom ihåg mina val sparar de nivåer du har valt i din webbläsare. Om funktionen är aktiverad kommer de nivåer du valde senast att visas automatiskt när du besöker webbplatsen. Om du inte längre vill att dina val ska sparas, inaktivera funktionen Kom ihåg mina val och uppdatera webbplatsen."
           }
         },
         "mapDetails": {
@@ -273,6 +279,7 @@
     "fairwayNumbers": "Farleds nummer"
   },
   "routes": {
+    "info": "De presenterade lotsningsrutterna är inte som sådana lämpade som enligt lotslagen (561/2023) hänvisade individuella lotsningsplaner för ett enskilt fartyg. Lotsningsrutterna har utarbetats som vägledande allmänna presentationer och felfriheten i enskilda lotsleder kan inte garanteras. Användning av lotsningsrutt, som presenteras i det digitala farledskortet, för navigering av ett fartyg är alltid på befälhavarens ansvar.",
     "title": "Lotsningsrutter",
     "route": "Rutt",
     "rtz": "Ruttfil i RTZ-format",

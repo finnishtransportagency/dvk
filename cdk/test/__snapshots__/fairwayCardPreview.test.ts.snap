@@ -7,6 +7,7 @@ exports[`should get draft card from the DynamoDB 1`] = `
   "attention": undefined,
   "creationTimestamp": Any<Number>,
   "creator": "test2",
+  "currentPublic": undefined,
   "designSpeed": undefined,
   "fairwayIds": "#1#",
   "fairways": [
@@ -23,6 +24,7 @@ exports[`should get draft card from the DynamoDB 1`] = `
   "harbors": undefined,
   "iceCondition": undefined,
   "id": "draft",
+  "latest": undefined,
   "lineText": undefined,
   "mareographs": undefined,
   "modificationTimestamp": Any<Number>,
@@ -87,6 +89,7 @@ exports[`should get public card from the DynamoDB 1`] = `
   "attention": undefined,
   "creationTimestamp": Any<Number>,
   "creator": "test",
+  "currentPublic": undefined,
   "designSpeed": undefined,
   "fairwayIds": "#1#",
   "fairways": [
@@ -103,6 +106,7 @@ exports[`should get public card from the DynamoDB 1`] = `
   "harbors": undefined,
   "iceCondition": undefined,
   "id": "public",
+  "latest": undefined,
   "lineText": undefined,
   "mareographs": undefined,
   "modificationTimestamp": Any<Number>,

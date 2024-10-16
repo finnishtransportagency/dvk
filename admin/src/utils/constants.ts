@@ -9,7 +9,7 @@ export type Lang = 'fi' | 'sv' | 'en';
 
 export type ItemType = '' | 'CARD' | 'HARBOR';
 
-export type ConfirmationType = '' | 'cancel' | 'save' | 'remove' | 'preview';
+export type ConfirmationType = '' | 'archive' | 'cancel' | 'preview' | 'publish' | 'remove' | 'version';
 
 export type ValidationType = {
   id: string;
@@ -21,12 +21,14 @@ export type ErrorMessageType = {
   invalid: string;
   duplicateId: string;
   endDateError: string;
+  duplicateLocation: string;
 };
 export const ErrorMessageKeys: ErrorMessageType = {
   required: 'general.required-field',
   invalid: 'general.check-input',
   duplicateId: 'fairwaycard.error-duplicate-id',
   endDateError: 'general.end-date-error',
+  duplicateLocation: 'harbour.error-duplicate-location',
 };
 
 export type ValueType = boolean | number | string | number[] | string[] | PilotPlaceInput[] | PictureInput[];
@@ -167,51 +169,93 @@ export type FeatureDataId =
   | 'pilotageareaborder'
   | 'pilotagelimit';
 
-export type FeatureDataSource = { id: FeatureDataId; url: URL; staticUrl?: URL };
+export type FeatureDataProjection = 'EPSG:3067' | 'EPSG:4326' | 'EPSG:3395' | 'EPSG:4258';
+
+export type FeatureDataSource = { id: FeatureDataId; projection: FeatureDataProjection; url: URL; staticUrl?: URL };
 
 export const FeatureDataSources: Array<FeatureDataSource> = [
-  { id: 'area12', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/area12.json.gz') },
-  { id: 'area3456', url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6'), staticUrl: new URL(staticUrl + '/area3456.json.gz') },
-  { id: 'line12', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/line12.json.gz') },
-  { id: 'line3456', url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6'), staticUrl: new URL(staticUrl + '/line3456.json.gz') },
+  {
+    id: 'area12',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=1,2'),
+    staticUrl: new URL(staticUrl + '/area12.json.gz'),
+  },
+  {
+    id: 'area3456',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=area&vaylaluokka=3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/area3456.json.gz'),
+  },
+  {
+    id: 'line12',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=1,2'),
+    staticUrl: new URL(staticUrl + '/line12.json.gz'),
+  },
+  {
+    id: 'line3456',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=line&vaylaluokka=3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/line3456.json.gz'),
+  },
   {
     id: 'restrictionarea',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=restrictionarea&vaylaluokka=1,2'),
     staticUrl: new URL(staticUrl + '/restrictionarea.json.gz'),
   },
   {
     id: 'specialarea2',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea2.json.gz'),
   },
   {
     id: 'specialarea15',
+    projection: 'EPSG:3067',
     url: new URL(featureLoaderUrl + '?type=specialarea15&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea15.json.gz'),
   },
-  { id: 'pilot', url: new URL(featureLoaderUrl + '?type=pilot'), staticUrl: new URL(staticUrl + '/pilot.json.gz') },
-  { id: 'harbor', url: new URL(featureLoaderUrl + '?type=harbor'), staticUrl: new URL(staticUrl + '/harbor.json.gz') },
+  { id: 'pilot', projection: 'EPSG:4258', url: new URL(featureLoaderUrl + '?type=pilot'), staticUrl: new URL(staticUrl + '/pilot.json.gz') },
+  { id: 'harbor', projection: 'EPSG:4326', url: new URL(featureLoaderUrl + '?type=harbor'), staticUrl: new URL(staticUrl + '/harbor.json.gz') },
   {
     id: 'safetyequipment',
+    projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=safetyequipment&vaylaluokka=1,2,99'),
     staticUrl: new URL(staticUrl + '/safetyequipment.json.gz'),
   },
-  { id: 'depth12', url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/depth12.json.gz') },
-  { id: 'name', url: new URL(staticUrl + '/names.json.gz') },
-  { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
-  { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20240719.json.gz') },
-  { id: 'boardline12', url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'), staticUrl: new URL(staticUrl + '/boardline12.json.gz') },
-  { id: 'vtsline', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
-  { id: 'vtspoint', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
-  { id: 'circle', url: new URL(featureLoaderUrl + '?type=circle'), staticUrl: new URL(staticUrl + '/circle.json.gz') },
-  { id: 'pilotroute', url: new URL(pilotRoutesUrl), staticUrl: new URL(staticUrl + '//pilotroutes.json.gz') },
+  {
+    id: 'depth12',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=depth&vaylaluokka=1,2'),
+    staticUrl: new URL(staticUrl + '/depth12.json.gz'),
+  },
+  { id: 'name', projection: 'EPSG:3067', url: new URL(staticUrl + '/names.json.gz') },
+  { id: 'balticsea', projection: 'EPSG:3067', url: new URL(staticUrl + '/balticsea.json.gz') },
+  { id: 'finland', projection: 'EPSG:3067', url: new URL(staticUrl + '/finland.json.gz') },
+  { id: 'mml_satamat', projection: 'EPSG:3067', url: new URL(staticUrl + '/mml-satamat-20240719.json.gz') },
+  {
+    id: 'boardline12',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=boardline&vaylaluokka=1,2'),
+    staticUrl: new URL(staticUrl + '/boardline12.json.gz'),
+  },
+  { id: 'vtsline', projection: 'EPSG:4258', url: new URL(featureLoaderUrl + '?type=vtsline'), staticUrl: new URL(staticUrl + '/vtsline.json.gz') },
+  { id: 'vtspoint', projection: 'EPSG:4258', url: new URL(featureLoaderUrl + '?type=vtspoint'), staticUrl: new URL(staticUrl + '/vtspoint.json.gz') },
+  { id: 'circle', projection: 'EPSG:4326', url: new URL(featureLoaderUrl + '?type=circle'), staticUrl: new URL(staticUrl + '/circle.json.gz') },
+  { id: 'pilotroute', projection: 'EPSG:4326', url: new URL(pilotRoutesUrl), staticUrl: new URL(staticUrl + '//pilotroutes.json.gz') },
   {
     id: 'pilotageareaborder',
+    projection: 'EPSG:3067',
     url: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
     staticUrl: new URL(staticUrl + '/luotsinkayttoalueenreuna.json.gz'),
   },
-  { id: 'pilotagelimit', url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'), staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz') },
+  {
+    id: 'pilotagelimit',
+    projection: 'EPSG:3067',
+    url: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
+    staticUrl: new URL(staticUrl + '/luotsinkayttolinjat.json.gz'),
+  },
 ];
 
 export type FeatureDataMainLayerId = 'merchant' | 'othertraffic' | 'vts' | 'piloting' | 'specialarea';
@@ -290,15 +334,6 @@ export const MAP: MapType = {
     { id: 'circle' },
   ],
   PRINT: { SCALE: 1.7, EXPORT_WIDTH: 794, EXPORT_HEIGHT: 1123, VIEW_WIDTH: 794 / 1.7 + 53, VIEW_HEIGHT: 1123 / 1.7 + 59.5 }, // A4 @ 96 DPI: 794 x 1123
-};
-
-export const OFFLINE_STORAGE = {
-  name: 'DVK-admin',
-  storeName: 'react-query-data',
-  staleTime: 2 * 60 * 60 * 1000, // 2 hours between server queries
-  cacheTime: 24 * 24 * 60 * 60 * 1000, // 24 days between local cache carbage collection
-  staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
-  cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
 };
 
 export const POSITION = {

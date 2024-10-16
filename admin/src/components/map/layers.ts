@@ -150,7 +150,6 @@ function addFeatureVectorLayer({
       updateWhileInteracting: false,
       updateWhileAnimating: false,
       opacity,
-      renderOrder: undefined,
       zIndex,
     })
   );
@@ -328,7 +327,7 @@ export function addAPILayers(map: Map) {
     id: 'safetyequipment',
     renderBuffer: 50,
     style: (feature, resolution) => getSafetyEquipmentStyle(feature, resolution, false),
-    zIndex: 306,
+    zIndex: 380,
   });
 
   // VTS linjat ja ilmoituspisteet

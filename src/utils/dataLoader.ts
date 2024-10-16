@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { FeatureDataId, FeatureDataSources, OFFLINE_STORAGE } from './constants';
+import { FeatureDataId, FeatureDataSources } from './constants';
 import {
   Status,
   useFairwayCardPreviewQuery,
@@ -11,14 +11,7 @@ import {
 } from '../graphql/generated';
 import { useEffect } from 'react';
 
-export function useFeatureData(
-  featureDataId: FeatureDataId,
-  refetchOnMount: 'always' | boolean = true,
-  refetchInterval: number | false = false,
-  enabled: boolean = true,
-  staleTime: number = OFFLINE_STORAGE.staleTime,
-  gcTime: number = OFFLINE_STORAGE.cacheTime
-) {
+export function useFeatureData(featureDataId: FeatureDataId, enabled: boolean = true) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   let urlStr: string;
   if (import.meta.env.VITE_APP_USE_STATIC_FEATURES === 'true') {
@@ -29,10 +22,10 @@ export function useFeatureData(
   const response = useQuery({
     queryKey: [fds?.id],
     meta: { persist: fds?.persist },
-    refetchOnMount,
-    refetchInterval,
-    staleTime: fds?.staleTime ?? staleTime,
-    gcTime,
+    refetchOnMount: fds?.refetchOnMount,
+    refetchInterval: fds?.refetchInterval,
+    staleTime: fds?.staleTime,
+    gcTime: fds?.gcTime,
     queryFn: async () => {
       // get headers to get the real time of fetching from api
       const { data, headers } = await axios.get(urlStr);
@@ -76,7 +69,7 @@ export function useFairwayCardPreviewData(id: string, isPreview: boolean, versio
   );
 }
 
-export function useHarborPreviewData(id: string, version: string = 'v0_latest') {
+export function useHarborPreviewData(id: string, version: string = 'v0_public') {
   return useHarborPreviewQuery(
     previewDataSourceClient,
     { id: id, version: version },

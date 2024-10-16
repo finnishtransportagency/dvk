@@ -9,7 +9,7 @@ const s3Client = new S3Client({ region: 'eu-west-1' });
 
 async function savePicture(picture: PictureUploadInput) {
   const bucketName = getNewStaticBucketName();
-  const key = `${picture.cardId}/${picture.id}`;
+  const key = `${picture.cardId}/${picture.cardVersion}/${picture.id}`;
   const command = new PutObjectCommand({
     Key: key,
     Bucket: bucketName,
@@ -24,11 +24,12 @@ async function savePicture(picture: PictureUploadInput) {
 export const handler: AppSyncResolverHandler<MutationUploadPictureArgs, boolean> = async (
   event: AppSyncResolverEvent<MutationUploadPictureArgs>
 ): Promise<boolean> => {
+  const picture = event.arguments.picture;
   const user = await getCurrentUser(event);
-  log.info(`uploadPicture(${event.arguments.picture.id}, ${user.uid})`);
+  log.info(`uploadPicture(${picture.id}, ${user.uid})`);
   try {
-    await savePicture(event.arguments.picture);
-    auditLog.info({ cardId: event.arguments.picture.cardId, id: event.arguments.picture.id, user: user.uid }, 'Picture uploaded');
+    await savePicture(picture);
+    auditLog.info({ cardId: picture.cardId, id: picture.id, version: picture.cardVersion, user: user.uid }, 'Picture uploaded');
     return true;
   } catch (e) {
     log.error('Uploading picture failed: %s', e);

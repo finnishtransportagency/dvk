@@ -333,11 +333,9 @@ ion-select.selectInput.select-expanded {
   border-image-width: 2px;
 }
 
-/* Hide default focus outline when focused on keyboard */
-ion-select.selectInput.version-select.ion-focused {
-  outline: none;
-  border-width: 2px;
-  min-height: 41px;
+ion-select.selectInput.ion-focused {
+  /* Use same background color as ion-item when focused (ion-color-dark with opacity 0.12) */
+  background-color: rgba(51, 51, 51, 0.12);
 }
 
 .selectWrapper.invalid ion-select.selectInput,
@@ -706,6 +704,7 @@ ion-grid.itemList ion-col.item-status-PUBLIC {
   color: var(--ion-color-success);
   font-weight: bold;
 }
+ion-grid.itemList ion-col.item-status-ARCHIVED,
 ion-grid.itemList ion-col.item-status-REMOVED {
   color: var(--ion-color-danger);
   opacity: 0.75;
@@ -978,6 +977,12 @@ ion-grid.alert ion-icon.error {
   position: relative;
   display: inline-block;
 }
+.mapExportTool ion-grid.print-images a.picLink.disabled {
+  pointer-events: none;
+}
+.mapExportTool ion-grid.print-images a.picLink.disabled img {
+  filter: grayscale(100%);
+}
 .mapExportTool ion-grid.print-images a.picLink:not(.selected) img {
   filter: grayscale(1);
 }
@@ -1248,6 +1253,16 @@ dd {
   margin: 0;
 }
 
+.print-images-warning {
+  background: url('./img/error_icon.svg') no-repeat 1px center;
+  background-size: 14px;
+  padding-left: 18px;
+  margin-left: 8px;
+  color: var(--ion-color-danger);
+  font-weight: normal;
+  text-transform: none;
+}
+
 /* Status bar */
 
 ion-row.infoHeaderRow {
@@ -1264,6 +1279,7 @@ ion-header.infoHeader .infoHeaderDivider {
   color: var(--ion-color-success);
   font-weight: bold;
 }
+.infoContent .item-status-ARCHIVED,
 .infoContent .item-status-REMOVED {
   color: var(--ion-color-danger);
   opacity: 0.75;

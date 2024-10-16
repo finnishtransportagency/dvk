@@ -7,6 +7,7 @@ import dvkMap from './DvkMap';
 import { useFairwayCardListData, useFeatureData } from '../utils/dataLoader';
 import { FairwayCardPartsFragment } from '../graphql/generated';
 import { Card } from './features';
+import { getFeatureDataSourceProjection } from '../utils/common';
 
 function addFairwayCardData(features: Feature<Geometry>[], cards: FairwayCardPartsFragment[]) {
   features.forEach((f) => {
@@ -22,14 +23,14 @@ function addFairwayCardData(features: Feature<Geometry>[], cards: FairwayCardPar
 export function usePilotRouteFeatures() {
   const [ready, setReady] = useState(false);
   const [pilotRouteFeatures, setPilotRouteFeatures] = useState<Feature<Geometry>[]>([]);
-  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching } = useFeatureData('pilotroute', true, 60 * 60 * 1000);
+  const { data, dataUpdatedAt, errorUpdatedAt, isPaused, isError, isPending, isFetching } = useFeatureData('pilotroute');
   const { data: fairwayCardData } = useFairwayCardListData();
 
   useEffect(() => {
     if (data && fairwayCardData) {
       const format = new GeoJSON();
       const pilotRouteFeatures = format.readFeatures(data, {
-        dataProjection: 'EPSG:4326',
+        dataProjection: getFeatureDataSourceProjection('pilotroute'),
         featureProjection: MAP.EPSG,
       });
       addFairwayCardData(pilotRouteFeatures, fairwayCardData.fairwayCards);

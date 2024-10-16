@@ -34,11 +34,18 @@ import { CurrentUser, getCurrentUser } from '../../api/login';
 import { diff } from 'deep-object-diff';
 import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { getExpires, getNewStaticBucketName } from '../../environment';
-import { PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
+import { CopyObjectCommand, PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
 import { deleteCacheObjects } from '../cache';
 
-export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDBModel | undefined, user: CurrentUser): FairwayCardDBModel {
+export function mapFairwayCardToModel(
+  card: FairwayCardInput,
+  old: FairwayCardDBModel | undefined,
+  user: CurrentUser,
+  newPictures?: PictureInput[]
+): FairwayCardDBModel {
+  const pictures = newPictures || card.pictures;
+
   return {
     id: mapId(card.id),
     version: mapVersion(card.version),
@@ -126,7 +133,7 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
     fairwayIds: mapIds(card.fairwayIds),
     expires: card.status === Status.Removed ? getExpires() : null,
     pictures:
-      card.pictures?.map((p) => {
+      pictures?.map((p) => {
         return {
           id: p.id,
           sequenceNumber: p.sequenceNumber ?? null,
@@ -154,12 +161,18 @@ export function mapFairwayCardToModel(card: FairwayCardInput, old: FairwayCardDB
 
 const s3Client = new S3Client({ region: 'eu-west-1' });
 
-async function tagPictures(cardId: string, pictures: InputMaybe<PictureInput[]> | undefined, oldPictures: Maybe<Picture[]> | undefined) {
-  const promises = [];
+async function tagPictures(
+  cardId: string,
+  version: string,
+  pictures: InputMaybe<PictureInput[]> | undefined,
+  oldPictures: Maybe<Picture[]> | undefined
+) {
   const bucketName = getNewStaticBucketName();
+  const promises = [];
+
   for (const picture of pictures ?? []) {
     const command = new PutObjectTaggingCommand({
-      Key: `${cardId}/${picture.id}`,
+      Key: `${cardId}/${version}/${picture.id}`,
       Bucket: bucketName,
       Tagging: { TagSet: [{ Key: 'InUse', Value: 'true' }] },
     });
@@ -169,7 +182,7 @@ async function tagPictures(cardId: string, pictures: InputMaybe<PictureInput[]> 
   for (const oldPicture of oldPictures ?? []) {
     if (!pictures?.find((p) => p.id === oldPicture.id)) {
       const command = new PutObjectTaggingCommand({
-        Key: `${cardId}/${oldPicture.id}`,
+        Key: `${cardId}/${version}/${oldPicture.id}`,
         Bucket: bucketName,
         Tagging: { TagSet: [{ Key: 'InUse', Value: 'false' }] },
       });
@@ -180,15 +193,74 @@ async function tagPictures(cardId: string, pictures: InputMaybe<PictureInput[]> 
   await Promise.all(promises);
 }
 
+async function copyPictures(
+  cardId: string,
+  cardVersion: string,
+  sourceId: string,
+  sourceVersion: string,
+  pictures: PictureInput[]
+): Promise<PictureInput[]> {
+  const bucketName = getNewStaticBucketName();
+  const promises = [];
+  const newPictures: PictureInput[] = [];
+
+  for (const picture of pictures) {
+    const newPictureId = `${cardId}-${picture.groupId}-${picture.lang}`;
+    const newKey = `${cardId}/${cardVersion}/${newPictureId}`;
+
+    const command = new CopyObjectCommand({
+      Key: newKey,
+      Bucket: bucketName,
+      CopySource: `${bucketName}/${sourceId}/${sourceVersion}/${picture.id}`,
+    });
+    promises.push(s3Client.send(command));
+    newPictures.push({
+      ...picture,
+      id: newPictureId,
+      modificationTimestamp: Date.now(),
+    });
+  }
+  await Promise.all(promises);
+  return newPictures;
+}
+
 export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, FairwayCard> = async (
   event: AppSyncResolverEvent<MutationSaveFairwayCardArgs>
 ): Promise<FairwayCard> => {
   const user = await getCurrentUser(event);
-  log.info(`saveFairwayCard(${event.arguments.card.id}, ${user.uid})`);
-  const dbModel = await FairwayCardDBModel.getVersion(event.arguments.card.id, event.arguments.card.version);
-  const newModel = mapFairwayCardToModel(event.arguments.card, dbModel, user);
+  const card = event.arguments.card;
+  const pictureSourceId = event.arguments.pictureSourceId;
+  const pictureSourceVersion = event.arguments.pictureSourceVersion;
+
+  log.info(`saveFairwayCard(${card.id}/${card.version}, ${pictureSourceId}/${pictureSourceVersion}, ${user.uid})`);
+
+  let dbModel;
+  let pictures;
+  let currentPublicCard = null;
+
+  const latestVersionNumber = await FairwayCardDBModel.getLatest(card.id).then((fairwayCard) => fairwayCard?.latest);
+
+  if (card.operation === Operation.Update) {
+    dbModel = await FairwayCardDBModel.getVersion(card.id, card.version);
+    await tagPictures(card.id, card.version, card.pictures, dbModel?.pictures);
+  } else if (card.operation === Operation.Publish) {
+    const publicVersion = await FairwayCardDBModel.getPublic(card.id).then((fairwayCard) => fairwayCard?.currentPublic);
+    if (publicVersion) {
+      currentPublicCard = await FairwayCardDBModel.getVersion(card.id, 'v' + publicVersion);
+    }
+  } else if (pictureSourceId && pictureSourceVersion && !!card.pictures?.length) {
+    pictures = await copyPictures(
+      card.id,
+      card.operation === Operation.Createversion ? 'v' + (Number(latestVersionNumber) + 1) : card.version,
+      pictureSourceId,
+      pictureSourceVersion,
+      card.pictures
+    );
+  }
+
+  const newModel = mapFairwayCardToModel(card, dbModel, user, pictures);
   log.debug('card: %o', newModel);
-  await tagPictures(event.arguments.card.id, event.arguments.card.pictures, dbModel?.pictures);
+
   try {
     // Clear fairway cache of a fairway card
     // delete when more sophisticated caching is implemented
@@ -199,14 +271,14 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
       const cacheKey = 'fairways:' + fairways.join(':');
       await deleteCacheObjects([cacheKey]);
     }
-    await FairwayCardDBModel.save(newModel, event.arguments.card.operation);
+    await FairwayCardDBModel.save(newModel, card.operation, latestVersionNumber, currentPublicCard);
   } catch (e) {
     if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
-      throw new Error(event.arguments.card.operation === Operation.Create ? OperationError.CardAlreadyExist : OperationError.CardNotExist);
+      throw new Error(card.operation === Operation.Create ? OperationError.CardAlreadyExist : OperationError.CardNotExist);
     }
     throw e;
   }
-  if (event.arguments.card.operation === Operation.Update) {
+  if (card.operation === Operation.Update) {
     const changes = dbModel ? diff(dbModel, newModel) : null;
     auditLog.info({ changes, card: newModel, user: user.uid }, 'FairwayCard updated');
   } else {

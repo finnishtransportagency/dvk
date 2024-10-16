@@ -19,6 +19,7 @@ jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
   getHeaders: () => {},
+  getWeatherResponseHeaders : () => {},
   getFairwayCardTableName: () => 'FairwayCard-mock',
   getHarborTableName: () => 'Harbor-mock',
 }));
@@ -416,6 +417,10 @@ async function parseResponse(body: string): Promise<FeatureCollection> {
   return JSON.parse((await response).toString()) as FeatureCollection;
 }
 
+async function parseWeatherResponse(body: string): Promise<FeatureCollection> {
+  return JSON.parse((body).toString()) as FeatureCollection;
+}
+
 let throwError = false;
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchVATUByApi: (api: string) => {
@@ -531,7 +536,7 @@ it('should get harbors from DynamoDB', async () => {
 it('should get mareographs from api', async () => {
   const response = await handler(mockFeaturesALBEvent('mareograph'));
   assert(response.body);
-  const responseObj = await parseResponse(response.body);
+  const responseObj = await parseWeatherResponse(response.body);
   expect(responseObj.features.length).toBe(3);
   expect(responseObj).toMatchSnapshot();
 });
@@ -539,7 +544,7 @@ it('should get mareographs from api', async () => {
 it('should get buoys from api', async () => {
   const response = await handler(mockFeaturesALBEvent('buoy'));
   assert(response.body);
-  const responseObj = await parseResponse(response.body);
+  const responseObj = await parseWeatherResponse(response.body);
   expect(responseObj.features.length).toBe(3);
   expect(responseObj).toMatchSnapshot();
 });

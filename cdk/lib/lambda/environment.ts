@@ -60,6 +60,19 @@ export function getHeaders(): Record<string, string[]> {
   };
 }
 
+export function getWeatherResponseHeaders(): Record<string, string[]> {
+  if (isPermanentEnvironment()) {
+    return { 'Content-Type': ['application/json'] };
+  }
+  return {
+    'Content-Type': ['application/json'],
+    'Access-Control-Allow-Origin': ['*'],
+    'Access-Control-Allow-Methods': ['*'],
+    'Access-Control-Allow-Headers': ['*'],
+    'Access-Control-Expose-Headers': ['fetchedDate'],
+  };
+}
+
 export function getPilotRoutesHeaders(): Record<string, string[]> {
   // identical to getHeaders() for now, but could change in future
   if (isPermanentEnvironment()) {
@@ -78,12 +91,16 @@ async function readParameterForEnv(path: string): Promise<string> {
   if (envParameters[path]) {
     return envParameters[path];
   }
-  const value = await readParameterByPath('/' + path);
-  if (value) {
-    envParameters[path] = value;
-    return value;
-  }
-  throw new Error(`Getting parameter ${path} failed`);
+  return new Promise((resolve) => {
+    readParameterByPath('/' + path).then((value) => {
+      if (value) {
+        envParameters[path] = value;
+        resolve(value);
+      } else {
+        throw new Error(`Getting parameter ${path} failed`);
+      }
+    });
+  });
 }
 
 export async function getVatuUsername() {
@@ -163,10 +180,14 @@ export async function getIBNetApiUrl() {
 }
 
 export async function getWeatherHeaders(): Promise<Record<string, string>> {
-  return {
-    'x-api-key': await getWeatherSOAApiKey(),
-    'Accept-Encoding': 'gzip',
-  };
+  return new Promise((resolve) => {
+    getWeatherSOAApiKey().then((key) => {
+      resolve({
+        'x-api-key': key,
+        'Accept-Encoding': 'gzip',
+      });
+    });
+  });
 }
 
 export async function getTraficomHeaders(): Promise<Record<string, string>> {

@@ -33,10 +33,16 @@ const DriftResults: React.FC<DriftResultProps> = ({ limitedView }) => {
                 value={Math.round(state.calculations.forces.relativeWindDirection ? state.calculations.forces.relativeWindDirection : 0)}
                 unit="°"
                 unitId="deg"
+                dataTestid="drift-relative-wind-direction"
               />
             </IonCol>
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
-              <LabelField title={t('relative-wind-speed')} value={Math.round(state.calculations.forces.relativeWindSpeed)} unit="m/s" />
+              <LabelField
+                title={t('relative-wind-speed')}
+                value={Math.round(state.calculations.forces.relativeWindSpeed)}
+                unit="m/s"
+                dataTestid="drift-relative-wind-speed"
+              />
             </IonCol>
 
             <IonCol size="6" sizeSm="4" sizeMd="3" sizeLg="6">
@@ -48,6 +54,7 @@ const DriftResults: React.FC<DriftResultProps> = ({ limitedView }) => {
                 ).toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
                 unit="°"
                 unitId="deg"
+                dataTestid="estimated-drift-angle"
               />
             </IonCol>
             <IonCol size="6" sizeSm="12" sizeMd="3" sizeLg="6">
@@ -55,6 +62,7 @@ const DriftResults: React.FC<DriftResultProps> = ({ limitedView }) => {
                 title={t('estimated-vessel-breadth-due-drift')}
                 value={state.calculations.forces.estimatedBreadth.toLocaleString(i18n.language, { maximumFractionDigits: 2 })}
                 unit="m"
+                dataTestid="estimated-vessel-breadth-due-drift"
               />
             </IonCol>
             <IonCol size="6" className="hide-portrait" />
