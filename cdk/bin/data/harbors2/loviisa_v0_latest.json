@@ -1,0 +1,144 @@
+{
+  "phoneNumber": [
+    "+358400717215"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "internet": "https://www.portofloviisa.fi",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Use of anchors prohibited in winter to protect the bubbling tubes at the bottom. Sheltered against swell and winds. Water depth 10.2/10.5 m. Diameter of swinging area 986 m.",
+    "fi": "Ankkurin käyttö kielletty laitureiden läheisyydessä, koska ilmapulputuslaitteiston letkut ovat pohjassa. Satama-allas on suojaisa aallokolta ja tuulilta. Vesisyvyys 10,2/10,5 m. Kääntöaltaanhalkaisija 986 m.",
+    "sv": "Förbjudet att använda ankare vintertid, då bubbelanordningens slangar är nedsänkta på bottnen. Skyddad för sjögång och vindar. Vattendjup 10,2/10,5 m. Svängbassängens diameter 986 m."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Port of Loviisa",
+    "fi": "Loviisan satama",
+    "sv": "Lovisa hamn"
+  },
+  "cargo": {
+    "en": "Cranes, mobile cranes.",
+    "fi": "Nostureita, mobiilinostureita.",
+    "sv": "Kranar, mobilkranar."
+  },
+  "modificationTimestamp": 1683095540982,
+  "company": {
+    "en": "Loviisan Satama Oy",
+    "fi": "Loviisan Satama Oy",
+    "sv": "Loviisan Satama Oy"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Grain and cement pier and ramp, Quays 1a-1b",
+        "fi": "Vilja- ja sementtilaituri ja ramppi, laiturit 1a-1b",
+        "sv": "Korn- och cementkajer och ramp, kajer 1a-1b"
+      },
+      "length": 163.5,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.25828,
+          60.41021
+        ]
+      },
+      "sections": [
+        {
+          "depth": 9.5
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 2",
+        "fi": "Laituri 2",
+        "sv": "Kaj 2"
+      },
+      "length": 114,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.25731,
+          60.41131
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 3",
+        "fi": "Laituri 3",
+        "sv": "Kaj 3"
+      },
+      "length": 105,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.25637,
+          60.4125
+        ]
+      },
+      "sections": [
+        {
+          "depth": 7.3
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 4",
+        "fi": "Laituri 4",
+        "sv": "Kaj 4"
+      },
+      "length": 175,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.25462,
+          60.41373
+        ]
+      },
+      "sections": [
+        {
+          "depth": 9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Bulk/deep pier, Quay 6",
+        "fi": "Bulk/syvälaituri, laituri 6",
+        "sv": "Bulk/djupkajen, kaj 6"
+      },
+      "length": 141,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.25321,
+          60.41665
+        ]
+      },
+      "sections": [
+        {
+          "depth": 9.5
+        }
+      ]
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095540982,
+  "id": "loviisa",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      26.25462,
+      60.41238
+    ]
+  }
+}

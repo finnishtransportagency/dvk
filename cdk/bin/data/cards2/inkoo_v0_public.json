@@ -1,0 +1,129 @@
+{
+  "anchorage": {
+    "en": "Anchorage possible in the outer part of the fairway, in the anchorage area SE of the sector light Häststen. In the fairway area at Jakob Ramsjö and Skämmö and in the secured supplementary area on both sides (safe clearance depth = -13.20 m MW2022), there is a turning circle with a diameter of 450 metres. The terminal vessel and the refill vessels are turned in this turning circle and towed stern first to the harbour. For towing operations, secured supplementary areas with a safe clearance depth of -10.20 m MW2022 have been made to complement both of the above mentioned secured supplementary areas.",
+    "fi": "Väylän ulko-osalla voi ankkuroida Hästenin sektoriloiston kaakkoispuolella olevalle ankkurointialueelle. Jakob Ramsjön ja Skämmön kohdalla olevalla väyläalueella ja sen kummallakin puolella olevalla varmistetulla lisäalueelle (HS= -13,20 m MW2022) sijaitsee kääntöympyrä, jonka halkaisija on 450 metriä. Terminaalialus ja täyttöalukset käännetään tässä kääntöympyrässä ja hinataan perä edellä satamaan. Hinaajatoimintoja varten on kumpaakin edellä mainittua varmistettua lisäaluetta täydentämään luotu varmistetut lisäalueet, joiden haraussyvyys on - 10,20 m MW2022.",
+    "sv": "I farledens yttre del kan man ankra i ankringsområdet sydost om Hästens sektorfyr. På farledsområdet och det säkrade tilläggsområdet (HS= -13,20 m MW2022) vid Jakob Ramsjö och Skämmö finns en vändcirkel med en diameter på 450 meter. Terminalfartyget och påfyllningsfartygen vänds i denna vändcirkel och bogseras med aktern före till hamnen. För bogserverksamheten har man för att komplettera de båda ovan nämnda bekräftade tilläggsområdena skapat säkerställda tilläggsområden, vars ramade djup är -10,20 m MW2022."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": {
+    "en": "Daylight and minimum visibility of 4 km.",
+    "fi": "Päivän valo ja näkyvyys vähintään 4 km.",
+    "sv": "Dagsljus och minst 4 km sikt."
+  },
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134253
+    },
+    {
+      "id": 132310
+    }
+  ],
+  "name": {
+    "en": "Inkoo fairway",
+    "fi": "Inkoon väylä",
+    "sv": "Ingåleden"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095538800,
+  "temporaryNotifications": [],
+  "navigationCondition": null,
+  "generalInfo": null,
+  "id": "inkoo",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "5 navigation lines, marked with leading beacons and partly with leading daytime lights.",
+    "fi": "Linjoja 5 kpl, merkitty linjatauluin ja osin päivävalolinjoin.",
+    "sv": "Det finns 5 st. linjer som utmärkts med ensmärken och delvis med dagerfyrar. "
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "inkoo"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Maximum wind speed 15 m/s.",
+    "fi": "Maksimi tuulen nopeus 15 m/s.",
+    "sv": "Max. vindhastighet 15 m/s."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 4350,
+      "primary": true
+    }
+  ],
+  "speedLimit": {
+    "en": "To maintain a safe underkeel clearance, the recommended speeds in dredged areas are: Bay of Fagervik, max. 18.5 km/h, and at the south end of the isle Jakob Ramsjö approx. 15 km/h.",
+    "fi": "Varaveden takia suositeltavat nopeudet ruopatuilla alueilla ovat: Fagervikinlahdella alle 18,5 km/h ja Jakob Ramsjön saaren eteläkärjen kohdalla n. 15 km/h.",
+    "sv": "På grund av djupmarginalen rekommenderas följande hastigheter inom de muddrade områdena: Max. 18,5 km/h i Fagerviken och ca 15 km/h vid Jakob Ramsjös sydspets."
+  },
+  "modificationTimestamp": 1718775572339,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "The fairway is open almost throughout the year.",
+    "fi": "Väylä on avoin lähes koko talven.",
+    "sv": "Farleden är öppen så gott som hela vintern."
+  },
+  "fairwayIds": "#4350#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Helsinki VTS, sector 2",
+          "fi": "Helsinki VTS, sektori 2",
+          "sv": "Helsingfors VTS, sektor 2"
+        },
+        "phoneNumber": "+358204485385",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 9
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 177228055000,
+          "pilotJourney": 14
+        },
+        {
+          "id": 27529222400,
+          "pilotJourney": 12
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs. To be booked through the shipping agent. Advance booking 24/12/6 hours, booking at least 3 hours prior to departure/arrival.",
+          "fi": "Yksityiset hinaajat. Tilataan agentin välityksellä ennakkotilaus 24/12/6 ja tilaus 3 tuntia ennen lähtöä/saapumista.",
+          "sv": "Privatägda bogserbåtar. Beställs genom agent. Förhandsbeställning 24/12/6 och beställning minst 3 timmar före avgång/ankomst."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

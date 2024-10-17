@@ -1,0 +1,210 @@
+{
+  "phoneNumber": [
+    "+35893101621"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "modifier": "System",
+  "email": "port.helsinki@portofhelsinki.fi",
+  "name": {
+    "en": "Port of Helsinki",
+    "fi": "Helsingin satama",
+    "sv": "Helsingfors hamn"
+  },
+  "modificationTimestamp": 1683095540728,
+  "company": {
+    "en": "Port of Helsinki Ltd, Helsinki",
+    "fi": "Helsingin Satama Oy, Helsinki",
+    "sv": "Oy Helsingfors hamn Ab, Helsingfors"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Olympia quay",
+        "fi": "Olympialaituri",
+        "sv": "Olympiakajen"
+      },
+      "length": 370,
+      "sections": [
+        {
+          "name": "EO1",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.95982,
+              60.1608
+            ]
+          },
+          "depth": 7.5
+        },
+        {
+          "name": "EO2",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.95787,
+              60.16217
+            ]
+          },
+          "depth": 8.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Makasiini quay",
+        "fi": "Makasiinilaituri",
+        "sv": "Magasinkajen"
+      },
+      "length": 240,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.95588,
+          60.1638
+        ]
+      },
+      "sections": [
+        {
+          "depth": 7.3
+        },
+        {
+          "depth": 7.5
+        },
+        {
+          "depth": 7.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Pakkahuone quay",
+        "fi": "Pakkahuoneenlaituri",
+        "sv": "Packhuskajen"
+      },
+      "length": 130,
+      "sections": [
+        {
+          "name": "EPL",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.95407,
+              60.16567
+            ]
+          },
+          "depth": 6
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Katajanokka quays",
+        "fi": "Katajanokan laiturit",
+        "sv": "Skatuddskajerna"
+      },
+      "length": 740,
+      "sections": [
+        {
+          "name": "EKL",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.96008,
+              60.16609
+            ]
+          },
+          "depth": 8.8
+        },
+        {
+          "name": "EK6",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.96533,
+              60.16434
+            ]
+          },
+          "depth": 8.8
+        },
+        {
+          "name": "EK7",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.96866,
+              60.16345
+            ]
+          },
+          "depth": 8.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Cruise ship quays",
+        "fi": "Risteilyaluslaiturit",
+        "sv": "Kajerna för kryssningsfartyg"
+      },
+      "length": 350,
+      "sections": [
+        {
+          "name": "ERA",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.97062,
+              60.16336
+            ]
+          },
+          "depth": 10.3
+        },
+        {
+          "name": "ERB",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.97318,
+              60.16425
+            ]
+          },
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Hanasaari quay",
+        "fi": "Hanasaaren laituri",
+        "sv": "Hanaholmens kaj"
+      },
+      "length": 330,
+      "sections": [
+        {
+          "name": "SHA/SHB",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.969,
+              60.18087
+            ]
+          },
+          "depth": 9.35
+        }
+      ]
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095540728,
+  "id": "helsinki",
+  "fax": "+358931033802",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.96317,
+      60.16207
+    ]
+  }
+}

@@ -1,0 +1,117 @@
+{
+  "anchorage": {
+    "en": "NW of the Gustavsvärn sector light in the vicinity of the fairway.",
+    "fi": "Gustavsvärnin sektoriloiston luoteispuolella väylän läheisyydessä.",
+    "sv": "NO om Gustavsvärns sektorfyr i närheten av farleden."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134253
+    }
+  ],
+  "name": {
+    "en": "Hanko channel",
+    "fi": "Hangon meriväylä",
+    "sv": "Hangö havsfarled"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095538546,
+  "temporaryNotifications": [],
+  "navigationCondition": null,
+  "generalInfo": null,
+  "id": "hanko",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "2 navigation lines, marked by boards.",
+    "fi": "Linjoja 2 kpl, merkitty linjatauluin.",
+    "sv": "2 farledslinjer, utmärkta med enstavlor."
+  },
+  "version": "v1",
+  "harbors": [
+    {
+      "id": "hanko"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 4110,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718775198319,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "Very variable ice conditions. The fairway can be open all winter or there can be formation of thin ice.",
+    "fi": "Jääolosuhteet ovat erittäin vaihtelevat. Väylä voi olla avoin koko talven tai siihen muodostuu vain ohut jääpeite.",
+    "sv": " Mycket varierande isförhållanden. Farleden kan vara öppen hela vintern eller så bildas det bara ett tunt istäcke."
+  },
+  "fairwayIds": "#4110#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Hanko VTS",
+          "fi": "Hanko VTS",
+          "sv": "Hangö VTS"
+        },
+        "phoneNumber": "+358204485388",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 22793122400,
+          "pilotJourney": null
+        },
+        {
+          "id": 23269122400,
+          "pilotJourney": 9
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs available.",
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed 16 knots.",
+    "fi": "Mitoitusnopeus väylällä 16 solmua.",
+    "sv": "Dimensionerande fart 16 knop."
+  }
+}
