@@ -582,12 +582,6 @@ export const N2000_URLS = {
   en: 'www.traficom.fi/en/transport/maritime/n2000-fairway-and-nautical-chart-reform-improved',
 };
 
-export const MASTERSGUIDE_URLS = {
-  fi: 'www.fintraffic.fi/fi/vts/masters-guide',
-  sv: 'www.fintraffic.fi/sv/vts/masters-guide',
-  en: 'www.fintraffic.fi/en/vts/masters-guide',
-};
-
 export const PILOTORDER_URL = 'www.pilotonline.fi';
 
 export const marineWarningLayers: FeatureDataLayerId[] = ['coastalwarning', 'localwarning', 'boaterwarning'];
