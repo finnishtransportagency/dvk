@@ -1,0 +1,326 @@
+{
+  "phoneNumber": [
+    "+35893101621"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "internet": "https://www.portofhelsinki.fi/",
+  "status": "PUBLIC",
+  "modifier": "System",
+  "email": "port.helsinki@portofhelsinki.fi",
+  "name": {
+    "en": "Port of Vuosaari",
+    "fi": "Vuosaaren satama",
+    "sv": "Nordsjöledens hamn"
+  },
+  "cargo": {
+    "en": "Quay D: 2 container cranes, lifting capacity 50/60 t, outreach 38 m; 2 container cranes, lifting capacity 40/50 t, outreach 27m. Quay E: 4 container cranes, lifting capacity 65/90 t, outreach 46 m. Quay F: container crane, lifting capacity 40/50 t, outreach 34 m.",
+    "fi": "D laituri: 2 konttinosturia, nostokyky 50/60 tn, ulottuma 38 m; 2 konttinosturia, nostokyky 40/50 tn, ulottuma 27 m. E laituri: 4 konttinosturia, nostokyky 65/90 tn, ulottuvuus 46 m. F laituri: konttinosturi, nostokyky 40/50 tn, ulottuma 34 m.",
+    "sv": "D kajen: 2 containerkranar, lyftkapacitet 50/60 t, räckvidd 38 m; 2 containerkranar, lyftkapacitet 40/50 t, räckvidd 27 m. E kajen: 4 containerkranar, lyftkapacitet 65/90 t, räckvidd 46 m. F kajen: containerkran, lyftkapacitet 40/50 t, räckvidd 34 m."
+  },
+  "modificationTimestamp": 1683095541136,
+  "company": {
+    "en": "Port of Helsinki, Helsinki",
+    "fi": "Helsingin Satama Oy, Helsinki",
+    "sv": "Helsingfors Hamn, Helsingfors"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay A",
+        "fi": "A laituri",
+        "sv": "A kajen"
+      },
+      "length": 180,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.19323,
+          60.2103
+        ]
+      },
+      "sections": [
+        {
+          "depth": 12.5
+        }
+      ],
+      "extraInfo": {
+        "en": "adjustable ramp",
+        "fi": "säädettävä ramppi",
+        "sv": "justerbar ramp"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay AP (pier)",
+        "fi": "AP pistolaituri",
+        "sv": "AP kajen (pir)"
+      },
+      "length": 215,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.19473,
+          60.20955
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.5
+        },
+        {
+          "depth": 12.5
+        }
+      ],
+      "extraInfo": {
+        "en": "2 fixed ramps",
+        "fi": "2 kpl kiinteää ramppia",
+        "sv": "2 fasta ramper"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay BP (pier)",
+        "fi": "BP pistolaituri",
+        "sv": "BP kajen (pir)"
+      },
+      "length": 250,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.18949,
+          60.21558
+        ]
+      },
+      "sections": [
+        {
+          "depth": 12.5
+        }
+      ],
+      "extraInfo": {
+        "en": "2 fixed ramps",
+        "fi": "2 kpl kiinteää ramppia",
+        "sv": "2 fasta ramper"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay CP (pier)",
+        "fi": "CP pistolaituri",
+        "sv": "CP kajen (pir)"
+      },
+      "length": 250,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.19999,
+          60.21892
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.5
+        }
+      ],
+      "extraInfo": {
+        "en": "2 adjustable ramps",
+        "fi": "2 kpl säädettävää tuplaramppia",
+        "sv": "2 justerbara dubbelramper"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay D",
+        "fi": "D laituri",
+        "sv": "D kajen"
+      },
+      "length": 750,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.19038,
+          60.21338
+        ]
+      },
+      "sections": [
+        {
+          "depth": 12.5
+        },
+        {
+          "depth": 14.3
+        }
+      ],
+      "extraInfo": {
+        "en": "containers, fixed ramp",
+        "fi": "konttialuksille, 1 kiinteä ramppi",
+        "sv": "containerfartyg, fast ramp"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay E",
+        "fi": "E laituri",
+        "sv": "E kajen"
+      },
+      "length": 750,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.19358,
+          60.21486
+        ]
+      },
+      "sections": [
+        {
+          "depth": 12.5
+        },
+        {
+          "depth": 14.3
+        }
+      ],
+      "extraInfo": {
+        "en": "containers, fixed ramp",
+        "fi": "konttialuksille, 1 kiinteä ramppi",
+        "sv": "containerfartyg, fast ramp"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay F",
+        "fi": "F laituri",
+        "sv": "F kajen"
+      },
+      "length": 497,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.19826,
+          60.21764
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.5
+        },
+        {
+          "depth": 14.3
+        }
+      ],
+      "extraInfo": {
+        "en": "2 fixed ramps",
+        "fi": "2 kpl kiinteää ramppia",
+        "sv": "2 fasta ramper"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay VG9",
+        "fi": "VG9 laituri",
+        "sv": "VG9 kajen"
+      },
+      "length": 162,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.19962,
+          60.21401
+        ]
+      },
+      "sections": [
+        {
+          "depth": 12.5
+        }
+      ],
+      "extraInfo": {
+        "en": "fixed ramp",
+        "fi": "1 kiinteä ramppi",
+        "sv": "fast ramp"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay GP 1 (pier)",
+        "fi": "GP 1 pistolaituri",
+        "sv": "GP 1 kajen (pir)"
+      },
+      "length": 204,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.2024,
+          60.21366
+        ]
+      },
+      "sections": [
+        {
+          "depth": 12.5
+        }
+      ],
+      "extraInfo": {
+        "en": "2 fixed ramps",
+        "fi": "2 kpl kiinteää ramppia",
+        "sv": "2 fasta ramper"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay GP 2 (pier)",
+        "fi": "GP 2 pistolaituri",
+        "sv": "GP 2 kajen (pir)"
+      },
+      "length": 204,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.2038,
+          60.21424
+        ]
+      },
+      "sections": [
+        {
+          "depth": 12.5
+        },
+        {
+          "depth": 14.3
+        }
+      ],
+      "extraInfo": {
+        "en": "2 fixed ramps",
+        "fi": "2 kpl kiinteää ramppia",
+        "sv": "2 fasta ramper"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay VGA",
+        "fi": "VGA laituri",
+        "sv": "VGA kajen"
+      },
+      "length": 189,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.19914,
+          60.2128
+        ]
+      },
+      "sections": [
+        {
+          "depth": 14.3
+        }
+      ]
+    }
+  ],
+  "creationTimestamp": 1683095541136,
+  "id": "vuosaari",
+  "fax": "+358931033802",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      25.19619,
+      60.21588
+    ]
+  }
+}

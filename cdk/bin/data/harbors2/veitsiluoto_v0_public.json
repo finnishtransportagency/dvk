@@ -1,0 +1,94 @@
+{
+  "phoneNumber": [
+    "+35840838 2508"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of turning circle 370 m, use of anchor permitted.",
+    "fi": "Kääntöympyrän halkaisija 370 m, ankkurin käyttö sallittu.",
+    "sv": "Svängcirkelns diameter 370 m, tillåtet att använda ankare."
+  },
+  "modifier": "System",
+  "email": "fredrik.bjorkman@experience365.fi",
+  "name": {
+    "en": "Port of Veitsiluoto",
+    "fi": "Veitsiluodon satama",
+    "sv": "Veitsiluoto hamn"
+  },
+  "cargo": {
+    "en": "Mobile cranes 7 / 6 - 12 t, 4 Ro-Ro ramps.",
+    "fi": "Mobiilinostureita 7 / 6 - 12 t, 4 peräporttipaikkaa.",
+    "sv": "Mobila kranar 7 / 6 - 12 t, 4 st. ro-ro-ramper."
+  },
+  "modificationTimestamp": 1702359336128,
+  "company": {
+    "en": "Stora Enso Veitsiluoto Ltd",
+    "fi": "Stora Enso Veitsiluoto Oy",
+    "sv": "Stora Enso Veitsiluoto Ab"
+  },
+  "quays": [
+    {
+      "length": 230,
+      "name": {
+        "en": "Quay 4",
+        "fi": "Laituri 4",
+        "sv": "Kaj 4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.61866,
+          65.68779
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.79
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 230,
+      "name": {
+        "en": "Quay 5",
+        "fi": "Laituri 5",
+        "sv": "Kaj 5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.61394,
+          65.68938
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.79
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "creationTimestamp": 1683095540021,
+  "id": "veitsiluoto",
+  "fax": null,
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.6227,
+      65.68785
+    ]
+  }
+}

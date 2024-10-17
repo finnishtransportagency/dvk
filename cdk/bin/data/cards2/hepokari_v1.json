@@ -1,0 +1,133 @@
+{
+  "anchorage": {
+    "en": "Anchorage in Uusikaupunki Channel (12.5 m): in the outer channel, 5.5 km NE of Sandbäck Lighthouse (off chart) and SW and SE of Isokari. In the inner channel anchorage N of Ruuhikari. The area is also used as the swinging area of Yara's industrial harbour.",
+    "fi": "Uudenkaupungin 12,5 m väylän ankkurointialueet: väylän ulko-osalla Sandbäckin majakasta 5,5 km koilliseen (kartan ulkopuolella) sekä Isonkarin lounais- ja kaakkoispuolella. Sisäosalla ankkurointipaikka on Ruuhikarin pohjoispuolella. Aluetta käytetään myös Kemiran sataman kääntöaltaana.",
+    "sv": "Ankringsområden i Nystadsleden (12,5 m): I farledens yttre del från Sandbäcks fyr 5,5 km mot NO (utanför kartan) och SV och SO om Enskär. I den inre delen finns ett ankringsområde N om Ruuhikari. Området används också som Yara hamns svängbassäng."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Vessels with a draught close to or equalling the maximum authorised draught are warned to beware of squat (design speed 9 knots).",
+    "fi": "Maksimikulkusyvyydessä kulkevien alusten tulee huomioida nopeuspainuma (mitoitusnopeus 9 solmua).",
+    "sv": "Fartyg i maximalt leddjupgående skall beakta squateffekten (dimensionerande fart 9 knop)."
+  },
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "1",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134224
+    }
+  ],
+  "name": {
+    "en": "Uusikaupunki Hepokari channel",
+    "fi": "Uudenkaupungin Hepokarin väylä",
+    "sv": "Hepokarileden i Nystad"
+  },
+  "attention": null,
+  "creationTimestamp": 1683095537847,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The channel is sheltered, but difficult to navigate when exposed to northerly winds. Use of tugs to be considered separately in each individual case.",
+    "fi": "Väylä on suojainen, mutta kovilla pohjoistuulilla vaikeasti navigoitava. Hinaajien käyttöä on harkittava tilanteen mukaan.",
+    "sv": "Farleden är skyddad men svårnavigerad vid hård nordlig vind. Anlitande av bogserhjälp bör övervägas från fall till fall."
+  },
+  "generalInfo": null,
+  "id": "hepokari",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Three lines, the two outermost marked with boards.",
+    "fi": "Linjoja 3, joista kaksi ulointa merkitty linjatauluin.",
+    "sv": "Tre linjer, varav de två yttersta är utmärkta med enstavlor."
+  },
+  "version": "v1",
+  "harbors": [
+    {
+      "id": "hepokari"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 2360,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718778160005,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "There may be fast ice in the channel. The channel is kept in navigable condition by tugs.",
+    "fi": "Väylällä esiintyy kiintojäätä. Väylä pidetään liikennöitävänä hinaajien avustuksella.",
+    "sv": "I farleden förekommer fastis. Farleden hålls framkomlig med hjälp av bogserare."
+  },
+  "fairwayIds": "#2360#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Archipelago VTS",
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 71
+          }
+        ],
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 615200599,
+          "pilotJourney": 25
+        }
+      ],
+      "phoneNumber": "+358295253460",
+      "fax": null,
+      "email": "pilotdispatch.archipelago@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Tugboat Jason 1,626 kW, BHP 22 t, 4 h in advance",
+          "fi": "Hinaaja Jason 1626 kW, BHP 22 t, ennakkovaroitusaika 4 h.",
+          "sv": "Bogseraren Jason 1626 kW, BHP 22 t, med 4 h varsel"
+        },
+        "phoneNumber": [
+          "+358400818814"
+        ],
+        "fax": null,
+        "email": null
+      },
+      {
+        "name": {
+          "en": "ASD tugboat, BHP 45 t. also available, 6 h in advance.",
+          "fi": "Saatavana myös ASD hinaaja, BHP 45 t, ennakkovaroitusaika 6 h.",
+          "sv": "Det finns också en ASD-bogserare att tillgå, BHP 45 t, med 6 h varsel"
+        },
+        "phoneNumber": [
+          "+358400818814"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed 9 knots.",
+    "fi": "Mitoitusnopeus väylällä 9 solmua.",
+    "sv": "Dimensionerande fart 9 knop."
+  }
+}

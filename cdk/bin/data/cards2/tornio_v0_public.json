@@ -1,0 +1,140 @@
+{
+  "anchorage": {
+    "en": "At Pohjoiskraaseli the fairway has been broadened for anchoring and passing, depth -18 m mud seabed. At Lehtikari island there is room for turning and passing, diameter 550 m, depth -11,6 mud seabed.",
+    "fi": "Pohjoiskraaselin kohdalla on levennys ankkurointia ja ohittamista varten, syvyys -18 m mutapohja. Väylällä on kääntö- ja ohittamispaikka Lehtikari saaren kohdalla, halkaisija 550 m, syvyys -11,6 m, mutapohja.",
+    "sv": "Vid Pohjoiskraaseli är farleden breddad för ankring och passage, djup -18 m, gyttjebotten. I leden vid ön Lehtikari finns utrymme för att svänga och passera, diameter 550 m, djup -11,6 m, gyttjebotten."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Vessels sailing at design draught should beware of the squat-effect. Design speed in the approach 11 knots and in the entrance 7 knots.",
+    "fi": "Mitoitussyvyydessä olevien alusten tulee huomioida pohjaimun vaikutus. Mitoitusnopeus ulko-osalla 11 solmua ja sisäosalla 7 solmua.",
+    "sv": "Fartyg i dimensionerat djupgående skall beakta squat-effekten. Dimensionerande fart i angöringen 11 knop och i inloppet 7 knop."
+  },
+  "status": "PUBLIC",
+  "visibility": {
+    "en": "The visibility between Etukari and the harbour is at least 1 nautical miles. LNG carriers are piloted only daytime when the visibility is good.",
+    "fi": "Osuudella Etukari - satama näkyvyys vähintään 1 mpk. Kaasulaivojen luotsaus vain päivävalolla näkyvyyden ollessa hyvä.",
+    "sv": "I avsnittet Etukari - hamnen är sikten minst 1 M. Lotsning av LNG-fartyg endast i dagsljus vid god sikt."
+  },
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 100539
+    }
+  ],
+  "name": {
+    "en": "Tornio Röyttä fairway",
+    "fi": "Tornio Röyttä väylä",
+    "sv": "Torneå Röyttä farled"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Kemi mareograph.",
+    "fi": "Kemi mareografi.",
+    "sv": "Kemi mareograf."
+  },
+  "creationTimestamp": 1683095537585,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The one-way fairway has been broadened for anchorage, passage and meeting traffic at Pohjoiskraaseli and Lehtikari. The area between Kemi 2 (not visible on the chart supplement) and the edge mark Pohjantähti is open sea and unsheltered against southerly winds. A 158 m narrow passage at Keilakrunni. The last section of the fairway, 2 nautical miles before the harbour basin, is a dredged fairway, width 120 m. No significant wave formation in the inner section of the fairway or in the harbour, but  strong winds and currents from the Tornio river can affect the manoeuvring of the vessels.",
+    "fi": "Väylä on yksikaistainen, jossa on levennykset Pohjoiskraaselin ja Lehtikarin kohdalla ankkurointia, ohittamista ja kohtaamista varten. Väli Kemi 2 (karttaliitteen ulkopuolella) - RM Pohjantähti on avomerta ja suojaton etelänpuoleisille tuulille. Keilakrunnissa on 158 m leveä kapeikko. Väylän loppuosa on ruopattua kaivantoa 2 mpk pituudelta ennen satama-allasta, leveys 120 m. Sisäosalla ja satamassa ei pääse syntymään mainittavaa aallokkoa, mutta kova tuuli ja Tornionjoen virtaukset voivat vaikuttaa alusten ohjailuun.",
+    "sv": "Farleden har ett trafikstråk, men är breddad för ankring, passage och mötande trafik vid Pohjoiskraaseli och Lehtikari. Avsnittet Kemi 2 (utanför kartbilagan) - RM Pohjantähti är öppen sjö och oskyddad för S vind. Vid Keilakrunni finns en trång passage, 158 m. Ett avsnitt på 2 M av farledens innersta del före hamnbassängen är muddrat, bredd 120 m. I inloppet och i hamnen uppstår det ingen nämnvärd sjögång, men hård vind och strömmen från Torne älv kan inverka på manövreringen av fartygen."
+  },
+  "generalInfo": null,
+  "id": "tornio",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "4 lines is marked with boards.",
+    "fi": "Linjoja on 4 kpl, merkitty linjatauluin.",
+    "sv": "4 linjer, utmärkta med ensmärken."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "tornio"
+    }
+  ],
+  "windRecommendation": {
+    "en": "The critical wind speed between Etukari and Kataja is 15 m/s, direction NE - S - NW. Between Kataja and Tornio harbour the critical wind speed is 8 m/s, direction NE - S - NW. LNG carriers are piloted only when the wind speed is less than 10 m/s.",
+    "fi": "Osuudella Etukari - Kataja kriittinen tuulennopeus on 15 m/s, suunta KO - E - LU. Osuudella Kataja - Tornion satama kriittinen tuulennopeus on 8 m/s, suunta KO - E - LU. Kaasulaivojen luotsaus alle 10 m/s.",
+    "sv": "I avsnittet Etukari - Kataja är den kritiska vindhastigheten 15 m/s, riktning NO - S - NV. I avsnittet Kataja - Torneå hamn är den kritiska vindhastigheten 8 m/s, riktning NO - S - NV. Lotsning av LNG-fartyg under 10 m/s."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 25,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718863195362,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "Between the approach and the edge mark Pohjantähti there is ice movement in autumn and spring, which can cause buoys and spar buoys to be pressed under ice surface. Ice ridges occur in wintertime from the open sea to Pohjantähti. Approx. 50 - 80 cm fast ice from Pohjantähti to the Röyttä harbour from December / January to April.",
+    "fi": "Välillä ulko-osa - RM Pohjantähti, jää liikkuessa syksyisin ja keväisin, poijut ja viitat voivat olla jään alla. Talvikautena jää ahtautumia mereltä Pohjantähteen asti. Pohjantähdestä Röyttän satamaan yleensä n. 50 - 80 cm paksuista kiintojäätä joulu-tammikuusta huhtikuuhun saakka.",
+    "sv": "I avsnittet mellan den yttre delen och RM Pohjantähti är isen rörlig under höstar och vårar, bojarna och prickarna kan då vara tryckta under isen. På vintertid packar sig isen från öppna havet ända fram till Pohjantähti. Från Pohjantähti till Röyttä hamn finns i ca 50 - 80 cm fast is från december - januari till april."
+  },
+  "fairwayIds": "#25#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 35910600403,
+          "pilotJourney": 22.5
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. In winter and adverse weather conditions the pilot boarding position is separately agreed.",
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Obs. Vintertid och i dåligt väder bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Arctia Karhu Ltd, tugs Ahto 3600 kw, Jääsalo, 2 x 1294 kW, and Ulla, 883 kW. To be ordered from Kemi",
+          "fi": "Arctia Karhu Oy, hinaajat Ahto 3600 kw, Jääsalo 2 x 1294 kW, Ulla 883 kW. Tilataan Kemistä.",
+          "sv": "Arctia Karhu Ab, bogserare Ahto 3600 kw, Jääsalo 2 x 1294 kW, Ulla 883 kW. Beställning från Kemi."
+        },
+        "phoneNumber": [
+          "+358468767064",
+          "+35846876062"
+        ],
+        "fax": null,
+        "email": "towing@arctia.fi"
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed in the approach 11 knots and in the entrance 6 knots.",
+    "fi": "Mitoitusnopeus ulko-osalla 11 solmua ja sisäosalla 6 solmua.",
+    "sv": "Dimensionerande fart i angöringen 11 knop och i inloppet 6 knop)."
+  }
+}

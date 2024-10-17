@@ -1,0 +1,140 @@
+{
+  "anchorage": {
+    "en": "There is an area for anchoring and overtaking in the approach, between Kemi 1 and Kemi 3. Another area for anchoring and overtaking is situated in the entrance at Inakari, on the W side of the channel, about 2 km before harbour, depth 14 - 16 m, sand seabed, cardinal marks, unsheltered from sea winds",
+    "fi": "Väylän ulko-osalla on tilaa ankkuroida ja ohittaa Kemi 1 ja Kemi 3 välillä. Sisäosalla on ankkurointi- ja ohituspaikka Inakarin kohdalla väylän länsipuolella n. 2 km ennen satamaa, syvyys 14 - 16 m, hiekkapohja, kardinaalimerkintä, suojaton merituulilla.",
+    "sv": "I angöringen finns plats för ankring och passage mellan Kemi 1 och Kemi 3. I inloppet finns plats för ankring och passage vid Inakari, ca 2 km före hamn, djup 14 - 16 m, sandbotten, kardinalutmärkning, oskyddad vid havsvindar."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Ships without advanced manoeuvring characteristics should employ tugs in the harbour if wind speed exceeds 10 m/s.",
+    "fi": "Ilman tehokkaita ohjailuominaisuuksia olevilla aluksilla on hinaajan käyttö satamassa tarpeellista yli 10 m/s tuulilla.",
+    "sv": "Fartyg utan effektiva manöveregenskaper bör anlita bogserhjälp när vindstyrkan överstiger 10 m/s."
+  },
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 100539
+    },
+    {
+      "id": 134248
+    }
+  ],
+  "name": {
+    "en": "Kemi Ajos fairway",
+    "fi": "Kemin Ajos väylä",
+    "sv": "Kemi Ajos farled"
+  },
+  "attention": null,
+  "creationTimestamp": 1687234757727,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "After Hebe the fairway narrows to 200 m and the rest of the fairway is dredged, its width being 200 m. Strong winds and heavy seas may impede navigation between Hebe and the harbour; heavy sea state all the way to the harbour. One-way traffic between Torneå - Röyttä fairway and the border of the harbor area.",
+    "fi": "Väylä kapenee Heben jälkeen 200 metriin ja väylän loppuosa on ruopattua kaivantoa 1 mpk pituudelta, leveys 200 m. Kova tuuli ja merenkäynti voivat vaikeuttaa navigointia välillä Hebe – satama, merenkäynti pääsee satamaan asti. Tornio-Röyttä väylältä siitä etenpäin yksikaistaisena satama-alueen rajalle.",
+    "sv": "Farleden blir smalare efter Hebe till 200 m och den sista sjömilen består av en uppmuddrad 200 m bred farled. Hård vind och sjögång kan försvåra navigeringen mellan Hebe och hamnen; sjögång ända in i hamn. Enkelriktad trafik mellan Torneå - Röyttä farled och  hamnområdets gräns."
+  },
+  "generalInfo": null,
+  "id": "kemiv12m",
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Four lines, the innermost marked by boards.",
+    "fi": "Linjoja on neljä, joista sisin on merkitty linjatauluin",
+    "sv": "Fyra linjer, varav den innersta utmärkt med enstavlor."
+  },
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "kesat12"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Critical wind forces for the design ship 15 m/s between Ristinmatala and Inakari, direction NE-SNW; 10 m/s between Inakari and the harbour, direction NE-S-NW.",
+    "fi": "Mitoitusalukselle kriittiset tuulirajat ovat osuudella Ristinmatala - Inakari 15 m/s, suunta KO-E-LU, osuudella Inakari - satama 10 m/s, suunta KO-E-LU.",
+    "sv": "Kritisk gräns för det dimensionerande fartyget är 15 m/s på sträckan Ristinmatala–Inakari, riktning NE-S-NW; 10 m/s på sträckan Inakari–hamnen, riktning NO-S-NV."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "primarySequenceNumber": 1,
+      "id": 10,
+      "primary": true,
+      "secondarySequenceNumber": 1
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1728638192271,
+  "pilotRoutes": [],
+  "latest": 1,
+  "iceCondition": {
+    "en": "In early winter the ice is in movement in the whole fairway and buoys and spar buoys may be pressed under ice (surface). Between Kemi 1 and Kemi 2 heavy ice ridges difficult to force. In midwinter 50-80 cm thick fast ice about 10-20 km off Ajos.",
+    "fi": "Alkutalvesta jää liikkuu koko väyläalueella, poijut ja viitat saattavat olla jään alla. Kemi 1 ja Kemi 2 välisellä alueella on yleensä pahoja jääahtaumia. Keskitalvella on 50 - 80 cm kiintojäätä Ajoksesta 10 - 20 km etäisyydellä.",
+    "sv": "I början av vintern rörlig is i hela farledsområdet, bojarna och prickar kan då vara tryckta under isen. Svåra isvallar vanliga, mellan Kemi 1 och Kemi 2. Under midvintern finns 50-80 cm tjock fastis 10-20 km utanför Ajos."
+  },
+  "fairwayIds": "#10#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 35910600403,
+          "pilotJourney": 6.9
+        },
+        {
+          "id": 44618020700,
+          "pilotJourney": 11.9
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. In winter and adverse weather conditions the pilot boarding position is separately agreed.",
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Anm. Vintertid och i dåligt väder bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Arctia Karhu Ltd, tugs Ahto 3600 kw, Jääsalo, 2 x 1294 kW, and Drago, 2 x 1360 kW. To be ordered from Kemi",
+          "fi": "Arctia Karhu Oy, hinaajat Ahto 3600 kw, Jääsalo 2 x 1294 kW, Drago, 2 x 1360 kW. Tilataan Kemistä.",
+          "sv": "Arctia Karhu Ab, bogserbåtar Ahto 3600 kw, Jääsalo 2 x 1294 kW, Drago, 2 x 1360 kW. Beställning från Kemi."
+        },
+        "phoneNumber": [
+          "+358400392904",
+          "+358400442904"
+        ],
+        "fax": null,
+        "email": "towing@arctia.fi"
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed in the approach 15 knots, from Kemi 1 to RM Hebe, the position where the safe clearance depth alters to port 11 knots.",
+    "fi": "Mitoitusnopeus ulko-osalla 15 solmua Kemi 1 - RM Hebe, haraussyvyyden muutoskohdasta satamaan 11 solmua.",
+    "sv": "Dimensionerande fart i den yttre delen 15 knop från Kemi 1 till RM Hebe, stället där det ramade djupet ändras till hamn 11 knop."
+  }
+}

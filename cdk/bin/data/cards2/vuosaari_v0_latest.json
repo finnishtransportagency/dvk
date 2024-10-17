@@ -1,0 +1,138 @@
+{
+  "anchorage": {
+    "en": "In the approach there is an anchorage area NW of Helsinki Lighthouse. When anchoring the instructions given by the pilot or the VTS centre must be followed. Areas where the channel has been widened South of Eestiluoto and west of Musta Hevonen.",
+    "fi": "Väylän ulko-osalla ankkurointialue on Helsingin majakan luoteispuolella. Ankkuroinnissa on noudatettava luotsin tai VTS - keskuksen antamia ohjeita. Eestiluodon eteläpuolella ja Musta Hevosen länsipuolella on väylän levennysalueita.",
+    "sv": "Ankringsområdet i angöringen ligger NV om Helsingfors fyr. Vid ankring bör lotsens eller VTS-centralens anvisningar följas. Farleden har breddade områden Söder om Estlotan och väster om Svarta Hästen."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": {
+    "en": "Minimum visibility for all vessels 300 m. Minimum visibility for vessels of more than 200 m in length, 1.0 nautical mile.",
+    "fi": "Näkyvyyden tulee olla vähintään 300 m kaikilla aluksilla. Lisäksi yli 200 m:n pituiselle alukselle näkyvyyttä oltava vähintään 1,0 M.",
+    "sv": "Bör vara minst 300 m för alla fartyg. Dessutom krävs minst 1,0 M sikt för fartyg med en längd över 200 m."
+  },
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 132310
+    },
+    {
+      "id": 100669
+    }
+  ],
+  "name": {
+    "en": "Vuosaari channel",
+    "fi": "Vuosaaren väylä",
+    "sv": "Nordsjöleden"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095539196,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The approach is at open sea and is unsheltered against E-S-W winds. From Eestiluoto to the harbour the channel is protected by islands and skerries.",
+    "fi": "Väylän ulko-osalla väylä on avomerta ja suojaton E-S-W- tuulille. Eestiluodosta väylä jatkuu saarien ja karien suojaamana satamaan.",
+    "sv": "Farledens yttre del är öppen sjö och oskyddad för O-S-V vind. Från Estlotan till hamnen löper farleden i skydd av holmar och skär."
+  },
+  "generalInfo": null,
+  "id": "vuosaari",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Three lines marked with boards.",
+    "fi": "Linjoja 3, merkitty linjatauluin.",
+    "sv": "Tre linjer, utmärkta med enstavlor."
+  },
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "vuosaari"
+    }
+  ],
+  "windRecommendation": {
+    "en": "The maximum wind speed is 15 m/s for vessels over 200 m in length.",
+    "fi": "Yli 200 m:n pituisilla aluksilla maksimituulennopeus 15 m/s.",
+    "sv": "Max. vindhastighet 15 m/s för fartyg med en längd av 200 m eller mera."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": false,
+      "id": 4921,
+      "primary": false
+    },
+    {
+      "secondary": true,
+      "id": 4927,
+      "primary": true
+    }
+  ],
+  "speedLimit": {
+    "en": "During the winter season (1 November - 31 March) a speed limit of 24/h will be in force (in the channel) between Krokholmshället and Vuosaari Harbour.",
+    "fi": "Talvikaudella (1.11 - 31.3) Vuosaaren väylän välillä Krokholmshället - Vuosaaren satama on voimassa vuosittain jatkuva nopeusrajoitus 24 km/h.",
+    "sv": "Under vintersäsongen (1.11 - 31.3) är en fartbegränsning 24 km/h i kraft (I farleden) mellan Krokholmshället och Nordsjö hamn."
+  },
+  "modificationTimestamp": 1718776035584,
+  "pilotRoutes": [],
+  "latest": 1,
+  "iceCondition": {
+    "en": "Ice usually causes problems only in the harbour basins, where slush may make manoeuvring difficult. Occasional ice ridging in the areas S and N of Eestiluoto.",
+    "fi": "Jää ongelmia esiintyy yleensä vain satama-altaissa, joissa jääsohjo saattaa vaikeuttaa aluksen käsittelyä. Ajoittain ahtautumista saattaa esiintyä Eestiluodon etelä- ja pohjoispuoleisilla alueilla.",
+    "sv": "Isproblem förekommer vanligen endast i hamnbassängerna, där issörja kan försvåra manövreringen. Tidvis vallbildning i områdena S och N om Estlotan."
+  },
+  "fairwayIds": "#4921#4927#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Helsinki VTS, sector 1",
+          "fi": "Helsinki VTS, sektori 1",
+          "sv": "Helsingfors VTS, sektor 1"
+        },
+        "phoneNumber": "+358204485385",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 71
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 1640000305,
+          "pilotJourney": 9
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs available.",
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privata bogserbåtar vid behov."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed (in the approach / in the entrance): 15 / 14 knots (container), 12.5 / 11.5 knots (bulk).",
+    "fi": "Mitoitusnopeus (ulko-osa / sisäosa): 15 / 14 solmua (konttialus), 12,5 / 11,5 solmua (bulk-alus).",
+    "sv": "Dimensionerande fart (i angöringen / i inloppet): 15 / 14 knop (container), 12,5 / 11,5 knop (bulk)."
+  }
+}

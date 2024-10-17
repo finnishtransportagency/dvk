@@ -1,0 +1,199 @@
+{
+  "phoneNumber": [
+    "+358447334550"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "status": "PUBLIC",
+  "modifier": "System",
+  "email": "satama@portofnaantali.fi",
+  "name": {
+    "en": "Port of Naantali",
+    "fi": "Naantalin satama",
+    "sv": "Nådendals hamn"
+  },
+  "cargo": {
+    "en": "Suomen Viljava: 2 cranes for loading/unloading of grain, cranes available from private companies",
+    "fi": "Suomen Viljava: 2 kpl viljan purkaus/lastauslaitteita, operaattoreilla mobiilinostureita",
+    "sv": "Suomen Viljava: 2 stycken kranar för lastning/lossning av spannmål"
+  },
+  "modificationTimestamp": 1683095540278,
+  "company": {
+    "en": "Port of Naantali",
+    "fi": "Naantalin Satama Oy",
+    "sv": "Nådendals hamn"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "quay 15-17, coal and grain",
+        "fi": "laituri 15-17, hiili- ja viljalaituri",
+        "sv": "kaj 15-17, stenkols- och spannmålskaj"
+      },
+      "length": 370,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.0494,
+          60.45713
+        ]
+      },
+      "sections": [
+        {
+          "depth": 13
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "quay 20, ferry/Finnlink",
+        "fi": "laituri 20, lauttalaituri/Finnlink",
+        "sv": "kaj 20, färjekaj/Finnlink"
+      },
+      "length": 200,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.04414,
+          60.45737
+        ]
+      },
+      "sections": [
+        {
+          "depth": 7.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "quay 22, small craft use",
+        "fi": "laituri 22, pienaluskäytössä",
+        "sv": "kaj 22, i småbåtsbruk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.0428,
+          60.45761
+        ]
+      }
+    },
+    {
+      "name": {
+        "en": "quay 23-24, rockmaterial",
+        "fi": "laituri 23-24, kivilaituri",
+        "sv": "kaj 23-24, stenkaj"
+      },
+      "length": 170,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03924,
+          60.45809
+        ]
+      },
+      "sections": [
+        {
+          "depth": 7.9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "quay 25, sugar",
+        "fi": "laituri 25, sokerilaituri",
+        "sv": "kaj 25, sockerkaj"
+      },
+      "length": 50,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03782,
+          60.45825
+        ]
+      },
+      "sections": [
+        {
+          "depth": 4.5
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "quay 26",
+        "fi": "laituri 26",
+        "sv": "kaj 26"
+      },
+      "length": 150,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03736,
+          60.45766
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "quay 27",
+        "fi": "laituri 27",
+        "sv": "kaj 27"
+      },
+      "length": 180,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03649,
+          60.4579
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "quay 30, Luonnonmaa",
+        "fi": "laituri 30, Luonnonmaa",
+        "sv": "kaj 30, Luonnonmaa"
+      },
+      "length": 130,
+      "sections": [
+        {
+          "depth": 7.7
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "quay 31, Luonnonmaa",
+        "fi": "laituri 31, Luonnonmaa",
+        "sv": "kaj 31, Luonnonmaa"
+      },
+      "length": 60,
+      "sections": [
+        {
+          "depth": 7.7
+        }
+      ]
+    }
+  ],
+  "creationTimestamp": 1683095540278,
+  "id": "naantali",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      22.04174,
+      60.45883
+    ]
+  }
+}

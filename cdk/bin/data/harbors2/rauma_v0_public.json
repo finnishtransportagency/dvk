@@ -1,0 +1,192 @@
+{
+  "phoneNumber": [
+    "+358283711",
+    "+358500597579"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "internet": "http://www.portofrauma.com",
+  "status": "PUBLIC",
+  "modifier": "System",
+  "email": "office@portofrauma.com",
+  "name": {
+    "en": "Port of Rauma",
+    "fi": "Rauman satama",
+    "sv": "Raumo hamn"
+  },
+  "cargo": {
+    "en": "http://www.portofrauma.com",
+    "fi": "http://www.portofrauma.com",
+    "sv": "http://www.portofrauma.com"
+  },
+  "modificationTimestamp": 1683095540421,
+  "company": {
+    "en": "Port of Rauma Oy, Rauma",
+    "fi": "Rauman Satama Oy, Rauma",
+    "sv": "Rauman Satama Oy, Rauma"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Petäjäs",
+        "fi": "Petäjäs",
+        "sv": "Petäjäs"
+      },
+      "length": 495,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.42912,
+          61.1315
+        ]
+      },
+      "sections": [
+        {
+          "depth": 11
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Konttilaituri (old)",
+        "fi": "Konttilaituri (vanha)",
+        "sv": "Konttilaituri (gammal)"
+      },
+      "length": 160,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.42853,
+          61.13033
+        ]
+      },
+      "sections": [
+        {
+          "depth": 11
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Konttilaituri (new)",
+        "fi": "Konttilaituri (uusi)",
+        "sv": "Konttilaituri (ny)"
+      },
+      "length": 350,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.42672,
+          61.13018
+        ]
+      },
+      "sections": [
+        {
+          "depth": 13.6
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Iso-Hakuni",
+        "fi": "Iso-Hakuni",
+        "sv": "Iso-Hakuni"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.43475,
+          61.12654
+        ]
+      },
+      "sections": [
+        {
+          "depth": 11
+        }
+      ],
+      "extraInfo": {
+        "en": "5 side/stern ramp berths",
+        "fi": "5 sivu/peräporttipaikkaa",
+        "sv": "5 sidoports/akterportsplatser, ramat djup"
+      }
+    },
+    {
+      "name": {
+        "en": "Oil Harbour",
+        "fi": "Öljylaituri",
+        "sv": "Oljehamnen"
+      },
+      "sections": [
+        {
+          "depth": 9.15
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.45246,
+          61.12565
+        ]
+      }
+    },
+    {
+      "name": {
+        "en": "Central Harbour",
+        "fi": "Keskussatama",
+        "sv": "Centralhamnen"
+      },
+      "length": 605,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.45209,
+          61.12703
+        ]
+      },
+      "sections": [
+        {
+          "depth": 6.7
+        },
+        {
+          "depth": 7.5
+        }
+      ],
+      "extraInfo": {
+        "en": "stern ramp berth",
+        "fi": "peräporttipaikka",
+        "sv": "akterportsplats, ramade djup"
+      }
+    },
+    {
+      "name": {
+        "en": "Laitsaari and chemical quay",
+        "fi": "Laitsaari ja kemikaalilaituri",
+        "sv": "Laitsaari och kemikaliekajen"
+      },
+      "length": 347,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.45771,
+          61.12715
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.85
+        }
+      ]
+    }
+  ],
+  "creationTimestamp": 1683095540421,
+  "id": "rauma",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.42929,
+      61.12878
+    ]
+  }
+}

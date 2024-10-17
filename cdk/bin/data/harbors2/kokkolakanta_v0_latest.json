@@ -1,0 +1,128 @@
+{
+  "phoneNumber": [
+    "+35868242400"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of turning circles: in General Port at the chemical terminal 400 m, at Quay 1 and 2 and the AWT 250 m.",
+    "fi": "Kääntöympyröiden halkaisijat: Kantasataman kemikaalilaiturin edustalla 400 m, laitureiden 1 ja 2 sekä AW-terminaalin edustalla 250 m.",
+    "sv": "Svängcirklarnas diametrar: vid kemikaliekajen i Stamhamnen 400 m, vid kaj 1 och 2 samt vid AW-terminalen 250 m."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Kokkola General Port",
+    "fi": "Kokkolan kantasatama",
+    "sv": "Karleby stamhamn"
+  },
+  "cargo": {
+    "en": "Two eight-ton cranes in the General Port. One 50-ton bridge crane at the AWT. One 60-ton crane in the port area.",
+    "fi": "Kantasatamassa 2 kpl 8 t nostureita. AW-terminaalissa 50 t siltanosturi. Lisäksi satamassa liikkuva 60 t nosturi.",
+    "sv": "I Stamhamnen 2 st. 8 t kranar. Vid AW-terminalen 50 t brokran. Därtill mobil 60 t kran."
+  },
+  "modificationTimestamp": 1683095539402,
+  "company": {
+    "en": "Port of Kokkola",
+    "fi": "Kokkolan satama, Kokkola",
+    "sv": "Karleby hamn, Karleby"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay 1",
+        "fi": "Laituri 1",
+        "sv": "Kaj 1"
+      },
+      "length": 150,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.02316,
+          63.84334
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.4
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 2",
+        "fi": "Laituri 2",
+        "sv": "Kaj 2"
+      },
+      "length": 150,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.02013,
+          63.84375
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.3
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 5 (chemical terminal)",
+        "fi": "Laituri 5 (kemikaalilaituri)",
+        "sv": "Kaj 5 (kemikaliekaj)"
+      },
+      "length": 83,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.01061,
+          63.85065
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "AWT",
+        "fi": "AW-terminaali",
+        "sv": "AW-terminalen"
+      },
+      "length": 125,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.01849,
+          63.84465
+        ]
+      },
+      "sections": [
+        {
+          "depth": 9.1
+        }
+      ],
+      "extraInfo": {
+        "en": "Basin 25 m x 125 m, max. height 24 m.",
+        "fi": "Altaan koko 25 m x 125 m, max. korkeus 24 m.",
+        "sv": "Bassängyta 25 m x 125 m, max. höjd 24 m."
+      }
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095539402,
+  "id": "kokkolakanta",
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      23.02009,
+      63.84744
+    ]
+  }
+}

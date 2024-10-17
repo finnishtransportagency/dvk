@@ -1,0 +1,109 @@
+{
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "forby"
+    }
+  ],
+  "creator": "System",
+  "status": "PUBLIC",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 3725,
+      "primary": true
+    }
+  ],
+  "group": "1",
+  "windGauge": {
+    "en": "Hanko pilot station.",
+    "fi": "Hangon luotsiasemalla.",
+    "sv": "Hangö lotsstation"
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Fläckgrund-Förby channel",
+    "fi": "Förbyn väylä",
+    "sv": "Farleden Förby"
+  },
+  "modificationTimestamp": 1683095537796,
+  "latest": 1,
+  "iceCondition": {
+    "en": "Southerly winds can at times cause ridges in the outer fairway. During normal winters there is fast ice between Stubbkål and the harbour.",
+    "fi": "Väylän alkuosalla voi etelänpuoleisilla tuulilla esiintyä ajoittain jääahtaumia. Välillä Stubbkål satama normaalitalvina kiintojäätä.",
+    "sv": "I yttre delen av farleden kan det vid S vindar tidvis förekomma isvallar. Under normala vintrar är det fastis mellan Stubbkål och hamnen."
+  },
+  "creationTimestamp": 1683095537796,
+  "navigationCondition": {
+    "en": "In the outer fairway navigation can be hampered by hard S-W winds and heavy seas. From Skataudden to Förby harbour the fairway is sheltered by islands. The narrowest part of the fairway is NW of Liesniemi, width 135 m. Vessels with a maximum draught should take the suction effect into consideration.",
+    "fi": "Väylän alkuosalla kova etelän-lännen puoleinen tuuli ja merenkäynti voivat vaikeuttaa navigointia. Skatauddenista väylä jatkuu saarien hyvin suojaamana Förbyn satamaan. Väylän kapein kohta on Liesniemen luoteispuolella, leveys 135 m. Maksimisyvyydessä kulkevien alusten on huomioitava mahdollinen imuvaikutus aluksen ohjailuun",
+    "sv": "I yttre delen av farleden kan hård S-V vind och sjögång försvåra navigationen. Från Skataudden fortsätter farleden i skydd av öar till Förby hamn. Farledens smalaste ställe är NV om Liesniemi, bredd 135 m. Fartyg med maximalt djupgående ska vid manövreringen beakta den eventuella sugeffekten."
+  },
+  "fairwayIds": "#3725#",
+  "id": "flackgrund",
+  "n2000HeightSystem": false,
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Archipelago VTS",
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "vhf": [
+          {
+            "channel": 71
+          }
+        ],
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ]
+      },
+      {
+        "name": {
+          "en": "Hanko VTS",
+          "fi": "Hanko VTS",
+          "sv": "Hanko VTS"
+        },
+        "phoneNumber": "+358204485388",
+        "vhf": [
+          {
+            "channel": 67
+          }
+        ],
+        "email": [
+          "hanko.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 22793122400
+        },
+        {
+          "id": 23269122400,
+          "pilotJourney": 27.4
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": "https://www.pilotonline.fi"
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs available.",
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov."
+        }
+      }
+    ]
+  },
+  "lineText": {
+    "en": "7 lines marked with sector lights and boards.",
+    "fi": "Linjoja 7 kpl jotka merkitty sektoriloistoin ja linjatauluin.",
+    "sv": "7 linjer, utmärkta med sektorfyrar och enstavlor."
+  }
+}

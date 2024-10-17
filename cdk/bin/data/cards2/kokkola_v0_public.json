@@ -1,0 +1,131 @@
+{
+  "anchorage": {
+    "en": "There is a sheltered anchorage area, marked by cardinal marks, in the southern part of the Ykspihlaja line. Depth 14,8 m, silt bottom, diameter of turning circle is 900 m. Adjacent to the anchorage area, east of the fairway, there is an area where anchoring is prohibited.",
+    "fi": "Väylällä on suojainen kardinaalipoijuin merkitty ankkurointipaikka Ykspihlajan linjan eteläpäässä, syvyys 14,8 m, pehmeä silttipohja, kääntöympyrän halkaisija 900 m. Ankkurointialueen kohdalla väylän itäpuolella on kapea ankkurointikieltoalue.",
+    "sv": "I södra delen av Yxpilalinjen finns en skyddad ankarplats som är utmärkt med kardinalbojar. Djup 14,8 m, slambotten, svängcirkelns diameter 900 m. Utanför Djuphamn, öster om farleden, finns ett område där ankring är förbjuden."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134250
+    }
+  ],
+  "name": {
+    "en": "Kokkola fairway",
+    "fi": "Kokkolan väylä",
+    "sv": "Karleby farled"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Pietarsaari mareograph.",
+    "fi": "Pietarsaaren mareografi.",
+    "sv": "Jakobstad mareograf."
+  },
+  "creationTimestamp": 1683095537101,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "Open sea from Kokkola Lighthouse to Bergbådan, exposed to westerly and north-westerly winds. From Bergbådan the fairway (dredged almost in its entirety) passes in between shoals to the port.",
+    "fi": "Väylän ulko-osa Kokkolan majakalta Bergbådaniin on avomerta ja suojaton L ja KO tuulille. Bergbådanista väylä jatkuu lähes kauttaaltaan ruopattuna matalikkojen välitse Kokkolan satamaan.",
+    "sv": "Öppen sjö från fyren Kokkola till Bergbådan, oskyddad för vind från V och NO. Därefter går farleden mellan grund men är nästan helt och hållet muddrad."
+  },
+  "generalInfo": null,
+  "id": "kokkola",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Five lines, marked with boards, edge marks, buoys, spar buoys in combined use.",
+    "fi": "Linjoja 5 kpl, merkintä perustuu linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",
+    "sv": "Fem linjer, utmärkningen med ensmärken, randmärken, bojar och prickar i en gemensam kombination."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "kokkolasyva"
+    },
+    {
+      "id": "kokkolakanta"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 427,
+      "primary": true
+    },
+    {
+      "secondary": false,
+      "id": 432,
+      "primary": false
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718864473194,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "The ice is in constant movement between Kokkola Lighthouse and Bergbådan virtually during the whole winter, between Bergbådan and Repskär in beginning of winter and spring, and it may cause buoys and spar buoys to be pressed under ice (surface). From Repskär to the port there is normally fast ice during the whole winter.",
+    "fi": "Välillä Kokkolan majakka - Bergbådan jäät liikkuvat poikkeuksetta lähes koko talven. Bergbådanista Repskäriin jäät liikkuvat alkutalvesta ja keväisin, jolloin poijut ja viitat saattavat olla jään alla. Välillä Repskär - Kokkolan satama on talvella yleensä kiintojäätä.",
+    "sv": "Mellan fyren Kokkola och Bergbådan är isarna i rörelse praktiskt taget hela vintern, mellan Bergbådan och Repskär bara i början av vintern och våren. Bojarna och prickarna kan då vara tryckta under isen. Avsnittet från Repskär till hamnen är normalt under vintern vanligen täckt av fast is."
+  },
+  "fairwayIds": "#427#432#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 27900501,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Yxpila Hinaus-Bogsering Oy Ab.",
+          "fi": "Yxpila Hinaus-Bogsering Oy Ab:n hinaajat.",
+          "sv": "Yxpila Hinaus-Bogsering Oy Ab:s bogserare."
+        },
+        "phoneNumber": [
+          "+358102190750"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed in the approach 13 knots, in the entrance 10 knots.",
+    "fi": "Mitoitusnopeus ulko-osalla 13 solmua ja sisäosalla 10 solmua.",
+    "sv": "Dimensionerande fart i den yttre delen 13 knop, i den inre delen 10 knop."
+  }
+}

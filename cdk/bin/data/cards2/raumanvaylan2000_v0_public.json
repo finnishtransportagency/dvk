@@ -1,0 +1,131 @@
+{
+  "anchorage": {
+    "en": "Anchorage SW of Rauma Lighthouse in the outer channel; take caution to avoid the cable situated S of the lighthouse.",
+    "fi": "Väylän ulko-osalla voi ankkuroida Rauman majakan lounaispuolella; varottava majakan eteläpuolella olevaa kaapelia.",
+    "sv": "I farledens yttre del ankringsmöjlighet V om Raumo fyr; se upp för kabeln S om fyren."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Vessels larger than the design ship and vessels with difficult manoeuvrability are only piloted in daytime.",
+    "fi": "Mitoitusalusta suurempia sekä vaikeasti ohjattavia aluksia luotsataan vain valoisana aikana.",
+    "sv": "Fartyg som är större än det dimensionerande fartyget, liksom svårmanövrerade fartyg lotsas bara under den ljusa tiden av dygnet."
+  },
+  "status": "PUBLIC",
+  "visibility": {
+    "en": "The Urmluoto lines shall be visible at night.",
+    "fi": "Urmluodon linjojen tulee olla yöllä näkyvissä.",
+    "sv": "Urmluotolinjerna bör vara synliga nattetid."
+  },
+  "group": "1",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134224
+    }
+  ],
+  "name": {
+    "en": "Rauma channel N2000",
+    "fi": "Rauman väylä N2000",
+    "sv": "Raumo farled N2000"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1701170730056,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The outer channel until Rihtniemi consists of open sea and is unsheltered against S-W-N winds. From Rihtniemi, the channel continues sheltered by skerries, islands and mainland and densely marked with edge marks to the Port of Rauma. On the Urmluoto line, in the Kovankivet passage, the manoeuvrability of large vessels may be restricted by cross currents. Strong side winds increase drift.",
+    "fi": "Väylän ulko-osa Rihtniemeen asti on avomerta ja suojaton S-W-N tuulille. Rihtniemestä väylä jatkuu karien, saarien ja mantereen suojaamana kapeana ja tiheästi reunamerkittynä väylänä Rauma satamaan. Urmluodon linjalla Kovankivien kapeikossa saattaa esiintyä suurten alusten ohjailua vaikeuttavia poikittaisvirtauksia. Voimakkaat sivutuulet lisäävät myös sortoa.",
+    "sv": "Ytter om Rihtniemi består farleden av öppet hav och är oskyddad för S-V-N vindar. Efter Rihtniemi fortsätter den smala och tätt randmärkta farleden skyddad av grund, holmar och fastlandet ända till Raumo hamn. På Urmluotolinjen i passagen vid Kovankivet kan det förekomma tvärströmning, som försvårar manövreringen av stora fartyg. Kraftiga sidovindar ökar också avdriften."
+  },
+  "generalInfo": null,
+  "id": "raumanvaylan2000",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Four lines.",
+    "fi": "Linjoja on 4.",
+    "sv": "4 linjer."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "raumasatn2000"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Vessels with a length under 210 m; maximum speed of drift-inducing wind gusts 18 m/s in daytime and 15 m/s at night. Vessels with a length over 210 m; maximum speed of drift-inducing wind gusts 15 m/s in the daytime and 12 m/s at night. Lower limits for ro-ro vessels and ships in ballast. Drift-inducing wind refers to wind which deviates from the Urmluoto line by more than 30°. Pilotage is discontinued when the wind speed exceeds 20 m/s.",
+    "fi": "Laivan pituuden ollessa alle 210 m; sortavan tuulen maksiminopeus puuskissa 18 m/s päivällä ja 15 m/s yöllä. Laivan pituuden ollessa yli 210 m; sortavan tuulen maksiminopeus puuskissa 15 m/s päivällä ja 12 m/s yöllä. Ro-ro- ja painolastialuksille rajoitusarvot ovat alhaisempia. Sortava tuuli on tuuli, joka poikkeaa Urmluodon linjasta yli 30 astetta. Luotsausta ei suoriteta tuulennopeuden ollessa yli 20 m/s.",
+    "sv": "Gäller fartyg med en längd under 210 m: Vinden kan pressa mot fartygen med en maximihastighet av 18 m/s i byarna dagtid och 15 m/s nattetid. Gäller fartyg med en längd över 210 m: Vinden kan pressa mot fartygen med en maximihastighet av 18 m/s i byarna dagtid och 15 m/s nattetid. För ro/ro-fartyg och fartyg i barlast gäller lägre maximivärden. Med pressande vind avses en vind som avviker från Urmluotolinjen mer än 30 grader. Lotsning utförs inte om vindhastigheten överstiger 20 m/s."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 2295,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718777817344,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "In winter, there may be moving ice fields in the area off Hylkikarta. Moving ice may cause buoys to be pressed beneath the surface and their lighting devices may be damaged.",
+    "fi": "Talvella jääkentät liikkuvat väylällä Hylkikartan ulkopuolisella alueella. Jäiden liikkuessa poijut voivat olla painuneina jään alle ja niiden valolaitteet voivat olla vahingoittuneet.",
+    "sv": "Vintertid är isfälten i rörelse ytter om Hylkikarta. Bojarna kan då vara tryckta under ytan och lysanordningarna skadade."
+  },
+  "fairwayIds": "#2295#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "West Coast VTS",
+          "fi": "West Coast VTS",
+          "sv": "West Coast VTS"
+        },
+        "phoneNumber": "+358204486645",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 9
+          }
+        ],
+        "email": [
+          "westcoast.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 42930622400,
+          "pilotJourney": 10
+        }
+      ],
+      "phoneNumber": "+358295253450",
+      "fax": null,
+      "email": "pilotdispatch.westcoast@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Alfons Håkan's tugs (ASD and conventional). Tugs shall be ordered at least 2 h in advance.",
+          "fi": "Alfons Håkansin hinaajat (ASD ja konventionaalinen). Ennakkotilausaika min. 2 h.",
+          "sv": "Alfons Håkans bogserbåtar (ASD och konventionell). Beställning görs minst 2 timmar i förväg."
+        },
+        "phoneNumber": [
+          "+358400521854"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed in the outer channel (safe clearance depth=14.1 m) 12 knots and in the inner channel 10 knots (safe clearance depth 13.6 m).",
+    "fi": "Mitoitusnopeus väylän ulko-osalla (hs=14,1 m) on 12 solmua ja sisäosalla (hs=13,6 m) 10 solmua.",
+    "sv": "Dimensionerande fart 12 knop i farledens yttre del (rd=14,1 m) och 10 knop i farledens inre del (rd=13,6 m)."
+  }
+}

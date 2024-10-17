@@ -1,0 +1,147 @@
+{
+  "anchorage": {
+    "en": "NW of the Gustavsvärn sector light in the vicinity of the fairway.",
+    "fi": "Gustavsvärnin sektoriloiston luoteispuolella väylän läheisyydessä.",
+    "sv": "NO om Gustavsvärns sektorfyr i närheten av farleden."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "DRAFT",
+  "visibility": {
+    "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\nLorem ipsum dolor sit amet, consectetur adipiscing el",
+    "fi": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\nLorem ipsum dolor sit amet, consectetur adipiscing el",
+    "sv": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\nLorem ipsum dolor sit amet, consectetur adipiscing el"
+  },
+  "group": "2",
+  "modifier": "System",
+  "name": {
+    "en": "Hanko channel - test",
+    "fi": "Hangon meriväylä - ylläpito testaa",
+    "sv": "Hangö havsfarled - test"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\nLorem ipsum dolor sit amet, consectetur adipiscing el",
+    "fi": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet.=Lorem ipsum dolor sit amet, consectetur adipiscing el",
+    "sv": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen Lorem ipsum dolor sit amet, consectetur adipiscing el"
+  },
+  "creationTimestamp": 1694157610260,
+  "navigationCondition": null,
+  "generalInfo": null,
+  "id": "hankotesti",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aenean at enim et nunc accumsan imperdiet. Fusce consectetur leo est, ut efficitur quam interdum sit amet. Sed sit amet leo tincidunt, fermentum purus at, ornare libero. Phasellus faucibus magna nec nibh egestas, eu mattis purus mollis. Sed at magna in magna semper ornare. Integer imperdiet enim vel congue pellentLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ult",
+    "fi": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\nLorem ipsum dolor sit amet, consectetur adipiscing el",
+    "sv": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aenean at enim et nunc accumsan imperdiet. Fusce consectetur leo est, ut efficitur quam interdum sit amet. Sed sit amet leo tincidunt, fermentum purus at, ornare libero. Phasellus faucibus magna nec nibh egestas, eu mattis purus mollis. Sed at magna in magna semper ornare. Integer imperdiet eLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. AenLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at placerat leo rutrum at. Phasellus interdum varius justo sit amet imperdiet. Aen\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis,vida euismod vel euismod nunc. Mauris facilisis a mauris sit amet tempus.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ultrices lorem felis, at"
+  },
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "hanko"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 4110,
+      "primary": true
+    },
+    {
+      "secondary": false,
+      "id": 2450,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 3650,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 2455,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 4160,
+      "primary": false
+    }
+  ],
+  "windGauge": {
+    "en": "Hanko pilot station.",
+    "fi": "Hangon luotsiasemalla.",
+    "sv": "Hangö lotsstation."
+  },
+  "speedLimit": null,
+  "modificationTimestamp": 1707132623089,
+  "latest": 1,
+  "iceCondition": {
+    "en": "Very variable ice conditions. The fairway can be open all winter or there can be formation of thin ice.",
+    "fi": "Jääolosuhteet ovat erittäin vaihtelevat. Väylä voi olla avoin koko talven tai siihen muodostuu vain ohut jääpeite.",
+    "sv": " Mycket varierande isförhållanden. Farleden kan vara öppen hela vintern eller så bildas det bara ett tunt istäcke."
+  },
+  "fairwayIds": "#4110#2450#3650#2455#4160#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Hanko VTS",
+          "fi": "Hanko VTS",
+          "sv": "Hangö VTS"
+        },
+        "phoneNumber": "+358204485388",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 22793122400,
+          "pilotJourney": null
+        },
+        {
+          "id": 23269122400,
+          "pilotJourney": null
+        },
+        {
+          "id": 177228055000,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs available.",
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "designSpeed": {
+    "en": "Design speed 16 knots.",
+    "fi": "Mitoitusnopeus väylällä 16 solmua.",
+    "sv": "Dimensionerande fart 16 knop."
+  }
+}

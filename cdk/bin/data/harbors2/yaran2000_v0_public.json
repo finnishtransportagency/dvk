@@ -1,0 +1,71 @@
+{
+  "phoneNumber": [
+    "+358505240072"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": null,
+  "modifier": "System",
+  "email": null,
+  "name": {
+    "en": "Yara Oy N2000",
+    "fi": "Yara Oy N2000",
+    "sv": "Yara Oy N2000"
+  },
+  "cargo": {
+    "en": "2 eight-ton cranes, 2 loaders.",
+    "fi": "2 kpl 8 t nostureita, 2 kpl lastaimia.",
+    "sv": "2 st 8 t kranar, 2 st lastare."
+  },
+  "modificationTimestamp": 1715932989437,
+  "company": {
+    "en": "Yara Suomi Oy",
+    "fi": "Yara Suomi Oy",
+    "sv": "Yara Suomi Oy"
+  },
+  "quays": [
+    {
+      "length": 330,
+      "name": {
+        "en": "Quay Yara",
+        "fi": "Yaran laituri",
+        "sv": "Yara kajen"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.33948,
+          60.79436
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 13.5
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": {
+    "en": "Maximum length of inbound vessels restricted to 225 m.",
+    "fi": "Satamaan saapuvien alusten maksimipituus on rajoitettu 225 metriin.",
+    "sv": "Maximilängden på fartyg som anlöper hamnen är begränsad till 225 m."
+  },
+  "creationTimestamp": 1715928345560,
+  "id": "yaran2000",
+  "fax": "+358102153000",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.33964,
+      60.79429
+    ]
+  }
+}

@@ -1,0 +1,114 @@
+{
+  "anchorage": {
+    "en": "Anchorage W of pilot boarding position. At the extension of the Suokari-line and E of the Pihlus-line a supplementary area has been secured by sweeping.",
+    "fi": "Luotsipaikan länsipuolella voi ankkuroida. Suokarin linjan jatkeella Pihluksen linjan itäpuolella on haraamalla varmistettu lisäalue.",
+    "sv": "Ankring V om lotsplatsen. Ett tilläggsområde har kontrollerats med ramning vid fortsättningen av Suokari-linjen O om Pihlus-linjen."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Vessels with a draught exceeding 7 m have a speed limit of 8 kn (15 km/h). If a higher speed is required in order to manoeuvre the vessel, the Rauma channel (12.0 m) shall be used. Vessels larger than the design vessel shall also use the 12.0-metre channel. ",
+    "fi": "Yli 7 m syväyksessä kulkeville aluksille on väylällä nopeusrajoitus 8 kn (15 km/h). Aluksen ohjailun vaatiessa suurempaa nopeutta tulee sen käyttää 12 m väylää. Mitoitusalusta suuremman aluksen tulee käyttää 12 m väylää.",
+    "sv": "Fartyg med djupgående på över 7 m har fartbegränsningen 8 knop (15 km/h). Om det krävs högre hastighet för att manövrera fartyget skall 12 m-farleden användas. Fartyg som är större än det dimensionerande fartyget skall också använda 12 m-farleden."
+  },
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "1",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134224
+    }
+  ],
+  "name": {
+    "en": "Rauma, Valkeakari channel N2000",
+    "fi": "Rauman Valkeakarin väylä N2000",
+    "sv": "Valkeakarileden till Raumo N2000 "
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1700564095932,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The outer channel consists of open sea and is unsheltered against S-W-N winds. From Pihlus the channel continues sheltered by skerries and islands with scarce edge marking to the Port of Rauma. The minimum width of the channel on the Suokari-line is 123 m, on the Pihlus-line 120 m and on the Valkeakari-line 140 m. At Valkeakari there is a narrow s-shaped bend. The channel is more sheltered than the 12.0-metre fairway to the Port of Rauma.",
+    "fi": "Väylän ulko-osa on avomerta ja suojaton S-W-N tuulille. Pihluksesta väylä jatkuu karien ja saarien suojaamana harvalla reunamerkinnällä varustettuna Rauman satamaan. Väylän leveys on Suokarin linjalla kapeimmillaan 123 m, Pihluksen linjalla 120 m ja Valkeakarin linjalla 140 m. Väylä on suojaisempi kuin Rauman satamaan johtava 12,0 m väylä.",
+    "sv": "Farledens yttre del består av öppet hav och är oskyddad för vind från S-V-N. Från Pihlus fortsätter farleden i skydd av skär och holmar med enstaka randmärken till Raumo hamn. Farledens minsta bredd är 123 m på Suokari-linjen, 120 m på Pihlus-linjen och 140 m på Valkeakari-linjen. En trång s-formad krök vid Valkeakari. Farleden är mera skyddad än 12,0 m-leden till Raumo hamn."
+  },
+  "generalInfo": null,
+  "id": "valkeakn2000",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Three lines marked with boards.",
+    "fi": "Linjoja 3 kpl, jotka merkitty linjatauluin.",
+    "sv": "Tre linjer, utmärkta med enstavlor."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "raumasatn2000"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 2265,
+      "primary": true
+    }
+  ],
+  "speedLimit": {
+    "en": "Vessels with a draught exceeding 7 m have a speed limit of 8 kn (15 km/h). If a higher speed is required in order to manoeuvre the vessel, the Rauma channel (12.0 m) shall be used. Vessels larger than the design vessel shall also use the 12.0-metre channel.",
+    "fi": "Yli 7 m syväyksessä kulkeville aluksille on väylällä nopeusrajoitus 8 kn (15 km/h). Aluksen ohjailun vaatiessa suurempaa nopeutta tulee sen käyttää 12 m väylää. Mitoitusalusta suuremman aluksen tulee käyttää 12 m väylää.",
+    "sv": "Fartyg med djupgående på över 7 m har fartbegränsningen 8 knop (15km/h). Om det krävs högre hastighet för att manövrera fartyget skall 12 m-farleden användas. Fartyg som är större än det dimensionerande fartyget skall också använda 12 m-farleden."
+  },
+  "modificationTimestamp": 1718777848846,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "In winter ice fields are moving in the outer channel as far as Pihlus. Ice movement may cause buoys to be pressed beneath the surface and their lighting devices may be damaged. Under severe ice conditions the channel is closed to traffic.",
+    "fi": "Talvella jääkentät liikkuvat väylän ulko-osalla Pihlukseen asti. Jäiden liikkuessa poijut voivat olla ajoittain jään alla ja valopoijujen valolaitteet voivat olla vahingoittuneet. Jääolosuhteiden vaikeutuessa väylä suljetaan liikenteeltä.",
+    "sv": "På vintern rör sig isfält i farledens yttre del ända till Pihlus. Då isfälten är i rörelse kan bojarna tidvis vara tryckta under ytan och lysanordningarna skadade. Vid svåra isförhållanden stängs farleden för trafik."
+  },
+  "fairwayIds": "#2265#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "West Coast VTS",
+          "fi": "West Coast VTS",
+          "sv": "West Coast VTS"
+        },
+        "phoneNumber": "+358204486645",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 9
+          }
+        ],
+        "email": [
+          "westcoast.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 42930622400,
+          "pilotJourney": 10
+        }
+      ],
+      "phoneNumber": "+358295253450",
+      "fax": null,
+      "email": "pilotdispatch.westcoast@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "The icebreakers do not assist vessels in the channel.",
+        "fi": "Jäänmurtajat eivät avusta väylällä liikennöiviä aluksia.",
+        "sv": "Isbrytarna assisterar inte fartyg som trafikerar farleden."
+      }
+    },
+    "tugs": null
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

@@ -1,0 +1,144 @@
+{
+  "anchorage": {
+    "en": "Anchoring is possible at the harbour entrance in Kruunuvuorenselkä.",
+    "fi": "Ankkuroida voi sataman edustalla olevalle Kruunuvuorenselälle.",
+    "sv": "Fartyg kan ankra vid hamninloppet i Kronobergsfjärden."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": {
+    "en": "Minimum visibility for all vessels 300 m. For vessels over 200 m in length the minimum visibility should be at least 1.0 M (approx. 2 km).",
+    "fi": "Näkyvyyden tulisi olla vähintään 300 m kaikilla aluksilla. Lisäksi yli 200 m:n pituisilla aluksilla näkyvyyden tulisi olla vähintään 1,0 M (n.2 km).",
+    "sv": "Sikten bör vara minst 300 m för alla fartyg. Dessutom bör sikten vara minst 1,0 sjömil (ca 2 km) för fartyg vars längd är över 200 m."
+  },
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 132310
+    }
+  ],
+  "name": {
+    "en": "Helsinki channel",
+    "fi": "Helsingin väylä",
+    "sv": "Helsingforsleden"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095538698,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The Kustaanmiekka strait is a critical narrow passage. Larger vessels may be strongly affected by bank suction.",
+    "fi": "Väylällä on kriittinen kapeikko Kustaanmiekan salmessa, jossa reunaimun vaikutus suurimmille aluksille voi olla erittäin voimakas.",
+    "sv": "Gustavssvärds sund är ett kritiskt trångt ställe i farleden. Bankeffekten kan vara mycket kraftig för större fartyg."
+  },
+  "generalInfo": null,
+  "id": "helsinki",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Two lines, marked with boards.",
+    "fi": "Linjoja 2 kpl, merkitty linjatauluin.",
+    "sv": "Två linjer, utmärkta med enstavlor."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "helsinki"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Vessels of over 200 m in length: E-W winds maximum 15-20 m/s depending on wind direction.",
+    "fi": "Yli 200 m:n pituinen alus: itä-länsituuli maksimi 15-20 m/s riippuen tuulen suunnasta.",
+    "sv": "Fartyg vars längd är över 200 m: ost-västlig vind max. 15-20 m/s beroende på vindriktningen."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": false,
+      "id": 4730,
+      "primary": true
+    },
+    {
+      "secondary": false,
+      "id": 4745,
+      "primary": false
+    },
+    {
+      "secondary": true,
+      "id": 4805,
+      "primary": false
+    }
+  ],
+  "speedLimit": {
+    "en": "North of latitude 60° 08' N the speed limit for all vessels is 30 km/h. Between latitudes 60°06'N and 60° 08' N the speed limit is 30 km/h for all vessels except for leisure craft and vessels performing official duties or rescue operations. In addition, the speed limit off Katajanokka is 10 km/h.",
+    "fi": "Leveyspiiriltä 60° 08' N pohjoiseen nopeusrajoitus kaikille aluksille 30 km/h. Leveyspiirien 60° 06' N ja 60° 08' N välillä nopeusrajoitus 30 km/h kaikille aluksille paitsi huvialuksille ja virka- tai pelastustehtävissä oleville aluksille. Lisäksi Katajanokan edustalla nopeusrajoitus 10 km/h",
+    "sv": "Från breddgraden 60° 08' N mot norr är farten begränsad till 30 km/h för alla fartyg. Mellan breddgraderna 60° 06' N och 60° 08' N gäller en fartbegränsning på 30 km/h för alla fartyg utom fritidsbåtar och fartyg med tjänste- eller räddningsuppdrag. Utanför Skatudden gäller dessutom en fartbegränsning på 10 km/h."
+  },
+  "modificationTimestamp": 1718775402801,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "Ice usually only causes problems in the harbour basins where ice slush may make ship-handling difficult. Occasionally packed ice between Hramtsow and Gråskärsbådan.",
+    "fi": "Jääongelmia esiintyy yleensä vain satama-altaissa, joissa jääsohjo saattaa vaikeuttaa aluksen käsittelyä. Ajoittain ahtautumista välillä Hramtsow Gråskärsbådan.",
+    "sv": "Isproblem förekommer i allmänhet bara i hamnbassängerna, där issörja kan försvåra manövreringen av fartygen. Mellan Hramtsow och Gråskärsbådan förekommer tidvis packis."
+  },
+  "fairwayIds": "#4730#4745#4805#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Helsinki VTS, sector 1",
+          "fi": "Helsinki VTS, sektori 1",
+          "sv": "Helsingfors VTS, sektor 1"
+        },
+        "phoneNumber": "+358204485385",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 71
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 458000602,
+          "pilotJourney": 7
+        },
+        {
+          "id": 457900602,
+          "pilotJourney": 12
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs available.",
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed for squat is 19 knots in the channel and 13.5 knots in Kustaanmiekka strait.",
+    "fi": "Mitoitusnopeus nopeuspainumalle (squat) väylällä 19 solmua ja Kustaanmiekan salmessa 13,5 solmua.",
+    "sv": "Dimensionerande fart för squat är 19 knop i farleden och 13,5 knop i Gustavssvärds sund"
+  }
+}

@@ -1,0 +1,128 @@
+{
+  "anchorage": null,
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134250
+    },
+    {
+      "id": 134223
+    }
+  ],
+  "name": {
+    "en": "Stubben-Munsala fairway",
+    "fi": "Stubben-Munsala väylä",
+    "sv": "Stubben-Munsala farled"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Pietarsaari Leppäluoto mareograph.",
+    "fi": "Merivedenkorkeus: Pietarsaari Leppäluoto mareograf.",
+    "sv": "Jakobstad mareograf."
+  },
+  "creationTimestamp": 1683095537481,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The fairway is unsheltered from Stubben lighthouse to Jöusan, W-N winds create heavy seas.",
+    "fi": "Väylä on suojaamaton Stubbenin majakalta Jöusaniin asti, kovilla L-P tuulilla merenkäynti on voimakasta.",
+    "sv": "Farleden går oskyddad från Stubben fyr ända fram till Jöusan. I synnerhet vid hård V-N vind är sjögången kraftig."
+  },
+  "generalInfo": null,
+  "id": "stubbenmunsala",
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Seven lines marked with spar boys.",
+    "fi": "Linjoja on 7, jotka on merkitty linjatauluin.",
+    "sv": "Sju linjer utmärkta med enstavlor."
+  },
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "munsala"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Ship-specific recommendations; wind speeds exceeding 10 m/s make navigation more difficult.",
+    "fi": "Aluskohtainen, yli 10 m/s tuulen nopeus vaikeuttaa navigointia.",
+    "sv": "Rekommendationerna fartygsspecifika, vindhastigheter som överstiger 10 m/s försvårar navigeringen."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 565,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718862213866,
+  "pilotRoutes": [],
+  "latest": 1,
+  "iceCondition": {
+    "en": "In early winter, ice fields are in motion in the area W of Jöusan. Ice movement may cause spar buoys to be pressed under ice (surface). In cold winters, the fast ice edge extends far out to sea.",
+    "fi": "Alkutalvella jääkentät liikkuvat Jöusan L-puolella, viitat saattavat olla jään alla. Kylminä talvina kiintojään alue ulottuu kauas avomerelle.",
+    "sv": "På förvintertid är isfälten i rörelse ytter om Jöusan. Prickarna kan då vara tryckta under isen. Under kalla vintrar sträcker sig den fasta isen långt ut till havs."
+  },
+  "fairwayIds": "#565#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 28500501,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. Pilot boarding position to be agreed upon in winter and in adverse weather conditions.",
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Anm. Vintertid och i dåligt väder bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately operated tugboats, commissioned by the ship's agent.",
+          "fi": "Yksityiset hinaajat, tilataan meklarin toimesta.",
+          "sv": "Privata bogserare, beställs av mäklaren."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed in the outer fairway 10 knots.",
+    "fi": "Mitoitusnopeus ulko-osalla 10 solmua.",
+    "sv": "Dimensionerande fart i den yttre delen 10 knop."
+  }
+}
