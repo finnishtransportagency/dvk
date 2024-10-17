@@ -4,6 +4,8 @@ import {
   Boardline,
   Fairway,
   FairwayCard,
+  GeometryLine,
+  GeometryPolygon,
   NavigationLine,
   ProhibitionArea,
   QueryFairwayCardArgs,
@@ -14,50 +16,57 @@ import { log } from '../../logger';
 import { fetchVATUByFairwayId } from './vatu';
 import { cacheResponse, getFromCache } from '../cache';
 import {
-  AlueAPIModel,
-  KaantoympyraAPIModel,
-  NavigointiLinjaAPIModel,
-  RajoitusAlueAPIModel,
-  TaululinjaAPIModel,
-  VaylaAPIModel,
+  AlueFeature,
+  AlueFeatureCollection,
+  KaantoympyraFeature,
+  KaantoympyraFeatureCollection,
+  NavigointiLinjaFeature,
+  NavigointiLinjaFeatureCollection,
+  RajoitusAlueFeature,
+  RajoitusAlueFeatureCollection,
+  TaululinjaFeature,
+  TaululinjaFeatureCollection,
+  VaylaFeature,
+  VaylaFeatureCollection,
+  VaylaGeojsonFeature,
 } from '../../api/apiModels';
 import { fetchProhibitionAreas } from '../../api/traficom';
 
-export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
+export function mapAPIModelToFairway(apiModel: VaylaFeature): Fairway {
   const fairway: Fairway = {
-    id: apiModel.jnro,
+    id: apiModel.properties.jnro,
     name: {
-      fi: apiModel.nimiFI ?? '',
-      sv: apiModel.nimiSV ?? '',
+      fi: apiModel.properties.nimiFI ?? '',
+      sv: apiModel.properties.nimiSV ?? '',
     },
     sizing: {
-      additionalInformation: apiModel.lisatieto,
-      mareograph: apiModel.mareografi,
-      minimumTurningCircle: apiModel.minimiKaantosade,
-      minimumWidth: apiModel.minimiLeveys,
-      normalTurningCircle: apiModel.normaaliKaantosade,
-      normalWidth: apiModel.normaaliLeveys,
-      reserveWater: apiModel.varavesi,
+      additionalInformation: apiModel.properties.lisatieto,
+      mareograph: apiModel.properties.mareografi,
+      minimumTurningCircle: apiModel.properties.minimiKaantosade,
+      minimumWidth: apiModel.properties.minimiLeveys,
+      normalTurningCircle: apiModel.properties.normaaliKaantosade,
+      normalWidth: apiModel.properties.normaaliLeveys,
+      reserveWater: apiModel.properties.varavesi,
     },
-    typeCode: apiModel.vaylalajiKoodi,
+    typeCode: apiModel.properties.vaylalajiKoodi,
     type: {
-      fi: apiModel.vaylaLajiFI,
-      sv: apiModel.vaylaLajiSV,
+      fi: apiModel.properties.vaylaLajiFI,
+      sv: apiModel.properties.vaylaLajiSV,
     },
     area: {
-      fi: apiModel.merialueFI,
-      sv: apiModel.merialueSV,
+      fi: apiModel.properties.merialueFI,
+      sv: apiModel.properties.merialueSV,
     },
-    lightingCode: apiModel.valaistusKoodi,
+    lightingCode: apiModel.properties.valaistusKoodi,
     lighting: {
-      fi: apiModel.valaistusFI,
-      sv: apiModel.valaistusSV,
+      fi: apiModel.properties.valaistusFI,
+      sv: apiModel.properties.valaistusSV,
     },
-    owner: apiModel.omistaja,
-    startText: apiModel.alunSeloste,
-    endText: apiModel.paatepisteenSeloste,
+    owner: apiModel.properties.omistaja,
+    startText: apiModel.properties.alunSeloste,
+    endText: apiModel.properties.paatepisteenSeloste,
   };
-  fairway.sizingVessels = apiModel.mitoitusalus?.map((vesselModel) => {
+  fairway.sizingVessels = apiModel.properties.mitoitusalus?.map((vesselModel) => {
     return {
       typeCode: vesselModel.alustyyppiKoodi,
       type: vesselModel.alustyyppi,
@@ -68,7 +77,7 @@ export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
       size: vesselModel.koko,
     };
   });
-  fairway.classifications = apiModel.luokitus?.map((classificationModel) => {
+  fairway.classifications = apiModel.properties.luokitus?.map((classificationModel) => {
     return {
       type: classificationModel.luokitusTyyppi,
       fairwayClassCode: classificationModel.vaylaluokkaKoodi,
@@ -82,59 +91,65 @@ export function mapAPIModelToFairway(apiModel: VaylaAPIModel): Fairway {
 }
 
 async function getNavigationLineMap(fairwayIds: number[]) {
-  const lines = (await fetchVATUByFairwayId<NavigointiLinjaAPIModel>(fairwayIds, 'navigointilinjat')).data as NavigointiLinjaAPIModel[];
+  const apiLines = (await fetchVATUByFairwayId<NavigointiLinjaFeature>(fairwayIds, 'navigointilinjat')).data as NavigointiLinjaFeatureCollection;
+  let lineMap = null;
+  const lines = apiLines.features;
   log.debug('lines: %d', lines.length);
-  const lineMap = new Map<number, NavigointiLinjaAPIModel[]>();
+  lineMap = new Map<number, NavigointiLinjaFeature[]>();
   for (const line of lines) {
-    for (const lineFairway of line.vayla) {
+    for (const lineFairway of line.properties.vayla) {
       if (!lineMap.has(lineFairway.jnro)) {
         lineMap.set(lineFairway.jnro, []);
       }
       lineMap.get(lineFairway.jnro)?.push(line);
     }
   }
+
   return lineMap;
 }
 
-function mapNavigationLines(lines: NavigointiLinjaAPIModel[]) {
+function mapNavigationLines(lines: NavigointiLinjaFeature[]) {
   return lines.map((apiLine) => {
-    const line: NavigationLine = {
-      id: apiLine.id,
-      draft: apiLine.mitoitusSyvays,
-      depth: apiLine.harausSyvyys,
-      referenceLevel: apiLine.vertaustaso,
-      n2000draft: apiLine.n2000MitoitusSyvays,
-      n2000depth: apiLine.n2000HarausSyvyys,
-      n2000ReferenceLevel: apiLine.n2000Vertaustaso,
-      direction: apiLine.tosisuunta,
-      length: apiLine.pituus,
-      additionalInformation: apiLine.lisatieto,
-      owner: apiLine.omistaja,
-      verificationDate: apiLine.vahvistusPaivamaara,
-      journalNumber: apiLine.diaariNumero,
-      type: apiLine.tyyppi,
-      typeCode: apiLine.tyyppiKoodi,
-      geometry: apiLine.geometria,
-      fairways: [],
-    };
-    line.fairways = apiLine.vayla?.map((apiFairway) => {
+    return mapNavigationLine(apiLine);
+  });
+}
+
+function mapNavigationLine(line: NavigointiLinjaFeature) {
+  const mappedLine: NavigationLine = {
+    id: line.properties.id,
+    draft: line.properties.mitoitusSyvays,
+    depth: line.properties.harausSyvyys,
+    referenceLevel: line.properties.vertaustaso,
+    n2000draft: line.properties.n2000MitoitusSyvays,
+    n2000depth: line.properties.n2000HarausSyvyys,
+    n2000ReferenceLevel: line.properties.n2000Vertaustaso,
+    direction: line.properties.tosisuunta,
+    length: line.properties.pituus,
+    additionalInformation: line.properties.lisatieto,
+    owner: line.properties.omistaja,
+    verificationDate: line.properties.vahvistusPaivamaara,
+    journalNumber: line.properties.diaariNumero,
+    type: line.properties.tyyppi,
+    typeCode: line.properties.tyyppiKoodi,
+    fairways: line.properties.vayla?.map((apiFairway) => {
       return {
         fairwayId: apiFairway.jnro,
         status: apiFairway.status,
         line: apiFairway.linjaus,
       };
-    });
-    return line;
-  });
+    }),
+    geometry: line.geometry as GeometryLine,
+  };
+  return mappedLine;
 }
 
 async function getAreaMap(fairwayIds: number[]) {
-  const apiAreas = (await fetchVATUByFairwayId<AlueAPIModel>(fairwayIds, 'vaylaalueet')).data as AlueAPIModel[];
-  const areas = apiAreas.filter((a) => a.tyyppiKoodi !== 15); // Filter specialarea15, fetched separately from Traficom
+  const apiAreas = (await fetchVATUByFairwayId<VaylaGeojsonFeature>(fairwayIds, 'vaylaalueet')).data as AlueFeatureCollection;
+  const areas = apiAreas.features.filter((a) => a.properties.tyyppiKoodi !== 15); // Filter specialarea15, fetched separately from Traficom
   log.debug('areas: %d', areas.length);
-  const areaMap = new Map<number, AlueAPIModel[]>();
+  const areaMap = new Map<number, AlueFeature[]>();
   for (const area of areas) {
-    for (const areaFairway of area.vayla ?? []) {
+    for (const areaFairway of area.properties.vayla ?? []) {
       if (!areaMap.has(areaFairway.jnro)) {
         areaMap.set(areaFairway.jnro, []);
       }
@@ -144,35 +159,35 @@ async function getAreaMap(fairwayIds: number[]) {
   return areaMap;
 }
 
-function mapAreas(areas: AlueAPIModel[]) {
+function mapAreas(areas: AlueFeature[]) {
   return areas.map((apiArea) => {
     const area: Area = {
-      id: apiArea.id,
-      name: apiArea.nimi,
-      draft: apiArea.mitoitusSyvays,
-      depth: apiArea.harausSyvyys,
-      referenceLevel: apiArea.vertaustaso,
-      n2000draft: apiArea.n2000MitoitusSyvays,
-      n2000depth: apiArea.n2000HarausSyvyys,
-      n2000ReferenceLevel: apiArea.n2000Vertaustaso,
-      direction: apiArea.suunta,
-      journalNumber: apiArea.diaariNumero,
-      verificationDate: apiArea.vahvistusPaivamaara,
-      owner: apiArea.omistaja,
-      additionalInformation: apiArea.lisatieto,
-      typeCode: apiArea.tyyppiKoodi,
-      type: apiArea.tyyppi,
-      notationCode: apiArea.merkintalajiKoodi,
-      notation: apiArea.merkintalaji,
-      operationStatusCode: apiArea.liikennointiStatusKoodi,
-      operationStatus: apiArea.liikennointiStatus,
-      operationTypeCode: apiArea.liikennointiTyyppiKoodi,
-      operationType: apiArea.liikenteenTyyppi,
-      operationDirectionCode: apiArea.liikennointiSuuntaKoodi,
-      operationDirection: apiArea.liikennointiSuunta,
-      geometry: apiArea.geometria,
+      id: apiArea.properties.id,
+      name: apiArea.properties.nimi,
+      draft: apiArea.properties.mitoitusSyvays,
+      depth: apiArea.properties.harausSyvyys,
+      referenceLevel: apiArea.properties.vertaustaso,
+      n2000draft: apiArea.properties.n2000MitoitusSyvays,
+      n2000depth: apiArea.properties.n2000HarausSyvyys,
+      n2000ReferenceLevel: apiArea.properties.n2000Vertaustaso,
+      direction: apiArea.properties.suunta,
+      journalNumber: apiArea.properties.diaariNumero,
+      verificationDate: apiArea.properties.vahvistusPaivamaara,
+      owner: apiArea.properties.omistaja,
+      additionalInformation: apiArea.properties.lisatieto,
+      typeCode: apiArea.properties.tyyppiKoodi,
+      type: apiArea.properties.tyyppi,
+      notationCode: apiArea.properties.merkintalajiKoodi,
+      notation: apiArea.properties.merkintalaji,
+      operationStatusCode: apiArea.properties.liikennointiStatusKoodi,
+      operationStatus: apiArea.properties.liikennointiStatus,
+      operationTypeCode: apiArea.properties.liikennointiTyyppiKoodi,
+      operationType: apiArea.properties.liikenteenTyyppi,
+      operationDirectionCode: apiArea.properties.liikennointiSuuntaKoodi,
+      operationDirection: apiArea.properties.liikennointiSuunta,
+      geometry: apiArea.geometry as GeometryPolygon,
     };
-    area.fairways = apiArea.vayla?.map((apiFairway) => {
+    area.fairways = apiArea.properties.vayla?.map((apiFairway) => {
       return {
         fairwayId: apiFairway.jnro,
         line: apiFairway.linjaus,
@@ -186,46 +201,46 @@ function mapAreas(areas: AlueAPIModel[]) {
   });
 }
 
-function mapRestrictionAreas(areas: RajoitusAlueAPIModel[]) {
+function mapRestrictionAreas(areas: RajoitusAlueFeature[]) {
   return areas.map((apiArea) => {
     const area: RestrictionArea = {
-      id: apiArea.id,
-      value: apiArea.suuruus,
-      presenter: apiArea.esittaja,
-      journalNumber: apiArea.diaariNumero,
-      verificationDate: apiArea.vahvistusPaivamaara,
-      modificationDate: apiArea.muutosPaivamaara,
-      startDate: apiArea.alkuPaivamaara,
-      endDate: apiArea.loppuPaivamaara,
-      status: apiArea.paatosTila,
-      source: apiArea.tietolahde,
-      location: apiArea.sijainti,
-      municipality: apiArea.kunta,
-      exception: apiArea.poikkeus,
-      geometry: apiArea.geometria,
+      id: apiArea.properties.id,
+      value: apiArea.properties.suuruus,
+      presenter: apiArea.properties.esittaja,
+      journalNumber: apiArea.properties.diaariNumero,
+      verificationDate: apiArea.properties.vahvistusPaivamaara,
+      modificationDate: apiArea.properties.muutosPaivamaara,
+      startDate: apiArea.properties.alkuPaivamaara,
+      endDate: apiArea.properties.loppuPaivamaara,
+      status: apiArea.properties.paatosTila,
+      source: apiArea.properties.tietolahde,
+      location: apiArea.properties.sijainti,
+      municipality: apiArea.properties.kunta,
+      exception: apiArea.properties.poikkeus,
+      geometry: apiArea.geometry as GeometryPolygon,
     };
-    area.fairways = apiArea.vayla?.map((apiFairway) => {
+    area.fairways = apiArea.properties.vayla?.map((apiFairway) => {
       return {
         fairwayId: apiFairway.jnro,
       };
     });
     area.types =
-      apiArea.rajoitustyypit?.map((t) => {
+      apiArea.properties.rajoitustyypit?.map((t) => {
         return { code: t.koodi, text: t.rajoitustyyppi };
       }) ?? [];
-    if (apiArea.rajoitustyyppi) {
-      area.types.push({ text: apiArea.rajoitustyyppi });
+    if (apiArea.properties.rajoitustyyppi) {
+      area.types.push({ text: apiArea.properties.rajoitustyyppi });
     }
     return area;
   });
 }
 
 async function getRestrictionAreaMap(fairwayIds: number[]) {
-  const areas = (await fetchVATUByFairwayId<RajoitusAlueAPIModel>(fairwayIds, 'rajoitusalueet')).data as RajoitusAlueAPIModel[];
-  log.debug('restriction areas: %d', areas.length);
-  const areaMap = new Map<number, RajoitusAlueAPIModel[]>();
-  for (const area of areas) {
-    for (const areaFairway of area.vayla ?? []) {
+  const areas = (await fetchVATUByFairwayId<RajoitusAlueFeature>(fairwayIds, 'rajoitusalueet')).data as RajoitusAlueFeatureCollection;
+  log.debug('restriction areas: %d', areas.features.length);
+  const areaMap = new Map<number, RajoitusAlueFeature[]>();
+  for (const area of areas.features) {
+    for (const areaFairway of area.properties.vayla ?? []) {
       if (!areaMap.has(areaFairway.jnro)) {
         areaMap.set(areaFairway.jnro, []);
       }
@@ -254,14 +269,14 @@ async function getProhibitionAreaMap() {
   return areaMap;
 }
 
-function mapBoardLines(lines: TaululinjaAPIModel[]): Boardline[] {
+function mapBoardLines(lines: TaululinjaFeature[]): Boardline[] {
   return lines.map((line) => {
     const boardLine: Boardline = {
-      id: line.taululinjaId,
-      direction: line.suunta,
-      geometry: line.geometria,
+      id: line.properties.taululinjaId,
+      direction: line.properties.suunta,
+      geometry: line.geometry as GeometryLine,
     };
-    boardLine.fairways = line.vayla?.map((apiFairway) => {
+    boardLine.fairways = line.properties.vayla?.map((apiFairway) => {
       return {
         fairwayId: apiFairway.jnro,
       };
@@ -271,11 +286,11 @@ function mapBoardLines(lines: TaululinjaAPIModel[]): Boardline[] {
 }
 
 async function getBoardLineMap(fairwayIds: number[]) {
-  const lines = (await fetchVATUByFairwayId<TaululinjaAPIModel>(fairwayIds, 'taululinjat')).data as TaululinjaAPIModel[];
-  log.debug('board lines: %d', lines.length);
-  const lineMap = new Map<number, TaululinjaAPIModel[]>();
-  for (const line of lines) {
-    for (const lineFairway of line.vayla || []) {
+  const lines = (await fetchVATUByFairwayId<TaululinjaFeature>(fairwayIds, 'taululinjat')).data as TaululinjaFeatureCollection;
+  log.debug('board lines: %d', lines.features.length);
+  const lineMap = new Map<number, TaululinjaFeature[]>();
+  for (const line of lines.features) {
+    for (const lineFairway of line.properties.vayla || []) {
       if (!lineMap.has(lineFairway.jnro)) {
         lineMap.set(lineFairway.jnro, []);
       }
@@ -285,14 +300,14 @@ async function getBoardLineMap(fairwayIds: number[]) {
   return lineMap;
 }
 
-function mapTurningCircles(circles: KaantoympyraAPIModel[]): TurningCircle[] {
+function mapTurningCircles(circles: KaantoympyraFeature[]): TurningCircle[] {
   return circles.map((circle) => {
     const turningCircle: TurningCircle = {
-      id: circle.kaantoympyraID,
-      geometry: circle.geometria,
-      diameter: circle.halkaisija,
+      id: circle.properties.kaantoympyraID,
+      geometry: circle.geometry as GeometryLine,
+      diameter: circle.properties.halkaisija,
     };
-    turningCircle.fairways = circle.vayla?.map((apiFairway) => {
+    turningCircle.fairways = circle.properties.vayla?.map((apiFairway) => {
       return {
         fairwayId: apiFairway.jnro,
       };
@@ -302,11 +317,11 @@ function mapTurningCircles(circles: KaantoympyraAPIModel[]): TurningCircle[] {
 }
 
 async function getCircleMap(fairwayIds: number[]) {
-  const circles = (await fetchVATUByFairwayId<KaantoympyraAPIModel>(fairwayIds, 'kaantoympyrat')).data as KaantoympyraAPIModel[];
-  log.debug('circles: %d', circles.length);
-  const circleMap = new Map<number, KaantoympyraAPIModel[]>();
-  for (const circle of circles) {
-    for (const circleFairway of circle.vayla ?? []) {
+  const circles = (await fetchVATUByFairwayId<KaantoympyraFeature>(fairwayIds, 'kaantoympyrat')).data as KaantoympyraFeatureCollection;
+  log.debug('circles: %d', circles.features.length);
+  const circleMap = new Map<number, KaantoympyraFeature[]>();
+  for (const circle of circles.features) {
+    for (const circleFairway of circle.properties.vayla ?? []) {
       if (!circleMap.has(circleFairway.jnro)) {
         circleMap.set(circleFairway.jnro, []);
       }
@@ -343,19 +358,19 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
       const prohibitionAreaMap = await getProhibitionAreaMap();
       const boardLineMap = await getBoardLineMap(fairwayIds);
       const circleMap = await getCircleMap(fairwayIds);
-      const fairways = (await fetchVATUByFairwayId<VaylaAPIModel>(fairwayIds, 'vaylat')).data as VaylaAPIModel[];
-      const response = fairways.map((apiFairway) => {
-        const fairway = fairwayMap.get(apiFairway.jnro);
+      const fairways = (await fetchVATUByFairwayId<VaylaFeature>(fairwayIds, 'vaylat')).data as VaylaFeatureCollection;
+      const response = fairways.features.map((apiFairway) => {
+        const fairway = fairwayMap.get(apiFairway.properties.jnro);
         log.debug('Fairway: %o', apiFairway);
         return {
           ...mapAPIModelToFairway(apiFairway),
           ...fairway,
-          navigationLines: mapNavigationLines(lineMap.get(apiFairway.jnro) ?? []),
-          areas: mapAreas(areaMap.get(apiFairway.jnro) ?? []),
-          restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.jnro) ?? []),
-          prohibitionAreas: prohibitionAreaMap.get(apiFairway.jnro) ?? [],
-          boardLines: mapBoardLines(boardLineMap.get(apiFairway.jnro) ?? []),
-          turningCircles: mapTurningCircles(circleMap.get(apiFairway.jnro) ?? []),
+          navigationLines: mapNavigationLines(lineMap?.get(apiFairway.properties.jnro) ?? []),
+          areas: mapAreas(areaMap.get(apiFairway.properties.jnro) ?? []),
+          restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.properties.jnro) ?? []),
+          prohibitionAreas: prohibitionAreaMap.get(apiFairway.properties.jnro) ?? [],
+          boardLines: mapBoardLines(boardLineMap.get(apiFairway.properties.jnro) ?? []),
+          turningCircles: mapTurningCircles(circleMap.get(apiFairway.properties.jnro) ?? []),
         };
       });
       await cacheResponse(key, response);

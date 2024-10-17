@@ -14,21 +14,24 @@ jest.mock('../lib/lambda/environment', () => ({
   getHeaders: () => {},
 }));
 
-const faults = [
-  {
-    vikaId: -2139953035,
-    vikatyyppiKoodi: 1022541001,
-    turvalaiteNumero: 2,
-    turvalaiteNimiFI: 'Kuusinen ylempi',
-    turvalaiteNimiSV: 'Kuusinen övre',
-    vikatyyppiFI: 'Valo pimeä',
-    vikatyyppiSV: 'Ljuset slocknat',
-    vikatyyppiEN: 'Light unlit',
-    kirjausAika: '2020-06-07T18:33:04.711000',
-    geometria: { type: 'Point', coordinates: [26.9622327773, 60.461115575] },
-  },
-];
-
+const faults = {
+  features: [
+    {
+      properties: {
+        vikaId: -2139953035,
+        vikatyyppiKoodi: 1022541001,
+        turvalaiteNumero: 2,
+        turvalaiteNimiFI: 'Kuusinen ylempi',
+        turvalaiteNimiSV: 'Kuusinen övre',
+        vikatyyppiFI: 'Valo pimeä',
+        vikatyyppiSV: 'Ljuset slocknat',
+        vikatyyppiEN: 'Light unlit',
+        kirjausAika: '2020-06-07T18:33:04.711000',
+      },
+      geometry: { type: 'Point', coordinates: [26.9622327773, 60.461115575] },
+    },
+  ],
+};
 let throwError = false;
 jest.mock('../lib/lambda/api/axios', () => ({
   fetchVATUByApi: () => {
