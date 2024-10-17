@@ -17,9 +17,7 @@ import {
   useDepth12Layer,
   useSpeedLimitLayer,
   usePilotLayer,
-  useCoastalWarningLayer,
-  useLocalWarningLayer,
-  useBoaterWarningLayer,
+  useMarineWarningLayer,
   useBoardLine12Layer,
   useBuoyLayer,
   DvkLayerState,
@@ -182,9 +180,9 @@ const DvkIonApp: React.FC = () => {
   useDepth12Layer();
   useSpeedLimitLayer();
   useSafetyEquipmentAndFaultLayer();
-  useCoastalWarningLayer();
-  useLocalWarningLayer();
-  useBoaterWarningLayer();
+  useMarineWarningLayer('coastalwarning');
+  useMarineWarningLayer('localwarning');
+  useMarineWarningLayer('boaterwarning');
   useNameLayer();
   useMareographLayer();
   useObservationLayer();

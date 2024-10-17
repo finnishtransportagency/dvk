@@ -254,7 +254,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=marinewarning'),
     staticUrl: new URL(staticUrl + '/marinewarning.json.gz'),
     persist: true,
-    staleTime: OFFLINE_STORAGE.staleTime,
+    staleTime: 1000 * 60 * 10, // 10 minutes
     gcTime: OFFLINE_STORAGE.gcTime,
     refetchInterval: 1000 * 60 * 15, // 15 minutes
     refetchOnMount: 'always',

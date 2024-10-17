@@ -448,16 +448,21 @@ export function usePilotLayer() {
   return useDataLayer('pilot', 'pilot');
 }
 
-export function useCoastalWarningLayer() {
-  return useDataLayer('marinewarning', 'coastalwarning', true, filterMarineWarnings('coastalwarning'));
-}
-
-export function useLocalWarningLayer() {
-  return useDataLayer('marinewarning', 'localwarning', true, filterMarineWarnings('localwarning'));
-}
-
-export function useBoaterWarningLayer() {
-  return useDataLayer('marinewarning', 'boaterwarning', true, filterMarineWarnings('boaterwarning'));
+export function useMarineWarningLayer(warningType: FeatureDataLayerId) {
+  const [initialized, setInitialized] = useState(false);
+  const [fetchingEnabled, setFetchingEnabled] = useState(featuresVisible(warningType));
+  const { refetch } = useFeatureData('marinewarning');
+  if (!initialized) {
+    const wLayer = dvkMap.getFeatureLayer(warningType);
+    wLayer.on('change:visible', () => {
+      setFetchingEnabled(featuresVisible(warningType));
+      if (featuresVisible(warningType)) {
+        refetch();
+      }
+    });
+    setInitialized(true);
+  }
+  return useDataLayer('marinewarning', warningType, fetchingEnabled, filterMarineWarnings(warningType));
 }
 
 export function useVaylaWaterAreaData() {
