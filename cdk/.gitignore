@@ -10,3 +10,4 @@ cdk.context.json
 coverage
 
 bastion_script.sh
+.DS_Store

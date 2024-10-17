@@ -1,0 +1,124 @@
+{
+  "phoneNumber": [
+    "+358207631500"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of swinging area 400 m, safe clearance depth -9.5 m.",
+    "fi": "Kääntöaltaan halkaisija 400 m, haraussyvyys -9,5 m.",
+    "sv": "Svängbassängens diameter 400 m, ramat djup -9,5 m."
+  },
+  "modifier": "System",
+  "email": "inkooshp@inkooshipping.fi",
+  "name": {
+    "en": "Port of Inkoo",
+    "fi": "Inkoon satama",
+    "sv": "Ingå hamn"
+  },
+  "cargo": {
+    "en": "Fortum quay No. 1: Two 10 t cranes. Inkoo Shipping quay 3: 10 t crane on rail, quay for loading and unloading barges using side ramp. Quay No. 4: bow/stern ramp, 3 mobile multipurpose cranes.",
+    "fi": "Fortum laituri 1: 2 kpl 10 t nivelpuominostureita. Inkoo Shipping laituri 3: 1 kpl 10 t nivelpuominosturi, sivurampillisten proomujen purkaus/lastausramppi. Laituri 4: peräporttipaikka, 3 kpl täsmänostureita.",
+    "sv": "Fortum kaj 1: 2 st. 10 t vikarmskranar. Ingå Shipping kaj 3: 1 st. 10 t vikarmskran, lossning av pråmar med sidoramper/lastningsramp. Kaj 4: akterportplats, 3 st. precisionskranar."
+  },
+  "modificationTimestamp": 1683095540779,
+  "company": {
+    "en": "Inkoo Shipping Oy Ab Inkoo",
+    "fi": "Inkoo Shipping Oy Ab, Inkoo",
+    "sv": "Inkoo Shipping Oy Ab Ingå"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Fortum: quay No. 1",
+        "fi": "Fortum: laituri 1",
+        "sv": "Fortum: kaj 1"
+      },
+      "length": 170,
+      "sections": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              23.91585,
+              60.01547
+            ]
+          },
+          "depth": 10.9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Fortum: quay No. 2",
+        "fi": "Fortum: laituri 2",
+        "sv": "Fortum: kaj 2"
+      },
+      "length": 240,
+      "sections": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              23.9184,
+              60.01496
+            ]
+          },
+          "depth": 14.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Inkoo Shipping: quay No. 3",
+        "fi": "Inkoo Shipping: laituri 3",
+        "sv": "Inkoo Shipping: kaj 3"
+      },
+      "length": 225,
+      "sections": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              23.92771,
+              60.01563
+            ]
+          },
+          "depth": 8.5
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Inkoo Shipping: quay No. 4",
+        "fi": "Inkoo Shipping: laituri 4",
+        "sv": "Inkoo Shipping: kaj 4"
+      },
+      "length": 145,
+      "sections": [
+        {
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              23.92672,
+              60.01541
+            ]
+          },
+          "depth": 8.5
+        }
+      ]
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095540779,
+  "id": "inkoo",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      23.92418,
+      60.01624
+    ]
+  }
+}

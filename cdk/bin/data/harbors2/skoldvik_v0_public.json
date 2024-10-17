@@ -1,0 +1,223 @@
+{
+  "phoneNumber": [
+    "+358104583120",
+    "+358104583115"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Buoyage: lighted ice buoys all the year round. Open water season: quays surrounded by oil spill booms.",
+    "fi": "Satama-allas on ympärivuotisesti merkitty valojääpoijuin. Avovesikautena laituri on myös ympyröity öljypuomein.",
+    "sv": "Utmärkt med lysisbojar året runt. Under den isfria tiden är kajerna omgärdade med oljebommar."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Port of Sköldvik",
+    "fi": "Sköldvikin satama",
+    "sv": "Sköldviks hamn"
+  },
+  "cargo": {
+    "en": "All methods in general use.",
+    "fi": "Lasti käsitellään yleisesti käytössä olevin menetelmin.",
+    "sv": "Allmänt brukade hanteringsmetoder."
+  },
+  "modificationTimestamp": 1683095541085,
+  "company": {
+    "en": "Neste Oyj, Porvoo",
+    "fi": "Neste Oyj, Porvoo",
+    "sv": "Neste Abp, Borgå"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay 1",
+        "fi": "Laituri 1",
+        "sv": "Kaj 1"
+      },
+      "length": 210,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.55366,
+          60.30761
+        ]
+      },
+      "sections": [
+        {
+          "depth": 14
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 2",
+        "fi": "Laituri 2",
+        "sv": "Kaj 2"
+      },
+      "length": 330,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.55604,
+          60.31301
+        ]
+      },
+      "sections": [
+        {
+          "depth": 16.95
+        }
+      ],
+      "extraInfo": {
+        "en": "For vessels over DWT 50 000 recommended mooring starboard side alongside.",
+        "fi": "Jos laivan DWT yli 50 000 suositellaan kiinnitettävän oikea puoli laituriin.",
+        "sv": "Om fartygets DWT är över 50 000 rekommenderas förtöjning med styrbords sida mot kaj."
+      }
+    },
+    {
+      "name": {
+        "en": "Quay 3",
+        "fi": "Laituri 3",
+        "sv": "Kaj 3"
+      },
+      "length": 280,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.55581,
+          60.31263
+        ]
+      },
+      "sections": [
+        {
+          "depth": 16.95
+        }
+      ],
+      "extraInfo": {
+        "en": "For vessels over DWT 50 000 recommended mooring starboard side alongside.",
+        "fi": "Jos laivan DWT yli 50 000 suositellaan kiinnitettävän oikea puoli laituriin.",
+        "sv": "Om fartygets DWT är över 50 000 rekommenderas förtöjning med styrbords sida mot kaj."
+      }
+    },
+    {
+      "name": {
+        "en": "Quay 4",
+        "fi": "Laituri 4",
+        "sv": "Kaj 4"
+      },
+      "length": 270,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.55069,
+          60.3056
+        ]
+      },
+      "sections": [
+        {
+          "depth": 15.7
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 5",
+        "fi": "Laituri 5",
+        "sv": "Kaj 5"
+      },
+      "length": 160,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.55254,
+          60.30924
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.5
+        }
+      ],
+      "extraInfo": {
+        "en": "Recommended mooring starboard side alongside, under 100 m LOA mooring also possible port side alongside.",
+        "fi": "Laiva suositellaan kiinnitettävän oikea puoli laituriin, alle 100 m laivat voidaan kiinnittää myös vasen puoli laituriin.",
+        "sv": "Förtöjning med styrbords sida mot kaj rekommenderas, fartyg under 100 m kan förtöjas med babords sida mot kaj."
+      }
+    },
+    {
+      "name": {
+        "en": "Quay 7",
+        "fi": "Laituri 7",
+        "sv": "Kaj 7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.55208,
+          60.31149
+        ]
+      },
+      "sections": [
+        {
+          "depth": 7.2
+        }
+      ],
+      "extraInfo": {
+        "en": "Tug quay.",
+        "fi": "Hinaajalaituri.",
+        "sv": "Bogserkaj."
+      }
+    },
+    {
+      "name": {
+        "en": "Quay 8",
+        "fi": "Laituri 8",
+        "sv": "Kaj 8"
+      },
+      "length": 250,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.54665,
+          60.29765
+        ]
+      },
+      "sections": [
+        {
+          "depth": 14.5
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 8",
+        "fi": "Laituri 9",
+        "sv": "Kaj 9"
+      },
+      "length": 128,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.54186,
+          60.29043
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.4
+        }
+      ]
+    }
+  ],
+  "creationTimestamp": 1683095541085,
+  "id": "skoldvik",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      25.54666,
+      60.30437
+    ]
+  }
+}

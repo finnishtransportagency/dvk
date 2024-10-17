@@ -1,0 +1,147 @@
+{
+  "phoneNumber": [
+    "+358207908800",
+    "+358207908840"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Speed of vessel to be regulated to ensure that no harm, damage or danger is caused. The speed limit 10 km/h and a prohibition to create wash are in force in the channel sections between City Terminal and Hietanen South.",
+    "fi": "Satama-alueella aluksen nopeus ei saa aiheuttaa kenellekään vahinkoa, haittaa tai vaaraa. Kantasataman ja Hietanen Etelä välisillä väyläosilla on voimassa 10 km/h nopeusrajoitus ja aallokon aiheuttamisen kielto.",
+    "sv": "I hamnområdet bör farten regleras för att undvika skador, olägenheter eller farliga situationer. Fartbegränsningen 10 km/h och ett förbud att orsaka svall gäller i farledsavsnitten mellan Stamhamnen och Hietanen södra."
+  },
+  "modifier": "System",
+  "email": "office@haminakotka.fi",
+  "name": {
+    "en": "Kotka inner harbour",
+    "fi": "Kotkan sisäsatamat",
+    "sv": "Kotka inre hamnen"
+  },
+  "modificationTimestamp": 1683095540880,
+  "company": {
+    "en": "Port of HaminaKotka Ltd",
+    "fi": "HaminaKotka Satama Oy",
+    "sv": "Fredrikshamn-Kotka hamn"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "City terminal",
+        "fi": "Kantasatama",
+        "sv": "Stamhamnen"
+      },
+      "length": 442,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.94952,
+          60.47386
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.3
+        },
+        {
+          "depth": 11.2
+        }
+      ],
+      "extraInfo": {
+        "en": "3 berths",
+        "fi": "laivapaikat 3 kpl",
+        "sv": "3 kajplatser"
+      }
+    },
+    {
+      "name": {
+        "en": "Hietanen",
+        "fi": "Hietanen",
+        "sv": "Hietanen"
+      },
+      "length": 1441,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.94738,
+          60.48459
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.5
+        },
+        {
+          "depth": 10.6
+        }
+      ],
+      "extraInfo": {
+        "en": "10 berths",
+        "fi": "laivapaikat 10 kpl",
+        "sv": "10 kajplatser"
+      }
+    },
+    {
+      "name": {
+        "en": "Hietanen South",
+        "fi": "Hietanen Etelä",
+        "sv": "Hietanen Södra"
+      },
+      "length": 360,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.93681,
+          60.47215
+        ]
+      },
+      "sections": [
+        {
+          "depth": 9.1
+        }
+      ],
+      "extraInfo": {
+        "en": "4 berths",
+        "fi": "laivapaikat 4 kpl",
+        "sv": "4 kajplatser"
+      }
+    },
+    {
+      "name": {
+        "en": "Halla quays",
+        "fi": "Hallan laituri",
+        "sv": "Halla-kajen"
+      },
+      "length": 242,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.97441,
+          60.48238
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.3
+        }
+      ],
+      "extraInfo": {
+        "en": "2 berths",
+        "fi": "laivapaikat 2 kpl",
+        "sv": "2 kajplatser"
+      }
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095540880,
+  "id": "kotka",
+  "fax": "+358207908891",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      26.9491,
+      60.47709
+    ]
+  }
+}

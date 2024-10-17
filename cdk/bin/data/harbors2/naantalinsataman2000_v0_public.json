@@ -1,0 +1,245 @@
+{
+  "phoneNumber": [
+    "+358447334550"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": null,
+  "modifier": "System",
+  "email": "satama@portofnaantali.fi",
+  "name": {
+    "en": "Port of Naantali N2000",
+    "fi": "Naantalin satama N2000",
+    "sv": "Nådendals hamn N2000"
+  },
+  "cargo": {
+    "en": "Suomen Viljava: 2 cranes for loading/unloading of grain, cranes available from private companies",
+    "fi": "Suomen Viljava: 2 kpl viljan purkaus/lastauslaitteita, operaattoreilla mobiilinostureita",
+    "sv": "Suomen Viljava: 2 stycken kranar för lastning/lossning av spannmål"
+  },
+  "modificationTimestamp": 1718789092436,
+  "company": {
+    "en": "Port of Naantali",
+    "fi": "Naantalin Satama Oy",
+    "sv": "Nådendals hamn"
+  },
+  "quays": [
+    {
+      "length": 370,
+      "name": {
+        "en": "quay 15-17, coal and grain",
+        "fi": "laituri 15-17, hiili- ja viljalaituri",
+        "sv": "kaj 15-17, stenkols- och spannmålskaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.0494,
+          60.45713
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 14.1
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 200,
+      "name": {
+        "en": "quay 20, ferry/Finnlink",
+        "fi": "laituri 20, lauttalaituri/Finnlink",
+        "sv": "kaj 20, färjekaj/Finnlink"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.04414,
+          60.45737
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.8
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "quay 22, small craft use",
+        "fi": "laituri 22, pienaluskäytössä",
+        "sv": "kaj 22, i småbåtsbruk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.0428,
+          60.45761
+        ]
+      },
+      "sections": null,
+      "extraInfo": null
+    },
+    {
+      "length": 170,
+      "name": {
+        "en": "quay 23-24, rockmaterial",
+        "fi": "laituri 23-24, kivilaituri",
+        "sv": "kaj 23-24, stenkaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03924,
+          60.45809
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.7
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 50,
+      "name": {
+        "en": "quay 25, sugar",
+        "fi": "laituri 25, sokerilaituri",
+        "sv": "kaj 25, sockerkaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03782,
+          60.45825
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": null
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 150,
+      "name": {
+        "en": "quay 26",
+        "fi": "laituri 26",
+        "sv": "kaj 26"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03736,
+          60.45766
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.8
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 180,
+      "name": {
+        "en": "quay 27",
+        "fi": "laituri 27",
+        "sv": "kaj 27"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03649,
+          60.4579
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.8
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 130,
+      "name": {
+        "en": "quay 30, Luonnonmaa",
+        "fi": "laituri 30, Luonnonmaa",
+        "sv": "kaj 30, Luonnonmaa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03464,
+          60.45215
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": null
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 60,
+      "name": {
+        "en": "quay 31, Luonnonmaa",
+        "fi": "laituri 31, Luonnonmaa",
+        "sv": "kaj 31, Luonnonmaa"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03342,
+          60.45189
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": null
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "creationTimestamp": 1718782191962,
+  "id": "naantalinsataman2000",
+  "fax": null,
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      22.04174,
+      60.45883
+    ]
+  }
+}

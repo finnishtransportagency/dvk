@@ -1,0 +1,142 @@
+{
+  "phoneNumber": [
+    "+35882277555"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of turning circle 340 m. Use of anchor prohibited.",
+    "fi": "Kääntöympyrän halkaisija 340 m. Ankkurin käyttö kielletty.",
+    "sv": "Svängcirkelns diameter 340 m. Förbjudet att använda ankare."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Lapaluoto harbour",
+    "fi": "Lapaluodon satama",
+    "sv": "Lapaluoto hamn"
+  },
+  "cargo": {
+    "en": "Mobile cranes max. 140 t.",
+    "fi": "Liikkuvia nostureita max 140 t.",
+    "sv": "Mobila kranar max 140 t."
+  },
+  "modificationTimestamp": 1683095539556,
+  "company": {
+    "en": "Port of Raahe Ltd. Lapaluoto",
+    "fi": "Raahen Satama Oy, Lapaluoto",
+    "sv": "Brahestad hamn Ab, Lapaluoto"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay 1",
+        "fi": "Laituri 1",
+        "sv": "Kaj 1"
+      },
+      "length": 101,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.40734,
+          64.65989
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 2",
+        "fi": "Laituri 2",
+        "sv": "Kaj 2"
+      },
+      "length": 120,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.4114,
+          64.65948
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 3",
+        "fi": "Laituri 3",
+        "sv": "Kaj 3"
+      },
+      "length": 100,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.41405,
+          64.65925
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Waiting quay",
+        "fi": "Odotuslaituri",
+        "sv": "Väntekaj"
+      },
+      "length": 60,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.40403,
+          64.66059
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Tugboats quay",
+        "fi": "Hinaajalaituri",
+        "sv": "Bogserbåtar kaj "
+      },
+      "sections": [
+        {
+          "depth": 4.8
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.41575,
+          64.65952
+        ]
+      }
+    }
+  ],
+  "creationTimestamp": 1683095539556,
+  "id": "raahe",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.41041,
+      64.66119
+    ]
+  }
+}

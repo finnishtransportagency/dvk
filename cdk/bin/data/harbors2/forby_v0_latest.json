@@ -1,0 +1,69 @@
+{
+  "phoneNumber": [
+    "+358277571"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter 480 m, safe clearance depth -11.0 m.",
+    "fi": "Kääntöaltaan halkaisija 480 m, haraussyvyys -11,0 m.",
+    "sv": "Hamnbassängens diameter 480 m, ramat djup -11,0 m."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Förby harbour",
+    "fi": "Förbyn satama",
+    "sv": "Förby hamn"
+  },
+  "cargo": {
+    "en": "With discharge pipes into tanks.",
+    "fi": "Purkuputkistolla säiliöihin.",
+    "sv": "Lossningsrör till tankarna."
+  },
+  "modificationTimestamp": 1683095540073,
+  "company": {
+    "en": "Omya Oy Förby harbour",
+    "fi": "Omya Oy:n Förbyn satama",
+    "sv": "Omya Oy Förby hamn"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay",
+        "fi": "Laituri",
+        "sv": "Kaj"
+      },
+      "length": 106,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.86189,
+          60.1015
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ],
+      "extraInfo": {
+        "en": "Barge ramp.",
+        "fi": "Laiturissa proomuramppi.",
+        "sv": "Pråmramp på kajen."
+      }
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095540073,
+  "id": "forby",
+  "fax": "+35827757594",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      22.86218,
+      60.10094
+    ]
+  }
+}

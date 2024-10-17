@@ -1,0 +1,140 @@
+{
+  "anchorage": {
+    "en": "Anchorage in the outer parts of the channel 4.5 km SW of Tainio Lighthouse, safe clearance depth -19.0 m (MW2005). Another anchorage in the inner parts of the channel NE of Kaunissaari, where the channels are crossing, safe clearance depth -18.4 m (MW2005).",
+    "fi": "Väylän ulko-osan ankkurointialue on Tainion majakasta 4,5 km lounaaseen, haraussyvyys -19,0 m (MW2005). Sisä-osan ankkurointialue on Kaunissaaren koillispuolella väylien risteysalueella, haraussyvyys -18,4 m (MW2005).",
+    "sv": "Ankringsområdet i farledens yttre del med det ramade djupet -19,0 m (MW2005) är beläget 4,5 km SV om Tainio fyr. Ankringsområdet i farledens inre del med det ramade djupet -18,4 m (MW2005) är beläget NO om Fagerö, där farlederna korsar varandra."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134254
+    },
+    {
+      "id": 100669
+    }
+  ],
+  "name": {
+    "en": "Orrengrund-Kotka channel",
+    "fi": "Orrengrund-Kotka väylä",
+    "sv": "Farleden Orrengrund-Kotka"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095538898,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The approach as far as the entrance to Mussalo Harbour is unsheltered against S winds. Navigation may be hampered by strong winds and rough sea. The approach is at its narrowest, i.e. 527 m wide, N of Lålättan. The narrowest part of the entrance, 182 m, is off Mussalo (the fairway width in the secured supplementary area (Sc -12 m) is 172 m).",
+    "fi": "Väylä on etelänpuoleisilta tuulilta suojaton Mussalon sataman edustalle asti. Kova tuuli ja merenkäynti voivat haitata navigointia väylällä. Ulko-osan kapein kohta on Lålättanin pohjoispuolella, leveys 527 m. Sisäosalla kapein kohta on Mussalon edustalla, leveys 182 m (varmistetun lisäalueen (Hs -12 m) kohdalla väyläleveys 172 m).",
+    "sv": "Farleden är oskyddad för sydlig vind ända till Mussalö hamninlopp. Navigeringen kan försvåras av hård vind och sjögång. Det smalaste stället i farledens yttre del är 527 m brett och finns N om Lålättan. I farledens inre del är inloppet till Mussalö det smalaste stället, bredd 182 m (i det kontrollerade tilläggsområdet (Rd -12 m) är farledens smalaste ställe 172 m brett)."
+  },
+  "generalInfo": null,
+  "id": "kotka",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Five navigation lines, marked by boards and sector lights.",
+    "fi": "Linjoja 5 kpl, jotka on merkitty linjatauluin tai sektoriloistoin.",
+    "sv": "Fem farledslinjer, utmärkta med enstavlor och sektorfyrar."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "mussalo"
+    },
+    {
+      "id": "kotka"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": false,
+      "id": 5385,
+      "primary": true
+    },
+    {
+      "secondary": false,
+      "id": 5615,
+      "primary": false
+    },
+    {
+      "secondary": true,
+      "id": 5690,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5590,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5605,
+      "primary": false
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718775876243,
+  "pilotRoutes": [],
+  "iceCondition": null,
+  "fairwayIds": "#5385#5615#5690#5590#5605#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Kotka VTS",
+          "fi": "Kotka VTS",
+          "sv": "Kotka VTS"
+        },
+        "phoneNumber": "+358204485660",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "kotka.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 681017200,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253430",
+      "fax": null,
+      "email": "pilotdispatch.kotka@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Provided by Alfons Håkans Ltd. Towage depending on the situation.",
+          "fi": "Alfons Håkans Oy. Hinaajien käyttö tilanteen mukaan.",
+          "sv": "Alfons Håkans Ab. Användning av bogserbåtar beroende på situationen."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed in the Lålättan narrows is 12.0 knots (Sc -11.7 m, MW2005).",
+    "fi": "Mitoitusnopeus Lålättanin kohdalla olevassa kapeikossa 12,0 solmua (Hs -11,7 m, MW2005).",
+    "sv": "Dimensionerande fart i det trånga farvattnet vid Lålättan 12,0 knop (Rd -11,7 m, MW2005)."
+  }
+}

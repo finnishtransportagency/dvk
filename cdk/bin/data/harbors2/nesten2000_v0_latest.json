@@ -1,0 +1,113 @@
+{
+  "phoneNumber": [
+    "+358504586487"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": null,
+  "modifier": "System",
+  "email": "naantali.harbour@neste.com",
+  "name": {
+    "en": "Neste Oyj, oil refinery N2000",
+    "fi": "Neste oil, öljynjalostamo N2000",
+    "sv": "Neste oil, oljeraffinaderi N2000"
+  },
+  "cargo": {
+    "en": "Cranes available from private companies",
+    "fi": "Fortum: nostureita yksityisillä yrittäjillä",
+    "sv": "Fortum: privata företags kranar"
+  },
+  "modificationTimestamp": 1718793776362,
+  "company": {
+    "en": "Neste Oyj’s harbour in Naantali",
+    "fi": "Neste Oyj:n satama, Naantali",
+    "sv": "Neste Oyj:s hamn, Nådendal"
+  },
+  "quays": [
+    {
+      "length": 170,
+      "name": {
+        "en": "quay 1",
+        "fi": "laituri 1",
+        "sv": "kaj 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.06305,
+          60.45601
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 9.3
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 200,
+      "name": {
+        "en": "quay 2",
+        "fi": "laituri 2",
+        "sv": "kaj 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.06502,
+          60.4545
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 10
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 300,
+      "name": {
+        "en": "quay 3",
+        "fi": "laituri 3",
+        "sv": "kaj 3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.06846,
+          60.45319
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 16.3
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "latest": 1,
+  "creationTimestamp": 1718793552301,
+  "id": "nesten2000",
+  "fax": null,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      22.06637,
+      60.45544
+    ]
+  }
+}

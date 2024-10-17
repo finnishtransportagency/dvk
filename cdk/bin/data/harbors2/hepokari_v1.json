@@ -1,0 +1,143 @@
+{
+  "phoneNumber": [
+    "+358504205193",
+    "+358447778686"
+  ],
+  "version": "v1",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Swinging area, diameter 370 m.",
+    "fi": "Kääntöympyrän halkaisija 370 m.",
+    "sv": "Svängbassängens diameter 370 m."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Hepokari harbour",
+    "fi": "Hepokarin satama",
+    "sv": "Hepokari hamn"
+  },
+  "cargo": {
+    "en": "Multifunctional cranes and devices.",
+    "fi": "Operaattorilla monitoimikone.",
+    "sv": "Operatören har en lasthanteringsmaskin."
+  },
+  "modificationTimestamp": 1683095540122,
+  "company": {
+    "en": "Port of Uusikaupunki",
+    "fi": "Uudenkaupungin Satama",
+    "sv": "Nystads hamn"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay 1",
+        "fi": "Laituri 1",
+        "sv": "Kaj 1"
+      },
+      "length": 100,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.37567,
+          60.79707
+        ]
+      },
+      "sections": [
+        {
+          "depth": 6
+        }
+      ],
+      "extraInfo": {
+        "en": "30m dolphin, stern ramp berth",
+        "fi": "30 m tihtaali, peräporttipaikka",
+        "sv": "30m dykdalb, plats för akterramp"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay 2",
+        "fi": "Laituri 2",
+        "sv": "Kaj 2"
+      },
+      "length": 100,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.37623,
+          60.79685
+        ]
+      },
+      "sections": [
+        {
+          "depth": 7
+        }
+      ],
+      "extraInfo": {
+        "en": "30m dolphin, stern ramp berth",
+        "fi": "30 m tihtaali, peräporttipaikka",
+        "sv": "30m dykdalb, plats för akterramp"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay 3",
+        "fi": "Laituri 3",
+        "sv": "Kaj 3"
+      },
+      "length": 150,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.37739,
+          60.79627
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.5
+        }
+      ],
+      "extraInfo": {
+        "en": "dolpin berth, stern ramp berth",
+        "fi": "tihtaalilaituri, peräporttipaikka",
+        "sv": "dykdalbkaj, plats för akterramp"
+      }
+    },
+    {
+      "name": {
+        "en": "Quay 4",
+        "fi": "Laituri 4",
+        "sv": "Kaj 4"
+      },
+      "length": 160,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.38027,
+          60.7956
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.5
+        }
+      ],
+      "extraInfo": {
+        "en": "55 m dolphins, stern ramp berth",
+        "fi": "55m tihtaalit, peräporttipaikka",
+        "sv": "55 m dykdalber, plats för akterramp"
+      }
+    }
+  ],
+  "creationTimestamp": 1683095540122,
+  "id": "hepokari",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.37874,
+      60.79688
+    ]
+  }
+}

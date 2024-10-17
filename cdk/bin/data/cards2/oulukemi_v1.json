@@ -1,0 +1,116 @@
+{
+  "anchorage": {
+    "en": "The channel is without anchorage- or special areas.",
+    "fi": "Väylällä ei ole ankkurointi- eikä erityisalueita.",
+    "sv": "Farleden har inte ankrings- eller specialområden."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 100539
+    },
+    {
+      "id": 134248
+    }
+  ],
+  "name": {
+    "en": "Oulu-Kemi fairway",
+    "fi": "Oulu-Kemi väylä",
+    "sv": "Uleåborg-Kemi farled"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Oulu mareograph, outside of Oulu Toppila harbour.",
+    "fi": "Oulu mareografi, Toppilasalmen suulla.",
+    "sv": "Uleåborg mareograf, i Toppila sundet."
+  },
+  "creationTimestamp": 1683095537268,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The channel follows the natural trenches, it is fairly unsheltered but well marked. SW-NW winds can create heavy seas. There are two sharp bends on the first leg of the fairway in which vessels should pay attention and navigate with caution. In the Hanhikari bend the alteration of course is approx. 127 degrees and in the Hookana bend the alteration of course is approx. 130 degrees. The narrowest part of the channel is on the Virpiniemi line, width 312 metres.",
+    "fi": "Väylä on luonnonsyvänteitä noudattava, melko suojaton, mutta hyvin merkitty väylä. LO - LU -puoleisilla tuulilla merenkäynti voi olla voimakasta. Väylän alkuosalla on kaksi tiukkaa mutkaa, joissa tulee noudattaa erityistä tarkkaavaisuutta ja varovaisuutta. Hanhikarin mutkan suunnan muutos on n. 127 astetta ja Hookanan mutkan suunnanmuutos on n. 130 astetta. Väylä on kapeimmillaan Virpiniemi linjalla, leveys 312 m.",
+    "sv": "Farleden följer de naturliga rännorna, den är relativt oskyddad men väl utmärkt. Vid SV - NV vind kan sjögången vara kraftig. I början av farleden finns det två skarpa krökar i vilka man bör iaktta särskild noggrannhet och försiktighet. I Hanhikari-kröken är kursändringen ca 127 grader och vid Hookana-kröken är kursändringen ca 130 grader. Farleden är smalast på Virpiniemi linjen, bredd 312 m."
+  },
+  "generalInfo": null,
+  "id": "oulukemi",
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Fairway has 12 lines, marked with sector lights and boards.",
+    "fi": "Väylällä on linjoja 12 kpl, jotka on merkitty sektoriloistoin tai linjatauluin.",
+    "sv": "Farleden har 12 linjer utmärkta med sektorfyrar eller enstavlor."
+  },
+  "version": "v1",
+  "harbors": [],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 100,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718864277255,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "In early winter there is ice movement in the whole fairway area. May cause spar buoys to be pressed under ice (surface).On the Hanhikari - Ulkokrunni leg there is approx 50-80 cm thick fast ice from January to April. On the leg between Ulkokrunni and Kemi 2 there is moving ice and ice ridges. The buoys are often pressed below the moving ice.",
+    "fi": "Alkutalvesta jää liikkuu koko väyläalueella. Viitat saattavat olla jään alla. Välillä Hanhikari - Ulkokrunni tammikuusta huhtikuuhun n. 50 - 80 cm paksuista kiintojäätä. Ulkokrunnista liikkuvaa ja ahtautunutta jäätä Kemi 2:lle.",
+    "sv": "I början av vintern rörlig is i hela farledsområdet. Prickarna kan då vara tryckta under isen. På sträckan Hanhikari - Ulkokrunni ca 50-80 cm tjock fastis från januari till april. Från Ulkokrunni till Kemi 2 är isen rörlig och vallbildning förekommer."
+  },
+  "fairwayIds": "#100#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 7711725400,
+          "pilotJourney": null
+        },
+        {
+          "id": 7711825400,
+          "pilotJourney": null
+        },
+        {
+          "id": 35910600403,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": null
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed 8 knots in the beginning Hanhikari - Pohjanletto, and 11 knots in the end Pohjanletto - Kemi 2.",
+    "fi": "Mitoitusnopeus 8 solmua alkuosalla välillä Hanhikari-Pohjanletto ja 11 solmua loppuosalla välillä Pohjanletto - Kemi 2.",
+    "sv": "Dimensionerande fart 8 knop i början Hanhikari- Pohjanletto och 11 knop på slutet Pohjanletto-Kemi 2."
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "anchorage": {
+    "en": "Anchorage in the anchorage areas of the Uusikaupunki channel (10.0 m): in the outer channel 5.5 km NE of Sandbäck Lighthouse (off chart) and SW and SE of Isokari.",
+    "fi": "Ankkuroida voi Uudenkaupungin 10,0 m väylän ankkurointialueille: ulko-osalla Sandbäckin majakasta 5,5 km koilliseen (kartan ulkopuolella) sekä Isonkarin lounais- ja kaakkoispuolella.",
+    "sv": "Ankring på Nystadsledens (10,0 m) ankringsområden: i farledens yttre del 5,5 km NO om Sandbäcks fyr (utanför kartan) samt SV och SO om Enskär."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "1",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134252
+    },
+    {
+      "id": 134224
+    },
+    {
+      "id": 134225
+    }
+  ],
+  "name": {
+    "en": "Lövskär-Isokari channel",
+    "fi": "Lövskärin-Isokarin väylä",
+    "sv": "Farleden Lövskär-Enskär"
+  },
+  "attention": null,
+  "creationTimestamp": 1683095537945,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "From Lövskär to Jurmo the fairway is well marked and sheltered by the archipelago. From Jurmo to Enskär the fairway consists of open sea, SW and N winds can create heavy seas.",
+    "fi": "Väylän alkuosa Lövskäristä Jurmoon kulkee suojaisena ja hyvin merkittynä läpi saariston. Jurmosta Isokariin väylä on avomerta, SW-N tuulilla merenkäynti voi olla voimakasta.",
+    "sv": "Från Lövskär till Jurmo går farleden skyddad och väl utprickad genom skärgården. Från Jurmo till Enskär består farleden av öppet hav, vid SV-N vind kan sjögången vara kraftig."
+  },
+  "generalInfo": null,
+  "id": "lovskar",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "22 lines, marked with boards and lights.",
+    "fi": "Linjoja 22 kpl, jotka merkitty linjatauluin ja loistoin.",
+    "sv": "22 farledslinjer, utmärkta med enstavlor och fyrar."
+  },
+  "version": "v0_latest",
+  "harbors": [],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 3010,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718863577861,
+  "pilotRoutes": [],
+  "latest": 1,
+  "iceCondition": {
+    "en": "Ice movement in the outer channel. Especially NW winds can temporarily cause ridges in the areas S of Isokari and N of Jurmo. Ice movement can cause buoys to be pressed beneath the surface and the lighting devices of the light buoys may be damaged.",
+    "fi": "Väylän ulkopäässä jää liikkuu ja etenkin luoteistuulilla jää ahtautuu ajoittain Isokarin etelä- ja Jurmon pohjoispuolisille alueille. Jäiden liikkuessa poijut voivat olla jään alla ja valopoijujen valolaitteet voivat olla vahingoittuneet.",
+    "sv": "Rörlig is i den yttersta delen av farleden och särskilt vid NV vind kan vallbildning tidvis förekomma på områdena S om Enskär och N om Jurmo. Då isen rör sig kan bojarna vara tryckta under ytan och lysbojarnas lysanordningar kan ha skadats."
+  },
+  "fairwayIds": "#3010#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Archipelago VTS",
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 71
+          }
+        ],
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 615200599,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253460",
+      "fax": null,
+      "email": "pilotdispatch.archipelago@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. Pilot boarding position to be agreed upon in strong W winds.",
+        "fi": "Huom. kovilla lännenpuoleisilla tuulilla luotsipaikka sovittava erikseen.",
+        "sv": "Anm. vid hård V vind bör platsen där lotsen möter överenskommas."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs available.",
+          "fi": "Yksityiset hinaajat.",
+          "sv": "Privatägda bogserbåtar."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

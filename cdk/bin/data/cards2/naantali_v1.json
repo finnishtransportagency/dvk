@@ -1,0 +1,149 @@
+{
+  "anchorage": {
+    "en": "The minimum depth has been confirmed in the following areas where the channel is widened: at Snökobben, E of Berghamn, at Vattkast, S of Väärämaa, at Airisto and Ruissalo. The areas are market with cardinal marks, with the exception of Snökobben, and the areas can be used for anchorage and passing. There are also areas where the depth has been confirmed and that can be used for example as waiting places, in Keitsorsten -13.5 m and in the Naantali harbour area -10.0 m.",
+    "fi": "Väylällä on haraussyvyyteen varmistettuja levennysalueita seuraavissa kohteissa: Snökobbenin kohdalla, Berghamnin itäpuolella, Vattkastin kohdalla, Väärämaan eteläpuolella, Airistolla ja Ruissalon kohdalla. Kohteet on rajattu Snökobbenin kohdetta lukuun ottamatta kardinaali-merkeillä ja alueita voi käyttää ankkurointiin ja ohituksiin. Lisäksi Keitsorstenin kohdalla on vesisyvyyteen -13,5 m ja Naantalin satamassa vesisyvyyteen -10,0 m varmistetut alueet, joita voidaan käyttää mm. odotuspaikkoina.",
+    "sv": "Farleden har breddade områden där det ramade djupet har kontrollerats på följande ställen: vid Snökobben, O om Berghamn, vid Vattkast, S om Väärämaa, områdena i Erstan och Runsala. Alla områden utom det vid Snökobben har avgränsats med kardinalmärken och områdena kan användas för ankring och för att passera. Därtill finns det ställen med kontrollerade djup, som kan användas t.ex. som väntplatser, vid Keitsorsten -13,5 m och i Nådendals hamn -10,0 m."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Vessels with a draught close to the max. authorised draught are requested to beware of shoals and the causing of squat in the following areas: SE of Svartbådan, W of Utö, at Torvskär, between the southern part of Länggadd and Gråskär, between Berghamn and Smörgrund and Kyrkfjärden, at Lövskär and in Airisto at the three 16,8 m shoals.",
+    "fi": "Maksimisyvyydessä kulkevien alusten on nopeudessaan otettava huomioon matalikot ja nopeuspainuman vaikutus seuraavissa paikoissa: Svartbådanin kaakkoispuolella, Utön länsipuolella, Torvskärissä, välillä Länggaddin eteläpuoli - Gråskär, välillä Berghamn - Smörgrund - Kyrkfjärden, Lövskärissä sekä Airistolla kolmen 16,8 m matalan kohdalla.",
+    "sv": "Fartyg med maximalt djupgående ska med avseende på hastigheten beakta grunden och fartens inverkan på följande platser: SO om Svartbådan, V om Utö, vid Torvskär, mellan S Länggadd och Gråskär, mellan Berghamn och Smörgrund och Kyrkfjärden, vid Lövskär samt i Erstan vid de tre grunden på 16,8 m."
+  },
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "1",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134225
+    },
+    {
+      "id": 134252
+    }
+  ],
+  "name": {
+    "en": "Naantali channel",
+    "fi": "Naantalin väylä",
+    "sv": "Farleden Nådendal"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095538097,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The outer section of the channel between Utö and Kalkskärskobb is poorly sheltered, which can hamper radar navigation and navigation in rough seas. From Kalkskärskobb to Smörgrund the channel is clear and navigation easy; from Smörgrund to the harbour it is sheltered and well marked. But navigation in the narrow passages at Smörgrund and Lövskär as well as near the seat of the ice ferry at Riskholmen require special attention and caution.",
+    "fi": "Väylän ulko-osa välillä Utö - Kalkskärskobb on harvaa saaristoa, jossa tutkanavigointi ja ohjailu kovan merenkäynnin aikana on vaikeaa. Kalkskärskobbista Smörgrundiin väylä on selkeä ja helppokulkuinen, ja edelleen Smörgrundista satamaan suojainen ja hyvin merkitty. Smörgrundin ja Lövskärin kapeikot sekä Riskholmenin railolossipaikka vaativat erityistä tarkkaavaisuutta ja varovaisuutta.",
+    "sv": "I farledens yttre del, mellan Utö och Kalkskärskobb där skärgården är gles försvåras radarnavigeringen och navigeringen vid kraftig sjögång. Från Kalkskärskobb till Smörgrund är farleden klar och lättframkomlig, och vidare från Smörgrund till hamnen är den skyddad och väl utmärkt. Sunden vid Smörgrund och Lövskär samt vid Riskholmens isfärjeplats kräver särskild uppmärksamhet och försiktighet."
+  },
+  "generalInfo": null,
+  "id": "naantali",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "19 lines.",
+    "fi": "Linjoja 19 kpl.",
+    "sv": "19 linjer."
+  },
+  "version": "v1",
+  "harbors": [
+    {
+      "id": "naantali"
+    },
+    {
+      "id": "neste"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 3255,
+      "primary": true
+    },
+    {
+      "secondary": false,
+      "id": 3260,
+      "primary": false
+    }
+  ],
+  "speedLimit": {
+    "en": "Between Smörgrund and Finnö there is a speed limit of 28 km/h and between Finnö - Lilla Björnholm speed limit is 32 km/h. Between Rajakari and Ajonpää a speed limit is 22 km/h. There is also a speed limit at the ice ferry seat at Riskholmen when the ferry is in operation.",
+    "fi": "Välillä Smörgrund - Finnön pohjoispuoli on nopeusrajoitus 28 km/h ja välillä Finnön pohjoispuoli Lilla Björnholm 32 km/h. Välillä Rajakari - Ajonpää nopeusrajoitus on 22 km/h. Myös Riskholmenin railolossipaikalla on nopeusrajoitus railolossin ollessa käytössä.",
+    "sv": "Mellan Smörgrund och Finnö är hastighetsbegränsningen 28 km/h och mellan Finnö - Lilla Björnholm 32 km/h. Mellan Rajakari och Ajonpää är hastighetsbegränsningen 22 km/h. Vid Riskholmens isfärjeplats råder en hastighetsbegränsning då isfärjan är i användning."
+  },
+  "modificationTimestamp": 1718782020659,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "In the outer section of the channel between Utö and Smörgrund ice conditions vary: sometimes there is hardly any ice formation and at other times the ice moves and the buoys can be under the ice. In the inner section of the channel between Smörgrund and the harbour there is usually 10 – 60 cm thick fast ice, which, owing to the busy ferry traffic, remains quite passable during the winter season.",
+    "fi": "Väylän ulko-osalla Utöstä Smörgrundiin jääolosuhteet ovat vaihtelevia: joskus jäätä ei muodostu lainkaan, välillä jäät liikkuvat ja poijut voivat olla jään alla. Väylän sisäosalla Smörgrundista satamaan muodostuu yleensä 10 - 60 cm paksuinen kiintojää, joka vilkkaan lauttaliikenteen takia pysyy helppokulkuisena koko talven.",
+    "sv": "I farledens yttre del från Utö till Smörgrund är isförhållandena varierande: ibland bildas ingen is och ibland rör sig isarna och bojarna kan vara under isen. I farledens inre del från Smörgrund till hamnen bildas i allmänhet ca 10–60 cm tjock fast is, som pga. den livliga färjetrafiken hålls lättframkomlig hela vintern."
+  },
+  "fairwayIds": "#3255#3260#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Archipelago VTS",
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 71
+          }
+        ],
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 3203220100,
+          "pilotJourney": 65
+        }
+      ],
+      "phoneNumber": "+358295253460",
+      "fax": null,
+      "email": "pilotdispatch.archipelago@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "Note: During the winter season and by bad weather the pilot boarding position must be agreed on separately. ",
+        "fi": "Huom. Talviaikana tai huonolla säällä luotsipaikka sovittava erikseen.",
+        "sv": "Obs. Vintertid och vid dåligt väder ska platsen där lots möter särskilt överenskommas."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Alfons Håkans Ltd, tug boats in Turku",
+          "fi": "Alfons Håkans Oy:n hinaajat Turussa",
+          "sv": "Alfons Håkans Oy Ab:s bogserbåtar i Åbo"
+        },
+        "phoneNumber": [
+          "+3582515500"
+        ],
+        "fax": "+35822515873",
+        "email": null
+      },
+      {
+        "name": {
+          "en": "Neste Oyj tugboat",
+          "fi": "Neste Oyj:n hinaaja",
+          "sv": "Neste Oyj bogserbåt"
+        },
+        "phoneNumber": [
+          "+358104586180"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

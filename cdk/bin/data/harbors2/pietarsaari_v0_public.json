@@ -1,0 +1,152 @@
+{
+  "phoneNumber": [
+    "+35867236128",
+    "+35867231388"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Swinging area 350 m x 750 m.",
+    "fi": "Kääntöallas 350 m x 750 m.",
+    "sv": "Svängbassängen 350 m x 750 m."
+  },
+  "modifier": "System",
+  "email": "office@portofpietarsaari.fi",
+  "name": {
+    "en": "Port of Pietarsaari",
+    "fi": "Pietarsaaren satama",
+    "sv": "Jakobstad hamn"
+  },
+  "modificationTimestamp": 1683095539764,
+  "company": {
+    "en": "Port of Pietarsaari Ltd",
+    "fi": "Pietarsaaren Satama Oy",
+    "sv": "Jakobstad Hamn Ab"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Laukko Quay",
+        "fi": "Laukon laituri",
+        "sv": "Laukkokajen"
+      },
+      "length": 502,
+      "sections": [
+        {
+          "name": "L1",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              22.69114,
+              63.71426
+            ]
+          },
+          "depth": 11.5
+        },
+        {
+          "name": "L2",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              22.69099,
+              63.71578
+            ]
+          },
+          "depth": 11.5
+        },
+        {
+          "name": "L3",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              22.69089,
+              63.71721
+            ]
+          },
+          "depth": 11.5
+        }
+      ],
+      "extraInfo": {
+        "en": "Ro-Ro berth, oil and general cargo.",
+        "fi": "Ro-ro laituri, öljy- ja kappaletavaralaituri.",
+        "sv": "Ro/ro kaj, olje- och styckegodskaj."
+      }
+    },
+    {
+      "name": {
+        "en": "BQ Buskö Quay",
+        "fi": "BQ Buskön laituri",
+        "sv": "BQ Buskökajen"
+      },
+      "length": 160,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.68878,
+          63.71288
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8
+        }
+      ],
+      "extraInfo": {
+        "en": "Ro-Ro berth.",
+        "fi": "Ro-ro laituri.",
+        "sv": "Ro/ro-kaj."
+      }
+    },
+    {
+      "name": {
+        "en": "SQ South Quay",
+        "fi": "SQ Etelälaituri",
+        "sv": "SQ Södra kajen"
+      },
+      "length": 180,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.68907,
+          63.71022
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "PK Cement Quay",
+        "fi": "PK Sementtilaituri",
+        "sv": "PK Cementkajen"
+      },
+      "sections": [
+        {
+          "depth": 8
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.68899,
+          63.70728
+        ]
+      }
+    }
+  ],
+  "creationTimestamp": 1683095539764,
+  "id": "pietarsaari",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      22.69375,
+      63.71544
+    ]
+  }
+}

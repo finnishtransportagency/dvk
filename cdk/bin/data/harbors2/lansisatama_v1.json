@@ -1,0 +1,284 @@
+{
+  "phoneNumber": [
+    "+35893101621"
+  ],
+  "version": "v1",
+  "creator": "System",
+  "status": "PUBLIC",
+  "modifier": "System",
+  "email": "port.helsinki@portofhelsinki.fi",
+  "name": {
+    "en": "Helsinki West Harbour",
+    "fi": "Länsisatama",
+    "sv": "Västra hamnbassängerna"
+  },
+  "modificationTimestamp": 1683095540930,
+  "company": {
+    "en": "Port of Helsinki, Helsinki",
+    "fi": "Helsingin Satama Oy, Helsinki",
+    "sv": "Helsingfors hamn, Helsingfors"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Jätkäsaari Quays",
+        "fi": "Jätkäsaarenlaiturit",
+        "sv": "Busholmskajerna"
+      },
+      "length": 150,
+      "sections": [
+        {
+          "name": "LJ3",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.92306,
+              60.15627
+            ]
+          },
+          "depth": 7.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Jätkäsaari Quays",
+        "fi": "Jätkäsaarenlaiturit",
+        "sv": "Busholmskajerna"
+      },
+      "length": 200,
+      "sections": [
+        {
+          "name": "LJ4",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.923,
+              60.15543
+            ]
+          },
+          "depth": 8.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Jätkäsaari Quays",
+        "fi": "Jätkäsaarenlaiturit",
+        "sv": "Busholmskajerna"
+      },
+      "length": 195,
+      "sections": [
+        {
+          "name": "LJ5",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.92012,
+              60.15271
+            ]
+          },
+          "depth": 8.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Jätkäsaari Quays",
+        "fi": "Jätkäsaarenlaiturit",
+        "sv": "Busholmskajerna"
+      },
+      "length": 255,
+      "sections": [
+        {
+          "name": "LJ6",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.91927,
+              60.1519
+            ]
+          },
+          "depth": 9.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Jätkäsaari Quays",
+        "fi": "Jätkäsaarenlaiturit",
+        "sv": "Busholmskajerna"
+      },
+      "length": 237,
+      "sections": [
+        {
+          "name": "LJ7",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.91585,
+              60.14937
+            ]
+          },
+          "depth": 11.9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Jätkäsaari Quays",
+        "fi": "Jätkäsaarenlaiturit",
+        "sv": "Busholmskajerna"
+      },
+      "length": 265,
+      "sections": [
+        {
+          "name": "LJ8",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.91328,
+              60.15006
+            ]
+          },
+          "depth": 11.9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Munkkisaari Quays",
+        "fi": "Munkkisaarenlaituri",
+        "sv": "Munkholmskajerna"
+      },
+      "length": 196,
+      "sections": [
+        {
+          "name": "LHA",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.92574,
+              60.15405
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Munkkisaari Quays",
+        "fi": "Munkkisaarenlaituri",
+        "sv": "Munkholmskajerna"
+      },
+      "length": 320,
+      "sections": [
+        {
+          "name": "LHB",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.9248,
+              60.15325
+            ]
+          },
+          "depth": 9.15
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Munkkisaari Quays",
+        "fi": "Munkkisaarenlaituri",
+        "sv": "Munkholmskajerna"
+      },
+      "length": 355,
+      "sections": [
+        {
+          "name": "LHC",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.92092,
+              60.1496
+            ]
+          },
+          "depth": 9.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Hernesaari Quay",
+        "fi": "Hernesaarenlaituri",
+        "sv": "Ärtholmenkajen"
+      },
+      "length": 313,
+      "sections": [
+        {
+          "name": "LHD",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.92113,
+              60.14698
+            ]
+          },
+          "depth": 11.9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Hietalati Quay",
+        "fi": "Hietalahdenlaituri",
+        "sv": "Sandvikenkajen"
+      },
+      "length": 85,
+      "sections": [
+        {
+          "name": "LKL",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.92802,
+              60.16039
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Oil/coal Quay",
+        "fi": "Öljy-/hiililaituri",
+        "sv": "Olje-/kolkajen"
+      },
+      "length": 137,
+      "sections": [
+        {
+          "name": "LEL",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              24.90575,
+              60.16022
+            ]
+          },
+          "depth": 9.2
+        }
+      ]
+    }
+  ],
+  "creationTimestamp": 1683095540930,
+  "id": "lansisatama",
+  "fax": "+358931033802",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.91388,
+      60.14907
+    ]
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "anchorage": {
+    "en": "There are two anchorage areas in the area, one SW of Rakin Kotka and the other at Uolionselkä.",
+    "fi": "Väylällä on kaksi ankkurointialuetta, joista toinen sijaitsee Rakin Kotka lounaispuolella ja toinen Uolionselällä.",
+    "sv": "I farleden finns två ankringsområden, varav det ena ligger SV om Rakin Kotka och det andra vid Uolionselkä."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": {
+    "en": "Minimum visibility should be 0.5 M.",
+    "fi": "Näkyvyyden tulee olla vähintään 0,5 M.",
+    "sv": "Sikten bör vara minst 0,5 M."
+  },
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134254
+    }
+  ],
+  "name": {
+    "en": "Hamina channel",
+    "fi": "Haminan väylä",
+    "sv": "Fredrikshamnsleden"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095538498,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "Navigation in the approach may be hampered by the sea state and SW-S-E winds. From Rakin Kotka the channel is sheltered by mainland and islands. Meeting and overtaking is prohibited in the area between S of Rakin Kotka and N of Saukko (between the latitudes 60 26.2' N and 60 27.4' N), but elsewhere the channel width allows two shipping lanes. The above-mentioned area where meeting and overtaking is prohibited has partly been dredged through a rocky, narrow and shallow water area. In the dredged narrow waters (channel bottom width 180 m) the slope height is a maximum of 9 m and the angle of slope 1:2-1:3.",
+    "fi": "Väylän ulko-osalla SW-S-E:n tuulet sekä aallokko voivat haitata liikennöintiä. Rakin Kotkasta väylä jatkuu mantereen, saarien ja karien suojaamana satamaan. Väylän kohtaamis- ja ohittamiskieltoalue sijaitsee välillä Rakin Kotkan eteläpuoli - Saukon pohjoispuoli (latitudien 60 26,2' N ja 60 27,4' N välillä), mutta muilta osin väylä on leveydeltään kaksikaistainen. Em. kohtaamis- ja kieltoalue on ruopattu osin kallioisen, kapean ja matalan vesialueen läpi. Ruopatussa kapeikossa (pohjaleveys 180 m) luiskakorkeus on enimmillään noin 9 m ja luiskakaltevuus 1:2-1:3.",
+    "sv": "I angöringen kan navigeringen försvåras av SV-S-O vindar och sjögång. Från Rakin Kotka är farleden skyddad av fastland, holmar och skär. Mötes- och passerförbud råder på sträckan S om Rakin Kotka-N om Saukko (mellan latituderna 60 26,2' N och 60 27,4' N ), men till övriga delar har farleden två stråk i bredd. Ovan nämnda område med mötes- och passerförbud har delvis muddrats genom ett stenigt, smalt och grunt vattenområde. I det muddrade trånga farvattnet (bottenbredd 180 m) är slänthöjden högst cirka 9 m och släntlutningen 1:2-1:3."
+  },
+  "generalInfo": null,
+  "id": "hamina",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "12 navigation lines. The lines are marked with leading beacons and leading lights, with the exception of the outer part of the channel, the so-called Saukko shortcut and most of the port.",
+    "fi": "Linjoja 12 kpl. Linjat ovat väylän ulkopäätä, ns. Saukon oikaisua sekä suurinta osaa satamasta lukuun ottamatta, merkitty linjatauluin ja -loistoin.",
+    "sv": "12 farledslinjer. Farledslinjerna är märkta med enslinjer och ensfyrar, med undantag av den yttre delen, den s.k. avkortningsleden vid Saukko samt största delen av hamnen."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "hamina"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 5507,
+      "primary": true
+    }
+  ],
+  "speedLimit": {
+    "en": "In the dredged narrow waters at Saukko the speed of vessels using the maximum authorised draught must not exceed 10 knots (18.5 km/h).",
+    "fi": "Saukon kohdalle ruopatulla kapeikolla täyttä kulkusyvyyttä käyttävien alusten kulkunopeus ei saa ylittää yli 10 solmua (18,5 km/h).",
+    "sv": "I det muddrade farvattnet vid Saukko får fartyg som använder maximalt leddjupgående inte överskrida farten 10 knop (18,5 km/h)."
+  },
+  "modificationTimestamp": 1718774941697,
+  "pilotRoutes": [],
+  "iceCondition": null,
+  "fairwayIds": "#5507#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Kotka VTS",
+          "fi": "Kotka VTS",
+          "sv": "Kotka VTS"
+        },
+        "phoneNumber": "+358204485660",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "kotka.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 681017200,
+          "pilotJourney": null
+        },
+        {
+          "id": 64865422300,
+          "pilotJourney": 38
+        }
+      ],
+      "phoneNumber": "+358295253430",
+      "fax": null,
+      "email": "pilotdispatch.kotka@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Private tugs available if required.",
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privata bogserbåtar vid behov."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

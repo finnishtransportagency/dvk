@@ -1,0 +1,121 @@
+{
+  "phoneNumber": [
+    "+358447012623"
+  ],
+  "version": "v1",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of the turning basin 900 m.",
+    "fi": "Kääntöaltaan halkaisija 900 m.",
+    "sv": "Svängbassängens diameter 900 m. "
+  },
+  "modifier": "System",
+  "email": "info@portofpori.fi",
+  "name": {
+    "en": "Tahkoluoto deep harbour N2000",
+    "fi": "Tahkoluodon syväsatama N2000",
+    "sv": "Tahkoluoto djuphamn N2000"
+  },
+  "cargo": {
+    "en": "A loader of 1,500 t/h, cranes of 32 t and 40 t. ",
+    "fi": "Syväsatamassa nosturit 32 t ja 40 t sekä lastain 1500 t/h.",
+    "sv": "I djuphamnen pålastare 1500 t/h, kranar 32 t och 40 t."
+  },
+  "modificationTimestamp": 1716189825068,
+  "company": {
+    "en": "Port of Pori, Pori",
+    "fi": "Porin satama Oy, Pori",
+    "sv": "Björneborgs hamn Ab, Björneborg"
+  },
+  "quays": [
+    {
+      "length": 450,
+      "name": {
+        "en": "Deep-water harbour: quay",
+        "fi": "Syväsatama: laituri",
+        "sv": "Djuphamnen: kaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.38476,
+          61.63399
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 16.8
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Oil and coal harbour: oil and coal jetty",
+        "fi": "Nestebulk laiturit 28, 29 ja 30",
+        "sv": "Olje- och kolhamnen: Oljekaj och kolkaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.40212,
+          61.64121
+        ]
+      },
+      "sections": [
+        {
+          "name": "28",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              21.4,
+              61.64
+            ]
+          },
+          "depth": 10.8
+        },
+        {
+          "name": "29",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              21.40785,
+              61.64055
+            ]
+          },
+          "depth": 13.5
+        },
+        {
+          "name": "30",
+          "geometry": {
+            "type": "Point",
+            "coordinates": [
+              21.40209,
+              61.63997
+            ]
+          },
+          "depth": 12.87
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "creationTimestamp": 1701169530151,
+  "id": "tahkoluodonsyvasatn2000",
+  "fax": null,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.38682,
+      61.63504
+    ]
+  }
+}
