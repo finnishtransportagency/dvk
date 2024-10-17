@@ -105,7 +105,12 @@ export async function fetchAISFeatureCollection(path: string, params: Record<str
 
 async function getVatuAPIVersion(api: string): Promise<string> {
   //During transition phase between V1 and V2, separate different environments support for API
-  return (await getVatuV2ApiSupport()).split(';').includes(api) ? '-v2' : '';
+  return (await getVatuV2ApiSupport())
+    .split(';')
+    .map((s) => s.trim().toLowerCase())
+    .includes(api)
+    ? '-v2'
+    : '';
 }
 
 export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeature>(api: string, params: Record<string, string> = {}) {
