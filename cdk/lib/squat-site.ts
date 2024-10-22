@@ -200,7 +200,7 @@ export class SquatSite extends Construct {
     });
 
     const squatBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.S3Origin(squatBucket, { originAccessIdentity: cloudfrontOAI }),
+      origin: cloudfront_origins.S3BucketOrigin.withOriginAccessIdentity(squatBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -241,7 +241,7 @@ export class SquatSite extends Construct {
     ];
 
     const adminBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.S3Origin(adminBucket, { originAccessIdentity: cloudfrontOAI }),
+      origin: cloudfront_origins.S3BucketOrigin.withOriginAccessIdentity(adminBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -261,7 +261,7 @@ export class SquatSite extends Construct {
     });
 
     const previewBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.S3Origin(previewBucket, { originAccessIdentity: cloudfrontOAI }),
+      origin: cloudfront_origins.S3BucketOrigin.withOriginAccessIdentity(previewBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -281,7 +281,7 @@ export class SquatSite extends Construct {
     });
 
     const dvkBehavior = {
-      origin: new cloudfront_origins.S3Origin(dvkBucket, { originAccessIdentity: cloudfrontOAI }),
+      origin: cloudfront_origins.S3BucketOrigin.withOriginAccessIdentity(dvkBucket, { originAccessIdentity: cloudfrontOAI }),
       compress: true,
       allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
       viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
@@ -322,7 +322,7 @@ export class SquatSite extends Construct {
     const staticBucket = s3.Bucket.fromBucketName(this, 'NewStaticBucket', getNewStaticBucketName());
     const originAccessIdentityId = cdk.Fn.importValue('OriginAccessIdentityId' + props.env);
     const staticBehavior: BehaviorOptions = {
-      origin: new cloudfront_origins.S3Origin(staticBucket, {
+      origin: cloudfront_origins.S3BucketOrigin.withOriginAccessIdentity(staticBucket, {
         originAccessIdentity: cloudfront.OriginAccessIdentity.fromOriginAccessIdentityId(this, 'StaticOAI', originAccessIdentityId),
       }),
       originRequestPolicy: Config.isPermanentEnvironment() ? undefined : OriginRequestPolicy.CORS_CUSTOM_ORIGIN,
