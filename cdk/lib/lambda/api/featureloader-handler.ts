@@ -246,7 +246,7 @@ async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: A
 
 async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
   const lines = (await fetchVATUByFairwayClass<NavigointiLinjaFeature>('navigointilinjat', event)).data as NavigointiLinjaFeatureCollection;
-  log.debug('lines: %d', lines.features);
+  log.debug('lines: %d', lines.features.length);
   for (const line of lines.features) {
     features.featureArray.push(mapLineFeature(line));
   }
