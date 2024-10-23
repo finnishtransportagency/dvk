@@ -179,6 +179,14 @@ export async function getIBNetApiUrl() {
   return readParameterForEnv('IBNetApiUrl');
 }
 
+export async function getWeatherUrl() {
+  return readParameterForEnv('WeatherUrl');
+}
+
+export async function getWeatherApiKey() {
+  return readParameterForEnv('WeatherApiKey');
+}
+
 export async function getWeatherHeaders(): Promise<Record<string, string>> {
   return new Promise((resolve) => {
     getWeatherSOAApiKey().then((key) => {

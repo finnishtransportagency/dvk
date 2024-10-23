@@ -478,3 +478,67 @@ DATE AND TIME
   "type": "FeatureCollection",
 }
 `;
+
+exports[`should get weather and wave forecast from api 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          25,
+          60,
+        ],
+        "type": "Point",
+      },
+      "id": "60.0,25.0:5",
+      "properties": {
+        "featureType": "forecast",
+        "forecastItems": [
+          {
+            "dateTime": 1729684800000,
+            "visibility": 40,
+            "waveHeight": 1.7,
+            "windDirection": 282.5,
+            "windGust": 16.1,
+            "windSpeed": 10.8,
+          },
+          {
+            "dateTime": 1729684800000,
+            "visibility": 41,
+            "waveHeight": 1.8,
+            "windDirection": 281.5,
+            "windGust": 16,
+            "windSpeed": 10.7,
+          },
+        ],
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          24.9,
+          59.9,
+        ],
+        "type": "Point",
+      },
+      "id": "59.9,24.9:5",
+      "properties": {
+        "featureType": "forecast",
+        "forecastItems": [
+          {
+            "dateTime": 1729684800000,
+            "visibility": 39,
+            "waveHeight": 0.9,
+            "windDirection": 287.5,
+            "windGust": 11.1,
+            "windSpeed": 9.7,
+          },
+        ],
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;

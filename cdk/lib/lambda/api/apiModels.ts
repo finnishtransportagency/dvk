@@ -282,6 +282,88 @@ export type Observation = {
   geometry: Geometry;
 };
 
+//Common forecast fields from API
+type ForecastApi = {
+  fmisid: number;
+  geoid: number;
+  name: string;
+  localtime: string;
+  latlon: string;
+};
+
+//Type representing forecast API response
+export type WeatherWaveForecastApi = {
+  place: string;
+  localtime: string;
+  windSpeed: number;
+  windDirection: number;
+  windGust: number;
+  visibility: number | null;
+  temperature: number;
+  waveHeight: number;
+  waveDirection: number;
+};
+
+//Type representing forecast API response
+export type WeatherForecastApi = {
+  windSpeedMS: number;
+  windDirection: number;
+  windGust: number;
+  visibility: number | null;
+  temperature: number;
+} & ForecastApi;
+
+//Type representing forecast API response
+export type WaveForecastApi = {
+  sigWaveHeight: number;
+  waveDirection: number;
+} & ForecastApi;
+
+//Types representing internal application objects
+type ForecastHeaders = {
+  id: string;
+  name: string;
+  geometry: Geometry;
+};
+
+type WaveForecastItem = {
+  dateTime: number;
+  sigWaveHeight: number;
+  waveDirection: number;
+};
+
+type WeatherForecastItem = {
+  dateTime: number;
+  windSpeedMS: number;
+  windDirection: number;
+  windGust: number;
+  visibility: number | null;
+  temperature: number;
+};
+
+type WeatherWaveForecastItem = {
+  dateTime: number;
+  windSpeed: number;
+  windDirection: number;
+  windGust: number;
+  visibility: number | null;
+  waveHeight: number;
+  waveDirection: number | null;
+};
+
+export type WaveForecast = {
+  forecastItems: WaveForecastItem[];
+} & ForecastHeaders;
+
+export type WeatherForecast = {
+  forecastItems: WeatherForecastItem[];
+} & ForecastHeaders;
+
+export type WeatherWaveForecast = {
+  pilotPlaceId: number | undefined;
+  forecastItems: WeatherWaveForecastItem[];
+} & ForecastHeaders;
+
 export type WeatherBuoy = {
   fmisid: number;
   geoid: number;

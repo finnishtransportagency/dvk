@@ -19,7 +19,7 @@ jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
   getHeaders: () => {},
-  getWeatherResponseHeaders : () => {},
+  getWeatherResponseHeaders: () => {},
   getFairwayCardTableName: () => 'FairwayCard-mock',
   getHarborTableName: () => 'Harbor-mock',
 }));
@@ -365,6 +365,36 @@ const buoys = [
   },
 ];
 
+const forecast = [
+  {
+    place: '60.0,25.0:5',
+    localtime: '2024-10-23 12:00:00',
+    windDirection: 282.5,
+    windSpeed: 10.8,
+    windGust: 16.1,
+    waveHeight: 1.7,
+    visibility: 40,
+  },
+  {
+    place: '60.0,25.0:5',
+    localtime: '2024-10-23 12:00:00',
+    windDirection: 281.5,
+    windSpeed: 10.7,
+    windGust: 16.0,
+    waveHeight: 1.8,
+    visibility: 41,
+  },
+  {
+    place: '59.9,24.9:5',
+    localtime: '2024-10-23 12:00:00',
+    windDirection: 287.5,
+    windSpeed: 9.7,
+    windGust: 11.1,
+    waveHeight: 0.9,
+    visibility: 39,
+  },
+];
+
 const card: FairwayCardDBModel = {
   id: 'test',
   version: 'v0',
@@ -405,6 +435,20 @@ const harbor2: HarborDBModel = {
   geometry: { coordinates: [3, 4] },
 };
 
+const points = {
+  features: [
+    {
+      type: 'Feature',
+      id: 'PilotBoardingPlace_P.fid--73ae6a7c_18944e5de2b_b6',
+      geometry: { type: 'Point', coordinates: [30.0, 60.0, 0] },
+      geometry_name: 'GEOM',
+      properties: {
+        IDENTIFIER: 'FI 0000034581 00305',
+      },
+    },
+  ],
+};
+
 async function parseResponse(body: string): Promise<FeatureCollection> {
   const response = new Promise<Error | Buffer>((resolve, reject) =>
     gunzip(Buffer.from(body, 'base64'), (err, data) => {
@@ -418,7 +462,7 @@ async function parseResponse(body: string): Promise<FeatureCollection> {
 }
 
 async function parseWeatherResponse(body: string): Promise<FeatureCollection> {
-  return JSON.parse((body).toString()) as FeatureCollection;
+  return JSON.parse(body.toString()) as FeatureCollection;
 }
 
 let throwError = false;
@@ -445,11 +489,11 @@ jest.mock('../lib/lambda/api/axios', () => ({
       },
     };
   },
-  fetchTraficomApi: () => {
+  fetchTraficomApi: (path: string) => {
     if (throwError) {
       throw new Error('Fetching from Traficom api failed');
     }
-    return vtsLines;
+    return path.includes('PilotBoardingPlace') ? points : vtsLines;
   },
   fetchIlmanetApi: () => ilmanetXml,
   fetchWeatherApi: (path: string) => {
@@ -461,6 +505,17 @@ jest.mock('../lib/lambda/api/axios', () => ({
     } else {
       return buoys;
     }
+  },
+  fetchWeatherApiResponse: () => {
+    if (throwError) {
+      throw new Error('Fetching from Weather forecast api failed');
+    }
+    return {
+      data: forecast,
+      headers: {
+        date: 0,
+      },
+    };
   },
 }));
 
@@ -568,6 +623,14 @@ it('should return right cache headers for observation', async () => {
   assert(response.body);
   const headers = getFeatureCacheControlHeaders('observation')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
+});
+
+it('should get weather and wave forecast from api', async () => {
+  const response = await handler(mockFeaturesALBEvent('forecast'));
+  assert(response.body);
+  const responseObj = await parseWeatherResponse(response.body);
+  expect(responseObj.features.length).toBe(2);
+  expect(responseObj).toMatchSnapshot();
 });
 
 it('should return same cache headers for various features of non buoy/mareograph/observation', async () => {

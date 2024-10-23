@@ -3,8 +3,22 @@ import { Geometry } from 'geojson';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { XMLParser } from 'fast-xml-parser';
-import { fetchIlmanetApi, fetchWeatherApi } from './axios';
-import { Mareograph, WeatherMareograph, Observation, WeatherObservation, Buoy, WeatherBuoy } from './apiModels';
+import { fetchIlmanetApi, fetchWeatherApi, fetchWeatherApiResponse } from './axios';
+import {
+  Mareograph,
+  WeatherMareograph,
+  Observation,
+  WeatherObservation,
+  Buoy,
+  WeatherBuoy,
+  WeatherForecast,
+  WaveForecast,
+  WaveForecastApi,
+  WeatherForecastApi,
+  WeatherWaveForecastApi,
+  WeatherWaveForecast,
+} from './apiModels';
+import { PilotPlace } from '../../../graphql/generated';
 
 function parseLocation(location: any): Partial<Mareograph> {
   return {
@@ -115,7 +129,7 @@ export async function fetchWeatherObservations(): Promise<Observation[]> {
     )
   ).map((measure) => {
     return {
-      id: measure.fmisid,
+      id: measure.fmisid ?? measure.geoid ?? measure.latlon,
       name: measure.stationname,
       windSpeedAvg: measure.WS_PT10M_AVG,
       windSpeedMax: measure.WG_PT10M_MAX,
@@ -126,6 +140,188 @@ export async function fetchWeatherObservations(): Promise<Observation[]> {
       geometry: parseGeometry(measure.latlon),
     };
   });
+}
+
+function getCommonForecastLocations(pilotPoints: PilotPlace[], searchRadius: number = 5): string {
+  //Take all pilot places and additional defined locations
+  const extraCoordinates = [
+    [60.786888, 21.325472],
+    [59.994667, 23.995667],
+    [60.785838, 21.226705],
+    [60.37799, 22.096668],
+  ];
+  return (
+    '&latlons=' +
+    pilotPoints.map((p) => p.geometry.coordinates?.join() + ':' + searchRadius).join() +
+    extraCoordinates.map((c) => c.join() + ':' + searchRadius).join()
+  );
+}
+
+//Map a location to a pilot place to get the id and name based on matching the point
+function mapToPilotPlace(pilotPoints: PilotPlace[], latlon: string) {
+  return pilotPoints.find(
+    (p) =>
+      p.geometry.coordinates != null &&
+      p.geometry.coordinates[0] === parseFloat(latlon?.split(',')[0]?.trim()) &&
+      p.geometry.coordinates[1] === parseFloat(latlon?.split(',')[1]?.trim())
+  );
+}
+
+function removeSearchRadius(place: string): string {
+  return place.slice(0, place.lastIndexOf(':'));
+}
+
+export async function fetchWeatherWaveForecast(
+  pilotPoints: PilotPlace[],
+  numberTimesteps: number = 48
+): Promise<{
+  forecast: WeatherWaveForecast[];
+  responseTime: any;
+}> {
+  const searchRadius = 6;
+  const fields = [
+    'place',
+    'localtime',
+    'median(DD-D:::6:10:1) as windDirection',
+    'max(FF-MS:::6:10:1) as windSpeed',
+    'max(FFG-MS:::6:10:1) as windGust',
+    'max(HWS-M:WAM_BALMFC:1061:6:0:1) as waveHeight',
+    'nanmedian(MUL{VV2-M:MEPSMTA:1093:6:0:4:0;0.001}) as visibility',
+  ];
+
+  const responseDetails = '&precision=double&format=json&timeformat=sql';
+
+  const response = await fetchWeatherApiResponse(
+    'timeseries?param=' +
+      encodeURI(fields.join()) +
+      getCommonForecastLocations(pilotPoints, searchRadius) +
+      responseDetails +
+      '&timesteps=' +
+      numberTimesteps
+  );
+  const responseTime = response.headers.date as number;
+
+  const forecast = Object.values(
+    (response.data as WeatherWaveForecastApi[])
+      .map((measure) => {
+        return {
+          id: mapToPilotPlace(pilotPoints, removeSearchRadius(measure.place))?.id?.toString() ?? measure.place,
+          name: mapToPilotPlace(pilotPoints, removeSearchRadius(measure.place))?.name?.toString() ?? measure.place,
+          pilotPlaceId: mapToPilotPlace(pilotPoints, removeSearchRadius(measure.place))?.id,
+          windSpeed: measure.windSpeed,
+          windGust: measure.windGust,
+          windDirection: measure.windDirection,
+          waveHeight: measure.waveHeight,
+          waveDirection: measure.waveDirection,
+          visibility: measure.visibility,
+          dateTime: Date.parse(measure.localtime),
+          geometry: parseGeometry(removeSearchRadius(measure.place)),
+        };
+      })
+      .reduce(
+        (acc, item) => {
+          if (!acc[item.id]) {
+            acc[item.id] = { id: item.id, pilotPlaceId: item.pilotPlaceId, name: item.name, geometry: item.geometry, forecastItems: [] };
+          }
+          acc[item.id].forecastItems.push({
+            dateTime: item.dateTime,
+            visibility: item.visibility,
+            windDirection: item.windDirection,
+            windSpeed: item.windSpeed,
+            windGust: item.windGust,
+            waveHeight: item.waveHeight,
+            waveDirection: item.waveDirection,
+          });
+          return acc;
+        },
+        {} as Record<string, WeatherWaveForecast>
+      )
+  );
+  return { forecast, responseTime };
+}
+
+export async function fetchWeatherForecast(pilotPoints: PilotPlace[], numberTimesteps: number = 48) {
+  const fields = ['fmisid', 'geoid', 'latlon', 'name', 'localtime', 'temperature', 'windSpeedMS', 'windDirection', 'windGust', 'visibility'];
+  const responseDetails = '&precision=double&producer=harmonie_scandinavia_surface&format=json&timeformat=sql';
+
+  const response = await fetchWeatherApiResponse(
+    'timeseries?param=' + fields.join() + getCommonForecastLocations(pilotPoints) + responseDetails + '&timesteps=' + numberTimesteps
+  );
+  const responseTime = response.headers.date;
+  const forecast = Object.values(
+    (response.data as WeatherForecastApi[])
+      .map((measure) => {
+        return {
+          id: mapToPilotPlace(pilotPoints, measure.latlon)?.id?.toString() ?? measure.latlon,
+          name: mapToPilotPlace(pilotPoints, measure.latlon)?.name?.toString() ?? measure.latlon,
+          windSpeedMS: measure.windSpeedMS,
+          windGust: measure.windGust,
+          windDirection: measure.windDirection,
+          visibility: measure.visibility,
+          temperature: measure.temperature,
+          dateTime: Date.parse(measure.localtime),
+          geometry: parseGeometry(measure.latlon),
+        };
+      })
+      .reduce(
+        (acc, item) => {
+          const key = `id`;
+          if (!acc[key]) {
+            acc[key] = { id: item.id, name: item.name, geometry: item.geometry, forecastItems: [] };
+          }
+          acc[key].forecastItems.push({
+            dateTime: item.dateTime,
+            temperature: item.temperature,
+            visibility: item.visibility,
+            windDirection: item.windDirection,
+            windSpeedMS: item.windSpeedMS,
+            windGust: item.windGust,
+          });
+          return acc;
+        },
+        {} as Record<string, WeatherForecast>
+      )
+  );
+  return { forecast, responseTime };
+}
+
+export async function fetchWaveForecast(pilotPoints: PilotPlace[], numberTimesteps: number = 48) {
+  const fields = ['fmisid', 'geoid', 'latlon', 'name', 'localtime', 'sigWaveHeight', 'waveDirection'];
+  const responseDetails = '&precision=double&producer=wam_balmfc&format=json&timeformat=sql';
+  const response = await fetchWeatherApiResponse(
+    'timeseries?param=' + fields.join() + getCommonForecastLocations(pilotPoints) + responseDetails + '&timesteps=' + numberTimesteps
+  );
+
+  const responseTime = response.headers.date;
+  const forecast = Object.values(
+    (
+      await fetchWeatherApi<WaveForecastApi>(
+        'timeseries?param=' + fields.join() + getCommonForecastLocations(pilotPoints) + responseDetails + '&timesteps=' + numberTimesteps
+      )
+    )
+      .map((measure) => {
+        return {
+          id: mapToPilotPlace(pilotPoints, measure.latlon)?.id?.toString() ?? measure.latlon,
+          name: mapToPilotPlace(pilotPoints, measure.latlon)?.name?.toString() ?? measure.latlon,
+          sigWaveHeight: measure.sigWaveHeight,
+          waveDirection: measure.waveDirection,
+          dateTime: Date.parse(measure.localtime),
+          geometry: parseGeometry(measure.latlon),
+        };
+      })
+      .reduce(
+        (acc, item) => {
+          const key = `id`;
+          if (!acc[key]) {
+            acc[key] = { id: item.id, name: item.name, geometry: item.geometry, forecastItems: [] };
+          }
+          acc[key].forecastItems.push({ dateTime: item.dateTime, sigWaveHeight: item.sigWaveHeight, waveDirection: item.waveDirection });
+          return acc;
+        },
+        {} as Record<string, WaveForecast>
+      )
+  );
+  return { forecast, responseTime };
 }
 
 export async function fetchBuoys(): Promise<Buoy[]> {
