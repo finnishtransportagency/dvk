@@ -133,7 +133,8 @@ export class DvkBackendStack extends Stack {
         runtime: lambda.Runtime.NODEJS_20_X,
         entry: lambdaFunc.entry,
         handler: 'handler',
-        timeout: Duration.seconds(30),
+        timeout: Duration.seconds(lambdaFunc.timeout ?? 30),
+        memorySize: lambdaFunc.memorySize ?? 256,
         layers: [layer],
         vpc: lambdaFunc.useVpc ? vpc : undefined,
         environment: {
@@ -448,7 +449,8 @@ export class DvkBackendStack extends Stack {
         entry: lambdaFunc.entry,
         handler: 'handler',
         layers: [layer],
-        timeout: Duration.seconds(60),
+        timeout: Duration.seconds(lambdaFunc.timeout ?? 60),
+        memorySize: lambdaFunc.memorySize ?? 256,
         vpc: lambdaFunc.useVpc ? vpc : undefined,
         environment: {
           LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
