@@ -403,7 +403,6 @@ async function addWeatherWaveForecast(features: FeaturesWithMaxFetchTime) {
       properties: {
         featureType: 'forecast',
         pilotPlaceId: f.pilotPlaceId,
-        pilotPlaceName: f.pilotPlaceName,
         forecastItems: f.forecastItems,
       },
     });

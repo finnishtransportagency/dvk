@@ -11,6 +11,7 @@ import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
 import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
+import { fetchWeatherApiNonSoaResponse } from '../lib/lambda/api/axios';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
 const s3Mock = mockClient(S3Client);
@@ -517,6 +518,17 @@ jest.mock('../lib/lambda/api/axios', () => ({
       },
     };
   },
+  fetchWeatherApiNonSoaResponse: () => {
+    if (throwError) {
+      throw new Error('Fetching from Weather forecast api failed');
+    }
+    return {
+      data: forecast,
+      headers: {
+        date: 0,
+      },
+    };
+  },
 }));
 
 beforeEach(() => {
@@ -630,6 +642,10 @@ it('should get weather and wave forecast from api', async () => {
   assert(response.body);
   const responseObj = await parseWeatherResponse(response.body);
   expect(responseObj.features.length).toBe(2);
+
+  //2 items should be grouped using the generated id
+  expect(responseObj.features.find((f) => f.id == '60.0,25.0')?.properties?.forecastItems.length).toBe(2);
+  expect(responseObj.features.find((f) => f.id == '59.9,24.9')?.properties?.forecastItems.length).toBe(1);
   expect(responseObj).toMatchSnapshot();
 });
 
