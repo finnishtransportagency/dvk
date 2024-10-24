@@ -137,10 +137,9 @@ export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeatur
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
 
-  if (!('features' in response.data && response.data.features && response.data.features.length > 0 && 'properties' in response.data.features[0])) {
+  if (!('features' in response.data)) {
     //Convert the data to GeoJson
-    response.data = convertToGeoJson('features' in response.data ? response.data.features : response.data);
-    log.debug(response.data);
+    response.data = convertToGeoJson(response.data);
   }
 
   for (const obj of response.data.features as T[]) {
