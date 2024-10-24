@@ -3,7 +3,7 @@ import { Geometry } from 'geojson';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { XMLParser } from 'fast-xml-parser';
-import { fetchIlmanetApi, fetchWeatherApi, fetchWeatherApiResponse } from './axios';
+import { fetchIlmanetApi, fetchWeatherApi, fetchWeatherApiNonSoaResponse } from './axios';
 import {
   Mareograph,
   WeatherMareograph,
@@ -11,14 +11,16 @@ import {
   WeatherObservation,
   Buoy,
   WeatherBuoy,
-  WeatherForecast,
-  WaveForecast,
-  WaveForecastApi,
-  WeatherForecastApi,
   WeatherWaveForecastApi,
   WeatherWaveForecast,
+  ForecastConfig,
+  WeatherWaveForecastItem,
+  PlaceForecastConfig,
+  Bounds,
 } from './apiModels';
 import { PilotPlace } from '../../../graphql/generated';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { getNewStaticBucketName } from '../environment';
 
 function parseLocation(location: any): Partial<Mareograph> {
   return {
@@ -152,7 +154,8 @@ function getCommonForecastLocations(pilotPoints: PilotPlace[], searchRadius: num
   ];
   return (
     '&latlons=' +
-    pilotPoints.map((p) => p.geometry.coordinates?.join() + ':' + searchRadius).join() +
+    pilotPoints.map((p) => p.geometry.coordinates?.reverse().join() + ':' + searchRadius).join() +
+    ',' +
     extraCoordinates.map((c) => c.join() + ':' + searchRadius).join()
   );
 }
@@ -168,7 +171,7 @@ function mapToPilotPlace(pilotPoints: PilotPlace[], latlon: string) {
 }
 
 function removeSearchRadius(place: string): string {
-  return place.slice(0, place.lastIndexOf(':'));
+  return place.includes(':') ? place.slice(0, place.lastIndexOf(':')) : place;
 }
 
 export async function fetchWeatherWaveForecast(
@@ -191,7 +194,7 @@ export async function fetchWeatherWaveForecast(
 
   const responseDetails = '&precision=double&format=json&timeformat=sql';
 
-  const response = await fetchWeatherApiResponse(
+  const response = await fetchWeatherApiNonSoaResponse(
     'timeseries?param=' +
       encodeURI(fields.join()) +
       getCommonForecastLocations(pilotPoints, searchRadius) +
@@ -199,14 +202,13 @@ export async function fetchWeatherWaveForecast(
       '&timesteps=' +
       numberTimesteps
   );
-  const responseTime = response.headers.date as number;
+  const responseTime = (response.headers.date ?? Date.now()) as number;
 
   const forecast = Object.values(
     (response.data as WeatherWaveForecastApi[])
       .map((measure) => {
         return {
-          id: mapToPilotPlace(pilotPoints, removeSearchRadius(measure.place))?.id?.toString() ?? measure.place,
-          name: mapToPilotPlace(pilotPoints, removeSearchRadius(measure.place))?.name?.toString() ?? measure.place,
+          id: mapToPilotPlace(pilotPoints, removeSearchRadius(measure.place))?.id?.toString() ?? removeSearchRadius(measure.place),
           pilotPlaceId: mapToPilotPlace(pilotPoints, removeSearchRadius(measure.place))?.id,
           windSpeed: measure.windSpeed,
           windGust: measure.windGust,
@@ -221,7 +223,7 @@ export async function fetchWeatherWaveForecast(
       .reduce(
         (acc, item) => {
           if (!acc[item.id]) {
-            acc[item.id] = { id: item.id, pilotPlaceId: item.pilotPlaceId, name: item.name, geometry: item.geometry, forecastItems: [] };
+            acc[item.id] = { id: item.id, pilotPlaceId: item.pilotPlaceId, geometry: item.geometry, forecastItems: [] };
           }
           acc[item.id].forecastItems.push({
             dateTime: item.dateTime,
@@ -237,91 +239,98 @@ export async function fetchWeatherWaveForecast(
         {} as Record<string, WeatherWaveForecast>
       )
   );
+  assignTrafficLights(forecast, getTestConfig());
+  //assignTrafficLights(forecast, await getForecastConfig());
   return { forecast, responseTime };
 }
 
-export async function fetchWeatherForecast(pilotPoints: PilotPlace[], numberTimesteps: number = 48) {
-  const fields = ['fmisid', 'geoid', 'latlon', 'name', 'localtime', 'temperature', 'windSpeedMS', 'windDirection', 'windGust', 'visibility'];
-  const responseDetails = '&precision=double&producer=harmonie_scandinavia_surface&format=json&timeformat=sql';
+function getTestConfig(): ForecastConfig {
+  const windRed: Bounds = { lowerLimit: 20, status: 'red' };
+  const windYellow: Bounds = { lowerLimit: 10, upperLimit: 20, status: 'yellow' };
+  const windGreen: Bounds = { upperLimit: 10, status: 'green' };
+  const windLimits = [windRed, windYellow, windGreen];
 
-  const response = await fetchWeatherApiResponse(
-    'timeseries?param=' + fields.join() + getCommonForecastLocations(pilotPoints) + responseDetails + '&timesteps=' + numberTimesteps
-  );
-  const responseTime = response.headers.date;
-  const forecast = Object.values(
-    (response.data as WeatherForecastApi[])
-      .map((measure) => {
-        return {
-          id: mapToPilotPlace(pilotPoints, measure.latlon)?.id?.toString() ?? measure.latlon,
-          name: mapToPilotPlace(pilotPoints, measure.latlon)?.name?.toString() ?? measure.latlon,
-          windSpeedMS: measure.windSpeedMS,
-          windGust: measure.windGust,
-          windDirection: measure.windDirection,
-          visibility: measure.visibility,
-          temperature: measure.temperature,
-          dateTime: Date.parse(measure.localtime),
-          geometry: parseGeometry(measure.latlon),
-        };
-      })
-      .reduce(
-        (acc, item) => {
-          const key = `id`;
-          if (!acc[key]) {
-            acc[key] = { id: item.id, name: item.name, geometry: item.geometry, forecastItems: [] };
-          }
-          acc[key].forecastItems.push({
-            dateTime: item.dateTime,
-            temperature: item.temperature,
-            visibility: item.visibility,
-            windDirection: item.windDirection,
-            windSpeedMS: item.windSpeedMS,
-            windGust: item.windGust,
-          });
-          return acc;
-        },
-        {} as Record<string, WeatherForecast>
-      )
-  );
-  return { forecast, responseTime };
+  const waveRed: Bounds = { lowerLimit: 2, status: 'red' };
+  const waveYellow: Bounds = { lowerLimit: 1, upperLimit: 2, status: 'yellow' };
+  const waveGreen: Bounds = { upperLimit: 1, status: 'green' };
+  const waveLimits = [waveRed, waveYellow, waveGreen];
+
+  const visRed: Bounds = { upperLimit: 10, status: 'red' };
+  const visYellow: Bounds = { lowerLimit: 10, upperLimit: 20, status: 'yellow' };
+  const visGreen: Bounds = { lowerLimit: 20, status: 'green' };
+  const visLimits = [visRed, visYellow, visGreen];
+
+  const placeForecastConfig: PlaceForecastConfig = {
+    windLimits: windLimits,
+    waveLimits: waveLimits,
+    visibilityLimits: visLimits,
+  };
+  const config: ForecastConfig = { limits: [placeForecastConfig] };
+  log.debug(JSON.stringify(config));
+  return config;
 }
 
-export async function fetchWaveForecast(pilotPoints: PilotPlace[], numberTimesteps: number = 48) {
-  const fields = ['fmisid', 'geoid', 'latlon', 'name', 'localtime', 'sigWaveHeight', 'waveDirection'];
-  const responseDetails = '&precision=double&producer=wam_balmfc&format=json&timeformat=sql';
-  const response = await fetchWeatherApiResponse(
-    'timeseries?param=' + fields.join() + getCommonForecastLocations(pilotPoints) + responseDetails + '&timesteps=' + numberTimesteps
-  );
+function assignTrafficLights(forecast: WeatherWaveForecast[], config: ForecastConfig | null) {
+  if (config) {
+    const defaultLimits = config.limits.find((l) => l.id == null);
+    for (let f of forecast) {
+      for (let i of f.forecastItems) {
+        if (defaultLimits && config.limits.length === 1) {
+          log.debug('Howard');
+          applyLimits(i, defaultLimits);
+        } else {
+          const placeLimits = config.limits.find((l) => l.id === (f.pilotPlaceId ?? f.id));
+          applyLimits(i, placeLimits ?? defaultLimits);
+        }
+      }
+    }
+  }
+}
 
-  const responseTime = response.headers.date;
-  const forecast = Object.values(
-    (
-      await fetchWeatherApi<WaveForecastApi>(
-        'timeseries?param=' + fields.join() + getCommonForecastLocations(pilotPoints) + responseDetails + '&timesteps=' + numberTimesteps
-      )
-    )
-      .map((measure) => {
-        return {
-          id: mapToPilotPlace(pilotPoints, measure.latlon)?.id?.toString() ?? measure.latlon,
-          name: mapToPilotPlace(pilotPoints, measure.latlon)?.name?.toString() ?? measure.latlon,
-          sigWaveHeight: measure.sigWaveHeight,
-          waveDirection: measure.waveDirection,
-          dateTime: Date.parse(measure.localtime),
-          geometry: parseGeometry(measure.latlon),
-        };
-      })
-      .reduce(
-        (acc, item) => {
-          const key = `id`;
-          if (!acc[key]) {
-            acc[key] = { id: item.id, name: item.name, geometry: item.geometry, forecastItems: [] };
-          }
-          acc[key].forecastItems.push({ dateTime: item.dateTime, sigWaveHeight: item.sigWaveHeight, waveDirection: item.waveDirection });
-          return acc;
-        },
-        {} as Record<string, WaveForecast>
-      )
-  );
-  return { forecast, responseTime };
+function applyLimits(item: WeatherWaveForecastItem, limits: PlaceForecastConfig | undefined) {
+  if (limits) {
+    if (item.windSpeed) {
+      for (let l of limits.windLimits) {
+        if (checkBounds(item.windSpeed, l)) {
+          item.windStatus = l.status;
+          break;
+        }
+      }
+    }
+    if (item.waveHeight) {
+      for (let l of limits.waveLimits) {
+        if (checkBounds(item.waveHeight, l)) {
+          item.waveStatus = l.status;
+          break;
+        }
+      }
+    }
+    if (item.visibility) {
+      for (let l of limits.visibilityLimits) {
+        if (checkBounds(item.visibility, l)) {
+          item.visibilityStatus = l.status;
+          break;
+        }
+      }
+    }
+  }
+}
+
+function checkBounds(n: number, b: Bounds): boolean {
+  return (b.lowerLimit ?? 0) <= n && (b.upperLimit ?? Number.MAX_VALUE) > n;
+}
+
+async function getForecastConfig(): Promise<ForecastConfig | null> {
+  const s3Client = new S3Client({ region: 'eu-west-1' });
+  const command = new GetObjectCommand({
+    Key: 'forecastconfig.json',
+    Bucket: getNewStaticBucketName(),
+  });
+  const config = await s3Client.send(command);
+  if (config.Body) {
+    return JSON.parse(JSON.stringify(config.Body)) as ForecastConfig;
+  }
+  return null;
 }
 
 export async function fetchBuoys(): Promise<Buoy[]> {

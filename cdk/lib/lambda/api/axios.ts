@@ -14,7 +14,9 @@ import {
   getVatuHeaders,
   getVatuPilotRoutesUrl,
   getVatuUrl,
+  getWeatherApiKey,
   getWeatherHeaders,
+  getWeatherUrl,
 } from '../environment';
 import { log } from '../logger';
 import { FeatureCollection, Geometry } from 'geojson';
@@ -161,9 +163,28 @@ export async function fetchWeatherApi<T>(path: string) {
 export async function fetchWeatherApiResponse(path: string) {
   const [soaApiUrl, weatherHeaders] = await Promise.all([getSOAApiUrl(), getWeatherHeaders()]);
   const start = Date.now();
+  log.debug(`Weather api https://${soaApiUrl}/fmi/${path} called`);
   const response = await axios
     .get(`https://${soaApiUrl}/fmi/${path}`, {
       headers: weatherHeaders,
+      timeout: getTimeout(),
+    })
+    .catch(function (error) {
+      const errorObj = error.toJSON();
+      log.fatal(`${ExternalAPI.WEATHER} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      throw new Error(getFetchErrorMessage(ExternalAPI.WEATHER));
+    });
+  const duration = Date.now() - start;
+  log.debug({ duration }, `Weather api ${path} response time: ${duration} ms`);
+  return response;
+}
+
+export async function fetchWeatherApiNonSoaResponse(path: string) {
+  const [weatherApiUrl, apiKey] = await Promise.all([getWeatherUrl(), getWeatherApiKey()]);
+  const start = Date.now();
+  log.debug(`Weather api https://${weatherApiUrl}/fmi-apikey/${apiKey}/${path} called`);
+  const response = await axios
+    .get(`https://${weatherApiUrl}/fmi-apikey/${apiKey}/${path}`, {
       timeout: getTimeout(),
     })
     .catch(function (error) {

@@ -5,7 +5,7 @@ import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson
 import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
-import { fetchBuoys, fetchMareoGraphs, fetchWaveForecast, fetchWeatherForecast, fetchWeatherObservations, fetchWeatherWaveForecast } from './weather';
+import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations, fetchWeatherWaveForecast } from './weather';
 import { fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
@@ -402,24 +402,8 @@ async function addWeatherWaveForecast(features: FeaturesWithMaxFetchTime) {
       geometry: f.geometry,
       properties: {
         featureType: 'forecast',
-        forecastItems: f.forecastItems,
-      },
-    });
-  }
-}
-
-async function addWaveForecast(features: FeaturesWithMaxFetchTime) {
-  const pilotPoints = await fetchPilotPoints();
-  const { forecast, responseTime } = await fetchWaveForecast(pilotPoints);
-  features.fetchedDate = String(Date.parse(responseTime));
-
-  for (const f of forecast) {
-    features.featureArray.push({
-      type: 'Feature',
-      id: f.id,
-      geometry: f.geometry,
-      properties: {
-        featureType: 'waveforecast',
+        pilotPlaceId: f.pilotPlaceId,
+        pilotPlaceName: f.pilotPlaceName,
         forecastItems: f.forecastItems,
       },
     });

@@ -282,87 +282,63 @@ export type Observation = {
   geometry: Geometry;
 };
 
-//Common forecast fields from API
-type ForecastApi = {
-  fmisid: number;
-  geoid: number;
-  name: string;
-  localtime: string;
-  latlon: string;
-};
-
 //Type representing forecast API response
 export type WeatherWaveForecastApi = {
   place: string;
   localtime: string;
-  windSpeed: number;
-  windDirection: number;
-  windGust: number;
+  windSpeed: number | null;
+  windDirection: number | null;
+  windGust: number | null;
   visibility: number | null;
-  temperature: number;
-  waveHeight: number;
-  waveDirection: number;
+  waveHeight: number | null;
+  waveDirection?: number | null;
 };
-
-//Type representing forecast API response
-export type WeatherForecastApi = {
-  windSpeedMS: number;
-  windDirection: number;
-  windGust: number;
-  visibility: number | null;
-  temperature: number;
-} & ForecastApi;
-
-//Type representing forecast API response
-export type WaveForecastApi = {
-  sigWaveHeight: number;
-  waveDirection: number;
-} & ForecastApi;
 
 //Types representing internal application objects
 type ForecastHeaders = {
   id: string;
-  name: string;
   geometry: Geometry;
 };
 
-type WaveForecastItem = {
-  dateTime: number;
-  sigWaveHeight: number;
-  waveDirection: number;
-};
+export type TrafficLight = 'green' | 'yellow' | 'red';
 
-type WeatherForecastItem = {
+export type WeatherWaveForecastItem = {
   dateTime: number;
-  windSpeedMS: number;
-  windDirection: number;
-  windGust: number;
+  windSpeed: number | null;
+  windDirection: number | null;
+  windGust: number | null;
   visibility: number | null;
-  temperature: number;
+  waveHeight: number | null;
+  waveDirection?: number | null;
+  windStatus?: TrafficLight;
+  waveStatus?: TrafficLight;
+  visibilityStatus?: TrafficLight;
 };
-
-type WeatherWaveForecastItem = {
-  dateTime: number;
-  windSpeed: number;
-  windDirection: number;
-  windGust: number;
-  visibility: number | null;
-  waveHeight: number;
-  waveDirection: number | null;
-};
-
-export type WaveForecast = {
-  forecastItems: WaveForecastItem[];
-} & ForecastHeaders;
-
-export type WeatherForecast = {
-  forecastItems: WeatherForecastItem[];
-} & ForecastHeaders;
 
 export type WeatherWaveForecast = {
   pilotPlaceId: number | undefined;
   forecastItems: WeatherWaveForecastItem[];
 } & ForecastHeaders;
+
+//Traffic light upper lower limits
+export type Bounds = {
+  status: TrafficLight;
+  lowerLimit?: number;
+  upperLimit?: number;
+};
+
+//Limit configs for individual place
+export type PlaceForecastConfig = {
+  id?: string;
+  waveLimits: Bounds[];
+  windLimits: Bounds[];
+  visibilityLimits: Bounds[];
+};
+
+//Forecast config for all places
+export type ForecastConfig = {
+  limits: PlaceForecastConfig[];
+};
 
 export type WeatherBuoy = {
   fmisid: number;
