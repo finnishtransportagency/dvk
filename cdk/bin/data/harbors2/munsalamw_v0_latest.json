@@ -1,0 +1,63 @@
+{
+  "phoneNumber": [
+    "+35867645261"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of turning circle 450 m.",
+    "fi": "Kääntöympyrän halkaisija n. 450 m.",
+    "sv": "Svängcirkelns diameter ca 450 m."
+  },
+  "modifier": "System",
+  "email": "johan.osterbacka@nykarleby.fi",
+  "name": {
+    "en": "Kanäs oil harbour",
+    "fi": "Kanäsin öljysatama",
+    "sv": "Kanäs oljehamn"
+  },
+  "cargo": {
+    "en": "Crane 5t/m.",
+    "fi": "Nosturi 5t/m.",
+    "sv": "Lyftkran 5t /m."
+  },
+  "modificationTimestamp": 1683095539661,
+  "company": {
+    "en": "Kanäsin öljysatama",
+    "fi": "Uudenkaarlepyyn kaupunki, Kanäsin öljysatama",
+    "sv": "Kanäs oljehamn"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Oil quay",
+        "fi": "Öljylaituri",
+        "sv": "Oljekaj"
+      },
+      "sections": [
+        {
+          "depth": 8
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.29566,
+          63.39189
+        ]
+      }
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095539661,
+  "id": "munsalamw",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      22.29733,
+      63.39262
+    ]
+  }
+}

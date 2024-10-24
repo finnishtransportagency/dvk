@@ -1,0 +1,99 @@
+{
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 3240,
+      "primary": true
+    }
+  ],
+  "group": "1",
+  "windGauge": {
+    "en": "Utö.",
+    "fi": "Utössä.",
+    "sv": "På Utö."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Utö-Lövskär channel",
+    "fi": "Utö-Lövskär väylä",
+    "sv": "Farleden Utö-Lövskar"
+  },
+  "speedLimit": {
+    "en": "The maximum permitted speed in the vicinity of the Korpo cable ferry is 16 km/h. Vessels with a draught equalling the maximum authorised draught are warned to beware of squat (design speed in the channel 13.5 knots with safe clearance depth -12.0 m).",
+    "fi": "Suurin sallittu nopeus Korppoon lautan läheisyydessä 16 km/h. Maksimikulkusyvyydessä kulkevien alusten tulee huomioida nopeus painuma (mitoitusnopeus väylällä mitoitusalukselle haraussyvyydellä -12,0 m 13,5 solmua).",
+    "sv": "Den största tillåtna hastigheten i närheten av Korpo-färjan är 16 km/h. Fartyg i maximalt leddjupgående ska beakta squateffekten (dimensionerande fart i farleden 13,5 knop med ramat djup -12,0 m)."
+  },
+  "modificationTimestamp": 1683095538349,
+  "latest": 1,
+  "iceCondition": {
+    "en": "In the approach, Utö-Lohm, the ice conditions vary: sometimes there is no formation of ice, at times there is moving ice and the buoys can be pressed beneath the surface. At the entrance, Lohm-Lövskär) there is normally 10 – 60 cm thick fast ice, which remains passable all winter due to the heavy traffic.",
+    "fi": "Väylän ulko-osalla Utöstä Lohmiin jääolosuhteet ovat vaihtelevia: toisinaan jäätä ei muodostu lainkaan, välillä jäät liikkuvat ja poijut voivat olla jään alla. Väylän sisäosalle Lohmista Lövskäriin muodostuu yleensä 10-60 cm paksuinen kiintojää, joka vilkkaan liikenteen takia yleensä pysyy helppokulkuisena koko talven.",
+    "sv": "Varierande isförhållanden i angöringen från Utö till Lohm: Ibland är den helt isfri, tidvis är isen rörlig och bojarna kan vara tryckta under ytan. I inloppet från Lohm till Lövskär bildas det vanligtvis 10-60 cm tjock fastis, som pga. den livliga trafiken för det mesta hålls lättframkomlig hela vintern."
+  },
+  "creationTimestamp": 1683095538349,
+  "navigationCondition": {
+    "en": "The first leg of the fairway, from Utö to Lohm, goes through a more open archipelago where navigation can be hampered by hard winds and heavy seas. The leg between Lohm and Lövskär in the sound between Nagu and Korpo is sheltered and well marked. The channel has mainly two traffic lanes, but on the line W of Vandrock the fairway area narrows down to one lane. At the Lövskär bend and Korpo ferry berth special attention and caution should be observed due to the crossing traffic.",
+    "fi": "Väylän alkuosa Utöstä Lohmiin kulkee läpi harvan saariston jossa kova tuuli ja merenkäynti voivat vaikeuttaa navigointia. Lohmista Lövskäriin väylä kulkee Nauvon ja Korppoon välisessä salmessa suojaisena ja hyvin merkittynä. Väylä on pääosiltaan kaksikaistainen, mutta Vandrockin länsipuoleisella linjalla väyläalue kapenee yksikaistaiseksi. Lövskärin mutka ja Korppoon lauttapaikka vaativat risteävän liikenteen vuoksi erityistä tarkkaavaisuutta ja varovaisuutta.",
+    "sv": "Det första farledsavsnittet, Utö-Lohm, går genom en gles skärgård där hård vind och sjögång kan försvåra navigationen. Från Lohm till Lövskär går farleden skyddad och väl utmärkt genom sundet mellan Nagu och Korpo. Farleden har i huvudsak två stråk, men på linjen V om Vandrock smalnar farledsområdet till ett stråk. Kröken vid Lövskär och färjfästet i Korpo kräver pga. den korsande trafiken särskild uppmärksamhet och försiktighet."
+  },
+  "fairwayIds": "#3240#",
+  "generalInfo": {
+    "en": "Instead of the route which goes in open sea, this fairway offers a route in the Archipelago Sea (Utö-Lövskär-Isokari), which is shorter, more sheltered against wind and with lighter ice conditions during difficult ice winters.",
+    "fi": "Väylä tarjoaa avomerireittiin nähden lyhyemmän, tuuliolosuhteiltaan suojaisemman ja vaikeina jäätalvina jääolosuhteiltaan helpomman Saaristomeren poikki kulkevan reitin (Utö-Lövskär-Isokari).",
+    "sv": "Jämfört med rutten som går genom öppet hav så erbjuder denna farled en rutt som går genom Skärgårdshavet (Utö-Lövskär-Enskär) och som är kortare, mera skyddad för vind och som har lättare isförhållanden under svåra isvintrar."
+  },
+  "id": "utolovskar",
+  "n2000HeightSystem": false,
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Archipelago VTS",
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "vhf": [
+          {
+            "channel": 71
+          }
+        ],
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 3203220100
+        }
+      ],
+      "phoneNumber": "+358295253460",
+      "email": "pilotdispatch.archipelago@finnpilot.fi",
+      "internet": "https://www.pilotonline.fi",
+      "extraInfo": {
+        "en": "NB. Pilot boarding position to be agreed upon in winter and in adverse weather conditions.",
+        "fi": "Huom. Talviaikana tai huonolla säällä luotsipaikka sovittava erikseen.",
+        "sv": "Anm. Vintertid eller i dåligt väder bör platsen där lots möter överenskommas."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs.",
+          "fi": "Yksityiset hinaajat.",
+          "sv": "Privatägda bogserbåtar."
+        }
+      }
+    ]
+  },
+  "lineText": {
+    "en": "14 lines marked with boards and lights.",
+    "fi": "Linjoja 14 kpl. Merkitty linjatauluin ja loistoin.",
+    "sv": "14 linjer. Utmärkt med enstavlor och fyrar."
+  }
+}

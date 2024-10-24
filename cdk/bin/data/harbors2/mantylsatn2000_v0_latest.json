@@ -1,0 +1,140 @@
+{
+  "phoneNumber": [
+    "+358447012623"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Swinging area, diameter 343 m.",
+    "fi": "Kääntöaltaan halkaisija 343 m.",
+    "sv": "Svängbassängens diameter 343 m."
+  },
+  "modifier": "System",
+  "email": "info@portofpori.fi",
+  "name": {
+    "en": "Mäntyluoto harbour N2000",
+    "fi": "Mäntyluodon satama N2000",
+    "sv": "Mäntyluoto hamn N2000"
+  },
+  "cargo": {
+    "en": "Quay no 1: 2 x Liebherr 140 t crane; Kallonlahti quay no 20-25: 60 t, 50 t cranes and two 40 t cranes; Quay no 14-19: two 40 t cranes and one 200 t crane.",
+    "fi": "Laituri n:o 1; 2 x Liebherr 140 tn; Kallonlahti 20-25; nosturit 60 t, 50 t ja 2 kpl 40 t; laiturit 14-19: 2 kpl 40 t ja 1 kpl 200 t. Lisäksi 2 kpl materiaalinkäsittelykone Mantsinen 110 ja 200 9-25 tn.",
+    "sv": "Kajen nr 1; 2 x Liebherr 140 t kran, Kallonlahti 20-25; 60 t och 50 t kranar och två 40 t kranar; Kajen nr 14-19; två 40 t mobilkranar och en 200 t kran. Två stycket Mantsinen 110 och 200, 9-25 t."
+  },
+  "modificationTimestamp": 1716189873037,
+  "company": {
+    "en": "Port of Pori, Pori",
+    "fi": "Porin satama Oy, Pori",
+    "sv": "Björneborgs hamn Ab, Björneborg"
+  },
+  "quays": [
+    {
+      "length": 250,
+      "name": {
+        "en": "Quay 1",
+        "fi": "Laituri no 1",
+        "sv": "Kaj 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.4705,
+          61.6
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 13.3
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 650,
+      "name": {
+        "en": "Kallonlahti: quay no 20-25",
+        "fi": "Kallonlahti: laiturit 20-25;",
+        "sv": "Kallonlahti: Kaj 20-25"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.471,
+          61.59671
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 10.9
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Quay no 3-5",
+        "fi": "Laituri 2",
+        "sv": "Kaj 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.47357,
+          61.59999
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 13.4
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Quay 7 and 14-19",
+        "fi": "Laiturit 7 ja 14-19",
+        "sv": "Kaj 7 och 14-19"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.4964,
+          61.59588
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.7
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "latest": 1,
+  "creationTimestamp": 1701168805795,
+  "id": "mantylsatn2000",
+  "fax": null,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.4853,
+      61.59499
+    ]
+  }
+}

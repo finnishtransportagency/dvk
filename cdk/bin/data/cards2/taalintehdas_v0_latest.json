@@ -1,0 +1,140 @@
+{
+  "anchorage": {
+    "en": "Anchorage and turning area at the port entrance between the islands Yttre Sirkholmen and Högholmen. The area can also be used as a waiting area. Lateral marking. Safe clearance depth 9.0 m, the centre is about 90 m from the fairway centre line.",
+    "fi": "Väylällä on ankkurointi ja kääntöalue sataman edustalla Ytre Sirkholmenin ja Högholmenin saarten välissä. Aluetta voidaan käyttää myös odotuspaikkana. Lateraalimerkintä. Haraussyvyys 9,0 m, alueen keskikohta on noin 90 m päässä väylän keskilinjasta.",
+    "sv": "Ankring och manöverutrymme i hamninloppet mellan öarna Yttre Sirkholmen och Högholmen. Området kan även användas som vänteplats. Lateralutmärkning. Ramat djup 9,0 m, områdets mittpunkt är ca 90 m från farledens mittlinje."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "1",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134252
+    },
+    {
+      "id": 134253
+    }
+  ],
+  "name": {
+    "en": "Dalsbruk channel",
+    "fi": "Taalintehtaan väylä",
+    "sv": "Dalsbruksleden"
+  },
+  "attention": null,
+  "creationTimestamp": 1683095538196,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The whole fairway is sheltered by mainland, islands and skerries. The narrowest part of the fairway is the narrow passage at Märaströmmen, width 90 m. Vessels with maximum draught should take the suction effect into consideration.",
+    "fi": "Väylä on kokonaisuudessaan mantereen, saarien ja karien hyvin suojaama. Väylän kapein kohta on Märaströmmenin kapeikossa, leveys 90 m. Maksimisyvyydessä kulkevien alusten on huomioitava mahdollinen imuvaikutus aluksen ohjailuun.",
+    "sv": "Farleden är i sin helhet väl skyddad av fastland, holmar och skär. Farledens smalaste ställe är den trånga passagen vid Märaströmmen, bredd 90 m. Fartyg med maximalt djupgående ska vid manövreringen beakta den eventuella sugeffekten."
+  },
+  "generalInfo": null,
+  "id": "taalintehdas",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Six lines marked with boards.",
+    "fi": "Linjoja 6 kpl jotka merkitty linjatauluin.",
+    "sv": "Sex farledslinjer, utmärkta med enstavlor."
+  },
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "taalintehdas"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 3705,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718791259960,
+  "pilotRoutes": [],
+  "latest": 1,
+  "iceCondition": {
+    "en": "During normal winters there is fast ice in the fairway.",
+    "fi": "Väylällä esiintyy normaalitalvina kiintojäätä.",
+    "sv": "Under normala vintrar förekommer fast is i farleden."
+  },
+  "fairwayIds": "#3705#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Archipelago VTS",
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 71
+          }
+        ],
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ]
+      },
+      {
+        "name": {
+          "en": "Hanko VTS",
+          "fi": "Hanko VTS",
+          "sv": "Hanko VTS"
+        },
+        "phoneNumber": "+358204485388",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "hanko.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 22793122400,
+          "pilotJourney": null
+        },
+        {
+          "id": 23269122400,
+          "pilotJourney": 27.9
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs.",
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed for pusher barges 14.0 knots and for vessels with maximum draught 8.0 knots.",
+    "fi": "Mitoitusnopeus puskuproomuyhdistelmällä 14,0 solmua ja maksimisyväyksisellä aluksella 8,0 solmua.",
+    "sv": "Dimensionerande fart för skjutbogserare 14,0 knop och för fartyg med maximalt djupgående 8,0 knop."
+  }
+}

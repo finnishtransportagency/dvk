@@ -1,0 +1,346 @@
+{
+  "phoneNumber": [
+    "+358207908800",
+    "+358207908840"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Use of anchor prohibited in the harbour basin.",
+    "fi": "Ankkurin käyttäminen satama-altaissa on kielletty.",
+    "sv": "Förbjudet att använda ankare i hamnbassängen."
+  },
+  "modifier": "System",
+  "email": "office@haminakotka.fi",
+  "name": {
+    "en": "Port of Hamina",
+    "fi": "Haminan satama",
+    "sv": "Hamnen i Fredrikshamn"
+  },
+  "cargo": {
+    "en": "Several mobile cranes, maximum lifting capacity 100 tonnes.",
+    "fi": "Useita mobiilinostureita, maksiminostokyky 100 tonnia.",
+    "sv": "Flera mobilkranar, max. lyftförmåga 100 ton."
+  },
+  "modificationTimestamp": 1683095540624,
+  "company": {
+    "en": "Port of HaminaKotka",
+    "fi": "HaminaKotka Satama Oy",
+    "sv": "Fredrikshamn-Kotka hamn"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Lakulahti",
+        "fi": "Lakulahti",
+        "sv": "Lakulahti"
+      },
+      "length": 216,
+      "sections": [
+        {
+          "name": "L1"
+        },
+        {
+          "name": "L2"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Lakulahti",
+        "fi": "Lakulahti",
+        "sv": "Lakulahti"
+      },
+      "length": 164,
+      "sections": [
+        {
+          "name": "L3"
+        },
+        {
+          "name": "L4"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Lakulahti",
+        "fi": "Lakulahti",
+        "sv": "Lakulahti"
+      },
+      "length": 187,
+      "sections": [
+        {
+          "name": "L5"
+        },
+        {
+          "name": "L6"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Lakulahti",
+        "fi": "Lakulahti",
+        "sv": "Lakulahti"
+      },
+      "length": 124,
+      "sections": [
+        {
+          "name": "L7"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Lakulahti",
+        "fi": "Lakulahti",
+        "sv": "Lakulahti"
+      },
+      "length": 116,
+      "sections": [
+        {
+          "name": "L8"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Hiirenkari",
+        "fi": "Hiirenkari",
+        "sv": "Hiirenkari"
+      },
+      "length": 158,
+      "sections": [
+        {
+          "name": "HK1"
+        },
+        {
+          "name": "HK2"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Hiirenkari",
+        "fi": "Hiirenkari",
+        "sv": "Hiirenkari"
+      },
+      "length": 100,
+      "sections": [
+        {
+          "name": "HK3"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Hiirenkari",
+        "fi": "Hiirenkari",
+        "sv": "Hiirenkari"
+      },
+      "length": 210,
+      "sections": [
+        {
+          "name": "HK4"
+        },
+        {
+          "name": "HK5"
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "EU",
+        "fi": "EU",
+        "sv": "EU"
+      },
+      "length": 90,
+      "sections": [
+        {
+          "name": "EU0",
+          "depth": 11.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "EU",
+        "fi": "EU",
+        "sv": "EU"
+      },
+      "length": 185,
+      "sections": [
+        {
+          "name": "EU1",
+          "depth": 11.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "EU",
+        "fi": "EU",
+        "sv": "EU"
+      },
+      "length": 190,
+      "sections": [
+        {
+          "name": "EU2",
+          "depth": 12.75
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "EU",
+        "fi": "EU",
+        "sv": "EU"
+      },
+      "length": 234,
+      "sections": [
+        {
+          "name": "EU3",
+          "depth": 13.2
+        },
+        {
+          "name": "EU4",
+          "depth": 13.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Palokangas",
+        "fi": "Palokangas",
+        "sv": "Palokangas"
+      },
+      "length": 200,
+      "sections": [
+        {
+          "name": "PK1",
+          "depth": 11.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Palokangas",
+        "fi": "Palokangas",
+        "sv": "Palokangas"
+      },
+      "length": 102,
+      "sections": [
+        {
+          "name": "PK2",
+          "depth": 12.3
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Palokangas",
+        "fi": "Palokangas",
+        "sv": "Palokangas"
+      },
+      "length": 192,
+      "sections": [
+        {
+          "name": "PK3",
+          "depth": 12.3
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Oil terminal",
+        "fi": "Öljysatama",
+        "sv": "Oljehamnen"
+      },
+      "length": 35,
+      "sections": [
+        {
+          "name": "Ö1",
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Oil terminal",
+        "fi": "Öljysatama",
+        "sv": "Oljehamnen"
+      },
+      "length": 72,
+      "sections": [
+        {
+          "name": "Ö2",
+          "depth": 11.2
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Oil terminal",
+        "fi": "Öljysatama",
+        "sv": "Oljehamnen"
+      },
+      "length": 80,
+      "sections": [
+        {
+          "name": "Ö3",
+          "depth": 12
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Gas terminal",
+        "fi": "Kaasusatama",
+        "sv": "Gashamnen"
+      },
+      "length": 170,
+      "sections": [
+        {
+          "name": "FG",
+          "depth": 9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "MCV",
+        "fi": "MCV",
+        "sv": "MCV"
+      },
+      "length": 120,
+      "sections": [
+        {
+          "name": "MCV1",
+          "depth": 5.5
+        },
+        {
+          "name": "MCV2",
+          "depth": 5.5
+        }
+      ],
+      "extraInfo": {
+        "en": "only ramp loading",
+        "fi": "vain ramppilastaukset",
+        "sv": "endast ramplastningar"
+      }
+    }
+  ],
+  "creationTimestamp": 1683095540624,
+  "id": "hamina",
+  "fax": "+358207908891",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      27.16347,
+      60.5244
+    ]
+  }
+}

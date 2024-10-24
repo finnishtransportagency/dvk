@@ -1,0 +1,94 @@
+{
+  "phoneNumber": [
+    "+358505919281"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Swinging area, diameter 500 m, use of anchor permitted.",
+    "fi": "Kääntöaltaan halkaisija 500 m, ankkurin käyttö sallittu.",
+    "sv": "Svängbassängens diameter 500 m, tillåtet att använda ankare"
+  },
+  "modifier": "System",
+  "email": "john.rajasalo@blomberg.fi",
+  "name": {
+    "en": "Port of Karhusaari",
+    "fi": "Karhusaaren satama",
+    "sv": "Björnö hamn"
+  },
+  "cargo": {
+    "en": "Mobile devices.",
+    "fi": "Mobiililaitteet.",
+    "sv": "Mobila enheter."
+  },
+  "modificationTimestamp": 1702358917147,
+  "company": {
+    "en": "Blomberg Stevedoring, part of KWH LOGISTICS",
+    "fi": "Blomberg Stevedoring, osa KWH LOGISTICS",
+    "sv": "Blomberg Stevedoring, en del av KWH LOGISTICS"
+  },
+  "quays": [
+    {
+      "length": 160,
+      "name": {
+        "en": "Deep harbour: deep quay",
+        "fi": "Syväsatama: syvälaituri",
+        "sv": "Djuphamnen: djupkaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.31762,
+          62.25979
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 13.3
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 50,
+      "name": {
+        "en": "Inner harbour: oil pier",
+        "fi": "Sisäsatama: öljylaituri",
+        "sv": "Innerhamnen: oljekaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.31468,
+          62.25797
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 11.3
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "creationTimestamp": 1694761898886,
+  "id": "karhusaarisat15",
+  "fax": null,
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.31824,
+      62.25926
+    ]
+  }
+}
