@@ -60,7 +60,7 @@ async function getModelMap(fairwayIds: number[], api: string) {
       if (!modelMap.has(fairway.jnro)) {
         modelMap.set(fairway.jnro, []);
       }
-      i = modelMap.get(fairway.jnro)?.push(model);
+      modelMap.get(fairway.jnro)?.push(model);
     }
   }
   return modelMap;
