@@ -7,6 +7,8 @@ interface BackendAPILambda {
   priority: number;
   useVpc?: boolean;
   useMonitoring?: boolean;
+  timeout?: number; // seconds
+  memorySize?: number;
 }
 
 const apiLambdaFunctions: BackendAPILambda[] = [
@@ -17,6 +19,7 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     priority: 10,
     useVpc: true,
     useMonitoring: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'dirway-handler.ts'),
@@ -25,6 +28,7 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     priority: 12,
     useVpc: true,
     useMonitoring: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'aislocations-handler.ts'),
@@ -57,6 +61,7 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     priority: 22,
     useVpc: true,
     useMonitoring: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'login.ts'),
