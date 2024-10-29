@@ -11,7 +11,6 @@ import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
 import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
-import { fetchWeatherApiNonSoaResponse } from '../lib/lambda/api/axios';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
 const s3Mock = mockClient(S3Client);
@@ -368,31 +367,74 @@ const buoys = [
 
 const forecast = [
   {
-    place: '60.0,25.0:5',
-    localtime: '2024-10-23 12:00:00',
-    windDirection: 282.5,
-    windSpeed: 10.8,
-    windGust: 16.1,
-    waveHeight: 1.7,
-    visibility: 40,
+    place: '60.08,24.97:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 293.0,
+    windSpeed: 5.2,
+    windGust: 8.0,
+    waveDirection: 232.7,
+    waveHeight: 0.6,
+    waveDirectionSaaristomeren: null,
+    waveHeightSaaristomeren: null,
+    waveDirectionHelsinki: 229.7,
+    waveHeightHelsinki: 0.5,
+    visibility: 40.0,
   },
   {
-    place: '60.0,25.0:5',
-    localtime: '2024-10-23 12:00:00',
-    windDirection: 281.5,
-    windSpeed: 10.7,
-    windGust: 16.0,
-    waveHeight: 1.8,
-    visibility: 41,
+    place: '60.08,24.97:5',
+    localtime: '2024-10-29 13:00:00',
+    windDirection: 293.0,
+    windSpeed: 5.2,
+    windGust: 8.0,
+    waveDirection: 232.7,
+    waveHeight: 0.6,
+    waveDirectionSaaristomeren: null,
+    waveHeightSaaristomeren: null,
+    waveDirectionHelsinki: 229.7,
+    waveHeightHelsinki: 0.5,
+    visibility: 40.0,
   },
   {
-    place: '59.9,24.9:5',
-    localtime: '2024-10-23 12:00:00',
-    windDirection: 287.5,
-    windSpeed: 9.7,
-    windGust: 11.1,
-    waveHeight: 0.9,
-    visibility: 39,
+    place: '60.06,25.83:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 294.0,
+    windSpeed: 7.4,
+    windGust: 10.3,
+    waveDirection: 247.4,
+    waveHeight: 0.8,
+    waveDirectionSaaristomeren: null,
+    waveHeightSaaristomeren: null,
+    waveDirectionHelsinki: null,
+    waveHeightHelsinki: null,
+    visibility: 40.0,
+  },
+  {
+    place: '60.044,24.928:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 292.0,
+    windSpeed: 5.1,
+    windGust: 7.8,
+    waveDirection: 235.8,
+    waveHeight: 0.6,
+    waveDirectionSaaristomeren: null,
+    waveHeightSaaristomeren: null,
+    waveDirectionHelsinki: 233.7,
+    waveHeightHelsinki: 0.6,
+    visibility: 40.0,
+  },
+  {
+    place: '60.08,21.11:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 262.0,
+    windSpeed: 5.9,
+    windGust: 8.2,
+    waveDirection: 277.5,
+    waveHeight: 0.3,
+    waveDirectionSaaristomeren: 275.7,
+    waveHeightSaaristomeren: 0.3,
+    waveDirectionHelsinki: null,
+    waveHeightHelsinki: null,
+    visibility: 40.0,
   },
 ];
 
@@ -518,17 +560,6 @@ jest.mock('../lib/lambda/api/axios', () => ({
       },
     };
   },
-  fetchWeatherApiNonSoaResponse: () => {
-    if (throwError) {
-      throw new Error('Fetching from Weather forecast api failed');
-    }
-    return {
-      data: forecast,
-      headers: {
-        date: 0,
-      },
-    };
-  },
 }));
 
 beforeEach(() => {
@@ -641,11 +672,22 @@ it('should get weather and wave forecast from api', async () => {
   const response = await handler(mockFeaturesALBEvent('forecast'));
   assert(response.body);
   const responseObj = await parseWeatherResponse(response.body);
-  expect(responseObj.features.length).toBe(2);
+  expect(responseObj.features.length).toBe(4);
 
   //2 items should be grouped using the generated id
-  expect(responseObj.features.find((f) => f.id == '60.0,25.0')?.properties?.forecastItems.length).toBe(2);
-  expect(responseObj.features.find((f) => f.id == '59.9,24.9')?.properties?.forecastItems.length).toBe(1);
+  expect(responseObj.features.find((f) => f.id == '60.08,24.97')?.properties?.forecastItems.length).toBe(2);
+
+  //Check that for Helsinki coords, the wave direction uses the more accurate version
+  expect(responseObj.features.find((f) => f.id == '60.08,24.97')?.properties?.forecastItems[0].waveDirection).toBe(229.7);
+  expect(responseObj.features.find((f) => f.id == '60.08,24.97')?.properties?.forecastItems[0].waveHeight).toBe(0.5);
+
+  //Check that for Saaristomeri coords, the wave direction uses the more accurate version
+  expect(responseObj.features.find((f) => f.id == '60.08,21.11')?.properties?.forecastItems[0].waveDirection).toBe(275.7);
+  expect(responseObj.features.find((f) => f.id == '60.08,21.11')?.properties?.forecastItems[0].waveHeight).toBe(0.3);
+
+  expect(responseObj.features.find((f) => f.id == '60.06,25.83')?.properties?.forecastItems[0].waveDirection).toBe(247.4);
+  expect(responseObj.features.find((f) => f.id == '60.06,25.83')?.properties?.forecastItems[0].waveHeight).toBe(0.8);
+
   expect(responseObj).toMatchSnapshot();
 });
 

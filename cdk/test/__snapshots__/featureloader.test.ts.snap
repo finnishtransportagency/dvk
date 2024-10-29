@@ -485,36 +485,32 @@ exports[`should get weather and wave forecast from api 1`] = `
     {
       "geometry": {
         "coordinates": [
-          25,
-          60,
+          24.97,
+          60.08,
         ],
         "type": "Point",
       },
-      "id": "60.0,25.0",
+      "id": "60.08,24.97",
       "properties": {
         "featureType": "forecast",
         "forecastItems": [
           {
-            "dateTime": 1729684800000,
+            "dateTime": 1730203200000,
             "visibility": 40,
-            "visibilityStatus": "green",
-            "waveHeight": 1.7,
-            "waveStatus": "yellow",
-            "windDirection": 282.5,
-            "windGust": 16.1,
-            "windSpeed": 10.8,
-            "windStatus": "yellow",
+            "waveDirection": 229.7,
+            "waveHeight": 0.5,
+            "windDirection": 293,
+            "windGust": 8,
+            "windSpeed": 5.2,
           },
           {
-            "dateTime": 1729684800000,
-            "visibility": 41,
-            "visibilityStatus": "green",
-            "waveHeight": 1.8,
-            "waveStatus": "yellow",
-            "windDirection": 281.5,
-            "windGust": 16,
-            "windSpeed": 10.7,
-            "windStatus": "yellow",
+            "dateTime": 1730206800000,
+            "visibility": 40,
+            "waveDirection": 229.7,
+            "waveHeight": 0.5,
+            "windDirection": 293,
+            "windGust": 8,
+            "windSpeed": 5.2,
           },
         ],
       },
@@ -523,25 +519,73 @@ exports[`should get weather and wave forecast from api 1`] = `
     {
       "geometry": {
         "coordinates": [
-          24.9,
-          59.9,
+          25.83,
+          60.06,
         ],
         "type": "Point",
       },
-      "id": "59.9,24.9",
+      "id": "60.06,25.83",
       "properties": {
         "featureType": "forecast",
         "forecastItems": [
           {
-            "dateTime": 1729684800000,
-            "visibility": 39,
-            "visibilityStatus": "green",
-            "waveHeight": 0.9,
-            "waveStatus": "green",
-            "windDirection": 287.5,
-            "windGust": 11.1,
-            "windSpeed": 9.7,
-            "windStatus": "green",
+            "dateTime": 1730203200000,
+            "visibility": 40,
+            "waveDirection": 247.4,
+            "waveHeight": 0.8,
+            "windDirection": 294,
+            "windGust": 10.3,
+            "windSpeed": 7.4,
+          },
+        ],
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          24.928,
+          60.044,
+        ],
+        "type": "Point",
+      },
+      "id": "60.044,24.928",
+      "properties": {
+        "featureType": "forecast",
+        "forecastItems": [
+          {
+            "dateTime": 1730203200000,
+            "visibility": 40,
+            "waveDirection": 233.7,
+            "waveHeight": 0.6,
+            "windDirection": 292,
+            "windGust": 7.8,
+            "windSpeed": 5.1,
+          },
+        ],
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          21.11,
+          60.08,
+        ],
+        "type": "Point",
+      },
+      "id": "60.08,21.11",
+      "properties": {
+        "featureType": "forecast",
+        "forecastItems": [
+          {
+            "dateTime": 1730203200000,
+            "visibility": 40,
+            "waveDirection": 275.7,
+            "waveHeight": 0.3,
+            "windDirection": 262,
+            "windGust": 8.2,
+            "windSpeed": 5.9,
           },
         ],
       },

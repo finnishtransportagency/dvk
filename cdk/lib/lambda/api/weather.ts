@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Geometry } from 'geojson';
+import { Geometry, Point } from 'geojson';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { XMLParser } from 'fast-xml-parser';
-import { fetchIlmanetApi, fetchWeatherApi, fetchWeatherApiNonSoaResponse } from './axios';
+import { fetchIlmanetApi, fetchWeatherApi, fetchWeatherApiResponse } from './axios';
 import {
   Mareograph,
   WeatherMareograph,
@@ -13,14 +13,8 @@ import {
   WeatherBuoy,
   WeatherWaveForecastApi,
   WeatherWaveForecast,
-  ForecastConfig,
-  WeatherWaveForecastItem,
-  PlaceForecastConfig,
-  Bounds,
 } from './apiModels';
 import { PilotPlace } from '../../../graphql/generated';
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { getNewStaticBucketName } from '../environment';
 
 function parseLocation(location: any): Partial<Mareograph> {
   return {
@@ -72,6 +66,15 @@ parser.addEntity('#xE5', 'å');
 parser.addEntity('#229', 'å');
 parser.addEntity('#xC5', 'Å');
 parser.addEntity('#197', 'Å');
+
+const HelsinkiArea = [
+  [24.6667, 25.4],
+  [59.8667, 60.2667],
+];
+const SaaristomerenArea = [
+  [20.0667, 22.4667],
+  [59.6, 60.8],
+];
 
 function parseXml(xml: string): Mareograph[] {
   const mareographs: Mareograph[] = [];
@@ -174,6 +177,38 @@ function removeSearchRadius(place: string): string {
   return place.includes(':') ? place.slice(0, place.lastIndexOf(':')) : place;
 }
 
+function getWaveDirection(measure: WeatherWaveForecastApi) {
+  const geom = parseGeometry(removeSearchRadius(measure.place));
+  if (isInBoundingBox(geom as Point, HelsinkiArea)) {
+    return measure.waveDirectionHelsinki ?? measure.waveDirection;
+  }
+  if (isInBoundingBox(geom as Point, SaaristomerenArea)) {
+    return measure.waveDirectionSaaristomeren ?? measure.waveDirection;
+  }
+  return measure.waveDirection;
+}
+
+function getWaveHeight(measure: WeatherWaveForecastApi) {
+  const geom = parseGeometry(removeSearchRadius(measure.place));
+  if (isInBoundingBox(geom as Point, HelsinkiArea)) {
+    return measure.waveHeightHelsinki ?? measure.waveHeight;
+  }
+  if (isInBoundingBox(geom as Point, SaaristomerenArea)) {
+    return measure.waveHeightSaaristomeren ?? measure.waveHeight;
+  }
+  return measure.waveHeight;
+}
+
+function isInBoundingBox(point: Point, bbox: number[][]) {
+  //No need to use OL to do simple bbox check here
+  return (
+    bbox[0][0] <= point.coordinates[0] &&
+    bbox[0][1] >= point.coordinates[0] &&
+    bbox[1][0] <= point.coordinates[1] &&
+    bbox[1][1] >= point.coordinates[1]
+  );
+}
+
 export async function fetchWeatherWaveForecast(
   pilotPoints: PilotPlace[],
   numberTimesteps: number = 48
@@ -188,15 +223,20 @@ export async function fetchWeatherWaveForecast(
     'median(DD-D:::6:10:1) as windDirection',
     'max(FF-MS:::6:10:1) as windSpeed',
     'max(FFG-MS:::6:10:1) as windGust',
+    'nanmedian(DPW-D:WAM_BALMFC:1061:6:0:1) as waveDirection',
     'max(HWS-M:WAM_BALMFC:1061:6:0:1) as waveHeight',
+    'nanmedian(DPW-D:WAM_HKI:1117:6:0:1) as waveDirectionHelsinki',
+    'nanmax(HWS-M:WAM_HKI:1117:6:0:1) as waveHeightHelsinki',
+    'nanmedian(DPW-D:WAM_BALMFC_ARCH:1119:6:0:1) as waveDirectionSaaristomeren',
+    'nanmax(HWS-M:WAM_BALMFC_ARCH:1119:6:0:1) as waveHeightSaaristomeren',
     'nanmedian(MUL{VV2-M:MEPSMTA:1093:6:0:4:0;0.001}) as visibility',
   ];
 
   const responseDetails = '&precision=double&format=json&timeformat=sql';
 
-  const response = await fetchWeatherApiNonSoaResponse(
+  const response = await fetchWeatherApiResponse(
     'timeseries?param=' +
-      encodeURI(fields.join()) +
+      encodeURIComponent(fields.join()) +
       getCommonForecastLocations(pilotPoints, searchRadius) +
       responseDetails +
       '&timesteps=' +
@@ -213,8 +253,8 @@ export async function fetchWeatherWaveForecast(
           windSpeed: measure.windSpeed,
           windGust: measure.windGust,
           windDirection: measure.windDirection,
-          waveHeight: measure.waveHeight,
-          waveDirection: measure.waveDirection,
+          waveHeight: getWaveHeight(measure),
+          waveDirection: getWaveDirection(measure),
           visibility: measure.visibility,
           dateTime: Date.parse(measure.localtime),
           geometry: parseGeometry(removeSearchRadius(measure.place)),
@@ -239,98 +279,7 @@ export async function fetchWeatherWaveForecast(
         {} as Record<string, WeatherWaveForecast>
       )
   );
-  assignTrafficLights(forecast, getTestConfig());
-  //assignTrafficLights(forecast, await getForecastConfig());
   return { forecast, responseTime };
-}
-
-function getTestConfig(): ForecastConfig {
-  const windRed: Bounds = { lowerLimit: 20, status: 'red' };
-  const windYellow: Bounds = { lowerLimit: 10, upperLimit: 20, status: 'yellow' };
-  const windGreen: Bounds = { upperLimit: 10, status: 'green' };
-  const windLimits = [windRed, windYellow, windGreen];
-
-  const waveRed: Bounds = { lowerLimit: 2, status: 'red' };
-  const waveYellow: Bounds = { lowerLimit: 1, upperLimit: 2, status: 'yellow' };
-  const waveGreen: Bounds = { upperLimit: 1, status: 'green' };
-  const waveLimits = [waveRed, waveYellow, waveGreen];
-
-  const visRed: Bounds = { upperLimit: 10, status: 'red' };
-  const visYellow: Bounds = { lowerLimit: 10, upperLimit: 20, status: 'yellow' };
-  const visGreen: Bounds = { lowerLimit: 20, status: 'green' };
-  const visLimits = [visRed, visYellow, visGreen];
-
-  const placeForecastConfig: PlaceForecastConfig = {
-    windLimits: windLimits,
-    waveLimits: waveLimits,
-    visibilityLimits: visLimits,
-  };
-  const config: ForecastConfig = { limits: [placeForecastConfig] };
-  log.debug(JSON.stringify(config));
-  return config;
-}
-
-function assignTrafficLights(forecast: WeatherWaveForecast[], config: ForecastConfig | null) {
-  if (config) {
-    const defaultLimits = config.limits.find((l) => l.id == null);
-    for (let f of forecast) {
-      for (let i of f.forecastItems) {
-        if (defaultLimits && config.limits.length === 1) {
-          log.debug('Howard');
-          applyLimits(i, defaultLimits);
-        } else {
-          const placeLimits = config.limits.find((l) => l.id === (f.pilotPlaceId ?? f.id));
-          applyLimits(i, placeLimits ?? defaultLimits);
-        }
-      }
-    }
-  }
-}
-
-function applyLimits(item: WeatherWaveForecastItem, limits: PlaceForecastConfig | undefined) {
-  if (limits) {
-    if (item.windSpeed) {
-      for (let l of limits.windLimits) {
-        if (checkBounds(item.windSpeed, l)) {
-          item.windStatus = l.status;
-          break;
-        }
-      }
-    }
-    if (item.waveHeight) {
-      for (let l of limits.waveLimits) {
-        if (checkBounds(item.waveHeight, l)) {
-          item.waveStatus = l.status;
-          break;
-        }
-      }
-    }
-    if (item.visibility) {
-      for (let l of limits.visibilityLimits) {
-        if (checkBounds(item.visibility, l)) {
-          item.visibilityStatus = l.status;
-          break;
-        }
-      }
-    }
-  }
-}
-
-function checkBounds(n: number, b: Bounds): boolean {
-  return (b.lowerLimit ?? 0) <= n && (b.upperLimit ?? Number.MAX_VALUE) > n;
-}
-
-async function getForecastConfig(): Promise<ForecastConfig | null> {
-  const s3Client = new S3Client({ region: 'eu-west-1' });
-  const command = new GetObjectCommand({
-    Key: 'forecastconfig.json',
-    Bucket: getNewStaticBucketName(),
-  });
-  const config = await s3Client.send(command);
-  if (config.Body) {
-    return JSON.parse(JSON.stringify(config.Body)) as ForecastConfig;
-  }
-  return null;
 }
 
 export async function fetchBuoys(): Promise<Buoy[]> {

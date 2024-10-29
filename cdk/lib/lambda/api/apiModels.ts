@@ -291,7 +291,11 @@ export type WeatherWaveForecastApi = {
   windGust: number | null;
   visibility: number | null;
   waveHeight: number | null;
-  waveDirection?: number | null;
+  waveDirection: number | null;
+  waveHeightHelsinki: number | null;
+  waveDirectionHelsinki: number | null;
+  waveHeightSaaristomeren: number | null;
+  waveDirectionSaaristomeren: number | null;
 };
 
 //Types representing internal application objects
@@ -300,8 +304,6 @@ type ForecastHeaders = {
   geometry: Geometry;
 };
 
-export type TrafficLight = 'green' | 'yellow' | 'red';
-
 export type WeatherWaveForecastItem = {
   dateTime: number;
   windSpeed: number | null;
@@ -309,36 +311,14 @@ export type WeatherWaveForecastItem = {
   windGust: number | null;
   visibility: number | null;
   waveHeight: number | null;
-  waveDirection?: number | null;
-  windStatus?: TrafficLight;
-  waveStatus?: TrafficLight;
-  visibilityStatus?: TrafficLight;
+  waveDirection: number | null;
+  temprature?: number | null;
 };
 
 export type WeatherWaveForecast = {
   pilotPlaceId: number | undefined;
   forecastItems: WeatherWaveForecastItem[];
 } & ForecastHeaders;
-
-//Traffic light upper lower limits
-export type Bounds = {
-  status: TrafficLight;
-  lowerLimit?: number;
-  upperLimit?: number;
-};
-
-//Limit configs for individual place
-export type PlaceForecastConfig = {
-  id?: string;
-  waveLimits: Bounds[];
-  windLimits: Bounds[];
-  visibilityLimits: Bounds[];
-};
-
-//Forecast config for all places
-export type ForecastConfig = {
-  limits: PlaceForecastConfig[];
-};
 
 export type WeatherBuoy = {
   fmisid: number;
