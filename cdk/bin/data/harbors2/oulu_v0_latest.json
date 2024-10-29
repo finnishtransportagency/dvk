@@ -1,0 +1,255 @@
+{
+  "phoneNumber": [
+    "+358447032753"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Vihreäsaari harbour: diameter of turning circle 330 m. Oritkari harbour: diameter of turning circle 320 m.",
+    "fi": "Vihreäsaaren satama: kääntöympyrän halkaisija 330 m. Oritkarin satama: kääntöympyrän halkaisija 330 m.",
+    "sv": "Vihreäsaari hamn: svängcirkelns diameter 330 m. Oritkari hamn: svängcirkelns diameter 330 m."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Port of Oulu",
+    "fi": "Oulun satama",
+    "sv": "Uleåborg hamn"
+  },
+  "modificationTimestamp": 1683095539713,
+  "company": {
+    "en": "Port of Oulu Ltd",
+    "fi": "Oulun Satama Oy",
+    "sv": "Uleåborg hamn Ab"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Oil terminal 301",
+        "fi": "Öljylaituri 301",
+        "sv": "Oljekaj 301"
+      },
+      "length": 72,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.39572,
+          65.00608
+        ]
+      },
+      "sections": [
+        {
+          "depth": 11.3
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Bulk terminal 302",
+        "fi": "Bulklaituri 302",
+        "sv": "Bulkkaj 302"
+      },
+      "length": 150,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.39914,
+          65.00496
+        ]
+      },
+      "sections": [
+        {
+          "depth": 11.3
+        },
+        {
+          "depth": 6.9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Bulk terminal 303",
+        "fi": "Bulklaituri 303",
+        "sv": "Bulkkaj 303"
+      },
+      "length": 150,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.39752,
+          65.00456
+        ]
+      },
+      "sections": [
+        {
+          "depth": 11.3
+        },
+        {
+          "depth": 6.9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Main quay 103",
+        "fi": "Päälaituri 103",
+        "sv": "Huvudkajen 103"
+      },
+      "length": 343,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.41323,
+          64.99845
+        ]
+      },
+      "sections": [
+        {
+          "depth": 9.2
+        }
+      ],
+      "extraInfo": {
+        "en": "Ro/Ro ramp 102",
+        "fi": "peräporttipaikka 102",
+        "sv": "ro-ro-ramp 102"
+      }
+    },
+    {
+      "name": {
+        "en": "North Quay 101",
+        "fi": "Pohjoislaituri 101",
+        "sv": "Norra kajen 101"
+      },
+      "length": 170,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.41827,
+          64.99846
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.8
+        }
+      ],
+      "extraInfo": {
+        "en": "Ro/Ro ramp",
+        "fi": "peräporttipaikka",
+        "sv": "ro-ro-ramp"
+      }
+    },
+    {
+      "name": {
+        "en": "Chemical terminal 203",
+        "fi": "Kemikaalilaituri 203",
+        "sv": "Kemikaliekaj 203"
+      },
+      "length": 70,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.41944,
+          65.00222
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Chemical terminal 204",
+        "fi": "Kemikaalilaituri 204",
+        "sv": "Kemikaliekaj 204"
+      },
+      "length": 162,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.42063,
+          65.00077
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "West Quay 105",
+        "fi": "Länsilaituri 105",
+        "sv": "Västra kajen 105"
+      },
+      "length": 290,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.40239,
+          65.00021
+        ]
+      },
+      "sections": [
+        {
+          "depth": 13.6
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Nuottasaari Quay 201",
+        "fi": "Nuottasaaren laituri 201",
+        "sv": "Nuottasaarikajen 201"
+      },
+      "length": 320,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.42592,
+          65.00498
+        ]
+      },
+      "sections": [
+        {
+          "depth": 6.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Nuottasaari Quay 202",
+        "fi": "Nuottasaaren laituri 202",
+        "sv": "Nuottasaarikajen 202"
+      },
+      "length": 320,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          25.42343,
+          65.0041
+        ]
+      },
+      "sections": [
+        {
+          "depth": 6.8
+        }
+      ]
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095539713,
+  "id": "oulu",
+  "fax": "+35885572040",
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      25.40793,
+      64.99891
+    ]
+  }
+}

@@ -1,0 +1,131 @@
+{
+  "anchorage": {
+    "en": "Anchorage in the outher part in an area approx. 0.5 nautical miles W of the light-buoy Västra Mössbådan, in the inner part in an area E of Sälgrund at the beginning of the harbour line (for passage and short-term anchorage).",
+    "fi": "Väylän ulko-osalla voi ankkuroida Västra Mössbådanin valopoijusta 0,5 mpk länteen olevalla alueella. Väylän sisäosalla Sälgrundin itäpuolella sataman linjan alkupäässä voi ohittaa ja ankkuroida lyhytaikaisesti.",
+    "sv": "I yttre delen ett område ca 0,5 M V om lysbojen Västra Mössbådan, i inre delen ett område O om Sälgrund i början av hamnlinjen (för passage och kortvarig ankring)."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134251
+    }
+  ],
+  "name": {
+    "en": "Kaskinen fairway",
+    "fi": "Kaskisten väylä",
+    "sv": "Kaskö farled"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Kaskinen mareograph.",
+    "fi": "Kaskinen mareografi.",
+    "sv": "Kaskö mareograf."
+  },
+  "creationTimestamp": 1694760093765,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The outer part of the channel, from the pilot boarding position to the southern edge of Sälgrund, consists of open water and is exposed to southerly, westerly and northerly winds. Heavy southerly and westerly winds in particular may impede navigation. From Sälgrund on, the channel is sheltered by shoals, isles and mainland.",
+    "fi": "Väylän ulko-osa luotsipaikalta Sälgrundin eteläkärkeen on avomerta ja suojaton E - L - P tuulilla, erityisesti voimakkaat etelä- ja länsituulet vaikeuttavat navigointia. Sälgrundista väylä jatkuu karien, saarien ja mantereen suojaamana satamaan.",
+    "sv": "Ledens yttre del, från lotsplatsen till Sälgrunds sydspets, är öppen sjö och känslig för vindar från syd, väst och nord. I synnerhet kraftiga sydliga och västliga vindar kan försvåra navigeringen. Från Sälgrund fortsätter leden in till djuphamnen i skydd av grund, holmar och fastland."
+  },
+  "generalInfo": null,
+  "id": "kaskinen15",
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "4 lines marked by boards.",
+    "fi": "Linjoja on 4, jotka merkitty linjatauluin.",
+    "sv": "4 linjer utmärkta med enstavlor."
+  },
+  "version": "v1",
+  "harbors": [],
+  "windRecommendation": {
+    "en": "Wind speeds of about 10 m/s are critical for design ships in open water.",
+    "fi": "Kriittinen tuulennopeus mitoitusaluksella on n. 10 m/s avovedessä.",
+    "sv": "Kritisk vindhastighet ca 10 m/s för dimensionerande fartyg i öppet vatten."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 1030,
+      "primary": true
+    },
+    {
+      "secondary": false,
+      "id": 1032,
+      "primary": false
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718864241594,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "The outer part of the channel, from the pilot boarding position to the southern edge of Sälgrund, consists of open water and is exposed to southerly, westerly and northerly winds. Heavy southerly and westerly winds in particular may impede navigation. From Sälgrund on, the channel is sheltered by shoals, isles and mainland.",
+    "fi": " Väylän ulko-osalla jää liikkuu. Kylminä talvina kiintojään alue ulottuu kauas avomerelle. Etenkin etelän- ja lännenpuoleisilla tuulilla jää ahtautuu Orionin ja Raskenin valopoijujen väliselle alueelle vaikeaksi jäävalliksi. Jäiden liikkuessa poijut ja viitat saattavat olla jään alla.",
+    "sv": "I yttre delen av leden är isen i rörelse. Under kalla vintrar sträcker sig istäcket långt ut till havs. I synnerhet mellan lysbojarna Orion och Rasken skapar sydliga och västliga vindar svårforcerade vallar. Bojarna och prickarna kan då vara tryckta under isen."
+  },
+  "fairwayIds": "#1030#1032#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "West Coast VTS",
+          "fi": "West Coast VTS",
+          "sv": "West Coast VTS"
+        },
+        "phoneNumber": "+358204486645",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 9
+          }
+        ],
+        "email": [
+          "westcoast.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 26300501,
+          "pilotJourney": 8
+        }
+      ],
+      "phoneNumber": "+358295253450",
+      "fax": null,
+      "email": "pilotdispatch.westcoast@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. Pilot boarding position to be agreed upon in winter and in adverse weather conditions.",
+        "fi": "Huom. talviaikana ja huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Obs! Vintertid och i dåligt väder bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Ordered by the ship’s agent.",
+          "fi": "Tilataan meklarin toimesta.",
+          "sv": "Beställs av skeppsmäklaren."
+        },
+        "phoneNumber": [
+          "+35862802222"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Vessel speed when passing shoals in the outer part 12 knots, on the harbour line in the inner part 9 knots.",
+    "fi": "Mitoitusnopeus ulko-osalla matalien kohdalla 12 solmua, sisäosalla sataman linjalla 9 solmua.",
+    "sv": "Dimensionerande fart vid grunden i yttre delen 12 knop, på hamnlinjen i inre delen 9 knop."
+  }
+}

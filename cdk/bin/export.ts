@@ -109,7 +109,7 @@ async function downloadAndAnonymizeItems(tableName: string, outputDir: string) {
 
   do {
     // Scan the table to get all items
-    const scanParams = {
+    const scanParams: ScanCommandInput = {
       TableName: tableName,
       ExclusiveStartKey: lastEvaluatedKey,
     };

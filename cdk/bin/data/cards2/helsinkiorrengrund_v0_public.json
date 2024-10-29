@@ -1,0 +1,134 @@
+{
+  "anchorage": {
+    "en": "Anchoring in the anchorage area of the Orrengrund-Kotka channel, SW of Tainio Lighthouse.",
+    "fi": "Ankkuroida voi Tainion majakan lounaispuolella olevalle Orrengrundin - Kotkan 10,0 m väylän ankkurointialueelle.",
+    "sv": "Ankringsmöjlighet i Orrengrund-Kotkaledens ankringsområde, SV om fyren Tainio."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 132310
+    },
+    {
+      "id": 100669
+    }
+  ],
+  "name": {
+    "en": "Helsinki-Orrengrund",
+    "fi": "Helsinki-Orrengrund",
+    "sv": "Helsingfors-Orrengrund"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095538749,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": " The section from Helsinki to S of Emäsalo is very well sheltered. The rest of the fairway is dotted by a few islands only and periodically fairly open to southerly winds.",
+    "fi": "Väylän alkuosa Helsingin edustalta Emäsalon eteläpuolelle on hyvin suojaisa. Edelleen Emäsalosta harvojen saarien ja karien lomitse Orrengrundin koillispuolelle jatkuva väylä on melko avoin etelänpuoleisille tuulille.",
+    "sv": "Sträckan från Helsingfors inlopp till området S om Emsalö är mycket välskyddad. Resten av farleden går mellan ett fåtal holmar och skär och är rätt öppen för sydliga vindar."
+  },
+  "generalInfo": null,
+  "id": "helsinkiorrengrund",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "The fairway is marked by boards.",
+    "fi": "Merkitty linjatauluin.",
+    "sv": "Farleden är utmärkt med enstavlor. "
+  },
+  "version": "v0_public",
+  "harbors": [],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 4865,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718775507841,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "Southerly winds may cause ridging in the fairway.",
+    "fi": "Väylällä voi etelänpuoleisilla tuulilla esiintyä ajoittain jääahtaumia.",
+    "sv": "Vid sydlig vind kan vallbildning tidvis förekomma i farleden."
+  },
+  "fairwayIds": "#4865#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Helsinki VTS",
+          "fi": "Suomenlahden meriliikennekeskus",
+          "sv": "Finska vikens sjötrafikcentral"
+        },
+        "phoneNumber": "+358204485391",
+        "vhf": [
+          {
+            "name": {
+              "en": "Helsinki VTS sector 1",
+              "fi": "Helsinki VTS sektori 1",
+              "sv": "Helsinki VTS sektor 1"
+            },
+            "channel": 71
+          },
+          {
+            "name": {
+              "en": "Helsinki VTS sector 2",
+              "fi": "Helsinki VTS sektori 2",
+              "sv": "Helsinki VTS sektor 2"
+            },
+            "channel": 9
+          },
+          {
+            "name": {
+              "en": "Kotka VTS",
+              "fi": "Kotka VTS",
+              "sv": "Kotka VTS"
+            },
+            "channel": 67
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "kotka.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 458000602,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs.",
+          "fi": "Yksityiset hinaajat.",
+          "sv": "Privatägda bogserbåtar."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

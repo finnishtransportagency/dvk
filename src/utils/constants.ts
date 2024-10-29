@@ -254,7 +254,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=marinewarning'),
     staticUrl: new URL(staticUrl + '/marinewarning.json.gz'),
     persist: true,
-    staleTime: OFFLINE_STORAGE.staleTime,
+    staleTime: 1000 * 60 * 10, // 10 minutes
     gcTime: OFFLINE_STORAGE.gcTime,
     refetchInterval: 1000 * 60 * 15, // 15 minutes
     refetchOnMount: 'always',
@@ -580,12 +580,6 @@ export const N2000_URLS = {
   fi: 'www.traficom.fi/fi/liikenne/merenkulku/n2000-vayla-ja-merikarttauudistus',
   sv: 'www.traficom.fi/sv/transport/sjofart/farleds-och-sjokortsreformen-n2000',
   en: 'www.traficom.fi/en/transport/maritime/n2000-fairway-and-nautical-chart-reform-improved',
-};
-
-export const MASTERSGUIDE_URLS = {
-  fi: 'www.fintraffic.fi/fi/vts/masters-guide',
-  sv: 'www.fintraffic.fi/sv/vts/masters-guide',
-  en: 'www.fintraffic.fi/en/vts/masters-guide',
 };
 
 export const PILOTORDER_URL = 'www.pilotonline.fi';

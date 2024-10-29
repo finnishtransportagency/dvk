@@ -1,0 +1,105 @@
+{
+  "phoneNumber": [
+    "+358400798698"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "In front of quay is a turning circle with diameter of about 225 m, turning requires that no ships are at the quay.",
+    "fi": "Laiturin edustalla on kääntöympyrä noin 225 m silloin, kun laiturissa ei ole laivoja.",
+    "sv": "Framför kajen finns en svängplats med diametern ca 225 m, svängning förutsätter att inga fartyg ligger vid kaj."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Port of Kalajoki",
+    "fi": "Kalajoen satama",
+    "sv": "Kalajoki hamn"
+  },
+  "cargo": {
+    "en": "Blomberg Stevedoring and Rahjan Huolinta.",
+    "fi": "Satamaoperaattorit: Blomberg Stevedoring ja Rahjan Huolinta.",
+    "sv": "Hamnoperatörerna Blomberg Stevedoring och Rahjan Huolinta."
+  },
+  "modificationTimestamp": 1683095539248,
+  "company": {
+    "en": "Port of Kalajoki",
+    "fi": "Kalajoen Satama",
+    "sv": "Kalajoki Hamn"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay 1",
+        "fi": "Laituri 1",
+        "sv": "Kaj 1"
+      },
+      "length": 154,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.7148,
+          64.22151
+        ]
+      },
+      "sections": [
+        {
+          "depth": 6.3
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 2",
+        "fi": "Laituri 2",
+        "sv": "Kaj 2"
+      },
+      "sections": [
+        {
+          "depth": 8.9
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.71214,
+          64.22265
+        ]
+      }
+    },
+    {
+      "name": {
+        "en": "Quay 3",
+        "fi": "Laituri 3",
+        "sv": "Kaj 3"
+      },
+      "sections": [
+        {
+          "depth": 8.9
+        },
+        {
+          "depth": 9.2
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.70988,
+          64.22383
+        ]
+      }
+    }
+  ],
+  "creationTimestamp": 1683095539248,
+  "id": "kalajoki",
+  "fax": "+3588465311",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      23.70896,
+      64.22297
+    ]
+  }
+}

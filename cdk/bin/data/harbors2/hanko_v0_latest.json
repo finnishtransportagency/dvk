@@ -1,0 +1,171 @@
+{
+  "phoneNumber": [
+    "+358102355013",
+    "+358405486534"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of swinging area 800 m, safe clearance depth -15.0 m.",
+    "fi": "Kääntöaltaan halkaisija 800 m, haraussyvyys -15,0 m.",
+    "sv": "Svängbassängens diameter 800 m, ramat djup -15,0 m."
+  },
+  "modifier": "System",
+  "email": "traffic@portofhanko.fi",
+  "name": {
+    "en": "Port of Hanko",
+    "fi": "Hangon satama",
+    "sv": "Hangö Hamn"
+  },
+  "cargo": {
+    "en": "Western Harbour: Ro/Ro berth No 1 (deep quay), multipurpose crane 50 t, ramp; Ro/Ro berths No 2-5, ramps. Outer Harbour: Berth OH1, Ro/Ro ramp, discharge of liquid bulk cargo; Berth OH2, Ro/Ro ramp.",
+    "fi": "Länsisatama: Ro-ro-laituri No: 1 (syvälaituri), monitoiminosturi 50 t, peräporttipaikka; Ro-ro-laiturit No: 2 – 5, peräporttipaikat. Ulkosatama: laituri-OH1, ro-ro-ramppi, nestebulk purku; laituri-OH2, ro-ro-ramppi.",
+    "sv": "Västra hamnen: Ro/ro-kaj Nr 1 (djupkaj), universalkran 50 t, inkörsramp; ro/ro-kajerna Nr 2-5, inkörsramp. Yttre hamnen: kaj OH1, ro-ro-ramp, lossning av bulklast i flytande form; kaj OH2, ro-ro-ramp."
+  },
+  "modificationTimestamp": 1683095540678,
+  "company": {
+    "en": "Hangon satama - Hangö Hamn Oy Ab",
+    "fi": "Hangon satama - Hangö Hamn Oy Ab",
+    "sv": "Hangon satama - Hangö Hamn Oy Ab"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Ro/Ro berth No 1",
+        "fi": "Ro-ro-laituri No: 1",
+        "sv": "Ro/ro-kaj Nr 1"
+      },
+      "length": 245,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.94776,
+          59.82251
+        ]
+      },
+      "sections": [
+        {
+          "depth": 14
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Ro/Ro berth No 2",
+        "fi": "Ro-ro-laituri No: 2",
+        "sv": "Ro/ro-kaj Nr 2"
+      },
+      "length": 230,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.95218,
+          59.82201
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.1
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Ro/Ro berth No 3",
+        "fi": "Ro-ro-laituri No: 3",
+        "sv": "Ro/ro-kaj Nr 3"
+      },
+      "length": 245,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.95395,
+          59.82106
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.1
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Ro/Ro berth No 4",
+        "fi": "Ro-ro-laituri No: 4",
+        "sv": "Ro/ro-kaj Nr 4"
+      },
+      "length": 160,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.94843,
+          59.82164
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.1
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Ro/Ro berth No 5",
+        "fi": "Ro-ro-laituri No: 5",
+        "sv": "Ro/ro-kaj Nr 5"
+      },
+      "length": 210,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.9488,
+          59.82007
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.6
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Berth OH1",
+        "fi": "Ro-ro-laituri-OH1",
+        "sv": "Kaj OH1"
+      },
+      "length": 196,
+      "sections": [
+        {
+          "depth": 10.5
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Berth OH2",
+        "fi": "Ro-ro-laituri-OH2",
+        "sv": "Kaj OH2"
+      },
+      "length": 160,
+      "sections": [
+        {
+          "depth": 7.8
+        }
+      ]
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095540678,
+  "id": "hanko",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      22.95026,
+      59.82109
+    ]
+  }
+}

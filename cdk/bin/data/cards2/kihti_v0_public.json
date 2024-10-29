@@ -1,0 +1,117 @@
+{
+  "anchorage": null,
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "1",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134252
+    }
+  ],
+  "name": {
+    "en": "Kihti-Maarianhamina channel",
+    "fi": "Kihti-Maarianhamina väylä",
+    "sv": "Farleden Skiftet-Mariehamn"
+  },
+  "attention": null,
+  "creationTimestamp": 1683095537896,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "From the Kihti open to Brändö the channel passes through an archipelago where the channel becomes narrow, has many turns and is difficult to navigate. From Brändö to Ledskär the channel is clearly navigable and sheltered by islands and reefs. From Ledskär to Korsö the channel is unsheltered, S-W winds can create heavy seas. Parallel and short-cut channels have been built to improve and expedite traffic flow on the channel (Askö-, Ledskär-, Prästkär- and Apteekkari channels).",
+    "fi": "Kihdin selältä väylä kulkee kapeana, mutkaisena ja vaikeasti navigoitavana läpi saariston Brändöhön. Brändöstä Ledskäriin väylä on saarien ja karien suojaamana selkeästi navigoitava. Ledskäristä Korsöhön väylä on suojaton, S-W tuulilla merenkäynti voi olla voimakasta. Väylän liikennöintiä helpottamaan ja nopeuttamaan on rakennettu rinnakkais- ja oikaisuväyliä (Askön-, Ledskärin-, Prästkärin- ja Apteekkarin väylät).",
+    "sv": "Från Skiftet Fjärden till Brandö går farleden genom en skärgård, när farleden är smal, krokig och svår att navigera. Från Brandö till Ledskär är farleden klart att navigera och skyddad av öar och klippar. Från Ledskär till Korsö är farleden oskyddad, vid S-W vindar kan sjögången vara kraftig. Parallell- och genvägsfarleder har byggts för att underlätta och påskynda trafik i farleden. (Askö-, Ledskär-, Prästkär- och Apotekarens farleder)."
+  },
+  "generalInfo": null,
+  "id": "kihti",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Marked with leading beacons and sector lights.",
+    "fi": "Merkitty linjatauluin ja sektoriloistoin.",
+    "sv": "Utmärkta med enstavlor och fyrar."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "maarianhamina"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 2565,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 2940,
+      "primary": true
+    }
+  ],
+  "speedLimit": {
+    "en": "In Mariehamn harbour, the speed limit is 17 km/h.",
+    "fi": "Maarianhaminan satamassa 17 km/h.",
+    "sv": "I Mariehamns hamn, 17 km/h."
+  },
+  "modificationTimestamp": 1718791165404,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "In normal winters, 10-60 cm thick fast ice forms on the inner channel from Kihti to Rödhamnsfjärden, but due to heavy traffic it usually remains easily passable throughout the winter. The channel's end section from Rödhamnsfjärden to Mariehamn has varying ice conditions; occasionally ice does not form at all, but sometimes the ice moves and buoys may be under the ice.",
+    "fi": "Väylän sisäosalle Kihdiltä Rödhamnsfjärdenille muodostuu normaalitalvina 10-60 cm paksuinen kiintojää, joka vilkkaan liikenteen takia yleensä pysyy helppokulkuisena koko talven. Väylän loppuosalla Rödhamnsfjärdeniltä Maarianhaminaan jääolosuhteet ovat vaihtelevia; toisinaan jäätä ei muodostu lainkaan, välillä jäät liikkuvat ja poijut voivat olla jään alla.",
+    "sv": "I farledens inre del från Skiftet till Rödhamnsfjärden bildas under normala vintrar ca. 10-60cm tjock fast is, men pga. den livliga trafiken hålls farleden vanligtvis lättframkomlig hela vintern. I slutdelen av farleden från Rödhamnsfjärden till Mariehamn är isförhållande varierande; ibland bildas ingen is, ibland rör sig isarna och bojarna kan vara under isen."
+  },
+  "fairwayIds": "#2565#2940#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Archipelago VTS",
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 71
+          }
+        ],
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 8412720700,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253460",
+      "fax": null,
+      "email": "pilotdispatch.archipelago@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs available.",
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privatägda bogserbåtar vid behov."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

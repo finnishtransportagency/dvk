@@ -1,0 +1,121 @@
+{
+  "anchorage": {
+    "en": "Anchorage NE of Kaunissaari, where the channels are crossing (safe clearance depth -18.4 m, MW2005) and anchorage SW of Kotka Lighthouse (safe clearance depth - 19 m, MW2005).",
+    "fi": "Ankkurointialue on Kaunissaaren koillispuolella väylien risteysalueella (haraussyvyys - 18,4 m, MW2005) sekä Kotkan majakan lounaispuolella (haraussyvyys -19 m, MW2005).",
+    "sv": "Ett ankringsområde finns NO om Fagerö, där farlederna korsar varandra (ramat djup -18,4 m, MW2005) och ett ankringsområde SV om Kotka fyr (ramat djup -19 m, MW2005)."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134254
+    },
+    {
+      "id": 100669
+    }
+  ],
+  "name": {
+    "en": "Mussalo channel",
+    "fi": "Mussalon väylä",
+    "sv": "Mussalöleden"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095539047,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The approach as far as the island Viikarinsaari consists of open sea, unsheltered against E-S-W winds. Navigation may be hampered by strong winds and sea state.",
+    "fi": "Väylän ulko-osa Viikarinsaareen asti on avomerta ja suojaton E-S-SW tuulille. Kova tuuli ja merenkäynti voivat haitata navigointia",
+    "sv": "Öppet hav, oskyddat för vind från O-S-SV, i farledens yttre del fram till holmen Viikarinsaari. Hård vind och sjögång kan försvåra navigeringen."
+  },
+  "generalInfo": null,
+  "id": "mussalo",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "4 navigation lines, marked by leading beacons, direction and sector lights.",
+    "fi": "Linjoja 4 kpl, merkitty linjatauluin, suunta- ja sektoriloistoin.",
+    "sv": "Fyra farledslinjer, utmärkta med enstavlor, riktnings- och sektorfyrar."
+  },
+  "version": "v1",
+  "harbors": [
+    {
+      "id": "mussalo"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 5510,
+      "primary": true
+    },
+    {
+      "secondary": false,
+      "id": 5532,
+      "primary": false
+    }
+  ],
+  "speedLimit": {
+    "en": "Ships sailing at maximum draught should take the squat effect into account; design speed 16.5 knots (Sc -18.4) in the approach, 12.5 knots (Sc -17.5 m) in the harbour.",
+    "fi": "Maksimikulkusyvyydessä olevien alusten tulee huomioida nopeuspainuma; mitoitusnopeus väylän ulko-osalla 16,5 solmua (Hs -18,4 m) ja satamassa 12,5 solmua (Hs -17,5 m).",
+    "sv": "Fartyg med maximalt djupgående bör ta hänsyn till squateffekten; dimensionerande fart i yttre delen av farleden 16,5 knop (Rd -18,4) och i hamnen 12,5 knop (Rd -17,5 m)."
+  },
+  "modificationTimestamp": 1718775803423,
+  "pilotRoutes": [],
+  "iceCondition": null,
+  "fairwayIds": "#5510#5532#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Kotka VTS",
+          "fi": "Kotka VTS",
+          "sv": "Kotka VTS"
+        },
+        "phoneNumber": "+358204485660",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "kotka.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 64865422300,
+          "pilotJourney": 20
+        }
+      ],
+      "phoneNumber": "+358295253430",
+      "fax": null,
+      "email": "pilotdispatch.kotka@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Provided by Alfons Håkans Ltd. Pilots can assist in ordering the service, if required.",
+          "fi": "Alfons Håkans Oy:n hinaajat. Luotsit avustavat tarvittaessa hinausavun tilaamisessa.",
+          "sv": "Alfons Håkans Oy Ab. Vid behov kan lotsen hjälpa till med att beställa bogserhjälp."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

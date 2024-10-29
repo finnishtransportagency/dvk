@@ -1,0 +1,702 @@
+{
+  "anchorage": {
+    "en": "An area for anchoring is located between Heikinkari and the breakwater. During the fast ice period vessels can also use the area for waiting. Icebreakers use the area for waiting and turning. Cardinal marking. Safe clearance depth -8,9 m, seabed of sand and stone. The center of the anchorage area is approx. 200 m of the fairway's middle line.",
+    "fi": "Väylällä on ankkurointialue Heikinkarin ja aallonmurtajan välillä, jota kiintojääkautena voidaan käyttää odotuspaikkana. Myös jäänmurtajat käyttävät aluetta käännös- ja odotuspaikkana. Kardinaalimerkintä. Haraussyvyys - 8,9 m, hiekka- ja kivipohja. Ankkurointialueen keskikohta on noin 200 m päässä väylän keskilinjasta.",
+    "sv": "Farleden har en ankringsplats mellan Heikinkari och vågbrytaren, som kan användas som en väntningsplats på fastisperioden. Isbrytarna använder också platsen till att vänta och vända. Kardinal utmärkning. Ramat djup -8,9 m, sand- och stenbotten. Mittpunkten av ankringsområdet ligger ungefär 200 m av farledens mittlinje."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "pictures": [
+    {
+      "scaleWidth": "116",
+      "sequenceNumber": 1,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "5 km",
+      "groupId": 1698236092393,
+      "id": "raahe-1698236092393-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698236094440
+    },
+    {
+      "scaleWidth": "116",
+      "sequenceNumber": 1,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "5 km",
+      "groupId": 1698236092393,
+      "id": "raahe-1698236092393-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698236095746
+    },
+    {
+      "scaleWidth": "116",
+      "sequenceNumber": 1,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "5 km",
+      "groupId": 1698236092393,
+      "id": "raahe-1698236092393-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698236096907
+    },
+    {
+      "scaleWidth": "109",
+      "sequenceNumber": 2,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1698236107646,
+      "id": "raahe-1698236107646-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698236108731
+    },
+    {
+      "scaleWidth": "109",
+      "sequenceNumber": 2,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1698236107646,
+      "id": "raahe-1698236107646-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698236109880
+    },
+    {
+      "scaleWidth": "109",
+      "sequenceNumber": 2,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1698236107646,
+      "id": "raahe-1698236107646-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698236110963
+    },
+    {
+      "scaleWidth": "132",
+      "sequenceNumber": 5,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698236149031,
+      "id": "raahe-1698236149031-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698236152265
+    },
+    {
+      "scaleWidth": "132",
+      "sequenceNumber": 5,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698236149031,
+      "id": "raahe-1698236149031-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698236153886
+    },
+    {
+      "scaleWidth": "132",
+      "sequenceNumber": 5,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698236149031,
+      "id": "raahe-1698236149031-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698236155121
+    },
+    {
+      "scaleWidth": "95",
+      "sequenceNumber": 3,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726827185658,
+      "id": "raahe-1726827185658-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1726827186243
+    },
+    {
+      "scaleWidth": "95",
+      "sequenceNumber": 3,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726827185658,
+      "id": "raahe-1726827185658-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1726827186785
+    },
+    {
+      "scaleWidth": "95",
+      "sequenceNumber": 3,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726827185658,
+      "id": "raahe-1726827185658-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1726827187359
+    },
+    {
+      "scaleWidth": "95",
+      "sequenceNumber": 4,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726827212531,
+      "id": "raahe-1726827212531-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1726827213251
+    },
+    {
+      "scaleWidth": "95",
+      "sequenceNumber": 4,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726827212531,
+      "id": "raahe-1726827212531-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1726827213811
+    },
+    {
+      "scaleWidth": "95",
+      "sequenceNumber": 4,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726827212531,
+      "id": "raahe-1726827212531-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1726827214372
+    },
+    {
+      "scaleWidth": "82",
+      "sequenceNumber": 6,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1726831091443,
+      "id": "raahe-1726831091443-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1726831092491
+    },
+    {
+      "scaleWidth": "82",
+      "sequenceNumber": 6,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1726831091443,
+      "id": "raahe-1726831091443-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1726831093292
+    },
+    {
+      "scaleWidth": "82",
+      "sequenceNumber": 6,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1726831091443,
+      "id": "raahe-1726831091443-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1726831094110
+    },
+    {
+      "scaleWidth": "103",
+      "sequenceNumber": 7,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1726832397422,
+      "id": "raahe-1726832397422-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1726832403222
+    },
+    {
+      "scaleWidth": "103",
+      "sequenceNumber": 7,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1726832397422,
+      "id": "raahe-1726832397422-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1726832404083
+    },
+    {
+      "scaleWidth": "103",
+      "sequenceNumber": 7,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1726832397422,
+      "id": "raahe-1726832397422-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1726832404920
+    },
+    {
+      "scaleWidth": "80",
+      "sequenceNumber": 1,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1697453301094,
+      "id": "raahe-1697453301094-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1697453304268
+    },
+    {
+      "scaleWidth": "80",
+      "sequenceNumber": 1,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1697453301094,
+      "id": "raahe-1697453301094-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1697453305328
+    },
+    {
+      "scaleWidth": "80",
+      "sequenceNumber": 1,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1697453301094,
+      "id": "raahe-1697453301094-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1697453306888
+    },
+    {
+      "scaleWidth": "98",
+      "sequenceNumber": 5,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1697453360668,
+      "id": "raahe-1697453360668-fi",
+      "text": "Raahen satama",
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1697453361938
+    },
+    {
+      "scaleWidth": "98",
+      "sequenceNumber": 5,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1697453360668,
+      "id": "raahe-1697453360668-sv",
+      "text": "Bahestad hamn",
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1697453363180
+    },
+    {
+      "scaleWidth": "98",
+      "sequenceNumber": 5,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1697453360668,
+      "id": "raahe-1697453360668-en",
+      "text": "Port of Raahe",
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1697453364342
+    },
+    {
+      "scaleWidth": "91",
+      "sequenceNumber": 3,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726826781593,
+      "id": "raahe-1726826781593-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1726826783176
+    },
+    {
+      "scaleWidth": "91",
+      "sequenceNumber": 3,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726826781593,
+      "id": "raahe-1726826781593-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1726826783895
+    },
+    {
+      "scaleWidth": "91",
+      "sequenceNumber": 3,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726826781593,
+      "id": "raahe-1726826781593-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1726826784783
+    },
+    {
+      "scaleWidth": "119",
+      "sequenceNumber": 2,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1726827129107,
+      "id": "raahe-1726827129107-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1726827130640
+    },
+    {
+      "scaleWidth": "119",
+      "sequenceNumber": 2,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1726827129107,
+      "id": "raahe-1726827129107-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1726827131581
+    },
+    {
+      "scaleWidth": "119",
+      "sequenceNumber": 2,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1726827129107,
+      "id": "raahe-1726827129107-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1726827132383
+    },
+    {
+      "scaleWidth": "78",
+      "sequenceNumber": 6,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1726830804854,
+      "id": "raahe-1726830804854-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1726830810209
+    },
+    {
+      "scaleWidth": "78",
+      "sequenceNumber": 6,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1726830804854,
+      "id": "raahe-1726830804854-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1726830811037
+    },
+    {
+      "scaleWidth": "78",
+      "sequenceNumber": 6,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1726830804854,
+      "id": "raahe-1726830804854-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1726830811874
+    },
+    {
+      "scaleWidth": "123",
+      "sequenceNumber": 4,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726830900822,
+      "id": "raahe-1726830900822-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1726830906453
+    },
+    {
+      "scaleWidth": "123",
+      "sequenceNumber": 4,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726830900822,
+      "id": "raahe-1726830900822-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1726830907311
+    },
+    {
+      "scaleWidth": "123",
+      "sequenceNumber": 4,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1726830900822,
+      "id": "raahe-1726830900822-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1726830908150
+    },
+    {
+      "scaleWidth": "82",
+      "sequenceNumber": 7,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "50 m",
+      "groupId": 1726832497550,
+      "id": "raahe-1726832497550-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1726832498400
+    },
+    {
+      "scaleWidth": "82",
+      "sequenceNumber": 7,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "50 m",
+      "groupId": 1726832497550,
+      "id": "raahe-1726832497550-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1726832499181
+    },
+    {
+      "scaleWidth": "82",
+      "sequenceNumber": 7,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "50 m",
+      "groupId": 1726832497550,
+      "id": "raahe-1726832497550-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1726832499978
+    }
+  ],
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 100540
+    }
+  ],
+  "name": {
+    "en": "Raahe fairway",
+    "fi": "Raahen väylä",
+    "sv": "Brahestad farled"
+  },
+  "attention": null,
+  "creationTimestamp": 1683095537376,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The fairway is open sea area and unsheltered against all winds. Strong wind affects the navigation on the entire fairway and in the harbour. Strong waves occur from the approach to Heikinkari. Strong transverse current may accrue between the approach and the edge mark Jaakko, especially in southern winds. Squat effect on the dredged part of the fairway, from the edge mark Länsipiekko to harbour.",
+    "fi": "Väylä on avomerta ja suojaton kaikilla merenpuolisilla tuulilla. Kova tuuli vaikuttaa aluksen ohjailuun koko väyläosuudella ja satamassa. Ulko-osalla Heikinkariin saakka voimakasta aallonmuodostusta. Väylän ulko-osalla reunamerkki Rm Jaakko saakka on usein voimakasta poikittaista virtausta erityisesti etelätuulilla. Ruopatulla väyläosuudella Länsipiekko reunamerkistä satamaan esiintyy pohjaimun vaikutusta.",
+    "sv": "Farleden går i öppen sjö och är oskyddad mot alla vindar. Hård vind påverkar navigeringen på hela farleden och i hamnen. Stark vågbildning i angöringen och ända fram till Heikinkari. I angöringen fram till Rm Jaakko kan förekomma kraftigt tvärgående ström speciellt vid sydliga vindar, squat-effekt förekommer i den muddrade delen av farleden från Rm Länsipiekko till hamnen."
+  },
+  "generalInfo": null,
+  "id": "raahe",
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "4 lines, marking is based on the lighthouse, boards, edge marks, buoys and spar buoys in combined use.",
+    "fi": "Linjoja on 4, merkintä perustuu majakan, linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",
+    "sv": "Fyra linjer utmärks i en kombination av en fyr, enstavlor, randmärken, bojar och prickar."
+  },
+  "version": "v1",
+  "harbors": [
+    {
+      "id": "raahe"
+    },
+    {
+      "id": "ssab"
+    }
+  ],
+  "windRecommendation": {
+    "en": "The critical wind speed for the design vessel is 15 m/s, direction NW-NE; for larger vessels the recommendation is 12-15 m/s, direction SW-N; same recommendations apply in the harbour area.",
+    "fi": "Kriittinen tuulen nopeus on mitoitusalukselle 15 m/s, suunta LU-KO; isommille aluksille avovesikautena 12 - 15 m/s, suunta LO-P; satama-alueella samat suositukset.",
+    "sv": "Kritisk vindhastighet för det dimensionerande fartyget är 15 m/s, riktning NV-NO; för större fartyg 12-15 m/s på öppet vatten, riktning SV-N. I hamnområdet sker samma rekommendationer."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "primarySequenceNumber": 1,
+      "id": 322,
+      "primary": true,
+      "secondarySequenceNumber": 1
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1726832562959,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "Between the approach and Heikinkari the ice is in movement almost whole winter forming ice ridges on the area between edge marks Jaakko and Länsipiekko. Ice is mobile on the whole fairway in spring, fall and mild winters. Buoys and spar buoys may be pressed under ice (surface). A thick layer of sludge builds up in strong W winds between Heikinkari and the breakwater. Fast ice is usually approx. 10-80 cm thick. The port is normally ice-free the whole winter.",
+    "fi": "Välillä ulko-osa - Heikinkari jää liikkuu lähes koko talven muodostaen jääahtaumia RM Jaakko:n ja RM Länsipiekko väliselle alueelle. Keväisin, syksyisin ja leutoina talvina jää liikkuu koko väyläalueella. Poijut ja viitat saattavat olla jään alla. Voimakkailla länsituulilla muodostuu paksu sohjojäävyöhyke Heikinkarin ja aallonmurtajan välille. Kiintojään paksuus on yleensä n. 10 - 80 cm. Satama on yleensä koko talven jäästä vapaa.",
+    "sv": "Isen är i rörelse mellan angöringen och Heikinkari nästan hela vintern och vallar bildas på området mellan Rm Jaakko och Rm Länsipiekko. Isen rör sig på hela farledsområdet på våren, hösten och under milda vintrar. Bojar och prickar kan då vara tryckta under isen. Starka västliga vindar skapar ett tjockt bälte av issörja i området mellan Heikinkari och vågbrytaren. Fastisen är oftast 10-80 cm tjock. Hamnen är normalt isfri hela vintern."
+  },
+  "fairwayIds": "#322#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 44617920700,
+          "pilotJourney": 6
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. In winter and adverse weather conditions the pilot boarding position is separately agreed.",
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka sovittava erikseen.",
+        "sv": "Obs. vintertid eller i dåligt väder bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Aquila.",
+          "fi": "Aquila.",
+          "sv": "Aquila."
+        },
+        "phoneNumber": [
+          "+358102190750"
+        ],
+        "fax": null,
+        "email": "jani.hannula@yxpilahinaus.fi"
+      },
+      {
+        "name": {
+          "en": "Charlie.",
+          "fi": "Charlie.",
+          "sv": "Charlie."
+        },
+        "phoneNumber": [
+          "+358400588566"
+        ],
+        "fax": null,
+        "email": "charlie@c-shipping.se"
+      },
+      {
+        "name": {
+          "en": "SSAB Europe Ltd.",
+          "fi": "SSAB Europe Oy.",
+          "sv": "SSAB Europe Ab."
+        },
+        "phoneNumber": [
+          "+358205923890"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed in the approach 11 knots, in the entrance 8 knots.",
+    "fi": "Mitoitusnopeus ulko-osalla 11 solmua ja sisäosalla 8 solmua.",
+    "sv": "Dimensionerande fart i den yttre delen 11 knop, i den inre delen 8 knop."
+  }
+}

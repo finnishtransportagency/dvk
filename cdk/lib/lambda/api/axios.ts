@@ -14,12 +14,13 @@ import {
   getVatuHeaders,
   getVatuPilotRoutesUrl,
   getVatuUrl,
+  getVatuV2ApiSupport,
   getWeatherHeaders,
 } from '../environment';
 import { log } from '../logger';
-import { FeatureCollection, Geometry } from 'geojson';
-import { roundGeometry } from '../util';
-import { GeometryModel, RtzData, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
+import { FeatureCollection } from 'geojson';
+import { convertToGeoJson, roundGeometry } from '../util';
+import { VaylaGeojsonFeature, RtzData, VesselAPIModel, VesselLocationFeatureCollection, VaylaFeature } from './apiModels';
 
 export enum ExternalAPI {
   ILMANET = 'Ilmanet',
@@ -102,8 +103,20 @@ export async function fetchAISFeatureCollection(path: string, params: Record<str
     : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);
 }
 
-export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
-  const url = `${await getVatuUrl()}/${api}`;
+async function getVatuAPIVersion(api: string): Promise<string> {
+  //During transition phase between V1 and V2, separate different environments support for API
+  return (await getVatuV2ApiSupport())
+    .split(';')
+    .map((s) => s.trim().toLowerCase())
+    .includes(api)
+    ? '-v2'
+    : '';
+}
+
+export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeature>(api: string, params: Record<string, string> = {}) {
+  const url = `${await getVatuUrl()}${await getVatuAPIVersion(api)}/${api}`;
+  log.debug({ api, url }, `VATU api: ${api}, url=${url}`);
+
   const start = Date.now();
   const response = await axios
     .get(url, {
@@ -123,9 +136,15 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
       throw new Error(getFetchErrorMessage(ExternalAPI.VATU));
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
-  for (const obj of response.data as T[]) {
-    if ('geometria' in obj) {
-      roundGeometry(obj.geometria as Geometry);
+
+  if (!('features' in response.data)) {
+    //Convert the data to GeoJson
+    response.data = convertToGeoJson(response.data);
+  }
+
+  for (const obj of response.data.features as T[]) {
+    if ('geometry' in obj) {
+      roundGeometry(obj.geometry);
     }
   }
   return response;
