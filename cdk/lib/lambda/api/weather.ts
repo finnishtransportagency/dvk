@@ -71,7 +71,7 @@ const HelsinkiArea = [
   [24.6667, 25.4],
   [59.8667, 60.2667],
 ];
-const SaaristomerenArea = [
+const SaaristomeriArea = [
   [20.0667, 22.4667],
   [59.6, 60.8],
 ];
@@ -177,26 +177,17 @@ function removeSearchRadius(place: string): string {
   return place.includes(':') ? place.slice(0, place.lastIndexOf(':')) : place;
 }
 
-function getWaveDirection(measure: WeatherWaveForecastApi) {
-  const geom = parseGeometry(removeSearchRadius(measure.place));
-  if (isInBoundingBox(geom as Point, HelsinkiArea)) {
-    return measure.waveDirectionHelsinki ?? measure.waveDirection;
+function getWaveDirectionAndHeight(geom: Point, measure: WeatherWaveForecastApi) {
+  if (isInBoundingBox(geom, HelsinkiArea)) {
+    return { waveDirection: measure.waveDirectionHelsinki ?? measure.waveDirection, waveHeight: measure.waveHeightHelsinki ?? measure.waveHeight };
   }
-  if (isInBoundingBox(geom as Point, SaaristomerenArea)) {
-    return measure.waveDirectionSaaristomeren ?? measure.waveDirection;
+  if (isInBoundingBox(geom, SaaristomeriArea)) {
+    return {
+      waveDirection: measure.waveDirectionSaaristomeri ?? measure.waveDirection,
+      waveHeight: measure.waveHeightSaaristomeri ?? measure.waveHeight,
+    };
   }
-  return measure.waveDirection;
-}
-
-function getWaveHeight(measure: WeatherWaveForecastApi) {
-  const geom = parseGeometry(removeSearchRadius(measure.place));
-  if (isInBoundingBox(geom as Point, HelsinkiArea)) {
-    return measure.waveHeightHelsinki ?? measure.waveHeight;
-  }
-  if (isInBoundingBox(geom as Point, SaaristomerenArea)) {
-    return measure.waveHeightSaaristomeren ?? measure.waveHeight;
-  }
-  return measure.waveHeight;
+  return { waveDirection: measure.waveDirection, waveHeight: measure.waveHeight };
 }
 
 function isInBoundingBox(point: Point, bbox: number[][]) {
@@ -227,8 +218,8 @@ export async function fetchWeatherWaveForecast(
     'max(HWS-M:WAM_BALMFC:1061:6:0:1) as waveHeight',
     'nanmedian(DPW-D:WAM_HKI:1117:6:0:1) as waveDirectionHelsinki',
     'nanmax(HWS-M:WAM_HKI:1117:6:0:1) as waveHeightHelsinki',
-    'nanmedian(DPW-D:WAM_BALMFC_ARCH:1119:6:0:1) as waveDirectionSaaristomeren',
-    'nanmax(HWS-M:WAM_BALMFC_ARCH:1119:6:0:1) as waveHeightSaaristomeren',
+    'nanmedian(DPW-D:WAM_BALMFC_ARCH:1119:6:0:1) as waveDirectionSaaristomeri',
+    'nanmax(HWS-M:WAM_BALMFC_ARCH:1119:6:0:1) as waveHeightSaaristomeri',
     'nanmedian(MUL{VV2-M:MEPSMTA:1093:6:0:4:0;0.001}) as visibility',
   ];
 
@@ -247,17 +238,21 @@ export async function fetchWeatherWaveForecast(
   const forecast = Object.values(
     (response.data as WeatherWaveForecastApi[])
       .map((measure) => {
+        const latlng = removeSearchRadius(measure.place);
+        const geometry = parseGeometry(removeSearchRadius(measure.place));
+        const { waveHeight, waveDirection } = getWaveDirectionAndHeight(geometry as Point, measure);
+        const pilotPlaceId = mapToPilotPlace(pilotPoints, latlng)?.id;
         return {
-          id: mapToPilotPlace(pilotPoints, removeSearchRadius(measure.place))?.id?.toString() ?? removeSearchRadius(measure.place),
-          pilotPlaceId: mapToPilotPlace(pilotPoints, removeSearchRadius(measure.place))?.id,
+          id: pilotPlaceId?.toString() ?? latlng,
+          pilotPlaceId: pilotPlaceId,
           windSpeed: measure.windSpeed,
           windGust: measure.windGust,
           windDirection: measure.windDirection,
-          waveHeight: getWaveHeight(measure),
-          waveDirection: getWaveDirection(measure),
+          waveHeight: waveHeight,
+          waveDirection: waveDirection,
           visibility: measure.visibility,
           dateTime: Date.parse(measure.localtime),
-          geometry: parseGeometry(removeSearchRadius(measure.place)),
+          geometry: geometry,
         };
       })
       .reduce(

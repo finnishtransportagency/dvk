@@ -294,8 +294,8 @@ export type WeatherWaveForecastApi = {
   waveDirection: number | null;
   waveHeightHelsinki: number | null;
   waveDirectionHelsinki: number | null;
-  waveHeightSaaristomeren: number | null;
-  waveDirectionSaaristomeren: number | null;
+  waveHeightSaaristomeri: number | null;
+  waveDirectionSaaristomeri: number | null;
 };
 
 //Types representing internal application objects
