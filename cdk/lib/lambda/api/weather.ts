@@ -67,13 +67,15 @@ parser.addEntity('#229', 'å');
 parser.addEntity('#xC5', 'Å');
 parser.addEntity('#197', 'Å');
 
-const HelsinkiArea = [
-  [24.6667, 25.4],
-  [59.8667, 60.2667],
+const HELSINKI_BBOX = [
+  //Define lower left and upper right
+  [24.6667, 59.8667],
+  [25.4, 60.2667],
 ];
-const SaaristomeriArea = [
-  [20.0667, 22.4667],
-  [59.6, 60.8],
+const SAARISTOMERI_BBOX = [
+  //Define lower left and upper right
+  [20.0667, 59.6],
+  [22.4667, 60.8],
 ];
 
 function parseXml(xml: string): Mareograph[] {
@@ -178,10 +180,10 @@ function removeSearchRadius(place: string): string {
 }
 
 function getWaveDirectionAndHeight(geom: Point, measure: WeatherWaveForecastApi) {
-  if (isInBoundingBox(geom, HelsinkiArea)) {
+  if (isInBoundingBox(geom, HELSINKI_BBOX)) {
     return { waveDirection: measure.waveDirectionHelsinki ?? measure.waveDirection, waveHeight: measure.waveHeightHelsinki ?? measure.waveHeight };
   }
-  if (isInBoundingBox(geom, SaaristomeriArea)) {
+  if (isInBoundingBox(geom, SAARISTOMERI_BBOX)) {
     return {
       waveDirection: measure.waveDirectionSaaristomeri ?? measure.waveDirection,
       waveHeight: measure.waveHeightSaaristomeri ?? measure.waveHeight,
@@ -194,8 +196,8 @@ function isInBoundingBox(point: Point, bbox: number[][]) {
   //No need to use OL to do simple bbox check here
   return (
     bbox[0][0] <= point.coordinates[0] &&
-    bbox[0][1] >= point.coordinates[0] &&
-    bbox[1][0] <= point.coordinates[1] &&
+    bbox[0][1] <= point.coordinates[1] &&
+    bbox[1][0] >= point.coordinates[0] &&
     bbox[1][1] >= point.coordinates[1]
   );
 }
