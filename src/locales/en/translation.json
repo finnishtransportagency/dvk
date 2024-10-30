@@ -52,6 +52,7 @@
           "circles": "Turning circles",
           "conditions": "Conditions",
           "seaLevel": "Sea level",
+          "forecast": "[en] Sää- ja aaltoennusteet",
           "weatherStation": "Weather stations",
           "buoys": "Wave buoys",
           "vts": "VTS",
@@ -430,6 +431,10 @@
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Last observation"
     },
+    "forecast": {
+      "forecast": "[en] Sää- ja aaltoennuste",
+      "coordinates": "Coordinates"
+    },
     "buoy": {
       "coordinates": "Coordinates",
       "temperature": "Water temperature",
@@ -501,6 +506,7 @@
         "mareograph": "Mareograph",
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
+        "forecast": "[en] Sää- ja aaltoennuste",
         "pilot": "Pilot boarding position",
         "pilotagelimit": "Compulsory pilotage limit",
         "pilotroute": "Pilot route",

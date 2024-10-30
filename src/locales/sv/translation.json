@@ -52,6 +52,7 @@
           "circles": "Vändcirklar",
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
+          "forecast": "[sv] Sää- ja aaltoennusteet",
           "weatherStation": "Kustväderstationerna",
           "buoys": "Vågbojar",
           "vts": "VTS",
@@ -430,6 +431,10 @@
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Beräknat vattenstånd"
     },
+    "forecast": {
+      "forecast": "[sv] Sää- ja aaltoennuste",
+      "coordinates": "Koordinater"
+    },
     "buoy": {
       "coordinates": "Koordinater",
       "temperature": "Vattentemperatur",
@@ -501,6 +506,7 @@
         "mareograph": "Mareograf",
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
+        "forecast": "[sv] Sää- ja aaltoennuste",
         "pilot": "Lotsplats",
         "pilotagelimit": "Lotspliktslinje",
         "pilotroute": "Lotsningsrutt",
