@@ -3,7 +3,7 @@ import { Maybe, Status, Operation, Orientation, Mareograph } from '../../../grap
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { getFairwayCardTableName } from '../environment';
-import { getPutCommands } from '../util';
+import { getPreviousVersion, getPutCommands } from '../util';
 
 export type Text = {
   fi?: Maybe<string>;
@@ -277,14 +277,27 @@ class FairwayCardDBModel {
     latestVersionNumber?: number | null,
     publicVersionData?: FairwayCardDBModel | null
   ) {
+    let previousVersionData;
     // get only number out of the string
     let versionNumber = Number(data.version.slice(1));
 
     if (operation === Operation.Createversion) {
       versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
     }
+    // data is needed if latest version is removed
+    if (operation === Operation.Remove && latestVersionNumber === versionNumber && latestVersionNumber !== 1) {
+      previousVersionData = (await getPreviousVersion(getFairwayCardTableName(), data.id, Number(latestVersionNumber))) as FairwayCardDBModel;
+    }
 
-    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation, versionNumber, latestVersionNumber, publicVersionData);
+    const putCommands = getPutCommands(
+      data,
+      getFairwayCardTableName(),
+      operation,
+      versionNumber,
+      latestVersionNumber,
+      publicVersionData,
+      previousVersionData,
+    );
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }
