@@ -15,6 +15,7 @@ import {
   WeatherWaveForecast,
 } from './apiModels';
 import { PilotPlace } from '../../../graphql/generated';
+import { Text } from '../db/fairwayCardDBModel';
 
 function parseLocation(location: any): Partial<Mareograph> {
   return {
@@ -76,6 +77,19 @@ const SAARISTOMERI_BBOX = [
   //Define lower left and upper right
   [20.0667, 59.6],
   [22.4667, 60.8],
+];
+type extraForecastLocation = {
+  name: Text;
+  coords: number[];
+};
+const EXTRA_FORECAST_LOCATIONS = [
+  { name: { fi: 'Sundinkari', se: 'Sundinkari', en: 'Sundinkari' }, coords: [60.786888, 21.325472] },
+  {
+    name: { fi: 'Jakob Ramsjö säähavaintoasema', se: 'Jakob Ramsjö säähavaintoasema', en: 'Jakob Ramsjö säähavaintoasema' },
+    coords: [59.994667, 23.995667],
+  },
+  { name: { fi: 'Isomatala', se: 'Isomatala', en: 'Isomatala' }, coords: [60.785838, 21.226705] },
+  { name: { fi: 'Rajakari', se: 'Rajakari', en: 'Rajakari' }, coords: [60.37799, 22.096668] },
 ];
 
 function parseXml(xml: string): Mareograph[] {
@@ -151,28 +165,31 @@ export async function fetchWeatherObservations(): Promise<Observation[]> {
 
 function getCommonForecastLocations(pilotPoints: PilotPlace[], searchRadius: number = 5): string {
   //Take all pilot places and additional defined locations
-  const extraCoordinates = [
-    [60.786888, 21.325472],
-    [59.994667, 23.995667],
-    [60.785838, 21.226705],
-    [60.37799, 22.096668],
-  ];
   return (
     '&latlons=' +
     pilotPoints.map((p) => p.geometry.coordinates?.reverse().join() + ':' + searchRadius).join() +
     ',' +
-    extraCoordinates.map((c) => c.join() + ':' + searchRadius).join()
+    EXTRA_FORECAST_LOCATIONS.map((c) => c.coords.join() + ':' + searchRadius).join()
   );
 }
 
 //Map a location to a pilot place to get the id and name based on matching the point
-function mapToPilotPlace(pilotPoints: PilotPlace[], latlon: string) {
-  return pilotPoints.find(
+function mapToPilotPlace(pilotPoints: PilotPlace[], extraLocations: extraForecastLocation[], latlon: string) {
+  const pilotPlace = pilotPoints.find(
     (p) =>
       p.geometry.coordinates != null &&
       p.geometry.coordinates[0] === parseFloat(latlon?.split(',')[0]?.trim()) &&
       p.geometry.coordinates[1] === parseFloat(latlon?.split(',')[1]?.trim())
   );
+  if (pilotPlace == null) {
+    const extraLocation = extraLocations.find(
+      (l) =>
+        l.coords != null && l.coords[0] === parseFloat(latlon?.split(',')[0]?.trim()) && l.coords[1] === parseFloat(latlon?.split(',')[1]?.trim())
+    );
+    return extraLocation != null ? { id: null, name: extraLocation.name } : { id: null, name: null };
+  } else {
+    return pilotPlace ?? { id: null, name: null };
+  }
 }
 
 function removeSearchRadius(place: string): string {
@@ -243,10 +260,11 @@ export async function fetchWeatherWaveForecast(
         const latlng = removeSearchRadius(measure.place);
         const geometry = parseGeometry(removeSearchRadius(measure.place));
         const { waveHeight, waveDirection } = getWaveDirectionAndHeight(geometry as Point, measure);
-        const pilotPlaceId = mapToPilotPlace(pilotPoints, latlng)?.id;
+        const { id, name } = mapToPilotPlace(pilotPoints, EXTRA_FORECAST_LOCATIONS, latlng);
         return {
-          id: pilotPlaceId?.toString() ?? latlng,
-          pilotPlaceId: pilotPlaceId,
+          id: id?.toString() ?? latlng,
+          name: name,
+          pilotPlaceId: id,
           windSpeed: measure.windSpeed,
           windGust: measure.windGust,
           windDirection: measure.windDirection,
@@ -260,7 +278,7 @@ export async function fetchWeatherWaveForecast(
       .reduce(
         (acc, item) => {
           if (!acc[item.id]) {
-            acc[item.id] = { id: item.id, pilotPlaceId: item.pilotPlaceId, geometry: item.geometry, forecastItems: [] };
+            acc[item.id] = { id: item.id, pilotPlaceId: item.pilotPlaceId, name: item.name, geometry: item.geometry, forecastItems: [] };
           }
           acc[item.id].forecastItems.push({
             dateTime: item.dateTime,

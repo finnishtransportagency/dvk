@@ -403,7 +403,7 @@ const forecast = [
     visibility: 40.0,
   },
   {
-    place: '60.06,25.83:5',
+    place: '59.994667,23.995667:5',
     localtime: '2024-10-29 12:00:00',
     windDirection: 294.0,
     windSpeed: 7.4,
@@ -693,8 +693,9 @@ it('should get weather and wave forecast from api', async () => {
   expect(responseObj.features.find((f) => f.id == '60.08,21.11')?.properties?.forecastItems[0].waveDirection).toBe(275.7);
   expect(responseObj.features.find((f) => f.id == '60.08,21.11')?.properties?.forecastItems[0].waveHeight).toBe(0.3);
 
-  expect(responseObj.features.find((f) => f.id == '60.06,25.83')?.properties?.forecastItems[0].waveDirection).toBe(247.4);
-  expect(responseObj.features.find((f) => f.id == '60.06,25.83')?.properties?.forecastItems[0].waveHeight).toBe(0.8);
+  expect(responseObj.features.find((f) => f.id == '59.994667,23.995667')?.properties?.forecastItems[0].waveDirection).toBe(247.4);
+  expect(responseObj.features.find((f) => f.id == '59.994667,23.995667')?.properties?.forecastItems[0].waveHeight).toBe(0.8);
+  expect(responseObj.features.find((f) => f.id == '59.994667,23.995667')?.properties?.name.fi).toBe('Jakob Ramsjö säähavaintoasema');
 
   expect(responseObj).toMatchSnapshot();
 });

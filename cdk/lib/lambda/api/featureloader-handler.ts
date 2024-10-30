@@ -430,6 +430,7 @@ async function addWeatherWaveForecast(features: FeaturesWithMaxFetchTime) {
       id: f.id,
       geometry: f.geometry,
       properties: {
+        name: f.name,
         featureType: 'forecast',
         pilotPlaceId: f.pilotPlaceId,
         forecastItems: f.forecastItems,

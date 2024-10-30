@@ -364,7 +364,8 @@ export type WeatherWaveForecastItem = {
 };
 
 export type WeatherWaveForecast = {
-  pilotPlaceId: number | undefined;
+  pilotPlaceId: number | null;
+  name: Text | null;
   forecastItems: WeatherWaveForecastItem[];
 } & ForecastHeaders;
 
