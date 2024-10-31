@@ -543,7 +543,7 @@ exports[`should get weather and wave forecast from api 1`] = `
         "name": {
           "en": "Jakob Ramsjö säähavaintoasema",
           "fi": "Jakob Ramsjö säähavaintoasema",
-          "se": "Jakob Ramsjö säähavaintoasema",
+          "sv": "Jakob Ramsjö säähavaintoasema",
         },
         "pilotPlaceId": null,
       },

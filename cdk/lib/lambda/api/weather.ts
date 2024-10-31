@@ -83,13 +83,13 @@ type extraForecastLocation = {
   coords: number[];
 };
 const EXTRA_FORECAST_LOCATIONS = [
-  { name: { fi: 'Sundinkari', se: 'Sundinkari', en: 'Sundinkari' }, coords: [60.786888, 21.325472] },
+  { name: { fi: 'Sundinkari', sv: 'Sundinkari', en: 'Sundinkari' }, coords: [60.786888, 21.325472] },
   {
-    name: { fi: 'Jakob Ramsjö säähavaintoasema', se: 'Jakob Ramsjö säähavaintoasema', en: 'Jakob Ramsjö säähavaintoasema' },
+    name: { fi: 'Jakob Ramsjö säähavaintoasema', sv: 'Jakob Ramsjö säähavaintoasema', en: 'Jakob Ramsjö säähavaintoasema' },
     coords: [59.994667, 23.995667],
   },
-  { name: { fi: 'Isomatala', se: 'Isomatala', en: 'Isomatala' }, coords: [60.785838, 21.226705] },
-  { name: { fi: 'Rajakari', se: 'Rajakari', en: 'Rajakari' }, coords: [60.37799, 22.096668] },
+  { name: { fi: 'Isomatala', sv: 'Isomatala', en: 'Isomatala' }, coords: [60.785838, 21.226705] },
+  { name: { fi: 'Rajakari', sv: 'Rajakari', en: 'Rajakari' }, coords: [60.37799, 22.096668] },
 ];
 
 function parseXml(xml: string): Mareograph[] {
