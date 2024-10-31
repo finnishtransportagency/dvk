@@ -373,6 +373,79 @@ const buoys = [
   },
 ];
 
+const forecast = [
+  {
+    place: '60.08,24.97:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 293.0,
+    windSpeed: 5.2,
+    windGust: 8.0,
+    waveDirection: 232.7,
+    waveHeight: 0.6,
+    waveDirectionSaaristomeri: null,
+    waveHeightSaaristomeri: null,
+    waveDirectionHelsinki: 229.7,
+    waveHeightHelsinki: 0.5,
+    visibility: 40.0,
+  },
+  {
+    place: '60.08,24.97:5',
+    localtime: '2024-10-29 13:00:00',
+    windDirection: 293.0,
+    windSpeed: 5.2,
+    windGust: 8.0,
+    waveDirection: 232.7,
+    waveHeight: 0.6,
+    waveDirectionSaaristomeri: null,
+    waveHeightSaaristomeri: null,
+    waveDirectionHelsinki: 229.7,
+    waveHeightHelsinki: 0.5,
+    visibility: 40.0,
+  },
+  {
+    place: '59.994667,23.995667:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 294.0,
+    windSpeed: 7.4,
+    windGust: 10.3,
+    waveDirection: 247.4,
+    waveHeight: 0.8,
+    waveDirectionSaaristomeri: null,
+    waveHeightSaaristomeri: null,
+    waveDirectionHelsinki: null,
+    waveHeightHelsinki: null,
+    visibility: 40.0,
+  },
+  {
+    place: '60.044,24.928:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 292.0,
+    windSpeed: 5.1,
+    windGust: 7.8,
+    waveDirection: 235.8,
+    waveHeight: 0.6,
+    waveDirectionSaaristomeri: null,
+    waveHeightSaaristomeri: null,
+    waveDirectionHelsinki: 233.7,
+    waveHeightHelsinki: 0.6,
+    visibility: 40.0,
+  },
+  {
+    place: '60.08,21.11:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 262.0,
+    windSpeed: 5.9,
+    windGust: 8.2,
+    waveDirection: 277.5,
+    waveHeight: 0.3,
+    waveDirectionSaaristomeri: 275.7,
+    waveHeightSaaristomeri: 0.3,
+    waveDirectionHelsinki: null,
+    waveHeightHelsinki: null,
+    visibility: 40.0,
+  },
+];
+
 const card: FairwayCardDBModel = {
   id: 'test',
   version: 'v0',
@@ -411,6 +484,20 @@ const harbor2: HarborDBModel = {
   version: 'v1',
   name: { fi: 'Harborfi2', sv: 'Harborsv2', en: 'Harboren2' },
   geometry: { coordinates: [3, 4] },
+};
+
+const points = {
+  features: [
+    {
+      type: 'Feature',
+      id: 'PilotBoardingPlace_P.fid--73ae6a7c_18944e5de2b_b6',
+      geometry: { type: 'Point', coordinates: [30.0, 60.0, 0] },
+      geometry_name: 'GEOM',
+      properties: {
+        IDENTIFIER: 'FI 0000034581 00305',
+      },
+    },
+  ],
 };
 
 async function parseResponse(body: string): Promise<FeatureCollection> {
@@ -453,11 +540,11 @@ jest.mock('../lib/lambda/api/axios', () => ({
       },
     };
   },
-  fetchTraficomApi: () => {
+  fetchTraficomApi: (path: string) => {
     if (throwError) {
       throw new Error('Fetching from Traficom api failed');
     }
-    return vtsLines;
+    return path.includes('PilotBoardingPlace') ? points : vtsLines;
   },
   fetchIlmanetApi: () => ilmanetXml,
   fetchWeatherApi: (path: string) => {
@@ -469,6 +556,17 @@ jest.mock('../lib/lambda/api/axios', () => ({
     } else {
       return buoys;
     }
+  },
+  fetchWeatherApiResponse: () => {
+    if (throwError) {
+      throw new Error('Fetching from Weather forecast api failed');
+    }
+    return {
+      data: forecast,
+      headers: {
+        date: 0,
+      },
+    };
   },
 }));
 
@@ -576,6 +674,30 @@ it('should return right cache headers for observation', async () => {
   assert(response.body);
   const headers = getFeatureCacheControlHeaders('observation')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
+});
+
+it('should get weather and wave forecast from api', async () => {
+  const response = await handler(mockFeaturesALBEvent('forecast'));
+  assert(response.body);
+  const responseObj = await parseWeatherResponse(response.body);
+  expect(responseObj.features.length).toBe(4);
+
+  //2 items should be grouped using the generated id
+  expect(responseObj.features.find((f) => f.id == '60.08,24.97')?.properties?.forecastItems.length).toBe(2);
+
+  //Check that for Helsinki coords, the wave direction uses the more accurate version
+  expect(responseObj.features.find((f) => f.id == '60.08,24.97')?.properties?.forecastItems[0].waveDirection).toBe(229.7);
+  expect(responseObj.features.find((f) => f.id == '60.08,24.97')?.properties?.forecastItems[0].waveHeight).toBe(0.5);
+
+  //Check that for Saaristomeri coords, the wave direction uses the more accurate version
+  expect(responseObj.features.find((f) => f.id == '60.08,21.11')?.properties?.forecastItems[0].waveDirection).toBe(275.7);
+  expect(responseObj.features.find((f) => f.id == '60.08,21.11')?.properties?.forecastItems[0].waveHeight).toBe(0.3);
+
+  expect(responseObj.features.find((f) => f.id == '59.994667,23.995667')?.properties?.forecastItems[0].waveDirection).toBe(247.4);
+  expect(responseObj.features.find((f) => f.id == '59.994667,23.995667')?.properties?.forecastItems[0].waveHeight).toBe(0.8);
+  expect(responseObj.features.find((f) => f.id == '59.994667,23.995667')?.properties?.name.fi).toBe('Jakob Ramsjö säähavaintoasema');
+
+  expect(responseObj).toMatchSnapshot();
 });
 
 it('should return same cache headers for various features of non buoy/mareograph/observation', async () => {

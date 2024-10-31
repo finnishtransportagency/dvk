@@ -5,7 +5,7 @@ import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson
 import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
-import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations } from './weather';
+import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations, fetchWeatherWaveForecast } from './weather';
 import { fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
@@ -419,6 +419,26 @@ async function addMareoGraphs(features: FeaturesWithMaxFetchTime) {
   }
 }
 
+async function addWeatherWaveForecast(features: FeaturesWithMaxFetchTime) {
+  const pilotPoints = await fetchPilotPoints();
+  const { forecast, responseTime } = await fetchWeatherWaveForecast(pilotPoints);
+  features.fetchedDate = String(Date.parse(responseTime));
+
+  for (const f of forecast) {
+    features.featureArray.push({
+      type: 'Feature',
+      id: f.id,
+      geometry: f.geometry,
+      properties: {
+        name: f.name,
+        featureType: 'forecast',
+        pilotPlaceId: f.pilotPlaceId,
+        forecastItems: f.forecastItems,
+      },
+    });
+  }
+}
+
 async function addWeatherObservations(features: FeaturesWithMaxFetchTime) {
   const resp = await fetchWeatherObservations();
   // dateTime is got straight from backend, so it can determine when last time data was fetched
@@ -547,6 +567,9 @@ async function addFeatures(type: string, features: FeaturesWithMaxFetchTime, eve
     case 'observation':
       await addWeatherObservations(features);
       return true;
+    case 'forecast':
+      await addWeatherWaveForecast(features);
+      return true;
     case 'buoy':
       await addBuoys(features);
       return true;
@@ -566,7 +589,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   let statusCode = 200;
   let fetchedDate = '';
   try {
-    // fetched is the real time the data is fetched from api. Needed for observations, buyos,
+    // fetched is the real time the data is fetched from api. Needed for observations, forecasts, buoys,
     // mareographs, marine warnings and safety equipment faults
     const features: FeaturesWithMaxFetchTime = { featureArray: [], fetchedDate: '' };
     const validType = await addFeatures(type, features, event);
@@ -580,7 +603,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
         features: features.featureArray,
       };
       fetchedDate = features.fetchedDate ?? '';
-      if (type === 'observation' || type === 'mareograph' || type === 'buoy') {
+      if (type === 'observation' || type === 'mareograph' || type === 'buoy' || type === 'forecast') {
         const responseData = JSON.stringify(collection);
         return {
           statusCode,
