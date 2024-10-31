@@ -8,8 +8,9 @@ import { getExpires, getHeaders } from './environment';
 import FairwayCardDBModel from './db/fairwayCardDBModel';
 import HarborDBModel from './db/harborDBModel';
 import { Operation, Status } from '../../graphql/generated';
-import { GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
+import { PutCommand, QueryCommand, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
 import { getDynamoDBDocumentClient } from './db/dynamoClient';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 const GEOMETRY_DECIMALS = 5;
 
@@ -319,8 +320,8 @@ export function getPutCommands(
           ConditionExpression: 'attribute_exists(id)',
         })
       );
-    } else {
       // if there's no previous version (so only one version was left), clear latest and public data
+    } else if (versionNumber === latestVersionNumber) {
       const emptyPublicData = {
         id: data.id,
         version: 'v0_public',
@@ -356,18 +357,32 @@ export function getPutCommands(
 }
 
 export async function getPreviousVersion(tableName: string, id: string, latestVersion: number) {
-  let versionData;
+  const params: QueryCommandInput = {
+    TableName: tableName,
+    KeyConditionExpression: '#id = :id AND #version < :latestVersion',
+    FilterExpression: '#status <> :removed',
+    ExpressionAttributeNames: {
+      '#id': 'id',
+      '#version': 'version',
+      '#status': 'status',
+    },
+    ExpressionAttributeValues: {
+      ':id': id,
+      ':latestVersion': 'v' + latestVersion,
+      ':removed': Status.Removed,
+    },
+    ScanIndexForward: false,
+    Limit: 1,
+  };
 
   try {
-    const getCommand = new GetCommand({
-      TableName: tableName,
-      Key: { id: id, version: 'v' + (latestVersion - 1) },
-    });
-    const result = await getDynamoDBDocumentClient().send(getCommand);
-    versionData = result.Item;
-  } catch (error) {
-    console.log(error);
-  }
+    const command = new QueryCommand(params);
+    const result = await getDynamoDBDocumentClient().send(command);
+    const previousVersion = result.Items?.[0];
 
-  return versionData;
+    return previousVersion ? (previousVersion as FairwayCardDBModel | HarborDBModel) : undefined;
+  } catch (error) {
+    console.log('ERROR TULI', error);
+    return undefined;
+  }
 }

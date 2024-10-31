@@ -284,7 +284,7 @@ class FairwayCardDBModel {
     if (operation === Operation.Createversion) {
       versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
     }
-    // data is needed if latest version is removed
+    // data is needed if latest version is removed, so latest can be updated to be the previous version (if there's one)
     if (operation === Operation.Remove && latestVersionNumber === versionNumber && latestVersionNumber !== 1) {
       previousVersionData = (await getPreviousVersion(getFairwayCardTableName(), data.id, Number(latestVersionNumber))) as FairwayCardDBModel;
     }
