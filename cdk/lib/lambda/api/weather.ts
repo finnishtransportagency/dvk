@@ -1,10 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Geometry } from 'geojson';
+import { Geometry, Point } from 'geojson';
 import { log } from '../logger';
 import { roundGeometry } from '../util';
 import { XMLParser } from 'fast-xml-parser';
-import { fetchIlmanetApi, fetchWeatherApi } from './axios';
-import { Mareograph, WeatherMareograph, Observation, WeatherObservation, Buoy, WeatherBuoy } from './apiModels';
+import { fetchIlmanetApi, fetchWeatherApi, fetchWeatherApiResponse } from './axios';
+import {
+  Mareograph,
+  WeatherMareograph,
+  Observation,
+  WeatherObservation,
+  Buoy,
+  WeatherBuoy,
+  WeatherWaveForecastApi,
+  WeatherWaveForecast,
+} from './apiModels';
+import { PilotPlace } from '../../../graphql/generated';
+import { Text } from '../db/fairwayCardDBModel';
 
 function parseLocation(location: any): Partial<Mareograph> {
   return {
@@ -56,6 +67,30 @@ parser.addEntity('#xE5', 'å');
 parser.addEntity('#229', 'å');
 parser.addEntity('#xC5', 'Å');
 parser.addEntity('#197', 'Å');
+
+const HELSINKI_BBOX = [
+  //Define lower left and upper right
+  [24.6667, 59.8667],
+  [25.4, 60.2667],
+];
+const SAARISTOMERI_BBOX = [
+  //Define lower left and upper right
+  [20.0667, 59.6],
+  [22.4667, 60.8],
+];
+type extraForecastLocation = {
+  name: Text;
+  coords: number[];
+};
+const EXTRA_FORECAST_LOCATIONS = [
+  { name: { fi: 'Sundinkari', sv: 'Sundinkari', en: 'Sundinkari' }, coords: [60.786888, 21.325472] },
+  {
+    name: { fi: 'Jakob Ramsjö säähavaintoasema', sv: 'Jakob Ramsjö säähavaintoasema', en: 'Jakob Ramsjö säähavaintoasema' },
+    coords: [59.994667, 23.995667],
+  },
+  { name: { fi: 'Isomatala', sv: 'Isomatala', en: 'Isomatala' }, coords: [60.785838, 21.226705] },
+  { name: { fi: 'Rajakari', sv: 'Rajakari', en: 'Rajakari' }, coords: [60.37799, 22.096668] },
+];
 
 function parseXml(xml: string): Mareograph[] {
   const mareographs: Mareograph[] = [];
@@ -115,7 +150,7 @@ export async function fetchWeatherObservations(): Promise<Observation[]> {
     )
   ).map((measure) => {
     return {
-      id: measure.fmisid,
+      id: measure.fmisid ?? measure.geoid ?? measure.latlon,
       name: measure.stationname,
       windSpeedAvg: measure.WS_PT10M_AVG,
       windSpeedMax: measure.WG_PT10M_MAX,
@@ -126,6 +161,140 @@ export async function fetchWeatherObservations(): Promise<Observation[]> {
       geometry: parseGeometry(measure.latlon),
     };
   });
+}
+
+function getCommonForecastLocations(pilotPoints: PilotPlace[], searchRadius: number = 5): string {
+  //Take all pilot places and additional defined locations
+  return (
+    '&latlons=' +
+    pilotPoints.map((p) => p.geometry.coordinates?.reverse().join() + ':' + searchRadius).join() +
+    ',' +
+    EXTRA_FORECAST_LOCATIONS.map((c) => c.coords.join() + ':' + searchRadius).join()
+  );
+}
+
+//Map a location to a pilot place to get the id and name based on matching the point
+function mapToPilotPlace(pilotPoints: PilotPlace[], extraLocations: extraForecastLocation[], latlon: string) {
+  const pilotPlace = pilotPoints.find(
+    (p) =>
+      p.geometry.coordinates != null &&
+      p.geometry.coordinates[0] === parseFloat(latlon?.split(',')[0]?.trim()) &&
+      p.geometry.coordinates[1] === parseFloat(latlon?.split(',')[1]?.trim())
+  );
+  if (pilotPlace == null) {
+    const extraLocation = extraLocations.find(
+      (l) =>
+        l.coords != null && l.coords[0] === parseFloat(latlon?.split(',')[0]?.trim()) && l.coords[1] === parseFloat(latlon?.split(',')[1]?.trim())
+    );
+    return extraLocation != null ? { id: null, name: extraLocation.name } : { id: null, name: null };
+  } else {
+    return pilotPlace ?? { id: null, name: null };
+  }
+}
+
+function removeSearchRadius(place: string): string {
+  return place.includes(':') ? place.slice(0, place.lastIndexOf(':')) : place;
+}
+
+function getWaveDirectionAndHeight(geom: Point, measure: WeatherWaveForecastApi) {
+  if (isInBoundingBox(geom, HELSINKI_BBOX)) {
+    return { waveDirection: measure.waveDirectionHelsinki ?? measure.waveDirection, waveHeight: measure.waveHeightHelsinki ?? measure.waveHeight };
+  }
+  if (isInBoundingBox(geom, SAARISTOMERI_BBOX)) {
+    return {
+      waveDirection: measure.waveDirectionSaaristomeri ?? measure.waveDirection,
+      waveHeight: measure.waveHeightSaaristomeri ?? measure.waveHeight,
+    };
+  }
+  return { waveDirection: measure.waveDirection, waveHeight: measure.waveHeight };
+}
+
+function isInBoundingBox(point: Point, bbox: number[][]) {
+  //No need to use OL to do simple bbox check here
+  return (
+    bbox[0][0] <= point.coordinates[0] &&
+    bbox[0][1] <= point.coordinates[1] &&
+    bbox[1][0] >= point.coordinates[0] &&
+    bbox[1][1] >= point.coordinates[1]
+  );
+}
+
+export async function fetchWeatherWaveForecast(
+  pilotPoints: PilotPlace[],
+  numberTimesteps: number = 48
+): Promise<{
+  forecast: WeatherWaveForecast[];
+  responseTime: any;
+}> {
+  const searchRadius = 6;
+  const fields = [
+    'place',
+    'localtime',
+    'median(DD-D:::6:10:1) as windDirection',
+    'max(FF-MS:::6:10:1) as windSpeed',
+    'max(FFG-MS:::6:10:1) as windGust',
+    'nanmedian(DPW-D:WAM_BALMFC:1061:6:0:1) as waveDirection',
+    'max(HWS-M:WAM_BALMFC:1061:6:0:1) as waveHeight',
+    'nanmedian(DPW-D:WAM_HKI:1117:6:0:1) as waveDirectionHelsinki',
+    'nanmax(HWS-M:WAM_HKI:1117:6:0:1) as waveHeightHelsinki',
+    'nanmedian(DPW-D:WAM_BALMFC_ARCH:1119:6:0:1) as waveDirectionSaaristomeri',
+    'nanmax(HWS-M:WAM_BALMFC_ARCH:1119:6:0:1) as waveHeightSaaristomeri',
+    'nanmedian(MUL{VV2-M:MEPSMTA:1093:6:0:4:0;0.001}) as visibility',
+  ];
+
+  const responseDetails = '&precision=double&format=json&timeformat=sql';
+
+  const response = await fetchWeatherApiResponse(
+    'timeseries?param=' +
+      encodeURIComponent(fields.join()) +
+      getCommonForecastLocations(pilotPoints, searchRadius) +
+      responseDetails +
+      '&timesteps=' +
+      numberTimesteps
+  );
+  const responseTime = (response.headers.date ?? Date.now()) as number;
+
+  const forecast = Object.values(
+    (response.data as WeatherWaveForecastApi[])
+      .map((measure) => {
+        const latlng = removeSearchRadius(measure.place);
+        const geometry = parseGeometry(removeSearchRadius(measure.place));
+        const { waveHeight, waveDirection } = getWaveDirectionAndHeight(geometry as Point, measure);
+        const { id, name } = mapToPilotPlace(pilotPoints, EXTRA_FORECAST_LOCATIONS, latlng);
+        return {
+          id: id?.toString() ?? latlng,
+          name: name,
+          pilotPlaceId: id,
+          windSpeed: measure.windSpeed,
+          windGust: measure.windGust,
+          windDirection: measure.windDirection,
+          waveHeight: waveHeight,
+          waveDirection: waveDirection,
+          visibility: measure.visibility,
+          dateTime: Date.parse(measure.localtime),
+          geometry: geometry,
+        };
+      })
+      .reduce(
+        (acc, item) => {
+          if (!acc[item.id]) {
+            acc[item.id] = { id: item.id, pilotPlaceId: item.pilotPlaceId, name: item.name, geometry: item.geometry, forecastItems: [] };
+          }
+          acc[item.id].forecastItems.push({
+            dateTime: item.dateTime,
+            visibility: item.visibility,
+            windDirection: item.windDirection,
+            windSpeed: item.windSpeed,
+            windGust: item.windGust,
+            waveHeight: item.waveHeight,
+            waveDirection: item.waveDirection,
+          });
+          return acc;
+        },
+        {} as Record<string, WeatherWaveForecast>
+      )
+  );
+  return { forecast, responseTime };
 }
 
 export async function fetchBuoys(): Promise<Buoy[]> {

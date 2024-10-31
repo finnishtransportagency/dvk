@@ -330,6 +330,45 @@ export type Observation = {
   geometry: Geometry;
 };
 
+//Type representing forecast API response
+export type WeatherWaveForecastApi = {
+  place: string;
+  localtime: string;
+  windSpeed: number | null;
+  windDirection: number | null;
+  windGust: number | null;
+  visibility: number | null;
+  waveHeight: number | null;
+  waveDirection: number | null;
+  waveHeightHelsinki: number | null;
+  waveDirectionHelsinki: number | null;
+  waveHeightSaaristomeri: number | null;
+  waveDirectionSaaristomeri: number | null;
+};
+
+//Types representing internal application objects
+type ForecastHeaders = {
+  id: string;
+  geometry: Geometry;
+};
+
+export type WeatherWaveForecastItem = {
+  dateTime: number;
+  windSpeed: number | null;
+  windDirection: number | null;
+  windGust: number | null;
+  visibility: number | null;
+  waveHeight: number | null;
+  waveDirection: number | null;
+  temprature?: number | null;
+};
+
+export type WeatherWaveForecast = {
+  pilotPlaceId: number | null;
+  name: Text | null;
+  forecastItems: WeatherWaveForecastItem[];
+} & ForecastHeaders;
+
 export type WeatherBuoy = {
   fmisid: number;
   geoid: number;
