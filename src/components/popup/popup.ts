@@ -325,7 +325,7 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       return { header: [(props as ObservationFeatureProperties).name], featureType: t('featureList.featureType.observation'), className: type };
     case 'forecast':
       return {
-        header: ['' + feature.getId() + ' ' + (props as ForecastFeatureProperties).pilotPlaceId],
+        header: [(props as ForecastFeatureProperties).name?.[lang] ?? ''],
         featureType: t('featureList.featureType.forecast'),
         className: type,
       };

@@ -1,6 +1,7 @@
 import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
+import { Lang } from '../../utils/constants';
 import './popup.css';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { ForecastFeatureProperties } from '../features';
@@ -19,7 +20,8 @@ export type ForecastProperties = {
 };
 
 const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, setPopupProperties }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as Lang;
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
@@ -30,7 +32,7 @@ const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, s
     <IonGrid className="ion-no-padding">
       <IonRow className="ion-justify-content-between">
         <IonCol size="auto" className="header">
-          {forecast.properties.pilotPlaceId}
+          {forecast.properties.name?.[lang]}
         </IonCol>
         <IonCol size="auto">
           <CloseButton close={closePopup} />

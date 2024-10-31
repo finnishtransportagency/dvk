@@ -275,6 +275,7 @@ type ForecastItem = {
 export type ForecastFeatureProperties = {
   featureType: 'forecast';
   id: string;
+  name: Text;
   pilotPlaceId?: number;
   forecastItems: ForecastItem[];
 };
