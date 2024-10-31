@@ -286,7 +286,7 @@ ion-modal#layerModalContainer::part(content) {
 #layerModalContainer ion-item .forecast {
   width: 21px;
   height: 24px;
-  background: url('../../theme/img/saahavaintoasema.svg') no-repeat left;
+  background: url('../../theme/img/saa_ja_aalto_ennuste.svg') no-repeat left;
   background-size: cover;
   margin-top: 6px;
   margin-right: 0;

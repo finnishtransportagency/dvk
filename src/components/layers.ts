@@ -689,7 +689,7 @@ export function addAPILayers(map: Map) {
     renderBuffer: 50,
     style: getForecastStyle,
     declutter: false,
-    zIndex: 413,
+    zIndex: 410,
   });
 
   // AIS

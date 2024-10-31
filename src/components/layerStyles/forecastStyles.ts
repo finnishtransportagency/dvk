@@ -1,10 +1,10 @@
 import { Style, Icon } from 'ol/style';
-import observationIcon from '../../theme/img/saahavaintoasema.svg';
+import forecastIcon from '../../theme/img/saa_ja_aalto_ennuste.svg';
 import { FeatureLike } from 'ol/Feature';
 
 const style = new Style({
   image: new Icon({
-    src: observationIcon,
+    src: forecastIcon,
     scale: 1,
     anchor: [0.5, 32],
     anchorXUnits: 'fraction',
@@ -14,7 +14,7 @@ const style = new Style({
 
 const hoverStyle = new Style({
   image: new Icon({
-    src: observationIcon,
+    src: forecastIcon,
     scale: 1.2,
     anchor: [0.5, 32],
     anchorXUnits: 'fraction',
