@@ -173,8 +173,14 @@ export async function fetchMarineWarnings() {
 }
 
 export async function fetchWeatherApi<T>(path: string) {
+  const response = await fetchWeatherApiResponse(path);
+  return response.data ? (response.data as T[]) : [];
+}
+
+export async function fetchWeatherApiResponse(path: string) {
   const [soaApiUrl, weatherHeaders] = await Promise.all([getSOAApiUrl(), getWeatherHeaders()]);
   const start = Date.now();
+  log.debug(`Weather api https://${soaApiUrl}/fmi/${path} called`);
   const response = await axios
     .get(`https://${soaApiUrl}/fmi/${path}`, {
       headers: weatherHeaders,
@@ -187,7 +193,7 @@ export async function fetchWeatherApi<T>(path: string) {
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `Weather api ${path} response time: ${duration} ms`);
-  return response.data ? (response.data as T[]) : [];
+  return response;
 }
 
 export async function fetchIlmanetApi(): Promise<string> {

@@ -54,26 +54,6 @@ export class DvkBuildImageStack extends Stack {
         input: sourceOutput,
       })
     );
-    const robotImageRepoName = 'dvk-robotimage';
-    new cdk.aws_ecr.Repository(this, 'RobotBuildImageRepository', {
-      repositoryName: robotImageRepoName,
-      lifecycleRules: [
-        {
-          rulePriority: 1,
-          description: 'Remove untagged images over 30 days old',
-          maxImageAge: cdk.Duration.days(30),
-          tagStatus: TagStatus.UNTAGGED,
-        },
-      ],
-    });
-    const robotBuildProject = this.buildProject(account, robotImageRepoName, '1.0.4', 'test', 'RobotImageBuild');
-    actions.push(
-      new cdk.aws_codepipeline_actions.CodeBuildAction({
-        actionName: 'BuildRobotImage',
-        project: robotBuildProject,
-        input: sourceOutput,
-      })
-    );
 
     const playwrightImageRepoName = 'dvk-playwrightimage';
     new cdk.aws_ecr.Repository(this, 'PlaywrightBuildImageRepository', {
