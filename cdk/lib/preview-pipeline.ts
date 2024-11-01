@@ -41,7 +41,7 @@ export class PreviewPipeline extends Construct {
     const importedAppSyncAPIKey = cdk.Fn.importValue('AppSyncAPIKey' + props.env);
     const previewBuildProject = new codebuild.PipelineProject(this, 'PreviewBuild', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.6'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkBuildImage', 'dvk-buildimage'), '1.0.7'),
         environmentVariables: {
           VITE_APP_API_KEY: { value: importedAppSyncAPIKey },
           VITE_APP_ENV: { value: props.env },
@@ -93,7 +93,7 @@ export class PreviewPipeline extends Construct {
     // Create the build project that will invalidate the cache
     const invalidateBuildProject = new codebuild.PipelineProject(this, 'InvalidateProject', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'InvalidateBuildImage', 'dvk-buildimage'), '1.0.6'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'InvalidateBuildImage', 'dvk-buildimage'), '1.0.7'),
         computeType: ComputeType.SMALL,
       },
       buildSpec: codebuild.BuildSpec.fromObject({
@@ -127,7 +127,7 @@ export class PreviewPipeline extends Construct {
     // Create the build project that will delete files from s3 before deploy
     const emptyS3BuildProject = new codebuild.PipelineProject(this, 'EmptyS3Project', {
       environment: {
-        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'S3BuildImage', 'dvk-buildimage'), '1.0.6'),
+        buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'S3BuildImage', 'dvk-buildimage'), '1.0.7'),
         computeType: ComputeType.SMALL,
       },
       buildSpec: codebuild.BuildSpec.fromObject({
