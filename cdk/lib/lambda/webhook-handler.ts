@@ -255,8 +255,56 @@ const handler = async function (event: any) {
   if (response) {
     return response;
   }
+  let { branch, commitAdded, commitRemoved, commitModified } = getCommitDataFromEventBody(event.body);
 
-  const githubData = JSON.parse(event.body);
+  const folders = getDistinctFolders(commitAdded.concat(commitRemoved).concat(commitModified));
+  const isDockerFiles = hasDockerFiles(commitAdded.concat(commitRemoved).concat(commitModified));
+
+  response = validateCommits(folders, isDockerFiles);
+  if (response) {
+    return response;
+  }
+
+  startPipelines(folders, branch, isDockerFiles);
+  response = {
+    statusCode: 200,
+    headers: {},
+    body: JSON.stringify({ received: true }),
+  };
+
+  return response;
+};
+
+function startPipelines(folders: string[], branch: any, isDockerFiles: boolean) {
+  // Kaynnista tarvittaessa squat-pipelinet
+  if (folders.includes('squat')) {
+    startPipeline(branch, APPS.SQUAT);
+  }
+  // ja DVK-pipelinet
+  // 13.10.2023 DVK:lla nykyaan riippuvuus squattiin upotuksen takia
+  if (folders.includes('src') || folders.includes('public') || folders.includes('cdk') || folders.includes('squat')) {
+    startPipeline(branch, APPS.DVK);
+  }
+  if (folders.includes('admin')) {
+    startPipeline(branch, APPS.ADMIN);
+  }
+  // ja build image -pipeline
+  if (isDockerFiles) {
+    startPipeline(branch, APPS.IMAGE);
+  }
+  // esikatselusovellus kaytannossa sama kuin dvk -squat
+  if (folders.includes('src') || folders.includes('public') || folders.includes('cdk')) {
+    startPipeline(branch, APPS.PREVIEW);
+  }
+}
+
+async function startPipeline(branch: string, app: APPS) {
+  const pipelineName = getPipelineName(branch, app);
+  if (pipelineName) await kaynnistaPipeline(pipelineName);
+}
+
+const getCommitDataFromEventBody = (eventBody: string) => {
+  const githubData = JSON.parse(eventBody);
   const branch = githubData.ref;
   const commits: GithubCommit[] = githubData?.commits;
   let commitAdded: string[] = [];
@@ -267,48 +315,7 @@ const handler = async function (event: any) {
     commitRemoved = commitRemoved.concat(commit.removed);
     commitModified = commitModified.concat(commit.modified);
   });
-
-  const folders = getDistinctFolders(commitAdded.concat(commitRemoved).concat(commitModified));
-  const isDockerFiles = hasDockerFiles(commitAdded.concat(commitRemoved).concat(commitModified));
-
-  response = validateCommits(folders, isDockerFiles);
-  if (response) {
-    return response;
-  }
-
-  // Kaynnista tarvittaessa squat-pipelinet
-  if (folders.includes('squat')) {
-    const squatPipelineName = getPipelineName(branch, APPS.SQUAT);
-    if (squatPipelineName) await kaynnistaPipeline(squatPipelineName);
-  }
-  // ja DVK-pipelinet
-  // 13.10.2023 DVK:lla nykyaan riippuvuus squattiin upotuksen takia
-  if (folders.includes('src') || folders.includes('public') || folders.includes('cdk') || folders.includes('squat')) {
-    const dvkPipelineName = getPipelineName(branch, APPS.DVK);
-    if (dvkPipelineName) await kaynnistaPipeline(dvkPipelineName);
-  }
-  if (folders.includes('admin')) {
-    const adminPipelineName = getPipelineName(branch, APPS.ADMIN);
-    if (adminPipelineName) await kaynnistaPipeline(adminPipelineName);
-  }
-  // ja build image -pipeline
-  if (isDockerFiles) {
-    const imagePipelineName = getPipelineName(branch, APPS.IMAGE);
-    if (imagePipelineName) await kaynnistaPipeline(imagePipelineName);
-  }
-  // esikatselusovellus kaytannossa sama kuin dvk -squat
-  if (folders.includes('src') || folders.includes('public') || folders.includes('cdk')) {
-    const previewPipelineName = getPipelineName(branch, APPS.PREVIEW);
-    if (previewPipelineName) await kaynnistaPipeline(previewPipelineName);
-  }
-
-  response = {
-    statusCode: 200,
-    headers: {},
-    body: JSON.stringify({ received: true }),
-  };
-
-  return response;
+  return { branch, commitAdded, commitRemoved, commitModified };
 };
 
 export { handler };
