@@ -79,7 +79,7 @@ function parseRoles(roles: string): string[] {
           // tsc fails if undefined is returned here
           return '';
         })
-        .filter((s) => s && s.startsWith('DVK_'))
+        .filter((s) => s?.startsWith('DVK_'))
     : [];
 }
 

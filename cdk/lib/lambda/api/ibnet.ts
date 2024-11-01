@@ -43,7 +43,8 @@ function addDirwayFeatures(features: Feature<Geometry, GeoJsonProperties>[], api
   }
   for (const points of dirwayMap.values()) {
     const id = points[0].dirway_id;
-    const coordinates = points.sort((a, b) => a.order_num - b.order_num).map((p) => [p.longitude, p.latitude] as Position);
+    points.sort((a, b) => a.order_num - b.order_num);
+    const coordinates = points.map((p) => [p.longitude, p.latitude] as Position);
     const dirway = dirways.find((d) => d.id === id); // Finds first in array
 
     if (dirway) {

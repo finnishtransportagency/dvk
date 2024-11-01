@@ -1,5 +1,5 @@
 function handler(event) {
-  var request = event.request;
+  let request = event.request;
 
   // Response when request or request URI missing
   if (!request || !request.uri) {

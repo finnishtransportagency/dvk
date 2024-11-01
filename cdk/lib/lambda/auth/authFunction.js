@@ -1,12 +1,12 @@
 function handler(event) {
-  var authHeaders = event.request.headers.authorization;
-  var authString = 'Basic ${AUTH_STRING}';
+  let authHeaders = event.request.headers.authorization;
+  let authString = 'Basic ${AUTH_STRING}';
 
   if (authHeaders && authHeaders.value === authString) {
     return event.request;
   }
 
-  var response = {
+  let response = {
     statusCode: 401,
     statusDescription: 'Unauthorized',
     headers: {

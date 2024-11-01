@@ -1,6 +1,6 @@
 function handler(event) {
-  var request = event.request;
-  var uri = request.uri;
+  let request = event.request;
+  let uri = request.uri;
   request.uri = uri.replace('/${REPLACE_PATH}/', '/');
   return request;
 }

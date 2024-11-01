@@ -1,5 +1,5 @@
 function handler(event) {
-  var request = event.request;
+  let request = event.request;
 
   // Response when request or request URI missing
   if (!request || !request.uri) {
@@ -10,11 +10,13 @@ function handler(event) {
   }
 
   // Default index pages do not work on s3 subdirectories -> all to /index.html
-  if (request.uri === '/vaylakortti' ||
+  if (
+    request.uri === '/vaylakortti' ||
     request.uri === '/vaylakortti/' ||
     request.uri.startsWith('/vaylakortti/kortit') ||
     request.uri.startsWith('/vaylakortti/turvalaiteviat') ||
-    request.uri.startsWith('/vaylakortti/merivaroitukset')) {
+    request.uri.startsWith('/vaylakortti/merivaroitukset')
+  ) {
     request.uri = '/vaylakortti/index.html';
   }
 
