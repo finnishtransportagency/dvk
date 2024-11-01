@@ -8,6 +8,8 @@ import { ForecastFeatureProperties } from '../features';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
+import ForecastTable from '../ForecastTable';
+import { useFeatureData } from '../../utils/dataLoader';
 
 type ForecastPopupContentProps = {
   forecast: ForecastProperties;
@@ -22,6 +24,7 @@ export type ForecastProperties = {
 const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, setPopupProperties }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const { dataUpdatedAt } = useFeatureData('forecast');
 
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
@@ -49,6 +52,23 @@ const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, s
           <IonCol>{coordinatesToStringHDM(forecast.coordinates)}</IonCol>
         </IonRow>
       )}
+      <IonRow>
+        <IonCol className="header">{t('popup.forecast.extra')}</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>{t('popup.forecast.extraContent')}</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol className="header">{t('popup.forecast.forecast2')}</IonCol>
+      </IonRow>
+      <IonRow>
+        <IonCol>
+          {t('popup.forecast.updated')} {t('popup.forecast.dateTimeFormat', { val: dataUpdatedAt })}
+        </IonCol>
+      </IonRow>
+      <IonRow>
+        <ForecastTable forecastItems={forecast.properties.forecastItems} />
+      </IonRow>
     </IonGrid>
   );
 };

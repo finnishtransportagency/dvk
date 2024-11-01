@@ -433,7 +433,12 @@
     },
     "forecast": {
       "forecast": "[en] Sää- ja aaltoennuste",
-      "coordinates": "Coordinates"
+      "coordinates": "Coordinates",
+      "extra": "Additional information",
+      "extraContent": "[en] Lorem ipsum...",
+      "forecast2": "[en] Sääennuste",
+      "updated": "Updated",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
     },
     "buoy": {
       "coordinates": "Coordinates",
@@ -597,5 +602,14 @@
     "KB": "kilobytes",
     "MB": "megabytes",
     "GB": "gigabytes"
+  },
+  "forecastTable": {
+    "tableHeaders": {
+      "time": "[en] Aika",
+      "wind": "[en] Tuulen nopeus (puuska) ja suunta",
+      "wave": "[en] Aallon korkeus ja suunta",
+      "visibility": "[en] Näkyvyys"
+    },
+    "dateTimeFormat": "{{ val, datetime(timeStyle: 'short')}}"
   }
 }
