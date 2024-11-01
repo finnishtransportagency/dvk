@@ -7,7 +7,7 @@ function handler(event) {
     return event.request;
   }
 
-  let response = {
+  var response = {
     statusCode: 401,
     statusDescription: 'Unauthorized',
     headers: {
