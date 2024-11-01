@@ -159,6 +159,172 @@ export async function handleAisCall(
   };
 }
 
+function getCreateCommands(data: FairwayCardDBModel | HarborDBModel, tableName: string) {
+  const updateCommands = [];
+  // latest item
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: { ...data, version: 'v0_latest', latest: 1 },
+      ConditionExpression: 'attribute_not_exists(id)',
+    })
+  );
+  // set currentPublic to null and no data except id if not public
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item:
+        data.status === Status.Public
+          ? { ...data, version: 'v0_public', currentPublic: 1 }
+          : { id: data.id, version: 'v0_public', currentPublic: null },
+      ConditionExpression: 'attribute_not_exists(id)',
+    })
+  );
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: { ...data, version: 'v1' },
+      ConditionExpression: 'attribute_not_exists(id)',
+    })
+  );
+  return updateCommands;
+}
+
+function getCreateversionCommands(data: FairwayCardDBModel | HarborDBModel, tableName: string, versionNumber?: number | null) {
+  const updateCommands = [];
+  // set latest version to new version
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: { ...data, version: 'v0_latest', latest: versionNumber },
+      ConditionExpression: 'attribute_exists(id)',
+    })
+  );
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: { ...data, version: 'v' + versionNumber },
+    })
+  );
+  return updateCommands;
+}
+
+function getArchiveCommands(
+  data: FairwayCardDBModel | HarborDBModel,
+  tableName: string,
+  versionNumber?: number | null,
+  latestVersionNumber?: number | null
+) {
+  const updateCommands = [];
+  // set latest version to new version
+  const emptyData = {
+    id: data.id,
+    version: 'v0_public',
+    currentPublic: null,
+  };
+  // clear public version
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: emptyData,
+      ConditionExpression: 'attribute_exists(id)',
+    })
+  );
+  // save item with archived status
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: { ...data },
+      ConditionExpression: 'attribute_exists(id)',
+    })
+  );
+  // update latest version pointer if necessary
+  if (versionNumber === latestVersionNumber) {
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v0_latest', latest: versionNumber },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+  }
+  return updateCommands;
+}
+
+function getPublishCommands(
+  data: FairwayCardDBModel | HarborDBModel,
+  tableName: string,
+  versionNumber?: number | null,
+  latestVersionNumber?: number | null,
+  publicVersionData?: FairwayCardDBModel | HarborDBModel | null
+) {
+  const updateCommands = [];
+  if (publicVersionData) {
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...publicVersionData, status: Status.Archived },
+        ConditionExpression: 'attribute_exists(version)',
+      })
+    );
+  }
+  // save item with public status
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: { ...data },
+      ConditionExpression: 'attribute_exists(id)',
+    })
+  );
+  // set public version to new version
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: { ...data, version: 'v0_public', currentPublic: versionNumber },
+      ConditionExpression: 'attribute_exists(id)',
+    })
+  );
+  // update latest version pointer if necessary
+  if (versionNumber === latestVersionNumber) {
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v0_latest', latest: versionNumber },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+  }
+  return updateCommands;
+}
+
+function getUpdateCommands(
+  data: FairwayCardDBModel | HarborDBModel,
+  tableName: string,
+  versionNumber?: number | null,
+  latestVersionNumber?: number | null
+) {
+  const updateCommands = [];
+  // set latest version to new version
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: { ...data },
+      ConditionExpression: 'attribute_exists(id)',
+    })
+  );
+  // update latest version pointer if necessary
+  if (versionNumber === latestVersionNumber) {
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...data, version: 'v0_latest', latest: versionNumber },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+  }
+  return updateCommands;
+}
+
 export function getPutCommands(
   data: FairwayCardDBModel | HarborDBModel,
   tableName: string,
@@ -167,138 +333,20 @@ export function getPutCommands(
   latestVersionNumber?: number | null,
   publicVersionData?: FairwayCardDBModel | HarborDBModel | null
 ) {
-  const updateCommands = [];
   // creating a new item
-  if (operation === Operation.Create) {
-    // latest item
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...data, version: 'v0_latest', latest: 1 },
-        ConditionExpression: 'attribute_not_exists(id)',
-      })
-    );
-    // set currentPublic to null and no data except id if not public
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item:
-          data.status === Status.Public
-            ? { ...data, version: 'v0_public', currentPublic: 1 }
-            : { id: data.id, version: 'v0_public', currentPublic: null },
-        ConditionExpression: 'attribute_not_exists(id)',
-      })
-    );
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...data, version: 'v1' },
-        ConditionExpression: 'attribute_not_exists(id)',
-      })
-    );
-  } else if (operation === Operation.Createversion) {
-    // set latest version to new version
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...data, version: 'v0_latest', latest: versionNumber },
-        ConditionExpression: 'attribute_exists(id)',
-      })
-    );
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...data, version: 'v' + versionNumber },
-      })
-    );
-  } else if (operation === Operation.Archive) {
-    const emptyData = {
-      id: data.id,
-      version: 'v0_public',
-      currentPublic: null,
-    };
-    // clear public version
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: emptyData,
-        ConditionExpression: 'attribute_exists(id)',
-      })
-    );
-    // save item with archived status
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...data },
-        ConditionExpression: 'attribute_exists(id)',
-      })
-    );
-    // update latest version pointer if necessary
-    if (versionNumber === latestVersionNumber) {
-      updateCommands.push(
-        new PutCommand({
-          TableName: tableName,
-          Item: { ...data, version: 'v0_latest', latest: versionNumber },
-          ConditionExpression: 'attribute_exists(id)',
-        })
-      );
-    }
-  } else if (operation === Operation.Publish) {
-    // archive previous public version if exists
-    if (publicVersionData) {
-      updateCommands.push(
-        new PutCommand({
-          TableName: tableName,
-          Item: { ...publicVersionData, status: Status.Archived },
-          ConditionExpression: 'attribute_exists(version)',
-        })
-      );
-    }
-    // save item with public status
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...data },
-        ConditionExpression: 'attribute_exists(id)',
-      })
-    );
-    // set public version to new version
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...data, version: 'v0_public', currentPublic: versionNumber },
-        ConditionExpression: 'attribute_exists(id)',
-      })
-    );
-    // update latest version pointer if necessary
-    if (versionNumber === latestVersionNumber) {
-      updateCommands.push(
-        new PutCommand({
-          TableName: tableName,
-          Item: { ...data, version: 'v0_latest', latest: versionNumber },
-          ConditionExpression: 'attribute_exists(id)',
-        })
-      );
-    }
-  } else if (operation === Operation.Update || operation === Operation.Remove) {
-    updateCommands.push(
-      new PutCommand({
-        TableName: tableName,
-        Item: { ...data },
-        ConditionExpression: 'attribute_exists(id)',
-      })
-    );
-    // update latest version pointer if necessary
-    if (versionNumber === latestVersionNumber) {
-      updateCommands.push(
-        new PutCommand({
-          TableName: tableName,
-          Item: { ...data, version: 'v0_latest', latest: versionNumber },
-          ConditionExpression: 'attribute_exists(id)',
-        })
-      );
-    }
+  switch (operation) {
+    case Operation.Create:
+      return getCreateCommands(data, tableName);
+    case Operation.Createversion:
+      return getCreateversionCommands(data, tableName, versionNumber);
+    case Operation.Archive:
+      return getArchiveCommands(data, tableName, versionNumber, latestVersionNumber);
+    case Operation.Publish:
+      return getPublishCommands(data, tableName, versionNumber, latestVersionNumber, publicVersionData);
+    case Operation.Update:
+    case Operation.Remove:
+      return getUpdateCommands(data, tableName, versionNumber, latestVersionNumber);
+    default:
+      return [];
   }
-
-  return updateCommands;
 }
