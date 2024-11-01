@@ -158,6 +158,8 @@ class FairwayCardDBModel {
 
   latest?: Maybe<number>;
 
+  latestVersionUsed?: Maybe<number>;
+
   static getLatestSortKey() {
     return 'v0_latest';
   }
@@ -274,16 +276,20 @@ class FairwayCardDBModel {
   static async save(
     data: FairwayCardDBModel,
     operation: Operation,
-    latestVersionNumber?: number | null,
+    latestVersion?: FairwayCardDBModel | null,
     publicVersionData?: FairwayCardDBModel | null
   ) {
+    const latestVersionUsed = latestVersion?.latestVersionUsed;
+    const latestVersionNumber = latestVersion?.latest;
+
     let previousVersionData;
     // get only number out of the string
     let versionNumber = Number(data.version.slice(1));
 
     if (operation === Operation.Createversion) {
-      versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
+      versionNumber = latestVersionUsed ? latestVersionUsed + 1 : 2;
     }
+
     // data is needed if latest version is removed, so latest can be updated to be the previous version (if there's one)
     if (operation === Operation.Remove && latestVersionNumber === versionNumber && latestVersionNumber !== 1) {
       previousVersionData = (await getPreviousVersion(getFairwayCardTableName(), data.id, Number(latestVersionNumber))) as FairwayCardDBModel;
@@ -294,7 +300,7 @@ class FairwayCardDBModel {
       getFairwayCardTableName(),
       operation,
       versionNumber,
-      latestVersionNumber,
+      latestVersion,
       publicVersionData,
       previousVersionData,
     );

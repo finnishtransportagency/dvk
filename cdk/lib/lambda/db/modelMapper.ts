@@ -302,6 +302,7 @@ export function mapFairwayCardDBModelToGraphqlType(
     pictures: dbModel.pictures,
     temporaryNotifications: mapTemporaryNotifications(dbModel.temporaryNotifications ?? []),
     latest: dbModel.latest,
+    latestVersionUsed: dbModel.latestVersionUsed,
   };
 
   for (const fairway of dbModel.fairways || []) {
@@ -332,6 +333,7 @@ export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: Curr
     quays: dbModel.quays,
     status: dbModel.status,
     latest: dbModel.latest,
+    latestVersionUsed: dbModel.latestVersionUsed,
   };
 }
 

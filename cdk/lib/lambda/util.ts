@@ -166,10 +166,13 @@ export function getPutCommands(
   tableName: string,
   operation: Operation,
   versionNumber?: number | null,
-  latestVersionNumber?: number | null,
+  latestVersion?: FairwayCardDBModel | HarborDBModel | null,
   publicVersionData?: FairwayCardDBModel | HarborDBModel | null,
   previousVersionData?: FairwayCardDBModel | HarborDBModel
 ) {
+  const latestVersionUsed = latestVersion?.latestVersionUsed;
+  const latestVersionNumber = latestVersion?.latest;
+
   const updateCommands = [];
   // creating a new item
   if (operation === Operation.Create) {
@@ -177,7 +180,7 @@ export function getPutCommands(
     updateCommands.push(
       new PutCommand({
         TableName: tableName,
-        Item: { ...data, version: 'v0_latest', latest: 1 },
+        Item: { ...data, version: 'v0_latest', latest: 1, latestVersionUsed: 1 },
         ConditionExpression: 'attribute_not_exists(id)',
       })
     );
@@ -204,7 +207,7 @@ export function getPutCommands(
     updateCommands.push(
       new PutCommand({
         TableName: tableName,
-        Item: { ...data, version: 'v0_latest', latest: versionNumber },
+        Item: { ...data, version: 'v0_latest', latest: versionNumber, latestVersionUsed: versionNumber },
         ConditionExpression: 'attribute_exists(id)',
       })
     );
@@ -312,11 +315,10 @@ export function getPutCommands(
     // if there's previous version, update latest version entry
     if (previousVersionData) {
       const previousVersionNumber = Number(previousVersionData.version.slice(1));
-
       updateCommands.push(
         new PutCommand({
           TableName: tableName,
-          Item: { ...previousVersionData, version: 'v0_latest', latest: previousVersionNumber },
+          Item: { ...previousVersionData, version: 'v0_latest', latest: previousVersionNumber, latestVersionUsed: latestVersionUsed ?? latestVersionNumber },
           ConditionExpression: 'attribute_exists(id)',
         })
       );
@@ -333,6 +335,7 @@ export function getPutCommands(
         version: 'v0_latest',
         latest: null,
         expires: getExpires(),
+        latestVersionUsed: latestVersionUsed ?? latestVersionNumber,
       };
       // clear public version
       updateCommands.push(
@@ -372,7 +375,6 @@ export async function getPreviousVersion(tableName: string, id: string, latestVe
       ':removed': Status.Removed,
     },
     ScanIndexForward: false,
-    Limit: 1,
   };
 
   try {
@@ -382,7 +384,7 @@ export async function getPreviousVersion(tableName: string, id: string, latestVe
 
     return previousVersion ? (previousVersion as FairwayCardDBModel | HarborDBModel) : undefined;
   } catch (error) {
-    console.log('ERROR TULI', error);
+    console.log(error);
     return undefined;
   }
 }
