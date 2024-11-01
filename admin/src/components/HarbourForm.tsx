@@ -65,7 +65,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handleOpenPreview();
       }
       if (isSubmittingVersion) {
-        const nextVersionNumber = latestHarbor?.harbor?.latest ? latestHarbor.harbor.latest + 1 : 2;
+        const nextVersionNumber = latestHarbor?.harbor?.latestVersionUsed ? latestHarbor.harbor.latestVersionUsed + 1 : 2;
         history.push({ pathname: '/satama/' + data.saveHarbor?.id + '/v' + nextVersionNumber });
         setIsSubmittingVersion(false);
       }

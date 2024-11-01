@@ -4,11 +4,13 @@ import { log } from './logger';
 import { CacheResponse, cacheResponse, getAisCacheControlHeaders } from './graphql/cache';
 import { ALBResult } from 'aws-lambda';
 import { Vessel } from './api/apiModels';
-import { getHeaders } from './environment';
+import { getExpires, getHeaders } from './environment';
 import FairwayCardDBModel from './db/fairwayCardDBModel';
 import HarborDBModel from './db/harborDBModel';
 import { Operation, Status } from '../../graphql/generated';
-import { PutCommand } from '@aws-sdk/lib-dynamodb';
+import { PutCommand, QueryCommand, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
+import { getDynamoDBDocumentClient } from './db/dynamoClient';
+import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 const GEOMETRY_DECIMALS = 5;
 
@@ -165,7 +167,7 @@ function getCreateCommands(data: FairwayCardDBModel | HarborDBModel, tableName: 
   updateCommands.push(
     new PutCommand({
       TableName: tableName,
-      Item: { ...data, version: 'v0_latest', latest: 1 },
+      Item: { ...data, version: 'v0_latest', latest: 1, latestVersionUsed: 1 },
       ConditionExpression: 'attribute_not_exists(id)',
     })
   );
@@ -196,7 +198,7 @@ function getCreateversionCommands(data: FairwayCardDBModel | HarborDBModel, tabl
   updateCommands.push(
     new PutCommand({
       TableName: tableName,
-      Item: { ...data, version: 'v0_latest', latest: versionNumber },
+      Item: { ...data, version: 'v0_latest', latest: versionNumber, latestVersionUsed: versionNumber },
       ConditionExpression: 'attribute_exists(id)',
     })
   );
@@ -325,14 +327,81 @@ function getUpdateCommands(
   return updateCommands;
 }
 
+function getRemoveCommands(
+  data: FairwayCardDBModel | HarborDBModel,
+  tableName: string,
+  previousVersionData?: FairwayCardDBModel | HarborDBModel,
+  versionNumber?: number | null,
+  latestVersionUsed?: number | null,
+  latestVersionNumber?: number | null
+) {
+  const updateCommands = [];
+
+  updateCommands.push(
+    new PutCommand({
+      TableName: tableName,
+      Item: { ...data },
+      ConditionExpression: 'attribute_exists(id)',
+    })
+  );
+  // if there's previous version, update latest version entry
+  if (previousVersionData) {
+    const previousVersionNumber = Number(previousVersionData.version.slice(1));
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: { ...previousVersionData, version: 'v0_latest', latest: previousVersionNumber, latestVersionUsed: latestVersionUsed ?? latestVersionNumber },
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+    // if there's no previous version (so only one version was left), clear latest and public data
+  } else if (versionNumber === latestVersionNumber) {
+    const emptyPublicData = {
+      id: data.id,
+      version: 'v0_public',
+      currentPublic: null,
+      expires: getExpires(),
+    };
+    const emptyLatestData = {
+      id: data.id,
+      version: 'v0_latest',
+      latest: null,
+      expires: getExpires(),
+      latestVersionUsed: latestVersionUsed ?? latestVersionNumber,
+    };
+    // clear public version
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: emptyPublicData,
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+    // clear latest version
+    updateCommands.push(
+      new PutCommand({
+        TableName: tableName,
+        Item: emptyLatestData,
+        ConditionExpression: 'attribute_exists(id)',
+      })
+    );
+  }
+
+  return updateCommands;
+}
+
 export function getPutCommands(
   data: FairwayCardDBModel | HarborDBModel,
   tableName: string,
   operation: Operation,
   versionNumber?: number | null,
-  latestVersionNumber?: number | null,
-  publicVersionData?: FairwayCardDBModel | HarborDBModel | null
+  latestVersion?: FairwayCardDBModel | HarborDBModel | null,
+  publicVersionData?: FairwayCardDBModel | HarborDBModel | null,
+  previousVersionData?: FairwayCardDBModel | HarborDBModel
 ) {
+  const latestVersionUsed = latestVersion?.latestVersionUsed;
+  const latestVersionNumber = latestVersion?.latest;
+
   // creating a new item
   switch (operation) {
     case Operation.Create:
@@ -344,9 +413,40 @@ export function getPutCommands(
     case Operation.Publish:
       return getPublishCommands(data, tableName, versionNumber, latestVersionNumber, publicVersionData);
     case Operation.Update:
-    case Operation.Remove:
       return getUpdateCommands(data, tableName, versionNumber, latestVersionNumber);
+    case Operation.Remove:
+      return getRemoveCommands(data, tableName, previousVersionData, versionNumber, latestVersionUsed, latestVersionNumber);
     default:
       return [];
+  }
+}
+
+export async function getPreviousVersion(tableName: string, id: string, latestVersion: number) {
+  const params: QueryCommandInput = {
+    TableName: tableName,
+    KeyConditionExpression: '#id = :id AND #version < :latestVersion',
+    FilterExpression: '#status <> :removed',
+    ExpressionAttributeNames: {
+      '#id': 'id',
+      '#version': 'version',
+      '#status': 'status',
+    },
+    ExpressionAttributeValues: {
+      ':id': id,
+      ':latestVersion': 'v' + latestVersion,
+      ':removed': Status.Removed,
+    },
+    ScanIndexForward: false,
+  };
+
+  try {
+    const command = new QueryCommand(params);
+    const result = await getDynamoDBDocumentClient().send(command);
+    const previousVersion = result.Items?.[0];
+
+    return previousVersion ? (previousVersion as FairwayCardDBModel | HarborDBModel) : undefined;
+  } catch (error) {
+    console.log(error);
+    return undefined;
   }
 }

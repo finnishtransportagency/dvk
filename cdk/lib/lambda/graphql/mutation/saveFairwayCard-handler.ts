@@ -227,7 +227,7 @@ async function copyPictures(
 async function clearCardFromFairwayCache(
   newModel: FairwayCardDBModel,
   card: FairwayCardInput,
-  latestVersionNumber: number | null | undefined,
+  latestVersionNumber: FairwayCardDBModel | null | undefined,
   currentPublicCard: FairwayCardDBModel | null | undefined
 ) {
   try {
@@ -263,7 +263,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   let pictures;
   let currentPublicCard = null;
 
-  const latestVersionNumber = await FairwayCardDBModel.getLatest(card.id).then((fairwayCard) => fairwayCard?.latest);
+  const latestVersion = await FairwayCardDBModel.getLatest(card.id);
 
   if (card.operation === Operation.Update) {
     dbModel = await FairwayCardDBModel.getVersion(card.id, card.version);
@@ -276,7 +276,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   } else if (pictureSourceId && pictureSourceVersion && !!card.pictures?.length) {
     pictures = await copyPictures(
       card.id,
-      card.operation === Operation.Createversion ? 'v' + (Number(latestVersionNumber) + 1) : card.version,
+      card.operation === Operation.Createversion ? 'v' + (Number(latestVersion?.latestVersionUsed ?? latestVersion?.latest) + 1) : card.version,
       pictureSourceId,
       pictureSourceVersion,
       card.pictures
@@ -286,7 +286,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   const newModel = mapFairwayCardToModel(card, dbModel, user, pictures);
   log.debug('card: %o', newModel);
 
-  clearCardFromFairwayCache(newModel, card, latestVersionNumber, currentPublicCard);
+  clearCardFromFairwayCache(newModel, card, latestVersion, currentPublicCard);
 
   if (card.operation === Operation.Update) {
     const changes = dbModel ? diff(dbModel, newModel) : null;
