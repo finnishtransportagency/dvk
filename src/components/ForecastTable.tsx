@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonRow, IonButton } from '@ionic/react';
 import { ForecastItem } from './features';
 
 type ForecastTableProps = {
@@ -43,8 +43,19 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
 
 const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
   const { t } = useTranslation();
+  const [startIndex, setStartIndex] = useState<number>(0);
+  const pageSize = 8;
 
   const utcDiffStr = timezoneOffsetMinutesToString(new Date());
+
+  const showPreviousPage = () => {
+    setStartIndex(startIndex >= pageSize ? startIndex - pageSize : 0);
+  };
+
+  const showNextPage = () => {
+    setStartIndex(startIndex + pageSize);
+  };
+
   return (
     <IonGrid className="ion-no-padding">
       <IonRow className="ion-justify-content-between">
@@ -64,7 +75,7 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
         </IonCol>
       </IonRow>
       {forecastItems.length > 0 ? (
-        forecastItems.map((forecastItem) => {
+        forecastItems.slice(startIndex, startIndex + pageSize).map((forecastItem) => {
           return <ForecastTableRow key={forecastItem.dateTime} forecastItem={forecastItem} />;
         })
       ) : (
@@ -72,6 +83,18 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
           <IonCol>-</IonCol>
         </IonRow>
       )}
+      <IonRow>
+        <IonCol size="6">
+          <IonButton onClick={showPreviousPage} disabled={startIndex === 0}>
+            {t('forecastTable.previousPage')} ({pageSize})h
+          </IonButton>
+        </IonCol>
+        <IonCol size="6">
+          <IonButton onClick={showNextPage} disabled={startIndex + pageSize >= forecastItems.length}>
+            {t('forecastTable.nextPage')} ({pageSize})h
+          </IonButton>
+        </IonCol>
+      </IonRow>
     </IonGrid>
   );
 };

@@ -611,6 +611,8 @@
       "wave": "[sv] Aallon korkeus ja suunta",
       "visibility": "[sv] Näkyvyys"
     },
-    "dateTimeFormat": "{{ val, datetime(timeStyle: 'short')}}"
+    "dateTimeFormat": "{{ val, datetime(timeStyle: 'short')}}",
+    "previousPage": "[sv] Edelliset",
+    "nextPage": "[sv] Seuraavat"
   }
 }

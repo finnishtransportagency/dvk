@@ -610,6 +610,8 @@
       "wave": "[en] Aallon korkeus ja suunta",
       "visibility": "[en] Näkyvyys"
     },
-    "dateTimeFormat": "{{ val, datetime(timeStyle: 'short')}}"
+    "dateTimeFormat": "{{ val, datetime(timeStyle: 'short')}}",
+    "previousPage": "Previous",
+    "nextPage": "Next"
   }
 }
