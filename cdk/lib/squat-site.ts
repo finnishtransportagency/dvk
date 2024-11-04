@@ -432,6 +432,7 @@ export class SquatSite extends Construct {
       'esikatselu*': previewBehavior,
       '/oauth2/*': apiProxyBehavior,
       '/sso/*': apiProxyBehavior,
+      '/jwtclaims': apiProxyBehavior,
     };
     // github webhook for cicd pipelines only in 'dev'
     if (Config.getEnvironment() === 'dev') {
