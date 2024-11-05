@@ -908,6 +908,17 @@ ion-modal.prompt .ion-page {
   overflow: visible;
 }
 
+ion-modal.publish-details {
+  --width: 1350px;
+  --height: 500px;
+}
+
+ion-modal.publish-details ion-grid.infoHeaderGrid {
+  width: 100%;
+  height: 500px;
+  padding: 0px 15px 0px 15px;
+}
+
 /* Alert */
 ion-grid.alert {
   font-size: 14px;

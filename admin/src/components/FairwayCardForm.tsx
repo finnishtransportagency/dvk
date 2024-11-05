@@ -40,6 +40,7 @@ import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
 import InfoHeader from './InfoHeader';
+import PublishModal from './PublishModal';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -69,6 +70,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
+  const [publishingInfoOpen, setPublishingInfoOpen] = useState(false);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -276,11 +278,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const handlePublish = () => {
     if (formValid()) {
-      setConfirmationType('publish');
+      setPublishingInfoOpen(true);
     } else {
       setSaveError('MISSING-INFORMATION');
     }
   };
+
+  /*const handlePublishInfo = () => {
+    if (formValid()) {
+      setPublishingInfoOpen(true);
+    }
+  }*/
 
   const handleConfirmationSubmit = () => {
     switch (confirmationType) {
@@ -329,6 +337,19 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   return (
     <IonPage>
+      <PublishModal
+        state={state}
+        setConfirmationType={setConfirmationType}
+        setModalOpen={setPublishingInfoOpen}
+        modalOpen={publishingInfoOpen}
+        setValue={updateState}
+        status={state.status}
+        modified={getDateTimeInfo(true)}
+        created={getDateTimeInfo(false)}
+        version={fairwayCard.version}
+        modifier={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
+        creator={savedCard?.creator ?? creator}
+      />
       <ConfirmationModal
         saveType="fairwaycard"
         action={handleConfirmationSubmit}

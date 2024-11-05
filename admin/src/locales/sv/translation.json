@@ -121,7 +121,8 @@
     "search-title-mainPage": "[sv] Hae nimellä tai tunnisteella",
     "check-and-publish": "[sv] Tarkasta muutokset ja julkaise",
     "publishing-details": "[sv] Julkaisutiedot",
-    "create-new-version": "[sv] Luo uusi versio"
+    "create-new-version": "[sv] Luo uusi versio",
+    "version": "[sv] Versio"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",
@@ -171,7 +172,8 @@
     "ending-fairway-title": "[sv] Päättävät väylät järjestyksen valinta",
     "ending-fairway-description": "[sv] Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "fairwaycard-publish-details": "[sv] Väyläkortin julkaisutiedot",
-    "harbor-publish-details": "[sv] Sataman julkaisutiedot"
+    "harbor-publish-details": "[sv] Sataman julkaisutiedot",
+    "adding-publish-details": "[sv] Julkaisutietojen lisääminen"
   },
   "fairwaycard": {
     "name": "Farledskortets namn",

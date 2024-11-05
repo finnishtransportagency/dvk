@@ -652,6 +652,10 @@ export const fairwayCardReducer = (
         ),
       };
       break;
+    case 'publishDetails':
+      console.log(value);
+      newState = { ...state, publishDetails: value as string };
+      break;
     default:
       console.warn(`Unknown action type, state not updated.`);
       return state;
