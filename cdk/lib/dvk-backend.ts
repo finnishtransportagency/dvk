@@ -55,16 +55,19 @@ export class DvkBackendStack extends Stack {
       },
       xrayEnabled: false,
     });
-    // Configure the appsync cache using CfnApiCache
-    new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
-      apiCachingBehavior: 'PER_RESOLVER_CACHING',
-      apiId: api.apiId,
-      type: 'SMALL',
-      transitEncryptionEnabled: true,
-      atRestEncryptionEnabled: true,
-      ttl: 3600,
-      healthMetricsConfig: 'ENABLED',
-    });
+    // Configure the appsync cache for permantn environments using CfnApiCache
+    if (Config.isPermanentEnvironment()) {
+      new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
+        apiCachingBehavior: 'PER_RESOLVER_CACHING',
+        apiId: api.apiId,
+        type: 'SMALL',
+        transitEncryptionEnabled: true,
+        atRestEncryptionEnabled: true,
+        ttl: 3600,
+        healthMetricsConfig: 'ENABLED',
+      });
+    }
+    
     const config = new Config(this);
     if (Config.isPermanentEnvironment()) {
       try {
@@ -150,7 +153,6 @@ export class DvkBackendStack extends Stack {
           DAYS_TO_EXPIRE: Config.isDeveloperOrDevEnvironment() ? '1' : '30',
           API_TIMEOUT: '10000',
         },
-        // logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
         logGroup: new LogGroup(this, `LambdaLogs-${functionName}`, {
           logGroupName: `/dvk/lambda/${functionName}`,
           retention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
@@ -164,7 +166,10 @@ export class DvkBackendStack extends Stack {
       lambdaDataSource.createResolver(`${typeName}${fieldName}Resolver`, {
         typeName: typeName,
         fieldName: fieldName,
-        cachingConfig: lambdaFunc.useCaching ? { cachingKeys: ['$context.arguments'], ttl: cdk.Duration.minutes(60) } : undefined,
+        cachingConfig:
+          Config.isPermanentEnvironment() && lambdaFunc.useCaching
+            ? { cachingKeys: ['$context.arguments'], ttl: cdk.Duration.minutes(60) }
+            : undefined,
       });
       if (typeName === 'Mutation') {
         fairwayCardWithVersionsTable.grantReadWriteData(backendLambda);
