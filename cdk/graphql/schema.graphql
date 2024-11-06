@@ -82,6 +82,7 @@ input FairwayCardInput {
   pictures: [PictureInput!]
   pilotRoutes: [Int!]
   temporaryNotifications: [TemporaryNotificationInput!]
+  publishDetails: String
 }
 
 input PictureInput {
@@ -264,6 +265,7 @@ type FairwayCard {
   temporaryNotifications: [TemporaryNotification!]
   latest: Float
   latestVersionUsed: Float
+  publishDetails: String
 }
 
 type Picture {
