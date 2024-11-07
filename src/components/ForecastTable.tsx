@@ -122,13 +122,14 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
         </IonCol>
       </IonRow>
       {forecastItems.length > 0 ? (
-        forecastItems.slice(startIndex, startIndex + pageSize).map((forecastItem, index, forecastItems) => {
+        forecastItems.slice(startIndex, startIndex + pageSize).map((item, index, items) => {
           const showDateRow =
-            index === 0 || new Date(forecastItems[index].dateTime).getDate() !== new Date(forecastItems[index - 1].dateTime).getDate();
+            (index === 0 && new Date(items[0].dateTime).getDate() === new Date(items[items.length - 1].dateTime).getDate()) ||
+            (index !== 0 && new Date(items[index].dateTime).getDate() !== new Date(items[index - 1].dateTime).getDate());
           return (
             <>
-              {showDateRow && <ForecastTableDateRow forecastItem={forecastItem} />}
-              <ForecastTableRow key={forecastItem.dateTime} forecastItem={forecastItem} />
+              {showDateRow && <ForecastTableDateRow key={'dateHeader_' + item.dateTime} forecastItem={item} />}
+              <ForecastTableRow key={item.dateTime} forecastItem={item} />
             </>
           );
         })
