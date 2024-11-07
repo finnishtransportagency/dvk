@@ -1,0 +1,255 @@
+{
+  "phoneNumber": [
+    "+358205923890"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of turning circle 340 m. Use of anchor prohibited.",
+    "fi": "Kääntöympyrän halkaisija 340 m. Ankkurin käyttö kielletty.",
+    "sv": "Svängcirkelns diameter 340 m. Förbjudet att använda ankare."
+  },
+  "modifier": "System",
+  "email": null,
+  "name": {
+    "en": "SSAB harbour",
+    "fi": "SSAB:n satama",
+    "sv": "SSAB hamn"
+  },
+  "cargo": {
+    "en": "1 x 40t and 1 x 60 t cranes, a mobile crane 100 t available.",
+    "fi": "1 kpl 40 t ja 1 kpl 60 t nostureita, liikkuva nosturi 100 t käytettävissä.",
+    "sv": "1 st. 40 t ja 1 st. 60 t kranar, en mobil kran 100 t kan användas."
+  },
+  "modificationTimestamp": 1726727978959,
+  "company": {
+    "en": "SSAB Europe Ltd Raahe harbour",
+    "fi": "SSAB Europe Oy Raahen satama",
+    "sv": "SSAB Europe Ab Brahestad hamn"
+  },
+  "quays": [
+    {
+      "length": null,
+      "name": {
+        "en": "Deep quay 1",
+        "fi": "Syvälaituri 1",
+        "sv": "Djupkajer 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.40431,
+          64.65637
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 11.3
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Deep quay 2",
+        "fi": "Syvälaituri 2",
+        "sv": "Djupkajer 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.40545,
+          64.6544
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 11.3
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Import quay 1",
+        "fi": "Tuontilaituri 1",
+        "sv": "Import kajer 1"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.40751,
+          64.65641
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.6
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Import quay 2",
+        "fi": "Tuontilaituri 2",
+        "sv": "Import kajer 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.40852,
+          64.65487
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.6
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Import quay 3",
+        "fi": "Tuontilaituri 3",
+        "sv": "Import kajer 3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.40895,
+          64.65399
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.1
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Export quay 4",
+        "fi": "Vientilaituri 4",
+        "sv": "Export kajer 4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.41036,
+          64.65416
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.1
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Export quay 5",
+        "fi": "Vientilaituri 5",
+        "sv": "Export kajer 5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.41033,
+          64.655
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.6
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Chemical quay ",
+        "fi": "Kemikaalilaituri",
+        "sv": "Kemikalie kajer "
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.41161,
+          64.65686
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.1
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "Export quay 6",
+        "fi": "Vientilaituri 6",
+        "sv": "Export kajer 6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.41047,
+          64.65623
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.8
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "latest": 1,
+  "extraInfo": null,
+  "creationTimestamp": 1683095539815,
+  "id": "ssab",
+  "fax": null,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.41181,
+      64.65544
+    ]
+  }
+}

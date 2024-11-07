@@ -63,6 +63,7 @@ fragment HarborById on Harbor {
     }
   }
   latest
+  latestVersionUsed
 }
 
 query harbourById($id: String!, $version: String!) {

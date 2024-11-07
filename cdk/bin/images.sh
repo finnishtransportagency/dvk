@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# 1. Declare a constant IMAGE_REPOS with values "dvk-analyticsimage", "dvk-buildimage" and "dvk-robotimage" (both accounts use same names)
-IMAGE_REPOS=("dvk-analyticsimage" "dvk-buildimage" "dvk-robotimage")
+# 1. Declare a constant IMAGE_REPOS with values "dvk-analyticsimage", "dvk-buildimage" (both accounts use same names)
+IMAGE_REPOS=("dvk-analyticsimage" "dvk-buildimage")
 
 # 2. Declare a constant DAYS_SINCE_LAST_PULL
 DAYS_SINCE_LAST_PULL=30

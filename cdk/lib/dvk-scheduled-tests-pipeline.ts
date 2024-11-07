@@ -8,6 +8,7 @@ import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps } from 'aws-cdk-lib/aws-s3';
 import { Rule, Schedule } from 'aws-cdk-lib/aws-events';
 import { CodeBuildProject } from 'aws-cdk-lib/aws-events-targets';
+// DEPRACATED AND TO BE REMOVED FROM PROD ACCOUNT, TO BE REPLACED BY PLAYWRIGHT TESTS
 export class DvkScheduledTestsPipelineStack extends Stack {
   constructor(scope: Construct, id: string) {
     super(scope, id, {

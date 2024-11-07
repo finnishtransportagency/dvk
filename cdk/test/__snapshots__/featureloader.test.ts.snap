@@ -478,3 +478,132 @@ DATE AND TIME
   "type": "FeatureCollection",
 }
 `;
+
+exports[`should get weather and wave forecast from api 1`] = `
+{
+  "features": [
+    {
+      "geometry": {
+        "coordinates": [
+          24.97,
+          60.08,
+        ],
+        "type": "Point",
+      },
+      "id": "60.08,24.97",
+      "properties": {
+        "featureType": "forecast",
+        "forecastItems": [
+          {
+            "dateTime": 1730203200000,
+            "visibility": 40,
+            "waveDirection": 229.7,
+            "waveHeight": 0.5,
+            "windDirection": 293,
+            "windGust": 8,
+            "windSpeed": 5.2,
+          },
+          {
+            "dateTime": 1730206800000,
+            "visibility": 40,
+            "waveDirection": 229.7,
+            "waveHeight": 0.5,
+            "windDirection": 293,
+            "windGust": 8,
+            "windSpeed": 5.2,
+          },
+        ],
+        "name": null,
+        "pilotPlaceId": null,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          23.99567,
+          59.99467,
+        ],
+        "type": "Point",
+      },
+      "id": "59.994667,23.995667",
+      "properties": {
+        "featureType": "forecast",
+        "forecastItems": [
+          {
+            "dateTime": 1730203200000,
+            "visibility": 40,
+            "waveDirection": 247.4,
+            "waveHeight": 0.8,
+            "windDirection": 294,
+            "windGust": 10.3,
+            "windSpeed": 7.4,
+          },
+        ],
+        "name": {
+          "en": "Jakob Ramsjö säähavaintoasema",
+          "fi": "Jakob Ramsjö säähavaintoasema",
+          "sv": "Jakob Ramsjö säähavaintoasema",
+        },
+        "pilotPlaceId": null,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          24.928,
+          60.044,
+        ],
+        "type": "Point",
+      },
+      "id": "60.044,24.928",
+      "properties": {
+        "featureType": "forecast",
+        "forecastItems": [
+          {
+            "dateTime": 1730203200000,
+            "visibility": 40,
+            "waveDirection": 233.7,
+            "waveHeight": 0.6,
+            "windDirection": 292,
+            "windGust": 7.8,
+            "windSpeed": 5.1,
+          },
+        ],
+        "name": null,
+        "pilotPlaceId": null,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          21.11,
+          60.08,
+        ],
+        "type": "Point",
+      },
+      "id": "60.08,21.11",
+      "properties": {
+        "featureType": "forecast",
+        "forecastItems": [
+          {
+            "dateTime": 1730203200000,
+            "visibility": 40,
+            "waveDirection": 275.7,
+            "waveHeight": 0.3,
+            "windDirection": 262,
+            "windGust": 8.2,
+            "windSpeed": 5.9,
+          },
+        ],
+        "name": null,
+        "pilotPlaceId": null,
+      },
+      "type": "Feature",
+    },
+  ],
+  "type": "FeatureCollection",
+}
+`;

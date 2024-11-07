@@ -91,7 +91,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handleOpenPreview();
       }
       if (isSubmittingVersion) {
-        const nextVersionNumber = latestFairwayCard?.fairwayCard?.latest ? latestFairwayCard.fairwayCard.latest + 1 : 2;
+        const nextVersionNumber = latestFairwayCard?.fairwayCard?.latestVersionUsed ? latestFairwayCard.fairwayCard.latestVersionUsed + 1 : 2;
         history.push({ pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v' + nextVersionNumber });
         setIsSubmittingVersion(false);
       }

@@ -1,7 +1,7 @@
 import Feature from 'ol/Feature';
 import Geolocation from 'ol/Geolocation';
 import Control from 'ol/control/Control';
-import Coordinate from 'ol/coordinate';
+import { Coordinate } from 'ol/coordinate';
 import { Point } from 'ol/geom';
 import { getMap } from '../DvkMap';
 
@@ -14,7 +14,7 @@ class CenterToOwnLocationControl extends Control {
     },
   });
 
-  position: Coordinate.Coordinate | undefined = undefined;
+  position: Coordinate | undefined = undefined;
 
   disabled: boolean = false;
 

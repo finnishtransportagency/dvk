@@ -4,7 +4,7 @@ import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { Text } from './fairwayCardDBModel';
 import { getHarborTableName } from '../environment';
-import { getPutCommands } from '../util';
+import { getPreviousVersion, getPutCommands } from '../util';
 
 export type Quay = {
   name?: Maybe<Text>;
@@ -64,6 +64,8 @@ class HarborDBModel {
   expires?: Maybe<number>;
 
   latest?: Maybe<number>;
+
+  latestVersionUsed?: Maybe<number>;
 
   private static getLatestSortKey() {
     return 'v0_latest';
@@ -177,15 +179,32 @@ class HarborDBModel {
   }
 
   static async save(data: HarborDBModel, operation: Operation, currentPublicHarbor?: HarborDBModel | null) {
-    const latestVersionNumber = await HarborDBModel.getLatest(data.id).then((harbor) => harbor?.latest);
+    const latestVersion = await HarborDBModel.getLatest(data.id);
+
+    const latestVersionUsed = latestVersion?.latestVersionUsed;
+    const latestVersionNumber = latestVersion?.latest;
+
     //get only number out of the string
     let versionNumber = Number(data.version.slice(1));
+    let previousVersionData;
 
     if (operation === Operation.Createversion) {
-      versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
+      versionNumber = latestVersionUsed ? latestVersionUsed + 1 : 2;
+    }
+    // data is needed if latest version is removed, so latest can be updated to be the previous version (if there's one)
+    if (operation === Operation.Remove && latestVersionNumber === versionNumber && latestVersionNumber !== 1) {
+      previousVersionData = (await getPreviousVersion(getHarborTableName(), data.id, Number(latestVersionNumber))) as HarborDBModel;
     }
 
-    const putCommands = getPutCommands(data, getHarborTableName(), operation, versionNumber, latestVersionNumber, currentPublicHarbor);
+    const putCommands = getPutCommands(
+      data,
+      getHarborTableName(),
+      operation,
+      versionNumber,
+      latestVersion,
+      currentPublicHarbor,
+      previousVersionData,
+    );
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }

@@ -38,7 +38,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardsAndHarborsArgs, Fa
       n2000HeightSystem: harbor.n2000HeightSystem || false,
       name: harbor.name,
       type: ContentType.Harbor,
-      status: harbor.status || Status.Public,
+      status: harbor.status ?? Status.Public,
       creator: harbor.creator,
       modifier: harbor.modifier,
       modificationTimestamp: harbor.modificationTimestamp,

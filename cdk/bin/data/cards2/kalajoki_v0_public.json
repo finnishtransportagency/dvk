@@ -1,0 +1,624 @@
+{
+  "anchorage": null,
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "pictures": [
+    {
+      "scaleWidth": "101",
+      "sequenceNumber": 1,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1698235725994,
+      "id": "kalajoki-1698235725994-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235727265
+    },
+    {
+      "scaleWidth": "101",
+      "sequenceNumber": 1,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1698235725994,
+      "id": "kalajoki-1698235725994-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235728586
+    },
+    {
+      "scaleWidth": "101",
+      "sequenceNumber": 1,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1698235725994,
+      "id": "kalajoki-1698235725994-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235729706
+    },
+    {
+      "scaleWidth": "107",
+      "sequenceNumber": 2,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "1000 m",
+      "groupId": 1698235761060,
+      "id": "kalajoki-1698235761060-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235762128
+    },
+    {
+      "scaleWidth": "107",
+      "sequenceNumber": 2,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "1000 m",
+      "groupId": 1698235761060,
+      "id": "kalajoki-1698235761060-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235763152
+    },
+    {
+      "scaleWidth": "107",
+      "sequenceNumber": 2,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "1000 m",
+      "groupId": 1698235761060,
+      "id": "kalajoki-1698235761060-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235764027
+    },
+    {
+      "scaleWidth": "95",
+      "sequenceNumber": 3,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235791846,
+      "id": "kalajoki-1698235791846-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235793385
+    },
+    {
+      "scaleWidth": "95",
+      "sequenceNumber": 3,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235791846,
+      "id": "kalajoki-1698235791846-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235794638
+    },
+    {
+      "scaleWidth": "95",
+      "sequenceNumber": 3,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235791846,
+      "id": "kalajoki-1698235791846-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235795798
+    },
+    {
+      "scaleWidth": "106",
+      "sequenceNumber": 4,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698235815735,
+      "id": "kalajoki-1698235815735-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235821393
+    },
+    {
+      "scaleWidth": "106",
+      "sequenceNumber": 4,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698235815735,
+      "id": "kalajoki-1698235815735-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235822553
+    },
+    {
+      "scaleWidth": "106",
+      "sequenceNumber": 4,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698235815735,
+      "id": "kalajoki-1698235815735-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235823773
+    },
+    {
+      "scaleWidth": "112",
+      "sequenceNumber": 5,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1698235844995,
+      "id": "kalajoki-1698235844995-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235848554
+    },
+    {
+      "scaleWidth": "112",
+      "sequenceNumber": 5,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1698235844995,
+      "id": "kalajoki-1698235844995-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235850188
+    },
+    {
+      "scaleWidth": "112",
+      "sequenceNumber": 5,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1698235844995,
+      "id": "kalajoki-1698235844995-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235851302
+    },
+    {
+      "scaleWidth": "75",
+      "sequenceNumber": 6,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "50 m",
+      "groupId": 1698235869021,
+      "id": "kalajoki-1698235869021-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235870903
+    },
+    {
+      "scaleWidth": "75",
+      "sequenceNumber": 6,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "50 m",
+      "groupId": 1698235869021,
+      "id": "kalajoki-1698235869021-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235872182
+    },
+    {
+      "scaleWidth": "75",
+      "sequenceNumber": 6,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "50 m",
+      "groupId": 1698235869021,
+      "id": "kalajoki-1698235869021-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235873285
+    },
+    {
+      "scaleWidth": "86",
+      "sequenceNumber": 1,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "1000 m",
+      "groupId": 1697519210051,
+      "id": "kalajoki-1697519210051-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1697519214501
+    },
+    {
+      "scaleWidth": "86",
+      "sequenceNumber": 1,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "1000 m",
+      "groupId": 1697519210051,
+      "id": "kalajoki-1697519210051-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1697519215419
+    },
+    {
+      "scaleWidth": "86",
+      "sequenceNumber": 1,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "1000 m",
+      "groupId": 1697519210051,
+      "id": "kalajoki-1697519210051-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1697519216452
+    },
+    {
+      "scaleWidth": "101",
+      "sequenceNumber": 6,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1697519246346,
+      "id": "kalajoki-1697519246346-fi",
+      "text": "Kalajoen satama",
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1697519251576
+    },
+    {
+      "scaleWidth": "101",
+      "sequenceNumber": 6,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1697519246346,
+      "id": "kalajoki-1697519246346-sv",
+      "text": "Kalajoki hamn",
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1697519252647
+    },
+    {
+      "scaleWidth": "101",
+      "sequenceNumber": 6,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "100 m",
+      "groupId": 1697519246346,
+      "id": "kalajoki-1697519246346-en",
+      "text": "Port of Kalajoki",
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1697519253658
+    },
+    {
+      "scaleWidth": "70",
+      "sequenceNumber": 2,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235555298,
+      "id": "kalajoki-1698235555298-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235557908
+    },
+    {
+      "scaleWidth": "70",
+      "sequenceNumber": 2,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235555298,
+      "id": "kalajoki-1698235555298-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235558976
+    },
+    {
+      "scaleWidth": "70",
+      "sequenceNumber": 2,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235555298,
+      "id": "kalajoki-1698235555298-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235560027
+    },
+    {
+      "scaleWidth": "112",
+      "sequenceNumber": 3,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235590390,
+      "id": "kalajoki-1698235590390-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235591468
+    },
+    {
+      "scaleWidth": "112",
+      "sequenceNumber": 3,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235590390,
+      "id": "kalajoki-1698235590390-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235592640
+    },
+    {
+      "scaleWidth": "112",
+      "sequenceNumber": 3,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235590390,
+      "id": "kalajoki-1698235590390-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235593751
+    },
+    {
+      "scaleWidth": "133",
+      "sequenceNumber": 4,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235616476,
+      "id": "kalajoki-1698235616476-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235622330
+    },
+    {
+      "scaleWidth": "133",
+      "sequenceNumber": 4,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235616476,
+      "id": "kalajoki-1698235616476-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235623536
+    },
+    {
+      "scaleWidth": "133",
+      "sequenceNumber": 4,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698235616476,
+      "id": "kalajoki-1698235616476-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235624794
+    },
+    {
+      "scaleWidth": "97",
+      "sequenceNumber": 5,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698235660694,
+      "id": "kalajoki-1698235660694-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1698235661819
+    },
+    {
+      "scaleWidth": "97",
+      "sequenceNumber": 5,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698235660694,
+      "id": "kalajoki-1698235660694-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1698235663018
+    },
+    {
+      "scaleWidth": "97",
+      "sequenceNumber": 5,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698235660694,
+      "id": "kalajoki-1698235660694-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1698235664139
+    }
+  ],
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134250
+    },
+    {
+      "id": 100540
+    }
+  ],
+  "name": {
+    "en": "Kalajoki Rahja fairway",
+    "fi": "Kalajoki Rahja väylä",
+    "sv": "Kalajoki Rahja farled"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Raahe mareograph.",
+    "fi": "Raahen mareografi.",
+    "sv": "Brahestad mareograf."
+  },
+  "creationTimestamp": 1683095536937,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The fairway is open sea area and unsheltered against all winds from sea to the harbour. Strong wind affects the navigation on the entire fairway and in the harbour. The inner fairway (1,5 km) has been dredged and is unsheltered for N-NE winds. Especially N and NE winds can create waves also in the harbour basin. Narrow fairway, winds, harbour basin features and squat-effect can affect on navigation and maneuvering of the ship.",
+    "fi": "Väylä sijaitsee avonaisella merialueella ja on suojaton kaikilla merenpuolisilla tuulilla. Kova tuuli vaikuttaa aluksen ohjailuun koko väyläosuudella ja satamassa. Sisäosa (n. 1,5km) sijaitsee ruopatussa kaivannossa, kapea kanava on pohjoisen ja koillisen välisillä tuulilla suojaton. Erityisesti pohjois- ja koillistuulet aiheuttavat satama-altaassakin aallokkoa. Väylän kapeuden ja satamaaltaan ominaisuuksien vuoksi tuuli- ja imuvaikutukset saattavat vaikeuttaa aluksen ohjailua.",
+    "sv": "Farleden går i öppen sjö och är oskyddad för alla vindar från havet, ända fram till hamnen. Hård vind påverkar navigeringen i hela farleden och i hamnen. Den inre (1,5 km) muddrade smala kanal liknande delen, är oskyddad för N och NO vindar. Speciellt med N och NO vindar uppstår också vågbildning i hamnen. Fartygets navigation påverkas av den smala farleden, hamnområdets karaktär, vind, samt squat-effekten."
+  },
+  "generalInfo": null,
+  "id": "kalajoki",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "5 lines, marked with boards, edge mark, buoys, spar buoys in combined use.",
+    "fi": "Linjoja on 5, merkintä perustuu linjataulujen, reunamerkin, poijujen ja viittojen yhdistettyyn käyttöön.",
+    "sv": "5 st. linjer, utmärkningen med ensmärken, randmärke, bojar och prickar i en gemensam kombination."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "kalajoki"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Critical wind speed 8-10 m/s for ships over 150 m, irrespective of wind direction during the open sea period. Ships approaching from sea to the harbour, NV and NE winds can affect on keeping up speed and direction of the ship.",
+    "fi": "Tuulirajat yli 150m aluksille enintään 8-10m/s tuulen suunnan mukaan. Luoteen ja koillisen väliset tuulet mereltä satamaan päin kuljettaessa voivat olla aluksen suunnan ja nopeuden hallinnan kannalta haasteellisia.",
+    "sv": "Vindbegränsning är max 8-10 m/s för fartyg över 150 m, med beaktande av vindriktningen. Vindar mellan NV och NO från havet mot hamnen kommande fartyg kan vara utmanande för att hålla fartygets riktning och fart."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 370,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718863006725,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "During normal winters, from mid of December to end of April the fast ice edge extends from harbour to edge mark Roima. Ice fields are in motion from Roima to Kaarlo buoy, layers of ice builds in the fairway. Ice movement may cause buoys and spar buoys to be pressed under ice (surface). During mild winters ice may be pressed outside of the harbour and even into the harbour basin and affecting maneuvering of the ship.",
+    "fi": "Pysyvä jääpeite yleensä joulukuun puolivälistä huhtikuun lopulle sataman edustan merialueilla. Sataman suulla sydäntalvella on usein ahtaumia. Etelään liikkuva jää pääsee satama-altaaseen asti ja voi tukkia aallonmurtajan suun ja vaikeuttaa huomattavasti alusten operointia satama-altaassa. Sataman suulta RM Roima:lle jääkenttä pysyy normaalitalvena paikallaan ja on helppokulkuinen. RM Roima:lta poijulle Kaarlo jää on liikkeessä ja ahtautunutta. Jäiden liikkuessa poijut ja viitat ovat usein jään alla.",
+    "sv": "Havsområdet utanför hamnen till RM Roima har vanligtvis ett fast istäcke från halva december till slutet av april vilket underlättar navigeringen. Från RM Roima till bojen Kaarlo är isen i rörelse och packis uppstår. Bojarna och prickarna kan då vara tryckta under isen. Under milda vintrar bildas packis i hamnmynningen. Med nordlig vind trycks packisen in i hamnen och kan försvåra fartygets manövrering."
+  },
+  "fairwayIds": "#370#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bottenvikens VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 2886100305,
+          "pilotJourney": 6.5
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB: In winter and adverse weather conditions the pilot boarding position is agreed separately.",
+        "fi": "Huom. Talviaikana tai huonolla säällä luotsauspaikka sovittava erikseen.",
+        "sv": "Anm. Vintertid och i dåligt väder bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Rahjan Huolinta Oy.",
+          "fi": "Rahjan Huolinta Oy.",
+          "sv": "Rahjan Huolinta Ab."
+        },
+        "phoneNumber": [
+          "+358400667847"
+        ],
+        "fax": null,
+        "email": null
+      },
+      {
+        "name": {
+          "en": "R-Towing Oy.",
+          "fi": "R-Towing Oy.",
+          "sv": "R-Towing Ab."
+        },
+        "phoneNumber": [
+          "+358400382652"
+        ],
+        "fax": null,
+        "email": null
+      },
+      {
+        "name": {
+          "en": "Oy Yxpila Hinaus - Bogsering Ab.",
+          "fi": "Oy Ykspila Hinaus - Bogsering Ab.",
+          "sv": "Oy Yxpila Hinaus - Bogsering Ab."
+        },
+        "phoneNumber": [
+          "+358102190750"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed in the approach 11 knots, in the entrance 8 knots, in the harbour area 4 knots.",
+    "fi": "Mitoitusnopeus ulko-osalla 11 solmua ja sisäosalla 8 solmua, satamassa 4 solmua.",
+    "sv": "Dimensionerande fart i den yttre delen 11 knop, i den inre delen 8 knop, i hamnen 4 knop."
+  }
+}
