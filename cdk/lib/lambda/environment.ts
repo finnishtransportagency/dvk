@@ -1,5 +1,5 @@
 import { readParameterByPath } from './api/axios';
-import * as ParamStore from './api/parameterStoreConstants';
+import * as ParamStore from './parameterStoreConstants';
 
 const envParameters: Record<string, string> = {};
 
