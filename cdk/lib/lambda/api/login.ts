@@ -66,21 +66,27 @@ const validateJwtToken = async (token: string | undefined, dataToken: string): P
   return JWT.decode(dataToken.replace(/=/g, '')) as JwtPayload;
 };
 
-function parseRoles(roles: string): string[] {
+export function parseRoles(roles: string): string[] {
+  if (!roles) {
+    return [];
+  }
+
+  // Check if the input is in the new JSON-like format
+  if (roles.startsWith('[') && roles.endsWith(']')) {
+    try {
+      const parsedRoles = JSON.parse(roles);
+      return Array.isArray(parsedRoles) ? parsedRoles.map((s) => s.trim()).filter((role) => typeof role === 'string' && role.startsWith('DVK_')) : [];
+    } catch (error) {
+      log.error('Error parsing JSON-like roles string:', error);
+      return [];
+    }
+  }
+
+  // Handle the old format
   return roles
-    ? roles
-        .replace('\\', '')
-        .split(',')
-        .map((s) => {
-          const s1 = s.split('/').pop();
-          if (s1) {
-            return s1;
-          }
-          // tsc fails if undefined is returned here
-          return '';
-        })
-        .filter((s) => s?.startsWith('DVK_'))
-    : [];
+    .split(',')
+    .map((s) => s.trim())
+    .filter((s) => s && s.startsWith('DVK_'));
 }
 
 export type CurrentUser = {

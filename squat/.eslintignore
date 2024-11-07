@@ -1,7 +1,6 @@
 build
 coverage
 dist
-capacitor.config.ts
 vite.config.ts
 vite.lib.config.ts
 service-worker.ts
