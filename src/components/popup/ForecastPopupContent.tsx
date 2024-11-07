@@ -59,12 +59,10 @@ const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, s
         <IonCol>{t('popup.forecast.extraContent')}</IonCol>
       </IonRow>
       <IonRow>
-        <IonCol className="header">{t('popup.forecast.forecast2')}</IonCol>
+        <IonCol className="header">{t('popup.forecast.updated')}</IonCol>
       </IonRow>
       <IonRow>
-        <IonCol>
-          {t('popup.forecast.updated')} {t('popup.forecast.dateTimeFormat', { val: dataUpdatedAt })}
-        </IonCol>
+        <IonCol>{t('popup.forecast.dateTimeFormat', { val: dataUpdatedAt })}</IonCol>
       </IonRow>
       <IonRow>
         <ForecastTable forecastItems={forecast.properties.forecastItems} />

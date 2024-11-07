@@ -1,0 +1,39 @@
+.ForecastGrid {
+  background: #ffffff;
+}
+
+.ForecastGrid ion-col {
+  padding: 2px;
+}
+
+.ForecastGrid .HeaderRow {
+  border-bottom: 1px solid #cccccc;
+}
+
+.ForecastGrid .HeaderRow ion-col:not(:last-child) {
+  border-right: 1px solid #cccccc;
+}
+
+.ForecastGrid .DateRow {
+  border-bottom: 1px solid #cccccc;
+}
+
+.ForecastGrid .ForecastRow {
+  border-bottom: 1px solid #cccccc;
+}
+
+.ForecastGrid .ForecastRow ion-col:not(:last-child) {
+  border-right: 1px solid #cccccc;
+}
+
+.ForecastGrid .ChangePageButton {
+  background: none;
+  color: #333333;
+  font-size: 12px;
+  line-height: 18px;
+  text-decoration: underline;
+}
+
+.ForecastGrid .ChangePageButton:disabled {
+  opacity: 0.5;
+}

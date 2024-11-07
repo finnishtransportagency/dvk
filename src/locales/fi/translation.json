@@ -436,7 +436,6 @@
       "coordinates": "Koordinaatit",
       "extra": "Lisätieto",
       "extraContent": "Lorem ipsum...",
-      "forecast2": "Sääennuste",
       "updated": "Päivitetty",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
     },
@@ -611,7 +610,8 @@
       "wave": "Aallon korkeus ja suunta",
       "visibility": "Näkyvyys"
     },
-    "dateTimeFormat": "{{ val, datetime(timeStyle: 'short')}}",
+    "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
+    "dateTimeFormat": "{{ val, datetime(hour: '2-digit')}}:{{val, datetime(minute: '2-digit')}}",
     "previousPage": "Edelliset",
     "nextPage": "Seuraavat"
   }
