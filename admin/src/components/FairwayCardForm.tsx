@@ -91,7 +91,12 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handleOpenPreview();
       }
       if (isSubmittingVersion) {
-        const nextVersionNumber = latestFairwayCard?.fairwayCard?.latestVersionUsed ? latestFairwayCard.fairwayCard.latestVersionUsed + 1 : 2;
+        const latestVersionUsed = latestFairwayCard?.fairwayCard?.latestVersionUsed;
+        const latestVersionNumber = latestFairwayCard?.fairwayCard?.latest;
+        // if latestVersionUsed is null, check latest. If still null we can assume there's only one version
+
+        const nextVersionNumber = (latestVersionUsed ?? latestVersionNumber ?? 1) + 1;
+
         history.push({ pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v' + nextVersionNumber });
         setIsSubmittingVersion(false);
       }
