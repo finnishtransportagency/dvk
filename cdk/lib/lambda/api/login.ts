@@ -1,4 +1,4 @@
-import { getCloudFrontPrivateKey, getCloudFrontPublicKeyId, getCognitoUrl, isPermanentEnvironment } from '../environment';
+import { getCloudFrontKeys, getCognitoUrl, isPermanentEnvironment } from '../environment';
 import { getSignedCookies } from '@aws-sdk/cloudfront-signer';
 import { ALBEvent, ALBResult, AppSyncResolverEvent } from 'aws-lambda';
 import { auditLog, log } from '../logger';
@@ -165,10 +165,12 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
       ],
     });
 
+    const { cloudFrontPrivateKey, cloudFrontPublicKeyId } = await getCloudFrontKeys();
+
     const cookie = getSignedCookies({
       url: cloudFrontDnsName as string,
-      privateKey: await getCloudFrontPrivateKey(),
-      keyPairId: await getCloudFrontPublicKeyId(),
+      privateKey: cloudFrontPrivateKey,
+      keyPairId: cloudFrontPublicKeyId,
       policy: cloudFrontPolicy,
     });
 
