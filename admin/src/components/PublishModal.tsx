@@ -1,5 +1,5 @@
-import React, { useRef } from 'react';
-import { IonButton, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import React, { useEffect, useRef, useState } from 'react';
+import { IonButton, IonFooter, IonGrid, IonHeader, IonModal, IonTitle, IonToolbar } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { ActionType, ConfirmationType, Lang } from '../utils/constants';
@@ -36,6 +36,8 @@ const PublishModal: React.FC<ModalProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  const [error, setError] = useState<string>('');
+
   const modal = useRef<HTMLIonModalElement>(null);
 
   const closeModal = () => {
@@ -44,8 +46,18 @@ const PublishModal: React.FC<ModalProps> = ({
   };
 
   const handlePublish = () => {
-    setConfirmationType('publish');
+    if (state.publishDetails && state.publishDetails.length > 0) {
+      setConfirmationType('publish');
+    } else {
+      setError(t('general.required-field'));
+    }
   };
+
+  useEffect(() => {
+    if (state.publishDetails) {
+      setError('');
+    }
+  }, [state.publishDetails]);
 
   return (
     <IonModal ref={modal} isOpen={modalOpen} className="publish-details" onDidDismiss={() => closeModal()}>
@@ -65,17 +77,19 @@ const PublishModal: React.FC<ModalProps> = ({
           </IonButton>
         </IonToolbar>
       </IonHeader>
-      <IonGrid className="infoHeaderGrid">
+      <IonGrid className="formGrid infoHeaderGrid">
         <InfoHeader status={status} modified={modified} modifier={modifier} creator={creator} created={created} version={version} />
-        <IonRow>
-          <Textarea
-            label={t('general.publishing-details')}
-            required={true}
-            val={state.publishDetails ?? ''}
-            setValue={setValue}
-            actionType="publishDetails"
-          />
-        </IonRow>
+        <br />
+        <br />
+        <Textarea
+          label={t('general.publishing-details')}
+          val={state.publishDetails ?? ''}
+          setValue={setValue}
+          actionType="publishDetails"
+          required={true}
+          rows={5}
+          error={error}
+        />
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">

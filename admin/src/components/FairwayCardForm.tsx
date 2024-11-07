@@ -165,6 +165,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (operation === Operation.Publish) {
         setState({ ...state, status: Status.Public });
         saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Public, operation }) as FairwayCardInput });
+        setPublishingInfoOpen(false);
       } else if (operation === Operation.Archive) {
         setState({ ...state, status: Status.Archived });
         saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Archived, operation }) as FairwayCardInput });
@@ -284,12 +285,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
-  /*const handlePublishInfo = () => {
-    if (formValid()) {
-      setPublishingInfoOpen(true);
-    }
-  }*/
-
   const handleConfirmationSubmit = () => {
     switch (confirmationType) {
       case 'archive':
@@ -341,8 +336,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         state={state}
         setConfirmationType={setConfirmationType}
         setModalOpen={setPublishingInfoOpen}
-        modalOpen={publishingInfoOpen}
         setValue={updateState}
+        modalOpen={publishingInfoOpen}
         status={state.status}
         modified={getDateTimeInfo(true)}
         created={getDateTimeInfo(false)}

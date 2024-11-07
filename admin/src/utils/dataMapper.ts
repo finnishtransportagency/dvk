@@ -168,7 +168,7 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
         endDate: stringValueOrDefault(notification.endDate),
       };
     }),
-    publishDetails: data?.fairwayCard?.publishDetails,
+    publishDetails: stringValueOrDefault(data?.fairwayCard?.publishDetails),
   };
 }
 

@@ -653,7 +653,6 @@ export const fairwayCardReducer = (
       };
       break;
     case 'publishDetails':
-      console.log(value);
       newState = { ...state, publishDetails: value as string };
       break;
     default:
