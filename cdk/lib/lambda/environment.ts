@@ -1,5 +1,5 @@
 import { readParameterByPath } from './api/axios';
-import * as ParameterStore from './api/parameterStoreConstants';
+import * as ParamStore from './api/parameterStoreConstants';
 
 const envParameters: Record<string, string> = {};
 
@@ -128,9 +128,9 @@ export function getPilotRoutesHeaders(): Record<string, string[]> {
 
 export async function getVatuParameters() {
   return await Promise.all([
-    readParameterForEnv(ParameterStore.VATU_URL),
-    readParameterForEnv(ParameterStore.VATU_USERNAME),
-    readParameterForEnv(ParameterStore.VATU_PASSWORD),
+    readParameterForEnv(ParamStore.VATU_URL),
+    readParameterForEnv(ParamStore.VATU_USERNAME),
+    readParameterForEnv(ParamStore.VATU_PASSWORD),
   ]).then((values) => ({
     vatuUrl: values[0],
     vatuHeaders: getBasicAuthHeaders(values[1], values[2]),
@@ -139,14 +139,14 @@ export async function getVatuParameters() {
 
 //This function to be removed once VATU returns geojson only
 export async function getVatuV2ApiSupport() {
-  return isProductionEnvironment() ? '' : readOptionalParameterForEnvWithDefault(ParameterStore.VATU_V2_APIS, '');
+  return isProductionEnvironment() ? '' : readOptionalParameterForEnvWithDefault(ParamStore.VATU_V2_APIS, '');
 }
 
 export async function getVatuPilotRoutesParameters() {
   return await Promise.all([
-    readParameterForEnv(ParameterStore.VATU_PILOT_ROUTE_URL),
-    readParameterForEnv(ParameterStore.VATU_USERNAME),
-    readParameterForEnv(ParameterStore.VATU_PASSWORD),
+    readParameterForEnv(ParamStore.VATU_PILOT_ROUTE_URL),
+    readParameterForEnv(ParamStore.VATU_USERNAME),
+    readParameterForEnv(ParamStore.VATU_PASSWORD),
   ]).then((values) => ({
     vatuPilotRoutesUrl: values[0],
     vatuHeaders: getBasicAuthHeaders(values[1], values[2]),
@@ -154,19 +154,17 @@ export async function getVatuPilotRoutesParameters() {
 }
 
 export async function getRocketChatCredentials() {
-  return await Promise.all([readParameterForEnv(ParameterStore.ROCKETCHAT_USER), readParameterForEnv(ParameterStore.ROCKETCHAT_PASSWORD)]).then(
-    (values) => ({
-      rocketChatUser: values[0],
-      rocketChatPassword: values[1],
-    })
-  );
+  return await Promise.all([readParameterForEnv(ParamStore.ROCKETCHAT_USER), readParameterForEnv(ParamStore.ROCKETCHAT_PASSWORD)]).then((values) => ({
+    rocketChatUser: values[0],
+    rocketChatPassword: values[1],
+  }));
 }
 
 export async function getPookiParameters() {
   return await Promise.all([
-    readParameterForEnv(ParameterStore.POOKI_URL),
-    readParameterForEnv(ParameterStore.POOKI_USERNAME),
-    readParameterForEnv(ParameterStore.POOKI_PASSWORD),
+    readParameterForEnv(ParamStore.POOKI_URL),
+    readParameterForEnv(ParamStore.POOKI_USERNAME),
+    readParameterForEnv(ParamStore.POOKI_PASSWORD),
   ]).then((values) => ({
     pookiUrl: values[0],
     pookiHeaders: getBasicAuthHeaders(values[1], values[2]),
@@ -175,10 +173,10 @@ export async function getPookiParameters() {
 
 export async function getIlmanetParameters() {
   return await Promise.all([
-    readParameterForEnv(ParameterStore.ILMANET_URL),
-    readParameterForEnv(ParameterStore.ILMANET_USERNAME),
-    readParameterForEnv(ParameterStore.ILMANET_PASSWORD),
-    readParameterForEnv(ParameterStore.WEATHER_SOA_API_KEY),
+    readParameterForEnv(ParamStore.ILMANET_URL),
+    readParameterForEnv(ParamStore.ILMANET_USERNAME),
+    readParameterForEnv(ParamStore.ILMANET_PASSWORD),
+    readParameterForEnv(ParamStore.WEATHER_SOA_API_KEY),
   ]).then((values) => ({
     ilmanetUrl: values[0],
     ilmanetUserName: values[1],
@@ -189,9 +187,9 @@ export async function getIlmanetParameters() {
 
 export async function getIBNetApiParameters() {
   return await Promise.all([
-    readParameterForEnv(ParameterStore.IBNET_API_URL),
-    readParameterForEnv(ParameterStore.VATU_USERNAME),
-    readParameterForEnv(ParameterStore.VATU_PASSWORD),
+    readParameterForEnv(ParamStore.IBNET_API_URL),
+    readParameterForEnv(ParamStore.VATU_USERNAME),
+    readParameterForEnv(ParamStore.VATU_PASSWORD),
   ]).then((values) => ({
     ibNetApiUrl: values[0],
     vatuHeaders: getBasicAuthHeaders(values[1], values[2]),
@@ -199,16 +197,14 @@ export async function getIBNetApiParameters() {
 }
 
 export async function getSOAApiParameters() {
-  return await Promise.all([readParameterForEnv(ParameterStore.SOA_API_URL), readParameterForEnv(ParameterStore.WEATHER_SOA_API_KEY)]).then(
-    (values) => ({
-      soaApiUrl: values[0],
-      weatherHeaders: getXApiKeyHeaders(values[1]),
-    })
-  );
+  return await Promise.all([readParameterForEnv(ParamStore.SOA_API_URL), readParameterForEnv(ParamStore.WEATHER_SOA_API_KEY)]).then((values) => ({
+    soaApiUrl: values[0],
+    weatherHeaders: getXApiKeyHeaders(values[1]),
+  }));
 }
 
 export async function getAISParameters() {
-  return await Promise.all([readParameterForEnv(ParameterStore.SOA_API_URL), readParameterForEnv(ParameterStore.AIS_SOA_API_KEY)]).then((values) => ({
+  return await Promise.all([readParameterForEnv(ParamStore.SOA_API_URL), readParameterForEnv(ParamStore.AIS_SOA_API_KEY)]).then((values) => ({
     soaApiUrl: values[0],
     aisHeaders: getXApiKeyHeaders(values[1]),
   }));
@@ -216,8 +212,8 @@ export async function getAISParameters() {
 
 export async function getCloudFrontKeys() {
   return await Promise.all([
-    readParameterForEnv(getEnvironment() + '/' + ParameterStore.CLOUDFRONT_PRIVATE_KEY),
-    readParameterForEnv(getEnvironment() + '/' + ParameterStore.CLOUDFRONT_PUBLIC_KEY_ID),
+    readParameterForEnv(getEnvironment() + '/' + ParamStore.CLOUDFRONT_PRIVATE_KEY),
+    readParameterForEnv(getEnvironment() + '/' + ParamStore.CLOUDFRONT_PUBLIC_KEY_ID),
   ]).then((values) => ({
     cloudFrontPrivateKey: values[0],
     cloudFrontPublicKeyId: values[1],
@@ -225,7 +221,7 @@ export async function getCloudFrontKeys() {
 }
 
 export async function getCognitoUrl() {
-  return readParameterForEnv(ParameterStore.COGNITO_URL);
+  return readParameterForEnv(ParamStore.COGNITO_URL);
 }
 
 export function getExpires() {
