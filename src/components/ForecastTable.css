@@ -3,7 +3,7 @@
 }
 
 .ForecastGrid ion-col {
-  padding: 2px;
+  padding: 5px;
 }
 
 .ForecastGrid .HeaderRow {
@@ -24,6 +24,18 @@
 
 .ForecastGrid .ForecastRow ion-col:not(:last-child) {
   border-right: 1px solid #cccccc;
+}
+
+.ForecastGrid .ForecastColGreen {
+  background: #90bda1;
+}
+
+.ForecastGrid .ForecastColYellow {
+  background: #ffc300;
+}
+
+.ForecastGrid .ForecastColRed{
+  background: #f79f9f;
 }
 
 .ForecastGrid .ChangePageButton {

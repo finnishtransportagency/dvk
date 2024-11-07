@@ -40,16 +40,47 @@ const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
 const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
   const { t } = useTranslation();
 
+  let windColClass = 'ForecastColGreen';
+  if (forecastItem.windSpeed >= 14) {
+    windColClass = 'ForecastColYellow';
+  }
+  if (forecastItem.windSpeed > 20) {
+    windColClass = 'ForecastColRed';
+  }
+
+  let windGustColClass = 'ForecastColGreen';
+  if (forecastItem.windGust >= 17) {
+    windGustColClass = 'ForecastColYellow';
+  }
+
+  let waveColClass = 'ForecastColGreen';
+  if (forecastItem.waveHeight > 2.2) {
+    waveColClass = 'ForecastColYellow';
+  }
+  if (forecastItem.waveHeight > 2.6) {
+    waveColClass = 'ForecastColRed';
+  }
+
+  let visibilityColClass = 'ForecastColGreen';
+  if (forecastItem.visibility < 4) {
+    visibilityColClass = 'ForecastColYellow';
+  }
+
   return (
     <IonRow className="ForecastRow">
       <IonCol size="2">{t('forecastTable.dateTimeFormat', { val: forecastItem.dateTime })}</IonCol>
-      <IonCol size="4">
-        {Math.round(forecastItem.windSpeed)} ({Math.round(forecastItem.windGust)}) m/s, {Math.round(forecastItem.windDirection)}&deg;
+      <IonCol size="3" className={windColClass + ' ion-text-end'}>
+        {Math.round(forecastItem.windSpeed)} m/s, {Math.round(forecastItem.windDirection)}&deg;
       </IonCol>
-      <IonCol size="4">
+      <IonCol size="2" className={windGustColClass + ' ion-text-end'}>
+        {Math.round(forecastItem.windGust)} m/s
+      </IonCol>
+      <IonCol size="3" className={waveColClass + ' ion-text-end'}>
         {(Math.round(forecastItem.waveHeight * 10) / 10).toFixed(1)} m, {Math.round(forecastItem.waveDirection)}&deg;
       </IonCol>
-      <IonCol size="2">{Math.round(forecastItem.visibility)} km</IonCol>
+      <IonCol size="2" className={visibilityColClass + ' ion-text-end'}>
+        {Math.round(forecastItem.visibility)} km
+      </IonCol>
     </IonRow>
   );
 };
@@ -77,10 +108,13 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
           <br />
           <span className="ion-text-nowrap">({utcDiffStr})</span>
         </IonCol>
-        <IonCol size="4" className="header">
+        <IonCol size="3" className="header">
           {t('forecastTable.tableHeaders.wind')}
         </IonCol>
-        <IonCol size="4" className="header">
+        <IonCol size="2" className="header">
+          {t('forecastTable.tableHeaders.windGust')}
+        </IonCol>
+        <IonCol size="3" className="header">
           {t('forecastTable.tableHeaders.wave')}
         </IonCol>
         <IonCol size="2" className="header">

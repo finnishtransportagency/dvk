@@ -606,7 +606,8 @@
   "forecastTable": {
     "tableHeaders": {
       "time": "Aika",
-      "wind": "Tuulen nopeus (puuska) ja suunta",
+      "wind": "Tuulen nopeus ja suunta",
+      "windGust": "Tuulen puuskanopeus",
       "wave": "Aallon korkeus ja suunta",
       "visibility": "Näkyvyys"
     },
