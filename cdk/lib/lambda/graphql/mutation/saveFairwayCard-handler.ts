@@ -156,6 +156,7 @@ export function mapFairwayCardToModel(
           endDate: mapString(notification.endDate),
         };
       }) ?? null,
+    publishDetails: card.publishDetails,
   };
 }
 
