@@ -70,7 +70,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
-  const [publishingInfoOpen, setPublishingInfoOpen] = useState(false);
+  const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -165,7 +165,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (operation === Operation.Publish) {
         setState({ ...state, status: Status.Public });
         saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Public, operation }) as FairwayCardInput });
-        setPublishingInfoOpen(false);
+        setPublishDetailsOpen(false);
       } else if (operation === Operation.Archive) {
         setState({ ...state, status: Status.Archived });
         saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Archived, operation }) as FairwayCardInput });
@@ -279,7 +279,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const handlePublish = () => {
     if (formValid()) {
-      setPublishingInfoOpen(true);
+      setPublishDetailsOpen(true);
     } else {
       setSaveError('MISSING-INFORMATION');
     }
@@ -335,9 +335,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       <PublishModal
         state={state}
         setConfirmationType={setConfirmationType}
-        setModalOpen={setPublishingInfoOpen}
+        setModalOpen={setPublishDetailsOpen}
         setValue={updateState}
-        modalOpen={publishingInfoOpen}
+        modalOpen={publishDetailsOpen}
         status={state.status}
         modified={getDateTimeInfo(true)}
         created={getDateTimeInfo(false)}

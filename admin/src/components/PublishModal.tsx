@@ -3,12 +3,12 @@ import { IonButton, IonFooter, IonGrid, IonHeader, IonModal, IonTitle, IonToolba
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { ActionType, ConfirmationType, Lang } from '../utils/constants';
-import { FairwayCardInput, Status } from '../graphql/generated';
+import { FairwayCardInput, HarborInput, Status } from '../graphql/generated';
 import InfoHeader from './InfoHeader';
 import Textarea from './form/Textarea';
 
 interface ModalProps {
-  state: FairwayCardInput;
+  state: FairwayCardInput | HarborInput;
   setConfirmationType: (isOpen: ConfirmationType) => void;
   setModalOpen: (isOpen: boolean) => void;
   setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number, actionOuterTarget?: string | number) => void;

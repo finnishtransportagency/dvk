@@ -160,6 +160,7 @@ input HarborInput {
   cargo: TextInput
   quays: [QuayInput]
   geometry: GeometryInput!
+  publishDetails: String
 }
 
 enum Status {
@@ -345,6 +346,7 @@ type Harbor {
   geometry: GeometryPoint
   latest: Float
   latestVersionUsed: Float
+  publishDetails: String
 }
 
 type Quay {

@@ -23,6 +23,7 @@ import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
 import { openPreview } from '../utils/common';
 import InfoHeader from './InfoHeader';
+import PublishModal from './PublishModal';
 
 interface FormProps {
   harbour: HarborInput;
@@ -51,6 +52,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
+  const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
@@ -58,6 +60,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const { data: latestHarbor } = useHarbourLatestByIdQueryData(harbour.id);
   const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
+      console.log(data);
       setSavedHarbour(data.saveHarbor);
       setOldState(mapToHarborInput(false, { harbor: data.saveHarbor }));
       setNotificationOpen(true);
@@ -126,6 +129,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       if (operation === Operation.Publish) {
         setState({ ...state, status: Status.Public });
         saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Public, operation }) as HarborInput });
+        setPublishDetailsOpen(false);
       } else if (operation === Operation.Archive) {
         setState({ ...state, status: Status.Archived });
         saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Archived, operation }) as HarborInput });
@@ -242,7 +246,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const handlePublish = () => {
     if (formValid()) {
-      setConfirmationType('publish');
+      setPublishDetailsOpen(true);
     } else {
       setSaveError('MISSING-INFORMATION');
     }
@@ -302,6 +306,19 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   return (
     <IonPage>
+      <PublishModal
+        state={state}
+        setConfirmationType={setConfirmationType}
+        setModalOpen={setPublishDetailsOpen}
+        setValue={updateState}
+        modalOpen={publishDetailsOpen}
+        status={state.status}
+        modified={getDateTimeInfo(true)}
+        created={getDateTimeInfo(false)}
+        version={harbour.version}
+        modifier={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
+        creator={savedHarbour?.creator ?? creator}
+      />
       <ConfirmationModal
         saveType="harbor"
         action={handleConfirmationSubmit}

@@ -322,6 +322,7 @@ export function mapToHarborInput(origin: boolean | undefined, data: HarbourByIdQ
     }),
     status: origin ? Status.Draft : (data?.harbor?.status ?? Status.Draft),
     operation: origin ? Operation.Create : Operation.Update,
+    publishDetails: stringValueOrDefault(data?.harbor?.publishDetails),
   };
 }
 

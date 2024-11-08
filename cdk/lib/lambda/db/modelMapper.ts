@@ -335,6 +335,7 @@ export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: Curr
     status: dbModel.status,
     latest: dbModel.latest,
     latestVersionUsed: dbModel.latestVersionUsed,
+    publishDetails: dbModel.publishDetails,
   };
 }
 
