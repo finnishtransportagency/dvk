@@ -189,7 +189,8 @@ class HarborDBModel {
     let previousVersionData;
 
     if (operation === Operation.Createversion) {
-      versionNumber = latestVersionUsed ? latestVersionUsed + 1 : 2;
+      // if latestVersionUsed is null, check latest. If still null we can assume there's only one version
+      versionNumber = (latestVersionUsed ?? latestVersionNumber ?? 1) + 1;
     }
     // data is needed if latest version is removed, so latest can be updated to be the previous version (if there's one)
     if (operation === Operation.Remove && latestVersionNumber === versionNumber && latestVersionNumber !== 1) {
