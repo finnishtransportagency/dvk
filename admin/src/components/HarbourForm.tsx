@@ -245,6 +245,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const handlePublish = () => {
     if (formValid()) {
+      setConfirmationType('publish');
       setPublishDetailsOpen(true);
     } else {
       setSaveError('MISSING-INFORMATION');
@@ -316,9 +317,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     <IonPage>
       <PublishModal
         state={state}
-        setConfirmationType={setConfirmationType}
         setModalOpen={setPublishDetailsOpen}
         setValue={updateState}
+        handleConfirmationSubmit={handleConfirmationSubmit}
         modalOpen={publishDetailsOpen}
         infoHeader={infoHeader}
       />

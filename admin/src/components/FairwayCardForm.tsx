@@ -279,6 +279,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const handlePublish = () => {
     if (formValid()) {
+      setConfirmationType('publish');
       setPublishDetailsOpen(true);
     } else {
       setSaveError('MISSING-INFORMATION');
@@ -343,9 +344,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     <IonPage>
       <PublishModal
         state={state}
-        setConfirmationType={setConfirmationType}
         setModalOpen={setPublishDetailsOpen}
         setValue={updateState}
+        handleConfirmationSubmit={handleConfirmationSubmit}
         modalOpen={publishDetailsOpen}
         infoHeader={infoHeader}
       />

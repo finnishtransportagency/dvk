@@ -911,12 +911,14 @@ ion-modal.prompt .ion-page {
 ion-modal.publish-details {
   --width: 1350px;
   --height: fit-content;
-  overflow: auto;
 }
 
-ion-modal.publish-details ion-grid.infoHeaderGrid {
+ion-modal.publish-details ion-grid.publishDetailsGrid {
   width: 100%;
-  height: 500px;
+  min-height: 380px;
+}
+
+ion-modal.publish-details ion-row.publishDetailsRow {
   padding: 0px 25px 0px 25px;
 }
 
