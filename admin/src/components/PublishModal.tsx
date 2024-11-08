@@ -25,6 +25,8 @@ const PublishModal: React.FC<PublishModalProps> = ({ state, setConfirmationType,
 
   const closeModal = () => {
     setModalOpen(false);
+    // discard possible changes
+    setValue('', 'publishDetails');
     modal.current?.dismiss().catch((err) => console.error(err));
   };
 
