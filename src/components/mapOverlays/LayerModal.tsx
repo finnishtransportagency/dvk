@@ -225,7 +225,13 @@ const LayerModal: React.FC<ModalProps> = ({
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
 
   return (
-    <IonModal id="layerModalContainer" isOpen={isOpen} onDidDismiss={() => closeLayerModal()} showBackdrop={!infoModalOpen}>
+    <IonModal
+      id="layerModalContainer"
+      isOpen={isOpen}
+      onDidDismiss={() => closeLayerModal()}
+      showBackdrop={!infoModalOpen}
+      data-testid="layerModalContainer"
+    >
       <div id="layerModalContent">
         <IonGrid className="mainGrid ion-no-padding">
           <IonRow className="ion-align-items-center">

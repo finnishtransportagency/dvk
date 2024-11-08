@@ -19,7 +19,7 @@ export const VTSInfo: React.FC<VTSInfoProps> = ({ data }) => {
       {data && (
         <IonText>
           <p>
-            <strong>{t('vts')}:</strong>
+            <strong data-testid="vts">{t('vts')}:</strong>
             {data.map((vts) => {
               const uuid = uniqueId();
               return (

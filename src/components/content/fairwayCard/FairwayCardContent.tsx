@@ -239,18 +239,23 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <DimensionInfo data={fairwayCard?.fairways} designSpeedText={fairwayCard?.designSpeed} isN2000HeightSystem={isN2000HeightSystem} />
             <IonText>
               <Paragraph title={t('attention')} bodyText={fairwayCard?.attention ?? undefined} />
-              <ProhibitionInfo data={fairwayCard?.fairways} inlineLabel />
-              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} inlineLabel />
+              <ProhibitionInfo data={fairwayCard?.fairways} inlineLabel data-testid="prohibitionAreas" />
+              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} inlineLabel data-testid="speedLimit" />
               <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} inlineLabel />
             </IonText>
 
-            <IonText>
+            <IonText data-testid="navigation">
               <h4>
                 <strong>{t('navigation')}</strong>
               </h4>
               <Paragraph bodyText={fairwayCard?.generalInfo ?? undefined} />
-              <Paragraph title={t('navigationCondition')} bodyText={fairwayCard?.navigationCondition ?? undefined} showNoData />
-              <Paragraph title={t('iceCondition')} bodyText={fairwayCard?.iceCondition ?? undefined} showNoData />
+              <Paragraph
+                data-testid="navigationsCondition"
+                title={t('navigationCondition')}
+                bodyText={fairwayCard?.navigationCondition ?? undefined}
+                showNoData
+              />
+              <Paragraph data-testid="iceCondition" title={t('iceCondition')} bodyText={fairwayCard?.iceCondition ?? undefined} showNoData />
             </IonText>
 
             <IonText>

@@ -22,7 +22,7 @@ const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, val
 
   return (
     <>
-      <IonText>
+      <IonText data-testid="fairwayInfo">
         <h2>{t('fairwaycard.fairway-info')}</h2>
       </IonText>
       <IonGrid className="formGrid">
@@ -35,6 +35,7 @@ const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, val
           disabled={state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'line')?.msg}
           inputType="textarea"
+          data-testid="liningAndMarking"
         />
         <TextInputRow
           labelKey="fairwaycard.design-speed"
