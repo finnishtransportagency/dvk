@@ -3,13 +3,13 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Status } from '../graphql/generated';
 
-interface InfoHeaderProps {
+export interface InfoHeaderProps {
   status: Status;
   modified: string;
-  modifier: string | null | undefined;
-  creator: string | null | undefined;
   created: string;
   version?: string;
+  modifier?: string;
+  creator?: string;
 }
 
 const InfoHeader: React.FC<InfoHeaderProps> = ({ status, modified, modifier, creator, created, version }) => {

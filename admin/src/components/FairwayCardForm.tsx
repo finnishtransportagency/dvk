@@ -39,7 +39,7 @@ import { openPreview } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
-import InfoHeader from './InfoHeader';
+import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 
 interface FormProps {
@@ -330,6 +330,15 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     setOldState(structuredClone(fairwayCard));
   }, [fairwayCard]);
 
+  const infoHeader: InfoHeaderProps = {
+    status: state.status,
+    modified: getDateTimeInfo(true),
+    created: getDateTimeInfo(false),
+    version: fairwayCard.version,
+    modifier: savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown'),
+    creator: savedCard?.creator ?? creator,
+  };
+
   return (
     <IonPage>
       <PublishModal
@@ -338,12 +347,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         setModalOpen={setPublishDetailsOpen}
         setValue={updateState}
         modalOpen={publishDetailsOpen}
-        status={state.status}
-        modified={getDateTimeInfo(true)}
-        created={getDateTimeInfo(false)}
-        version={fairwayCard.version}
-        modifier={savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown')}
-        creator={savedCard?.creator ?? creator}
+        infoHeader={infoHeader}
       />
       <ConfirmationModal
         saveType="fairwaycard"

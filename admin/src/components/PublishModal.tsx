@@ -3,37 +3,20 @@ import { IonButton, IonFooter, IonGrid, IonHeader, IonModal, IonTitle, IonToolba
 import { useTranslation } from 'react-i18next';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { ActionType, ConfirmationType, Lang } from '../utils/constants';
-import { FairwayCardInput, HarborInput, Status } from '../graphql/generated';
-import InfoHeader from './InfoHeader';
+import { FairwayCardInput, HarborInput } from '../graphql/generated';
+import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import Textarea from './form/Textarea';
 
-interface ModalProps {
+interface PublishModalProps {
   state: FairwayCardInput | HarborInput;
   setConfirmationType: (isOpen: ConfirmationType) => void;
   setModalOpen: (isOpen: boolean) => void;
   setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number, actionOuterTarget?: string | number) => void;
   modalOpen: boolean;
-  status: Status;
-  modified: string;
-  created: string;
-  version?: string;
-  modifier?: string;
-  creator?: string;
+  infoHeader: InfoHeaderProps;
 }
 
-const PublishModal: React.FC<ModalProps> = ({
-  state,
-  setConfirmationType,
-  setModalOpen,
-  setValue,
-  modalOpen,
-  status,
-  modified,
-  created,
-  version,
-  modifier,
-  creator,
-}) => {
+const PublishModal: React.FC<PublishModalProps> = ({ state, setConfirmationType, setModalOpen, setValue, modalOpen, infoHeader }) => {
   const { t } = useTranslation();
 
   const [error, setError] = useState<string>('');
@@ -78,7 +61,14 @@ const PublishModal: React.FC<ModalProps> = ({
         </IonToolbar>
       </IonHeader>
       <IonGrid className="formGrid infoHeaderGrid">
-        <InfoHeader status={status} modified={modified} modifier={modifier} creator={creator} created={created} version={version} />
+        <InfoHeader
+          status={infoHeader.status}
+          modified={infoHeader.modified}
+          modifier={infoHeader.modifier}
+          creator={infoHeader.creator}
+          created={infoHeader.created}
+          version={infoHeader.version}
+        />
         <br />
         <br />
         <Textarea

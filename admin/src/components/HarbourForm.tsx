@@ -22,7 +22,7 @@ import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
 import { openPreview } from '../utils/common';
-import InfoHeader from './InfoHeader';
+import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 
 interface FormProps {
@@ -60,7 +60,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const { data: latestHarbor } = useHarbourLatestByIdQueryData(harbour.id);
   const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
-      console.log(data);
       setSavedHarbour(data.saveHarbor);
       setOldState(mapToHarborInput(false, { harbor: data.saveHarbor }));
       setNotificationOpen(true);
@@ -304,6 +303,15 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     setOldState(harbour);
   }, [harbour]);
 
+  const infoHeader: InfoHeaderProps = {
+    status: state.status,
+    modified: getDateTimeInfo(true),
+    created: getDateTimeInfo(false),
+    version: harbour.version,
+    modifier: savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown'),
+    creator: savedHarbour?.creator ?? creator,
+  };
+
   return (
     <IonPage>
       <PublishModal
@@ -312,12 +320,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         setModalOpen={setPublishDetailsOpen}
         setValue={updateState}
         modalOpen={publishDetailsOpen}
-        status={state.status}
-        modified={getDateTimeInfo(true)}
-        created={getDateTimeInfo(false)}
-        version={harbour.version}
-        modifier={savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown')}
-        creator={savedHarbour?.creator ?? creator}
+        infoHeader={infoHeader}
       />
       <ConfirmationModal
         saveType="harbor"
