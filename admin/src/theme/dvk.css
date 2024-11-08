@@ -910,7 +910,7 @@ ion-modal.prompt .ion-page {
 
 ion-modal.publish-details {
   --width: 1350px;
-  --height: 500px;
+  --height: 460px;
 }
 
 ion-modal.publish-details ion-grid.infoHeaderGrid {
