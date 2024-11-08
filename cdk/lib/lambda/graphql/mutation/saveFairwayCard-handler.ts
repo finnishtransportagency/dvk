@@ -287,7 +287,7 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   const newModel = mapFairwayCardToModel(card, dbModel, user, pictures);
   log.debug('card: %o', newModel);
 
-  clearCardFromFairwayCache(newModel, card, latestVersion, currentPublicCard);
+  await clearCardFromFairwayCache(newModel, card, latestVersion, currentPublicCard);
 
   if (card.operation === Operation.Update) {
     const changes = dbModel ? diff(dbModel, newModel) : null;

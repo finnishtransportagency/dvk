@@ -420,8 +420,15 @@ async function addMareoGraphs(features: FeaturesWithMaxFetchTime) {
 }
 
 async function addWeatherWaveForecast(features: FeaturesWithMaxFetchTime) {
+  //Array of pilot places that do not need weather forecast
+  const IGNORE_PILOT_PLACE_FORECAST: string[] = ['Juustila', 'Soskua', 'Mälkiä', 'Puumala', 'Simuna', 'Haapavesi', 'Taipaleen kanava', 'Vuokala'].map(
+    (i) => i.toLowerCase()
+  );
+
   const pilotPoints = await fetchPilotPoints();
-  const { forecast, responseTime } = await fetchWeatherWaveForecast(pilotPoints);
+  const { forecast, responseTime } = await fetchWeatherWaveForecast(
+    pilotPoints.filter((p) => p.name.fi == null || !IGNORE_PILOT_PLACE_FORECAST.includes(p.name.fi.toLowerCase()))
+  );
   features.fetchedDate = String(Date.parse(responseTime));
 
   for (const f of forecast) {
