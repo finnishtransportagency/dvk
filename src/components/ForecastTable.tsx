@@ -90,7 +90,14 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
   const [startIndex, setStartIndex] = useState<number>(0);
   const pageSize = 8;
 
-  const utcDiffStr = timezoneOffsetMinutesToString(new Date());
+  /* Always show timezone offset of the first forecast item */
+  let utcDiffStr = timezoneOffsetMinutesToString(new Date(forecastItems[startIndex].dateTime));
+
+  /* If timezone offset of the last element is not the same as the first element, show also timezone offset of the last element */
+  const endIndex = Math.min(startIndex + pageSize, forecastItems.length - 1);
+  if (new Date(forecastItems[endIndex].dateTime).getTimezoneOffset() !== new Date(forecastItems[startIndex].dateTime).getTimezoneOffset()) {
+    utcDiffStr += ', ' + timezoneOffsetMinutesToString(new Date(forecastItems[endIndex].dateTime));
+  }
 
   const showPreviousPage = () => {
     setStartIndex(startIndex >= pageSize ? startIndex - pageSize : 0);
@@ -106,7 +113,7 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
         <IonCol size="2" className="header">
           {t('forecastTable.tableHeaders.time')}
           <br />
-          <span className="ion-text-nowrap">({utcDiffStr})</span>
+          <span>({utcDiffStr})</span>
         </IonCol>
         <IonCol size="3" className="header">
           {t('forecastTable.tableHeaders.wind')}
@@ -127,10 +134,10 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
             (index === 0 && new Date(items[0].dateTime).getDate() === new Date(items[items.length - 1].dateTime).getDate()) ||
             (index !== 0 && new Date(items[index].dateTime).getDate() !== new Date(items[index - 1].dateTime).getDate());
           return (
-            <>
-              {showDateRow && <ForecastTableDateRow key={'dateHeader_' + item.dateTime} forecastItem={item} />}
-              <ForecastTableRow key={item.dateTime} forecastItem={item} />
-            </>
+            <div key={item.dateTime}>
+              {showDateRow && <ForecastTableDateRow forecastItem={item} />}
+              <ForecastTableRow forecastItem={item} />
+            </div>
           );
         })
       ) : (

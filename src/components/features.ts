@@ -263,7 +263,7 @@ export type RestrictionPortFeatureProperties = {
 };
 
 export type ForecastItem = {
-  dateTime: string;
+  dateTime: number;
   visibility: number;
   windDirection: number;
   windSpeed: number;
