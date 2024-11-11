@@ -240,3 +240,8 @@ export function getNewStaticBucketName() {
     return `static2.dvk${getEnvironment()}.testivaylapilvi.fi`;
   }
 }
+
+export async function getFeedbackSQSQueueUrl(): Promise<string> {
+  const path = `/dvk/${getEnvironment()}/feedback-sqs-queue-url`;
+  return await readParameterForEnv(path);
+}

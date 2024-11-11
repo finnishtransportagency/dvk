@@ -127,6 +127,12 @@ const lambdaFunctions: BackendLambda[] = [
     fieldName: 'uploadPicture',
     useVpc: false,
   },
+  {
+    entry: path.join(__dirname, 'mutation/saveFeedback-handler.ts'),
+    typeName: 'Mutation',
+    fieldName: 'saveFeedback',
+    useVpc: false,
+  },
 ];
 
 export default lambdaFunctions;

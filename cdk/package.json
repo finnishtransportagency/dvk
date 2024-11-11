@@ -87,6 +87,7 @@
     "@smithy/types": "^3.6.0",
     "@smithy/util-stream": "^3.2.1",
     "@turf/boolean-contains": "^7.1.0",
+    "@aws-sdk/client-sqs": "^3.687.0",
     "@turf/helpers": "^7.1.0",
     "@turf/line-arc": "^7.1.0",
     "@turf/line-intersect": "^7.1.0",

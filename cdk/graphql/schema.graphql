@@ -23,6 +23,12 @@ type Mutation {
   saveFairwayCard(card: FairwayCardInput!, pictureSourceId: String, pictureSourceVersion: String): FairwayCard
   saveHarbor(harbor: HarborInput!): Harbor
   uploadPicture(picture: PictureUploadInput!): Boolean
+  saveFeedback(feedback: FeedbackInput!): Boolean
+}
+
+input FeedbackInput {
+  rating: Int!
+  feedback: String!
 }
 
 input PictureUploadInput {
