@@ -8,6 +8,7 @@ interface BackendLambda {
   useCaching?: boolean; // used to add per resolver caching as needed
   timeout?: number; // seconds
   memorySize?: number;
+  useSqs?: boolean;
 }
 
 const lambdaFunctions: BackendLambda[] = [
@@ -132,6 +133,7 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'Mutation',
     fieldName: 'saveFeedback',
     useVpc: false,
+    useSqs: true,
   },
 ];
 

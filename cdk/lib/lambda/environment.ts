@@ -242,6 +242,6 @@ export function getNewStaticBucketName() {
 }
 
 export async function getFeedbackSQSQueueUrl(): Promise<string> {
-  const path = `/dvk/${getEnvironment()}/feedback-sqs-queue-url`;
+  const path = `${getEnvironment()}/feedback-sqs-queue-url`;
   return await readParameterForEnv(path);
 }
