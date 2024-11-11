@@ -1,0 +1,166 @@
+{
+  "phoneNumber": [
+    "+358406152848"
+  ],
+  "version": "v1",
+  "creator": "System",
+  "expires": null,
+  "internet": "https//www.portofkaskinen.fi",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Deep harbour: diameter of turning circle 270 m, use of anchors permitted.",
+    "fi": "Syväsatama: kääntöympyrän halkaisija 270 m, ankkurin käyttö sallittu.",
+    "sv": "Djuphamnen: svängcirkelns diameter 270 m, tillåtet att använda ankare."
+  },
+  "modifier": "System",
+  "email": null,
+  "name": {
+    "en": "Port of Kaskinen deep port",
+    "fi": "Kaskisten syväsatama",
+    "sv": "Kaskö djuphamn"
+  },
+  "cargo": null,
+  "modificationTimestamp": 1702358847667,
+  "company": {
+    "en": "Port of Kaskinen",
+    "fi": "Kaskisten satama",
+    "sv": "Kaskö hamn"
+  },
+  "quays": [
+    {
+      "length": 500,
+      "name": {
+        "en": "quay 1-5",
+        "fi": "laituri 1-5",
+        "sv": "kaj 1-5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.2165,
+          62.35665
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 10
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 160,
+      "name": {
+        "en": "Dolphin berth 6",
+        "fi": "Tihtaalilaituri 6",
+        "sv": "Dykdalbskajen 6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.21587,
+          62.35361
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.6
+        }
+      ],
+      "extraInfo": {
+        "en": "Ro-Ro berth",
+        "fi": "peräporttipaikka",
+        "sv": "ro-ro kaj"
+      }
+    },
+    {
+      "length": 165,
+      "name": {
+        "en": "Quay 7",
+        "fi": "Laituri 7",
+        "sv": "Kaj 7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.21467,
+          62.35192
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 10
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 125,
+      "name": {
+        "en": "Ro-Ro, Chemical quay: quay",
+        "fi": "Ro-Ro, kemikaalilaituri: laituri 8",
+        "sv": "Ro-Ro, kemikaliekaj: kaj 8"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.21504,
+          62.35081
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 10
+        }
+      ],
+      "extraInfo": {
+        "en": "max. Vessel length 120 m",
+        "fi": "aluksen suurin sallittu pituus 120 m",
+        "sv": "max. fartygslängd 120 m"
+      }
+    },
+    {
+      "length": 170,
+      "name": {
+        "en": "Outer port: outer quay",
+        "fi": "Ulkosatama: laituri",
+        "sv": "Yttre hamnen: yttre kaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.21549,
+          62.36481
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.8
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "creationTimestamp": 1694760534627,
+  "id": "kaskistensat15",
+  "fax": "+35862207300",
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.21676,
+      62.35417
+    ]
+  }
+}

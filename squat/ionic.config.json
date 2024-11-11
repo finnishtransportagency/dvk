@@ -1,7 +1,5 @@
 {
   "name": "squat",
-  "integrations": {
-    "capacitor": {}
-  },
+  "integrations": {},
   "type": "react"
 }

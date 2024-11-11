@@ -1,0 +1,198 @@
+{
+  "phoneNumber": [
+    "+358207908800",
+    "+358207908840"
+  ],
+  "version": "v1",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Speed of vessel to be adjusted to ensure that no harm, damage or danger is caused.",
+    "fi": "Satama-alueella on aluksen nopeus säädettävä siten, ettei siitä aiheudu vahinkoa, haittaa eikä vaaraa.",
+    "sv": "Farten bör regleras så att risk för skada, olägenhet eller fara inte uppstår."
+  },
+  "modifier": "System",
+  "email": "office@haminakotka.fi",
+  "name": {
+    "en": "Mussalo harbour",
+    "fi": "Mussalon satama",
+    "sv": "Mussalö hamn"
+  },
+  "cargo": {
+    "en": "A Quay - three cranes (40 t), B Quay - one crane (40/50 t) and a mobile crane, C Quay - five cranes (40/50 t).",
+    "fi": "A-laiturilla kolme 40 t nosturia, B-laiturilla yksi 40/50 t nosturi sekä mobiilinosturi, C-laiturilla viisi 40/50 t nosturia.",
+    "sv": "Kaj A - tre kranar (40 t), kaj B - en kran (40/50 t) samt en mobilkran, kaj C - fem kranar (40/50 t)."
+  },
+  "modificationTimestamp": 1683095541034,
+  "company": {
+    "en": "Port of HaminaKotka Ltd",
+    "fi": "HaminaKotka Satama Oy",
+    "sv": "Fredrikshamn-Kotka hamn"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay A",
+        "fi": "A-laituri",
+        "sv": "Kaj A"
+      },
+      "length": 609,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.92007,
+          60.4268
+        ]
+      },
+      "sections": [
+        {
+          "depth": 14.5
+        },
+        {
+          "depth": 15.3
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay B",
+        "fi": "B-laituri",
+        "sv": "Kaj B"
+      },
+      "length": 856,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.91086,
+          60.42366
+        ]
+      },
+      "sections": [
+        {
+          "depth": 11.5
+        },
+        {
+          "depth": 13.7
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay  C",
+        "fi": "C-laituri",
+        "sv": "Kaj C"
+      },
+      "length": 936,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.90883,
+          60.42157
+        ]
+      },
+      "sections": [
+        {
+          "depth": 11.5
+        },
+        {
+          "depth": 13.7
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay D",
+        "fi": "D-laituri",
+        "sv": "Kaj D"
+      },
+      "sections": [
+        {
+          "depth": 17.5
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.90234,
+          60.41921
+        ]
+      }
+    },
+    {
+      "name": {
+        "en": "Liquid Bulk Terminal, berth N 1",
+        "fi": "Nestelaituri N 1",
+        "sv": "Kemikalieterminalen N 1"
+      },
+      "length": 69,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.92155,
+          60.42809
+        ]
+      },
+      "sections": [
+        {
+          "depth": 15
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Liquid Bulk Terminal, berth N 2",
+        "fi": "Nestelaituri N 2",
+        "sv": "Kemikalieterminalen N 2"
+      },
+      "length": 60,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.92223,
+          60.42854
+        ]
+      },
+      "sections": [
+        {
+          "depth": 11.5
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Jänskä",
+        "fi": "Jänskä",
+        "sv": "Jänskä"
+      },
+      "length": 133,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          26.91994,
+          60.43771
+        ]
+      },
+      "sections": [
+        {
+          "depth": 8.6
+        }
+      ],
+      "extraInfo": {
+        "en": "2 berths",
+        "fi": "laituripaikat 2 kpl",
+        "sv": "2 kajplatser, ramat djup"
+      }
+    }
+  ],
+  "creationTimestamp": 1683095541034,
+  "id": "mussalo",
+  "fax": "+358207908891",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      26.9116,
+      60.42258
+    ]
+  }
+}

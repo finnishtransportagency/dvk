@@ -1,0 +1,133 @@
+{
+  "anchorage": {
+    "en": "The fairway has been broadened at Fräki for anchoring and passing. Another anchoring spot is located at Koivuhauta, in the northern part of the fairway, diameter 350 m and a seabed of sand. Only suitable for small vessels. Both anchoring spots have cardinal marking. Room for anchoring and passing can also be found at the approach.",
+    "fi": "Väylällä on levennys Fräkin kohdalla, jossa voi ankkuroida ja ohittaa. Koivuhaudan ankkurointipaikka sijaitsee väylän pohjoispuolella, halkaisija 350 m, hiekkapohja, sopii vain pienille aluksille. Molemmissa kardinaalimerkintä. Myös väylän ulko-osalla on tilaa ankkuroida ja ohittaa.",
+    "sv": "Farleden är breddad vid Fräki för ankring och passage. Ankringsplats vid Koivuhauta ligger N om farleden, diameter 350 m, sandbotten, passar endast för mindre fartygen. Båda har kardinalutmärkning. Också på farledens yttre del finns det utrymme för passage och ankring."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": {
+    "en": "The visibility is at least 1 km for all vessels.",
+    "fi": "Näkyvyys vähintään 1 km kaikilla aluksilla.",
+    "sv": "Sikten minst 1 km för alla fartyg."
+  },
+  "group": "3",
+  "modifier": "System",
+  "name": {
+    "en": "Veitsiluoto fairway",
+    "fi": "Veitsiluodon väylä",
+    "sv": "Veitsiluoto farled"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Kemi mareograph.",
+    "fi": "Kemi mareografi.",
+    "sv": "Kemi mareograf."
+  },
+  "creationTimestamp": 1683095537744,
+  "navigationCondition": {
+    "en": "The approach is open sea and unsheltered all the way to the edge mark Kraaseli and from there on the fairway is partially sheltered by shallows and the Ajoskrunni island. Fairway is exposed mostly to SE-S-W winds. The entrance is narrow (80-110 m) and winding and therefore hard to manoeuvre, especially in strong wind and if the navigation system of the ship is ineffective. Navigation on the fairway is challenging, vessel speed must be calculated based on the circumstances and a tug boat must be used in the bends if necessary. Must observe that navigation is affected by squat effect and leeway.",
+    "fi": "Ulko-osa avomerta ja suojaton Kraaselin Rm asti, jonka jälkeen suojana matalikot ja Ajoskrunnin saari. Pahimmat tuulen suunnat KA - E - L. Väylän sisäosan kapeus (80-110 m) ja mutkat vaikeuttavat aluksen ohjailua kovalla tuulella, jos aluksen ohjailuominaisuudet ovat tehottomia. Navigointi väylällä on vaativaa, nopeus sovitettava tilanteen mukaan, käännöksissä tarvittaessa käytettävä hinaajaa ohjailuapuna. Huomioitava sorto sekä jyrkät käännökset ja pohjaimun vaikutus aluksen ohjailuun.",
+    "sv": "Yttre delen av farleden är öppen sjö och oskyddad fram till Kraaseli Rm, varefter grund och ön Ajoskrunni ger något skydd. De starkaste vindriktningar är SO-S-V. Inre delen är trång (80-100 m bred) och krokig vilket försvårar navigeringen i hård vind speciellt om fartygen har ineffektiva manöveregenskaper. Navigering på farleden är krävande, hastigheten bör anpassas efter omständigheterna, vid behov bör bogsering användas i svängarna för att underlätta navigeringen. Genom att leden är smal och svängarna tvära bör avdriften och squat-effekten uppmärksammas."
+  },
+  "generalInfo": null,
+  "id": "veitsiluoto",
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": " 6 lines, marking is based on the boards, edge mark, buoys and spar buoys in combined use.",
+    "fi": " Linjoja 6, merkintä perustuu linjataulujen, reunamerkin, poijujen ja viittojen yhdistettyyn käyttöön.",
+    "sv": " Farleden har 6 linjer utmärkta med ensmärken, randmärke, bojar och prickar i en gemensam kombination."
+  },
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "veitsiluoto"
+    }
+  ],
+  "windRecommendation": {
+    "en": "The critical wind speed between Välimatala and Koivuhauta is 12 m/s, direction SE-W-NW. Between Koivuhauta and the harbour the critical wind speed is 8 m/s, direction SE-W-NW.",
+    "fi": "Mitoitusalukselle kriittinen tuulen nopeus osuudella Välimatala - Koivuhauta 12 m/s, suunta KA - L - LU, osuudella Koivuhauta - satama 10 m/s, suunta KA-L-LU.",
+    "sv": "Kritisk vindhastighet för det dimensionerande fartyget i avsnittet Välimatala - Koivuhauta 12 m/s, riktning SO-V-NV, i avsnittet Koivuhauta - hamnen 10 m/s, riktning SO-V-NV."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 20,
+      "primary": true
+    }
+  ],
+  "windGauge": {
+    "en": "Marine weather observations: Kemi 1 lighthouse.",
+    "fi": "Rannikkoasemat: Kemi 1 majakalla.",
+    "sv": "Vädret vid kuststationerna: fyren Kemi 1."
+  },
+  "speedLimit": null,
+  "modificationTimestamp": 1698653618829,
+  "latest": 1,
+  "iceCondition": {
+    "en": "Between the approach and the edge mark Kraaseli there is ice movement in early winter and spring. Ice movement may cause buoys and spare buoys to be pressed under the ice (surface) also N of Ajoskrunni island. Fast ice is approx. 50-80 cm thick in wintertime. The narrowness and bends of the passage make the vessel's course in the icy fairway heavy. Warm water effluents alleviate ice conditions in the harbour.",
+    "fi": "Välillä ulko-osa - Kraaselin Rm jää liikkuu alkutalvesta sekä keväällä. Jään liikkuessa poijut ja viitat voivat olla jään alla myös Ajoskrunnin saaren pohjoispuolella. Talvella kiintojään paksuus n. 50-80 cm. Väylän kapeus ja mutkaisuus tekevät aluksen kulun jääuomassa raskaaksi. Teollisuuden lauhdevedet helpottavat jääoloja satamassa.",
+    "sv": "I avsnittet mellan den yttre delen och Kraaseli Rm är isen rörlig under början av vintern och på våren. När isen är i rörelse kan bojar och prickar vara tryckta under isen också N om ön Ajoskrunni. På vintertid är fastisen ca 50-80 cm tjock. Farledens krokar och trångheten gör navigeringen tungt på vintertid. Varmvattenutsläpp underlättar isförhållandena i hamnen."
+  },
+  "fairwayIds": "#20#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 35910600403,
+          "pilotJourney": 10.8
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. In winter and adverse weather conditions the pilot boarding position is separately agreed.",
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka sovittava erikseen.",
+        "sv": "Obs. vintertid eller i dåligt väder bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Arctia Karhu Ltd, tugs: Ahto 3600 kW, Jääsalo 2 x 1,294 kW, Ulla 883 kW.",
+          "fi": "Arctia Karhu Oy, hinaajat: Ahto 3600 kW, Jääsalo 2 x 1294 kW, Ulla 883 kW.",
+          "sv": "Arctia Karhu Ab, bogserare: Ahto 3600 kW, Jääsalo 2 x 1294 kW, Ulla 883 kW."
+        },
+        "phoneNumber": [
+          "+358400392904",
+          "+358400442904"
+        ],
+        "fax": null,
+        "email": "towing@arctia.fi"
+      }
+    ]
+  },
+  "designSpeed": {
+    "en": "Design speed 6 knots between Koivuhauta and port of Veitsiluoto.",
+    "fi": "Mitoitusnopeus 6 solmua välillä Koivuhauta-Veitsiluodon sataman edusta.",
+    "sv": "Dimensionerande fart 6 knop mellan Koivuhauta och Veitsiluoto hamn."
+  }
+}

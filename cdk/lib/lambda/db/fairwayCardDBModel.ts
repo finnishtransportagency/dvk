@@ -3,7 +3,7 @@ import { Maybe, Status, Operation, Orientation, Mareograph } from '../../../grap
 import { log } from '../logger';
 import { getDynamoDBDocumentClient } from './dynamoClient';
 import { getFairwayCardTableName } from '../environment';
-import { getPutCommands } from '../util';
+import { getPreviousVersion, getPutCommands } from '../util';
 
 export type Text = {
   fi?: Maybe<string>;
@@ -158,6 +158,8 @@ class FairwayCardDBModel {
 
   latest?: Maybe<number>;
 
+  latestVersionUsed?: Maybe<number>;
+
   static getLatestSortKey() {
     return 'v0_latest';
   }
@@ -274,17 +276,35 @@ class FairwayCardDBModel {
   static async save(
     data: FairwayCardDBModel,
     operation: Operation,
-    latestVersionNumber?: number | null,
+    latestVersion?: FairwayCardDBModel | null,
     publicVersionData?: FairwayCardDBModel | null
   ) {
+    const latestVersionUsed = latestVersion?.latestVersionUsed;
+    const latestVersionNumber = latestVersion?.latest;
+
+    let previousVersionData;
     // get only number out of the string
     let versionNumber = Number(data.version.slice(1));
 
     if (operation === Operation.Createversion) {
-      versionNumber = latestVersionNumber ? latestVersionNumber + 1 : 2;
+      // if latestVersionUsed is null, check latest. If still null we can assume there's only one version
+      versionNumber = (latestVersionUsed ?? latestVersionNumber ?? 1) + 1;
     }
 
-    const putCommands = getPutCommands(data, getFairwayCardTableName(), operation, versionNumber, latestVersionNumber, publicVersionData);
+    // data is needed if latest version is removed, so latest can be updated to be the previous version (if there's one)
+    if (operation === Operation.Remove && latestVersionNumber === versionNumber && latestVersionNumber !== 1) {
+      previousVersionData = (await getPreviousVersion(getFairwayCardTableName(), data.id, Number(latestVersionNumber))) as FairwayCardDBModel;
+    }
+
+    const putCommands = getPutCommands(
+      data,
+      getFairwayCardTableName(),
+      operation,
+      versionNumber,
+      latestVersion,
+      publicVersionData,
+      previousVersionData,
+    );
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }
 }

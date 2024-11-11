@@ -103,6 +103,14 @@ async function readParameterForEnv(path: string): Promise<string> {
   });
 }
 
+async function readOptionalParameterForEnvWithDefault(path: string, defaultValue: string): Promise<string> {
+  return new Promise((resolve) => {
+    readParameterByPath('/' + path).then((value) => {
+      resolve(value ?? defaultValue);
+    });
+  });
+}
+
 export async function getVatuUsername() {
   return readParameterForEnv('VatuUsername');
 }
@@ -113,6 +121,10 @@ export async function getVatuPassword() {
 
 export async function getVatuUrl() {
   return readParameterForEnv('VatuUrl');
+}
+
+export async function getVatuV2ApiSupport() {
+  return isProductionEnvironment() ? '' : readOptionalParameterForEnvWithDefault('VatuV2Apis', '');
 }
 
 export async function getVatuPilotRoutesUrl() {
@@ -177,6 +189,14 @@ export async function getIlmanetPassword() {
 
 export async function getIBNetApiUrl() {
   return readParameterForEnv('IBNetApiUrl');
+}
+
+export async function getWeatherUrl() {
+  return readParameterForEnv('WeatherUrl');
+}
+
+export async function getWeatherApiKey() {
+  return readParameterForEnv('WeatherApiKey');
 }
 
 export async function getWeatherHeaders(): Promise<Record<string, string>> {

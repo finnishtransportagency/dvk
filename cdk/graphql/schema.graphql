@@ -263,6 +263,7 @@ type FairwayCard {
   pilotRoutes: [PilotRoute!]
   temporaryNotifications: [TemporaryNotification!]
   latest: Float
+  latestVersionUsed: Float
 }
 
 type Picture {
@@ -341,6 +342,7 @@ type Harbor {
   cargo: Text
   geometry: GeometryPoint
   latest: Float
+  latestVersionUsed: Float
 }
 
 type Quay {

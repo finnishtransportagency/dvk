@@ -1,0 +1,64 @@
+{
+  "phoneNumber": [
+    "+35824285423"
+  ],
+  "version": "v1",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter 400 m, safe clearance depth -9.0 m.",
+    "fi": "Kääntöaltaan halkaisija 400 m, haraussyvyys -9,0 m.",
+    "sv": "Svängbassängens diameter 400 m, ramat djup -9,0 m."
+  },
+  "modifier": "System",
+  "email": "harri.kiviaho@seaportlogistisc.fi",
+  "name": {
+    "en": "Dalsbruk harbour",
+    "fi": "Taalintehtaan satama",
+    "sv": "Dalsbruks hamn"
+  },
+  "cargo": {
+    "en": "Crane and trucks.",
+    "fi": "Nosturi ja trukit.",
+    "sv": "Lyftkran och truckar."
+  },
+  "modificationTimestamp": 1683095540472,
+  "company": {
+    "en": "Port of Dalsbruk, Seaport Logistics Oy",
+    "fi": "Taalintehtaan satama Seaport Logistics Oy",
+    "sv": "Dalsbruks hamn"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay",
+        "fi": "Laituri",
+        "sv": "Kaj"
+      },
+      "length": 66,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.51161,
+          60.01555
+        ]
+      },
+      "sections": [
+        {
+          "depth": 9
+        }
+      ]
+    }
+  ],
+  "creationTimestamp": 1683095540472,
+  "id": "taalintehdas",
+  "fax": "+35824285462",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      22.51156,
+      60.01572
+    ]
+  }
+}

@@ -1,0 +1,149 @@
+{
+  "anchorage": {
+    "en": "Anchorage in the bay E of Ratholmen and Lindholmen. Anchoring possible also in the anchorage area of the Orrengrund-Kotka channel, 4.5 m SW of Tainio Lighthouse.",
+    "fi": "Varsinainen ankkurointialue sijaitsee Ratholmenin ja Lindholmenin saarten itäpuolisella selällä. Ankkuroida voi myös Tainion majakasta 4,5 km lounaaseen olevalla Orrengrud-Kotka väylän ankkurointialueella.",
+    "sv": "Det egentliga ankringsområdet är beläget på fjärden O om Ratholmen och Lindholmen. Ankringsmöjlighet finns även i Orrengrund-Kotkaledens ankringsområde, 4,5 m SV om fyren Tainio."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 100669
+    },
+    {
+      "id": 134254
+    }
+  ],
+  "name": {
+    "en": "Loviisa channel",
+    "fi": "Loviisan väylä",
+    "sv": "Loviisaleden"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095538997,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The approach is unsheltered against SE-S-SW winds as far as the ramark Lodgrund, after which the channel continues, sheltered by islands and the mainland, to port. There is a narrow passage, 120 m wide, E of Hudö and another one, 100 m wide, E of Trollholmen, with increased risk of bank suction. In the passage E of Trollholmen, the gross underkeel clearance of mere 1.5 m and the small water crosssection may affect the navigability of vessels sailing at max. draught. In these passages, part-loaded oversized vessels in particular should take prevailing wind directions into account and use tugs for assistance, if necessary. In the entrance and the port there is practically no swell.",
+    "fi": "Väylän ulko-osa on suojaton SE-S-SW tuulilla Lodgrundin tutkamerkille asti, josta väylä jatkuu saarien ja mantereen suojaamana Valkon satamaan. Hudön saaren itäpuolella on 120 m leveä kapeikko ja Trollholmenin saaren itäpuolella on 100 m leveä kapeikko. Ko. kapeikoissa saattaa esiintyä imuvaikutusta. Trollholmenin saaren itäpuoleisessa kapeikossa pieni varavesi (1,5 m) ja vesipoikkileikkausala voivat vaikuttaa väylän maksimikulkusyvyydessä kulkevien alusten ohjailtavuuteen. Erityisesti ylisuurten, vajaassa lastissa olevien alusten on otettava huomioon vallitsevat tuulensuunnat kapeikoissa ja tarpeen mukaan käytettävä hinaaja-avustusta. Väylän sisäosalla ja satamassa ei esiinny mainittavaa aallokkoa.",
+    "sv": "Angöringen är oskyddad för SO-S-SV vindar ända till radarmärket Lodgrund. Därifrån är farleden skyddad av holmar och fastland ända till hamn. O om Hudö finns en 120 m bred passage och O om Trollholmen en 100 m bred passage, där risk för ökad sugeffekt kan förekomma. I passagen O om Trollholmen kan den ringa djupmarginalen (1,5 m) och tvärsektionen påverka navigerbarheten hos fartyg i max. djupgående. Särskilt överstora fartyg som är dellastade bör ta hänsyn till rådande vindriktningar i passagerna och anlita bogserbåtar vid behov. I inloppet och hamnen förekommer det ingen nämnvärd sjögång."
+  },
+  "generalInfo": null,
+  "id": "loviisa",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Seven navigation lines, marked by boards and sector lights.",
+    "fi": "Linjoja 7 kpl, merkitty linjatauluin ja sektoriloistoin.",
+    "sv": "Sju farledslinjer, utmärkta med enstavlor och sektorfyrar."
+  },
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "loviisa"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 5345,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718775723401,
+  "pilotRoutes": [],
+  "latest": 1,
+  "iceCondition": {
+    "en": "There is a bubbling device in the harbour basin; as a rule, ice difficulties do not arise.",
+    "fi": "Satama-altaassa on ilmapulputuslaitteisto, jäävaikeuksia ei yleensä esiinny.",
+    "sv": "I hamnbassängen finns en bubbelanordning, issvårigheter uppstår i regel inte."
+  },
+  "fairwayIds": "#5345#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Kotka VTS",
+          "fi": "Kotka VTS",
+          "sv": "Kotka VTS"
+        },
+        "phoneNumber": "+358204485660",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "kotka.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 177227855000,
+          "pilotJourney": 9.5
+        },
+        {
+          "id": 681017200,
+          "pilotJourney": 12
+        }
+      ],
+      "phoneNumber": "+358295253430",
+      "fax": null,
+      "email": "pilotdispatch.kotka@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs. Tug assistance non-mandatory.",
+          "fi": "Hinaajan käyttöpakkoa ei ole. Laivan asiamies tilaa mahdollisen avustuksen.",
+          "sv": "Anlitande av bogserbåtsassistans är inte obligatoriskt."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      },
+      {
+        "name": {
+          "en": "HH Hinaus Oy",
+          "fi": "HH Hinaus Oy",
+          "sv": "HH Hinaus Oy"
+        },
+        "phoneNumber": [
+          "+358400664556"
+        ],
+        "fax": null,
+        "email": null
+      },
+      {
+        "name": {
+          "en": "Finntugs Oy",
+          "fi": "Finntugs Oy",
+          "sv": "Finntugs Oy"
+        },
+        "phoneNumber": [
+          "+358400258739"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed 11 knots.",
+    "fi": "Mitoitus nopeus 11 solmua.",
+    "sv": "Dimensionerande fart 11 knop."
+  }
+}

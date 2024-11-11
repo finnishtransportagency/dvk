@@ -1,0 +1,204 @@
+{
+  "phoneNumber": [
+    "+35816454511"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of turning circle 330 m. Use of anchor forbidden.",
+    "fi": "Kääntöympyrän halkaisija 330 m, ankkurin käyttö kielletty.",
+    "sv": "Svängcirkelns diameter 330 m, förbjudet att använda ankare."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Röyttä harbour",
+    "fi": "Röyttän satama",
+    "sv": "Röyttä hamn"
+  },
+  "cargo": {
+    "en": "One 56 t, one 80 t, two 100 t cranes, one 125 t, mobile cranes, gas-discharge beam.",
+    "fi": "1 56kpl t, 1 kpl 80 t ja 2 kpl 100 t ja 1kpl 125 t nostureita sekä autonostureita, kaasunpurkausvarsi.",
+    "sv": "En 56 t, en 80 t, två 100 t och en 125 t kranar samt mobilkranar, apparatur för lossning av gas."
+  },
+  "modificationTimestamp": 1683095539866,
+  "company": {
+    "en": "Röyttä harbour, Tornio",
+    "fi": "Röyttän satama, Tornio",
+    "sv": "Röyttä hamn, Torneå"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay 1",
+        "fi": "Laituri 1",
+        "sv": "Kaj 1"
+      },
+      "length": 144,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.16095,
+          65.75342
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 2",
+        "fi": "Laituri 2",
+        "sv": "Kaj 2"
+      },
+      "length": 144,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.15821,
+          65.75276
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 3",
+        "fi": "Laituri 3",
+        "sv": "Kaj 3"
+      },
+      "length": 202,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.15609,
+          65.75317
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 4",
+        "fi": "Laituri 4",
+        "sv": "Kaj 4"
+      },
+      "length": 208,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.15585,
+          65.75422
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 5",
+        "fi": "Laituri 5",
+        "sv": "Kaj 5"
+      },
+      "length": 151.5,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.15667,
+          65.75551
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 6",
+        "fi": "Laituri 6",
+        "sv": "Kaj 6"
+      },
+      "length": 154.1,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.15269,
+          65.75511
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 7",
+        "fi": "Laituri 7",
+        "sv": "Kaj 7"
+      },
+      "length": 150,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.1511,
+          65.7557
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Liquid-gas quay",
+        "fi": "Kaasulaituri",
+        "sv": "Gaskaj"
+      },
+      "length": 144,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.16014,
+          65.75044
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10
+        }
+      ]
+    }
+  ],
+  "creationTimestamp": 1683095539866,
+  "id": "tornio",
+  "fax": "+35816454513",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.15845,
+      65.75382
+    ]
+  }
+}

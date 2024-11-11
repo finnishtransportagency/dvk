@@ -1,0 +1,137 @@
+{
+  "anchorage": {
+    "en": "The anchorage area of the fairway is located SE of sector light Hästen, safe clearance depth 15.5 m. The fairway passes through a restricted area. In the restricted area, unauthorised anchoring outside the anchorage areas marked in the charts is prohibited. The fairway also passes through a firing area. More information on the firings can be found in the firings notices of the Finnish Defence Forces.",
+    "fi": "Väylän ankkurointialue sijaitsee Hästenin sektoriloiston kaakkoispuolella, haraussyvyys 15,5m. Väylä kulkee suoja-alueen läpi. Suoja-alueella ankkurointi karttoihin merkittyjen ankkurointipaikkojen ulkopuolelle on ilman lupaa kielletty. Väylä kulkee myös ampuma-alueen läpi. Ammunnoista saa tietoa puolustusvoimien ampumatiedotteista",
+    "sv": "Farledens ankringsområden är beläget sydost om Hästens sektorfyr, ramade djup 15,5 m. Farleden går genom ett skyddsområde. I skyddsområdet är ankring utanför de på kartor angivna ankringsplatserna förbjudet utan tillstånd. Farleden går även igen ett skjutområde. Information om skjutövningar finns i Försvarsmaktens meddelanden om skjutövningar."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Maximum vessel length 180 m",
+    "fi": "Maksimi aluksen pituus 180 m.",
+    "sv": "Fartygets maximala längd är 180 m."
+  },
+  "status": "PUBLIC",
+  "visibility": {
+    "en": "Vessels over 15,000 DWT: daylight and minimum visibility of 4 km.",
+    "fi": "Yli 15 000 dwt alukset: päivän valo ja näkyvyys vähintään 4 km.",
+    "sv": "Fartyg över 15 000 dwt: dagsljus och sikt minst 4 km."
+  },
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134253
+    },
+    {
+      "id": 132310
+    }
+  ],
+  "name": {
+    "en": "Kantvik fairway",
+    "fi": "Kantvikin väylä",
+    "sv": "Kantviksleden"
+  },
+  "attention": null,
+  "seaLevel": null,
+  "creationTimestamp": 1683095538848,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The approach from the pilot boarding position to Upinniemi is unsheltered against southerly winds. From Upinniemi on the fairway continues to Kantvik harbour sheltered by shoals, isles and mainland.",
+    "fi": "Väylän ulko-osa luotsipaikalta Upinniemeen on suojaton etelänpuoleisilla tuulilla. Upinniemestä väylä jatkuu karien, saarien ja mantereen suojaamana Kantvikin satamaan.",
+    "sv": "Den yttre delen av farleden från lotsplatsen till Obbnäs är oskyddad mot sydlig vind. Från Obbnäs fortsätter farleden till fastlandet under skydd från kobbar och holmar till Kantviks hamn."
+  },
+  "generalInfo": null,
+  "id": "kantvik",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Six navigation lines marked with boards.",
+    "fi": "Linjoja 6 kpl, merkitty linjatauluin.",
+    "sv": "Det finns 6 st. linjer som utmärkts med ensmärken."
+  },
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "kantvik"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Vessels over 15,000 DWT: the critical wind speed is 15 m/s, other matters to be taken into account include the ship size, equipment and controllability, as well as whether the ship is known from earlier visits.",
+    "fi": "Yli 15 000 dwt alukset: kriittinen tuulen nopeus 15 m/s, lisäksi huomioitava aluksen koko, varustus ja hallittavuus sekä onko alus ennestään tunnettu.",
+    "sv": "Fartyg över 15 000 dwt: kritisk vindhastighet 15 m/s, dessutom ska fartygets storlek, utrustning och manövrerbarhet beaktas samt huruvida fartyget är tidigare identifierat."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 4410,
+      "primary": true
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718775637421,
+  "pilotRoutes": [],
+  "latest": 1,
+  "iceCondition": {
+    "en": "Very variable ice conditions. The fairway can be open almost all winter or there can be formation of thin ice. Southerly winds may cause ridging in the fairway.",
+    "fi": "Jääolosuhteet ovat erittäin vaihtelevia. Väylä voi olla avoin lähes koko talven tai siihen muodostuu vain ohut jääpeite. Väylällä voi etelänpuoleisilla tuulilla esiintyä ajoittain jää ahtautumia.",
+    "sv": "Isförhållandena är mycket varierande. Farleden kan vara öppen under nästan hela vintern eller endast bilda ett tunt istäcke. På farleden kan det vid sydliga vindar tidvis förekomma packis."
+  },
+  "fairwayIds": "#4410#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Helsinki VTS, sector 2",
+          "fi": "Helsinki VTS, sektori 2",
+          "sv": "Helsingfors VTS, sektor 2"
+        },
+        "phoneNumber": "+358204485385",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 9
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 27529222400,
+          "pilotJourney": 13
+        },
+        {
+          "id": 457800602,
+          "pilotJourney": 10.5
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs.",
+          "fi": "Yksityiset hinaajat.",
+          "sv": "Privata bogserare."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Vessel speed 14 knots in the channel with safe clearance depth of 11.5 and 6 knots in Sjövik channel with safe clearance depth of 10.2.",
+    "fi": "Mitoitusnopeudet 14 solmua väylän 11,5 m:n haraussyvyydellä ja 6 solmua 10,2 m:n haraussyvyydellä Sjövikin linjalla.",
+    "sv": "Dimensionerande fart är 14 knop där farledens ramade djup är 11,5 m och 6 knop vid ramade djup på 10,2 m på Sjövikslinjen."
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "phoneNumber": [
+    "+358447012623"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of the turning basin 900 m.",
+    "fi": "Kääntöaltaan halkaisija 900 m.",
+    "sv": "Svängbassängens diameter 900 m. "
+  },
+  "modifier": "System",
+  "email": "info@portofpori.fi",
+  "name": {
+    "en": "Tahkoluoto deep harbour",
+    "fi": "Tahkoluodon syväsatama",
+    "sv": "Tahkoluoto djuphamn"
+  },
+  "cargo": {
+    "en": "A loader of 1,500 t/h, cranes of 32 t and 40 t. ",
+    "fi": "Syväsatamassa nosturit 32 t ja 40 t sekä lastain 1500 t/h.",
+    "sv": "I djuphamnen pålastare 1500 t/h, kranar 32 t och 40 t."
+  },
+  "modificationTimestamp": 1683095540523,
+  "company": {
+    "en": "Port of Pori, Pori",
+    "fi": "Porin satama Oy, Pori",
+    "sv": "Björneborgs hamn Ab, Björneborg"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Deep-water harbour: quay",
+        "fi": "Syväsatama: laituri",
+        "sv": "Djuphamnen: kaj"
+      },
+      "length": 450,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.38476,
+          61.63399
+        ]
+      },
+      "sections": [
+        {
+          "depth": 17.5
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Oil and coal harbour: oil and coal jetty",
+        "fi": "Nestebulk laiturit 28, 29 ja 30",
+        "sv": "Olje- och kolhamnen: Oljekaj och kolkaj"
+      },
+      "sections": [
+        {
+          "depth": 11.5
+        }
+      ],
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          21.39978,
+          61.6401
+        ]
+      }
+    }
+  ],
+  "creationTimestamp": 1683095540523,
+  "id": "tahkoluoto",
+  "currentPublic": 1,
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      21.38682,
+      61.63504
+    ]
+  }
+}
