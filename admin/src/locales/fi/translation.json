@@ -156,7 +156,7 @@
     "archive-harbor-description": "Olet siirtämässä julkisen sataman \"{{name}}\" arkistoon. Oletko varma, että haluat arkistoida sataman?",
     "publish-harbor-title": "Sataman julkaiseminen",
     "publish-harbor-description": "Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
-    "version-harbor-description": "Olet luomassa julkisesta satamasta uuden version. Uusi versio luodaan luonnokseksi ja nykyinen satama pysyy julkisena, kunnes uusi versio julkaistaan. Oletko varma, että haluat jatkaa?",
+    "version-harbor-description": "Olet luomassa satamasta uuden version. Uusi versio luodaan luonnokseksi. Oletko varma, että haluat jatkaa?",
     "preview-harbor-title": "Sataman esikatselu",
     "preview-harbor-description": "Satama sisältää tallentamattomia muutoksia. Tallenna muutokset nähdäksesi ne esikatselussa.",
     "saved-fairwaycard-by-name": "Väyläkortin \"{{ name }}\" tiedot tallennettu.",
