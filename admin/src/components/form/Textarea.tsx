@@ -16,6 +16,7 @@ interface TextareaProps {
   error?: string;
   helperText?: string | null;
   name?: string;
+  rows?: number;
 }
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -24,12 +25,13 @@ const Textarea: React.FC<TextareaProps> = ({
   setValue,
   actionType,
   actionLang,
+  actionTarget,
   required,
   disabled,
   error,
   helperText,
   name,
-  actionTarget,
+  rows,
 }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
@@ -96,7 +98,7 @@ const Textarea: React.FC<TextareaProps> = ({
         }}
         disabled={disabled}
         autoGrow
-        rows={1}
+        rows={rows ?? 1}
         maxlength={TEXTAREA_MAXLENGTH}
         fill="outline"
         className={'ion-align-self-center formInput' + (isInputOk(isValid, error) ? '' : ' invalid')}

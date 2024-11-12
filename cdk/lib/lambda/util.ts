@@ -10,7 +10,6 @@ import HarborDBModel from './db/harborDBModel';
 import { Operation, Status } from '../../graphql/generated';
 import { PutCommand, QueryCommand, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
 import { getDynamoDBDocumentClient } from './db/dynamoClient';
-import { unmarshall } from '@aws-sdk/util-dynamodb';
 
 const GEOMETRY_DECIMALS = 5;
 

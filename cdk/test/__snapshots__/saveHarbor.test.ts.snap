@@ -48,6 +48,7 @@ exports[`test mapHarborToModel all 1`] = `
     "12345",
     "22222",
   ],
+  "publishDetails": undefined,
   "quays": [
     {
       "extraInfo": {
@@ -117,6 +118,7 @@ exports[`test mapHarborToModel minimal 1`] = `
     "sv": "testsv",
   },
   "phoneNumber": null,
+  "publishDetails": undefined,
   "quays": null,
   "status": "DRAFT",
   "version": "v2",

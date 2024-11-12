@@ -125,7 +125,8 @@
     "search-title-mainPage": "Hae nimellä tai tunnisteella",
     "check-and-publish": "Tarkasta muutokset ja julkaise",
     "publishing-details": "Julkaisutiedot",
-    "create-new-version": "Luo uusi versio"
+    "create-new-version": "Luo uusi versio",
+    "version": "Versio"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
@@ -144,7 +145,7 @@
     "archive-fairwaycard-title": "Väyläkortin arkistointi",
     "archive-fairwaycard-description": "Olet siirtämässä julkisen väyläkortin \"{{name}}\" arkistoon. Oletko varma, että haluat arkistoida väyläkortin?",
     "publish-fairwaycard-title": "Väyläkortin julkaiseminen",
-    "publish-fairwaycard-description": "Olet asettamassa \"Luonnos\"-tilassa olevan väyläkortin julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
+    "publish-fairwaycard-description": "Painamalla Julkaise asetat väyläkortin julkiseksi nykyisessä muodossaan ja arkistoit mahdollisen aiemman version.",
     "version-fairwaycard-description": "Olet luomassa väyläkortista uuden version. Uusi versio luodaan luonnokseksi. Oletko varma, että haluat jatkaa?",
     "preview-fairwaycard-title": "Väyläkortin esikatselu",
     "preview-fairwaycard-description": "Väyläkortti sisältää tallentamattomia muutoksia. Tallenna muutokset nähdäksesi ne esikatselussa.",
@@ -155,7 +156,7 @@
     "archive-harbor-title": "Sataman arkistointi",
     "archive-harbor-description": "Olet siirtämässä julkisen sataman \"{{name}}\" arkistoon. Oletko varma, että haluat arkistoida sataman?",
     "publish-harbor-title": "Sataman julkaiseminen",
-    "publish-harbor-description": "Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
+    "publish-harbor-description": "Painamalla Julkaise asetat sataman julkiseksi nykyisessä muodossaan ja arkistoit mahdollisen aiemman version.",
     "version-harbor-description": "Olet luomassa satamasta uuden version. Uusi versio luodaan luonnokseksi. Oletko varma, että haluat jatkaa?",
     "preview-harbor-title": "Sataman esikatselu",
     "preview-harbor-description": "Satama sisältää tallentamattomia muutoksia. Tallenna muutokset nähdäksesi ne esikatselussa.",
@@ -179,7 +180,8 @@
     "ending-fairway-title": "Päättävät väylät järjestyksen valinta",
     "ending-fairway-description": "Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "fairwaycard-publish-details": "Väyläkortin julkaisutiedot",
-    "harbor-publish-details": "Sataman julkaisutiedot"
+    "harbor-publish-details": "Sataman julkaisutiedot",
+    "adding-publish-details": "Julkaisutietojen lisääminen"
   },
   "fairwaycard": {
     "name": "Väyläkortin nimi",

@@ -39,7 +39,8 @@ import { openPreview } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
-import InfoHeader from './InfoHeader';
+import InfoHeader, { InfoHeaderProps } from './InfoHeader';
+import PublishModal from './PublishModal';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -69,6 +70,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
+  const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -168,6 +170,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       if (operation === Operation.Publish) {
         setState({ ...state, status: Status.Public });
         saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Public, operation }) as FairwayCardInput });
+        setPublishDetailsOpen(false);
       } else if (operation === Operation.Archive) {
         setState({ ...state, status: Status.Archived });
         saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Archived, operation }) as FairwayCardInput });
@@ -282,6 +285,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const handlePublish = () => {
     if (formValid()) {
       setConfirmationType('publish');
+      setPublishDetailsOpen(true);
     } else {
       setSaveError('MISSING-INFORMATION');
     }
@@ -332,8 +336,25 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     setOldState(structuredClone(fairwayCard));
   }, [fairwayCard]);
 
+  const infoHeader: InfoHeaderProps = {
+    status: state.status,
+    modified: getDateTimeInfo(true),
+    created: getDateTimeInfo(false),
+    version: fairwayCard.version,
+    modifier: savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown'),
+    creator: savedCard?.creator ?? creator,
+  };
+
   return (
     <IonPage>
+      <PublishModal
+        state={state}
+        setModalOpen={setPublishDetailsOpen}
+        setValue={updateState}
+        handleConfirmationSubmit={handleConfirmationSubmit}
+        modalOpen={publishDetailsOpen}
+        infoHeader={infoHeader}
+      />
       <ConfirmationModal
         saveType="fairwaycard"
         action={handleConfirmationSubmit}
