@@ -249,13 +249,8 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                 <strong>{t('navigation')}</strong>
               </h4>
               <Paragraph bodyText={fairwayCard?.generalInfo ?? undefined} />
-              <Paragraph
-                data-testid="navigationsCondition"
-                title={t('navigationCondition')}
-                bodyText={fairwayCard?.navigationCondition ?? undefined}
-                showNoData
-              />
-              <Paragraph data-testid="iceCondition" title={t('iceCondition')} bodyText={fairwayCard?.iceCondition ?? undefined} showNoData />
+              <Paragraph title={t('navigationCondition')} bodyText={fairwayCard?.navigationCondition ?? undefined} showNoData />
+              <Paragraph title={t('iceCondition')} bodyText={fairwayCard?.iceCondition ?? undefined} showNoData />
             </IonText>
 
             <IonText>

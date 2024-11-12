@@ -94,7 +94,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
   return (
     <>
       {data && (
-        <IonText>
+        <IonText data-testid="dimensionInfoControl">
           <p>
             <strong>{t('fairwayDimensions')}:</strong>
             <br />

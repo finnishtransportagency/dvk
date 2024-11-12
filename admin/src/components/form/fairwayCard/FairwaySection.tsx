@@ -35,7 +35,6 @@ const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, val
           disabled={state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'line')?.msg}
           inputType="textarea"
-          data-testid="liningAndMarking"
         />
         <TextInputRow
           labelKey="fairwaycard.design-speed"

@@ -1,7 +1,13 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 
 const PORT = process.env.PORT ?? '3000';
 const url = `http://localhost:${PORT}/vaylakortti`;
+
+enum Languages {
+  Finnish = 1,
+  Swedish = 2,
+  English = 3,
+}
 
 test.describe('Check map elements', () => {
   test('map scale should exist with correct format', async ({ page }) => {
@@ -26,38 +32,56 @@ test.describe('Check map elements', () => {
 
 test.describe('Open front page and go to fairway cards', () => {
   test('should open fairway card list in finnish', async ({ page }) => {
+    await page.goto(url + '/?lang=en');
+    await page.getByTitle('Open menu').click();
+    //Change language to English
+    await page.getByRole('button', { name: 'Suomeksi' }).click();
+    await page.getByTestId('closeMenu').click();
+    await page.goto(url + '/?lang=fi');
     await runTestsInLanguage(page, {
-      lang: 'fi',
       title: 'Digitaalinen väyläkortti',
       menuTitle: 'Avaa valikko',
       card: 'Väyläkortit',
       searchPlaceholder: 'Hae väylän nimellä tai numerolla',
+      language: Languages.Finnish,
     });
   });
 
   test('should open fairway card list in swedish', async ({ page }) => {
+    await page.goto(url + '/?lang=fi');
+    await page.getByTitle('Avaa valikko').click();
+    //Change language to English
+    await page.getByRole('button', { name: 'På svenska' }).click();
+    await page.getByTestId('closeMenu').click();
     await runTestsInLanguage(page, {
-      lang: 'sv',
       title: 'Digital farledskort',
       menuTitle: 'Öppna meny',
       card: 'Farledskort',
       searchPlaceholder: 'Sök med farledsnamn eller',
+      language: Languages.Swedish,
     });
   });
 
   test('should open fairway card list in english', async ({ page }) => {
+    //Start page in Swedish
+    await page.goto(url + '/?lang=sv');
+    await page.getByTitle('Öppna meny').click();
+    //Change language to English
+    await page.getByRole('button', { name: 'In English' }).click();
+    await page.getByTestId('closeMenu').click();
     await runTestsInLanguage(page, {
-      lang: 'en',
       title: 'Digital Fairway Card',
       menuTitle: 'Open menu',
       card: 'Fairway cards',
       searchPlaceholder: 'Search by fairway name or number',
+      language: Languages.English,
     });
   });
 
-  async function runTestsInLanguage(page, langParams) {
-    await page.goto(url + '/?lang=' + langParams.lang);
-
+  async function runTestsInLanguage(
+    page: Page,
+    langParams: { title: string; menuTitle: string; card: string; searchPlaceholder: string; language: Languages }
+  ) {
     // Expect a title
     await expect(page).toHaveTitle(langParams.title);
 
@@ -66,73 +90,85 @@ test.describe('Open front page and go to fairway cards', () => {
     await page.getByTestId('fairwaysLink').click();
     await expect(page.getByRole('heading', { name: langParams.card })).toBeVisible();
 
-    // this link count could be a function instead of copy paste
-    const listOfCards = page.locator('xpath=//ion-content[@id = "fairwayCardsContainer"] /div/div/ion-grid/ion-row/ion-col/ion-label/a');
+    //Get the list of fairway cards
+    const listOfCards = page.getByTestId('cardlink');
     expect(await listOfCards.count()).toBeGreaterThan(0);
-    const randomCardName = await listOfCards.nth(Math.floor(Math.random() * (await listOfCards.count()))).innerText();
 
+    //Select a random card here - even this is a bad idea for reproducing any error, this is how it was in the original robot tests
+    const randomCardName = await listOfCards.nth(Math.floor(Math.random() * Math.min(await listOfCards.count(), 10))).innerText();
+
+    //Put the text of the card in the search to check the search functionality
     await page.getByTestId('searchInput').getByPlaceholder(langParams.searchPlaceholder).click();
     await page.getByTestId('searchInput').getByPlaceholder(langParams.searchPlaceholder).fill(randomCardName);
     await page.getByTestId('searchInput').getByPlaceholder(langParams.searchPlaceholder).press('Enter');
 
+    //Check the card is selected
     await expect(page.getByTestId('fairwayTitle')).toHaveText(randomCardName);
 
     //Click the fairway card tab
-    await page.getByTestId('tabButton-1').click();
-    //Check it's active
-    expect(page.locator('.tabContent.tab1.active')).toBeVisible();
-    //Check the wide button works
-    expect(page.locator('.tabContent.tab1.wide.active')).toBeHidden();
-    await page.getByTestId('toggleWide').click();
-    expect(page.locator('.tabContent.tab1.wide.active')).toBeVisible();
-    await page.getByTestId('toggleWide').click();
+    await checkTab(page, 1);
 
-    let shouldBeVisibleTestIds = [
-      'navigation',
-      'navigationCondition',
-      'iceCondition',
-      'fairwayInfo',
-      'liningAndMarking',
-      'dimensionInfo',
-      'prohibitionData',
-      'speedLimit',
-      'trafficServices',
-      'pilotOrder',
-      'vts',
-    ];
-
-    await Promise.all(
-      shouldBeVisibleTestIds.map(async (id) => {
-        expect(page.getByTestId(id)).toBeVisible;
-      })
+    checkValuesExistsOnTab(
+      page,
+      [
+        ['navigation', 'Väylän navigoitavuus', 'Navigerbarhet', 'Fairway navigability'],
+        ['navigation', 'Navigointiolosuhteet', 'Navigationsförhållanden', 'Navigation conditions'],
+        ['navigation', 'Jääolosuhteet', 'Isförhållanden', 'Ice conditions'],
+        [null, 'Väylätiedot', 'Farledsdata', 'Fairway data'],
+        [null, 'Linjaus ja merkintä', 'Farledsdragning och utmärkning', 'Channel alignment and marking'],
+        ['dimensionInfoControl', 'Väylän mitoitustiedot', 'Dimensionering', 'Fairway dimensions'],
+        [null, 'Kohtaamis- ja ohittamiskieltoalueet', 'Områden med mötes- och omkörningsförbud', 'Meeting and overtaking prohibition areas'],
+        [null, 'Nopeusrajoitukset', 'Fartbegränsningar och -rekommendationer', 'Speed limits and recommendations'],
+        [null, 'Liikennepalvelut', 'Trafikservice', 'Traffic services'],
+        [null, 'Luotsintilaus', 'Lotsbeställning', 'Pilotage'],
+        [null, 'VTS', 'VTS', 'VTS'],
+      ],
+      langParams.language
     );
 
     //Click the 2nd tab
-    await page.getByTestId('tabButton-2').click();
-    //Check it's active
-    expect(page.locator('.tabContent.tab2.active')).toBeVisible();
-    //Check the wide button works
-    expect(page.locator('.tabContent.tab2.wide.active')).toBeHidden();
-    await page.getByTestId('toggleWide').click();
-    expect(page.locator('.tabContent.tab2.wide.active')).toBeVisible();
-    await page.getByTestId('toggleWide').click();
-
-    shouldBeVisibleTestIds = ['restrictions', 'cargo', 'harbourBasin', 'contactDetails'];
-
-    await Promise.all(
-      shouldBeVisibleTestIds.map(async (id) => {
-        expect(page.getByTestId(id)).toBeVisible;
-      })
+    await checkTab(page, 2);
+    checkValuesExistsOnTab(
+      page,
+      [
+        [null, 'Sataman rajoitukset', 'Hamnens begränsningar', 'Harbour restrictions'],
+        [null, 'Lastinkäsittely', 'Lasthantering', 'Cargo handling'],
+        [null, 'Satama-allas', 'Hamnbassäng', 'Harbour basin'],
+        [null, 'Yhteystiedot', 'Kontaktinformation', 'Contact details'],
+      ],
+      langParams.language
     );
 
-    //Click the 3rd tab
-    await page.getByTestId('tabButton-3').click();
+    //Check 3rd tab
+    await checkTab(page, 3);
+  }
+
+  async function checkValuesExistsOnTab(page: Page, testVisibility: (string | null)[][], langId: number) {
+    for (const element of testVisibility) {
+      //If we specifify a data test id use it otherwise default to looking on the page
+      if (element[0]) {
+        expect(
+          await page
+            .getByTestId(element[0])
+            .getByText(element[langId] ?? '')
+            .count()
+        ).toBeGreaterThan(0);
+      } else {
+        expect(await page.getByText(element[langId] ?? '').count()).toBeGreaterThan(0);
+      }
+    }
+  }
+
+  async function checkTab(page: Page, tab: string | number) {
+    //Click the tab
+    await page.getByTestId('tabButton-' + tab).click();
     //Check it's active
-    expect(page.locator('.tabContent.tab3.active')).toBeVisible();
-    //Check the wide button works
-    expect(page.locator('.tabContent.tab3.wide.active')).toBeHidden();
+    await expect(page.locator('.tabContent.tab' + tab + '.active')).toBeVisible();
+
+    //Check the wide button works....and resets on second click
+    await expect(page.locator('.tabContent.tab' + tab + '.wide.active')).toBeHidden();
     await page.getByTestId('toggleWide').click();
-    expect(page.locator('.tabContent.tab3.wide.active')).toBeVisible();
+    await expect(page.locator('.tabContent.tab' + tab + '.wide.active')).toBeVisible();
     await page.getByTestId('toggleWide').click();
   }
 });
