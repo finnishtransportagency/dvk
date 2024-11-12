@@ -67,16 +67,6 @@ const Header: React.FC<HeaderProps> = ({
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
               </IonButton>
             )}
-            {currentState.status === Status.Public && (
-              <>
-                {/* <IonButton id="publishingDetails" shape="round" disabled={isError || isLoading}>
-                  {t('general.publishing-details')}
-                </IonButton> */}
-                <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => handleNewVersion()}>
-                  {t('general.create-new-version')}
-                </IonButton>
-              </>
-            )}
             {currentState.status === Status.Draft && (
               <>
                 <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSave()}>
@@ -89,6 +79,9 @@ const Header: React.FC<HeaderProps> = ({
                 </IonButton>
               </>
             )}
+            <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => handleNewVersion()}>
+              {t('general.create-new-version')}
+            </IonButton>
           </IonCol>
         </IonRow>
       </IonGrid>
