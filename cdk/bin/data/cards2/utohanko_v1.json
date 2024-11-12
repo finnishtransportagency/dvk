@@ -1,0 +1,136 @@
+{
+  "anchorage": {
+    "en": "Anchorage in the anchorage area SW of Bokullankivi.",
+    "fi": "Ankkuroida voi Bokullankiven lounaispuolella olevalle ankkurointialueelle.",
+    "sv": "Ankring på ankringsområdet SV om Bokullasten."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "1",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134253
+    },
+    {
+      "id": 134252
+    }
+  ],
+  "name": {
+    "en": "Utö-Hanko channel",
+    "fi": "Utö-Hanko väylä",
+    "sv": "Farleden Utö-Hangö"
+  },
+  "attention": null,
+  "creationTimestamp": 1683095538298,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The first leg of the fairway from Bokullankivi sector light to Borstö is quite open to southern winds. From Borstö onwards the fairway continues well sheltered throughout the Hitis archipelago to the open sea W of Hanko (Hanko läntinen selkä). On Hanko läntinen selkä and off Hankoniemi  navigation can be hampered by hard S/W winds and heavy seas. The fairway is planned for two traffic lanes, but in some positions the channel narrows to one lane. The narrowest channel area is at the Idskär minor light N of Hitis (120m).",
+    "fi": "Väylän alkuosa Bokullankiven sektoriloistosta Borstöön on melko avoin etelänpuoleisille tuulille. Borstöstä väylä jatkuu saarien ja karien hyvin suojaamana Hiittisten saariston lomitse Hangon läntiselle selälle. Hangon läntisellä selällä ja Hankoniemen edustalla kova etelän-lännen puoleinen tuuli ja merenkäynti voivat vaikeuttaa navigointia. Väylä on suunniteltu pääosin kaksikaistaiseksi, mutta paikoin väyläalue kapenee yksikaistaiseksi. Väylä kapein kohta on Idskärin apuloiston kohdalla Hiittisten pohjoispuolella (120 m).",
+    "sv": "På det första farledsavsnittet från Bokullasten sektorfyr till Borstö är farleden rätt så öppen för sydliga vindar. Från Borstö går farleden väl skyddad av holmar och skär genom Hitis skärgård till Hangö västra fjärd. På Hangö västra fjärd och utanför Hangö udd kan en hård sydlig-västlig vind och hård sjögång försvåra navigeringen. Farleden är huvudsakligen planerad för två stråk men avsmalnar ställvis till ett stråk. Farledens smalaste ställe är vid Idskär hjälpfyr N om Hitis (120 m)."
+  },
+  "generalInfo": null,
+  "id": "utohanko",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Marked with boards.",
+    "fi": "Merkitty linjatauluin.",
+    "sv": "Utmärkt med enstavlor."
+  },
+  "version": "v1",
+  "harbors": [],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": false,
+      "id": 3770,
+      "primary": true
+    },
+    {
+      "secondary": true,
+      "id": 4000,
+      "primary": false
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1718791210541,
+  "pilotRoutes": [],
+  "iceCondition": {
+    "en": "The Utö-Hanko channel has been planned to serve as an alternative channel under severe ice conditions. Variable ice conditions. During mild winters hardly any ice formation; formation of pack ice or fast ice possible during hard winters.",
+    "fi": "Utö-Hanko väylä on suunniteltu varaväyläksi ankarien jääolosuhteiden varalle. Väylän jääolosuhteet ovat vaihtelevia, leutoina talvina haittaavaa jäätä ei muodostu lainkaan, kovina talvina voi väylällä esiintyä jää ahtautumia tai kiintojäätä.",
+    "sv": "Farleden Utö-Hangö har planerats som reservled för svåra isförhållanden. Varierande isförhållanden. Under milda vintrar bildas just ingen is, under hårda vintrar kan det förekomma packis eller fastis."
+  },
+  "fairwayIds": "#3770#4000#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Archipelago VTS",
+          "fi": "Archipelago VTS",
+          "sv": "Archipelago VTS"
+        },
+        "phoneNumber": "+358204486521",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 71
+          }
+        ],
+        "email": [
+          "archipelago.vts@fintraffic.fi"
+        ]
+      },
+      {
+        "name": {
+          "en": "Hanko VTS",
+          "fi": "Hanko VTS",
+          "sv": "Hanko VTS"
+        },
+        "phoneNumber": "+358204485388",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "hanko.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 3203220100,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253460",
+      "fax": null,
+      "email": "pilotdispatch.archipelago@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. Pilot boarding position to be agreed upon in winter and in adverse weather conditions.",
+        "fi": "Huom. Talviaikana tai huonolla säällä luotsipaikka sovittava erikseen.",
+        "sv": "Anm. Vintertid eller vid dåligt väder bör platsen där lots möter överenskommas."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs available.",
+          "fi": "Yksityiset hinaajat.",
+          "sv": "Privatägda bogserbåtar vid behov."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

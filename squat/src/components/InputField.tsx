@@ -194,6 +194,7 @@ const InputField: React.FC<InputProps> = (props) => {
         labelPlacement="end"
         helperText={getHelperText()}
         errorText={getErrorText()}
+        data-testid={props.name}
       />
     </>
   );

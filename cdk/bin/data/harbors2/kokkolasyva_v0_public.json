@@ -1,0 +1,203 @@
+{
+  "phoneNumber": [
+    "+35868242400"
+  ],
+  "version": "v0_public",
+  "creator": "System",
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of turning circles: in the Deep Port 600 m.",
+    "fi": "Kääntöympyröiden halkaisijat: Syväsataman edustalla 600 m.",
+    "sv": "Svängcirklarnas diametrar: utanför Djuphamnen 600 m."
+  },
+  "modifier": "System",
+  "name": {
+    "en": "Kokkola deep port",
+    "fi": "Kokkolan syväsatama",
+    "sv": "Karleby djuphamn"
+  },
+  "cargo": {
+    "en": "4 forty-ton cranes, one ten-ton and one eight-ton crane in the Deep Port.",
+    "fi": "Syväsatamassa 4 kpl 40 t nostureita, sekä 10 t ja 8 t nosturit.",
+    "sv": "4 st. 40 t kranar i Djuphamnen samt 10 t kran och 8 t kran."
+  },
+  "modificationTimestamp": 1683095539454,
+  "company": {
+    "en": "Port of Kokkola",
+    "fi": "Kokkolan satama, Kokkola",
+    "sv": "Karleby hamn, Karleby"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "Quay 12",
+        "fi": "Laituri 12",
+        "sv": "Kaj 12"
+      },
+      "length": 140,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.02448,
+          63.86501
+        ]
+      },
+      "sections": [
+        {
+          "depth": 15.7
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 11",
+        "fi": "Laituri 11",
+        "sv": "Kaj 11"
+      },
+      "length": 250,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.0278,
+          63.86421
+        ]
+      },
+      "sections": [
+        {
+          "depth": 15.7
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 10",
+        "fi": "Laituri 10",
+        "sv": "Kaj 10"
+      },
+      "length": 250,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.03112,
+          63.86343
+        ]
+      },
+      "sections": [
+        {
+          "depth": 15.7
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 9",
+        "fi": "Laituri 9",
+        "sv": "Kaj 9"
+      },
+      "length": 180,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.0352,
+          63.86246
+        ]
+      },
+      "sections": [
+        {
+          "depth": 12.4
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 8",
+        "fi": "Laituri 8",
+        "sv": "Kaj 8"
+      },
+      "length": 100,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.03825,
+          63.86172
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.4
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Quay 7",
+        "fi": "Laituri 7",
+        "sv": "Kaj 7"
+      },
+      "length": 140,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.04023,
+          63.86124
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.4
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Silverstone quay 1",
+        "fi": "Hopeakiven laituri 1",
+        "sv": "Silverstenskaj 1"
+      },
+      "length": 160,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.03808,
+          63.85983
+        ]
+      },
+      "sections": [
+        {
+          "depth": 10.4
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Silverstone quay 2",
+        "fi": "Hopeakiven laituri 2",
+        "sv": "Silverstenskaj 2"
+      },
+      "length": 150,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          23.03452,
+          63.86047
+        ]
+      },
+      "sections": [
+        {
+          "depth": 12.4
+        }
+      ]
+    }
+  ],
+  "creationTimestamp": 1683095539454,
+  "id": "kokkolasyva",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      23.02537,
+      63.86685
+    ]
+  }
+}

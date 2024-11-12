@@ -1,0 +1,128 @@
+{
+  "anchorage": {
+    "en": "There is an anchorage area (depth approx. 20 m) suitable for larger vessels in the outer channel, 2,8 km W of Pietarsaari edge mark.",
+    "fi": "Väylän ulko-osalla on isoille aluksille sopiva ankkurointipaikka 2,8 km Pietarsaari reunamerkistä länteen, syvyys n. 20 m.",
+    "sv": "I ledens yttre del, 2,8 km V om randmärket Jakobstad finns en ankringsplats (djup ca 20 m) lämplig för stora fartyg."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "3",
+  "modifier": "System",
+  "name": {
+    "en": "Pietarsaari fairway",
+    "fi": "Pietarsaaren väylä",
+    "sv": "Jakobstad farled"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Pietarsaari mareograph.",
+    "fi": "Pietarsaaren mareografi.",
+    "sv": "Jakobstad mareograf."
+  },
+  "creationTimestamp": 1683095537320,
+  "navigationCondition": {
+    "en": "The outer fairway from Kallan to Mässkär is open and unsheltered from N-W-E winds. The inner part of the fairway a length of 3 km has been dredged and forms a 120 m wide canal. No heavy swell is created but due to the narrowness of the channel winds and squat effect might affect the navigation of the vessel.",
+    "fi": "Väylän ulko-osa Kallanista Mässkäriin on avointa ja suojatonta P - L - I tuulille. Väylä on sisäosaltaan ruopattu 120 m kanavamaiseksi väyläksi noin 3 kilometrin matkalta ennen satamaa. Sisäosalla ei aallokkoa pääse syntymään, mutta väylän kapeuden vuoksi tuuli ja squat-effekt imuvaikutus saattavat vaikeuttaa aluksen ohjailua.",
+    "sv": "Den yttre delen av leden från Kallan till Mässkär är öppen och oskyddad för N - V - O vindar. Den inre delen av farleden, 3 km lång, är muddrad så att den påminner om en 120 m bred kanal. Sjögång förekommer inte i denna del men genom att farleden är smal kan vinden och squateffekten försvåra fartygets navigering."
+  },
+  "generalInfo": null,
+  "id": "pietarsaari",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Three lines in the channel, all marked with boards.",
+    "fi": "Väylällä on kolme linjaa, merkintä perustuu linjataulujen, reunamerkin, poijujen ja viittojen yhdistettyyn käyttöön.",
+    "sv": "Leden har tre linjer, utmärkningen med ensmärken, randmärke, bojar och prickar i en gemensam kombination."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "pietarsaari"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Recommendations for vessels of more than 150 m in length, for inbound < 10 m/s and for outbound < 15 m/s.",
+    "fi": "Tuulirajasuositus yli 150 m pitkille aluksille on satamaan tultaessa < 10 m/s ja satamasta lähdettäessä < 15 m/s.",
+    "sv": "Rekommendation för fartyg med en längd över 150 m är max. vindhastigheten för inkommande < 10 m/s och för utgående < 15 m/s."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 495,
+      "primary": true
+    }
+  ],
+  "windGauge": {
+    "en": "Marine weather observations: Pietarsaari Kallan.",
+    "fi": "Rannikkoasemat: Pietarsaari Kallan.",
+    "sv": "Vädret vid kuststationerna: Jakobstad Kallan."
+  },
+  "speedLimit": null,
+  "modificationTimestamp": 1698235149602,
+  "iceCondition": {
+    "en": "The area is normally ice-covered from December to April. During ice formation winds and currents may create a heavy brash ice barrier between Pietarsaari edge mark and Mässkär. Later on ice ridges may occur off Pietarsaari edge mark. Ice movement may cause buoys and spar buoys to be pressed under ice (surface) over the whole length of the fairway.",
+    "fi": "Jäätä esiintyy alueella tavallisesti joulukuusta huhtikuuhun. Jäiden muodostumisaikana tuulet ja merivirrat voivat muodostaa vaikean sohjojäävyöhykkeen Pietarsaari reunamerkin ja Mässkärin väliselle alueelle. Talvikautena saattaa Pietarsaari reunamerkin edustalla esiintyä jääahtaumia. Jäiden liikkuessa poijut ja viitat saattavat olla jään alla koko väylän mitalta satamaan asti.",
+    "sv": "Is förekommer vanligen i området från december till april. Under isbildningen kan vindar och havsströmmar skapa ett svårforcerat bälte av issörja mellan randmärket Jakobstad och Mässkär. Vintertid kan det också förekomma isvallar utanför randmärket Jakobstad. När isen är i rörelse kan bojar och prickar vara tryckta under isen utmed hela farledens sträckning."
+  },
+  "fairwayIds": "#495#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 28500501,
+          "pilotJourney": 7
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. In winter and adverse weather conditions the pilot boarding position is separately agreed.",
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Anm. Vintertid och i dåligt väder bör plats där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Oy Kraftline Ab / www.kraftline.fi : tugboat M/S Simson 1235 kW, M/S Bock 1560 kW.",
+          "fi": "Oy Kraftline Ab / www.kraftline.fi : hinaaja M/S Simson 1235 kW, M/S Bock 1560 kW.",
+          "sv": "Oy Kraftline Ab / www.kraftline.fi : bogseraren M/S Simson 1235 kW, M/S Bock 1560 kW."
+        },
+        "phoneNumber": [
+          "+358405575692"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "designSpeed": {
+    "en": "Design speed in the outer fairway 11 knots, in the inner fairway 9 knots, in the harbour area 6 knots.",
+    "fi": "Mitoitusnopeus ulko-osalla 11 solmua ja sisäosalla 9 solmua, satamassa 6 solmua.",
+    "sv": "Rekommenderad fart i den yttre delen 11 knop, i den inre delen 9 knop, i hamnen 6 knop."
+  }
+}

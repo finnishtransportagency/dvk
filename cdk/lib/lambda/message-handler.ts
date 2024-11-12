@@ -1,7 +1,7 @@
 import { SNSEvent } from 'aws-lambda';
 import axios from 'axios';
 import { getRocketChatCredentials } from './environment';
-let credentials: { RocketchatUser: string; RocketchatPassword: string } | undefined = undefined;
+let credentials: { rocketChatUser: string; rocketChatPassword: string } | undefined = undefined;
 
 function getColor(result: string) {
   switch (result) {
@@ -42,8 +42,8 @@ const handler = async function (event: SNSEvent, context: any, callback: any) {
 
   const response = await axios.post(url, data, {
     headers: {
-      'X-Auth-Token': credentials.RocketchatPassword || '',
-      'X-User-Id': credentials.RocketchatUser || '',
+      'X-Auth-Token': credentials.rocketChatPassword || '',
+      'X-User-Id': credentials.rocketChatUser || '',
       'Content-type': 'application/json',
     },
   });

@@ -9,7 +9,7 @@ export type Lang = 'fi' | 'sv' | 'en';
 
 export type ItemType = '' | 'CARD' | 'HARBOR';
 
-export type ConfirmationType = '' | 'cancel' | 'save' | 'remove' | 'preview';
+export type ConfirmationType = '' | 'archive' | 'cancel' | 'preview' | 'publish' | 'remove' | 'version';
 
 export type ValidationType = {
   id: string;
@@ -56,7 +56,8 @@ export type HarbourActionType =
   | 'sectionName'
   | 'sectionDepth'
   | 'sectionLat'
-  | 'sectionLon';
+  | 'sectionLon'
+  | 'publishDetails';
 
 export type FairwayCardActionType =
   | 'name'
@@ -97,7 +98,8 @@ export type FairwayCardActionType =
   | 'temporaryNotifications'
   | 'temporaryNotificationContent'
   | 'temporaryNotificationStartDate'
-  | 'temporaryNotificationEndDate';
+  | 'temporaryNotificationEndDate'
+  | 'publishDetails';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'

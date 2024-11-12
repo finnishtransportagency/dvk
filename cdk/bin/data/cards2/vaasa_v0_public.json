@@ -1,0 +1,143 @@
+{
+  "anchorage": {
+    "en": "Anchoring within the harbour area should be avoided. In the approaches there is a possibility for anchoring N and S of Norrskär. In the inner section anchoring is possible approx. 0.6 nautical miles S of Ensten and 0.5 nautical miles NE of Fågelskär.",
+    "fi": "Ankkurointia satama-alueella vältettävä. Ulkopäässä Norrskärin pohjois- ja eteläpuolella ankkurointimahdollisuus. Sisäosalla ankkurointimahdollisuus Enstenin kohdalla väylän eteläpuolella ja Fågelskärin kohdalla väylän koillispuolella.",
+    "sv": "Ankring inom hamnområdet bör undvikas. N och S om Norrskär möjlighet till ankring. I farledens inre del möjlighet till ankring S om farleden vid Ensten och NO om farleden vid Fågelskär."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "3",
+  "modifier": "System",
+  "name": {
+    "en": "Vaasa fairway",
+    "fi": "Vaasan väylä",
+    "sv": "Vasa farled"
+  },
+  "attention": null,
+  "seaLevel": {
+    "en": "Vaasa mareograph (mareograph is located in Port of Vaasa area at Vaasa fairway depot).",
+    "fi": "Vaasa mareografi on satama-alueella, Vaasan väyläasemalla.",
+    "sv": "Vasa mareograf är inom hamnområdet vid Vasa farledsdepå."
+  },
+  "creationTimestamp": 1683095537638,
+  "navigationCondition": {
+    "en": "The approaches consist of open sea up to Norra Gloppsten, unsheltered against SW-N winds. For shelter, between Norra Gloppsten and Storhästen there are scarce isles, and from Storhästen up to Port of Vaasa is larger islands and archipelago. The Nygrund line requires accuracy and care from large vessels (there is a steep starboard bend of 65° at the beginning and a 26° bend to port at the end). Within the inner section strong side wind may affect navigation adversely.",
+    "fi": "Ulko-osa Norra Gloppsteniin saakka avomerta, suojaton LU - P tuulille. Välillä Norra Gloppsten - Storhästen suojana harvaa saaristoa ja Storhästenistä Vaasan satamaan sisäsaaristoa. Nygrundin kohta vaatii suurilta aluksilta tarkkuutta ja varovaisuutta (alussa jyrkkä 65° käännös oikealle, lopussa 26° käännös vasemmalle). Sisäosalla voi kova sivutuuli vaikeuttaa navigointia.",
+    "sv": "Öppet hav för den yttre delen fram till Norra Gloppsten, oskyddat för vind från SV-N. Mellan Norra Gloppsten och Storhästen löper farleden i skydd av gles skärgård och från Storhästen till Vasa hamn i innerskärgård. Nygrundslinjen kräver noggrannhet och försiktighet av stora fartyg (i början en tvär 65° styrbordsgir, i slutet en 26° gir åt babord). Navigeringen i det inre avsnittet kan försvåras av hård sidovind."
+  },
+  "generalInfo": null,
+  "id": "vaasa",
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Nine or eight (9/8) leading lines, mainly marked boards with boards, edge marks, buoys, spar buoys in combined use.",
+    "fi": "9/8 linjaa, jotka merkintä perustuu linjataulujen, reunamerkkien, poijujen ja viittojen yhdistettyyn käyttöön.",
+    "sv": "9/8 linjer, som huvudsakligen är utmärkta med ensmärken, randmärken, bojar och prickar i en gemensam kombination."
+  },
+  "version": "v0_public",
+  "harbors": [
+    {
+      "id": "vaasa"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Critical wind speed of design vessel 15 m/s between Nygrund and Port of Vaasa irrespective of wind direction during the open sea period.",
+    "fi": "Välillä Nygrund-Vaasan satama mitoitusalukselle kriittinen tuulennopeus 15 m/s kaikilla tuulen suunnilla avovesiaikana.",
+    "sv": "I avsnittet mellan Nygrund och Vasa hamn är den kritiska vindhastigheten för det dimensionerande fartyget 15 m/s för alla vindriktningar under den isfria perioden."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "id": 770,
+      "primary": true
+    },
+    {
+      "secondary": false,
+      "id": 775,
+      "primary": false
+    }
+  ],
+  "windGauge": {
+    "en": "Marine weather observations, Maalahti Strömmingsbådan, Mustasaari Valassaaret.",
+    "fi": "Rannikkoasemat, Maalahti Strömmingsbådan, Mustasaari Valassaaret.",
+    "sv": "Vädret vid kuststationerna, Malax Strömmingsbådan, Korsholm Valsörarna."
+  },
+  "speedLimit": {
+    "en": "There is a 15 knot speed limit between Nygrund and Port of Vaasa. A speed limit of 8 knots is recommended for the whole fairway. In the inner section the maximum speed of large vessels is normally approx. 5 knots.",
+    "fi": "Välillä Nygrund-Vaasan satama on 15 solmun nopeusrajoitus. Koko väylällä suositellaan noudatettavaksi 8 solmun nopeutta. Sisäosalla suurten alusten maksiminopeus on käytännössä n. 5 solmua.",
+    "sv": "I avsnittet mellan Nygrund och Vasa hamn gäller en 15 knops fartbegränsning. Rekommenderad fart i hela farleden är 8 knop. I farledens inre del är maximifarten för stora fartyg i praktiken ca 5 knop."
+  },
+  "modificationTimestamp": 1698231242872,
+  "iceCondition": {
+    "en": "Further out ice conditions vary according to winds and temperature. The outmost buoys are normally removed for winter. Very often ice moves or is stacked between Ensten and Norra Gloppsten. Ice movement may cause buoys and spar buoys to be pressed under ice (surface). Normaly during wintertime there is from 20 to 40 cm thick fast ice between Vaskiluoto and Ensten.",
+    "fi": "Ulompana jäätilanne vaihtelee tuulen ja lämpötilan mukaan. Uloimmat poijut yleensä poistetaan talveksi. Usein välillä Ensten-Norra Gloppsten jää liikkuu tai on kerrostunutta. Jäiden liikkuessa poijut ja viitat saattavat olla jään alla. Vaskiluodosta Ensteniin on yleensä talvisin noin 20-40 cm paksua kiintojäätä.",
+    "sv": "Längre ut varierar isläget med vinden och temperaturen. Vanligen tas de yttersta bojarna in till vintern. I avsnittet mellan Ensten och Norra Gloppsten är isen ofta rörlig eller skiktad. När isen rör sig kan bojarna och prickarna vara tryckta under isen. Normalt under vintern är det 20-40 cm tjock fast is mellan Vasklot och Ensten."
+  },
+  "fairwayIds": "#770#775#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "West Coast VTS",
+          "fi": "West Coast VTS",
+          "sv": "West Coast VTS"
+        },
+        "phoneNumber": "+358204486645",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 9
+          }
+        ],
+        "email": [
+          "westcoast.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 28100501,
+          "pilotJourney": 24
+        },
+        {
+          "id": 28200501,
+          "pilotJourney": 24
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB: In winter and adverse weather conditions the pilot boarding position is agreed separately.",
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka sovittava erikseen.",
+        "sv": "Anm. Vintertid och vid dåligt väder bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Harbour tug Hercules 750 kW; booking 2 h in advance.",
+          "fi": "Satamahinaaja Hercules 750 kW, 2 h ennakkovaroitusaika.",
+          "sv": "Hamnbogseraren Hercules 750 kW, med 2 h förvarning."
+        },
+        "phoneNumber": [
+          "+35840267927",
+          "+358505574739",
+          "+35863122233"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "designSpeed": {
+    "en": "Design speed in the outer fairway 12 knots, 10 knots from position where safe clearance depth alters to harbour.",
+    "fi": "Mitoitusnopeus ulko-osalla 12 solmua, haraussyvyyden muutoskohdasta satamaan 10 solmua.",
+    "sv": "Dimensionerande fart i den yttre delen 12 knop, från positionen där det ramade djupet ändras till hamnen 10 knop."
+  }
+}

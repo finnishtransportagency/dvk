@@ -94,31 +94,46 @@ export class DvkSonarPipelineStack extends Stack {
               'cd e2e',
               'npm ci',
               'npx playwright install --with-deps',
-              'xvfb-run --server-args="-screen 0 1920x1080x24 -ac" npx playwright test'
+              'PLAYWRIGHT_JUNIT_OUTPUT_NAME=dvk-results.xml PORT=3000 xvfb-run --server-args="-screen 0 1920x1080x24 -ac" npx playwright test tests/dvk',
+              'cd ..',
+              'cd squat',
+              'npm run build',
+              'npx serve -p 3001 -s build &',
+              'until curl -s http://localhost:3001 > /dev/null; do sleep 1; done',
+              'cd ..',
+              'cd e2e',
+              'PLAYWRIGHT_JUNIT_OUTPUT_NAME=squat-results.xml PORT=3001 xvfb-run --server-args="-screen 0 1920x1080x24 -ac" npx playwright test tests/squat',
             ],
           },
         },
         cache: { paths: ['/tmp/.npm/**/*', '/tmp/.sonar/**/*'] },
         reports: {
-          'squat-robot-tests': { files: 'e2e/xml-report/results.xml' },
-          'dvk-robot-tests': { files: 'e2e/xml-report/results.xml' },
-          'admin-robot-tests': { files: 'e2e/xml-report/results.xml' },
+          'squat-robot-tests': { files: 'e2e/xml-report/squat-results.xml' },
+          'dvk-robot-tests': { files: 'e2e/xml-report/dvk-results.xml' },
+          'admin-robot-tests': { files: 'e2e/xml-report/dvk-results.xml' },
         },
         artifacts: {
           'base-directory': 'e2e/xml-report',
           files: '**/*',
           name: '$CODEBUILD_BUILD_NUMBER',
+          'secondary-artifacts': {
+            Traces: {
+              'base-directory': 'e2e/test-results',
+              files: ['**/*'],
+              name: 'traces/$CODEBUILD_BUILD_NUMBER',
+            },
+          },
         },
       }),
       source: gitHubSource,
       cache: Cache.local(LocalCacheMode.CUSTOM, LocalCacheMode.SOURCE, LocalCacheMode.DOCKER_LAYER),
       environment: {
         buildImage: LinuxBuildImage.fromEcrRepository(Repository.fromRepositoryName(this, 'DvkPlaywrightImage', 'dvk-playwrightimage'), '1.0.0'),
-        computeType: ComputeType.MEDIUM,
+        computeType: ComputeType.LARGE,
         environmentVariables: {
           CI: { value: true },
           ENVIRONMENT: { value: 'feature' },
-          SONAR_BINARY_CACHE: { value: '/tmp/.sonar'},
+          SONAR_BINARY_CACHE: { value: '/tmp/.sonar' },
           SONARQUBE_HOST_URL: { value: config.getGlobalStringParameter('SonarQubeHostURL') },
           SONARQUBE_ACCESS_TOKEN: {
             type: BuildEnvironmentVariableType.SECRETS_MANAGER,
@@ -137,6 +152,14 @@ export class DvkSonarPipelineStack extends Stack {
         includeBuildId: false,
         packageZip: false,
       }),
+      secondaryArtifacts: [
+        Artifacts.s3({
+          bucket: sonarBucket,
+          includeBuildId: false,
+          packageZip: false,
+          identifier: 'Traces',
+        }),
+      ],
     });
     project.addToRolePolicy(
       new PolicyStatement({

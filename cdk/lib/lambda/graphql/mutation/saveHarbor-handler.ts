@@ -60,6 +60,7 @@ export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undef
         };
       }) ?? null,
     expires: harbor.status === Status.Removed ? getExpires() : null,
+    publishDetails: harbor.publishDetails,
   };
 }
 
@@ -67,19 +68,30 @@ export const handler: AppSyncResolverHandler<MutationSaveHarborArgs, Harbor> = a
   event: AppSyncResolverEvent<MutationSaveHarborArgs>
 ): Promise<Harbor> => {
   const user = await getCurrentUser(event);
-  log.info(`saveHarbor(${event.arguments.harbor?.id}, ${user.uid})`);
-  const dbModel = await HarborDBModel.getVersion(event.arguments.harbor.id, event.arguments.harbor.version);
-  const newModel = mapHarborToModel(event.arguments.harbor, dbModel, user);
+  const harbor = event.arguments.harbor;
+
+  log.info(`saveHarbor(${harbor?.id}, ${user.uid})`);
+  const dbModel = await HarborDBModel.getVersion(harbor.id, harbor.version);
+  const newModel = mapHarborToModel(harbor, dbModel, user);
   log.debug('harbor: %o', newModel);
+  let currentPublicHarbor = null;
+
+  if (harbor.operation === Operation.Publish) {
+    const publicVersion = await HarborDBModel.getPublic(harbor.id).then((harbour) => harbour?.currentPublic);
+    if (publicVersion) {
+      currentPublicHarbor = await HarborDBModel.getVersion(harbor.id, 'v' + publicVersion);
+    }
+  }
+
   try {
-    await HarborDBModel.save(newModel, event.arguments.harbor.operation);
+    await HarborDBModel.save(newModel, harbor.operation, currentPublicHarbor);
   } catch (e) {
     if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
-      throw new Error(event.arguments.harbor.operation === Operation.Create ? OperationError.HarborAlreadyExist : OperationError.HarborNotExist);
+      throw new Error(harbor.operation === Operation.Create ? OperationError.HarborAlreadyExist : OperationError.HarborNotExist);
     }
     throw e;
   }
-  if (event.arguments.harbor.operation === Operation.Update) {
+  if (harbor.operation === Operation.Update) {
     const changes = dbModel ? diff(dbModel, newModel) : null;
     auditLog.info({ changes, harbor: newModel, user: user.uid }, 'Harbor updated');
   } else {

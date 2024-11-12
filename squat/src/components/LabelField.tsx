@@ -14,6 +14,7 @@ interface LabelProps {
   helper?: string;
   infoContentTitle?: string;
   infoContent?: string | ReactElement;
+  dataTestid?: string;
 }
 
 const LabelField: React.FC<LabelProps> = (props) => {
@@ -24,7 +25,12 @@ const LabelField: React.FC<LabelProps> = (props) => {
       <Label title={props.title} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
 
       <IonItem lines="none" className="item-static">
-        <IonText color={props.error ? 'danger' : 'dark'} title={props.error ? props.error : ''} className={props.error ? 'input-error' : ''}>
+        <IonText
+          color={props.error ? 'danger' : 'dark'}
+          title={props.error ? props.error : ''}
+          className={props.error ? 'input-error' : ''}
+          data-testid={props.dataTestid}
+        >
           {props.error && <IonIcon icon={warningOutline} color="danger" />}
           {props.value}
         </IonText>

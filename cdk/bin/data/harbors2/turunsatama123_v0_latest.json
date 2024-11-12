@@ -1,0 +1,233 @@
+{
+  "phoneNumber": [
+    "+358447334550"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "DRAFT",
+  "harborBasin": null,
+  "modifier": "System",
+  "email": "satama@portofnaantali.fi",
+  "name": {
+    "en": "Port of Turku",
+    "fi": "Turun satama",
+    "sv": "Åbo hamn"
+  },
+  "cargo": {
+    "en": "Suomen Viljava: 2 cranes for loading/unloading of grain, cranes available from private companies",
+    "fi": "Suomen Viljava: 2 kpl viljan purkaus/lastauslaitteita, operaattoreilla mobiilinostureita",
+    "sv": "Suomen Viljava: 2 stycken kranar för lastning/lossning av spannmål"
+  },
+  "modificationTimestamp": 1695733858736,
+  "company": {
+    "en": "Port of Turku",
+    "fi": "Turun Satama Oy",
+    "sv": "Åbo hamn"
+  },
+  "quays": [
+    {
+      "length": 370,
+      "name": {
+        "en": "quay 15-17, coal and grain",
+        "fi": "laituri 15-17, hiili- ja viljalaituri",
+        "sv": "kaj 15-17, stenkols- och spannmålskaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.13,
+          60.26
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 13
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 200,
+      "name": {
+        "en": "quay 20, ferry/Finnlink",
+        "fi": "laituri 20, lauttalaituri/Finnlink",
+        "sv": "kaj 20, färjekaj/Finnlink"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.13,
+          60.26
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.2
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": null,
+      "name": {
+        "en": "quay 22, small craft use",
+        "fi": "laituri 22, pienaluskäytössä",
+        "sv": "kaj 22, i småbåtsbruk"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.0428,
+          60.45761
+        ]
+      },
+      "sections": null,
+      "extraInfo": null
+    },
+    {
+      "length": 170,
+      "name": {
+        "en": "quay 23-24, rockmaterial",
+        "fi": "laituri 23-24, kivilaituri",
+        "sv": "kaj 23-24, stenkaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03924,
+          60.45809
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.9
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 50,
+      "name": {
+        "en": "quay 25, sugar",
+        "fi": "laituri 25, sokerilaituri",
+        "sv": "kaj 25, sockerkaj"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03782,
+          60.45825
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 4.5
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 150,
+      "name": {
+        "en": "quay 26",
+        "fi": "laituri 26",
+        "sv": "kaj 26"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03736,
+          60.45766
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 180,
+      "name": {
+        "en": "quay 27",
+        "fi": "laituri 27",
+        "sv": "kaj 27"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          22.03649,
+          60.4579
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 130,
+      "name": {
+        "en": "quay 30, Luonnonmaa",
+        "fi": "laituri 30, Luonnonmaa",
+        "sv": "kaj 30, Luonnonmaa"
+      },
+      "geometry": null,
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.7
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 60,
+      "name": {
+        "en": "quay 31, Luonnonmaa",
+        "fi": "laituri 31, Luonnonmaa",
+        "sv": "kaj 31, Luonnonmaa"
+      },
+      "geometry": null,
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.7
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "latest": 1,
+  "creationTimestamp": 1695715767144,
+  "id": "turunsatama123",
+  "fax": null,
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      22.13,
+      60.26
+    ]
+  }
+}

@@ -37,6 +37,9 @@ enum Operation {
   CREATE
   UPDATE
   CREATEVERSION
+  PUBLISH
+  ARCHIVE
+  REMOVE
 }
 
 enum OperationError {
@@ -79,6 +82,7 @@ input FairwayCardInput {
   pictures: [PictureInput!]
   pilotRoutes: [Int!]
   temporaryNotifications: [TemporaryNotificationInput!]
+  publishDetails: String
 }
 
 input PictureInput {
@@ -156,12 +160,14 @@ input HarborInput {
   cargo: TextInput
   quays: [QuayInput]
   geometry: GeometryInput!
+  publishDetails: String
 }
 
 enum Status {
   DRAFT
   PUBLIC
   REMOVED
+  ARCHIVED
 }
 
 input GeometryInput {
@@ -259,6 +265,8 @@ type FairwayCard {
   pilotRoutes: [PilotRoute!]
   temporaryNotifications: [TemporaryNotification!]
   latest: Float
+  latestVersionUsed: Float
+  publishDetails: String
 }
 
 type Picture {
@@ -337,6 +345,8 @@ type Harbor {
   cargo: Text
   geometry: GeometryPoint
   latest: Float
+  latestVersionUsed: Float
+  publishDetails: String
 }
 
 type Quay {

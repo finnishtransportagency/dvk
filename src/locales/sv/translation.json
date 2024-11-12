@@ -32,8 +32,8 @@
         "layer": {
           "tipLabel": "Välj lager",
           "header": "Kartlager",
-          "saveSelection": "[sv] Muista valintani",
-          "selectAll": "[sv] Valitse kaikki tasot",
+          "saveSelection": "Kom ihåg mina val",
+          "selectAll": "Välj alla nivåer",
           "class1": "Handelssjöfart",
           "class2": "Annan vattentrafik",
           "lines": "Navigationslinjer",
@@ -109,7 +109,7 @@
           },
           "modal": {
             "info": "Ytterligare information",
-            "description": "[sv] Muista valintani -ominaisuus tallentaa tekemäsi tasovalinnat selaimeesi. Mikäli ominaisuus on käytössä, valitaan sivustolle saapuessasi näkyviin automaattisesti viimeksi käyttämäsi tasot. Jos haluat, että tasovalintojasi ei enää muisteta, ota Muista valintani -ominaisuus pois käytöstä ja päivitä sivusto."
+            "description": "Funktionen Kom ihåg mina val sparar de nivåer du har valt i din webbläsare. Om funktionen är aktiverad kommer de nivåer du valde senast att visas automatiskt när du besöker webbplatsen. Om du inte längre vill att dina val ska sparas, inaktivera funktionen Kom ihåg mina val och uppdatera webbplatsen."
           }
         },
         "mapDetails": {
@@ -188,8 +188,8 @@
     "attention": "Obs.",
     "n2000Info": "Referensnivå för djupuppgifter är N2000 (Baltic Sea Chart Datum 2000 / BSCD2000).",
     "prohibitionAreas": "Områden med mötes- och omkörningsförbud",
-    "prohibitionText_one": "Farleden har ett permanent område med mötes- och omkörningsförbud, se noggrannare VTS Master's Guide",
-    "prohibitionText_other": "Farleden har permanent område med mötes- och omkörningsförbud, se noggrannare VTS Master's Guide",
+    "prohibitionText_one": "Farleden har ett permanent område med mötes- och omkörningsförbud",
+    "prohibitionText_other": "Farleden har permanent område med mötes- och omkörningsförbud",
     "anchorage": "Ankrings- och andra specialområden",
     "navigation": "Navigerbarhet",
     "navigationCondition": "Navigationsförhållanden",

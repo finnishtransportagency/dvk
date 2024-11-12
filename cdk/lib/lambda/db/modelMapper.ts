@@ -131,7 +131,7 @@ export function mapEmail(text: Maybe<string> | undefined): string | null {
 }
 
 export function mapEmails(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
-  return text ? (text.map((t) => mapEmail(t)).filter((t) => t !== null) as string[]) : null;
+  return text ? text.map((t) => mapEmail(t)).filter((t) => t !== null) : null;
 }
 
 export function mapPhoneNumber(text: Maybe<string> | undefined): string | null {
@@ -143,11 +143,11 @@ export function mapPhoneNumber(text: Maybe<string> | undefined): string | null {
 }
 
 export function mapPhoneNumbers(text: Maybe<Maybe<string>[]> | undefined): string[] | null {
-  return text ? (text.map((t) => mapPhoneNumber(t)).filter((t) => t !== null) as string[]) : null;
+  return text ? text.map((t) => mapPhoneNumber(t)).filter((t) => t !== null) : null;
 }
 
 export function mapStringArray(text: Maybe<Maybe<string>[]> | undefined, maxLength = MAX_TEXT_LENGTH): string[] | null {
-  return text ? (text.map((t) => mapString(t, maxLength)).filter((t) => t !== null) as string[]) : null;
+  return text ? text.map((t) => mapString(t, maxLength)).filter((t) => t !== null) : null;
 }
 
 export function mapIds(ids: number[]) {
@@ -302,6 +302,8 @@ export function mapFairwayCardDBModelToGraphqlType(
     pictures: dbModel.pictures,
     temporaryNotifications: mapTemporaryNotifications(dbModel.temporaryNotifications ?? []),
     latest: dbModel.latest,
+    latestVersionUsed: dbModel.latestVersionUsed,
+    publishDetails: dbModel.publishDetails,
   };
 
   for (const fairway of dbModel.fairways || []) {
@@ -332,6 +334,8 @@ export function mapHarborDBModelToGraphqlType(dbModel: HarborDBModel, user: Curr
     quays: dbModel.quays,
     status: dbModel.status,
     latest: dbModel.latest,
+    latestVersionUsed: dbModel.latestVersionUsed,
+    publishDetails: dbModel.publishDetails,
   };
 }
 

@@ -25,7 +25,7 @@ export const handler = async (): Promise<MarineWarning[]> => {
         description: { fi: feature.properties?.SISALTO_FI, sv: feature.properties?.SISALTO_SV, en: feature.properties?.SISALTO_EN },
         startDateTime: dates.startDateTime,
         endDateTime: dates.endDateTime,
-        dateTime: dates.dateTime || 0,
+        dateTime: dates.dateTime ?? 0,
         notifier: feature.properties?.TIEDOKSIANTAJA,
         equipmentId: Number(feature.properties?.TURVALAITE_TXT?.match(/\d.*/)[0]),
         lineId: Number(feature.properties?.NAVIGOINTILINJA_TXT?.match(/\d.*/)[0]),

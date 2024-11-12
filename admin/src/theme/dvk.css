@@ -704,11 +704,12 @@ ion-grid.itemList ion-col.item-status-PUBLIC {
   color: var(--ion-color-success);
   font-weight: bold;
 }
+ion-grid.itemList ion-col.item-status-ARCHIVED,
 ion-grid.itemList ion-col.item-status-REMOVED {
   color: var(--ion-color-danger);
   opacity: 0.75;
-  text-decoration: line-through;
 }
+
 ion-grid.itemList ion-col.item-status-DRAFT {
   color: var(--ion-color-medium);
   font-style: italic;
@@ -905,6 +906,20 @@ ion-modal.prompt::part(content) {
 
 ion-modal.prompt .ion-page {
   overflow: visible;
+}
+
+ion-modal.publish-details {
+  --width: 1350px;
+  --height: fit-content;
+}
+
+ion-modal.publish-details ion-grid.publishDetailsGrid {
+  width: 100%;
+  min-height: 380px;
+}
+
+ion-modal.publish-details ion-row.publishDetailsRow {
+  padding: 0px 25px 0px 25px;
 }
 
 /* Alert */
@@ -1278,12 +1293,17 @@ ion-header.infoHeader .infoHeaderDivider {
   color: var(--ion-color-success);
   font-weight: bold;
 }
+.infoContent .item-status-ARCHIVED,
 .infoContent .item-status-REMOVED {
   color: var(--ion-color-danger);
   opacity: 0.75;
-  text-decoration: line-through;
   font-size: 14px;
 }
+
+.item-status-REMOVED {
+  text-decoration: line-through;
+}
+
 .infoContent .item-status-DRAFT {
   color: var(--ion-color-medium);
   font-style: italic;

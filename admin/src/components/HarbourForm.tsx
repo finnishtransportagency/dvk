@@ -15,14 +15,15 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NotificationModal';
-import { mapOriginToHarborInput, mapToHarborInput } from '../utils/dataMapper';
+import { mapNewHarbourVersion, mapToHarborInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
 import { openPreview } from '../utils/common';
-import InfoHeader from './InfoHeader';
+import InfoHeader, { InfoHeaderProps } from './InfoHeader';
+import PublishModal from './PublishModal';
 
 interface FormProps {
   harbour: HarborInput;
@@ -51,6 +52,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
+  const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
@@ -65,7 +67,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handleOpenPreview();
       }
       if (isSubmittingVersion) {
-        const nextVersionNumber = latestHarbor?.harbor?.latest ? latestHarbor.harbor.latest + 1 : 2;
+        const latestVersionUsed = latestHarbor?.harbor?.latestVersionUsed;
+        const latestVersionNumber = latestHarbor?.harbor?.latest;
+        // if latestVersionUsed is null, check latest. If still null we can assume there's only one version
+
+        const nextVersionNumber = (latestVersionUsed ?? latestVersionNumber ?? 1) + 1;
+
         history.push({ pathname: '/satama/' + data.saveHarbor?.id + '/v' + nextVersionNumber });
         setIsSubmittingVersion(false);
       }
@@ -92,28 +99,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     );
   };
 
-  const backToList = () => {
-    history.push({ pathname: '/' });
-  };
-
-  const handleCancel = () => {
-    if (hasUnsavedChanges(oldState, state)) {
-      setConfirmationType('cancel');
-    } else {
-      backToList();
-    }
-  };
-
   const saveHarbour = useCallback(
-    (isRemove?: boolean) => {
-      if (isRemove) {
-        const oldHarbour = { ...oldState, status: Status.Removed };
-        setState({ ...oldState, status: Status.Removed });
-        saveHarbourMutation({ harbor: oldHarbour as HarborInput });
-      } else {
-        const currentHarbour = {
-          ...state,
-          quays: state.quays?.map((quay) => {
+    (operation: Operation) => {
+      const mapQuays = (harbour: HarborInput) => {
+        return {
+          ...harbour,
+          quays: harbour.quays?.map((quay) => {
             return {
               ...quay,
               geometry:
@@ -137,7 +128,28 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
             };
           }),
         };
-        saveHarbourMutation({ harbor: currentHarbour as HarborInput });
+      };
+
+      if (operation === Operation.Publish) {
+        setState({ ...state, status: Status.Public });
+        saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Public, operation }) as HarborInput });
+        setPublishDetailsOpen(false);
+      } else if (operation === Operation.Archive) {
+        setState({ ...state, status: Status.Archived });
+        saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Archived, operation }) as HarborInput });
+      } else if (operation === Operation.Remove) {
+        // Ignore unsaved changes if draft harbour is removed
+        setState({ ...oldState, status: Status.Removed });
+        saveHarbourMutation({ harbor: mapQuays({ ...oldState, status: Status.Removed, operation }) as HarborInput });
+      } else if (operation === Operation.Update) {
+        saveHarbourMutation({ harbor: mapQuays(state) as HarborInput });
+      } else if (operation === Operation.Create) {
+        saveHarbourMutation({ harbor: mapQuays({ ...state, version: 'v1' }) as HarborInput });
+      } else if (operation === Operation.Createversion) {
+        setIsSubmittingVersion(true);
+        const newVersion = mapNewHarbourVersion(state);
+        setState(newVersion);
+        saveHarbourMutation({ harbor: mapQuays(newVersion) as HarborInput });
       }
     },
     [state, oldState, saveHarbourMutation]
@@ -155,15 +167,17 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
 
-  const checkLinkedFairways = (isToBeRemoved: boolean, isToBeDrafted: boolean) => {
+  const checkLinkedFairwayCards = (operation: Operation) => {
     const linkedFairwayCards = fairwayCardList?.fairwayCards.filter(
       (card) => card.harbors?.filter((harbourItem) => harbourItem.id === harbour.id).length
     );
 
     if ((linkedFairwayCards || []).length > 0) {
-      if (isToBeRemoved || isToBeDrafted) {
-        let translatedMsg = t('harbour.linked-fairwaycards-exist-cannot-remove-harbour', { count: linkedFairwayCards?.length });
-        if (isToBeDrafted) translatedMsg = t('harbour.linked-fairwaycards-exist-cannot-draft-harbour', { count: linkedFairwayCards?.length });
+      if (operation === Operation.Remove || operation === Operation.Archive) {
+        const translatedMsg =
+          operation === Operation.Remove
+            ? t('harbour.linked-fairwaycards-exist-cannot-remove-harbour', { count: linkedFairwayCards?.length })
+            : t('harbour.linked-fairwaycards-exist-cannot-archive-harbour', { count: linkedFairwayCards?.length });
         setSaveError('OPERATION-BLOCKED');
         setSaveErrorMsg(translatedMsg);
         setSaveErrorItems(linkedFairwayCards?.map((card) => card.name[lang] ?? card.name.fi ?? card.id));
@@ -173,32 +187,41 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     return false;
   };
 
-  const handleSubmit = (isRemove = false, newVersion?: boolean) => {
-    queryClient.invalidateQueries({ queryKey: ['fairwayCards'] }).catch((err) => console.error(err));
+  const backToList = () => {
+    history.push({ pathname: '/' });
+  };
 
-    const isToBeRemoved = isRemove || (harbour.status !== Status.Removed && state.status === Status.Removed);
-    const isToBeDrafted = harbour.status === Status.Public && state.status === Status.Draft && !newVersion;
-    const linkedFairways = checkLinkedFairways(isToBeRemoved, isToBeDrafted);
-
-    if (linkedFairways) {
-      setPreviewPending(false);
-      return;
+  const handleCancel = () => {
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('cancel');
+    } else {
+      backToList();
     }
+  };
 
-    if (isToBeRemoved) {
-      setConfirmationType('remove');
-    } else if (formValid()) {
-      if (
-        state.status === Status.Draft &&
-        (oldState.status === Status.Draft || state.operation === Operation.Create || state.operation === Operation.Createversion)
-      ) {
-        saveHarbour(false);
-      } else {
-        setConfirmationType('save');
-      }
+  const handleSave = () => {
+    if (formValid()) {
+      saveHarbour(state.operation);
     } else {
       setSaveError('MISSING-INFORMATION');
       setPreviewPending(false);
+    }
+  };
+
+  const handleRemove = () => {
+    queryClient.invalidateQueries({ queryKey: ['fairwayCards'] }).catch((err) => console.error(err));
+    const operation = state.status === Status.Public ? Operation.Archive : Operation.Remove;
+    const linkedFairwayCards = checkLinkedFairwayCards(operation);
+
+    // Cannot remove or archive harbour, if fairway card has a link to it
+    if (linkedFairwayCards) {
+      return;
+    }
+
+    if (state.status === Status.Draft) {
+      setConfirmationType('remove');
+    } else if (state.status === Status.Public) {
+      setConfirmationType('archive');
     }
   };
 
@@ -213,6 +236,41 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       setPreviewConfirmation('preview');
     } else {
       handleOpenPreview();
+    }
+  };
+
+  const handleNewVersion = () => {
+    if (formValid()) {
+      setConfirmationType('version');
+    } else if (!saveError && !saveErrorMsg) {
+      setSaveError('OPERATION-BLOCKED');
+      setSaveErrorMsg(t('general.fix-errors-try-again'));
+    }
+  };
+
+  const handlePublish = () => {
+    if (formValid()) {
+      setConfirmationType('publish');
+      setPublishDetailsOpen(true);
+    } else {
+      setSaveError('MISSING-INFORMATION');
+    }
+  };
+
+  const handleConfirmationSubmit = () => {
+    switch (confirmationType) {
+      case 'archive':
+        return saveHarbour(Operation.Archive);
+      case 'cancel':
+        return backToList();
+      case 'publish':
+        return saveHarbour(Operation.Publish);
+      case 'remove':
+        return saveHarbour(Operation.Remove);
+      case 'version':
+        return saveHarbour(Operation.Createversion);
+      default:
+        return;
     }
   };
 
@@ -246,33 +304,33 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
   };
 
-  const createNewVersion = () => {
-    if (formValid()) {
-      setState(mapOriginToHarborInput(state));
-      setIsSubmittingVersion(true);
-    } else if (!saveError && !saveErrorMsg) {
-      setSaveError('OPERATION-BLOCKED');
-      setSaveErrorMsg(t('general.fix-errors-try-again'));
-    }
-  };
-
   useEffect(() => {
     setState(harbour);
     setOldState(harbour);
   }, [harbour]);
 
-  useEffect(() => {
-    if (isSubmittingVersion && state.operation === Operation.Createversion) {
-      handleSubmit(false, true);
-    }
-    // eslint-disable-next-line
-  }, [isSubmittingVersion])
+  const infoHeader: InfoHeaderProps = {
+    status: state.status,
+    modified: getDateTimeInfo(true),
+    created: getDateTimeInfo(false),
+    version: harbour.version,
+    modifier: savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown'),
+    creator: savedHarbour?.creator ?? creator,
+  };
 
   return (
     <IonPage>
+      <PublishModal
+        state={state}
+        setModalOpen={setPublishDetailsOpen}
+        setValue={updateState}
+        handleConfirmationSubmit={handleConfirmationSubmit}
+        modalOpen={publishDetailsOpen}
+        infoHeader={infoHeader}
+      />
       <ConfirmationModal
         saveType="harbor"
-        action={confirmationType === 'cancel' ? backToList : saveHarbour}
+        action={handleConfirmationSubmit}
         confirmationType={confirmationType}
         setConfirmationType={setConfirmationType}
         newStatus={state.status}
@@ -281,7 +339,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       />
       <ConfirmationModal
         saveType="harbor"
-        action={handleSubmit}
+        action={() => saveHarbour(state.operation)}
         confirmationType={previewConfirmation}
         setConfirmationType={setPreviewConfirmation}
         newStatus={state.status}
@@ -304,16 +362,16 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         itemList={saveErrorItems}
       />
       <Header
-        operation={state.operation}
-        status={state.status}
-        oldStatus={oldState.status}
+        currentState={state}
+        oldState={oldState}
         isLoading={isLoadingMutation}
         isLoadingMutation={isLoadingMutation}
-        updateState={updateState}
-        handleSubmit={handleSubmit}
         handleCancel={handleCancel}
+        handleSave={handleSave}
+        handleRemove={handleRemove}
         handlePreview={handlePreview}
-        createNewVersion={createNewVersion}
+        handleNewVersion={handleNewVersion}
+        handlePublish={handlePublish}
         isError={isError}
       />
 

@@ -1,25 +1,20 @@
 import axios from 'axios';
 import {
-  getAISHeaders,
+  getAISParameters,
   getExtensionPort,
-  getIBNetApiUrl,
-  getIlmanetPassword,
-  getIlmanetUrl,
-  getIlmanetUsername,
-  getPookiHeaders,
-  getPookiUrl,
-  getSOAApiUrl,
+  getIBNetApiParameters,
+  getIlmanetParameters,
+  getPookiParameters,
+  getSOAApiParameters,
   getTimeout,
-  getTraficomHeaders,
-  getVatuHeaders,
-  getVatuPilotRoutesUrl,
-  getVatuUrl,
-  getWeatherHeaders,
+  getVatuParameters,
+  getVatuPilotRoutesParameters,
+  getVatuV2ApiSupport,
 } from '../environment';
 import { log } from '../logger';
-import { FeatureCollection, Geometry } from 'geojson';
-import { roundGeometry } from '../util';
-import { GeometryModel, RtzData, VaylaAPIModel, VesselAPIModel, VesselLocationFeatureCollection } from './apiModels';
+import { FeatureCollection } from 'geojson';
+import { convertToGeoJson, roundGeometry } from '../util';
+import { VaylaGeojsonFeature, RtzData, VesselAPIModel, VesselLocationFeatureCollection, VaylaFeature } from './apiModels';
 
 export enum ExternalAPI {
   ILMANET = 'Ilmanet',
@@ -37,11 +32,12 @@ export function getFetchErrorMessage(api: ExternalAPI): string {
 }
 
 export async function fetchTraficomApi<T>(path: string) {
-  const url = `https://${await getSOAApiUrl()}/${path}`;
+  const { soaApiUrl, weatherHeaders } = await getSOAApiParameters();
+  const url = `https://${soaApiUrl}/${path}`;
   const start = Date.now();
   const response = await axios
     .get(url, {
-      headers: await getTraficomHeaders(),
+      headers: weatherHeaders,
       timeout: getTimeout(),
     })
     .catch(function (error) {
@@ -55,11 +51,11 @@ export async function fetchTraficomApi<T>(path: string) {
 }
 
 export async function fetchPilotRoutesApi() {
-  const url = await getVatuPilotRoutesUrl();
+  const { vatuPilotRoutesUrl, vatuHeaders } = await getVatuPilotRoutesParameters();
   const start = Date.now();
   const response = await axios
-    .get(url, {
-      headers: await getVatuHeaders(),
+    .get(vatuPilotRoutesUrl, {
+      headers: vatuHeaders,
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
@@ -72,11 +68,12 @@ export async function fetchPilotRoutesApi() {
 }
 
 async function fetchAISApi(path: string, params: Record<string, string>) {
-  const url = `https://${await getSOAApiUrl()}/${path}`;
+  const { soaApiUrl, aisHeaders } = await getAISParameters();
+  const url = `https://${soaApiUrl}/${path}`;
   const start = Date.now();
   const response = await axios
     .get(url, {
-      headers: await getAISHeaders(),
+      headers: aisHeaders,
       params,
       timeout: getTimeout(),
     })
@@ -102,12 +99,26 @@ export async function fetchAISFeatureCollection(path: string, params: Record<str
     : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);
 }
 
-export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(api: string, params: Record<string, string> = {}) {
-  const url = `${await getVatuUrl()}/${api}`;
+async function getVatuAPIVersion(api: string): Promise<string> {
+  //During transition phase between V1 and V2, separate different environments support for API
+  return (await getVatuV2ApiSupport())
+    .split(';')
+    .map((s) => s.trim().toLowerCase())
+    .includes(api)
+    ? '-v2'
+    : '';
+}
+
+export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeature>(api: string, params: Record<string, string> = {}) {
+  const { vatuUrl, vatuHeaders } = await getVatuParameters();
+
+  const url = `${vatuUrl}${await getVatuAPIVersion(api)}/${api}`;
+  log.debug({ api, url }, `VATU api: ${api}, url=${url}`);
+
   const start = Date.now();
   const response = await axios
     .get(url, {
-      headers: await getVatuHeaders(),
+      headers: vatuHeaders,
       params,
       timeout: getTimeout(),
     })
@@ -123,19 +134,26 @@ export async function fetchVATUByApi<T extends GeometryModel | VaylaAPIModel>(ap
       throw new Error(getFetchErrorMessage(ExternalAPI.VATU));
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
-  for (const obj of response.data as T[]) {
-    if ('geometria' in obj) {
-      roundGeometry(obj.geometria as Geometry);
+
+  if (!('features' in response.data)) {
+    //Convert the data to GeoJson
+    response.data = convertToGeoJson(response.data);
+  }
+
+  for (const obj of response.data.features as T[]) {
+    if ('geometry' in obj) {
+      roundGeometry(obj.geometry);
     }
   }
   return response;
 }
 
 export async function fetchMarineWarnings() {
+  const { pookiUrl, pookiHeaders } = await getPookiParameters();
   const start = Date.now();
   const response = await axios
-    .get(await getPookiUrl(), {
-      headers: await getPookiHeaders(),
+    .get(pookiUrl, {
+      headers: pookiHeaders,
       timeout: getTimeout(),
     })
     .catch(function (error) {
@@ -154,8 +172,14 @@ export async function fetchMarineWarnings() {
 }
 
 export async function fetchWeatherApi<T>(path: string) {
-  const [soaApiUrl, weatherHeaders] = await Promise.all([getSOAApiUrl(), getWeatherHeaders()]);
+  const response = await fetchWeatherApiResponse(path);
+  return response.data ? (response.data as T[]) : [];
+}
+
+export async function fetchWeatherApiResponse(path: string) {
+  const { soaApiUrl, weatherHeaders } = await getSOAApiParameters();
   const start = Date.now();
+  log.debug(`Weather api https://${soaApiUrl}/fmi/${path} called`);
   const response = await axios
     .get(`https://${soaApiUrl}/fmi/${path}`, {
       headers: weatherHeaders,
@@ -168,22 +192,17 @@ export async function fetchWeatherApi<T>(path: string) {
     });
   const duration = Date.now() - start;
   log.debug({ duration }, `Weather api ${path} response time: ${duration} ms`);
-  return response.data ? (response.data as T[]) : [];
+  return response;
 }
 
 export async function fetchIlmanetApi(): Promise<string> {
-  const [url, username, password, weatherHeaders] = await Promise.all([
-    getIlmanetUrl(),
-    getIlmanetUsername(),
-    getIlmanetPassword(),
-    getWeatherHeaders(),
-  ]);
+  const { ilmanetUrl, ilmanetUserName, ilmanetPassword, weatherHeaders } = await getIlmanetParameters();
   const start = Date.now();
   const response = await axios
-    .get(url, {
+    .get(ilmanetUrl, {
       params: {
-        username: username,
-        password: password,
+        username: ilmanetUserName,
+        password: ilmanetPassword,
         orderId: 165689,
       },
       headers: weatherHeaders,
@@ -200,11 +219,12 @@ export async function fetchIlmanetApi(): Promise<string> {
 }
 
 export async function fetchIBNetApi<T>(path?: string, params?: Record<string, string>) {
-  const url = `${await getIBNetApiUrl()}${path ?? ''}`;
+  const { ibNetApiUrl, vatuHeaders } = await getIBNetApiParameters();
+  const url = `${ibNetApiUrl}${path ?? ''}`;
   const start = Date.now();
   const response = await axios
     .get(url, {
-      headers: await getVatuHeaders(),
+      headers: vatuHeaders,
       params: params ?? [],
       timeout: getTimeout(),
     })

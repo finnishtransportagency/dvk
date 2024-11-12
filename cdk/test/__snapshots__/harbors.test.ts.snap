@@ -35,6 +35,7 @@ exports[`should get harbors from the DynamoDB 1`] = `
   "id": "1",
   "internet": "www.fi",
   "latest": undefined,
+  "latestVersionUsed": undefined,
   "modificationTimestamp": Any<Number>,
   "modifier": "test2",
   "n2000HeightSystem": true,
@@ -47,6 +48,7 @@ exports[`should get harbors from the DynamoDB 1`] = `
     "12345",
     "22222",
   ],
+  "publishDetails": undefined,
   "quays": [
     {
       "extraInfo": {
@@ -99,6 +101,7 @@ exports[`should get harbors from the DynamoDB 2`] = `
   "id": "2",
   "internet": undefined,
   "latest": undefined,
+  "latestVersionUsed": undefined,
   "modificationTimestamp": Any<Number>,
   "modifier": "test2",
   "n2000HeightSystem": undefined,
@@ -108,6 +111,7 @@ exports[`should get harbors from the DynamoDB 2`] = `
     "sv": "Harbor2sv",
   },
   "phoneNumber": undefined,
+  "publishDetails": undefined,
   "quays": undefined,
   "status": undefined,
   "version": "v1",

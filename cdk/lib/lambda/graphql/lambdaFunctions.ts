@@ -6,6 +6,8 @@ interface BackendLambda {
   typeName: string;
   useVpc?: boolean;
   useCaching?: boolean; // used to add per resolver caching as needed
+  timeout?: number; // seconds
+  memorySize?: number;
 }
 
 const lambdaFunctions: BackendLambda[] = [
@@ -15,6 +17,7 @@ const lambdaFunctions: BackendLambda[] = [
     fieldName: 'fairwayCards',
     useVpc: true,
     useCaching: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'query/fairwayCard-handler.ts'),
@@ -33,6 +36,7 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'FairwayCard',
     fieldName: 'fairways',
     useVpc: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'query/fairwayCardHarbors-handler.ts'),
@@ -51,12 +55,14 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'Query',
     fieldName: 'safetyEquipmentFaults',
     useVpc: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'query/marineWarnings-handler.ts'),
     typeName: 'Query',
     fieldName: 'marineWarnings',
     useVpc: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'query/currentUser-handler.ts'),
@@ -69,6 +75,7 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'Query',
     fieldName: 'fairwayCardsAndHarbors',
     useVpc: false,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'query/pilotPlaces-handler.ts'),
@@ -93,6 +100,7 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'Query',
     fieldName: 'fairways',
     useVpc: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'query/mareographs-handler.ts'),
@@ -105,6 +113,7 @@ const lambdaFunctions: BackendLambda[] = [
     typeName: 'Mutation',
     fieldName: 'saveFairwayCard',
     useVpc: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'mutation/saveHarbor-handler.ts'),

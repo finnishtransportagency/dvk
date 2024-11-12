@@ -19,114 +19,122 @@ jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
   isPermanentEnvironment: () => false,
   getHeaders: () => {},
-  getWeatherResponseHeaders : () => {},
+  getWeatherResponseHeaders: () => {},
   getFairwayCardTableName: () => 'FairwayCard-mock',
   getHarborTableName: () => 'Harbor-mock',
 }));
 
-const lines = [
-  {
-    id: 69883,
-    mitoitusSyvays: 1.8,
-    harausSyvyys: 2.2,
-    vertaustaso: 'NN+78.80',
-    n2000MitoitusSyvays: null,
-    n2000HarausSyvyys: null,
-    n2000Vertaustaso: null,
-    tosisuunta: 175,
-    pituus: 33,
-    sade: 150,
-    diaariNumero: '306/611/2000',
-    vahvistusPaivamaara: '2001-01-25',
-    omistaja: 'Väylävirasto',
-    lisatieto: null,
-    vayla: [
-      {
-        jnro: 4710,
-        nimiFI: 'Tampere - Hämeenlinna väylä',
-        nimiSV: null,
-        status: 1,
-        linjaus: 1,
-        luokitus: 3,
-      },
-    ],
-    tyyppiKoodi: 3,
-    tyyppi: 'Pakollinen kaarre',
-    geometria: {
-      type: 'LineString',
-      coordinates: [
-        [23.771884401, 61.2984219918],
-        [23.7719649967, 61.2983296353],
-        [23.7720591894, 61.2982403049],
-        [23.7721664917, 61.298154463],
-      ],
-    },
-  },
-];
-
-const areas = [
-  {
-    id: 193273,
-    nimi: null,
-    mitoitusSyvays: 9.5,
-    harausSyvyys: 12,
-    vertaustaso: 'MW2005',
-    n2000MitoitusSyvays: null,
-    n2000HarausSyvyys: null,
-    n2000Vertaustaso: null,
-    suunta: 327,
-    diaariNumero: '4424/1042/2014',
-    vahvistusPaivamaara: '2014-09-19',
-    omistaja: 'Väylävirasto',
-    lisatieto: null,
-    vayla: [
-      {
-        jnro: 5345,
-        nimiFI: 'Loviisan väylä',
-        nimiSV: 'Farleden till Lovisa',
-        status: 1,
-        linjaus: 1,
-        vaylaLuokka: 1,
-        mitoitusNopeus: null,
-        mitoitusNopeus2: null,
-        vaylaalueenJarjestysNro: 20,
-      },
-      {
-        jnro: 4865,
-        nimiFI: 'Etelä-Suomen talviväylä I ',
-        nimiSV: 'Södra Finlands vinterfarled I',
-        status: 2,
-        linjaus: 1,
-        vaylaLuokka: 1,
-        mitoitusNopeus: null,
-        mitoitusNopeus2: null,
-        vaylaalueenJarjestysNro: 150,
-      },
-    ],
-    tyyppiKoodi: 1,
-    tyyppi: 'Navigointialue',
-    merkintalajiKoodi: 2,
-    merkintalaji: 'Kardinaali',
-    liikennointiStatusKoodi: null,
-    liikennointiStatus: null,
-    liikennointiTyyppiKoodi: null,
-    liikenteenTyyppi: null,
-    liikennointiSuuntaKoodi: 2,
-    liikennointiSuunta: 'Kaksisuuntainen liikenne',
-    geometria: {
-      type: 'Polygon',
-      coordinates: [
-        [
-          [26.3684718529, 60.3042285176],
-          [26.3747757247, 60.3006386974],
-          [26.3916301723, 60.3039381049],
-          [26.3838445268, 60.3072378752],
-          [26.3684718529, 60.3042285176],
+const lines = {
+  features: [
+    {
+      properties: {
+        id: 69883,
+        mitoitusSyvays: 1.8,
+        harausSyvyys: 2.2,
+        vertaustaso: 'NN+78.80',
+        n2000MitoitusSyvays: null,
+        n2000HarausSyvyys: null,
+        n2000Vertaustaso: null,
+        tosisuunta: 175,
+        pituus: 33,
+        sade: 150,
+        diaariNumero: '306/611/2000',
+        vahvistusPaivamaara: '2001-01-25',
+        omistaja: 'Väylävirasto',
+        lisatieto: null,
+        vayla: [
+          {
+            jnro: 4710,
+            nimiFI: 'Tampere - Hämeenlinna väylä',
+            nimiSV: null,
+            status: 1,
+            linjaus: 1,
+            luokitus: 3,
+          },
         ],
-      ],
+        tyyppiKoodi: 3,
+        tyyppi: 'Pakollinen kaarre',
+      },
+      geometry: {
+        type: 'LineString',
+        coordinates: [
+          [23.771884401, 61.2984219918],
+          [23.7719649967, 61.2983296353],
+          [23.7720591894, 61.2982403049],
+          [23.7721664917, 61.298154463],
+        ],
+      },
     },
-  },
-];
+  ],
+};
+
+const areas = {
+  features: [
+    {
+      properties: {
+        id: 193273,
+        nimi: null,
+        mitoitusSyvays: 9.5,
+        harausSyvyys: 12,
+        vertaustaso: 'MW2005',
+        n2000MitoitusSyvays: null,
+        n2000HarausSyvyys: null,
+        n2000Vertaustaso: null,
+        suunta: 327,
+        diaariNumero: '4424/1042/2014',
+        vahvistusPaivamaara: '2014-09-19',
+        omistaja: 'Väylävirasto',
+        lisatieto: null,
+        vayla: [
+          {
+            jnro: 5345,
+            nimiFI: 'Loviisan väylä',
+            nimiSV: 'Farleden till Lovisa',
+            status: 1,
+            linjaus: 1,
+            vaylaLuokka: 1,
+            mitoitusNopeus: null,
+            mitoitusNopeus2: null,
+            vaylaalueenJarjestysNro: 20,
+          },
+          {
+            jnro: 4865,
+            nimiFI: 'Etelä-Suomen talviväylä I ',
+            nimiSV: 'Södra Finlands vinterfarled I',
+            status: 2,
+            linjaus: 1,
+            vaylaLuokka: 1,
+            mitoitusNopeus: null,
+            mitoitusNopeus2: null,
+            vaylaalueenJarjestysNro: 150,
+          },
+        ],
+        tyyppiKoodi: 1,
+        tyyppi: 'Navigointialue',
+        merkintalajiKoodi: 2,
+        merkintalaji: 'Kardinaali',
+        liikennointiStatusKoodi: null,
+        liikennointiStatus: null,
+        liikennointiTyyppiKoodi: null,
+        liikenteenTyyppi: null,
+        liikennointiSuuntaKoodi: 2,
+        liikennointiSuunta: 'Kaksisuuntainen liikenne',
+      },
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [26.3684718529, 60.3042285176],
+            [26.3747757247, 60.3006386974],
+            [26.3916301723, 60.3039381049],
+            [26.3838445268, 60.3072378752],
+            [26.3684718529, 60.3042285176],
+          ],
+        ],
+      },
+    },
+  ],
+};
 
 const warnings: FeatureCollection = {
   type: 'FeatureCollection',
@@ -365,6 +373,79 @@ const buoys = [
   },
 ];
 
+const forecast = [
+  {
+    place: '60.08,24.97:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 293.0,
+    windSpeed: 5.2,
+    windGust: 8.0,
+    waveDirection: 232.7,
+    waveHeight: 0.6,
+    waveDirectionSaaristomeri: null,
+    waveHeightSaaristomeri: null,
+    waveDirectionHelsinki: 229.7,
+    waveHeightHelsinki: 0.5,
+    visibility: 40.0,
+  },
+  {
+    place: '60.08,24.97:5',
+    localtime: '2024-10-29 13:00:00',
+    windDirection: 293.0,
+    windSpeed: 5.2,
+    windGust: 8.0,
+    waveDirection: 232.7,
+    waveHeight: 0.6,
+    waveDirectionSaaristomeri: null,
+    waveHeightSaaristomeri: null,
+    waveDirectionHelsinki: 229.7,
+    waveHeightHelsinki: 0.5,
+    visibility: 40.0,
+  },
+  {
+    place: '59.994667,23.995667:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 294.0,
+    windSpeed: 7.4,
+    windGust: 10.3,
+    waveDirection: 247.4,
+    waveHeight: 0.8,
+    waveDirectionSaaristomeri: null,
+    waveHeightSaaristomeri: null,
+    waveDirectionHelsinki: null,
+    waveHeightHelsinki: null,
+    visibility: 40.0,
+  },
+  {
+    place: '60.044,24.928:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 292.0,
+    windSpeed: 5.1,
+    windGust: 7.8,
+    waveDirection: 235.8,
+    waveHeight: 0.6,
+    waveDirectionSaaristomeri: null,
+    waveHeightSaaristomeri: null,
+    waveDirectionHelsinki: 233.7,
+    waveHeightHelsinki: 0.6,
+    visibility: 40.0,
+  },
+  {
+    place: '60.08,21.11:5',
+    localtime: '2024-10-29 12:00:00',
+    windDirection: 262.0,
+    windSpeed: 5.9,
+    windGust: 8.2,
+    waveDirection: 277.5,
+    waveHeight: 0.3,
+    waveDirectionSaaristomeri: 275.7,
+    waveHeightSaaristomeri: 0.3,
+    waveDirectionHelsinki: null,
+    waveHeightHelsinki: null,
+    visibility: 40.0,
+  },
+];
+
 const card: FairwayCardDBModel = {
   id: 'test',
   version: 'v0',
@@ -405,6 +486,20 @@ const harbor2: HarborDBModel = {
   geometry: { coordinates: [3, 4] },
 };
 
+const points = {
+  features: [
+    {
+      type: 'Feature',
+      id: 'PilotBoardingPlace_P.fid--73ae6a7c_18944e5de2b_b6',
+      geometry: { type: 'Point', coordinates: [30.0, 60.0, 0] },
+      geometry_name: 'GEOM',
+      properties: {
+        IDENTIFIER: 'FI 0000034581 00305',
+      },
+    },
+  ],
+};
+
 async function parseResponse(body: string): Promise<FeatureCollection> {
   const response = new Promise<Error | Buffer>((resolve, reject) =>
     gunzip(Buffer.from(body, 'base64'), (err, data) => {
@@ -418,7 +513,7 @@ async function parseResponse(body: string): Promise<FeatureCollection> {
 }
 
 async function parseWeatherResponse(body: string): Promise<FeatureCollection> {
-  return JSON.parse((body).toString()) as FeatureCollection;
+  return JSON.parse(body.toString()) as FeatureCollection;
 }
 
 let throwError = false;
@@ -445,11 +540,11 @@ jest.mock('../lib/lambda/api/axios', () => ({
       },
     };
   },
-  fetchTraficomApi: () => {
+  fetchTraficomApi: (path: string) => {
     if (throwError) {
       throw new Error('Fetching from Traficom api failed');
     }
-    return vtsLines;
+    return path.includes('PilotBoardingPlace') ? points : vtsLines;
   },
   fetchIlmanetApi: () => ilmanetXml,
   fetchWeatherApi: (path: string) => {
@@ -461,6 +556,17 @@ jest.mock('../lib/lambda/api/axios', () => ({
     } else {
       return buoys;
     }
+  },
+  fetchWeatherApiResponse: () => {
+    if (throwError) {
+      throw new Error('Fetching from Weather forecast api failed');
+    }
+    return {
+      data: forecast,
+      headers: {
+        date: 0,
+      },
+    };
   },
 }));
 
@@ -568,6 +674,30 @@ it('should return right cache headers for observation', async () => {
   assert(response.body);
   const headers = getFeatureCacheControlHeaders('observation')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
+});
+
+it('should get weather and wave forecast from api', async () => {
+  const response = await handler(mockFeaturesALBEvent('forecast'));
+  assert(response.body);
+  const responseObj = await parseWeatherResponse(response.body);
+  expect(responseObj.features.length).toBe(4);
+
+  //2 items should be grouped using the generated id
+  expect(responseObj.features.find((f) => f.id == '60.08,24.97')?.properties?.forecastItems.length).toBe(2);
+
+  //Check that for Helsinki coords, the wave direction uses the more accurate version
+  expect(responseObj.features.find((f) => f.id == '60.08,24.97')?.properties?.forecastItems[0].waveDirection).toBe(229.7);
+  expect(responseObj.features.find((f) => f.id == '60.08,24.97')?.properties?.forecastItems[0].waveHeight).toBe(0.5);
+
+  //Check that for Saaristomeri coords, the wave direction uses the more accurate version
+  expect(responseObj.features.find((f) => f.id == '60.08,21.11')?.properties?.forecastItems[0].waveDirection).toBe(275.7);
+  expect(responseObj.features.find((f) => f.id == '60.08,21.11')?.properties?.forecastItems[0].waveHeight).toBe(0.3);
+
+  expect(responseObj.features.find((f) => f.id == '59.994667,23.995667')?.properties?.forecastItems[0].waveDirection).toBe(247.4);
+  expect(responseObj.features.find((f) => f.id == '59.994667,23.995667')?.properties?.forecastItems[0].waveHeight).toBe(0.8);
+  expect(responseObj.features.find((f) => f.id == '59.994667,23.995667')?.properties?.name.fi).toBe('Jakob Ramsjö säähavaintoasema');
+
+  expect(responseObj).toMatchSnapshot();
 });
 
 it('should return same cache headers for various features of non buoy/mareograph/observation', async () => {

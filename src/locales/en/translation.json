@@ -32,8 +32,8 @@
         "layer": {
           "tipLabel": "Select layers",
           "header": "Map layers",
-          "saveSelection": "[en] Muista valintani",
-          "selectAll": "[en] Valitse kaikki tasot",
+          "saveSelection": "Remember my choice",
+          "selectAll": "Select all layers",
           "class1": "Merchant shipping",
           "class2": "Other waterborne traffic",
           "lines": "Navigation lines",
@@ -109,7 +109,7 @@
           },
           "modal": {
             "info": "Additional information",
-            "description": "[en] Muista valintani -ominaisuus tallentaa tekemäsi tasovalinnat selaimeesi. Mikäli ominaisuus on käytössä, valitaan sivustolle saapuessasi näkyviin automaattisesti viimeksi käyttämäsi tasot. Jos haluat, että tasovalintojasi ei enää muisteta, ota Muista valintani -ominaisuus pois käytöstä ja päivitä sivusto."
+            "description": "The 'Remember my choice' feature saves the selected layers to your browser. If the feature is selected, the next time the application is used, the same layers will be pre-selected. If you do not want the layers to be remembered, deselect the feature and refresh the page."
           }
         },
         "mapDetails": {
@@ -188,8 +188,8 @@
     "attention": "Note:",
     "n2000Info": "Depth information reference level is N2000 (Baltic Sea Chart Datum 2000 / BSCD2000).",
     "prohibitionAreas": "Meeting and overtaking prohibition areas",
-    "prohibitionText_one": "The channel has one permanent area of meeting and overtaking prohibition, please refer to VTS Master's Guide",
-    "prohibitionText_other": "The channel has permanent area of meeting and overtaking prohibitions, please refer to VTS Master's Guide",
+    "prohibitionText_one": "The channel has one permanent area of meeting and overtaking prohibition",
+    "prohibitionText_other": "The channel has permanent area of meeting and overtaking prohibitions",
     "anchorage": "Anchorage and special areas",
     "navigation": "Fairway navigability",
     "navigationCondition": "Navigation conditions",

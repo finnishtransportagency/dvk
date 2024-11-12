@@ -156,6 +156,7 @@ export function mapFairwayCardToModel(
           endDate: mapString(notification.endDate),
         };
       }) ?? null,
+    publishDetails: card.publishDetails,
   };
 }
 
@@ -224,6 +225,31 @@ async function copyPictures(
   return newPictures;
 }
 
+async function clearCardFromFairwayCache(
+  newModel: FairwayCardDBModel,
+  card: FairwayCardInput,
+  latestVersionNumber: FairwayCardDBModel | null | undefined,
+  currentPublicCard: FairwayCardDBModel | null | undefined
+) {
+  try {
+    // Clear fairway cache of a fairway card
+    // delete when more sophisticated caching is implemented
+    // needed to get updated starting and ending fairways for fairwaycard
+    // if linked fairways are for example 1111, 2222, then the key for cache clearing is 'fairways:1111:2222'
+    const fairways = newModel.fairways.map((f: { id: any }) => f.id);
+    if (fairways) {
+      const cacheKey = 'fairways:' + fairways.join(':');
+      await deleteCacheObjects([cacheKey]);
+    }
+    await FairwayCardDBModel.save(newModel, card.operation, latestVersionNumber, currentPublicCard);
+  } catch (e) {
+    if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
+      throw new Error(card.operation === Operation.Create ? OperationError.CardAlreadyExist : OperationError.CardNotExist);
+    }
+    throw e;
+  }
+}
+
 export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, FairwayCard> = async (
   event: AppSyncResolverEvent<MutationSaveFairwayCardArgs>
 ): Promise<FairwayCard> => {
@@ -236,16 +262,22 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
 
   let dbModel;
   let pictures;
+  let currentPublicCard = null;
 
-  const latestVersionNumber = await FairwayCardDBModel.getLatest(card.id).then((fairwayCard) => fairwayCard?.latest);
+  const latestVersion = await FairwayCardDBModel.getLatest(card.id);
 
   if (card.operation === Operation.Update) {
     dbModel = await FairwayCardDBModel.getVersion(card.id, card.version);
     await tagPictures(card.id, card.version, card.pictures, dbModel?.pictures);
+  } else if (card.operation === Operation.Publish) {
+    const publicVersion = await FairwayCardDBModel.getPublic(card.id).then((fairwayCard) => fairwayCard?.currentPublic);
+    if (publicVersion) {
+      currentPublicCard = await FairwayCardDBModel.getVersion(card.id, 'v' + publicVersion);
+    }
   } else if (pictureSourceId && pictureSourceVersion && !!card.pictures?.length) {
     pictures = await copyPictures(
       card.id,
-      card.operation === Operation.Createversion ? 'v' + (Number(latestVersionNumber) + 1) : card.version,
+      card.operation === Operation.Createversion ? 'v' + (Number(latestVersion?.latestVersionUsed ?? latestVersion?.latest) + 1) : card.version,
       pictureSourceId,
       pictureSourceVersion,
       card.pictures
@@ -255,23 +287,8 @@ export const handler: AppSyncResolverHandler<MutationSaveFairwayCardArgs, Fairwa
   const newModel = mapFairwayCardToModel(card, dbModel, user, pictures);
   log.debug('card: %o', newModel);
 
-  try {
-    // Clear fairway cache of a fairway card
-    // delete when more sophisticated caching is implemented
-    // needed to get updated starting and ending fairways for fairwaycard
-    // if linked fairways are for example 1111, 2222, then the key for cache clearing is 'fairways:1111:2222'
-    const fairways = newModel.fairways.map((f) => f.id);
-    if (fairways) {
-      const cacheKey = 'fairways:' + fairways.join(':');
-      await deleteCacheObjects([cacheKey]);
-    }
-    await FairwayCardDBModel.save(newModel, card.operation, latestVersionNumber);
-  } catch (e) {
-    if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
-      throw new Error(card.operation === Operation.Create ? OperationError.CardAlreadyExist : OperationError.CardNotExist);
-    }
-    throw e;
-  }
+  await clearCardFromFairwayCache(newModel, card, latestVersion, currentPublicCard);
+
   if (card.operation === Operation.Update) {
     const changes = dbModel ? diff(dbModel, newModel) : null;
     auditLog.info({ changes, card: newModel, user: user.uid }, 'FairwayCard updated');

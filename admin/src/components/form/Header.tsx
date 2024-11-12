@@ -1,50 +1,41 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { IonButton, IonCol, IonGrid, IonHeader, IonProgressBar, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Operation, Status } from '../../graphql/generated';
-import SelectInput from './SelectInput';
-import { ValueType, ActionType, Lang } from '../../utils/constants';
+import { FairwayCardInput, HarborInput, Operation, Status } from '../../graphql/generated';
+import { hasUnsavedChanges } from '../../utils/formValidations';
 
 interface HeaderProps {
-  operation: Operation;
-  status: Status;
-  oldStatus: Status;
+  currentState: FairwayCardInput | HarborInput;
+  oldState: FairwayCardInput | HarborInput;
   isLoading: boolean;
   isLoadingMutation: boolean;
-  updateState: (
-    value: ValueType,
-    actionType: ActionType,
-    actionLang?: Lang,
-    actionTarget?: string | number,
-    actionOuterTarget?: string | number
-  ) => void;
-  handleSubmit: (isRemove: boolean) => void;
   handleCancel: () => void;
+  handleSave: () => void;
+  handleRemove: () => void;
   handlePreview: () => void;
-  createNewVersion: () => void;
+  handleNewVersion: () => void;
+  handlePublish: () => void;
   isError?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
-  operation,
-  status,
-  oldStatus,
+  currentState,
+  oldState,
   isLoading,
   isLoadingMutation,
-  updateState,
-  handleSubmit,
   handleCancel,
+  handleSave,
+  handleRemove,
   handlePreview,
-  createNewVersion,
+  handleNewVersion,
+  handlePublish,
   isError,
 }) => {
   const { t } = useTranslation();
 
-  const statusOptions = [
-    { name: { fi: t('general.item-status-' + Status.Draft) }, id: Status.Draft },
-    { name: { fi: t('general.item-status-' + Status.Public) }, id: Status.Public },
-  ];
-  if (operation === Operation.Update) statusOptions.push({ name: { fi: t('general.item-status-' + Status.Removed) }, id: Status.Removed });
+  const unsavedChanges = useMemo(() => {
+    return hasUnsavedChanges(oldState, currentState);
+  }, [oldState, currentState]);
 
   return (
     <IonHeader className="ion-no-border" id="mainPageContent">
@@ -54,52 +45,43 @@ const Header: React.FC<HeaderProps> = ({
           {/* this 'extra' column keeps everything in it's right place */}
           <IonCol className="align-right" />
           <IonCol size="auto">
-            <SelectInput
-              label={t('general.item-status')}
-              selected={status}
-              options={statusOptions}
-              setSelected={updateState}
-              actionType="status"
-              disabled={isLoading}
-            />
-          </IonCol>
-          <IonCol size="auto">
             <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
               {t('general.cancel')}
             </IonButton>
-            {(operation === Operation.Update || operation === Operation.Createversion) && oldStatus !== Status.Removed && (
+            {(currentState.status === Status.Public || currentState.status === Status.Draft) && (
               <IonButton
                 id="deleteButton"
                 shape="round"
                 color="danger"
                 disabled={isError || isLoading}
                 onClick={() => {
-                  handleSubmit(true);
+                  handleRemove();
                 }}
               >
-                {t('general.delete')}
+                {currentState.status === Status.Draft ? t('general.delete') : t('general.archive')}
               </IonButton>
             )}
-            {status !== Status.Removed && (
-              <IonButton shape="round" disabled={isError || isLoading || operation === Operation.Create} onClick={() => handlePreview()}>
+            {currentState.status === Status.Draft && (
+              <IonButton shape="round" disabled={isError || isLoading || currentState.operation === Operation.Create} onClick={() => handlePreview()}>
                 {t('general.preview')}
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
               </IonButton>
             )}
-            {status === Status.Public ? (
+            {currentState.status === Status.Draft && (
               <>
-                <IonButton id="publishingDetails" shape="round" disabled={isError || isLoading}>
-                  {t('general.publishing-details')}
+                <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSave()}>
+                  {currentState.operation === Operation.Update || currentState.operation === Operation.Createversion
+                    ? t('general.save')
+                    : t('general.create-new')}
                 </IonButton>
-                <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => createNewVersion()}>
-                  {t('general.create-new-version')}
+                <IonButton id="publishVersion" shape="round" disabled={isError || isLoading || unsavedChanges} onClick={() => handlePublish()}>
+                  {t('general.publish')}
                 </IonButton>
               </>
-            ) : (
-              <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSubmit(status === Status.Removed)}>
-                {operation === Operation.Update || operation === Operation.Createversion ? t('general.save') : t('general.create-new')}
-              </IonButton>
             )}
+            <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => handleNewVersion()}>
+              {t('general.create-new-version')}
+            </IonButton>
           </IonCol>
         </IonRow>
       </IonGrid>

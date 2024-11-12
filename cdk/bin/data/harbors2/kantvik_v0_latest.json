@@ -1,0 +1,100 @@
+{
+  "phoneNumber": [
+    "+358503873672"
+  ],
+  "version": "v0_latest",
+  "creator": "System",
+  "status": "PUBLIC",
+  "modifier": "System",
+  "email": "kantvik@inkooshipping.fi",
+  "name": {
+    "en": "Kantvik harbour",
+    "fi": "Kantvikin satama",
+    "sv": "Kantviks hamn"
+  },
+  "cargo": {
+    "en": "A 8 t crane on North Quay, suited for use as a grab bucket crane or hook crane, and a multipurpose crane and conveyor. A multipurpose crane on the South Quay. Marine VHF channel 12 used for mooring/casting off.",
+    "fi": "Pohjoislaiturilla 8 tn nosturi, joka soveltuu kahmari- ja koukkukäyttöön ja lisäksi monitoiminosturi ja kuljetin. Etelälaiturilla monitoiminosturi. Laivankiinnitys/ -irrotus käyttää meri-VHF kanavaa ch 12.",
+    "sv": "Vid norra kajen finns en 8 t kran som kan användas med gripskopa och krok samt en multifunktionell kran och transportör. Vid södra kajen finns en multifunktionell kran. Förtöjning/losskastning använder sjö-VHF-kanal ch 12."
+  },
+  "modificationTimestamp": 1683095540829,
+  "company": {
+    "en": "Oy Kantvik Shipping Ltd",
+    "fi": "Oy Kantvik Shipping Ltd",
+    "sv": "Oy Kantvik Shipping Ltd"
+  },
+  "quays": [
+    {
+      "name": {
+        "en": "North Quay",
+        "fi": "Pohjoislaituri",
+        "sv": "Norra kajen"
+      },
+      "length": 110,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.37535,
+          60.08372
+        ]
+      },
+      "sections": [
+        {
+          "depth": 9.8
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "Small Quay",
+        "fi": "Pikkulaituri",
+        "sv": "Lilla kajen"
+      },
+      "length": 50,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.37718,
+          60.08444
+        ]
+      },
+      "sections": [
+        {
+          "depth": 5.9
+        }
+      ]
+    },
+    {
+      "name": {
+        "en": "South Quay",
+        "fi": "Etelälaituri",
+        "sv": "Södra kajen"
+      },
+      "length": 60,
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.37501,
+          60.08207
+        ]
+      },
+      "sections": [
+        {
+          "depth": 9.2
+        }
+      ]
+    }
+  ],
+  "latest": 1,
+  "creationTimestamp": 1683095540829,
+  "id": "kantvik",
+  "fax": "+35892985163",
+  "n2000HeightSystem": false,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.37518,
+      60.08399
+    ]
+  }
+}
