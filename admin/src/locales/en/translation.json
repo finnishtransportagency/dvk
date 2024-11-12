@@ -141,7 +141,7 @@
     "archive-fairwaycard-description": "[en] Olet siirtämässä julkisen väyläkortin \"{{name}}\" arkistoon. Oletko varma, että haluat arkistoida väyläkortin?",
     "publish-fairwaycard-title": "[en] Väyläkortin julkaiseminen",
     "publish-fairwaycard-description": "[en] Olet asettamassa \"Luonnos\"-tilassa olevan väyläkortin julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
-    "version-fairwaycard-description": "[en] Olet luomassa julkisesta väyläkortista uuden version. Uusi versio luodaan luonnokseksi ja nykyinen väyläkortti pysyy julkisena, kunnes uusi versio julkaistaan. Oletko varma, että haluat jatkaa?",
+    "version-fairwaycard-description": "[en] Olet luomassa väyläkortista uuden version. Uusi versio luodaan luonnokseksi. Oletko varma, että haluat jatkaa?",
     "cancel-harbor-title": "[en] Poistu tallentamatta",
     "cancel-harbor-description": "[en] Satama sisältää tallentamattomia muutoksia. Oletko varma, että haluat poistua tallentamatta?",
     "delete-harbor-title": "[en] Sataman poisto",
