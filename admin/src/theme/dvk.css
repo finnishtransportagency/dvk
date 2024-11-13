@@ -814,6 +814,10 @@ ion-grid.formGrid ion-col:last-of-type {
   max-height: 0;
   overflow: hidden;
 }
+.mainContent .sectionContent p {
+  margin: 10px 5px 0;
+  font-size: 14px;
+}
 
 /* Footer */
 ion-footer {

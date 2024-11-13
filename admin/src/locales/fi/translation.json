@@ -184,6 +184,7 @@
     "adding-publish-details": "Julkaisutietojen lisääminen"
   },
   "fairwaycard": {
+    "publish-details": "Julkaisutiedot",
     "name": "Väyläkortin nimi",
     "primary-id": "Väyläkortin tunniste",
     "primary-id-help-text": "Yksilöivä tunniste, joka näkyy selaimen osoiterivillä; sallitut merkit: (a-z) ja (0-9).",

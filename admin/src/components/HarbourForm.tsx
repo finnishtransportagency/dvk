@@ -24,6 +24,7 @@ import Header from './form/Header';
 import { openPreview } from '../utils/common';
 import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
+import PublishDetailsSection from './form/PublishDetailsSection';
 
 interface FormProps {
   harbour: HarborInput;
@@ -388,6 +389,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
+              <PublishDetailsSection state={state} />
               <MainSection state={state} updateState={updateState} validationErrors={validationErrors} />
               <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} />
               <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />

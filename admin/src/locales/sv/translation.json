@@ -176,6 +176,7 @@
     "adding-publish-details": "[sv] Julkaisutietojen lisääminen"
   },
   "fairwaycard": {
+    "publish-details": "[sv] Julkaisutiedot",
     "name": "Farledskortets namn",
     "primary-id": "[sv] Väyläkortin tunniste",
     "primary-id-help-text": "[sv] Yksilöivä tunniste, joka näkyy selaimen osoiterivillä; sallitut merkit: (a-z) ja (0-9).",
