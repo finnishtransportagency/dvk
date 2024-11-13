@@ -46,10 +46,6 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   } else if (confirmationType === 'preview') {
     title = t(`modal.preview-${saveType}-title`);
     description = t(`modal.preview-${saveType}-description`);
-  } else if (confirmationType === 'publish') {
-    buttonTitle = t('general.publish');
-    title = t(`modal.publish-${saveType}-title`);
-    description = t(`modal.publish-${saveType}-description`);
   } else if (confirmationType === 'version') {
     title = t('general.create-new-version');
     description = t(`modal.version-${saveType}-description`);
@@ -81,7 +77,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   };
 
   return (
-    <IonModal ref={modal} isOpen={confirmationType !== ''} className="prompt" onDidDismiss={() => closeModal()}>
+    <IonModal ref={modal} isOpen={confirmationType !== '' && confirmationType !== 'publish'} className="prompt" onDidDismiss={() => closeModal()}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">

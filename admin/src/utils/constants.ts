@@ -56,7 +56,8 @@ export type HarbourActionType =
   | 'sectionName'
   | 'sectionDepth'
   | 'sectionLat'
-  | 'sectionLon';
+  | 'sectionLon'
+  | 'publishDetails';
 
 export type FairwayCardActionType =
   | 'name'
@@ -97,7 +98,8 @@ export type FairwayCardActionType =
   | 'temporaryNotifications'
   | 'temporaryNotificationContent'
   | 'temporaryNotificationStartDate'
-  | 'temporaryNotificationEndDate';
+  | 'temporaryNotificationEndDate'
+  | 'publishDetails';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'

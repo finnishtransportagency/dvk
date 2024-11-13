@@ -160,6 +160,8 @@ class FairwayCardDBModel {
 
   latestVersionUsed?: Maybe<number>;
 
+  publishDetails?: Maybe<string>;
+
   static getLatestSortKey() {
     return 'v0_latest';
   }

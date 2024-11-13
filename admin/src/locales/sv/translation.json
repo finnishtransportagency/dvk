@@ -121,7 +121,8 @@
     "search-title-mainPage": "[sv] Hae nimellä tai tunnisteella",
     "check-and-publish": "[sv] Tarkasta muutokset ja julkaise",
     "publishing-details": "[sv] Julkaisutiedot",
-    "create-new-version": "[sv] Luo uusi versio"
+    "create-new-version": "[sv] Luo uusi versio",
+    "version": "[sv] Versio"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",
@@ -141,7 +142,7 @@
     "archive-fairwaycard-description": "[sv] Olet siirtämässä julkisen väyläkortin \"{{name}}\" arkistoon. Oletko varma, että haluat arkistoida väyläkortin?",
     "publish-fairwaycard-title": "[sv] Väyläkortin julkaiseminen",
     "publish-fairwaycard-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan väyläkortin julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
-    "version-fairwaycard-description": "[sv] Olet luomassa julkisesta väyläkortista uuden version. Uusi versio luodaan luonnokseksi ja nykyinen väyläkortti pysyy julkisena, kunnes uusi versio julkaistaan. Oletko varma, että haluat jatkaa?",
+    "version-fairwaycard-description": "[sv] Olet luomassa väyläkortista uuden version. Uusi versio luodaan luonnokseksi. Oletko varma, että haluat jatkaa?",
     "cancel-harbor-title": "[sv] Poistu tallentamatta",
     "cancel-harbor-description": "[sv] Satama sisältää tallentamattomia muutoksia. Oletko varma, että haluat poistua tallentamatta?",
     "delete-harbor-title": "[sv] Sataman poisto",
@@ -150,7 +151,7 @@
     "archive-harbor-description": "[sv] Olet siirtämässä julkisen sataman \"{{name}}\" arkistoon. Oletko varma, että haluat arkistoida sataman?",
     "publish-harbor-title": "[sv] Sataman julkaiseminen",
     "publish-harbor-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
-    "version-harbor-description": "[sv] Olet luomassa julkisesta satamasta uuden version. Uusi versio luodaan luonnokseksi ja nykyinen satama pysyy julkisena, kunnes uusi versio julkaistaan. Oletko varma, että haluat jatkaa?",
+    "version-harbor-description": "[sv] Olet luomassa satamasta uuden version. Uusi versio luodaan luonnokseksi. Oletko varma, että haluat jatkaa?",
     "saved-fairwaycard-by-name": "[sv] Väyläkortin \"{{ name }}\" tiedot tallennettu.",
     "saved-harbor-by-name": "[sv] Sataman \"{{ name }}\" tiedot tallennettu.",
     "help-title-PORTRAIT": "[sv] Väyläkortin pystytulosteiden asettaminen",
@@ -171,7 +172,8 @@
     "ending-fairway-title": "[sv] Päättävät väylät järjestyksen valinta",
     "ending-fairway-description": "[sv] Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "fairwaycard-publish-details": "[sv] Väyläkortin julkaisutiedot",
-    "harbor-publish-details": "[sv] Sataman julkaisutiedot"
+    "harbor-publish-details": "[sv] Sataman julkaisutiedot",
+    "adding-publish-details": "[sv] Julkaisutietojen lisääminen"
   },
   "fairwaycard": {
     "name": "Farledskortets namn",
