@@ -38,8 +38,6 @@ const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
 };
 
 const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
-  const { t } = useTranslation();
-
   let windColClass = 'ForecastColGreen';
   if (forecastItem.windSpeed >= 14) {
     windColClass = 'ForecastColYellow';
@@ -66,9 +64,15 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
     visibilityColClass = 'ForecastColYellow';
   }
 
+  function getTimeString(date: Date) {
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
+  }
+
   return (
     <IonRow className="ForecastRow">
-      <IonCol size="2">{t('forecastTable.dateTimeFormat', { val: forecastItem.dateTime })}</IonCol>
+      <IonCol size="2">{getTimeString(new Date(forecastItem.dateTime))}</IonCol>
       <IonCol size="3" className={windColClass + ' ion-text-end'}>
         {Math.round(forecastItem.windSpeed)} m/s, {Math.round(forecastItem.windDirection)}&deg;
       </IonCol>
