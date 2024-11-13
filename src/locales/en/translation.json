@@ -606,7 +606,7 @@
     "tableHeaders": {
       "time": "[en] Aika",
       "wind": "[en] Tuulen nopeus ja suunta",
-      "windGust": "[en] Tuulen puuskanopeus",
+      "windGust": "[en] Tuulen puuska\u00ADnopeus",
       "wave": "[en] Aallon korkeus ja suunta",
       "visibility": "[en] Näkyvyys"
     },
