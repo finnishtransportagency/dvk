@@ -17,25 +17,27 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { FairwayCardOrHarbor } from '../graphql/generated';
+import { FairwayCardInput, FairwayCardOrHarbor, Operation, SaveFairwayCardMutationVariables, Status } from '../graphql/generated';
 import { INPUT_MAXLENGTH, ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
 import { FairwayCardOrHarborGroup, getCombinedErrorAndHelperText, sortItemGroups } from '../utils/common';
+import { mapTrafficService } from '../utils/dataMapper';
 
 interface ModalProps {
   itemList: FairwayCardOrHarbor[];
   itemType: ItemType;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  saveFairwayCard: (options: SaveFairwayCardMutationVariables) => void;
+  modalRef: React.RefObject<HTMLIonModalElement>;
 }
 
-const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIsOpen }) => {
+const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIsOpen, saveFairwayCard, modalRef }) => {
   const { t, i18n } = useTranslation();
   const history = useHistory();
 
-  const modal = useRef<HTMLIonModalElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [source, setSource] = useState<FairwayCardOrHarborGroup | undefined>();
   const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
@@ -57,8 +59,20 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   };
 
   const createNewItem = () => {
-    modal.current?.dismiss().catch((err) => console.error(err));
-    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version, copyPictures: copyPics, newVersion: false } });
+    if (itemType === 'CARD') {
+      const card = mapTrafficService({
+        fairwayIds: version?.fairwayIds,
+        group: version?.group,
+        id: identifier,
+        n2000HeightSystem: version?.n2000HeightSystem,
+        name: version?.name,
+        status: Status.Draft,
+        temporaryNotifications: version?.temporaryNotifications,
+        version: 'v1',
+        operation: Operation.Create,
+      } as FairwayCardInput);
+      saveFairwayCard({ card: card });
+    }
     if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version, newVersion: false } });
   };
 
@@ -81,7 +95,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
     setIsOpen(false);
     setIdentifier('');
     setIdentifierValid(true);
-    modal.current?.dismiss().catch((err) => console.error(err));
+    modalRef.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {
       if (!isDropdownOpen) {
         setSource(undefined);
@@ -115,7 +129,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   };
 
   return (
-    <IonModal ref={modal} isOpen={isOpen} className="prompt" canDismiss={!isDropdownOpen} onDidDismiss={() => closeModal()}>
+    <IonModal ref={modalRef} isOpen={isOpen} className="prompt" canDismiss={!isDropdownOpen} onDidDismiss={() => closeModal()}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">

@@ -27,7 +27,7 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import NotificationModal from './NotificationModal';
 import MapExportTool from './pictures/MapExportTool';
-import { mapNewFairwayCardVersion, mapToFairwayCardInput } from '../utils/dataMapper';
+import { mapNewFairwayCardVersion, mapToFairwayCardInput, mapTrafficService } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateFairwayCardForm } from '../utils/formValidations';
 import MainSection from './form/fairwayCard/MainSection';
 import FairwaySection from './form/fairwayCard/FairwaySection';
@@ -152,21 +152,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   const saveCard = useCallback(
     (operation: Operation) => {
-      const mapTrafficService = (card: FairwayCardInput) => {
-        return {
-          ...card,
-          trafficService: {
-            ...card.trafficService,
-            pilot: {
-              ...card.trafficService?.pilot,
-              places: card.trafficService?.pilot?.places?.map((place) => {
-                return { id: place.id, pilotJourney: place.pilotJourney };
-              }),
-            },
-          },
-        };
-      };
-
       if (operation === Operation.Publish) {
         setState({ ...state, status: Status.Public });
         saveFairwayCard({ card: mapTrafficService({ ...state, status: Status.Public, operation }) as FairwayCardInput });

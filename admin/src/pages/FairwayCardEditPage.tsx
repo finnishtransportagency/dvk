@@ -7,7 +7,8 @@ import { IonProgressBar } from '@ionic/react';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
 
 interface FairwayCardEditProps {
-  fairwayCardId: string;
+  queryFairwayCardId: string;
+  fairwayCardIdInput?: string;
   fairwayCardVersion?: string;
   sourceCardId?: string;
   sourceCardVersion?: string;
@@ -15,13 +16,14 @@ interface FairwayCardEditProps {
 }
 
 const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
-  fairwayCardId,
+  queryFairwayCardId,
+  fairwayCardIdInput,
   fairwayCardVersion = 'v1',
   sourceCardId,
   sourceCardVersion,
   copyPictures,
 }) => {
-  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwayCardVersion, false);
+  const { data, isLoading, isError } = useFairwayCardByIdQueryData(queryFairwayCardId, fairwayCardVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const fairwayCard = mapToFairwayCardInput(sourceCardId, data, copyPictures);
@@ -31,7 +33,7 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
       {isLoading && <IonProgressBar type="indeterminate" />}
       {!isLoading && (
         <FairwayCardForm
-          fairwayCard={fairwayCard}
+          fairwayCard={{ ...fairwayCard, id: fairwayCardIdInput ?? queryFairwayCardId }}
           modified={sourceCardId ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
           modifier={sourceCardId ? '-' : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
           creator={sourceCardId ? userData?.currentUser?.name : (data?.fairwayCard?.creator ?? undefined)}
@@ -52,12 +54,14 @@ interface FairwayCardProps {
 
 type LocationState = {
   //fairwayCardInput when creating a new version since the whole card data is copied initially
+  fairwayCardIdInput?: string;
   origin?: FairwayCardOrHarbor;
   copyPictures?: boolean;
   newVersion?: boolean;
 };
 
 const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
+  // when fairwayCardId is undefined, we're creating new entry
   const { fairwayCardId, version } = useParams<FairwayCardProps>();
   const location = useLocation();
   const locationState = location.state as LocationState;
@@ -68,7 +72,7 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
     fairwayIds: [],
     group: '',
     harbors: [],
-    id: '',
+    id: locationState?.fairwayCardIdInput ?? '',
     // for now version is v1 since versioning is not still used so it always defaults to 'v1'
     version: 'v1',
     n2000HeightSystem: false,
@@ -103,10 +107,11 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
 
   return (
     <>
-      {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} fairwayCardVersion={version} />}
+      {fairwayCardId && <FairwayCardEditForm queryFairwayCardId={fairwayCardId} fairwayCardVersion={version} />}
       {locationState?.origin && (
         <FairwayCardEditForm
-          fairwayCardId={locationState.origin.id}
+          queryFairwayCardId={locationState.origin.id}
+          fairwayCardIdInput={locationState.fairwayCardIdInput}
           fairwayCardVersion={locationState.origin.version}
           sourceCardId={locationState.origin.id}
           sourceCardVersion={locationState.origin.version}

@@ -368,3 +368,18 @@ export function mapNewHarbourVersion(harbour: HarborInput) {
     operation: Operation.Createversion,
   };
 }
+
+export const mapTrafficService = (card: FairwayCardInput) => {
+  return {
+    ...card,
+    trafficService: {
+      ...card.trafficService,
+      pilot: {
+        ...card.trafficService?.pilot,
+        places: card.trafficService?.pilot?.places?.map((place) => {
+          return { id: place.id, pilotJourney: place.pilotJourney };
+        }),
+      },
+    },
+  };
+};
