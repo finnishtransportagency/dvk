@@ -24,7 +24,7 @@ import CreationModal from '../components/CreationModal';
 import ClearSearchButton from '../components/ClearSearchButton';
 import { getMap } from '../components/map/DvkMap';
 import { Status, TemporaryNotification } from '../graphql/generated';
-import { useFairwayCardsAndHarborsQueryData, useSaveFairwayCardMutationQuery } from '../graphql/api';
+import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 
 type HeaderButtonProps = {
   headername: string;
@@ -59,20 +59,9 @@ const MainPage: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [sortBy, setSortBy] = useState('name');
   const [sortDescending, setSortDescending] = useState(false);
-  const searchRef = useRef<HTMLIonInputElement>(null);
-  const creationModalRef = useRef<HTMLIonModalElement>(null);
+  const [isCreating, setIsCreating] = useState(false);
 
-  const { mutate: saveFairwayCard, isPending: isCreating } = useSaveFairwayCardMutationQuery({
-    onSuccess(data) {
-      creationModalRef.current?.dismiss().catch((err) => console.error(err));
-      history.push({
-        pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v1',
-      });
-    },
-    onError: (error: Error) => {
-      console.log(error);
-    },
-  });
+  const searchRef = useRef<HTMLIonInputElement>(null);
 
   const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, itemStatus, sortBy, sortDescending, t);
 
@@ -377,8 +366,7 @@ const MainPage: React.FC = () => {
           itemType={itemType}
           isOpen={isOpen}
           setIsOpen={setIsOpen}
-          saveFairwayCard={saveFairwayCard}
-          modalRef={creationModalRef}
+          setIsCreating={setIsCreating}
         />
       </IonContent>
     </IonPage>

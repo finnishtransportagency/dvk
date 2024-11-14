@@ -17,12 +17,13 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { FairwayCardInput, FairwayCardOrHarbor, Operation, SaveFairwayCardMutationVariables, Status } from '../graphql/generated';
+import { FairwayCardInput, FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
 import { INPUT_MAXLENGTH, ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
 import { FairwayCardOrHarborGroup, getCombinedErrorAndHelperText, sortItemGroups } from '../utils/common';
+import { useSaveFairwayCardMutationQuery } from '../graphql/api';
 import { mapTrafficService } from '../utils/dataMapper';
 
 interface ModalProps {
@@ -30,14 +31,14 @@ interface ModalProps {
   itemType: ItemType;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
-  saveFairwayCard: (options: SaveFairwayCardMutationVariables) => void;
-  modalRef: React.RefObject<HTMLIonModalElement>;
+  setIsCreating: (isCreating: boolean) => void;
 }
 
-const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIsOpen, saveFairwayCard, modalRef }) => {
+const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIsOpen, setIsCreating }) => {
   const { t, i18n } = useTranslation();
   const history = useHistory();
 
+  const modal = useRef<HTMLIonModalElement>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [source, setSource] = useState<FairwayCardOrHarborGroup | undefined>();
   const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
@@ -47,6 +48,19 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const selectVersionRef = useRef<HTMLIonSelectElement>(null);
   const identifierInputRef = useRef<HTMLIonInputElement>(null);
+
+  const { mutate: saveFairwayCard, isPending } = useSaveFairwayCardMutationQuery({
+    onSuccess(data) {
+      setIsCreating(false);
+      modal.current?.dismiss().catch((err) => console.error(err));
+      history.push({
+        pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v1',
+      });
+    },
+    onError: (error: Error) => {
+      console.log(error);
+    },
+  });
 
   const focusVersionSelect = () => {
     selectVersionRef.current?.click();
@@ -59,6 +73,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   };
 
   const createNewItem = () => {
+    setIsCreating(true);
     if (itemType === 'CARD') {
       const card = mapTrafficService({
         fairwayIds: version?.fairwayIds,
@@ -95,7 +110,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
     setIsOpen(false);
     setIdentifier('');
     setIdentifierValid(true);
-    modalRef.current?.dismiss().catch((err) => console.error(err));
+    modal.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {
       if (!isDropdownOpen) {
         setSource(undefined);
@@ -129,7 +144,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   };
 
   return (
-    <IonModal ref={modalRef} isOpen={isOpen} className="prompt" canDismiss={!isDropdownOpen} onDidDismiss={() => closeModal()}>
+    <IonModal ref={modal} isOpen={isOpen} className="prompt" canDismiss={!isDropdownOpen} onDidDismiss={() => closeModal()}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">
@@ -143,6 +158,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             className="closeButton"
             title={t('general.close') ?? ''}
             aria-label={t('general.close') ?? ''}
+            disabled={isPending}
           >
             <CloseIcon />
           </IonButton>
@@ -237,10 +253,15 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert">
+          <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert" disabled={isPending}>
             {t('general.cancel')}
           </IonButton>
-          <IonButton slot="end" onClick={() => createNewItem()} shape="round" disabled={!identifier || !identifierValid || (source && !version)}>
+          <IonButton
+            slot="end"
+            onClick={() => createNewItem()}
+            shape="round"
+            disabled={!identifier || !identifierValid || (source && !version) || isPending}
+          >
             {t('modal.create-' + itemType)}
           </IonButton>
         </IonToolbar>
