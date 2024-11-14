@@ -16,6 +16,7 @@ import {
   BuoyFeatureProperties,
   DirwayFeatureProperties,
   EquipmentFeatureProperties,
+  ForecastFeatureProperties,
   HarborFeatureProperties,
   LineFeatureProperties,
   MareographFeatureProperties,
@@ -172,6 +173,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'specialarea2',
     'specialarea15',
     'area',
+    'forecast',
   ];
 
   if (container) {
@@ -321,6 +323,12 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       return getMarineWarningDetails(t, lang, feature);
     case 'observation':
       return { header: [(props as ObservationFeatureProperties).name], featureType: t('featureList.featureType.observation'), className: type };
+    case 'forecast':
+      return {
+        header: [(props as ForecastFeatureProperties).name?.[lang] ?? ''],
+        featureType: t('featureList.featureType.forecast'),
+        className: type,
+      };
     case 'pilot':
       return {
         header: [t('pilotPlace.header', { val: (props as PilotFeatureProperties).name[lang] })],
