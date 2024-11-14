@@ -45,7 +45,14 @@ const Header: React.FC<HeaderProps> = ({
           {/* this 'extra' column keeps everything in it's right place */}
           <IonCol className="align-right" />
           <IonCol size="auto">
-            <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
+            <IonButton
+              id="cancelButton"
+              data-testid="cancelButton"
+              shape="round"
+              className="invert"
+              onClick={() => handleCancel()}
+              disabled={isLoading}
+            >
               {t('general.cancel')}
             </IonButton>
             {(currentState.status === Status.Public || currentState.status === Status.Draft) && (
@@ -69,7 +76,7 @@ const Header: React.FC<HeaderProps> = ({
             )}
             {currentState.status === Status.Draft && (
               <>
-                <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSave()}>
+                <IonButton id="saveButton" data-testid="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSave()}>
                   {currentState.operation === Operation.Update || currentState.operation === Operation.Createversion
                     ? t('general.save')
                     : t('general.create-new')}

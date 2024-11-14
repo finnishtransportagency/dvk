@@ -229,6 +229,7 @@ const TextInput: React.FC<TextInputProps> = ({
         min={inputType === 'number' ? (min ?? 0) : undefined}
         multiple={inputType === 'email' && multiple}
         name={name ? name + (actionLang ?? '') : undefined}
+        data-testid={name ? name + (actionLang ?? '') : undefined}
         onIonBlur={() => {
           checkValidity();
           setIsTouched(true);
