@@ -261,3 +261,21 @@ export type RestrictionPortFeatureProperties = {
   updated: string;
   restrictions: Restriction[];
 };
+
+export type ForecastItem = {
+  dateTime: number;
+  visibility: number;
+  windDirection: number;
+  windSpeed: number;
+  windGust: number;
+  waveHeight: number;
+  waveDirection: number;
+};
+
+export type ForecastFeatureProperties = {
+  featureType: 'forecast';
+  id: string;
+  name: Text;
+  pilotPlaceId?: number;
+  forecastItems: ForecastItem[];
+};

@@ -52,6 +52,7 @@
           "circles": "Kääntöympyrät",
           "conditions": "Olosuhteet",
           "seaLevel": "Merivedenkorkeus",
+          "forecast": "Sää- ja aaltoennusteet",
           "weatherStation": "Säähavaintoasemat",
           "buoys": "Aaltopoijut",
           "vts": "VTS",
@@ -430,6 +431,14 @@
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Viimeisin havainto"
     },
+    "forecast": {
+      "forecast": "Sää- ja aaltoennuste",
+      "coordinates": "Koordinaatit",
+      "extra": "Lisätieto",
+      "extraContent": "Lorem ipsum...",
+      "updated": "Päivitetty",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    },
     "buoy": {
       "coordinates": "Koordinaatit",
       "temperature": "Veden lämpötila",
@@ -501,6 +510,7 @@
         "mareograph": "Mareografi",
         "marinewarning": "Merivaroitus",
         "observation": "Säähavaintoasema",
+        "forecast": "Sää- ja aaltoennuste",
         "pilot": "Luotsipaikka",
         "pilotagelimit": "Luotsinkäyttölinja",
         "pilotroute": "Luotsausreitti",
@@ -592,5 +602,17 @@
     "KB": "kilotavua",
     "MB": "megatavua",
     "GB": "gigatavua"
+  },
+  "forecastTable": {
+    "tableHeaders": {
+      "time": "Aika",
+      "wind": "Tuulen nopeus ja suunta",
+      "windGust": "Tuulen puuska\u00ADnopeus",
+      "wave": "Aallon korkeus ja suunta",
+      "visibility": "Näkyvyys"
+    },
+    "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
+    "previousPage": "Edelliset",
+    "nextPage": "Seuraavat"
   }
 }

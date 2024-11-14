@@ -52,6 +52,7 @@
           "circles": "Vändcirklar",
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
+          "forecast": "[sv] Sää- ja aaltoennusteet",
           "weatherStation": "Kustväderstationerna",
           "buoys": "Vågbojar",
           "vts": "VTS",
@@ -430,6 +431,14 @@
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Beräknat vattenstånd"
     },
+    "forecast": {
+      "forecast": "[sv] Sää- ja aaltoennuste",
+      "coordinates": "Koordinater",
+      "extra": "Tilläggsuppgift",
+      "extraContent": "[sv] Lorem ipsum...",
+      "updated": "Uppdaterat",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    },
     "buoy": {
       "coordinates": "Koordinater",
       "temperature": "Vattentemperatur",
@@ -501,6 +510,7 @@
         "mareograph": "Mareograf",
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
+        "forecast": "[sv] Sää- ja aaltoennuste",
         "pilot": "Lotsplats",
         "pilotagelimit": "Lotspliktslinje",
         "pilotroute": "Lotsningsrutt",
@@ -592,5 +602,17 @@
     "KB": "kilobyte",
     "MB": "megabyte",
     "GB": "gigabyte"
+  },
+  "forecastTable": {
+    "tableHeaders": {
+      "time": "[sv] Aika",
+      "wind": "[sv] Tuulen nopeus ja suunta",
+      "windGust": "[sv] Tuulen puuska\u00ADnopeus",
+      "wave": "[sv] Aallon korkeus ja suunta",
+      "visibility": "[sv] Näkyvyys"
+    },
+    "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
+    "previousPage": "[sv] Edelliset",
+    "nextPage": "[sv] Seuraavat"
   }
 }
