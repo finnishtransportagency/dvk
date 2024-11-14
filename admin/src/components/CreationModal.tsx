@@ -58,6 +58,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
       });
     },
     onError: (error: Error) => {
+      setIsCreating(false);
       console.log(error);
     },
   });

@@ -1,14 +1,14 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
+import { FairwayCardOrHarbor } from '../graphql/generated';
 import { useCurrentUserQueryData, useFairwayCardByIdQueryData } from '../graphql/api';
 import FairwayCardForm from '../components/FairwayCardForm';
 import { IonProgressBar } from '@ionic/react';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
+import { getEmptyFairwayCardInput } from '../utils/common';
 
 interface FairwayCardEditProps {
-  queryFairwayCardId: string;
-  fairwayCardIdInput?: string;
+  fairwayCardId: string;
   fairwayCardVersion?: string;
   sourceCardId?: string;
   sourceCardVersion?: string;
@@ -16,14 +16,13 @@ interface FairwayCardEditProps {
 }
 
 const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
-  queryFairwayCardId,
-  fairwayCardIdInput,
+  fairwayCardId,
   fairwayCardVersion = 'v1',
   sourceCardId,
   sourceCardVersion,
   copyPictures,
 }) => {
-  const { data, isLoading, isError } = useFairwayCardByIdQueryData(queryFairwayCardId, fairwayCardVersion, false);
+  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwayCardVersion, false);
   const { data: userData } = useCurrentUserQueryData();
 
   const fairwayCard = mapToFairwayCardInput(sourceCardId, data, copyPictures);
@@ -33,7 +32,7 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
       {isLoading && <IonProgressBar type="indeterminate" />}
       {!isLoading && (
         <FairwayCardForm
-          fairwayCard={{ ...fairwayCard, id: fairwayCardIdInput ?? queryFairwayCardId }}
+          fairwayCard={{ ...fairwayCard }}
           modified={sourceCardId ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
           modifier={sourceCardId ? '-' : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
           creator={sourceCardId ? userData?.currentUser?.name : (data?.fairwayCard?.creator ?? undefined)}
@@ -54,7 +53,6 @@ interface FairwayCardProps {
 
 type LocationState = {
   //fairwayCardInput when creating a new version since the whole card data is copied initially
-  fairwayCardIdInput?: string;
   origin?: FairwayCardOrHarbor;
   copyPictures?: boolean;
   newVersion?: boolean;
@@ -67,51 +65,14 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
   const locationState = location.state as LocationState;
 
   const { data } = useCurrentUserQueryData();
-
-  const emptyCardInput = {
-    fairwayIds: [],
-    group: '',
-    harbors: [],
-    id: locationState?.fairwayCardIdInput ?? '',
-    // for now version is v1 since versioning is not still used so it always defaults to 'v1'
-    version: 'v1',
-    n2000HeightSystem: false,
-    name: { fi: '', sv: '', en: '' },
-    additionalInfo: { fi: '', sv: '', en: '' },
-    lineText: { fi: '', sv: '', en: '' },
-    designSpeed: { fi: '', sv: '', en: '' },
-    speedLimit: { fi: '', sv: '', en: '' },
-    anchorage: { fi: '', sv: '', en: '' },
-    navigationCondition: { fi: '', sv: '', en: '' },
-    iceCondition: { fi: '', sv: '', en: '' },
-    windRecommendation: { fi: '', sv: '', en: '' },
-    vesselRecommendation: { fi: '', sv: '', en: '' },
-    visibility: { fi: '', sv: '', en: '' },
-    trafficService: {
-      pilot: {
-        email: '',
-        phoneNumber: '',
-        fax: '',
-        extraInfo: { fi: '', sv: '', en: '' },
-        places: [],
-      },
-      vts: [],
-      tugs: [],
-    },
-    status: Status.Draft,
-    operation: Operation.Create,
-    pictures: [],
-    pilotRoutes: [],
-    temporaryNotifications: [],
-  };
+  const emptyCardInput = getEmptyFairwayCardInput(locationState.origin?.id);
 
   return (
     <>
-      {fairwayCardId && <FairwayCardEditForm queryFairwayCardId={fairwayCardId} fairwayCardVersion={version} />}
+      {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} fairwayCardVersion={version} />}
       {locationState?.origin && (
         <FairwayCardEditForm
-          queryFairwayCardId={locationState.origin.id}
-          fairwayCardIdInput={locationState.fairwayCardIdInput}
+          fairwayCardId={locationState.origin.id}
           fairwayCardVersion={locationState.origin.version}
           sourceCardId={locationState.origin.id}
           sourceCardVersion={locationState.origin.version}

@@ -3,6 +3,7 @@ import {
   FairwayCardOrHarbor,
   Mareograph,
   Maybe,
+  Operation,
   Orientation,
   PictureInput,
   SelectedFairwayInput,
@@ -341,4 +342,42 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
 export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   return fds?.projection;
+}
+
+export function getEmptyFairwayCardInput(id?: string) {
+  return {
+    fairwayIds: [],
+    group: '',
+    harbors: [],
+    id: id ?? '',
+    version: 'v1',
+    n2000HeightSystem: false,
+    name: { fi: '', sv: '', en: '' },
+    additionalInfo: { fi: '', sv: '', en: '' },
+    lineText: { fi: '', sv: '', en: '' },
+    designSpeed: { fi: '', sv: '', en: '' },
+    speedLimit: { fi: '', sv: '', en: '' },
+    anchorage: { fi: '', sv: '', en: '' },
+    navigationCondition: { fi: '', sv: '', en: '' },
+    iceCondition: { fi: '', sv: '', en: '' },
+    windRecommendation: { fi: '', sv: '', en: '' },
+    vesselRecommendation: { fi: '', sv: '', en: '' },
+    visibility: { fi: '', sv: '', en: '' },
+    trafficService: {
+      pilot: {
+        email: '',
+        phoneNumber: '',
+        fax: '',
+        extraInfo: { fi: '', sv: '', en: '' },
+        places: [],
+      },
+      vts: [],
+      tugs: [],
+    },
+    status: Status.Draft,
+    operation: Operation.Create,
+    pictures: [],
+    pilotRoutes: [],
+    temporaryNotifications: [],
+  };
 }
