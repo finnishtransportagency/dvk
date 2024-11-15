@@ -169,7 +169,8 @@ export type FeatureDataId =
   | 'specialarea15'
   | 'pilotroute'
   | 'pilotageareaborder'
-  | 'pilotagelimit';
+  | 'pilotagelimit'
+  | 'forecast';
 
 export type FeatureDataProjection = 'EPSG:3067' | 'EPSG:4326' | 'EPSG:3395' | 'EPSG:4258';
 

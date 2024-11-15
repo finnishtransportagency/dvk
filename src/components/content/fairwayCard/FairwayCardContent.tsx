@@ -28,6 +28,7 @@ import {
   getFairwayCardSafetyEquipmentFaults,
   getFairwayCardObservations,
   getFairwayCardMareographs,
+  getFairwayCardForecasts,
 } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
@@ -49,6 +50,15 @@ import MarkdownParagraph from '../MarkdownParagraph';
 import { AreaInfoByType } from './AreaInfoByType';
 import MareographInfo from './MareographInfo';
 import { useMareographFeatures } from '../../MareographFeatureLoader';
+import { useForecastFeatures } from '../../ForecastLoader';
+
+export enum FairwayCardTab {
+  Information = 1,
+  Harbours = 2,
+  CommonInformation = 3,
+  PilotRoutes = 4,
+  WeatherForecasts = 5,
+}
 
 interface FairwayCardContentProps {
   fairwayCardId: string;
@@ -70,12 +80,13 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const { state } = useDvkContext();
-  const [tab, setTab] = useState<number>(1);
+  const [tab, setTab] = useState<FairwayCardTab>(FairwayCardTab.Information);
   const [safetyEquipmentFaults, setSafetyEquipmentFaults] = useState<SafetyEquipmentFault[]>([]);
   const [pilotageLimits, setPilotageLimits] = useState<Feature<Geometry>[]>([]);
   const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
   const [observations, setObservations] = useState<Feature<Geometry>[]>([]);
   const [mareographs, setMareographs] = useState<Feature<Geometry>[]>([]);
+  const [forecasts, setForecasts] = useState<Feature<Geometry>[]>([]);
 
   const {
     data: safetyEquipmentData,
@@ -88,6 +99,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { pilotRouteFeatures, ready: pilotRoutesReady } = usePilotRouteFeatures();
   const { observationFeatures, ready: observationsReady } = useObservationFeatures();
   const { mareographFeatures, ready: mareographsReady } = useMareographFeatures();
+  const { forecastFeatures, ready: forecastsReady } = useForecastFeatures();
 
   useEffect(() => {
     if (fairwayCard && safetyEquipmentsReady && !faultIsPending && !faultIsFetching) {
@@ -133,6 +145,12 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
     }
   }, [mareographsReady, mareographFeatures, fairwayCard]);
 
+  useEffect(() => {
+    if (fairwayCard && forecastsReady) {
+      setForecasts(getFairwayCardForecasts(fairwayCard, forecastFeatures));
+    }
+  }, [forecastsReady, forecastFeatures, fairwayCard]);
+
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
   const modifiedInfo =
@@ -144,7 +162,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const heightSystemInfo = isN2000HeightSystem ? 'N2000 (BSCD2000)' : 'MW';
   const updatedInfo = t('dataUpdated') + (!isPending && !isFetching ? ' ' + t('datetimeFormat', { val: dataUpdatedAt }) : '');
 
-  const getTabClassName = (tabId: number): string => {
+  const getTabClassName = (tabId: FairwayCardTab): string => {
     return 'tabContent tab' + tabId + (widePane ? ' wide' : '') + (tab === tabId ? ' active' : '');
   };
 
@@ -229,7 +247,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
 
           <TabSwiper tab={tab} setTab={setTab} widePane={widePane} />
 
-          <div className={getTabClassName(1)}>
+          <div className={getTabClassName(FairwayCardTab.Information)}>
             <IonText className="no-margin-top">
               <h4>
                 <strong>{t('information')}</strong>
@@ -284,7 +302,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <TugInfo data={fairwayCard?.trafficService?.tugs} />
           </div>
 
-          <div className={getTabClassName(2)}>
+          <div className={getTabClassName(FairwayCardTab.Harbours)}>
             {fairwayCard?.harbors?.map((harbour: HarborPartsFragment | null | undefined, idx: React.Key) => {
               return <HarbourInfo data={harbour} key={harbour?.id} isLast={fairwayCard.harbors?.length === Number(idx) + 1} />;
             })}
@@ -295,7 +313,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             )}
           </div>
 
-          <div className={getTabClassName(3)}>
+          <div className={getTabClassName(FairwayCardTab.CommonInformation)}>
             <IonText className="no-margin-top">
               <h5>{t('commonInformation')}</h5>
               <GeneralInfo data={fairwayCard?.fairways} />
@@ -319,7 +337,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <AreaInfo data={fairwayCard?.fairways} />
           </div>
 
-          <div className={getTabClassName(4)}>
+          <div className={getTabClassName(FairwayCardTab.PilotRoutes)}>
             {pilotRoutesReady && (
               <>
                 {pilotRoutes.length > 0 ? (
@@ -331,6 +349,10 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                 )}
               </>
             )}
+          </div>
+
+          <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
+            {forecastsReady && forecasts ? JSON.stringify(forecasts) : 'not-ready'}
           </div>
 
           {!isMobile() && (

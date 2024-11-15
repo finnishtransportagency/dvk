@@ -12,6 +12,13 @@ import {
   PilotageLimitFeatureProperties,
 } from '../components/features';
 import * as olExtent from 'ol/extent';
+import { FairwayCardTab } from '../components/content/fairwayCard/FairwayCardContent';
+import { point, polygon } from '@turf/helpers';
+import { pointsWithinPolygon } from '@turf/points-within-polygon';
+import { buffer } from '@turf/buffer';
+import { MAP } from './constants';
+
+const WGS84 = 'EPSG:4326';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -26,16 +33,18 @@ export function setFairwayCardByPreview(
   return filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
 }
 
-export function getTabLabel(t: TFunction, tabId: number): string {
-  switch (tabId) {
-    case 1:
+export function getTabLabel(t: TFunction, tab: FairwayCardTab): string {
+  switch (tab) {
+    case FairwayCardTab.Information:
       return t('title', { count: 1 });
-    case 2:
+    case FairwayCardTab.Harbours:
       return t('harboursTitle');
-    case 3:
+    case FairwayCardTab.CommonInformation:
       return t('areasTitle');
-    case 4:
+    case FairwayCardTab.PilotRoutes:
       return t('routesTitle');
+    case FairwayCardTab.WeatherForecasts:
+      return t('weatherForecastsTitle');
     default:
       return '-';
   }
@@ -140,6 +149,25 @@ export function getFairwayCardObservations(fairwayCard: FairwayCardPartsFragment
   return [];
 }
 
+export function getFairwayCardForecasts(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  //Buffer search distance = 1km
+  const BUFFER_SIZE = 1;
+  if (!features) {
+    return [];
+  }
+
+  const forecasts = features.filter((f) => {
+    return fairwayCard?.trafficService?.pilot?.places?.find((pilotPlace) => f.getProperties().pilotPlaceId === pilotPlace?.id) ?? false;
+  });
+
+  const nonMatchedFeatures = features.filter((f) => {
+    return !forecasts.find((fo) => fo.getId() === f.getId());
+  });
+  inAreaBuffer(getFairwayCardFairwayAreas(fairwayCard), MAP.EPSG, BUFFER_SIZE, nonMatchedFeatures, WGS84).forEach((p) => forecasts.push(p));
+
+  return forecasts;
+}
+
 export function getFairwayCardMareographs(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
   const mareographs = features.filter((f) => {
     return fairwayCard?.mareographs?.find((mareograph) => f.getId() === mareograph?.id) ?? false;
@@ -172,4 +200,37 @@ export function getFairwayListFairwayCards(
 ) {
   const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
   return fairwayCards.filter((card) => card.fairways.some((fairway) => fairwayIds.includes(fairway.id)));
+}
+
+function inAreaBuffer(areas: Feature<Geometry>[], areaEPSG: string, bufferSizeInKm: number, testPoints: Feature<Geometry>[], pointEPSG: string) {
+  const filteredPoints: Feature<Geometry>[] = [];
+  testPoints.forEach((tp) => {
+    const tpAsPoint = toLatLng(tp, pointEPSG) as Feature<Point> | undefined;
+    if (tpAsPoint) {
+      const p = point(tpAsPoint.getGeometry()?.getCoordinates() ?? []);
+      let inside = false;
+      areas.forEach((a) => {
+        const aAsPolygon = toLatLng(a, areaEPSG) as Feature<Polygon> | undefined;
+        if (aAsPolygon && !inside) {
+          const buff = buffer(polygon(aAsPolygon.getGeometry()?.getCoordinates() ?? []).geometry, bufferSizeInKm);
+          console.log(buff?.geometry);
+          if (buff && pointsWithinPolygon(p, buff).features?.length > 0) {
+            filteredPoints.push(tp);
+            inside = true;
+          }
+        }
+      });
+    }
+  });
+  return filteredPoints;
+}
+
+function toLatLng(feature: Feature<Geometry>, fromEPSG: string) {
+  //Return clone to avoid changing in place
+  if (fromEPSG === WGS84) {
+    return feature;
+  }
+  const clone: Feature<Geometry> = feature?.clone();
+  clone.getGeometry()?.transform(MAP.EPSG, WGS84);
+  return clone;
 }
