@@ -52,7 +52,6 @@ interface FairwayCardProps {
 }
 
 type LocationState = {
-  //fairwayCardInput when creating a new version since the whole card data is copied initially
   origin?: FairwayCardOrHarbor;
   copyPictures?: boolean;
   newVersion?: boolean;
@@ -65,7 +64,6 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
   const locationState = location.state as LocationState;
 
   const { data } = useCurrentUserQueryData();
-  const emptyCardInput = getEmptyFairwayCardInput(locationState.origin?.id);
 
   return (
     <>
@@ -80,7 +78,13 @@ const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
         />
       )}
       {!fairwayCardId && !locationState?.origin && (
-        <FairwayCardForm fairwayCard={emptyCardInput} modified={0} modifier="-" creator={data?.currentUser?.name} created={0} />
+        <FairwayCardForm
+          fairwayCard={getEmptyFairwayCardInput(fairwayCardId ?? '')}
+          modified={0}
+          modifier="-"
+          creator={data?.currentUser?.name}
+          created={0}
+        />
       )}
     </>
   );

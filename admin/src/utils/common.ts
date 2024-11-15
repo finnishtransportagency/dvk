@@ -344,12 +344,12 @@ export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
   return fds?.projection;
 }
 
-export function getEmptyFairwayCardInput(id?: string) {
+export function getEmptyFairwayCardInput(id: string) {
   return {
     fairwayIds: [],
     group: '',
     harbors: [],
-    id: id ?? '',
+    id: id,
     version: 'v1',
     n2000HeightSystem: false,
     name: { fi: '', sv: '', en: '' },

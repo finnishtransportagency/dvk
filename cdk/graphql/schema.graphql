@@ -57,11 +57,11 @@ input FairwayCardInput {
   id: String!
   version: String!
   operation: Operation!
-  name: TextInput!
+  name: TextInput
   n2000HeightSystem: Boolean!
-  group: String!
+  group: String
   status: Status!
-  fairwayIds: [Float!]!
+  fairwayIds: [Float!]
   primaryFairwayId: [SelectedFairwayInput!]
   secondaryFairwayId: [SelectedFairwayInput!]
   additionalInfo: TextInput
@@ -210,7 +210,7 @@ type FairwayCardOrHarbor {
   id: String!
   version: String!
   type: ContentType!
-  name: Text!
+  name: Text
   group: String
   fairwayIds: [Int!]
   n2000HeightSystem: Boolean!
@@ -236,7 +236,7 @@ type FairwayCard {
   id: String!
   version: String!
   currentPublic: Int
-  name: Text!
+  name: Text
   n2000HeightSystem: Boolean!
   group: String
   status: Status
@@ -245,7 +245,7 @@ type FairwayCard {
   modifier: String
   modificationTimestamp: Float
   fairwayIds: String
-  fairways: [Fairway!]!
+  fairways: [Fairway!]
   additionalInfo: Text
   lineText: Text
   designSpeed: Text
@@ -364,7 +364,7 @@ type Section {
 }
 
 type Fairway {
-  id: Int!
+  id: Int
   name: Text
   primary: Boolean
   primarySequenceNumber: Int

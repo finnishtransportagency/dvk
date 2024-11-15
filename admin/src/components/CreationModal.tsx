@@ -22,7 +22,7 @@ import { INPUT_MAXLENGTH, ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
-import { FairwayCardOrHarborGroup, getCombinedErrorAndHelperText, sortItemGroups } from '../utils/common';
+import { FairwayCardOrHarborGroup, getCombinedErrorAndHelperText, getEmptyFairwayCardInput, sortItemGroups } from '../utils/common';
 import { useSaveFairwayCardMutationQuery } from '../graphql/api';
 import { mapTrafficService } from '../utils/dataMapper';
 
@@ -76,17 +76,23 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const createNewItem = () => {
     setIsCreating(true);
     if (itemType === 'CARD') {
-      const card = mapTrafficService({
-        fairwayIds: version?.fairwayIds,
-        group: version?.group,
-        id: identifier,
-        n2000HeightSystem: version?.n2000HeightSystem,
-        name: version?.name,
-        status: Status.Draft,
-        temporaryNotifications: version?.temporaryNotifications,
-        version: 'v1',
-        operation: Operation.Create,
-      } as FairwayCardInput);
+      let card;
+      if (version) {
+        card = mapTrafficService({
+          fairwayIds: version?.fairwayIds,
+          group: version?.group,
+          id: identifier,
+          n2000HeightSystem: version?.n2000HeightSystem,
+          name: version?.name,
+          status: Status.Draft,
+          temporaryNotifications: version?.temporaryNotifications,
+          version: 'v1',
+          operation: Operation.Create,
+        } as FairwayCardInput);
+      } else {
+        card = getEmptyFairwayCardInput(identifier);
+        console.log(card);
+      }
       saveFairwayCard({ card: card });
     }
     if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version, newVersion: false } });
