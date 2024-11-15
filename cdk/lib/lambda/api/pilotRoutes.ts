@@ -22,6 +22,13 @@ function getTurningDirection(azimuthBefore: number, azimuthAfter: number): Turni
   return 'left';
 }
 
+/* Get minimum points to approximate arc with maximum maxError meter error */
+/* Radius in meters, angle in degrees ans maxError in meters */
+function calculateMinimumTurningPoints(radius: number, angle: number, maxError: number) : number {
+  const angleRadians = angle * (Math.PI / 180);
+  return Math.ceil(Math.sqrt((radius * angleRadians * angleRadians) / (8 * maxError)));
+}
+
 /* Get turning arc coordinates based on three coordinates and turning radius.
    If turning arc cannot be calculated return array of single coordinate 'middle.
 */
@@ -67,17 +74,22 @@ function getTurningArc(start: Coordinate, middle: Coordinate, end: Coordinate, t
   const touchPoint1Angle = turf_rhumbBearing(center, touchPoint1.geometry);
   const touchPoint2Angle = turf_rhumbBearing(center, touchPoint2.geometry);
 
+  const angleBetween = Math.min(360 - Math.abs(touchPoint1Angle - touchPoint2Angle), Math.abs(touchPoint1Angle - touchPoint2Angle));
+
   /* Do not calculate turning arc if touch point angle difference is less than one degrees */
-  if (Math.abs(touchPoint1Angle - touchPoint2Angle) < 1 || Math.abs(touchPoint1Angle - touchPoint2Angle) > 359) {
+  if (angleBetween < 1) {
     return [middle];
   }
 
+  /* Get minimum points to approximate arc with maximum 1 meter error */
+  const steps = calculateMinimumTurningPoints(turningRadius * 1000, angleBetween, 1);
+
   /* Turf lineArc always returns arc coordinates clockwise, so if we are turning left we need to reverse coordinates */
   if (turningDirection === 'right') {
-    const arc = turf_lineArc(center, turningRadius, turf_rhumbBearing(center, touchPoint1.geometry), turf_rhumbBearing(center, touchPoint2.geometry));
+    const arc = turf_lineArc(center, turningRadius, touchPoint1Angle, touchPoint2Angle, {steps: steps});
     return arc.geometry.coordinates as Coordinate[];
   } else {
-    const arc = turf_lineArc(center, turningRadius, turf_rhumbBearing(center, touchPoint2.geometry), turf_rhumbBearing(center, touchPoint1.geometry));
+    const arc = turf_lineArc(center, turningRadius, touchPoint2Angle, touchPoint1Angle , {steps: steps});
     const coordinates = arc.geometry.coordinates;
     coordinates.reverse();
     return coordinates as Coordinate[];
