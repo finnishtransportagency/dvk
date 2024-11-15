@@ -17,14 +17,14 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { FairwayCardInput, FairwayCardOrHarbor, Operation, Status } from '../graphql/generated';
+import { FairwayCardInput, FairwayCardOrHarbor } from '../graphql/generated';
 import { INPUT_MAXLENGTH, ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
 import { FairwayCardOrHarborGroup, getCombinedErrorAndHelperText, getEmptyFairwayCardInput, sortItemGroups } from '../utils/common';
-import { useSaveFairwayCardMutationQuery } from '../graphql/api';
-import { mapTrafficService } from '../utils/dataMapper';
+import { useFairwayCardByIdQueryData, useSaveFairwayCardMutationQuery } from '../graphql/api';
+import { mapToFairwayCardInput, mapTrafficService } from '../utils/dataMapper';
 
 interface ModalProps {
   itemList: FairwayCardOrHarbor[];
@@ -45,6 +45,9 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const [identifier, setIdentifier] = useState<string>('');
   const [identifierValid, setIdentifierValid] = useState(true);
   const [copyPics, setCopyPics] = useState(false);
+
+  // needed for copying the whole data of fairway card but enabled only if there's version selected
+  const { data: fairwayCardData } = useFairwayCardByIdQueryData(version?.id ?? '', version?.version, false, !!version?.id && itemType === 'CARD');
 
   const selectVersionRef = useRef<HTMLIonSelectElement>(null);
   const identifierInputRef = useRef<HTMLIonInputElement>(null);
@@ -76,24 +79,17 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const createNewItem = () => {
     setIsCreating(true);
     if (itemType === 'CARD') {
-      let card;
-      if (version) {
-        card = mapTrafficService({
-          fairwayIds: version?.fairwayIds,
-          group: version?.group,
+      if (version && fairwayCardData) {
+        const filledCard = mapTrafficService({
+          ...mapToFairwayCardInput(version.id, fairwayCardData),
           id: identifier,
-          n2000HeightSystem: version?.n2000HeightSystem,
-          name: version?.name,
-          status: Status.Draft,
-          temporaryNotifications: version?.temporaryNotifications,
           version: 'v1',
-          operation: Operation.Create,
         } as FairwayCardInput);
-      } else {
-        card = getEmptyFairwayCardInput(identifier);
-        console.log(card);
+        saveFairwayCard({ card: filledCard });
+      } else if (!version) {
+        const emptyCard = getEmptyFairwayCardInput(identifier);
+        saveFairwayCard({ card: emptyCard });
       }
-      saveFairwayCard({ card: card });
     }
     if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version, newVersion: false } });
   };

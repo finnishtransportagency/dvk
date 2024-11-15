@@ -96,7 +96,7 @@ class FairwayCardDBModel {
 
   version: string;
 
-  name?: Text;
+  name: Text;
 
   status: Status;
 

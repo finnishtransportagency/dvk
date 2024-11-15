@@ -345,14 +345,15 @@ export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
 }
 
 export function getEmptyFairwayCardInput(id: string) {
+  // empty strings so schema doesnt need to be changed for group and name
   return {
     fairwayIds: [],
-    group: '',
+    group: ' ',
     harbors: [],
     id: id,
     version: 'v1',
     n2000HeightSystem: false,
-    name: { fi: '', sv: '', en: '' },
+    name: { fi: ' ', sv: ' ', en: ' ' },
     additionalInfo: { fi: '', sv: '', en: '' },
     lineText: { fi: '', sv: '', en: '' },
     designSpeed: { fi: '', sv: '', en: '' },

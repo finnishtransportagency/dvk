@@ -87,7 +87,7 @@ export const fairwayCardReducer = (
         newState.secondaryFairwayId = onlyLinkedFairwayInArray;
       }
       // this monster of a conditional clause is to update sequencing when one of the linked fairways are removed
-      if (state.fairwayIds.length > newState.fairwayIds.length) {
+      if (state.fairwayIds && state.fairwayIds.length > newState.fairwayIds.length) {
         const removedId = state.fairwayIds.find((id) => !(value as number[]).includes(id));
         const removedStartingFairway = state.primaryFairwayId?.find((fairway) => fairway.id === removedId) as SelectedFairwayInput;
         const newPrimaryValues = state.primaryFairwayId?.filter((f) => f.id !== removedId) as SelectedFairwayInput[];
