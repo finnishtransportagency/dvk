@@ -59,6 +59,7 @@
     "@typescript-eslint/parser": "^8.13.0",
     "aws-cdk": "^2.166.0",
     "aws-sdk-client-mock": "^4.1.0",
+    "@types/nodemailer": "^6.4.16",
     "cdk-sso-sync": "0.0.6",
     "cross-env": "7.0.3",
     "esbuild": "^0.24.0",
@@ -107,6 +108,7 @@
     "jwk-to-pem": "2.0.6",
     "pino": "^9.5.0",
     "proj4": "^2.14.0",
+    "nodemailer": "^6.9.16",
     "source-map-support": "^0.5.21",
     "watch": "^1.0.2"
   },

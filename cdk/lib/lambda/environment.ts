@@ -245,3 +245,19 @@ export async function getFeedbackSQSQueueUrl(): Promise<string> {
   const path = `${getEnvironment()}/feedback-sqs-queue-url`;
   return await readParameterForEnv(path);
 }
+
+export async function getEmailHost(): Promise<string> {
+  return readParameterForEnv(`${getEnvironment()}/email/host`);
+}
+
+export async function getEmailPort(): Promise<string> {
+  return readParameterForEnv(`${getEnvironment()}/email/port`);
+}
+
+export async function getEmailUser(): Promise<string> {
+  return readParameterForEnv(`${getEnvironment()}/email/user`);
+}
+
+export async function getEmailPass(): Promise<string> {
+  return readParameterForEnv(`${getEnvironment()}/email/pass`);
+}
