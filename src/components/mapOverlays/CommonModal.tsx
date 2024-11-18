@@ -1,4 +1,18 @@
-import { IonButton, IonButtons, IonCol, IonFooter, IonGrid, IonHeader, IonIcon, IonModal, IonRow, IonTitle, IonToolbar } from '@ionic/react';
+import {
+  IonButton,
+  IonButtons,
+  IonCol,
+  IonFooter,
+  IonGrid,
+  IonHeader,
+  IonIcon,
+  IonModal,
+  IonRange,
+  IonRow,
+  IonTextarea,
+  IonTitle,
+  IonToolbar,
+} from '@ionic/react';
 import React, { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import './CommonModal.css';
@@ -12,9 +26,10 @@ type ModalProps = {
   size: string;
   children: ReactElement;
   htmlId?: string;
+  handleSubmit?: () => void;
 };
 
-export const CommonModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, size, children, htmlId }) => {
+export const CommonModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, size, children, htmlId, handleSubmit }) => {
   const { t } = useTranslation();
   return (
     <IonModal id={htmlId ?? 'commonModal'} isOpen={isOpen} className={size} showBackdrop={showBackdrop} onDidDismiss={() => setIsOpen(false)}>
@@ -40,6 +55,18 @@ export const CommonModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, sh
       {children}
       <IonFooter>
         <IonToolbar className="buttonBar ion-margin-top">
+          {handleSubmit && (
+            <IonButton
+              slot="end"
+              onClick={() => {
+                handleSubmit();
+                setIsOpen(false);
+              }}
+              shape="round"
+            >
+              {t('common.submit')}
+            </IonButton>
+          )}
           <IonButton slot="end" onClick={() => setIsOpen(false)} shape="round">
             {t('common.close')}
           </IonButton>
@@ -83,6 +110,59 @@ export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) =
               <span className="screen-reader-only">{t('common.opens-in-a-new-tab')}</span>
             </a>
           </IonCol>
+        </IonRow>
+      </IonGrid>
+    </CommonModal>
+  );
+};
+
+type FeedbackModalProps = {
+  isOpen: boolean;
+  setIsOpen: (open: boolean) => void;
+  handleSubmit: () => void;
+};
+
+export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, setIsOpen, handleSubmit }) => {
+  const { t } = useTranslation();
+  return (
+    <CommonModal
+      size="large"
+      showBackdrop={false}
+      isOpen={isOpen}
+      setIsOpen={setIsOpen}
+      title={t('feedback.title')}
+      // TODO: pass down the handler
+      handleSubmit={handleSubmit}
+    >
+      <IonGrid className="linkBar content">
+        <IonRow>
+          <IonCol>{t('feedback.content')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <strong>{t('feedback.title2')}</strong>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>{t('feedback.content2')}</IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonRange aria-label="Arvosana-asteikko" min={0} max={10} value={5} pin={true} ticks={true} snaps={true}></IonRange>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <strong>{t('feedback.title3')}</strong>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>
+            <IonTextarea fill="outline" autoGrow></IonTextarea>
+          </IonCol>
+        </IonRow>
+        <IonRow>
+          <IonCol>{t('feedback.content3')}</IonCol>
         </IonRow>
       </IonGrid>
     </CommonModal>

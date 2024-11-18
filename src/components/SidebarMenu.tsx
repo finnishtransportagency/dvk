@@ -35,6 +35,7 @@ import { Lang, accessibilityUrl } from '../utils/constants';
 
 type SidebarMenuProps = {
   setIsSourceOpen: (open: boolean) => void;
+  setIsFeedbackOpen: (open: boolean) => void;
 };
 
 type RouteItemProps = {
@@ -64,7 +65,7 @@ const RouteItem: React.FC<RouteItemProps> = ({ routerLink, icon, title, dataTest
   );
 };
 
-const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
+const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen, setIsFeedbackOpen }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'homePage.sidebarMenu' });
   const firstFocusableElement = useRef<HTMLIonButtonElement>(null);
   const lastFocusableElement = useRef<HTMLIonButtonElement>(null);
@@ -159,6 +160,21 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen }) => {
                 <IonRow className="locationPermission">
                   <IonCol size="12">
                     <LocationPermissionControl />
+                  </IonCol>
+                  {/* TODO t */}
+                  <IonCol>
+                    <IonButtons>
+                      <IonButton
+                        ref={lastFocusableElement}
+                        className="sourceText ion-text-nowrap"
+                        onClick={() => {
+                          menuController.close();
+                          setIsFeedbackOpen(true);
+                        }}
+                      >
+                        {t('Anna palvelusta palautetta')}
+                      </IonButton>
+                    </IonButtons>
                   </IonCol>
                 </IonRow>
               </IonGrid>
