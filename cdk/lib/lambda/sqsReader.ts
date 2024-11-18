@@ -1,14 +1,15 @@
 import { SQSEvent, SQSHandler } from 'aws-lambda';
 import nodemailer from 'nodemailer';
-import { getEmailHost, getEmailPort, getEmailUser, getEmailPass } from './environment';
+import { getEmailConfig } from './environment';
 
 export const handler: SQSHandler = async (event: SQSEvent) => {
+  const { emailHost, emailPort, emailUser, emailPass } = await getEmailConfig();
   const transporter = nodemailer.createTransport({
-    host: await getEmailHost(),
-    port: parseInt(await getEmailPort()),
+    host: emailHost,
+    port: parseInt(emailPort),
     auth: {
-      user: await getEmailUser(),
-      pass: await getEmailPass(),
+      user: emailUser,
+      pass: emailPass,
     },
   });
 

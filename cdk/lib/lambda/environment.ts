@@ -246,18 +246,21 @@ export async function getFeedbackSQSQueueUrl(): Promise<string> {
   return await readParameterForEnv(path);
 }
 
-export async function getEmailHost(): Promise<string> {
-  return readParameterForEnv(`${getEnvironment()}/email/host`);
-}
-
-export async function getEmailPort(): Promise<string> {
-  return readParameterForEnv(`${getEnvironment()}/email/port`);
-}
-
-export async function getEmailUser(): Promise<string> {
-  return readParameterForEnv(`${getEnvironment()}/email/user`);
-}
-
-export async function getEmailPass(): Promise<string> {
-  return readParameterForEnv(`${getEnvironment()}/email/pass`);
+export async function getEmailConfig(): Promise<{
+  emailHost: string;
+  emailPass: string;
+  emailPort: string;
+  emailUser: string;
+}> {
+  return await Promise.all([
+    readParameterForEnv(`${getEnvironment()}/email/host`),
+    readParameterForEnv(`${getEnvironment()}/email/pass`),
+    readParameterForEnv(`${getEnvironment()}/email/port`),
+    readParameterForEnv(`${getEnvironment()}/email/user`),
+  ]).then((values) => ({
+    emailHost: values[0],
+    emailPass: values[1],
+    emailPort: values[2],
+    emailUser: values[3],
+  }));
 }
