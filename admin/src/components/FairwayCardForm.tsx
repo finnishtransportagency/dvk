@@ -48,12 +48,10 @@ interface FormProps {
   modifier?: string;
   creator?: string;
   created?: number;
-  sourceCardId?: string;
-  sourceCardVersion?: string;
   isError?: boolean;
 }
 
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, sourceCardId, sourceCardVersion, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, isError }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -164,25 +162,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         setState({ ...oldState, status: Status.Removed });
         saveFairwayCard({ card: mapTrafficService({ ...oldState, status: Status.Removed, operation }) as FairwayCardInput });
       } else if (operation === Operation.Update) {
-        if (!!sourceCardId?.length && !!state.pictures?.length) {
-          saveFairwayCard({
-            card: mapTrafficService(state) as FairwayCardInput,
-            pictureSourceId: sourceCardId,
-            pictureSourceVersion: sourceCardVersion,
-          });
-        } else {
-          saveFairwayCard({ card: mapTrafficService(state) as FairwayCardInput });
-        }
+        saveFairwayCard({ card: mapTrafficService(state) as FairwayCardInput });
       } else if (operation === Operation.Create) {
-        if (!!sourceCardId?.length && !!state.pictures?.length) {
-          saveFairwayCard({
-            card: mapTrafficService({ ...state, version: 'v1' }) as FairwayCardInput,
-            pictureSourceId: sourceCardId,
-            pictureSourceVersion: sourceCardVersion,
-          });
-        } else {
-          saveFairwayCard({ card: mapTrafficService({ ...state, version: 'v1' }) as FairwayCardInput });
-        }
+        saveFairwayCard({ card: mapTrafficService({ ...state, version: 'v1' }) as FairwayCardInput });
       } else if (operation === Operation.Createversion) {
         setIsSubmittingVersion(true);
         const newVersion = mapNewFairwayCardVersion(state, !!state.pictures?.length);
@@ -199,7 +181,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         }
       }
     },
-    [state, oldState, sourceCardId, sourceCardVersion, saveFairwayCard]
+    [state, oldState, saveFairwayCard]
   );
 
   const formValid = (): boolean => {
@@ -409,7 +391,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 harbourOptions={harbourOptions}
                 isLoadingPilotRoutes={isLoadingPilotRoutes}
                 pilotRouteOptions={pilotRouteList}
-                sourceCard={sourceCardId}
               />
               <NotificationSection
                 state={state}
@@ -455,12 +436,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               />
 
               <IonText>
-                <h2>
-                  {t('fairwaycard.print-images')}
-                  {!!sourceCardId?.length && !!state.pictures?.length && (
-                    <span className="print-images-warning">{t('fairwaycard.print-images-warning')}</span>
-                  )}
-                </h2>
+                <h2>{t('fairwaycard.print-images')}</h2>
               </IonText>
 
               <MapExportTool
@@ -470,8 +446,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 setPicture={updateState}
                 fairways={fairwaySelection}
                 harbours={harbourSelection}
-                sourceCardId={sourceCardId}
-                sourceCardVersion={sourceCardVersion}
               />
             </form>
           </>

@@ -27,8 +27,6 @@ interface PrintImagesByModeProps {
   isLoading?: boolean;
   isProcessingCurLang?: boolean;
   validationErrors?: ValidationType[];
-  sourceCardId?: string;
-  sourceCardVersion?: string;
 }
 
 export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
@@ -40,8 +38,6 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   isLoading,
   isProcessingCurLang,
   validationErrors,
-  sourceCardId,
-  sourceCardVersion,
 }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
@@ -101,8 +97,8 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
     }
   };
 
-  const cardId = sourceCardId?.length ? sourceCardId : fairwayCardInput.id;
-  const cardVersion = sourceCardId?.length ? sourceCardVersion : fairwayCardInput.version;
+  const cardId = fairwayCardInput.id;
+  const cardVersion = fairwayCardInput.version;
 
   return (
     <IonGrid className={'print-images ' + orientation.toLowerCase()}>
@@ -124,7 +120,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                         setShowPicture(pic);
                       }}
                     >
-                      <img src={imgSource + pic.id} alt={sourceCardId?.length ? `${t('fairwaycard.pic-copy')}-${pic.id}` : pic.id} />
+                      <img src={imgSource + pic.id} alt={pic.id} />
                       <IonButton
                         slot="end"
                         onClick={(ev) => {
@@ -168,11 +164,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                                 setShowPicture(groupedPic);
                               }}
                             >
-                              <img
-                                src={imgSource + groupedPic.id}
-                                alt={sourceCardId?.length ? `${t('fairwaycard.pic-copy')}-${groupedPic.id}` : groupedPic.id}
-                                className="small"
-                              />
+                              <img src={imgSource + groupedPic.id} alt={groupedPic.id} className="small" />
                             </a>
                           </IonCol>
                         ))}

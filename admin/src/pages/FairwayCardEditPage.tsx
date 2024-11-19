@@ -1,31 +1,20 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
-import { FairwayCardOrHarbor } from '../graphql/generated';
-import { useCurrentUserQueryData, useFairwayCardByIdQueryData } from '../graphql/api';
+import { useParams } from 'react-router-dom';
+import { useFairwayCardByIdQueryData } from '../graphql/api';
 import FairwayCardForm from '../components/FairwayCardForm';
 import { IonProgressBar } from '@ionic/react';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
-import { getEmptyFairwayCardInput } from '../utils/common';
 
-interface FairwayCardEditProps {
-  fairwayCardId: string;
+interface FairwayCardProps {
+  fairwayCardId?: string;
   fairwayCardVersion?: string;
-  sourceCardId?: string;
-  sourceCardVersion?: string;
-  copyPictures?: boolean;
 }
 
-const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
-  fairwayCardId,
-  fairwayCardVersion = 'v1',
-  sourceCardId,
-  sourceCardVersion,
-  copyPictures,
-}) => {
-  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId, fairwayCardVersion, false);
-  const { data: userData } = useCurrentUserQueryData();
+const FairwayCardEditPage: React.FC = () => {
+  const { fairwayCardId, fairwayCardVersion } = useParams<FairwayCardProps>();
+  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId ?? 'v1', fairwayCardVersion, false);
 
-  const fairwayCard = mapToFairwayCardInput(sourceCardId, data, copyPictures);
+  const fairwayCard = mapToFairwayCardInput(undefined, data);
 
   return (
     <>
@@ -33,57 +22,11 @@ const FairwayCardEditForm: React.FC<FairwayCardEditProps> = ({
       {!isLoading && (
         <FairwayCardForm
           fairwayCard={{ ...fairwayCard }}
-          modified={sourceCardId ? 0 : (data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0)}
-          modifier={sourceCardId ? '-' : (data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? '')}
-          creator={sourceCardId ? userData?.currentUser?.name : (data?.fairwayCard?.creator ?? undefined)}
-          created={sourceCardId ? 0 : (data?.fairwayCard?.creationTimestamp ?? undefined)}
-          sourceCardId={sourceCardId}
-          sourceCardVersion={sourceCardVersion}
+          modified={data?.fairwayCard?.modificationTimestamp ?? data?.fairwayCard?.creationTimestamp ?? 0}
+          modifier={data?.fairwayCard?.modifier ?? data?.fairwayCard?.creator ?? ''}
+          creator={data?.fairwayCard?.creator ?? undefined}
+          created={data?.fairwayCard?.creationTimestamp ?? undefined}
           isError={isError}
-        />
-      )}
-    </>
-  );
-};
-
-interface FairwayCardProps {
-  fairwayCardId?: string;
-  version?: string;
-}
-
-type LocationState = {
-  origin?: FairwayCardOrHarbor;
-  copyPictures?: boolean;
-  newVersion?: boolean;
-};
-
-const FairwayCardEditPage: React.FC<FairwayCardProps> = () => {
-  // when fairwayCardId is undefined, we're creating new entry
-  const { fairwayCardId, version } = useParams<FairwayCardProps>();
-  const location = useLocation();
-  const locationState = location.state as LocationState;
-
-  const { data } = useCurrentUserQueryData();
-
-  return (
-    <>
-      {fairwayCardId && <FairwayCardEditForm fairwayCardId={fairwayCardId} fairwayCardVersion={version} />}
-      {locationState?.origin && (
-        <FairwayCardEditForm
-          fairwayCardId={locationState.origin.id}
-          fairwayCardVersion={locationState.origin.version}
-          sourceCardId={locationState.origin.id}
-          sourceCardVersion={locationState.origin.version}
-          copyPictures={locationState?.copyPictures}
-        />
-      )}
-      {!fairwayCardId && !locationState?.origin && (
-        <FairwayCardForm
-          fairwayCard={getEmptyFairwayCardInput(fairwayCardId ?? '')}
-          modified={0}
-          modifier="-"
-          creator={data?.currentUser?.name}
-          created={0}
         />
       )}
     </>

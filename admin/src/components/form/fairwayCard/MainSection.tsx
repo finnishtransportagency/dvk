@@ -28,7 +28,6 @@ interface MainSectionProps {
   harbourOptions?: SelectOption[];
   fairwaySelection?: SelectOption[];
   pilotRouteOptions?: FeatureCollection;
-  sourceCard?: string;
 }
 
 const MainSection: React.FC<MainSectionProps> = ({
@@ -43,7 +42,6 @@ const MainSection: React.FC<MainSectionProps> = ({
   harbourOptions,
   fairwaySelection,
   pilotRouteOptions,
-  sourceCard,
 }) => {
   const { t } = useTranslation();
 
@@ -68,7 +66,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             actionType="primaryId"
             name="primaryId"
             required
-            disabled={state.operation === Operation.Update || (!sourceCard?.length && !!state.pictures?.length)}
+            disabled={state.operation === Operation.Update}
             error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
             helperText={t('fairwaycard.primary-id-help-text')}
             setValidity={setValidity}
