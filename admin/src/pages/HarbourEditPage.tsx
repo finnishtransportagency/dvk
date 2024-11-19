@@ -1,10 +1,11 @@
 import React from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import { FairwayCardOrHarbor, HarborInput, Operation, Status } from '../graphql/generated';
+import { FairwayCardOrHarbor } from '../graphql/generated';
 import { useCurrentUserQueryData, useHarbourByIdQueryData } from '../graphql/api';
 import HarbourForm from '../components/HarbourForm';
 import { IonProgressBar } from '@ionic/react';
 import { mapToHarborInput } from '../utils/dataMapper';
+import { getEmptyHarborInput } from '../utils/common';
 
 interface HarbourEditProps {
   harbourId: string;
@@ -52,31 +53,18 @@ const HarbourEditPage: React.FC<HarbourProps> = () => {
 
   const { data } = useCurrentUserQueryData();
 
-  const emptyHarbourInput: HarborInput = {
-    geometry: { lat: '', lon: '' },
-    id: '',
-    version: 'v1',
-    n2000HeightSystem: false,
-    name: { fi: '', sv: '', en: '' },
-    extraInfo: { fi: '', sv: '', en: '' },
-    cargo: { fi: '', sv: '', en: '' },
-    harborBasin: { fi: '', sv: '', en: '' },
-    company: { fi: '', sv: '', en: '' },
-    email: '',
-    fax: '',
-    internet: '',
-    phoneNumber: [],
-    quays: [],
-    status: Status.Draft,
-    operation: Operation.Create,
-  };
-
   return (
     <>
       {harbourId && <HarbourEditForm harbourId={harbourId} harbourVersion={version} />}
       {locationState?.origin && <HarbourEditForm harbourId={locationState.origin.id} harbourVersion={locationState.origin.version} origin />}
       {!harbourId && !locationState?.origin && (
-        <HarbourForm harbour={emptyHarbourInput} modified={0} modifier={'-'} creator={data?.currentUser?.name} created={0} />
+        <HarbourForm
+          harbour={getEmptyHarborInput(locationState.origin?.id ?? '')}
+          modified={0}
+          modifier={'-'}
+          creator={data?.currentUser?.name}
+          created={0}
+        />
       )}
     </>
   );

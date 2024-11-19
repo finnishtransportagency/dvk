@@ -22,9 +22,15 @@ import { INPUT_MAXLENGTH, ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
-import { FairwayCardOrHarborGroup, getCombinedErrorAndHelperText, getEmptyFairwayCardInput, sortItemGroups } from '../utils/common';
-import { useFairwayCardByIdQueryData, useSaveFairwayCardMutationQuery } from '../graphql/api';
-import { mapToFairwayCardInput, mapTrafficService } from '../utils/dataMapper';
+import {
+  FairwayCardOrHarborGroup,
+  getCombinedErrorAndHelperText,
+  getEmptyFairwayCardInput,
+  getEmptyHarborInput,
+  sortItemGroups,
+} from '../utils/common';
+import { useFairwayCardByIdQueryData, useHarbourByIdQueryData, useSaveFairwayCardMutationQuery, useSaveHarborMutationQuery } from '../graphql/api';
+import { mapToFairwayCardInput, mapToHarborInput, mapTrafficService } from '../utils/dataMapper';
 
 interface ModalProps {
   itemList: FairwayCardOrHarbor[];
@@ -46,18 +52,34 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const [identifierValid, setIdentifierValid] = useState(true);
   const [copyPics, setCopyPics] = useState(false);
 
-  // needed for copying the whole data of fairway card but enabled only if there's version selected
+  // needed for copying the whole data of but enabled only if there's version selected
   const { data: fairwayCardData } = useFairwayCardByIdQueryData(version?.id ?? '', version?.version, false, !!version?.id && itemType === 'CARD');
+  const { data: harborData } = useHarbourByIdQueryData(version?.id ?? '', version?.version, false, !!version?.id && itemType === 'HARBOR');
 
   const selectVersionRef = useRef<HTMLIonSelectElement>(null);
   const identifierInputRef = useRef<HTMLIonInputElement>(null);
 
-  const { mutate: saveFairwayCard, isPending } = useSaveFairwayCardMutationQuery({
+  const { mutate: saveFairwayCard, isPending: cardIsPending } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setIsCreating(false);
       modal.current?.dismiss().catch((err) => console.error(err));
       history.push({
         pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v1',
+      });
+    },
+    onError: (error: Error) => {
+      setIsCreating(false);
+      console.log(error);
+    },
+  });
+
+  const { mutate: saveHarbor, isPending: harborIsPending } = useSaveHarborMutationQuery({
+    onSuccess(data) {
+      console.log(data);
+      setIsCreating(false);
+      modal.current?.dismiss().catch((err) => console.error(err));
+      history.push({
+        pathname: '/satama/' + data.saveHarbor?.id + '/v1',
       });
     },
     onError: (error: Error) => {
@@ -91,7 +113,19 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
         saveFairwayCard({ card: emptyCard });
       }
     }
-    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version, newVersion: false } });
+    if (itemType === 'HARBOR') {
+      if (version && harborData) {
+        const filledHarbor = {
+          ...mapToHarborInput(true, harborData),
+          id: identifier,
+          version: 'v1',
+        };
+        saveHarbor({ harbor: filledHarbor });
+      } else if (!version) {
+        const emptyHarbor = getEmptyHarborInput(identifier);
+        saveHarbor({ harbor: emptyHarbor });
+      }
+    }
   };
 
   const groupedItemList = useMemo(() => {
@@ -161,7 +195,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             className="closeButton"
             title={t('general.close') ?? ''}
             aria-label={t('general.close') ?? ''}
-            disabled={isPending}
+            disabled={cardIsPending || harborIsPending}
           >
             <CloseIcon />
           </IonButton>
@@ -256,14 +290,14 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert" disabled={isPending}>
+          <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert" disabled={cardIsPending || harborIsPending}>
             {t('general.cancel')}
           </IonButton>
           <IonButton
             slot="end"
             onClick={() => createNewItem()}
             shape="round"
-            disabled={!identifier || !identifierValid || (source && !version) || isPending}
+            disabled={!identifier || !identifierValid || (source && !version) || cardIsPending || harborIsPending}
           >
             {t('modal.create-' + itemType)}
           </IonButton>

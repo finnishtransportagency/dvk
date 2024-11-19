@@ -15,7 +15,7 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NotificationModal';
-import { mapNewHarbourVersion, mapToHarborInput } from '../utils/dataMapper';
+import { mapNewHarbourVersion, mapQuays, mapToHarborInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
@@ -101,35 +101,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const saveHarbour = useCallback(
     (operation: Operation) => {
-      const mapQuays = (harbour: HarborInput) => {
-        return {
-          ...harbour,
-          quays: harbour.quays?.map((quay) => {
-            return {
-              ...quay,
-              geometry:
-                !quay?.geometry?.lat || !quay?.geometry?.lon
-                  ? ''
-                  : {
-                      lat: quay?.geometry?.lat,
-                      lon: quay?.geometry?.lon,
-                    },
-              length: quay?.length ?? '',
-              sections: quay?.sections?.map((quaySection) => {
-                return {
-                  ...quaySection,
-                  geometry:
-                    !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
-                      ? { lat: '', lon: '' }
-                      : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
-                  depth: quaySection?.depth ?? '',
-                };
-              }),
-            };
-          }),
-        };
-      };
-
       if (operation === Operation.Publish) {
         setState({ ...state, status: Status.Public });
         saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Public, operation }) as HarborInput });

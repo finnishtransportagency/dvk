@@ -60,8 +60,8 @@ export function useHarboursQueryData() {
   return useHarborsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
-export function useHarbourByIdQueryData(id: string, version: string = 'v0_latest', refetchOnWindowFocus?: boolean) {
-  return useHarbourByIdQuery(datasourceClient, { id, version }, { refetchOnWindowFocus: refetchOnWindowFocus });
+export function useHarbourByIdQueryData(id: string, version: string = 'v0_latest', refetchOnWindowFocus?: boolean, enabled?: boolean) {
+  return useHarbourByIdQuery(datasourceClient, { id, version }, { refetchOnWindowFocus: refetchOnWindowFocus, enabled: enabled });
 }
 
 export function useHarbourLatestByIdQueryData(id: string) {

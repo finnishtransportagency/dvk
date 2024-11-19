@@ -382,3 +382,24 @@ export function getEmptyFairwayCardInput(id: string) {
     temporaryNotifications: [],
   };
 }
+
+export function getEmptyHarborInput(id: string) {
+  return {
+    geometry: { lat: '', lon: '' },
+    id: id,
+    version: 'v1',
+    n2000HeightSystem: false,
+    name: { fi: ' ', sv: ' ', en: ' ' },
+    extraInfo: { fi: '', sv: '', en: '' },
+    cargo: { fi: '', sv: '', en: '' },
+    harborBasin: { fi: '', sv: '', en: '' },
+    company: { fi: '', sv: '', en: '' },
+    email: '',
+    fax: '',
+    internet: '',
+    phoneNumber: [],
+    quays: [],
+    status: Status.Draft,
+    operation: Operation.Create,
+  };
+}
