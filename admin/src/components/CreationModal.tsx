@@ -75,7 +75,6 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const { mutate: saveHarbor, isPending: harborIsPending } = useSaveHarborMutationQuery({
     onSuccess(data) {
-      console.log(data);
       setIsCreating(false);
       modal.current?.dismiss().catch((err) => console.error(err));
       history.push({
@@ -106,8 +105,18 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
           ...mapToFairwayCardInput(version.id, fairwayCardData),
           id: identifier,
           version: 'v1',
+          pictures: fairwayCardData.fairwayCard?.pictures,
         } as FairwayCardInput);
-        saveFairwayCard({ card: filledCard });
+        const sourceFairwayCard = fairwayCardData.fairwayCard;
+        if (copyPics && !!sourceFairwayCard?.pictures?.length) {
+          saveFairwayCard({
+            card: filledCard,
+            pictureSourceId: sourceFairwayCard?.id,
+            pictureSourceVersion: sourceFairwayCard?.version,
+          });
+        } else {
+          saveFairwayCard({ card: filledCard });
+        }
       } else if (!version) {
         const emptyCard = getEmptyFairwayCardInput(identifier);
         saveFairwayCard({ card: emptyCard });
