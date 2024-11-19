@@ -139,7 +139,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const groupedItemList = useMemo(() => {
     const lang = i18n.language as Lang;
-    const filtered = itemList.filter((item) => item.type === itemType) || [];
+    // filter items that have right type and name's not an empty string (that indicates that it's an empty form)
+    const filtered = itemList.filter((item) => item.type === itemType && item.name[lang]?.trim() !== '') || [];
     const groupedItems: FairwayCardOrHarborGroup[] = [];
     for (const item of filtered) {
       const group = groupedItems.find((g) => g.id === item.id);
