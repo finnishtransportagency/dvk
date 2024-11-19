@@ -53,6 +53,7 @@ const apiLambdaFunctions: BackendAPILambda[] = [
     priority: 18,
     useVpc: true,
     useMonitoring: true,
+    memorySize: 512,
   },
   {
     entry: path.join(__dirname, 'restriction-handler.ts'),
