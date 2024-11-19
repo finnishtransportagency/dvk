@@ -137,6 +137,11 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
     }
   };
 
+  const handleInputChange = (event: CustomEvent) => {
+    setIdentifier(event.detail.value);
+    checkIdentifierValidity();
+  };
+
   const groupedItemList = useMemo(() => {
     const lang = i18n.language as Lang;
     // filter items that have right type and name's not an empty string (that indicates that it's an empty form)
@@ -280,12 +285,13 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               onIonBlur={() => {
                 checkIdentifierValidity();
               }}
-              onIonChange={(ev) => setIdentifier(ev.target.value as string)}
+              onIonInput={(ev) => handleInputChange(ev)}
+              onIonChange={(ev) => handleInputChange(ev)}
               pattern="[a-z]+[a-z\\d]*"
               required
               type="text"
               value={identifier}
-            ></IonInput>
+            />
           </IonCol>
         </IonRow>
         {itemType === 'CARD' && (
