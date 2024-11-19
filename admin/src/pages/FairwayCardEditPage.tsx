@@ -12,7 +12,7 @@ interface FairwayCardProps {
 
 const FairwayCardEditPage: React.FC = () => {
   const { fairwayCardId, fairwayCardVersion } = useParams<FairwayCardProps>();
-  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId ?? 'v1', fairwayCardVersion, false);
+  const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId ?? '', fairwayCardVersion, false);
 
   const fairwayCard = mapToFairwayCardInput(undefined, data);
 
