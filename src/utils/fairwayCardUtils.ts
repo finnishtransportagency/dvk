@@ -13,12 +13,8 @@ import {
 } from '../components/features';
 import * as olExtent from 'ol/extent';
 import { FairwayCardTab } from '../components/content/fairwayCard/FairwayCardContent';
-import { point, polygon } from '@turf/helpers';
-import { pointsWithinPolygon } from '@turf/points-within-polygon';
-import { buffer } from '@turf/buffer';
 import { MAP } from './constants';
-
-const WGS84 = 'EPSG:4326';
+import { inAreaBuffer, WGS84 } from './spatialUtils';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -155,16 +151,15 @@ export function getFairwayCardForecasts(fairwayCard: FairwayCardPartsFragment, f
   if (!features) {
     return [];
   }
-
+  //Find those matching pilot place id in card
   const forecasts = features.filter((f) => {
     return fairwayCard?.trafficService?.pilot?.places?.find((pilotPlace) => f.getProperties().pilotPlaceId === pilotPlace?.id) ?? false;
   });
-
+  //Get forecasts within 1 km of any fairway area
   const nonMatchedFeatures = features.filter((f) => {
     return !forecasts.find((fo) => fo.getId() === f.getId());
   });
   inAreaBuffer(getFairwayCardFairwayAreas(fairwayCard), MAP.EPSG, BUFFER_SIZE, nonMatchedFeatures, WGS84).forEach((p) => forecasts.push(p));
-
   return forecasts;
 }
 
@@ -200,37 +195,4 @@ export function getFairwayListFairwayCards(
 ) {
   const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
   return fairwayCards.filter((card) => card.fairways.some((fairway) => fairwayIds.includes(fairway.id)));
-}
-
-function inAreaBuffer(areas: Feature<Geometry>[], areaEPSG: string, bufferSizeInKm: number, testPoints: Feature<Geometry>[], pointEPSG: string) {
-  const filteredPoints: Feature<Geometry>[] = [];
-  testPoints.forEach((tp) => {
-    const tpAsPoint = toLatLng(tp, pointEPSG) as Feature<Point> | undefined;
-    if (tpAsPoint) {
-      const p = point(tpAsPoint.getGeometry()?.getCoordinates() ?? []);
-      let inside = false;
-      areas.forEach((a) => {
-        const aAsPolygon = toLatLng(a, areaEPSG) as Feature<Polygon> | undefined;
-        if (aAsPolygon && !inside) {
-          const buff = buffer(polygon(aAsPolygon.getGeometry()?.getCoordinates() ?? []).geometry, bufferSizeInKm);
-          console.log(buff?.geometry);
-          if (buff && pointsWithinPolygon(p, buff).features?.length > 0) {
-            filteredPoints.push(tp);
-            inside = true;
-          }
-        }
-      });
-    }
-  });
-  return filteredPoints;
-}
-
-function toLatLng(feature: Feature<Geometry>, fromEPSG: string) {
-  //Return clone to avoid changing in place
-  if (fromEPSG === WGS84) {
-    return feature;
-  }
-  const clone: Feature<Geometry> = feature?.clone();
-  clone.getGeometry()?.transform(MAP.EPSG, WGS84);
-  return clone;
 }

@@ -287,6 +287,11 @@
     "rtz": "Reitin RTZ-tiedosto",
     "linkedFairwayCards": "Luotsausreittiin liittyvät väyläkortit"
   },
+  "forecast": {
+    "forecastLocation": "Sää- ja aaltoennustepisteen sijainti",
+    "updated": "Päivitetty",
+    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+  },
   "faults": {
     "title": "Turvalaiteviat",
     "notification": "HUOM! Siirtyminen uuteen N2000-korkeusjärjestelmään merikarttajulkaisuissa on alkanut. Väyläkortit päivitetään tähän korkeusjärjestelmään uusien rannikkokarttojen julkaisun mukaisessa tahdissa.  Käyttäjien tulee varmistaa, että heillä on käytössään rannikkokartan mukaisen korkeusjärjestelmän väyläkortti. N2000-korkeusjärjestelmään päivitetyn väyläkortin tunnistat kortin yläreunan merkinnästä N2000 (BSCD2000).",

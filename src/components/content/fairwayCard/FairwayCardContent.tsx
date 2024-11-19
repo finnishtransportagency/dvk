@@ -51,6 +51,7 @@ import { AreaInfoByType } from './AreaInfoByType';
 import MareographInfo from './MareographInfo';
 import { useMareographFeatures } from '../../MareographFeatureLoader';
 import { useForecastFeatures } from '../../ForecastLoader';
+import ForecastContainer from '../ForecastContainer';
 
 export enum FairwayCardTab {
   Information = 1,
@@ -352,7 +353,11 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           </div>
 
           <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
-            {forecastsReady && forecasts ? JSON.stringify(forecasts) : 'not-ready'}
+            {forecastsReady && forecasts
+              ? forecasts.map((f) => {
+                  return <ForecastContainer forecast={f} key={f.getId()} />;
+                })
+              : ''}
           </div>
 
           {!isMobile() && (
