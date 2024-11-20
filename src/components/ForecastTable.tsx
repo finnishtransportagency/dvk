@@ -114,7 +114,6 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clea
   };
 
   const gridClassName = 'ForecastGrid' + ((clear ? ' clear' : '') + ' ion-no-padding');
-  console.log(gridClassName);
   return (
     <IonGrid className={gridClassName}>
       <IonRow className="HeaderRow ion-justify-content-between">
