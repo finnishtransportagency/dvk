@@ -18,7 +18,7 @@ import {
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardInput, FairwayCardOrHarbor } from '../graphql/generated';
-import { INPUT_MAXLENGTH, ItemType, Lang, VERSION } from '../utils/constants';
+import { ErrorMessageKeys, INPUT_MAXLENGTH, ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
@@ -55,6 +55,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   // needed for copying the whole data of but enabled only if there's version selected
   const { data: fairwayCardData } = useFairwayCardByIdQueryData(version?.id ?? '', version?.version, false, !!version?.id && itemType === 'CARD');
   const { data: harborData } = useHarbourByIdQueryData(version?.id ?? '', version?.version, false, !!version?.id && itemType === 'HARBOR');
+
+  const reservedIds = itemList.filter((item) => item.type === itemType).map((i) => i.id);
 
   const selectVersionRef = useRef<HTMLIonSelectElement>(null);
   const identifierInputRef = useRef<HTMLIonInputElement>(null);
@@ -180,7 +182,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
       ?.getInputElement()
       .then((textinput) => {
         if (textinput) {
-          setIdentifierValid(textinput.checkValidity());
+          const notInUse = !reservedIds.includes(identifier);
+          setIdentifierValid(notInUse ?? textinput.checkValidity());
         }
       })
       .catch((err) => {
@@ -190,6 +193,9 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const getErrorText = (val?: string) => {
     if (!identifierValid) {
+      if (reservedIds.includes(identifier)) {
+        return t(ErrorMessageKeys.duplicateId);
+      }
       return !val?.trim()?.length ? t('general.required-field') : t('general.check-input');
     }
     return '';
@@ -276,20 +282,19 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             <IonInput
               ref={identifierInputRef}
               className={'formInput' + (identifierValid ? '' : ' invalid')}
-              errorText={getCombinedErrorAndHelperText(t('fairwaycard.primary-id-help-text'), getErrorText())}
+              errorText={getCombinedErrorAndHelperText(t('fairwaycard.primary-id-help-text'), getErrorText(identifier))}
               fill="outline"
               helperText={identifierValid ? t('fairwaycard.primary-id-help-text') : ''}
-              inputMode="text"
               maxlength={INPUT_MAXLENGTH}
               name="primaryId"
               onIonBlur={() => {
                 checkIdentifierValidity();
               }}
+              debounce={500}
               onIonInput={(ev) => handleInputChange(ev)}
               onIonChange={(ev) => handleInputChange(ev)}
-              pattern="[a-z]+[a-z\\d]*"
+              pattern={'[a-z]+[a-z\\d]*'}
               required
-              type="text"
               value={identifier}
             />
           </IonCol>
