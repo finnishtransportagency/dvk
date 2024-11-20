@@ -149,6 +149,7 @@
     "harboursTitle": "Farledens hamnar",
     "areasTitle": "Farledsområden",
     "routesTitle": "Lotsningsrutter",
+    "weatherForecastsTitle": "Väderprognoser",
     "information": "Farledsdata",
     "liningAndMarking": "Farledsdragning och utmärkning",
     "starts": "Börjar",
@@ -285,6 +286,11 @@
     "route": "Rutt",
     "rtz": "Ruttfil i RTZ-format",
     "linkedFairwayCards": "Farledskort angående lotsningsrutt"
+  },
+  "forecast": {
+    "forecastLocation": "[sv] Sää- ja aaltoennustepisteen sijainti",
+    "updated": "Uppdaterat",
+    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",

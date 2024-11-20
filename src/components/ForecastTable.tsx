@@ -6,6 +6,8 @@ import './ForecastTable.css';
 
 type ForecastTableProps = {
   forecastItems: ForecastItem[];
+  page?: number;
+  clear?: boolean;
 };
 
 type ForecastRowProps = {
@@ -83,16 +85,16 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
         {(Math.round(forecastItem.waveHeight * 10) / 10).toFixed(1)} m, {Math.round(forecastItem.waveDirection)}&deg;
       </IonCol>
       <IonCol size="2" className={visibilityColClass + ' ion-text-end'}>
-        {Math.round(forecastItem.visibility)} km
+        {(Math.round(forecastItem.visibility * 10) / 10).toFixed(1)} km
       </IonCol>
     </IonRow>
   );
 };
 
-const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
+const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clear = false }) => {
   const { t } = useTranslation();
   const [startIndex, setStartIndex] = useState<number>(0);
-  const pageSize = 8;
+  const pageSize = page ?? 8;
 
   /* Always show timezone offset of the first forecast item */
   let utcDiffStr = timezoneOffsetMinutesToString(new Date(forecastItems[startIndex].dateTime));
@@ -111,8 +113,9 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems }) => {
     setStartIndex(startIndex + pageSize);
   };
 
+  const gridClassName = 'ForecastGrid' + ((clear ? ' clear' : '') + ' ion-no-padding');
   return (
-    <IonGrid className="ForecastGrid ion-no-padding">
+    <IonGrid className={gridClassName}>
       <IonRow className="HeaderRow ion-justify-content-between">
         <IonCol size="2" className="header">
           {t('forecastTable.tableHeaders.time')}
