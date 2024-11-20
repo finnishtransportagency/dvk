@@ -1,3 +1,7 @@
+.ForecastGrid.clear {
+  background: none;
+}
+
 .ForecastGrid {
   background: #ffffff;
 }
@@ -34,7 +38,7 @@
   background: #ffc300;
 }
 
-.ForecastGrid .ForecastColRed{
+.ForecastGrid .ForecastColRed {
   background: #f79f9f;
 }
 

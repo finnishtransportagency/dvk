@@ -46,7 +46,7 @@ const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast }) => {
       </IonRow>
       <br />
       <IonRow>
-        <ForecastTable forecastItems={properties.forecastItems} page={12} />
+        <ForecastTable forecastItems={properties.forecastItems} page={12} clear={true} />
       </IonRow>
       <br />
     </IonGrid>
