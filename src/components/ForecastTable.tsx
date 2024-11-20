@@ -84,7 +84,7 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
         {(Math.round(forecastItem.waveHeight * 10) / 10).toFixed(1)} m, {Math.round(forecastItem.waveDirection)}&deg;
       </IonCol>
       <IonCol size="2" className={visibilityColClass + ' ion-text-end'}>
-        {Math.round(forecastItem.visibility)} km
+        {(Math.round(forecastItem.visibility * 10) / 10).toFixed(1)} km
       </IonCol>
     </IonRow>
   );
