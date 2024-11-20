@@ -48,10 +48,10 @@ async function fillLatLngAndSaveSucceeds(page: Page) {
 }
 
 async function fillFieldWithValue(page: Page, id: string, value: string) {
-  const primaryId = page.getByTestId(id);
-  await primaryId.click();
-  await primaryId.pressSequentially(value);
-  await primaryId.press('Tab');
+  const field = page.getByTestId(id);
+  await field.click();
+  await field.pressSequentially(value);
+  await field.press('Tab');
 }
 
 async function save(page: Page, expectMessage: string, screenshot: boolean = false) {
@@ -129,7 +129,7 @@ test.describe('Modify operations for cards and harbors', () => {
     await createNewVersonFromPublishedSave(page, 'Väyläkortti');
   });
 
-  test.skip('should create new fairway card from template', async ({ page }) => {
+  test('should create new fairway card from template', async ({ page }) => {
     await page.goto(url);
     const randomlocator = getRandomItemFromList(page, 'Väyläkortti', 'Julkaistu');
     const randomname = await (await randomlocator).getByTestId('resultname').innerText();
@@ -140,7 +140,7 @@ test.describe('Modify operations for cards and harbors', () => {
     await deleteFairwayCard(page);
   });
 
-  test.skip('should create new harbor from template', async ({ page }) => {
+  test('should create new harbor from template', async ({ page }) => {
     await page.goto(url);
     const randomlocator = getRandomItemFromList(page, 'Satama', 'Julkaistu');
     const randomname = await (await randomlocator).getByTestId('resultname').innerText();
