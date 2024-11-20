@@ -156,7 +156,7 @@ export function getPilotPlaceFairwayCards(pilotPlaceId: number, fairwayCards: Fa
 export function getPilotageLimitFairwayCards(pilotageLimitProperties: PilotageLimitFeatureProperties, fairwayCards: FairwayCardPartsFragment[]) {
   const fairwayIds = pilotageLimitProperties.liittyyVayliin.split(',');
   return fairwayCards.filter((fc) => {
-    const fcIds = fc.fairways.map((f) => f.id);
+    const fcIds = fc.fairways?.map((f) => f.id) ?? [];
     for (const element of fcIds) {
       if (fairwayIds.includes('' + element)) {
         return true;
@@ -171,5 +171,5 @@ export function getFairwayListFairwayCards(
   fairwayCards: FairwayCardPartsFragment[]
 ) {
   const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
-  return fairwayCards.filter((card) => card.fairways.some((fairway) => fairwayIds.includes(fairway.id)));
+  return fairwayCards.filter((card) => card.fairways?.some((fairway) => fairwayIds.includes(fairway.id)));
 }
