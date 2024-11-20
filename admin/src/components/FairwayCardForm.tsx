@@ -163,8 +163,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         saveFairwayCard({ card: mapTrafficService({ ...oldState, status: Status.Removed, operation }) as FairwayCardInput });
       } else if (operation === Operation.Update) {
         saveFairwayCard({ card: mapTrafficService(state) as FairwayCardInput });
-      } else if (operation === Operation.Create) {
-        saveFairwayCard({ card: mapTrafficService({ ...state, version: 'v1' }) as FairwayCardInput });
       } else if (operation === Operation.Createversion) {
         setIsSubmittingVersion(true);
         const newVersion = mapNewFairwayCardVersion(state, !!state.pictures?.length);
@@ -185,15 +183,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   );
 
   const formValid = (): boolean => {
-    let primaryIdErrorMsg = '';
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
-    if (state.operation === Operation.Create) {
-      if (reservedFairwayCardIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
-      if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
-    }
     const invalidErrorMsg = t(ErrorMessageKeys?.invalid);
     const endDateErrorMsg = t(ErrorMessageKeys.endDateError);
-    const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, primaryIdErrorMsg, invalidErrorMsg, endDateErrorMsg);
+    const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -293,9 +286,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const closeNotification = () => {
     setSaveError('');
     setNotificationOpen(false);
-    if (!saveError && !!savedCard && state.operation === Operation.Create) {
-      history.push({ pathname: '/vaylakortti/' + savedCard.id + '/' + savedCard.version });
-    }
   };
 
   useEffect(() => {

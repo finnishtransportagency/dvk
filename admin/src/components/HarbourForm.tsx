@@ -114,8 +114,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         saveHarbourMutation({ harbor: mapQuays({ ...oldState, status: Status.Removed, operation }) as HarborInput });
       } else if (operation === Operation.Update) {
         saveHarbourMutation({ harbor: mapQuays(state) as HarborInput });
-      } else if (operation === Operation.Create) {
-        saveHarbourMutation({ harbor: mapQuays({ ...state, version: 'v1' }) as HarborInput });
       } else if (operation === Operation.Createversion) {
         setIsSubmittingVersion(true);
         const newVersion = mapNewHarbourVersion(state);
@@ -127,13 +125,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   );
 
   const formValid = (): boolean => {
-    let primaryIdErrorMsg = '';
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
-    if (state.operation === Operation.Create) {
-      if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
-      if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
-    }
-    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg, t(ErrorMessageKeys?.duplicateLocation));
+    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, t(ErrorMessageKeys?.duplicateLocation));
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -265,9 +258,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     setSaveErrorMsg('');
     setSaveErrorItems([]);
     setNotificationOpen(false);
-    if (!saveError && !!savedHarbour && state.operation === Operation.Create) {
-      if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id + '/' + savedHarbour.version });
-    }
   };
 
   const getNotificationTitle = () => {
