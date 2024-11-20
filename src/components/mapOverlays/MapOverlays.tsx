@@ -16,6 +16,7 @@ import { useFairwayCardListData } from '../../utils/dataLoader';
 import MarineWarningPopupContent, { MarineWarningProperties } from '../popup/MarineWarningPopupContent';
 import MareographPopupContent, { MareographProperties } from '../popup/MareographPopupContent';
 import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
+import ForecastPopupContent, { ForecastProperties } from '../popup/ForecastPopupContent';
 import BuoyPopupContent, { BuoyProperties } from '../popup/BuoyPopupContent';
 import HarborPopupContent, { HarborProperties } from '../popup/HarborPopupContent';
 import VtsPointPopupContent, { VtsProperties } from '../popup/VtsPointPopupContent';
@@ -49,6 +50,7 @@ export type PopupProperties = {
   marinewarning?: MarineWarningProperties;
   mareograph?: MareographProperties;
   observation?: ObservationProperties;
+  forecast?: ForecastProperties;
   buoy?: BuoyProperties;
   harbor?: HarborProperties;
   vtspoint?: VtsProperties;
@@ -173,6 +175,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.observation && (
           <ObservationPopupContent observation={popupProperties.observation} setPopupProperties={setPopupProperties} />
         )}
+        {popupProperties?.forecast && <ForecastPopupContent forecast={popupProperties.forecast} setPopupProperties={setPopupProperties} />}
         {popupProperties?.buoy && <BuoyPopupContent buoy={popupProperties.buoy} setPopupProperties={setPopupProperties} />}
         {popupProperties?.harbor && <HarborPopupContent harbor={popupProperties.harbor} setPopupProperties={setPopupProperties} />}
         {popupProperties?.vtspoint && <VtsPointPopupContent vts={popupProperties.vtspoint} setPopupProperties={setPopupProperties} />}

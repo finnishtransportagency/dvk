@@ -178,6 +178,7 @@
     "adding-publish-details": "[en] Julkaisutietojen lisääminen"
   },
   "fairwaycard": {
+    "publish-details": "Publish details",
     "name": "Fairway card name",
     "primary-id": "Fairway card ID",
     "primary-id-help-text": "Unique identifier, visible in browser's address bar; valid characters: (a-z) and (0-9).",
