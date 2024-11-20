@@ -41,6 +41,7 @@ import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
 import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
+import PublishDetailsSection from './form/PublishDetailsSection';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -412,6 +413,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
+              <PublishDetailsSection state={state} />
               <MainSection
                 state={state}
                 updateState={updateState}

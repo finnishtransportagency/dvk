@@ -796,6 +796,9 @@ ion-grid.formGrid ion-col:last-of-type {
   margin: 10px 0 0;
   border: none;
 }
+.mainContent ion-item.sectionHeader h3.disabled {
+  opacity: 0.5;
+}
 .mainContent ion-item.sectionHeader ion-button.toggle {
   transition: transform 150ms;
 }
@@ -813,6 +816,10 @@ ion-grid.formGrid ion-col:last-of-type {
 .mainContent .sectionContent.closed {
   max-height: 0;
   overflow: hidden;
+}
+.mainContent .sectionContent p {
+  margin: 10px 5px 0;
+  font-size: 14px;
 }
 
 /* Footer */
