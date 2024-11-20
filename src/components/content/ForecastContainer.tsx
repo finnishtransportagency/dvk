@@ -8,7 +8,7 @@ import { ForecastFeatureProperties } from '../features';
 import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { Feature } from 'ol';
 import { Geometry, Point } from 'ol/geom';
-import './forecast.css';
+import './Forecast.css';
 
 type ForecastContentProps = {
   forecast: Feature<Geometry>;
