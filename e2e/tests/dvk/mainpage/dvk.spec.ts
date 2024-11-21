@@ -37,7 +37,6 @@ test.describe('Open front page and go to fairway cards', () => {
     //Change language to English
     await page.getByRole('button', { name: 'Suomeksi' }).click();
     await page.getByTestId('closeMenu').click();
-    await page.goto(url + '/?lang=fi');
     await runTestsInLanguage(page, {
       title: 'Digitaalinen väyläkortti',
       menuTitle: 'Avaa valikko',
@@ -57,7 +56,7 @@ test.describe('Open front page and go to fairway cards', () => {
       title: 'Digital farledskort',
       menuTitle: 'Öppna meny',
       card: 'Farledskort',
-      searchPlaceholder: 'Sök med farledsnamn eller',
+      searchPlaceholder: 'Sök med farledsnamn eller nummer',
       language: Languages.Swedish,
     });
   });
@@ -95,7 +94,7 @@ test.describe('Open front page and go to fairway cards', () => {
     expect(await listOfCards.count()).toBeGreaterThan(0);
 
     //Select a random card here - even this is a bad idea for reproducing any error, this is how it was in the original robot tests
-    const randomCardName = await listOfCards.nth(Math.floor(Math.random() * Math.min(await listOfCards.count(), 10))).innerText();
+    const randomCardName = await listOfCards.first().innerText();
 
     //Put the text of the card in the search to check the search functionality
     await page.getByTestId('searchInput').getByPlaceholder(langParams.searchPlaceholder).click();
