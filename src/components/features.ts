@@ -56,6 +56,7 @@ export type PilotageLimitFeatureProperties = {
 
 export type AreaFeatureProperties = {
   id: number;
+  isN2000?: boolean;
   typeCode: number;
   type: string;
   name?: string;
@@ -93,6 +94,7 @@ export type LineFairway = {
 export type LineFeatureProperties = {
   id: number;
   featureType: string;
+  isN2000?: boolean;
   draft?: number;
   depth?: number;
   length?: number;

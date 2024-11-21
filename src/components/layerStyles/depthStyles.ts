@@ -9,6 +9,8 @@ import { Polygon } from 'ol/geom';
 export function isShowN2000HeightSystem(props: AreaFeatureProperties | LineFeatureProperties): boolean {
   if (props.n2000HeightSystem !== undefined) {
     return props.n2000HeightSystem;
+  } else if (props.isN2000 !== undefined) {
+    return props.isN2000;
   } else {
     return (props.referenceLevel && props.referenceLevel.indexOf('N2000') !== -1) || !!props.n2000depth || !!props.n2000draft;
   }
