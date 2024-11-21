@@ -5,6 +5,9 @@ import './TabSwiper.css';
 import { IonButton, IonLabel } from '@ionic/react';
 import { getTabLabel } from '../../../utils/fairwayCardUtils';
 import { useTranslation } from 'react-i18next';
+import { FairwayCardTab } from './FairwayCardContent';
+
+const NUM_TABS = 5;
 
 interface TabSwiperProps {
   tab: number;
@@ -43,10 +46,16 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane, dis
   return (
     <div className="tabs">
       <swiper-container ref={swiperRef} init={false} className={widePane ? 'wide' : ''}>
-        {[1, 2, 3, 4].map((tabId) => {
+        {[
+          FairwayCardTab.Information,
+          FairwayCardTab.Harbours,
+          FairwayCardTab.CommonInformation,
+          FairwayCardTab.PilotRoutes,
+          FairwayCardTab.WeatherForecasts,
+        ].map((tabId) => {
           const selected = tabId === tab;
           // WatchSlidesProgress not working properly with React, so can't use 'slide-fully-visible' class, must apply own css class
-          const slideNotVisible = activeSlide === 0 ? tabId === 4 : tabId === 1;
+          const slideNotVisible = activeSlide === 0 ? tabId >= 4 : tabId <= NUM_TABS - 4;
           const cssClass = `${selected ? 'selected' : ''} ${slideNotVisible && !widePane ? 'not-fully-visible' : ''}`;
           return (
             <swiper-slide key={tabId}>

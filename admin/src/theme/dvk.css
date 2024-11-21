@@ -796,6 +796,9 @@ ion-grid.formGrid ion-col:last-of-type {
   margin: 10px 0 0;
   border: none;
 }
+.mainContent ion-item.sectionHeader h3.disabled {
+  opacity: 0.5;
+}
 .mainContent ion-item.sectionHeader ion-button.toggle {
   transition: transform 150ms;
 }
@@ -813,6 +816,10 @@ ion-grid.formGrid ion-col:last-of-type {
 .mainContent .sectionContent.closed {
   max-height: 0;
   overflow: hidden;
+}
+.mainContent .sectionContent p {
+  margin: 10px 5px 0;
+  font-size: 14px;
 }
 
 /* Footer */
@@ -906,6 +913,20 @@ ion-modal.prompt::part(content) {
 
 ion-modal.prompt .ion-page {
   overflow: visible;
+}
+
+ion-modal.publish-details {
+  --width: 1350px;
+  --height: fit-content;
+}
+
+ion-modal.publish-details ion-grid.publishDetailsGrid {
+  width: 100%;
+  min-height: 380px;
+}
+
+ion-modal.publish-details ion-row.publishDetailsRow {
+  padding: 0px 25px 0px 25px;
 }
 
 /* Alert */

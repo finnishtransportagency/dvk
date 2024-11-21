@@ -80,6 +80,7 @@ export type FeatureDataId =
   | 'marinewarning'
   | 'boardline12'
   | 'mareograph'
+  | 'forecast'
   | 'observation'
   | 'buoy'
   | 'vtsline'
@@ -282,6 +283,17 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     refetchOnMount: 'always',
   },
   {
+    id: 'forecast',
+    projection: 'EPSG:4258',
+    url: new URL(featureLoaderUrl + '?type=forecast'),
+    staticUrl: new URL(staticUrl + '/forecast.json.gz'),
+    persist: false,
+    staleTime: 60 * 60 * 1000, // 1 hour
+    gcTime: 60 * 60 * 1000, // 1 hour
+    refetchInterval: 1000 * 60 * 60, // 1 hour
+    refetchOnMount: true,
+  },
+  {
     id: 'observation',
     projection: 'EPSG:4258',
     url: new URL(featureLoaderUrl + '?type=observation'),
@@ -477,6 +489,7 @@ export type FeatureDataLayerId =
   | 'name'
   | 'boardline12'
   | 'mareograph'
+  | 'forecast'
   | 'observation'
   | 'buoy'
   | 'vtsline'
@@ -547,6 +560,7 @@ export const MAP: MapType = {
     { id: 'boaterwarning', offlineSupport: true, localizedStyle: false },
     { id: 'boardline12', offlineSupport: true, localizedStyle: false },
     { id: 'mareograph', offlineSupport: false, localizedStyle: false },
+    { id: 'forecast', offlineSupport: false, localizedStyle: false },
     { id: 'ice', offlineSupport: false, localizedStyle: false },
     { id: 'observation', offlineSupport: false, localizedStyle: false },
     { id: 'buoy', offlineSupport: false, localizedStyle: false },

@@ -56,7 +56,8 @@ export type HarbourActionType =
   | 'sectionName'
   | 'sectionDepth'
   | 'sectionLat'
-  | 'sectionLon';
+  | 'sectionLon'
+  | 'publishDetails';
 
 export type FairwayCardActionType =
   | 'name'
@@ -97,7 +98,8 @@ export type FairwayCardActionType =
   | 'temporaryNotifications'
   | 'temporaryNotificationContent'
   | 'temporaryNotificationStartDate'
-  | 'temporaryNotificationEndDate';
+  | 'temporaryNotificationEndDate'
+  | 'publishDetails';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'
@@ -167,7 +169,8 @@ export type FeatureDataId =
   | 'specialarea15'
   | 'pilotroute'
   | 'pilotageareaborder'
-  | 'pilotagelimit';
+  | 'pilotagelimit'
+  | 'forecast';
 
 export type FeatureDataProjection = 'EPSG:3067' | 'EPSG:4326' | 'EPSG:3395' | 'EPSG:4258';
 

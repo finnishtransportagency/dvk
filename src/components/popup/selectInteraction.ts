@@ -41,6 +41,7 @@ function getLayers() {
     dvkMap.getFeatureLayer('localwarning'),
     dvkMap.getFeatureLayer('boaterwarning'),
     dvkMap.getFeatureLayer('mareograph'),
+    dvkMap.getFeatureLayer('forecast'),
     dvkMap.getFeatureLayer('observation'),
     dvkMap.getFeatureLayer('buoy'),
     dvkMap.getFeatureLayer('harbor'),
@@ -123,7 +124,7 @@ export function addPointerMoveInteraction(map: Map, types: string[]) {
 
   const handleSelect = (f: Feature) => {
     const type = f.getProperties().featureType;
-    if (type === 'specialarea2' || type === 'specialarea15' || type === 'observation') {
+    if (['specialarea2', 'specialarea15', 'observation', 'forecast'].includes(type)) {
       // These features are in two layers, so do not set styles to features, but set flag to indicate hover
       f.set('hoverStyle', true);
     } else {
@@ -135,14 +136,14 @@ export function addPointerMoveInteraction(map: Map, types: string[]) {
 
   const handleDeselect = (f: Feature) => {
     const type = f.getProperties().featureType;
-    if (type === 'specialarea2' || type === 'specialarea15' || type === 'observation') {
+    if (['specialarea2', 'specialarea15', 'observation', 'forecast'].includes(type)) {
       // Set hoverStye flag to false only if feature has not been click-selected
       const clickInteraction = getClickSelection();
       let found = false;
       if (clickInteraction) {
         clickInteraction.getFeatures().forEach((feat) => {
           const featType = feat.getProperties().featureType;
-          if ((featType === 'specialarea2' || featType === 'specialarea15' || featType == 'observation') && feat.getId() === f.getId()) {
+          if (['specialarea2', 'specialarea15', 'observation', 'forecast'].includes(featType) && feat.getId() === f.getId()) {
             found = true;
           }
         });
@@ -199,7 +200,7 @@ export function clearClickSelectionFeatures() {
   if (interaction) {
     interaction.getFeatures().forEach((f) => {
       const type = f.getProperties().featureType;
-      if (type === 'specialarea2' || type === 'specialarea15' || type === 'observation' || type === 'marinewarning') {
+      if (['specialarea2', 'specialarea15', 'observation', 'forecast', 'marinewarning'].includes(type)) {
         f.set('hoverStyle', false);
       } else {
         // Restore old saved style to the feature
@@ -215,7 +216,7 @@ export function clearClickSelectionFeatures() {
 export function setClickSelectionFeature(feature: FeatureLike) {
   const f = feature as Feature;
   const type = f.getProperties().featureType;
-  if (type === 'specialarea2' || type === 'specialarea15' || type === 'observation' || type === 'marinewarning') {
+  if (['specialarea2', 'specialarea15', 'observation', 'forecast', 'marinewarning'].includes(type)) {
     f.set('hoverStyle', true);
   } else {
     f.set('savedStyle', f.getStyle(), false);

@@ -480,3 +480,7 @@ export function useDirwayLayer() {
 export function useRestrictionPortLayer() {
   return useDataLayer('restrictionport', 'restrictionport');
 }
+
+export function useForecastLayer() {
+  return useDataLayer('forecast', 'forecast');
+}

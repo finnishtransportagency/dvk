@@ -82,6 +82,7 @@ input FairwayCardInput {
   pictures: [PictureInput!]
   pilotRoutes: [Int!]
   temporaryNotifications: [TemporaryNotificationInput!]
+  publishDetails: String
 }
 
 input PictureInput {
@@ -159,6 +160,7 @@ input HarborInput {
   cargo: TextInput
   quays: [QuayInput]
   geometry: GeometryInput!
+  publishDetails: String
 }
 
 enum Status {
@@ -264,6 +266,7 @@ type FairwayCard {
   temporaryNotifications: [TemporaryNotification!]
   latest: Float
   latestVersionUsed: Float
+  publishDetails: String
 }
 
 type Picture {
@@ -343,6 +346,7 @@ type Harbor {
   geometry: GeometryPoint
   latest: Float
   latestVersionUsed: Float
+  publishDetails: String
 }
 
 type Quay {

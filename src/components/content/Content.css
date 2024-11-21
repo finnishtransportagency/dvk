@@ -409,6 +409,10 @@ ion-app:not(.mobile) .breadcrumbs .closeButton {
   column-count: 2;
   column-gap: 48px;
 }
+.tabContent.tab5.wide {
+  column-count: 2;
+  column-gap: 40px;
+}
 .hidden .tabContent.wide {
   column-count: 1;
   transition: column-count 0s;

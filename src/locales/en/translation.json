@@ -52,6 +52,7 @@
           "circles": "Turning circles",
           "conditions": "Conditions",
           "seaLevel": "Sea level",
+          "forecast": "[en] Sää- ja aaltoennusteet",
           "weatherStation": "Weather stations",
           "buoys": "Wave buoys",
           "vts": "VTS",
@@ -148,6 +149,7 @@
     "harboursTitle": "Fairway harbours",
     "areasTitle": "Fairway areas",
     "routesTitle": "Pilot routes",
+    "weatherForecastsTitle": "Weather forecasts",
     "information": "Fairway data",
     "liningAndMarking": "Channel alignment and marking",
     "starts": "Starts",
@@ -284,6 +286,11 @@
     "route": "Route",
     "rtz": "Route file in RTZ-format",
     "linkedFairwayCards": "Fairway cards for the pilot route"
+  },
+  "forecast": {
+    "forecastLocation": "Weather and wave forecast location",
+    "updated": "Updated",
+    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   },
   "faults": {
     "title": "Defective navigation aids",
@@ -430,6 +437,14 @@
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Last observation"
     },
+    "forecast": {
+      "forecast": "[en] Sää- ja aaltoennuste",
+      "coordinates": "Coordinates",
+      "extra": "Additional information",
+      "extraContent": "[en] Lorem ipsum...",
+      "updated": "Updated",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    },
     "buoy": {
       "coordinates": "Coordinates",
       "temperature": "Water temperature",
@@ -501,6 +516,7 @@
         "mareograph": "Mareograph",
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
+        "forecast": "[en] Sää- ja aaltoennuste",
         "pilot": "Pilot boarding position",
         "pilotagelimit": "Compulsory pilotage limit",
         "pilotroute": "Pilot route",
@@ -591,5 +607,17 @@
     "KB": "kilobytes",
     "MB": "megabytes",
     "GB": "gigabytes"
+  },
+  "forecastTable": {
+    "tableHeaders": {
+      "time": "[en] Aika",
+      "wind": "[en] Tuulen nopeus ja suunta",
+      "windGust": "[en] Tuulen puuska\u00ADnopeus",
+      "wave": "[en] Aallon korkeus ja suunta",
+      "visibility": "[en] Näkyvyys"
+    },
+    "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
+    "previousPage": "Previous",
+    "nextPage": "Next"
   }
 }

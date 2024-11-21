@@ -49,6 +49,7 @@ import { getHarborStyle, getRestrictionPortStyle } from './layerStyles/harborSty
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
 import { getDirwayStyle } from './layerStyles/dirwayStyles';
 import { Cluster } from 'ol/source';
+import { getForecastStyle } from './layerStyles/forecastStyles';
 
 const minResolutionHarbor = 3;
 
@@ -681,6 +682,14 @@ export function addAPILayers(map: Map) {
     style: (feature, resolution) => getMareographStyle(feature, !!feature.get('hoverStyle'), resolution),
     declutter: true,
     zIndex: 413,
+  });
+  addFeatureVectorLayer({
+    map: map,
+    id: 'forecast',
+    renderBuffer: 50,
+    style: getForecastStyle,
+    declutter: false,
+    zIndex: 410,
   });
 
   // AIS
