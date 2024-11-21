@@ -112,7 +112,7 @@ function mapAreaFeature(area: AlueFeature): Feature {
       referenceLevel: area.properties.vertaustaso,
       n2000draft: area.properties.n2000MitoitusSyvays && area.properties.n2000MitoitusSyvays > 0 ? area.properties.n2000MitoitusSyvays : undefined,
       n2000depth: area.properties.n2000HarausSyvyys && area.properties.n2000HarausSyvyys > 0 ? area.properties.n2000HarausSyvyys : undefined,
-      n2000ReferenceLevel: area.properties.n2000Vertaustaso,
+      n2000ReferenceLevel: area.properties.n2000Vertaustaso ?? undefined,
     },
   };
 }
@@ -160,7 +160,7 @@ async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
         isN2000: inOfficialN2000Area(area.geometry, traficomN2000MapAreas),
         n2000draft: getNumberValue(area.properties.n2000MitoitusSyvays),
         n2000depth: getNumberValue(area.properties.n2000HarausSyvyys),
-        n2000ReferenceLevel: area.properties.n2000Vertaustaso,
+        n2000ReferenceLevel: area.properties.n2000Vertaustaso ?? undefined,
         extra: area.properties.lisatieto?.trim(),
         fairways: area.properties.vayla?.map((v) => {
           return {
@@ -290,7 +290,7 @@ function mapLineFeature(line: NavigointiLinjaFeature, traficomN2000MapAreas: Geo
       n2000depth: getNumberValue(line.properties?.n2000HarausSyvyys),
       n2000draft: getNumberValue(line.properties?.n2000MitoitusSyvays),
       referenceLevel: line.properties?.vertaustaso,
-      n2000ReferenceLevel: line.properties?.n2000Vertaustaso,
+      n2000ReferenceLevel: line.properties?.n2000Vertaustaso ?? undefined,
       extra: line.properties?.lisatieto?.trim(),
       fairways: line.properties?.vayla?.map((v) => {
         return {
