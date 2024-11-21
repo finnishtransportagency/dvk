@@ -2,6 +2,7 @@ import { test, expect, Page } from '@playwright/test';
 
 const PORT = process.env.PORT ?? '3000';
 const url = `http://localhost:${PORT}/yllapito/`;
+const SLOW_TIMEOUT = 10000;
 
 async function getFirstItemFromList(page: Page, type: string, state: string) {
   const typeFilter = page.getByTestId('resulttype').filter({ hasText: type });
@@ -56,11 +57,10 @@ async function fillFieldWithValue(page: Page, id: string, value: string) {
 
 async function save(page: Page, expectMessage: string, screenshot: boolean = false) {
   await page.getByTestId('saveButton').first().click();
-  await page.waitForTimeout(5000);
   if (screenshot) {
     await page.screenshot({ path: 'screenshot.png', fullPage: true });
   }
-  await expect(page.getByText(expectMessage)).toBeVisible();
+  await expect(page.getByText(expectMessage)).toBeVisible({ timeout: SLOW_TIMEOUT });
   await page.getByRole('button', { name: 'Ok' }).click();
 }
 
@@ -168,7 +168,7 @@ test.describe('Modify operations for cards and harbors', () => {
     await page.goto(url);
     await page.getByRole('button', { name: 'Luo satama' }).click();
     //No template selected
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
     await page.getByRole('button', { name: 'Luo satama' }).click();
     await fillFieldWithValue(page, 'primaryId', generateRandomString());
     //Click the cancel
