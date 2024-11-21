@@ -34,8 +34,8 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
   return (
     <>
       <IonText>
-        <h2>{t('fairwaycard.traffic-services')}</h2>
-        <h3>{t('fairwaycard.pilot-order')}</h3>
+        <h2 data-testid="trafficServices">{t('fairwaycard.traffic-services')}</h2>
+        <h3 data-testid="pilotOrder">{t('fairwaycard.pilot-order')}</h3>
       </IonText>
       <IonGrid className="formGrid">
         <IonRow>

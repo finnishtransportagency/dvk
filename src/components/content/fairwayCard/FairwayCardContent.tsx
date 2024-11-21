@@ -258,12 +258,12 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <DimensionInfo data={fairwayCard?.fairways} designSpeedText={fairwayCard?.designSpeed} isN2000HeightSystem={isN2000HeightSystem} />
             <IonText>
               <Paragraph title={t('attention')} bodyText={fairwayCard?.attention ?? undefined} />
-              <ProhibitionInfo data={fairwayCard?.fairways} inlineLabel />
-              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} inlineLabel />
+              <ProhibitionInfo data={fairwayCard?.fairways} inlineLabel data-testid="prohibitionAreas" />
+              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} inlineLabel data-testid="speedLimit" />
               <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} inlineLabel />
             </IonText>
 
-            <IonText>
+            <IonText data-testid="navigation">
               <h4>
                 <strong>{t('navigation')}</strong>
               </h4>

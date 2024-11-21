@@ -43,7 +43,9 @@ const FairwayCardGroup: React.FC<FairwayCardGroupProps> = ({ data, title, loadin
             <IonRow key={uuid} className="fairwayCards">
               <IonCol>
                 <IonLabel>
-                  <Link to={'/kortit/' + fairwayCard.id + '/' + PUBLIC_VERSION}>{fairwayCard.name[lang]}</Link>
+                  <Link data-testid="cardlink" to={'/kortit/' + fairwayCard.id + '/' + PUBLIC_VERSION}>
+                    {fairwayCard.name[lang]}
+                  </Link>
                 </IonLabel>
               </IonCol>
               <IonCol>
@@ -70,7 +72,7 @@ const FairwayCards: React.FC<FairwayCardsProps> = ({ widePane }) => {
     <>
       <Breadcrumb path={path} />
 
-      <IonText className="fairwayTitle" id="mainPageContent">
+      <IonText className="fairwayTitle" id="mainPageContent" data-testid="fairwayTitle">
         <h2 className="no-margin-bottom">
           <strong>{t('title', { count: 0 })}</strong>
         </h2>
