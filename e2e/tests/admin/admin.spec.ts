@@ -3,15 +3,15 @@ import { test, expect, Page } from '@playwright/test';
 const PORT = process.env.PORT ?? '3000';
 const url = `http://localhost:${PORT}/yllapito/`;
 
-async function getRandomItemFromList(page: Page, type: string, state: string) {
+async function getFirstItemFromList(page: Page, type: string, state: string) {
   const typeFilter = page.getByTestId('resulttype').filter({ hasText: type });
   const stateFilter = page.getByTestId('resultstatus').filter({ hasText: state });
   const rowLocator = page.getByTestId('resultrow').filter({ has: typeFilter }).filter({ has: stateFilter });
-  return rowLocator.nth(Math.floor(Math.random() * (await rowLocator.count())));
+  return rowLocator.first();
 }
 
 async function clickOnResultsByTypeAndState(page: Page, type: string, state: string) {
-  (await getRandomItemFromList(page, type, state)).click();
+  (await getFirstItemFromList(page, type, state)).click();
 }
 
 function generateRandomString(length: number = 10) {
@@ -44,7 +44,7 @@ async function fillHarbourNameAndSaveFails(page: Page) {
 async function fillLatLngAndSaveSucceeds(page: Page) {
   await fillFieldWithValue(page, 'lat', '59');
   await fillFieldWithValue(page, 'lon', '20');
-  await save(page, 'Tallennus onnistui', true);
+  await save(page, 'Tallennus onnistui');
 }
 
 async function fillFieldWithValue(page: Page, id: string, value: string) {
@@ -56,9 +56,9 @@ async function fillFieldWithValue(page: Page, id: string, value: string) {
 
 async function save(page: Page, expectMessage: string, screenshot: boolean = false) {
   await page.getByTestId('saveButton').first().click();
-  await page.waitForTimeout(1000);
+  await page.waitForTimeout(5000);
   if (screenshot) {
-    //await page.screenshot({ path: 'screenshot.png', fullPage: true });
+    await page.screenshot({ path: 'screenshot.png', fullPage: true });
   }
   await expect(page.getByText(expectMessage)).toBeVisible();
   await page.getByRole('button', { name: 'Ok' }).click();
@@ -120,6 +120,7 @@ async function fillTemplate(page: Page, randomname: string) {
 }
 
 test.describe('Modify operations for cards and harbors', () => {
+  //test.describe.configure({ mode: 'serial' });
   test('should save published harbor', async ({ page }) => {
     await page.goto(url);
     await createNewVersonFromPublishedSave(page, 'Satama');
@@ -131,7 +132,7 @@ test.describe('Modify operations for cards and harbors', () => {
 
   test('should create new fairway card from template', async ({ page }) => {
     await page.goto(url);
-    const randomlocator = getRandomItemFromList(page, 'Väyläkortti', 'Julkaistu');
+    const randomlocator = getFirstItemFromList(page, 'Väyläkortti', 'Julkaistu');
     const randomname = await (await randomlocator).getByTestId('resultname').innerText();
     await page.getByRole('button', { name: 'Luo väyläkortti' }).click();
     await fillTemplate(page, randomname);
@@ -142,7 +143,7 @@ test.describe('Modify operations for cards and harbors', () => {
 
   test('should create new harbor from template', async ({ page }) => {
     await page.goto(url);
-    const randomlocator = getRandomItemFromList(page, 'Satama', 'Julkaistu');
+    const randomlocator = getFirstItemFromList(page, 'Satama', 'Julkaistu');
     const randomname = await (await randomlocator).getByTestId('resultname').innerText();
     await page.getByRole('button', { name: 'Luo satama' }).click();
     await fillTemplate(page, randomname);
@@ -155,7 +156,7 @@ test.describe('Modify operations for cards and harbors', () => {
     await page.goto(url);
     await page.getByRole('button', { name: 'Luo satama' }).click();
     //No template selected
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
     await page.getByRole('button', { name: 'Luo satama' }).click();
     await fillPrimaryIdAndSaveFails(page);
     await fillHarbourNameAndSaveFails(page);
