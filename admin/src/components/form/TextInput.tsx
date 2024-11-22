@@ -17,6 +17,7 @@ interface TextInputProps {
   actionOuterTarget?: string | number;
   required?: boolean;
   disabled?: boolean;
+  readonly?: boolean;
   error?: string;
   helperText?: string | null;
   inputType?: 'text' | 'number' | 'tel' | 'email' | 'latitude' | 'longitude' | 'date';
@@ -44,6 +45,7 @@ const TextInput: React.FC<TextInputProps> = ({
   actionOuterTarget,
   required,
   disabled,
+  readonly = false,
   error,
   helperText,
   inputType,
@@ -193,9 +195,11 @@ const TextInput: React.FC<TextInputProps> = ({
     }
   }, [focused]);
 
+  const inputClassName = 'formInput' + (readonly ? ' readonly' : isInputOk(isValid, error) ? '' : ' invalid');
+
   return (
     <>
-      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')}>
+      <IonLabel className={'formLabel' + (!readonly && disabled ? ' disabled' : '')}>
         <IonText onClick={() => focusInput()}>
           {label} {required ? '*' : ''}
         </IonText>
@@ -213,11 +217,12 @@ const TextInput: React.FC<TextInputProps> = ({
       </IonLabel>
       <IonInput
         ref={inputRef}
-        className={'formInput' + (isInputOk(isValid, error) ? '' : ' invalid')}
+        className={inputClassName}
         counter={true}
         counterFormatter={(inputLength, maxLength) => getInputCounterText(inputLength, maxLength)}
         debounce={500}
-        disabled={disabled}
+        readonly={readonly}
+        disabled={!readonly && disabled}
         errorText={getCombinedErrorAndHelperText(getHelperText(), getErrorText())}
         fill="outline"
         helperText={isInputOk(isValid, error) ? getHelperText() : ''}

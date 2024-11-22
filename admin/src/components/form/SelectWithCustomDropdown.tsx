@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { IonButton, IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText, IonText } from '@ionic/react';
+import { IonButton, IonIcon, IonItem, IonLabel, IonNote, IonSkeletonText, IonText, IonTextarea } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, DropdownType, Lang, SelectOption, ValueType } from '../../utils/constants';
 import { constructSelectDropdownLabel, getCombinedErrorAndHelperText, isInputOk } from '../../utils/common';
@@ -20,6 +20,7 @@ interface SelectWithCustomDropdownProps {
   required?: boolean;
   showId?: boolean;
   disabled?: boolean;
+  readonly?: boolean;
   helperText?: string | null;
   error?: string;
   isLoading?: boolean;
@@ -37,6 +38,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   required,
   showId,
   disabled,
+  readonly = false,
   helperText,
   error,
   isLoading,
@@ -86,11 +88,13 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
     lang,
     showId
   );
-
+  const disabledStyle = disabled ? ' disabled' : '';
+  const readonlyStyle = readonly ? ' readonly' : disabledStyle;
+  const inputClassName = 'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid' + readonlyStyle);
   return (
-    <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
+    <div className={inputClassName}>
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')}>
-        <IonText onClick={disabled ? undefined : focusSelectItem}>
+        <IonText onClick={disabled || readonly ? undefined : focusSelectItem}>
           {label} {required ? '*' : ''}
         </IonText>
         {infoTitle && infoDescription && (
@@ -105,9 +109,9 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
           </IonButton>
         )}
       </IonLabel>
-      {isLoading ? (
-        <IonSkeletonText animated={true} className="select-skeleton" />
-      ) : (
+      {readonly && <IonTextarea className="formInput readonly" readonly={readonly} value={labelText.join('\r')} rows={labelText.length} />}
+      {!readonly && isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
+      {!readonly && !isLoading && (
         <>
           <IonItem
             ref={selectRef}

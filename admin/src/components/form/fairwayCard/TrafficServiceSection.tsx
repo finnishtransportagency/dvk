@@ -19,6 +19,7 @@ interface TrafficServiceSectionProps {
   validationErrors: ValidationType[];
   isLoadingPilotPlaces: boolean;
   pilotPlaceOptions?: SelectOption[];
+  readonly?: boolean;
 }
 
 const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
@@ -27,6 +28,7 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
   validationErrors,
   isLoadingPilotPlaces,
   pilotPlaceOptions,
+  readonly = false,
 }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
@@ -45,7 +47,8 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
               val={state.trafficService?.pilot?.email ?? ''}
               setValue={updateState}
               actionType="pilotEmail"
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
               inputType="email"
             />
           </IonCol>
@@ -55,7 +58,8 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
               val={state.trafficService?.pilot?.phoneNumber ?? ''}
               setValue={updateState}
               actionType="pilotPhone"
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
               inputType="tel"
             />
           </IonCol>
@@ -65,7 +69,8 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
               val={state.trafficService?.pilot?.fax ?? ''}
               setValue={updateState}
               actionType="pilotFax"
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
               inputType="tel"
             />
           </IonCol>
@@ -80,7 +85,8 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
             !!state.trafficService?.pilot?.extraInfo?.sv ||
             !!state.trafficService?.pilot?.extraInfo?.en
           }
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'pilotExtraInfo')?.msg}
           inputType="textarea"
         />
@@ -95,7 +101,8 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
               multiple
               compareObjects
               isLoading={isLoadingPilotPlaces}
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
               showCoords
             />
           </IonCol>
@@ -114,7 +121,8 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
                   inputType="number"
                   max={999.9}
                   decimalCount={1}
-                  disabled={state.status === Status.Removed}
+                  readonly={readonly}
+                  disabled={!readonly && state.status === Status.Removed}
                 />
               </IonCol>
             );

@@ -19,6 +19,7 @@ interface RecommendationsSectionProps {
   validationErrors: ValidationType[];
   isLoadingMareographs?: boolean;
   mareographOptions?: Mareograph[];
+  readonly?: boolean;
 }
 
 const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
@@ -27,6 +28,7 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
   validationErrors,
   isLoadingMareographs,
   mareographOptions,
+  readonly = false,
 }) => {
   const { t } = useTranslation();
 
@@ -42,7 +44,8 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
           updateState={updateState}
           actionType="windRecommendation"
           required={!!state.windRecommendation?.fi || !!state.windRecommendation?.sv || !!state.windRecommendation?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'windRecommendation')?.msg}
           inputType="textarea"
         />
@@ -52,7 +55,8 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
           updateState={updateState}
           actionType="vesselRecommendation"
           required={!!state.vesselRecommendation?.fi || !!state.vesselRecommendation?.sv || !!state.vesselRecommendation?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'vesselRecommendation')?.msg}
           inputType="textarea"
         />
@@ -62,7 +66,8 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
           updateState={updateState}
           actionType="visibility"
           required={!!state.visibility?.fi || !!state.visibility?.sv || !!state.visibility?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'visibility')?.msg}
           inputType="textarea"
         />
@@ -75,7 +80,8 @@ const RecommendationsSection: React.FC<RecommendationsSectionProps> = ({
               selected={state.mareographs ?? []}
               setSelected={updateState}
               actionType="mareographs"
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
               isLoading={isLoadingMareographs}
             />
           </IonCol>

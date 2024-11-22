@@ -15,9 +15,20 @@ interface MarkdownInputRowProps {
   required?: boolean;
   disabled?: boolean;
   error?: string;
+  readonly?: boolean;
 }
 
-const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, updateState, actionType, actionTarget, required, disabled, error }) => {
+const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({
+  labelKey,
+  value,
+  updateState,
+  actionType,
+  actionTarget,
+  required,
+  disabled,
+  error,
+  readonly = false,
+}) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
@@ -38,7 +49,8 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           actionLang="fi"
           actionTarget={actionTarget}
           required={required}
-          disabled={disabled}
+          readonly={readonly}
+          disabled={!readonly && disabled}
           error={errorText === t('general.required-field') && value?.fi?.trim() ? '' : errorText}
           helperText={helperText}
         />
@@ -52,7 +64,8 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           actionLang="sv"
           actionTarget={actionTarget}
           required={required}
-          disabled={disabled}
+          readonly={readonly}
+          disabled={!readonly && disabled}
           error={errorText === t('general.required-field') && value?.sv?.trim() ? '' : errorText}
           helperText={helperText}
         />
@@ -66,7 +79,8 @@ const MarkdownInputRow: React.FC<MarkdownInputRowProps> = ({ labelKey, value, up
           actionLang="en"
           actionTarget={actionTarget}
           required={required}
-          disabled={disabled}
+          readonly={readonly}
+          disabled={!readonly && disabled}
           error={errorText === t('general.required-field') && value?.en?.trim() ? '' : errorText}
           helperText={helperText}
         />

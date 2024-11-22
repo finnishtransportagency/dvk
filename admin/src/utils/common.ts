@@ -5,6 +5,8 @@ import {
   Maybe,
   Orientation,
   PictureInput,
+  PilotPlace,
+  PilotPlaceInput,
   SelectedFairwayInput,
   Status,
   TemporaryNotification,
@@ -341,4 +343,31 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
 export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   return fds?.projection;
+}
+
+export function getSelectedItemsAsText(
+  options: SelectOption[] | PilotPlace[] | null,
+  selected: string | number | boolean | string[] | number[] | PilotPlaceInput[] | PictureInput[] | undefined,
+  lang: Lang
+) {
+  if (!options || !selected) {
+    return { rows: 1, stringValue: '' };
+  }
+  const rows = Array.isArray(selected) ? selected.length : 1;
+  if (typeof selected === 'string' || typeof selected === 'number' || typeof selected === 'boolean') {
+    return { rows: rows, stringValue: options.find((o) => o.id === selected)?.name?.[lang] };
+  }
+
+  const selectedValues = selected.map((s) => {
+    return '' + (typeof s === 'string' || typeof s === 'number' ? s : s.id);
+  });
+  const valueStrings = options
+    .filter((o) => {
+      return selectedValues.includes('' + o.id);
+    })
+    .map((o) => {
+      return o?.name ? o.name[lang] : '';
+    });
+
+  return { rows: rows, stringValue: valueStrings.join('\n') };
 }

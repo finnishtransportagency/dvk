@@ -13,11 +13,22 @@ interface SectionHeaderProps {
   toggleSection: (position: number) => void;
   open: boolean;
   disabled?: boolean;
+  readonly?: boolean;
   infoTitle?: string;
   infoDescription?: string;
 }
 
-const SectionHeader: React.FC<SectionHeaderProps> = ({ title, idx, deleteSection, toggleSection, open, disabled, infoTitle, infoDescription }) => {
+const SectionHeader: React.FC<SectionHeaderProps> = ({
+  title,
+  idx,
+  deleteSection,
+  toggleSection,
+  open,
+  disabled,
+  readonly = false,
+  infoTitle,
+  infoDescription,
+}) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
@@ -45,17 +56,19 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({ title, idx, deleteSection
             <HelpIcon />
           </IonButton>
         )}
-        <IonButton
-          slot="end"
-          fill="clear"
-          className="icon-only small"
-          onClick={() => deleteSection(idx)}
-          title={t('general.delete') ?? ''}
-          aria-label={t('general.delete') ?? ''}
-          disabled={disabled}
-        >
-          <BinIcon />
-        </IonButton>
+        {readonly || (
+          <IonButton
+            slot="end"
+            fill="clear"
+            className="icon-only small"
+            onClick={() => deleteSection(idx)}
+            title={t('general.delete') ?? ''}
+            aria-label={t('general.delete') ?? ''}
+            disabled={disabled}
+          >
+            <BinIcon />
+          </IonButton>
+        )}
         <IonButton
           slot="end"
           fill="clear"
