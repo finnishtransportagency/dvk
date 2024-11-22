@@ -94,8 +94,12 @@ export async function fetchProhibitionAreas(): Promise<Feature<Geometry, GeoJson
 export async function fetchN2000MapAreas(): Promise<Polygon | MultiPolygon | undefined> {
   const path =
     'trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=avoin:tuotejako_kaikki&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4258&cql_filter=IS_N2000=1';
-  const data = await fetchTraficomApi<FeatureCollection>(path);
-
+  let data = undefined;
+  try {
+    data = await fetchTraficomApi<FeatureCollection>(path);
+  } catch(error) {
+    return undefined;
+  }
   const turfAreas: Feature<Polygon>[] = [];
 
   data.features.forEach((f) => {
