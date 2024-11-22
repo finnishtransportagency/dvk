@@ -57,7 +57,7 @@ const MainSection: React.FC<MainSectionProps> = ({
         actionType="name"
         name="fairwayCardName"
         required
-        disabled={state.status === Status.Removed}
+        disabled={!readonly && state.status === Status.Removed}
         readonly={readonly}
         error={validationErrors.find((error) => error.id === 'name')?.msg}
       />
@@ -70,7 +70,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             actionType="primaryId"
             name="primaryId"
             required
-            disabled={state.operation === Operation.Update || (!sourceCard?.length && !!state.pictures?.length)}
+            disabled={!readonly && (state.operation === Operation.Update || (!sourceCard?.length && !!state.pictures?.length))}
             readonly={readonly}
             error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
             helperText={t('fairwaycard.primary-id-help-text')}
@@ -87,7 +87,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             actionType="fairwayIds"
             required
             showId
-            disabled={state.status === Status.Removed}
+            disabled={!readonly && state.status === Status.Removed}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'fairwayIds')?.msg}
             isLoading={isLoadingFairways}
@@ -103,7 +103,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             actionType="fairwayPrimary"
             helperText={t('fairwaycard.fairway-order-help-text') + ' ' + t('general.multiple-values-supported')}
             isLoading={isLoadingFairways}
-            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
+            disabled={!readonly && (state.fairwayIds.length < 2 || state.status === Status.Removed)}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'fairwayPrimary')?.msg}
             infoTitle={t('modal.starting-fairway-title')}
@@ -122,7 +122,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             actionType="fairwaySecondary"
             helperText={t('fairwaycard.fairway-order-help-text') + ' ' + t('general.multiple-values-supported')}
             isLoading={isLoadingFairways}
-            disabled={state.fairwayIds.length < 2 || state.status === Status.Removed}
+            disabled={!readonly && (state.fairwayIds.length < 2 || state.status === Status.Removed)}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'fairwaySecondary')?.msg}
             infoTitle={t('modal.ending-fairway-title')}
@@ -145,7 +145,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             setSelected={updateState}
             actionType="group"
             required
-            disabled={state.status === Status.Removed}
+            disabled={!readonly && state.status === Status.Removed}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'group')?.msg}
           />
@@ -160,7 +160,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             ]}
             setSelected={updateState}
             actionType="referenceLevel"
-            disabled={state.status === Status.Removed}
+            disabled={!readonly && state.status === Status.Removed}
             readonly={readonly}
           />
         </IonCol>
@@ -173,7 +173,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             actionType="harbours"
             multiple
             isLoading={isLoadingHarbours}
-            disabled={state.status === Status.Removed}
+            disabled={!readonly && state.status === Status.Removed}
             readonly={readonly}
           />
         </IonCol>
@@ -185,7 +185,7 @@ const MainSection: React.FC<MainSectionProps> = ({
             selected={state.pilotRoutes ?? []}
             setSelected={updateState}
             actionType="pilotRoutes"
-            disabled={state.status === Status.Removed}
+            disabled={!readonly && state.status === Status.Removed}
             isLoading={isLoadingPilotRoutes}
             readonly={readonly}
           />

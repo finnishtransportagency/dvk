@@ -490,7 +490,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
               <MapExportTool
                 fairwayCardInput={state}
-                disabled={state.status === Status.Removed}
+                readonly={readonly}
+                disabled={!readonly && state.status === Status.Removed}
                 validationErrors={validationErrors.concat(innerValidationErrors)}
                 setPicture={updateState}
                 fairways={fairwaySelection}

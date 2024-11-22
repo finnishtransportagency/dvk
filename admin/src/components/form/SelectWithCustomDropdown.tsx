@@ -93,7 +93,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   const inputClassName = 'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid' + readonlyStyle);
   return (
     <div className={inputClassName}>
-      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')}>
+      <IonLabel className={'formLabel' + (!readonly && disabled ? ' disabled' : '')}>
         <IonText onClick={disabled || readonly ? undefined : focusSelectItem}>
           {label} {required ? '*' : ''}
         </IonText>
@@ -109,8 +109,10 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
           </IonButton>
         )}
       </IonLabel>
-      {readonly && <IonTextarea className="formInput readonly" readonly={readonly} value={labelText.join('\r')} rows={labelText.length} />}
-      {!readonly && isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
+      {isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
+      {readonly && !isLoading && (
+        <IonTextarea className="formInput readonly" readonly={readonly} value={labelText.join('\r')} rows={labelText.length} />
+      )}
       {!readonly && !isLoading && (
         <>
           <IonItem

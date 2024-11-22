@@ -29,6 +29,7 @@ interface PrintImagesByModeProps {
   validationErrors?: ValidationType[];
   sourceCardId?: string;
   sourceCardVersion?: string;
+  readonly?: boolean;
 }
 
 export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
@@ -36,6 +37,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   setPicture,
   orientation,
   disabled,
+  readonly = false,
   setShowPicture,
   isLoading,
   isProcessingCurLang,
@@ -143,7 +145,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                       <IonButton
                         slot="end"
                         fill="clear"
-                        disabled={previewDisabled || disabled}
+                        disabled={previewDisabled || disabled || readonly}
                         className="icon-only x-small deletePicture"
                         onClick={(ev) => {
                           ev.preventDefault();
@@ -284,7 +286,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
               </IonRow>
             </IonGrid>
           )}
-          {!mainPictures?.length && !isLoading && <PrintInfo orientation={orientation} isFull />}
+          {!mainPictures?.length && !isLoading && !readonly && <PrintInfo orientation={orientation} isFull />}
         </IonCol>
       </IonRow>
     </IonGrid>

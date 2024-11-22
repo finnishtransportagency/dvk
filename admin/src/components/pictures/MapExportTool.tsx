@@ -62,6 +62,7 @@ interface MapExportToolProps {
   validationErrors?: ValidationType[];
   sourceCardId?: string;
   sourceCardVersion?: string;
+  readonly?: boolean;
 }
 
 const MapExportTool: React.FC<MapExportToolProps> = ({
@@ -71,6 +72,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
   setPicture,
   validationErrors,
   disabled,
+  readonly = false,
   sourceCardId,
   sourceCardVersion,
 }) => {
@@ -311,35 +313,38 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
     <>
       <IonGrid className={'mapExportTool' + (isMapDisabled ? ' disabled' : '')}>
         <IonRow>
-          <IonCol>
-            <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
-            {hasPrimaryIdError && <Alert alertType="info" text={t('fairwaycard.print-images-card-id-required')} extraClass="ion-margin-bottom" />}
-            {(!!isFetching || !initDone) && (
-              <IonProgressBar
-                value={percentDone}
-                buffer={percentDone}
-                type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
-                className={fetchError ? 'danger' : ''}
+          {readonly || (
+            <IonCol>
+              <LayerModal isOpen={isOpen} setIsOpen={setIsOpen} />
+              {hasPrimaryIdError && <Alert alertType="info" text={t('fairwaycard.print-images-card-id-required')} extraClass="ion-margin-bottom" />}
+              {(!!isFetching || !initDone) && (
+                <IonProgressBar
+                  value={percentDone}
+                  buffer={percentDone}
+                  type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
+                  className={fetchError ? 'danger' : ''}
+                />
+              )}
+              <ExtMapControls
+                printCurrentMapView={printCurrentMapView}
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                printDisabled={isLoadingMutation || isMapDisabled}
+                fileUploader={fileUploader}
+                importExternalImage={importExternalImage}
+                setErrors={setPicUploadErrors}
               />
-            )}
-            <ExtMapControls
-              printCurrentMapView={printCurrentMapView}
-              isOpen={isOpen}
-              setIsOpen={setIsOpen}
-              printDisabled={isLoadingMutation || isMapDisabled}
-              fileUploader={fileUploader}
-              importExternalImage={importExternalImage}
-              setErrors={setPicUploadErrors}
-            />
-            <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
-          </IonCol>
+              <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
+            </IonCol>
+          )}
           <IonCol>
             <PrintImages
               fairwayCardInput={fairwayCardInput}
               setPicture={setPicture}
               isLoading={isLoadingMutation}
               isProcessingCurLang={isProcessingCurLang}
-              disabled={disabled}
+              readonly={readonly}
+              disabled={!readonly && disabled}
               validationErrors={validationErrors}
               sourceCardId={sourceCardId}
               sourceCardVersion={sourceCardVersion}

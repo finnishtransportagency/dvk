@@ -113,8 +113,9 @@ const SelectInput: React.FC<SelectInputProps> = ({
           {label} {required ? '*' : ''}
         </IonLabel>
       )}
-      {readonly && !multiple && <IonInput className="formInput readonly" readonly={readonly} value={stringValue} />}
-      {readonly && multiple && <IonTextarea className="formInput readonly" readonly={readonly} value={stringValue} rows={rows} />}
+      {isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
+      {readonly && !isLoading && !multiple && <IonInput className="formInput readonly" readonly={readonly} value={stringValue} />}
+      {readonly && !isLoading && multiple && <IonTextarea className="formInput readonly" readonly={readonly} value={stringValue} rows={rows} />}
       {!readonly && isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
       {!readonly && !isLoading && (
         <>
