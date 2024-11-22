@@ -107,6 +107,9 @@ export async function fetchN2000MapAreas(): Promise<Polygon | MultiPolygon | und
     turfAreas.push(feat as Feature<Polygon>);
   });
 
+  if (turfAreas.length < 1){
+    return undefined;
+  }
   const union = turf_union(turf_helpers.featureCollection(turfAreas));
   return union === null ? undefined : union?.geometry;
 }

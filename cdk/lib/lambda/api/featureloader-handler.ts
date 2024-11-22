@@ -252,11 +252,11 @@ async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: A
 }
 
 async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-
   const [lineData, traficomN2000MapAreas] = await Promise.all([
     fetchVATUByFairwayClass<NavigointiLinjaFeature>('navigointilinjat', event),
     fetchN2000MapAreas()
   ]);
+
   const lines = lineData.data as NavigointiLinjaFeatureCollection;
 
   log.debug('lines: %d', lines.features.length);
