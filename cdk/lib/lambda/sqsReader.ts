@@ -20,8 +20,8 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
       const { rating, feedback } = JSON.parse(record.body);
 
       const mailOptions = {
-        from: 'sender@example.com',
-        to: 'tuki.dvk@vayla.fi',
+        from: 'dvk@vayla.fi',
+        to: 'juhani.kettunen@cgi.com',
         subject: 'Uusi palaute palvelusta Digitaalinen Väyläkortti',
         text: `Arvosana: ${rating}\nPalaute: ${feedback}`,
       };

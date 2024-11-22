@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import LayerModal from './LayerModal';
 import SearchbarDropdown from './SearchbarDropdown';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
@@ -12,7 +12,7 @@ import { CommonModal, SourceModal, FeedbackModal } from './CommonModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 import LinePopupContent, { LineProperties } from '../popup/LinePopupContent';
 import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPopupContent';
-import { useFairwayCardListData } from '../../utils/dataLoader';
+import { useFairwayCardListData, useSaveFeedback } from '../../utils/dataLoader';
 import MarineWarningPopupContent, { MarineWarningProperties } from '../popup/MarineWarningPopupContent';
 import MareographPopupContent, { MareographProperties } from '../popup/MareographPopupContent';
 import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
@@ -34,6 +34,7 @@ import DirwayPopupContent, { DirwayProperties } from '../popup/DirwayPopupConten
 import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup/RestrictionPortPopupContent';
 import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup/ProhibitionAreaPopupContent';
 import { IonCol, IonGrid, IonRow, IonText, IonToast } from '@ionic/react';
+import { FeedbackInput } from '../../graphql/generated';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -149,6 +150,14 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   sc?.setCurrentActiveSelection(activeSelection);
   sc?.setFilteredData(filteredFairways);
 
+  const { mutate: saveFeedbackMutation } = useSaveFeedback();
+  const saveFeedback = useCallback(
+    (feedback: FeedbackInput) => {
+      saveFeedbackMutation({ feedback });
+    },
+    [saveFeedbackMutation]
+  );
+
   return (
     <>
       <div id="popup" className="ol-popup">
@@ -222,15 +231,18 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       <FeedbackModal
         isOpen={isFeedbackOpen}
         setIsOpen={setIsFeedbackOpen}
-        handleSubmit={() => {
+        handleSubmit={(rating: number, feedback: string) => {
+          console.log('Arvosana:', rating);
+          console.log('Palaute:', feedback);
           console.log('Palaute lähetetty!');
+          saveFeedback({ rating, feedback });
           setIsToastOpen(true);
         }}
       />
       <IonToast
         isOpen={isToastOpen}
         message="Palaute lähetetty, kiitos!"
-        onDidDismiss={() => setIsToastOpen!(false)}
+        onDidDismiss={() => setIsToastOpen(false)}
         duration={3000}
         position="top"
       ></IonToast>

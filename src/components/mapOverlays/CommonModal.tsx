@@ -13,7 +13,7 @@ import {
   IonTitle,
   IonToolbar,
 } from '@ionic/react';
-import React, { ReactElement } from 'react';
+import React, { ReactElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './CommonModal.css';
 import closeIcon from '../../theme/img/close_black_24dp.svg';
@@ -26,10 +26,10 @@ type ModalProps = {
   size: string;
   children: ReactElement;
   htmlId?: string;
-  handleSubmit?: () => void;
+  onSubmit?: () => void;
 };
 
-export const CommonModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, size, children, htmlId, handleSubmit }) => {
+export const CommonModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, showBackdrop, size, children, htmlId, onSubmit }) => {
   const { t } = useTranslation();
   return (
     <IonModal id={htmlId ?? 'commonModal'} isOpen={isOpen} className={size} showBackdrop={showBackdrop} onDidDismiss={() => setIsOpen(false)}>
@@ -55,11 +55,11 @@ export const CommonModal: React.FC<ModalProps> = ({ isOpen, setIsOpen, title, sh
       {children}
       <IonFooter>
         <IonToolbar className="buttonBar ion-margin-top">
-          {handleSubmit && (
+          {onSubmit && (
             <IonButton
               slot="end"
               onClick={() => {
-                handleSubmit();
+                onSubmit();
                 setIsOpen(false);
               }}
               shape="round"
@@ -83,6 +83,7 @@ type SourceModalProps = {
 
 export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
+
   return (
     <CommonModal size="large" showBackdrop={false} isOpen={isOpen} setIsOpen={setIsOpen} title={t('source.title')}>
       <IonGrid className="linkBar content">
@@ -119,21 +120,28 @@ export const SourceModal: React.FC<SourceModalProps> = ({ isOpen, setIsOpen }) =
 type FeedbackModalProps = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
-  handleSubmit: () => void;
+  handleSubmit: (rating: number, feedback: string) => void;
 };
 
 export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, setIsOpen, handleSubmit }) => {
   const { t } = useTranslation();
+  const [rating, setRating] = useState<number>(5);
+  const [feedback, setFeedback] = useState<string>('');
+
+  const onSubmit = useCallback(() => {
+    handleSubmit(rating, feedback);
+  }, [handleSubmit, rating, feedback]);
+
+  const handleRatingChange = useCallback((e: CustomEvent) => {
+    setRating(e.detail.value as number);
+  }, []);
+
+  const handleFeedbackChange = useCallback((e: CustomEvent) => {
+    setFeedback(e.detail.value ?? '');
+  }, []);
+
   return (
-    <CommonModal
-      size="large"
-      showBackdrop={false}
-      isOpen={isOpen}
-      setIsOpen={setIsOpen}
-      title={t('feedback.title')}
-      // TODO: pass down the handler
-      handleSubmit={handleSubmit}
-    >
+    <CommonModal size="large" showBackdrop={false} isOpen={isOpen} setIsOpen={setIsOpen} title={t('feedback.title')} onSubmit={onSubmit}>
       <IonGrid className="linkBar content">
         <IonRow>
           <IonCol>{t('feedback.content')}</IonCol>
@@ -148,7 +156,18 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, setIsOpen,
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonRange aria-label="Arvosana-asteikko" min={0} max={10} value={5} pin={true} ticks={true} snaps={true}></IonRange>
+            <IonRange
+              id="ratingNumber"
+              aria-label="Arvosana-asteikko"
+              min={0}
+              max={10}
+              value={rating}
+              pin={true}
+              ticks={true}
+              snaps={true}
+              onIonChange={handleRatingChange}
+              data-test-id="ratingNumber"
+            />
           </IonCol>
         </IonRow>
         <IonRow>
@@ -158,7 +177,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, setIsOpen,
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonTextarea fill="outline" autoGrow></IonTextarea>
+            <IonTextarea id="feedbackText" fill="outline" autoGrow value={feedback} onIonChange={handleFeedbackChange} data-test-id="feedbackText" />
           </IonCol>
         </IonRow>
         <IonRow>
