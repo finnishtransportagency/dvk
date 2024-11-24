@@ -90,6 +90,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         fairwayCardInput={fairwayCardInput}
         setPicture={setPicture}
         orientation={Orientation.Portrait}
+        readonly={readonly}
         disabled={readonly || disabled}
         setShowPicture={setShowPicture}
         isLoading={dvkMap.getOrientationType() === Orientation.Portrait && isLoading}

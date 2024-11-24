@@ -35,7 +35,7 @@ import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
-import { openPreview } from '../utils/common';
+import { isReadOnly, openPreview } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
@@ -346,7 +346,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     modifier: savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown'),
     creator: savedCard?.creator ?? creator,
   };
-  const readonly = [Status.Removed, Status.Public, Status.Archived].includes(state.status);
+  const readonly = isReadOnly(state);
 
   return (
     <IonPage>

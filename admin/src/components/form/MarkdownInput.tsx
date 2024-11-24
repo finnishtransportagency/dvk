@@ -3,10 +3,11 @@ import { useTranslation } from 'react-i18next';
 import MDEditor, { ICommand, bold, codeEdit, codeLive, codePreview, italic, link } from '@uiw/react-md-editor';
 import rehypeSanitize from 'rehype-sanitize';
 import { PluggableList } from 'unified';
-import { IonLabel, IonTextarea } from '@ionic/react';
+import { IonLabel } from '@ionic/react';
 import { ActionType, Lang, TEXTAREA_MAXLENGTH } from '../../utils/constants';
 import './MarkdownInput.css';
 import { getInputCounterText } from '../../utils/common';
+import Textarea from './Textarea';
 
 interface MarkdownInputProps {
   label: string;
@@ -120,39 +121,41 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({
 
   return (
     <>
-      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
-        {label} {required ? '*' : ''}
-      </IonLabel>
-      <div className="md-editor-container" ref={editorRef}>
-        {readonly ? (
-          <IonTextarea className="formInput readonly" readonly={readonly} value={val} rows={8} />
-        ) : (
-          <MDEditor
-            className={isValid ? '' : 'error'}
-            value={val}
-            onChange={(value) => handleChange(value)}
-            onBlur={() => {
-              checkValidity();
-              setIsTouched(true);
-            }}
-            previewOptions={{
-              rehypePlugins: rehypePlugins,
-            }}
-            textareaProps={{
-              maxLength: maxLength,
-              required: required,
-            }}
-            commands={[boldCommand, italicCommand, linkCommand]}
-            extraCommands={[editViewCommand, liveViewCommand, previewCommand]}
-            defaultTabEnable
-          />
-        )}
-        <div className="textarea-helper">
-          {!error && isValid && counterText && <div className="counter">{counterText}</div>}
-          {!error && isValid && !counterText && helperText && <div className="helper-text">{helperText}</div>}
-          {(error || !isValid) && <div className="error-text">{getErrorText()}</div>}
-        </div>
-      </div>
+      {readonly ? (
+        <Textarea readonly={readonly} label={label} setValue={() => {}} actionType="empty" val={val} rows={8} required={required} />
+      ) : (
+        <>
+          <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
+            {label} {required ? '*' : ''}
+          </IonLabel>
+          <div className="md-editor-container" ref={editorRef}>
+            <MDEditor
+              className={isValid ? '' : 'error'}
+              value={val}
+              onChange={(value) => handleChange(value)}
+              onBlur={() => {
+                checkValidity();
+                setIsTouched(true);
+              }}
+              previewOptions={{
+                rehypePlugins: rehypePlugins,
+              }}
+              textareaProps={{
+                maxLength: maxLength,
+                required: required,
+              }}
+              commands={[boldCommand, italicCommand, linkCommand]}
+              extraCommands={[editViewCommand, liveViewCommand, previewCommand]}
+              defaultTabEnable
+            />
+            <div className="textarea-helper">
+              {!error && isValid && counterText && <div className="counter">{counterText}</div>}
+              {!error && isValid && !counterText && helperText && <div className="helper-text">{helperText}</div>}
+              {(error || !isValid) && <div className="error-text">{getErrorText()}</div>}
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 };

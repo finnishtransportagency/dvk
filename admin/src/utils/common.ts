@@ -1,6 +1,8 @@
 import { TFunction } from 'i18next';
 import {
+  FairwayCardInput,
   FairwayCardOrHarbor,
+  HarborInput,
   Mareograph,
   Maybe,
   Orientation,
@@ -343,6 +345,10 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
 export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   return fds?.projection;
+}
+
+export function isReadOnly(state: HarborInput | FairwayCardInput) {
+  return [Status.Removed, Status.Public, Status.Archived].includes(state.status);
 }
 
 export function getSelectedItemsAsText(

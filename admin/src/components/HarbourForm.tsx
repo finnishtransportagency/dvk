@@ -21,7 +21,7 @@ import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
-import { openPreview } from '../utils/common';
+import { isReadOnly, openPreview } from '../utils/common';
 import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
@@ -319,7 +319,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     creator: savedHarbour?.creator ?? creator,
   };
 
-  const readonly = [Status.Removed, Status.Public, Status.Archived].includes(state.status);
+  const readonly = isReadOnly(state);
 
   return (
     <IonPage>
@@ -376,7 +376,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handleNewVersion={handleNewVersion}
         handlePublish={handlePublish}
         isError={isError}
-        readonly={readonly}
       />
 
       <IonContent className="mainContent ion-no-padding" data-testid="harbourEditPage">

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { IonInput, IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText, IonTextarea } from '@ionic/react';
+import { IonLabel, IonNote, IonSelect, IonSelectOption, IonSkeletonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, Lang, SelectOption, ValueType } from '../../utils/constants';
 import { PilotPlace } from '../../graphql/generated';
 import { IonSelectCustomEvent } from '@ionic/core/dist/types/components';
 import { getCombinedErrorAndHelperText, getSelectedItemsAsText, isInputOk, sortSelectOptions } from '../../utils/common';
 import { roundCoordinates } from '../../utils/coordinateUtils';
+import TextInput from './TextInput';
+import Textarea from './Textarea';
 
 interface SelectChangeEventDetail<ValueType> {
   value: ValueType;
@@ -105,55 +107,75 @@ const SelectInput: React.FC<SelectInputProps> = ({
     }
   }, [required, error, selected, isTouched]);
 
+  //For readability of tsx
+  const readonlyAndLoading = readonly && !isLoading;
+  const inputOrLoading = !readonlyAndLoading;
+
   const { stringValue, rows } = getSelectedItemsAsText(options, selected, lang);
   return (
-    <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
-      {!hideLabel && (
-        <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
-          {label} {required ? '*' : ''}
-        </IonLabel>
+    <>
+      {readonlyAndLoading &&
+        (multiple ? (
+          <Textarea
+            readonly={readonly}
+            label={label}
+            setValue={() => {}}
+            actionType="empty"
+            val={stringValue ? stringValue.toString() : ''}
+            rows={rows}
+            required={required}
+          />
+        ) : (
+          <TextInput readonly={readonly} label={label} setValue={() => {}} actionType="empty" val={stringValue} required={required} />
+        ))}
+      {inputOrLoading && (
+        <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
+          {!hideLabel && (
+            <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
+              {label} {required ? '*' : ''}
+            </IonLabel>
+          )}
+          {isLoading ? (
+            <IonSkeletonText animated={true} className="select-skeleton" />
+          ) : (
+            <>
+              <IonSelect
+                ref={selectRef}
+                className="selectInput"
+                placeholder={t('choose') ?? ''}
+                onIonChange={(ev) => handleChange(ev)}
+                onIonBlur={() => checkValidity()}
+                interface="popover"
+                interfaceOptions={{
+                  size: 'cover',
+                  className: 'multiSelect',
+                }}
+                value={selected}
+                multiple={Array.isArray(selected) || multiple}
+                compareWith={Array.isArray(selected) ? compareOptions : undefined}
+                disabled={disabled}
+                fill="outline"
+                labelPlacement="stacked"
+              >
+                {sortedOptions?.map((item) => {
+                  const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
+                  const coordinates = showCoords ? roundCoordinates(item.geometry?.coordinates, 5) : undefined;
+                  const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
+                  return (
+                    <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
+                      {showId ? '[' + item.id + '] ' : ''}
+                      {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
+                    </IonSelectOption>
+                  );
+                })}
+              </IonSelect>
+              {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
+              <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
+            </>
+          )}
+        </div>
       )}
-      {isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
-      {readonly && !isLoading && !multiple && <IonInput className="formInput readonly" readonly={readonly} value={stringValue} />}
-      {readonly && !isLoading && multiple && <IonTextarea className="formInput readonly" readonly={readonly} value={stringValue} rows={rows} />}
-      {!readonly && isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
-      {!readonly && !isLoading && (
-        <>
-          <IonSelect
-            ref={selectRef}
-            className="selectInput"
-            placeholder={t('choose') ?? ''}
-            onIonChange={(ev) => handleChange(ev)}
-            onIonBlur={() => checkValidity()}
-            interface="popover"
-            interfaceOptions={{
-              size: 'cover',
-              className: 'multiSelect',
-            }}
-            value={selected}
-            multiple={Array.isArray(selected) || multiple}
-            compareWith={Array.isArray(selected) ? compareOptions : undefined}
-            disabled={disabled}
-            fill="outline"
-            labelPlacement="stacked"
-          >
-            {sortedOptions?.map((item) => {
-              const optionLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id;
-              const coordinates = showCoords ? roundCoordinates(item.geometry?.coordinates, 5) : undefined;
-              const additionalLabel = coordinates ? [coordinates[1], coordinates[0]].join(', ') : '';
-              return (
-                <IonSelectOption key={item.id.toString()} value={compareObjects ? item : item.id}>
-                  {showId ? '[' + item.id + '] ' : ''}
-                  {optionLabel + (additionalLabel ? ' [' + additionalLabel + ']' : '')}
-                </IonSelectOption>
-              );
-            })}
-          </IonSelect>
-          {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
-          <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
-        </>
-      )}
-    </div>
+    </>
   );
 };
 

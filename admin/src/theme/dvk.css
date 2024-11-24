@@ -553,8 +553,7 @@ label.input-wrapper {
 
 .formGrid ion-input.formInput.has-focus.readonly.input-fill-outline label.input-wrapper,
 .formGrid ion-textarea.formInput.has-focus.readonly label.textarea-wrapper {
-  border: none;
-  -webkit-tap-highlight-color: var(--ion-color-lighter);
+  border: 1px solid var(--ion-color-lighter);
 }
 .formGrid ion-input.formInput.has-focus.invalid.input-fill-outline label.input-wrapper,
 .formGrid ion-textarea.formInput.has-focus.invalid.textarea-fill-outline label.textarea-wrapper {
