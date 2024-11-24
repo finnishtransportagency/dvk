@@ -97,20 +97,23 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   const inputOrLoading = !readonlyAndNotLoading;
 
   return (
-    <>
+    <div className={inputClassName}>
       {readonlyAndNotLoading && (
-        <Textarea
-          readonly={readonly}
-          label={label}
-          setValue={() => {}}
-          actionType="empty"
-          val={labelText.join('\r')}
-          rows={labelText.length}
-          required={required}
-        />
+        <>
+          <Textarea
+            readonly={readonly}
+            label={label}
+            setValue={() => {}}
+            actionType="empty"
+            val={labelText.join('\r')}
+            rows={labelText.length}
+            required={required}
+          />
+          <IonNote className="helper">{getHelperText()}</IonNote>
+        </>
       )}
       {inputOrLoading && (
-        <div className={inputClassName}>
+        <>
           <IonLabel className={'formLabel' + (!readonly && disabled ? ' disabled' : '')}>
             <IonText onClick={disabled || readonly ? undefined : focusSelectItem}>
               {label} {required ? '*' : ''}
@@ -198,9 +201,9 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
               />
             </>
           )}
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 

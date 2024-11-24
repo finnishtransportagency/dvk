@@ -108,20 +108,22 @@ const SelectInput: React.FC<SelectInputProps> = ({
   }, [required, error, selected, isTouched]);
 
   //For readability of tsx
-  const readonlyAndLoading = readonly && !isLoading;
-  const inputOrLoading = !readonlyAndLoading;
+  const readonlyAndNotLoading = readonly && !isLoading;
+  const inputOrLoading = !readonlyAndNotLoading;
 
   const stringValue = '' + getSelectedItemsAsText(options, selected, lang, ', ');
   return (
-    <>
-      {readonlyAndLoading &&
+    <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
+      {readonlyAndNotLoading &&
         (multiple ? (
           <Textarea readonly={readonly} label={label} setValue={() => {}} actionType="empty" val={stringValue} required={required} />
         ) : (
           <TextInput readonly={readonly} label={label} setValue={() => {}} actionType="empty" val={stringValue} required={required} />
         ))}
+      {readonlyAndNotLoading && <IonNote className="helper">{getHelperText()}</IonNote>}
+
       {inputOrLoading && (
-        <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
+        <>
           {!hideLabel && (
             <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
               {label} {required ? '*' : ''}
@@ -165,9 +167,9 @@ const SelectInput: React.FC<SelectInputProps> = ({
               <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
             </>
           )}
-        </div>
+        </>
       )}
-    </>
+    </div>
   );
 };
 

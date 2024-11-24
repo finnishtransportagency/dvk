@@ -123,10 +123,10 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({
       <IonLabel className={'formLabel' + (!readonly && disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
-      {readonly ? (
-        <MDEditor.Markdown className="md-editor-container" source={val}></MDEditor.Markdown>
-      ) : (
-        <div className="md-editor-container" ref={editorRef}>
+      <div className="md-editor-container" ref={editorRef}>
+        {readonly ? (
+          <MDEditor.Markdown className="md-editor-container" source={val}></MDEditor.Markdown>
+        ) : (
           <MDEditor
             className={isValid ? '' : 'error'}
             value={val}
@@ -146,13 +146,13 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({
             extraCommands={[editViewCommand, liveViewCommand, previewCommand]}
             defaultTabEnable
           />
-          <div className="textarea-helper">
-            {!error && isValid && counterText && <div className="counter">{counterText}</div>}
-            {!error && isValid && !counterText && helperText && <div className="helper-text">{helperText}</div>}
-            {(error || !isValid) && <div className="error-text">{getErrorText()}</div>}
-          </div>
+        )}
+        <div className="textarea-helper">
+          {!error && isValid && counterText && <div className="counter">{counterText}</div>}
+          {!error && isValid && !counterText && helperText && <div className="helper-text">{helperText}</div>}
+          {(error || !isValid) && <div className="error-text">{getErrorText()}</div>}
         </div>
-      )}
+      </div>
     </>
   );
 };
