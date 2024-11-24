@@ -111,20 +111,12 @@ const SelectInput: React.FC<SelectInputProps> = ({
   const readonlyAndLoading = readonly && !isLoading;
   const inputOrLoading = !readonlyAndLoading;
 
-  const { stringValue, rows } = getSelectedItemsAsText(options, selected, lang);
+  const stringValue = '' + getSelectedItemsAsText(options, selected, lang, ', ');
   return (
     <>
       {readonlyAndLoading &&
         (multiple ? (
-          <Textarea
-            readonly={readonly}
-            label={label}
-            setValue={() => {}}
-            actionType="empty"
-            val={stringValue ? stringValue.toString() : ''}
-            rows={rows}
-            required={required}
-          />
+          <Textarea readonly={readonly} label={label} setValue={() => {}} actionType="empty" val={stringValue} required={required} />
         ) : (
           <TextInput readonly={readonly} label={label} setValue={() => {}} actionType="empty" val={stringValue} required={required} />
         ))}

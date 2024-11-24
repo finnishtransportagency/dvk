@@ -354,14 +354,14 @@ export function isReadOnly(state: HarborInput | FairwayCardInput) {
 export function getSelectedItemsAsText(
   options: SelectOption[] | PilotPlace[] | null,
   selected: string | number | boolean | string[] | number[] | PilotPlaceInput[] | PictureInput[] | undefined,
-  lang: Lang
+  lang: Lang,
+  valueSeparator: string = '\n'
 ) {
   if (!options || !selected) {
-    return { rows: 1, stringValue: '' };
+    return '';
   }
-  const rows = Array.isArray(selected) ? selected.length : 1;
   if (typeof selected === 'string' || typeof selected === 'number' || typeof selected === 'boolean') {
-    return { rows: rows, stringValue: options.find((o) => o.id === selected)?.name?.[lang] };
+    return options.find((o) => o.id === selected)?.name?.[lang];
   }
 
   const selectedValues = selected.map((s) => {
@@ -375,5 +375,5 @@ export function getSelectedItemsAsText(
       return o?.name ? o.name[lang] : '';
     });
 
-  return { rows: rows, stringValue: valueStrings.join('\n') };
+  return valueStrings.join(valueSeparator);
 }

@@ -537,6 +537,12 @@ label.input-wrapper {
   border-color: var(--ion-color-danger);
 }
 
+.formGrid div.wmde-markdown.wmde-markdown-color.md-editor-container {
+  font-size: 14px;
+  border: none;
+  background-color: var(--ion-color-lighter);
+}
+
 .formGrid ion-input.formInput.readonly .textarea-outline-container,
 .formGrid ion-textarea.formInput.readonly .textarea-outline-container {
   border: none;
