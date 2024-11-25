@@ -172,7 +172,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen, setIsFeedbac
                           setIsFeedbackOpen(true);
                         }}
                       >
-                        {t('Anna palvelusta palautetta')}
+                        {t('leave-feedback')}
                       </IonButton>
                     </IonButtons>
                   </IonCol>

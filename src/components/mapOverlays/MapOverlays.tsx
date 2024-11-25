@@ -241,7 +241,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       />
       <IonToast
         isOpen={isToastOpen}
-        message="Palaute lähetetty, kiitos!"
+        message={t('feedback.thank-you')}
         onDidDismiss={() => setIsToastOpen(false)}
         duration={3000}
         position="top"

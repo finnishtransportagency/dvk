@@ -15,7 +15,8 @@
       "opens-in-a-new-tab": "Öppnas i en ny flik",
       "location-service": "Platstjänst",
       "location-description": "Möjliggör att platsbestämma din mobila enhet.",
-      "location-disabled": "Behörigheter för platsbestämning inaktiverad"
+      "location-disabled": "Behörigheter för platsbestämning inaktiverad",
+      "leave-feedback": "Respons på tjänsten"
     },
     "map": {
       "controls": {
@@ -576,7 +577,8 @@
     "print": "Skriva ut sidan",
     "filter": "Välj filter...",
     "sortOldToNew": "Äldst först",
-    "sortNewToOld": "Nyaste först"
+    "sortNewToOld": "Nyaste först",
+    "submit": "Skicka"
   },
   "tileLoadWarning": {
     "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
@@ -620,5 +622,14 @@
     "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
     "previousPage": "[sv] Edelliset",
     "nextPage": "[sv] Seuraavat"
+  },
+  "feedback": {
+    "title": "Respons på tjänsten",
+    "content": "Kerro Digitaalinen Väyläkortti -palvelun kehittäjille, miten palvelun toimintaa voisi kehittää. Huomaathan, että palvelun parantamista koskeviin palautteisiin ei vastata.",
+    "title2": "Minkä arvosanan antaisit palvelulle?",
+    "content2": "Kuinka todennäköisesti suosittelisit palvelua? Asteikolla 1–10, jolloin 10 suosittelisi erittäin todennäköisesti ja 1 suosittelisi erittäin epätodennäköisesti.",
+    "title3": "Miten kehittäisit palvelua paremmaksi?",
+    "content3": "Palautteesi välitetään Digitaalinen Väyläkortti -palvelun kehittäjille palvelun parantamiseksi. Näitä palautteita ei toimiteta väyläkorttien laatijoille tai muille virastojen tai sidosryhmien henkilöille.",
+    "thank-you": "Tack för din respons!"
   }
 }

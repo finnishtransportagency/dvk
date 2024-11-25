@@ -15,7 +15,8 @@
       "opens-in-a-new-tab": "Opens in a new tab",
       "location-service": "Location service",
       "location-description": "Enables tracking of the end device",
-      "location-disabled": "Use of location prohibited"
+      "location-disabled": "Use of location prohibited",
+      "leave-feedback": "Leave feedback"
     },
     "map": {
       "controls": {
@@ -575,7 +576,8 @@
     "print": "Print page",
     "filter": "Select filter...",
     "sortOldToNew": "Oldest first",
-    "sortNewToOld": "Newest first"
+    "sortNewToOld": "Newest first",
+    "submit": "Submit"
   },
   "tileLoadWarning": {
     "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."
@@ -619,5 +621,14 @@
     "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
     "previousPage": "Previous",
     "nextPage": "Next"
+  },
+  "feedback": {
+    "title": "Leave feedback",
+    "content": "Kerro Digitaalinen Väyläkortti -palvelun kehittäjille, miten palvelun toimintaa voisi kehittää. Huomaathan, että palvelun parantamista koskeviin palautteisiin ei vastata.",
+    "title2": "Minkä arvosanan antaisit palvelulle?",
+    "content2": "Kuinka todennäköisesti suosittelisit palvelua? Asteikolla 1–10, jolloin 10 suosittelisi erittäin todennäköisesti ja 1 suosittelisi erittäin epätodennäköisesti.",
+    "title3": "Miten kehittäisit palvelua paremmaksi?",
+    "content3": "Palautteesi välitetään Digitaalinen Väyläkortti -palvelun kehittäjille palvelun parantamiseksi. Näitä palautteita ei toimiteta väyläkorttien laatijoille tai muille virastojen tai sidosryhmien henkilöille.",
+    "thank-you": "Thank you for the feedback!"
   }
 }
