@@ -82,8 +82,14 @@ export class DvkBackendStack extends Stack {
       stringValue: queue.queueUrl,
     });
 
+    const layer = LayerVersion.fromLayerVersionArn(
+      this,
+      'ParameterLayer',
+      'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
+    );
+
     // Create Lambda function to read from SQS
-    this.createSqsReaderLambda(queue, env);
+    this.createSqsReaderLambda(queue, env, layer);
 
     const config = new Config(this);
     if (Config.isPermanentEnvironment()) {
@@ -99,13 +105,6 @@ export class DvkBackendStack extends Stack {
     const fairwayCardWithVersionsTable = this.createFairwayCardWithVersionsTable();
     this.createHarborTable();
     const harborWithVersionsTable = this.createHarborWithVersionsTable();
-
-    const layer = LayerVersion.fromLayerVersionArn(
-      this,
-      'ParameterLayer',
-      'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
-    );
-
     const fairwayCardVersioningBucket = this.createVersioningBucket('fairwaycard', env);
     const harborVersioningBucket = this.createVersioningBucket('harbor', env);
 
@@ -524,18 +523,27 @@ export class DvkBackendStack extends Stack {
     }
   }
 
-  private createSqsReaderLambda(queue: sqs.Queue, env: string): lambda.Function {
+  private createSqsReaderLambda(queue: sqs.Queue, env: string, ssmLayer: ILayerVersion): lambda.Function {
     const sqsReaderLambda = new NodejsFunction(this, 'DvkSqsReaderLambda', {
       functionName: `dvk-feedback-reader-${env}`,
       entry: path.join(__dirname, 'lambda', 'sqsReader.ts'),
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_20_X,
-      environment: {
-        QUEUE_URL: queue.queueUrl,
-      },
       memorySize: 256,
       timeout: Duration.seconds(60),
+      layers: [ssmLayer],
+      environment: {
+        QUEUE_URL: queue.queueUrl,
+        LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+        ENVIRONMENT: Config.getEnvironment(),
+        TZ: 'Europe/Helsinki',
+        PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
+        PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
+        SSM_PARAMETER_STORE_TTL: '300',
+      },
     });
+
+    sqsReaderLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
 
     // Grant the Lambda function permission to read from the SQS queue
     queue.grantConsumeMessages(sqsReaderLambda);
