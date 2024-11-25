@@ -20,7 +20,7 @@ export const handler: SQSHandler = async (event: SQSEvent) => {
       const { rating, feedback } = JSON.parse(record.body);
 
       const mailOptions = {
-        from: 'noreply-dvk@vaylapilvi.fi',
+        from: 'noreply.dvk@vaylapilvi.fi',
         to: feedbackAddress,
         subject: 'Uusi palaute palvelusta Digitaalinen Väyläkortti',
         text: `Arvosana: ${rating}\nPalaute: ${feedback}`,
