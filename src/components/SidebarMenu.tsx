@@ -28,6 +28,7 @@ import alertIcon from '../theme/img/alert_icon.svg';
 import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import routeIcon from '../theme/img/route_icon.svg';
+import extLink from '../theme/img/ext_link.svg';
 import LocationPermissionControl from './LocationPermissionControl';
 import LanguageBar from './LanguageBar';
 import { useDvkContext } from '../hooks/dvkContext';
@@ -161,18 +162,18 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen, setIsFeedbac
                   <IonCol size="12">
                     <LocationPermissionControl />
                   </IonCol>
-                  {/* TODO t */}
                   <IonCol>
                     <IonButtons>
                       <IonButton
                         ref={lastFocusableElement}
-                        className="sourceText ion-text-nowrap"
+                        className="feedbackButton ion-text-nowrap"
                         onClick={() => {
                           menuController.close();
                           setIsFeedbackOpen(true);
                         }}
                       >
                         {t('leave-feedback')}
+                        <IonIcon src={extLink} slot="end" style={{ 'font-size': '10px' }}></IonIcon>
                       </IonButton>
                     </IonButtons>
                   </IonCol>

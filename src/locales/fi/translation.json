@@ -16,7 +16,7 @@
       "location-service": "Sijaintipalvelu",
       "location-description": "Mahdollistaa päätelaitteesi paikantamisen.",
       "location-disabled": "Sijainnin käyttöoikeus estetty",
-      "leave-feedback": "Anna palvelusta palautetta"
+      "leave-feedback": "Anna palautetta palvelusta"
     },
     "map": {
       "controls": {
@@ -624,7 +624,7 @@
     "nextPage": "Seuraavat"
   },
   "feedback": {
-    "title": "Anna palvelusta palautetta",
+    "title": "Anna palautetta palvelusta",
     "content": "Kerro Digitaalinen Väyläkortti -palvelun kehittäjille, miten palvelun toimintaa voisi kehittää. Huomaathan, että palvelun parantamista koskeviin palautteisiin ei vastata.",
     "title2": "Minkä arvosanan antaisit palvelulle?",
     "content2": "Kuinka todennäköisesti suosittelisit palvelua? Asteikolla 1–10, jolloin 10 suosittelisi erittäin todennäköisesti ja 1 suosittelisi erittäin epätodennäköisesti.",
