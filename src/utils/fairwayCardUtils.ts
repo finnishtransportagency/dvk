@@ -12,6 +12,9 @@ import {
   PilotageLimitFeatureProperties,
 } from '../components/features';
 import * as olExtent from 'ol/extent';
+import { FairwayCardTab } from '../components/content/fairwayCard/FairwayCardContent';
+import { MAP } from './constants';
+import { inAreaBuffer, WGS84 } from './spatialUtils';
 
 export function setFairwayCardByPreview(
   preview: boolean,
@@ -26,16 +29,18 @@ export function setFairwayCardByPreview(
   return filteredFairwayCard && filteredFairwayCard.length > 0 ? filteredFairwayCard[0] : undefined;
 }
 
-export function getTabLabel(t: TFunction, tabId: number): string {
-  switch (tabId) {
-    case 1:
+export function getTabLabel(t: TFunction, tab: FairwayCardTab): string {
+  switch (tab) {
+    case FairwayCardTab.Information:
       return t('title', { count: 1 });
-    case 2:
+    case FairwayCardTab.Harbours:
       return t('harboursTitle');
-    case 3:
+    case FairwayCardTab.CommonInformation:
       return t('areasTitle');
-    case 4:
+    case FairwayCardTab.PilotRoutes:
       return t('routesTitle');
+    case FairwayCardTab.WeatherForecasts:
+      return t('weatherForecastsTitle');
     default:
       return '-';
   }
@@ -138,6 +143,24 @@ export function getFairwayCardObservations(fairwayCard: FairwayCardPartsFragment
     return closestFeatures.map((cf) => cf.feat);
   }
   return [];
+}
+
+export function getFairwayCardForecasts(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {
+  //Buffer search distance = 1km
+  const BUFFER_SIZE = 1;
+  if (!features) {
+    return [];
+  }
+  //Find those matching pilot place id in card
+  const forecasts = features.filter((f) => {
+    return fairwayCard?.trafficService?.pilot?.places?.find((pilotPlace) => f.getProperties().pilotPlaceId === pilotPlace?.id) ?? false;
+  });
+  //Get forecasts within 1 km of any fairway area
+  const nonMatchedFeatures = features.filter((f) => {
+    return !forecasts.find((fo) => fo.getId() === f.getId());
+  });
+  inAreaBuffer(getFairwayCardFairwayAreas(fairwayCard), MAP.EPSG, BUFFER_SIZE, nonMatchedFeatures, WGS84).forEach((p) => forecasts.push(p));
+  return forecasts;
 }
 
 export function getFairwayCardMareographs(fairwayCard: FairwayCardPartsFragment, features: Feature<Geometry>[]) {

@@ -31,6 +31,7 @@ export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
             onFocus={() => highlightHarbor(data.id, true)}
             onMouseLeave={() => highlightHarbor(data.id, false)}
             onBlur={() => highlightHarbor(data.id, false)}
+            data-testid="restrictions"
           >
             <h4>
               <strong>{data.name?.[lang]}</strong>
@@ -42,15 +43,15 @@ export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
             <h5>{t('quays')}</h5>
             <div className="printGrid">{(data.quays && <QuayInfo data={data?.quays} />) || <InfoParagraph />}</div>
           </IonText>
-          <IonText>
+          <IonText data-testid="cargo">
             <h5>{t('cargo')}</h5>
             {(data.cargo && <p>{data.cargo[lang]}</p>) || <InfoParagraph />}
           </IonText>
-          <IonText>
+          <IonText data-testid="harbourBasin">
             <h5>{t('harbourBasin')}</h5>
             {(data.harborBasin && <p>{data.harborBasin[lang]}</p>) || <InfoParagraph />}
           </IonText>
-          <IonText>
+          <IonText data-testid="contactDetails">
             <h5>{t('contactDetails')}</h5>
             <ContactInfo data={data} noMargin={isLast} />
           </IonText>
