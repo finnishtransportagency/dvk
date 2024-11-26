@@ -31,7 +31,7 @@ export const FairwayCardHeader: React.FC<FairwayCardHeaderProps> = ({
       <IonRow>
         <IonCol>
           <IonText className="fairwayTitle" id="mainPageContent">
-            <h2 className="ion-no-margin">
+            <h2 className="ion-no-margin" data-testid="fairwayTitle">
               <strong>{fairwayTitle}</strong>
             </h2>
           </IonText>

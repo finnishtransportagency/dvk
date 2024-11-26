@@ -149,6 +149,7 @@
     "harboursTitle": "Väylän satamat",
     "areasTitle": "Väylän alueet",
     "routesTitle": "Luotsausreitit",
+    "weatherForecastsTitle": "Sääennusteet",
     "information": "Väylätiedot",
     "liningAndMarking": "Linjaus ja merkintä",
     "starts": "Alkaa",
@@ -285,6 +286,11 @@
     "route": "Reitti",
     "rtz": "Reitin RTZ-tiedosto",
     "linkedFairwayCards": "Luotsausreittiin liittyvät väyläkortit"
+  },
+  "forecast": {
+    "forecastLocation": "Sää- ja aaltoennustepisteen sijainti",
+    "updated": "Päivitetty",
+    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   },
   "faults": {
     "title": "Turvalaiteviat",
