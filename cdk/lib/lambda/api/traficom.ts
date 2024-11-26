@@ -4,8 +4,6 @@ import { PilotPlace } from '../../../graphql/generated';
 import { fetchTraficomApi } from './axios';
 import { union as turf_union } from '@turf/union';
 import * as turf_helpers from '@turf/helpers';
-import { log } from '../logger';
-
 
 function flattenCoordinates(row: Feature<Geometry, GeoJsonProperties>) {
   if ('coordinates' in row.geometry) {
