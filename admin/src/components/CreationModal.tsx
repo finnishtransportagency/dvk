@@ -107,7 +107,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
           ...mapToFairwayCardInput(version.id, fairwayCardData),
           id: identifier,
           version: 'v1',
-          pictures: fairwayCardData.fairwayCard?.pictures,
+          pictures: copyPics ? fairwayCardData.fairwayCard?.pictures : [],
         } as FairwayCardInput);
         const sourceFairwayCard = fairwayCardData.fairwayCard;
         if (copyPics && !!sourceFairwayCard?.pictures?.length) {
