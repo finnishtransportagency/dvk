@@ -56,19 +56,17 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
             <HelpIcon />
           </IonButton>
         )}
-        {readonly || (
-          <IonButton
-            slot="end"
-            fill="clear"
-            className="icon-only small"
-            onClick={() => deleteSection(idx)}
-            title={t('general.delete') ?? ''}
-            aria-label={t('general.delete') ?? ''}
-            disabled={disabled}
-          >
-            <BinIcon />
-          </IonButton>
-        )}
+        <IonButton
+          slot="end"
+          fill="clear"
+          className="icon-only small"
+          onClick={() => deleteSection(idx)}
+          title={t('general.delete') ?? ''}
+          aria-label={t('general.delete') ?? ''}
+          disabled={readonly || disabled}
+        >
+          <BinIcon />
+        </IonButton>
         <IonButton
           slot="end"
           fill="clear"

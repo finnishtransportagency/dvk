@@ -119,17 +119,13 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
         message={t('general.markdown.description')}
       />
       <IonGrid>
-        {readonly || (
-          <IonRow className="ion-justify-content-end">
-            <IonCol size="auto">
-              {readonly || (
-                <IonButton shape="round" onClick={() => addSection()} disabled={disabled}>
-                  {t('general.add-section-temporary-notification')}
-                </IonButton>
-              )}
-            </IonCol>
-          </IonRow>
-        )}
+        <IonRow className="ion-justify-content-end">
+          <IonCol size="auto">
+            <IonButton shape="round" onClick={() => addSection()} disabled={readonly || disabled}>
+              {t('general.add-section-temporary-notification')}
+            </IonButton>
+          </IonCol>
+        </IonRow>
       </IonGrid>
     </>
   );

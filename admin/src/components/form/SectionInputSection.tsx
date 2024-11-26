@@ -112,18 +112,16 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
           />
         </IonCol>
         <IonCol size="auto" className="ion-align-self-center">
-          {readonly || (
-            <IonButton
-              fill="clear"
-              className="icon-only small"
-              onClick={() => deleteSection(idx)}
-              title={t('general.delete') ?? ''}
-              aria-label={t('general.delete') ?? ''}
-              disabled={disabled}
-            >
-              <BinIcon />
-            </IonButton>
-          )}
+          <IonButton
+            fill="clear"
+            className="icon-only small"
+            onClick={() => deleteSection(idx)}
+            title={t('general.delete') ?? ''}
+            aria-label={t('general.delete') ?? ''}
+            disabled={readonly || disabled}
+          >
+            <BinIcon />
+          </IonButton>
         </IonCol>
       </IonRow>
     </IonGrid>

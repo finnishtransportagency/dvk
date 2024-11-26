@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MDEditor, { ICommand, bold, codeEdit, codeLive, codePreview, italic, link } from '@uiw/react-md-editor';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 import rehypeSanitize from 'rehype-sanitize';
 import { PluggableList } from 'unified';
 import { IonLabel } from '@ionic/react';
@@ -125,7 +126,9 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({
       </IonLabel>
       <div className="md-editor-container" ref={editorRef}>
         {readonly ? (
-          <MDEditor.Markdown className="md-editor-container" source={val}></MDEditor.Markdown>
+          <div className="markdown-preview-container" ref={editorRef}>
+            <MarkdownPreview className="markdown-text" source={val} rehypePlugins={rehypePlugins} />
+          </div>
         ) : (
           <MDEditor
             className={isValid ? '' : 'error'}

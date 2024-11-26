@@ -258,7 +258,7 @@ const TextInput: React.FC<TextInputProps> = ({
                 setModalOpen(true);
               }
             }}
-            disabled={disabled}
+            disabled={readonly || disabled}
           >
             <IonIcon icon={CalendarIcon} className="dateIcon" />
           </IonButton>

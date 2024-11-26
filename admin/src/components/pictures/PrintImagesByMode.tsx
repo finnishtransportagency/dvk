@@ -135,7 +135,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           toggleSequence(pic);
                         }}
                         fill="clear"
-                        disabled={previewDisabled || disabled}
+                        disabled={readonly || previewDisabled || disabled}
                         className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
                         title={t('fairwaycard.toggle-sequence') ?? ''}
                         aria-label={t('fairwaycard.toggle-sequence') ?? ''}
@@ -145,7 +145,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                       <IonButton
                         slot="end"
                         fill="clear"
-                        disabled={previewDisabled || disabled || readonly}
+                        disabled={readonly || previewDisabled || disabled}
                         className="icon-only x-small deletePicture"
                         onClick={(ev) => {
                           ev.preventDefault();
@@ -233,6 +233,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           actionTarget={pic.groupId ?? ''}
                           required={!!pic.text || !!groupedPics?.filter((gPic) => gPic.text).length}
                           disabled={previewDisabled || disabled}
+                          readonly={readonly}
                           error={
                             pic.text || groupedPics?.filter((gPic) => gPic.text).length
                               ? validationErrors?.find((error) => error.id === 'pictureText-' + pic.groupId)?.msg
@@ -286,7 +287,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
               </IonRow>
             </IonGrid>
           )}
-          {!mainPictures?.length && !isLoading && !readonly && <PrintInfo orientation={orientation} isFull />}
+          {!mainPictures?.length && !isLoading && <PrintInfo orientation={orientation} isFull />}
         </IonCol>
       </IonRow>
     </IonGrid>

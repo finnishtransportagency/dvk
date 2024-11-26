@@ -68,22 +68,20 @@ export const PrintImages: React.FC<PrintImageProps> = ({
       <IonText>
         <h4>
           {t('fairwaycard.print-images-portrait')}{' '}
-          {readonly || (
-            <IonButton
-              slot="end"
-              fill="clear"
-              className="icon-only xx-small"
-              onClick={(ev) => {
-                ev.preventDefault();
-                setShowOrientationHelp(Orientation.Portrait);
-              }}
-              title={t('general.show-help') ?? ''}
-              aria-label={t('general.show-help') ?? ''}
-              disabled={!fairwayCardInput.id || !savedPicturesPortrait?.length}
-            >
-              <IonIcon icon={helpIcon} />
-            </IonButton>
-          )}
+          <IonButton
+            slot="end"
+            fill="clear"
+            className="icon-only xx-small"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setShowOrientationHelp(Orientation.Portrait);
+            }}
+            title={t('general.show-help') ?? ''}
+            aria-label={t('general.show-help') ?? ''}
+            disabled={readonly || !fairwayCardInput.id || !savedPicturesPortrait?.length}
+          >
+            <IonIcon icon={helpIcon} />
+          </IonButton>
         </h4>
       </IonText>
       <PrintImagesByMode
@@ -103,22 +101,20 @@ export const PrintImages: React.FC<PrintImageProps> = ({
       <IonText>
         <h4>
           {t('fairwaycard.print-images-landscape')}{' '}
-          {readonly || (
-            <IonButton
-              slot="end"
-              fill="clear"
-              className="icon-only xx-small"
-              onClick={(ev) => {
-                ev.preventDefault();
-                setShowOrientationHelp(Orientation.Landscape);
-              }}
-              title={t('general.show-help') ?? ''}
-              aria-label={t('general.show-help') ?? ''}
-              disabled={!fairwayCardInput.id || !savedPicturesLandscape?.length}
-            >
-              <IonIcon icon={helpIcon} />
-            </IonButton>
-          )}
+          <IonButton
+            slot="end"
+            fill="clear"
+            className="icon-only xx-small"
+            onClick={(ev) => {
+              ev.preventDefault();
+              setShowOrientationHelp(Orientation.Landscape);
+            }}
+            title={t('general.show-help') ?? ''}
+            aria-label={t('general.show-help') ?? ''}
+            disabled={readonly || !fairwayCardInput.id || !savedPicturesLandscape?.length}
+          >
+            <IonIcon icon={helpIcon} />
+          </IonButton>
         </h4>
       </IonText>
       <PrintImagesByMode

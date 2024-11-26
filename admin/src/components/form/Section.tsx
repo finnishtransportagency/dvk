@@ -192,17 +192,15 @@ const Section: React.FC<SectionProps> = ({
         );
       })}
 
-      {readonly || (
-        <IonGrid>
-          <IonRow className="ion-justify-content-end">
-            <IonCol size="auto">
-              <IonButton shape="round" onClick={() => addSection()} disabled={disabled}>
-                {t('general.add-section-' + sectionType)}
-              </IonButton>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      )}
+      <IonGrid>
+        <IonRow className="ion-justify-content-end">
+          <IonCol size="auto">
+            <IonButton shape="round" onClick={() => addSection()} disabled={readonly || disabled}>
+              {t('general.add-section-' + sectionType)}
+            </IonButton>
+          </IonCol>
+        </IonRow>
+      </IonGrid>
     </>
   );
 };
