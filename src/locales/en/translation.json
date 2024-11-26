@@ -149,6 +149,7 @@
     "harboursTitle": "Fairway harbours",
     "areasTitle": "Fairway areas",
     "routesTitle": "Pilot routes",
+    "weatherForecastsTitle": "Weather forecasts",
     "information": "Fairway data",
     "liningAndMarking": "Channel alignment and marking",
     "starts": "Starts",
@@ -285,6 +286,11 @@
     "route": "Route",
     "rtz": "Route file in RTZ-format",
     "linkedFairwayCards": "Fairway cards for the pilot route"
+  },
+  "forecast": {
+    "forecastLocation": "Weather and wave forecast location",
+    "updated": "Updated",
+    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
   },
   "faults": {
     "title": "Defective navigation aids",
