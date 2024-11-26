@@ -111,7 +111,9 @@ export type FairwayCardActionTypeSelect =
   | 'group'
   | 'pilotPlaces';
 
-export type ActionType = HarbourActionType | FairwayCardActionType | FairwayCardActionTypeSelect;
+export type EmptyActionTypeSelect = 'empty';
+
+export type ActionType = HarbourActionType | FairwayCardActionType | FairwayCardActionTypeSelect | EmptyActionTypeSelect;
 
 export type SelectOption = {
   id: number | string | boolean;
