@@ -94,7 +94,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
   return (
     <>
       {data && (
-        <IonText>
+        <IonText data-testid="dimensionInfoControl">
           <p>
             <strong>{t('fairwayDimensions')}:</strong>
             <br />
@@ -116,7 +116,7 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
               const totalLength = getFairwayTotalLength(fairway);
               const sizingVessels = getFairwaySizingVessels(fairway);
               return (
-                <span key={uuid}>
+                <span key={uuid} data-testid="dimensionInfo">
                   {numberOfFairways > 1 && (
                     <>
                       {idx > 0 && <br />}

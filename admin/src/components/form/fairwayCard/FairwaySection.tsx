@@ -22,7 +22,7 @@ const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, val
   const { t } = useTranslation();
   return (
     <>
-      <IonText>
+      <IonText data-testid="fairwayInfo">
         <h2>{t('fairwaycard.fairway-info')}</h2>
       </IonText>
       <IonGrid className="formGrid">
