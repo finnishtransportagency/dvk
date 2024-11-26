@@ -111,7 +111,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
   const readonlyAndNotLoading = readonly && !isLoading;
   const inputOrLoading = !readonlyAndNotLoading;
 
-  const stringValue = '' + getSelectedItemsAsText(options, selected, lang, ', ');
+  const stringValue = getSelectedItemsAsText(options, selected, lang, ', ') ?? '';
   return (
     <div className={'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid') + (disabled ? ' disabled' : '')}>
       {readonlyAndNotLoading &&
