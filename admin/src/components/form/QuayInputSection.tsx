@@ -19,9 +19,10 @@ interface QuayInputSectionProps {
   focused?: boolean;
   validationErrors?: ValidationType[];
   disabled?: boolean;
+  readonly?: boolean;
 }
 
-const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updateState, focused, validationErrors, disabled }) => {
+const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updateState, focused, validationErrors, disabled, readonly = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -38,7 +39,8 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
             ? validationErrors?.find((error) => error.id === 'quayName-' + idx)?.msg
             : undefined
         }
-        disabled={disabled}
+        readonly={readonly}
+        disabled={!readonly && disabled}
         focused={focused}
       />
       <TextInputRow
@@ -53,7 +55,8 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
             ? validationErrors?.find((error) => error.id === 'quayExtraInfo-' + idx)?.msg
             : undefined
         }
-        disabled={disabled}
+        readonly={readonly}
+        disabled={!readonly && disabled}
       />
       <IonRow>
         <IonCol sizeMd="4">
@@ -67,7 +70,8 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
             unit="m"
             max={9999.9}
             decimalCount={1}
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
         <IonCol sizeMd="4">
@@ -83,7 +87,8 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
               validationErrors?.find((error) => error.id === 'quayLat-' + idx)?.msg ??
               validationErrors?.find((error) => error.id === 'quayLocation-' + idx)?.msg
             }
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
         <IonCol sizeMd="4">
@@ -99,7 +104,8 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
               validationErrors?.find((error) => error.id === 'quayLon-' + idx)?.msg ??
               validationErrors?.find((error) => error.id === 'quayLocation-' + idx)?.msg
             }
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
       </IonRow>

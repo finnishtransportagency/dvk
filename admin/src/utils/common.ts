@@ -1,10 +1,14 @@
 import { TFunction } from 'i18next';
 import {
+  FairwayCardInput,
   FairwayCardOrHarbor,
+  HarborInput,
   Mareograph,
   Maybe,
   Orientation,
   PictureInput,
+  PilotPlace,
+  PilotPlaceInput,
   SelectedFairwayInput,
   Status,
   TemporaryNotification,
@@ -341,4 +345,35 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
 export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   return fds?.projection;
+}
+
+export function isReadOnly(state: HarborInput | FairwayCardInput) {
+  return [Status.Removed, Status.Public, Status.Archived].includes(state.status);
+}
+
+export function getSelectedItemsAsText(
+  options: SelectOption[] | PilotPlace[] | null,
+  selected: string | number | boolean | string[] | number[] | PilotPlaceInput[] | PictureInput[] | undefined,
+  lang: Lang,
+  valueSeparator: string = '\n'
+) {
+  if (!options || selected === undefined) {
+    return '';
+  }
+  if (typeof selected === 'string' || typeof selected === 'number' || typeof selected === 'boolean') {
+    return options.find((o) => o.id === selected)?.name?.[lang];
+  }
+
+  const selectedValues = selected.map((s) => {
+    return '' + (typeof s === 'string' || typeof s === 'number' ? s : s.id);
+  });
+  const valueStrings = options
+    .filter((o) => {
+      return selectedValues.includes('' + o.id);
+    })
+    .map((o) => {
+      return o?.name ? o.name[lang] : '';
+    });
+
+  return valueStrings.join(valueSeparator);
 }

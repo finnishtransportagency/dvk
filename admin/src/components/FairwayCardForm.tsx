@@ -35,7 +35,7 @@ import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
-import { openPreview } from '../utils/common';
+import { isReadOnly, openPreview } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
@@ -346,6 +346,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     modifier: savedCard?.modifier ?? savedCard?.creator ?? modifier ?? t('general.unknown'),
     creator: savedCard?.creator ?? creator,
   };
+  const readonly = isReadOnly(state);
 
   return (
     <IonPage>
@@ -428,6 +429,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 isLoadingPilotRoutes={isLoadingPilotRoutes}
                 pilotRouteOptions={pilotRouteList}
                 sourceCard={sourceCardId}
+                readonly={readonly}
               />
               <NotificationSection
                 state={state}
@@ -435,23 +437,26 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 sectionType="temporaryNotifications"
                 validationErrors={validationErrors}
+                readonly={readonly}
               />
-              <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} />
-              <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               <RecommendationsSection
                 state={state}
                 updateState={updateState}
                 validationErrors={validationErrors}
                 isLoadingMareographs={isLoadingMareographs}
                 mareographOptions={mareographList?.mareographs}
+                readonly={readonly}
               />
-              <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               <TrafficServiceSection
                 state={state}
                 updateState={updateState}
                 validationErrors={validationErrors}
                 isLoadingPilotPlaces={isLoadingPilotPlaces}
                 pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
+                readonly={readonly}
               />
 
               <Section
@@ -460,7 +465,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 sectionType="vts"
                 validationErrors={validationErrors}
-                disabled={state.status === Status.Removed}
+                disabled={!readonly && state.status === Status.Removed}
+                readonly={readonly}
               />
 
               <Section
@@ -469,7 +475,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 sectionType="tug"
                 validationErrors={validationErrors}
-                disabled={state.status === Status.Removed}
+                disabled={!readonly && state.status === Status.Removed}
+                readonly={readonly}
               />
 
               <IonText>
@@ -483,7 +490,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
               <MapExportTool
                 fairwayCardInput={state}
-                disabled={state.status === Status.Removed}
+                readonly={readonly}
+                disabled={!readonly && state.status === Status.Removed}
                 validationErrors={validationErrors.concat(innerValidationErrors)}
                 setPicture={updateState}
                 fairways={fairwaySelection}

@@ -29,6 +29,7 @@ interface PrintImagesByModeProps {
   validationErrors?: ValidationType[];
   sourceCardId?: string;
   sourceCardVersion?: string;
+  readonly?: boolean;
 }
 
 export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
@@ -36,6 +37,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   setPicture,
   orientation,
   disabled,
+  readonly = false,
   setShowPicture,
   isLoading,
   isProcessingCurLang,
@@ -133,7 +135,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           toggleSequence(pic);
                         }}
                         fill="clear"
-                        disabled={previewDisabled || disabled}
+                        disabled={readonly || previewDisabled || disabled}
                         className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
                         title={t('fairwaycard.toggle-sequence') ?? ''}
                         aria-label={t('fairwaycard.toggle-sequence') ?? ''}
@@ -143,7 +145,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                       <IonButton
                         slot="end"
                         fill="clear"
-                        disabled={previewDisabled || disabled}
+                        disabled={readonly || previewDisabled || disabled}
                         className="icon-only x-small deletePicture"
                         onClick={(ev) => {
                           ev.preventDefault();
@@ -231,6 +233,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           actionTarget={pic.groupId ?? ''}
                           required={!!pic.text || !!groupedPics?.filter((gPic) => gPic.text).length}
                           disabled={previewDisabled || disabled}
+                          readonly={readonly}
                           error={
                             pic.text || groupedPics?.filter((gPic) => gPic.text).length
                               ? validationErrors?.find((error) => error.id === 'pictureText-' + pic.groupId)?.msg

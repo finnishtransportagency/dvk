@@ -62,6 +62,7 @@ interface MapExportToolProps {
   validationErrors?: ValidationType[];
   sourceCardId?: string;
   sourceCardVersion?: string;
+  readonly?: boolean;
 }
 
 const MapExportTool: React.FC<MapExportToolProps> = ({
@@ -71,6 +72,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
   setPicture,
   validationErrors,
   disabled,
+  readonly = false,
   sourceCardId,
   sourceCardVersion,
 }) => {
@@ -326,7 +328,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
               printCurrentMapView={printCurrentMapView}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
-              printDisabled={isLoadingMutation || isMapDisabled}
+              printDisabled={readonly || isLoadingMutation || isMapDisabled}
               fileUploader={fileUploader}
               importExternalImage={importExternalImage}
               setErrors={setPicUploadErrors}
@@ -339,7 +341,8 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
               setPicture={setPicture}
               isLoading={isLoadingMutation}
               isProcessingCurLang={isProcessingCurLang}
-              disabled={disabled}
+              readonly={readonly}
+              disabled={!readonly && disabled}
               validationErrors={validationErrors}
               sourceCardId={sourceCardId}
               sourceCardVersion={sourceCardVersion}
