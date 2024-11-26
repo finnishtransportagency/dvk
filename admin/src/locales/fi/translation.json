@@ -135,6 +135,8 @@
     "description-new-HARBOR": "Voit valita halutessasi olemassa olevan sataman pohjaksi uuden lisäämistä varten.",
     "create-CARD": "Luo väyläkortti",
     "create-HARBOR": "Luo satama",
+    "card-identifier": "Uuden väyläkortin tunniste",
+    "harbor-identifier": "Uuden sataman tunniste",
     "copy-pictures": "Kopioi kuvat aiemmasta versiosta",
     "logout-title": "Olet kirjautumassa ulos",
     "logout-description": "Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella.",

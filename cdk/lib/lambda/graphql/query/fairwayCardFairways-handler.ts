@@ -331,15 +331,16 @@ async function getCircleMap(fairwayIds: number[]) {
   return circleMap;
 }
 
-function getKey(fairwayIds: number[]) {
-  return 'fairways:' + fairwayIds.join(':');
+function getKey(fairwayIds?: number[]) {
+  return 'fairways:' + fairwayIds?.join(':');
 }
 
 export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], FairwayCard> = async (
   event: AppSyncResolverEvent<QueryFairwayCardArgs, FairwayCard>
 ): Promise<Fairway[]> => {
   log.info(`fairwayCardFairways(${event.source.id})`);
-  const fairwayIds = event.source.fairways.map((f) => f.id);
+  // make sure that there's no undefined values in array
+  const fairwayIds = event.source.fairways?.filter((f): f is { id: number } => f.id !== undefined).map((f) => f.id) ?? [];
   log.debug(`fairwayIds: ${fairwayIds}`);
   const key = getKey(fairwayIds);
   const cacheResponseData = await getFromCache(key);
@@ -348,33 +349,39 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardArgs, Fairway[], Fa
     return JSON.parse(cacheResponseData.data);
   } else {
     try {
-      const fairwayMap = new Map<number, Fairway>();
-      event.source.fairways.forEach((f) => {
-        fairwayMap.set(f.id, f);
-      });
-      const lineMap = await getNavigationLineMap(fairwayIds);
-      const areaMap = await getAreaMap(fairwayIds);
-      const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);
-      const prohibitionAreaMap = await getProhibitionAreaMap();
-      const boardLineMap = await getBoardLineMap(fairwayIds);
-      const circleMap = await getCircleMap(fairwayIds);
-      const fairways = (await fetchVATUByFairwayId<VaylaFeature>(fairwayIds, 'vaylat')).data as VaylaFeatureCollection;
-      const response = fairways.features.map((apiFairway) => {
-        const fairway = fairwayMap.get(apiFairway.properties.jnro);
-        log.debug('Fairway: %o', apiFairway);
-        return {
-          ...mapAPIModelToFairway(apiFairway),
-          ...fairway,
-          navigationLines: mapNavigationLines(lineMap?.get(apiFairway.properties.jnro) ?? []),
-          areas: mapAreas(areaMap.get(apiFairway.properties.jnro) ?? []),
-          restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.properties.jnro) ?? []),
-          prohibitionAreas: prohibitionAreaMap.get(apiFairway.properties.jnro) ?? [],
-          boardLines: mapBoardLines(boardLineMap.get(apiFairway.properties.jnro) ?? []),
-          turningCircles: mapTurningCircles(circleMap.get(apiFairway.properties.jnro) ?? []),
-        };
-      });
-      await cacheResponse(key, response);
-      return response;
+      if (fairwayIds.length > 0) {
+        const fairwayMap = new Map<number, Fairway>();
+        event.source.fairways?.forEach((f) => {
+          if (f.id) {
+            fairwayMap.set(f.id, f);
+          }
+        });
+        const lineMap = await getNavigationLineMap(fairwayIds);
+        const areaMap = await getAreaMap(fairwayIds);
+        const restrictionAreaMap = await getRestrictionAreaMap(fairwayIds);
+        const prohibitionAreaMap = await getProhibitionAreaMap();
+        const boardLineMap = await getBoardLineMap(fairwayIds);
+        const circleMap = await getCircleMap(fairwayIds);
+        const fairways = (await fetchVATUByFairwayId<VaylaFeature>(fairwayIds, 'vaylat')).data as VaylaFeatureCollection;
+        const response = fairways.features.map((apiFairway) => {
+          const fairway = fairwayMap.get(apiFairway.properties.jnro);
+          log.debug('Fairway: %o', apiFairway);
+          return {
+            ...mapAPIModelToFairway(apiFairway),
+            ...fairway,
+            navigationLines: mapNavigationLines(lineMap?.get(apiFairway.properties.jnro) ?? []),
+            areas: mapAreas(areaMap.get(apiFairway.properties.jnro) ?? []),
+            restrictionAreas: mapRestrictionAreas(restrictionAreaMap.get(apiFairway.properties.jnro) ?? []),
+            prohibitionAreas: prohibitionAreaMap.get(apiFairway.properties.jnro) ?? [],
+            boardLines: mapBoardLines(boardLineMap.get(apiFairway.properties.jnro) ?? []),
+            turningCircles: mapTurningCircles(circleMap.get(apiFairway.properties.jnro) ?? []),
+          };
+        });
+        await cacheResponse(key, response);
+        return response;
+      } else {
+        return [];
+      }
     } catch (e) {
       log.error('Getting fairways failed: %s', e);
       if (cacheResponseData.data) {

@@ -131,6 +131,8 @@
     "description-new-HARBOR": "[en] Voit valita halutessasi olemassa olevan sataman pohjaksi uuden lisäämistä varten.",
     "create-CARD": "Create fairway card",
     "create-HARBOR": "Create harbour",
+    "card-identifier": "[en] Uuden väyläkortin tunniste",
+    "harbor-identifier": "[en] Uuden sataman tunniste",
     "copy-pictures": "[en] Kopioi kuvat aiemmasta versiosta",
     "logout-title": "You are logging out",
     "logout-description": "[en] Kirjautumalla ulos kirjaudut samalla ulos kaikista palveluista, joihin olet kirjautunut Väyläviraston tunnuksella.",

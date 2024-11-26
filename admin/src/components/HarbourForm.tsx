@@ -15,7 +15,7 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NotificationModal';
-import { mapNewHarbourVersion, mapToHarborInput } from '../utils/dataMapper';
+import { mapNewHarbourVersion, mapQuays, mapToHarborInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
@@ -102,35 +102,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const saveHarbour = useCallback(
     (operation: Operation) => {
-      const mapQuays = (harbour: HarborInput) => {
-        return {
-          ...harbour,
-          quays: harbour.quays?.map((quay) => {
-            return {
-              ...quay,
-              geometry:
-                !quay?.geometry?.lat || !quay?.geometry?.lon
-                  ? ''
-                  : {
-                      lat: quay?.geometry?.lat,
-                      lon: quay?.geometry?.lon,
-                    },
-              length: quay?.length ?? '',
-              sections: quay?.sections?.map((quaySection) => {
-                return {
-                  ...quaySection,
-                  geometry:
-                    !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
-                      ? { lat: '', lon: '' }
-                      : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
-                  depth: quaySection?.depth ?? '',
-                };
-              }),
-            };
-          }),
-        };
-      };
-
       if (operation === Operation.Publish) {
         setState({ ...state, status: Status.Public });
         saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Public, operation }) as HarborInput });
@@ -144,8 +115,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         saveHarbourMutation({ harbor: mapQuays({ ...oldState, status: Status.Removed, operation }) as HarborInput });
       } else if (operation === Operation.Update) {
         saveHarbourMutation({ harbor: mapQuays(state) as HarborInput });
-      } else if (operation === Operation.Create) {
-        saveHarbourMutation({ harbor: mapQuays({ ...state, version: 'v1' }) as HarborInput });
       } else if (operation === Operation.Createversion) {
         setIsSubmittingVersion(true);
         const newVersion = mapNewHarbourVersion(state);
@@ -157,13 +126,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   );
 
   const formValid = (): boolean => {
-    let primaryIdErrorMsg = '';
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
-    if (state.operation === Operation.Create) {
-      if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
-      if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
-    }
-    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg, t(ErrorMessageKeys?.duplicateLocation));
+    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, t(ErrorMessageKeys?.duplicateLocation));
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -295,9 +259,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     setSaveErrorMsg('');
     setSaveErrorItems([]);
     setNotificationOpen(false);
-    if (!saveError && !!savedHarbour && state.operation === Operation.Create) {
-      if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id + '/' + savedHarbour.version });
-    }
   };
 
   const getNotificationTitle = () => {

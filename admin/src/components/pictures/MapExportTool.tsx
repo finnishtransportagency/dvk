@@ -60,22 +60,10 @@ interface MapExportToolProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors?: ValidationType[];
-  sourceCardId?: string;
-  sourceCardVersion?: string;
   readonly?: boolean;
 }
 
-const MapExportTool: React.FC<MapExportToolProps> = ({
-  fairwayCardInput,
-  fairways,
-  harbours,
-  setPicture,
-  validationErrors,
-  disabled,
-  readonly = false,
-  sourceCardId,
-  sourceCardVersion,
-}) => {
+const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors, disabled, readonly }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
   const [fileUploader] = useState<FileUploader>(() => new FileUploader());
@@ -344,8 +332,6 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
               readonly={readonly}
               disabled={!readonly && disabled}
               validationErrors={validationErrors}
-              sourceCardId={sourceCardId}
-              sourceCardVersion={sourceCardVersion}
             />
           </IonCol>
         </IonRow>

@@ -5,6 +5,7 @@ import {
   HarborInput,
   Mareograph,
   Maybe,
+  Operation,
   Orientation,
   PictureInput,
   PilotPlace,
@@ -345,6 +346,66 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
 export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   return fds?.projection;
+}
+
+export function getEmptyFairwayCardInput(id: string) {
+  // empty strings so schema doesnt need to be changed for group and name
+  return {
+    fairwayIds: [],
+    group: ' ',
+    harbors: [],
+    id: id,
+    version: 'v1',
+    n2000HeightSystem: false,
+    name: { fi: ' ', sv: ' ', en: ' ' },
+    additionalInfo: { fi: '', sv: '', en: '' },
+    lineText: { fi: '', sv: '', en: '' },
+    designSpeed: { fi: '', sv: '', en: '' },
+    speedLimit: { fi: '', sv: '', en: '' },
+    anchorage: { fi: '', sv: '', en: '' },
+    navigationCondition: { fi: '', sv: '', en: '' },
+    iceCondition: { fi: '', sv: '', en: '' },
+    windRecommendation: { fi: '', sv: '', en: '' },
+    vesselRecommendation: { fi: '', sv: '', en: '' },
+    visibility: { fi: '', sv: '', en: '' },
+    trafficService: {
+      pilot: {
+        email: '',
+        phoneNumber: '',
+        fax: '',
+        extraInfo: { fi: '', sv: '', en: '' },
+        places: [],
+      },
+      vts: [],
+      tugs: [],
+    },
+    status: Status.Draft,
+    operation: Operation.Create,
+    pictures: [],
+    pilotRoutes: [],
+    temporaryNotifications: [],
+  };
+}
+
+export function getEmptyHarborInput(id: string) {
+  return {
+    geometry: { lat: '', lon: '' },
+    id: id,
+    version: 'v1',
+    n2000HeightSystem: false,
+    name: { fi: ' ', sv: ' ', en: ' ' },
+    extraInfo: { fi: '', sv: '', en: '' },
+    cargo: { fi: '', sv: '', en: '' },
+    harborBasin: { fi: '', sv: '', en: '' },
+    company: { fi: '', sv: '', en: '' },
+    email: '',
+    fax: '',
+    internet: '',
+    phoneNumber: [],
+    quays: [],
+    status: Status.Draft,
+    operation: Operation.Create,
+  };
 }
 
 export function isReadOnly(state: HarborInput | FairwayCardInput) {

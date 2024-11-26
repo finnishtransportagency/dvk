@@ -155,7 +155,11 @@ export function mapIds(ids: number[]) {
 }
 
 export function mapFairwayIds(dbModel: FairwayCardDBModel) {
-  return mapIds(dbModel.fairways.map((f) => f.id));
+  const fairways = dbModel.fairways;
+  if (fairways) {
+    return mapIds(fairways.map((f) => f.id));
+  }
+  return '';
 }
 
 function mapNumberAndMax(text: Maybe<string> | undefined, regexp: RegExp, maxValue: number) {
@@ -306,8 +310,10 @@ export function mapFairwayCardDBModelToGraphqlType(
     publishDetails: dbModel.publishDetails,
   };
 
-  for (const fairway of dbModel.fairways || []) {
-    card.fairways.push(mapFairwayDBModelToFairway(fairway));
+  if (card.fairways) {
+    for (const fairway of dbModel.fairways || []) {
+      card.fairways.push(mapFairwayDBModelToFairway(fairway));
+    }
   }
   return card;
 }

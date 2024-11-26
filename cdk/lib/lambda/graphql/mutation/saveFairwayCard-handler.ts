@@ -45,11 +45,11 @@ export function mapFairwayCardToModel(
   newPictures?: PictureInput[]
 ): FairwayCardDBModel {
   const pictures = newPictures || card.pictures;
-
+  // conditionals because empty string can be saved
   return {
     id: mapId(card.id),
     version: mapVersion(card.version),
-    name: mapMandatoryText(card.name),
+    name: card.name?.fi ? mapMandatoryText(card?.name) : { fi: '', sv: '', en: ''},
     status: card.status,
     n2000HeightSystem: !!card.n2000HeightSystem,
     group: mapString(card.group),
@@ -57,7 +57,7 @@ export function mapFairwayCardToModel(
     creator: old ? old.creator : `${user.firstName} ${user.lastName}`,
     modifier: `${user.firstName} ${user.lastName}`,
     modificationTimestamp: Date.now(),
-    fairways: card.fairwayIds.map((id) => {
+    fairways: card?.fairwayIds?.map((id) => {
       const primary = card.primaryFairwayId?.find((pId) => pId.id === id);
       const secondary = card.secondaryFairwayId?.find((sId) => sId.id === id);
       return {
@@ -130,7 +130,7 @@ export function mapFairwayCardToModel(
       card.pilotRoutes?.map((id) => {
         return { id };
       }) ?? null,
-    fairwayIds: mapIds(card.fairwayIds),
+    fairwayIds: mapIds(card.fairwayIds ?? []),
     expires: card.status === Status.Removed ? getExpires() : null,
     pictures:
       pictures?.map((p) => {
@@ -236,7 +236,7 @@ async function clearCardFromFairwayCache(
     // delete when more sophisticated caching is implemented
     // needed to get updated starting and ending fairways for fairwaycard
     // if linked fairways are for example 1111, 2222, then the key for cache clearing is 'fairways:1111:2222'
-    const fairways = newModel.fairways.map((f: { id: any }) => f.id);
+    const fairways = newModel.fairways?.map((f: { id: any }) => f.id);
     if (fairways) {
       const cacheKey = 'fairways:' + fairways.join(':');
       await deleteCacheObjects([cacheKey]);
