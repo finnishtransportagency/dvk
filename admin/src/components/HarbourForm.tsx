@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
@@ -56,7 +56,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
 
   const queryClient = useQueryClient();
-  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
   const { data: fairwayCardList } = useFairwayCardsQueryData();
   const { data: latestHarbor } = useHarbourLatestByIdQueryData(harbour.id);
   const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
@@ -84,9 +84,14 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     },
   });
 
+  // no need for all versions for checking reserved id's
   const reservedHarbourIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
-    .filter((item) => item.type === ContentType.Harbor)
+    .filter((item) => item.type === ContentType.Harbor && item.version === VERSION.LATEST)
     .flatMap((item) => item.id);
+  // filter out latest and public versions
+  const harbourVersions = fairwaysAndHarbours?.fairwayCardsAndHarbors.filter(
+    (item) => item.type === ContentType.Harbor && item.id === harbour.id && item.version !== VERSION.LATEST && item.version !== VERSION.PUBLIC
+  );
 
   const updateState = (
     value: ValueType,
@@ -337,6 +342,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handleNewVersion={handleNewVersion}
         handlePublish={handlePublish}
         isError={isError}
+        versions={harbourVersions}
       />
 
       <IonContent className="mainContent ion-no-padding" data-testid="harbourEditPage">

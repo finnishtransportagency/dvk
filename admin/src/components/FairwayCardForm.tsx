@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
 import {
   ContentType,
   FairwayCardByIdFragment,
@@ -76,7 +76,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: pilotPlaceList, isLoading: isLoadingPilotPlaces } = usePilotPlacesQueryData();
   const { data: mareographList, isLoading: isLoadingMareographs } = useMareographQueryData();
 
-  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
   // this is for checking the latest version number, so in case creating a new version we get the right url
   const { data: latestFairwayCard } = useFairwayCardLatestByIdQueryData(fairwayCard.id);
 
@@ -114,10 +114,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const harbourSelection = harbourList?.harbors.filter((item) => state.harbors?.includes(item.id));
   const harbourOptions = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem);
 
+  // no need for all versions for checking reserved id's
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
-    .filter((item) => item.type === ContentType.Card)
+    .filter((item) => item.type === ContentType.Card && item.version === VERSION.LATEST)
     .flatMap((item) => item.id);
-
+  // filter out latest and public versions
+  const fairwayCardVersions = fairwaysAndHarbours?.fairwayCardsAndHarbors.filter(
+    (item) => item.type === ContentType.Card && item.id === fairwayCard.id && item.version !== VERSION.LATEST && item.version !== VERSION.PUBLIC
+  );
   const isLoading = isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces || isLoadingMareographs;
 
   const updateState = (
@@ -356,6 +360,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handlePreview={handlePreview}
         handleNewVersion={handleNewVersion}
         handlePublish={handlePublish}
+        versions={fairwayCardVersions}
         isError={isError}
       />
 

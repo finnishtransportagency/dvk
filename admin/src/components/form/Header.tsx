@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { IonButton, IonCol, IonGrid, IonHeader, IonProgressBar, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { FairwayCardInput, HarborInput, Operation, Status } from '../../graphql/generated';
+import { FairwayCardInput, FairwayCardOrHarbor, HarborInput, Operation, Status } from '../../graphql/generated';
 import { hasUnsavedChanges } from '../../utils/formValidations';
 
 interface HeaderProps {
@@ -16,6 +16,7 @@ interface HeaderProps {
   handleNewVersion: () => void;
   handlePublish: () => void;
   isError?: boolean;
+  versions?: FairwayCardOrHarbor[];
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -30,9 +31,10 @@ const Header: React.FC<HeaderProps> = ({
   handleNewVersion,
   handlePublish,
   isError,
+  versions,
 }) => {
   const { t } = useTranslation();
-
+  console.log(versions);
   const unsavedChanges = useMemo(() => {
     return hasUnsavedChanges(oldState, currentState);
   }, [oldState, currentState]);
