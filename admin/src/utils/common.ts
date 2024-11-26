@@ -357,8 +357,6 @@ export function getSelectedItemsAsText(
   lang: Lang,
   valueSeparator: string = '\n'
 ) {
-  console.log(selected);
-  console.log(JSON.stringify(options));
   if (!options || selected === undefined) {
     return '';
   }
