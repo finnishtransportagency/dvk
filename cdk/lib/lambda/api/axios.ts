@@ -41,8 +41,12 @@ export async function fetchTraficomApi<T>(path: string) {
       timeout: getTimeout(),
     })
     .catch(function (error) {
-      const errorObj = error.toJSON();
-      log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      if (error.code === 'ECONNABORTED') {
+        log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch timeout: message=%s`, path, error.message);
+      } else {
+        const errorObj = error.toJSON();
+        log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      }
       throw new Error(getFetchErrorMessage(ExternalAPI.TRAFICOM));
     });
   const duration = Date.now() - start;
