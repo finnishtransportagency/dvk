@@ -16,9 +16,10 @@ interface ContactInfoSectionProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors: ValidationType[];
+  readonly?: boolean;
 }
 
-const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateState, validationErrors }) => {
+const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateState, validationErrors, readonly }) => {
   const { t } = useTranslation();
 
   return (
@@ -33,7 +34,8 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateSt
           updateState={updateState}
           actionType="companyName"
           required={!!state.company?.fi || !!state.company?.sv || !!state.company?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'companyName')?.msg}
         />
         <IonRow>
@@ -44,7 +46,8 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateSt
               setValue={updateState}
               actionType="email"
               inputType="email"
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
             />
           </IonCol>
           <IonCol sizeMd="4">
@@ -56,7 +59,8 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateSt
               helperText={t('general.use-comma-separated-values')}
               inputType="tel"
               multiple
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
             />
           </IonCol>
           <IonCol sizeMd="4">
@@ -66,7 +70,8 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateSt
               setValue={updateState}
               actionType="fax"
               inputType="tel"
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
             />
           </IonCol>
         </IonRow>
@@ -77,7 +82,8 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateSt
               val={state.internet ?? ''}
               setValue={updateState}
               actionType="internet"
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
             />
           </IonCol>
           <IonCol sizeMd="4">
@@ -90,7 +96,8 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateSt
               required
               error={validationErrors.find((error) => error.id === 'lat')?.msg}
               inputType="latitude"
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
             />
           </IonCol>
           <IonCol sizeMd="4">
@@ -103,7 +110,8 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateSt
               required
               error={validationErrors.find((error) => error.id === 'lon')?.msg}
               inputType="longitude"
-              disabled={state.status === Status.Removed}
+              readonly={readonly}
+              disabled={!readonly && state.status === Status.Removed}
             />
           </IonCol>
         </IonRow>

@@ -21,7 +21,7 @@ import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
-import { openPreview } from '../utils/common';
+import { isReadOnly, openPreview } from '../utils/common';
 import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
@@ -280,6 +280,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     creator: savedHarbour?.creator ?? creator,
   };
 
+  const readonly = isReadOnly(state);
+
   return (
     <IonPage>
       <PublishModal
@@ -351,16 +353,17 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
             />
             <form ref={formRef}>
               <PublishDetailsSection state={state} />
-              <MainSection state={state} updateState={updateState} validationErrors={validationErrors} />
-              <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} />
-              <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <MainSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               <Section
                 title={t('harbour.quay-heading')}
                 sections={state.quays as QuayInput[]}
                 updateState={updateState}
                 sectionType="quay"
                 validationErrors={validationErrors}
-                disabled={state.status === Status.Removed}
+                readonly={readonly}
+                disabled={!readonly && state.status === Status.Removed}
               />
             </form>
           </>

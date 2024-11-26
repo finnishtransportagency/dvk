@@ -19,9 +19,10 @@ interface VtsInputSectionProps {
   focused?: boolean;
   validationErrors?: ValidationType[];
   disabled?: boolean;
+  readonly?: boolean;
 }
 
-const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateState, focused, validationErrors, disabled }) => {
+const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateState, focused, validationErrors, disabled, readonly = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -38,7 +39,8 @@ const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateS
             ? validationErrors?.find((error) => error.id === 'vtsName-' + idx)?.msg
             : undefined
         }
-        disabled={disabled}
+        readonly={readonly}
+        disabled={!readonly && disabled}
         focused={focused}
       />
       <IonRow>
@@ -52,7 +54,8 @@ const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateS
             inputType="email"
             helperText={t('general.use-comma-separated-values')}
             multiple
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
         <IonCol sizeMd="6">
@@ -63,7 +66,8 @@ const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateS
             actionType="vtsPhone"
             actionTarget={idx}
             inputType="tel"
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
       </IonRow>

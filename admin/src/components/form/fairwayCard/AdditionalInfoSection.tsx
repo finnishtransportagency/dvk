@@ -17,9 +17,10 @@ interface AdditionalInfoSectionProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors: ValidationType[];
+  readonly?: boolean;
 }
 
-const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, updateState, validationErrors }) => {
+const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, updateState, validationErrors, readonly = false }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
   const modalText = `${t('fairwaycard.fairway-additional-info-notification-body') ?? ''}\n${t('general.markdown.description')}`;
@@ -51,7 +52,8 @@ const AdditionalInfoSection: React.FC<AdditionalInfoSectionProps> = ({ state, up
           updateState={updateState}
           actionType="additionalInfo"
           required={!!state.additionalInfo?.fi || !!state.additionalInfo?.sv || !!state.additionalInfo?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'additionalInfo')?.msg}
         />
       </IonGrid>

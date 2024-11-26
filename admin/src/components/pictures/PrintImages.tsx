@@ -22,6 +22,7 @@ interface PrintImageProps {
   isLoading?: boolean;
   validationErrors?: ValidationType[];
   isProcessingCurLang?: boolean;
+  readonly?: boolean;
 }
 
 export const PrintImages: React.FC<PrintImageProps> = ({
@@ -29,6 +30,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
   setPicture,
   isLoading,
   disabled,
+  readonly = false,
   validationErrors,
   isProcessingCurLang,
 }) => {
@@ -64,7 +66,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
             }}
             title={t('general.show-help') ?? ''}
             aria-label={t('general.show-help') ?? ''}
-            disabled={!fairwayCardInput.id || !savedPicturesPortrait?.length}
+            disabled={readonly || !fairwayCardInput.id || !savedPicturesPortrait?.length}
           >
             <IonIcon icon={helpIcon} />
           </IonButton>
@@ -74,7 +76,8 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         fairwayCardInput={fairwayCardInput}
         setPicture={setPicture}
         orientation={Orientation.Portrait}
-        disabled={disabled}
+        readonly={readonly}
+        disabled={readonly || disabled}
         setShowPicture={setShowPicture}
         isLoading={dvkMap.getOrientationType() === Orientation.Portrait && isLoading}
         isProcessingCurLang={isProcessingCurLang}
@@ -94,7 +97,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
             }}
             title={t('general.show-help') ?? ''}
             aria-label={t('general.show-help') ?? ''}
-            disabled={!fairwayCardInput.id || !savedPicturesLandscape?.length}
+            disabled={readonly || !fairwayCardInput.id || !savedPicturesLandscape?.length}
           >
             <IonIcon icon={helpIcon} />
           </IonButton>
@@ -104,7 +107,8 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         fairwayCardInput={fairwayCardInput}
         setPicture={setPicture}
         orientation={Orientation.Landscape}
-        disabled={disabled}
+        readonly={readonly}
+        disabled={readonly || disabled}
         setShowPicture={setShowPicture}
         isLoading={dvkMap.getOrientationType() === Orientation.Landscape && isLoading}
         isProcessingCurLang={isProcessingCurLang}

@@ -21,6 +21,7 @@ interface SectionInputSectionProps {
   focused?: boolean;
   validationErrors?: ValidationType[];
   disabled?: boolean;
+  readonly?: boolean;
   actionOuterTarget?: string | number;
 }
 
@@ -33,6 +34,7 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
   focused,
   validationErrors,
   disabled,
+  readonly = false,
   actionOuterTarget,
 }) => {
   const { t } = useTranslation();
@@ -48,7 +50,8 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
             actionType="sectionName"
             actionTarget={idx}
             actionOuterTarget={actionOuterTarget}
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
             focused={focused}
             infoTitle={t('modal.help-title-section')}
             infoDescription={t('modal.help-description-section')}
@@ -66,7 +69,8 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
             unit="m"
             max={999.99}
             decimalCount={2}
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
         <IonCol>
@@ -84,7 +88,8 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
                 ? validationErrors?.find((error) => error.id === 'sectionGeometry-' + actionOuterTarget + '-' + idx)?.msg
                 : undefined) ?? validationErrors?.find((error) => error.id === 'sectionLocation-' + actionOuterTarget + '-' + idx)?.msg
             }
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
         <IonCol>
@@ -102,7 +107,8 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
                 ? validationErrors?.find((error) => error.id === 'sectionGeometry-' + actionOuterTarget + '-' + idx)?.msg
                 : undefined) ?? validationErrors?.find((error) => error.id === 'sectionLocation-' + actionOuterTarget + '-' + idx)?.msg
             }
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
         <IonCol size="auto" className="ion-align-self-center">
@@ -112,7 +118,7 @@ const SectionInputSection: React.FC<SectionInputSectionProps> = ({
             onClick={() => deleteSection(idx)}
             title={t('general.delete') ?? ''}
             aria-label={t('general.delete') ?? ''}
-            disabled={disabled}
+            disabled={readonly || disabled}
           >
             <BinIcon />
           </IonButton>
