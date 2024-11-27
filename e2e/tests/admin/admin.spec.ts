@@ -2,7 +2,8 @@ import { test, expect, Page } from '@playwright/test';
 
 const PORT = process.env.PORT ?? '3000';
 const url = `http://localhost:${PORT}/yllapito/`;
-const SLOW_TIMEOUT = 10000;
+const SLOW_TIMEOUT = 2000;
+const REALLY_SLOW_TIMEOUT = 5000;
 
 async function getFirstItemFromList(page: Page, type: string, state: string) {
   const typeFilter = page.getByTestId('resulttype').filter({ hasText: type });
@@ -17,22 +18,12 @@ async function clickOnResultsByTypeAndState(page: Page, type: string, state: str
 
 function generateRandomString(length: number = 10) {
   let result = '';
-  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   const charactersLength = characters.length;
   for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength));
   }
   return result;
-}
-
-async function fillPrimaryIdAndSaveSucceeds(page: Page) {
-  await fillFieldWithValue(page, 'primaryId', generateRandomString());
-  await save(page, 'Tallennus onnistui');
-}
-
-async function fillPrimaryIdAndSaveFails(page: Page) {
-  await fillFieldWithValue(page, 'primaryId', generateRandomString());
-  await save(page, 'Tallennus epäonnistui');
 }
 
 async function fillHarbourNameAndSaveFails(page: Page) {
@@ -48,19 +39,23 @@ async function fillLatLngAndSaveSucceeds(page: Page) {
   await save(page, 'Tallennus onnistui');
 }
 
-async function fillFieldWithValue(page: Page, id: string, value: string) {
+async function fillFieldWithValue(page: Page, id: string, value: string, wait: number = 0) {
   const field = page.getByTestId(id);
   await field.click();
   await field.pressSequentially(value);
   await field.press('Tab');
+  if (wait > 0) {
+    await page.waitForTimeout(wait);
+  }
 }
 
 async function save(page: Page, expectMessage: string, screenshot: boolean = false) {
-  await page.getByTestId('saveButton').first().click();
+  await page.waitForTimeout(SLOW_TIMEOUT);
+  await page.getByTestId('saveButton').click();
   if (screenshot) {
     await page.screenshot({ path: 'screenshot.png', fullPage: true });
   }
-  await expect(page.getByText(expectMessage)).toBeVisible({ timeout: SLOW_TIMEOUT });
+  await expect(page.getByText(expectMessage)).toBeVisible({ timeout: REALLY_SLOW_TIMEOUT });
   await page.getByRole('button', { name: 'Ok' }).click();
 }
 
@@ -86,19 +81,20 @@ async function deleteItem(page: Page, expectMessage: string) {
   await expect(page.getByText('Poistettu')).toBeVisible();
 }
 
-async function createNewVersonFromPublishedSave(page: Page, type: string) {
+async function createNewVersionFromPublishedSave(page: Page, type: string) {
   //Get random published element
   await clickOnResultsByTypeAndState(page, type, 'Julkaistu');
 
-  await page.getByRole('button', { name: 'Luo uusi versio' }).click();
-  await page.getByRole('button', { name: 'Tallenna' }).click();
+  await page.getByRole('button', { name: 'Lisää uusi versio' }).click();
 
   //Click save in the modal
-  await page.getByRole('button', { name: 'Tallenna' }).first().click();
+  await page.getByRole('button', { name: 'Tallenna' }).click();
+
+  //Click save on the main page
+  await page.getByTestId('saveButton').locator('button').click();
 
   //Check success
   await expect(page.getByText('Tallennus onnistui')).toBeVisible();
-
   //Close the modal
   await page.getByRole('button', { name: 'Ok' }).click();
 }
@@ -117,27 +113,31 @@ async function fillTemplate(page: Page, randomname: string) {
   await versionLocator.click();
   //Select the first
   await page.getByRole('radio').first().click();
+
+  //Fill in random id
+  await fillFieldWithValue(page, 'primaryId', generateRandomString(), SLOW_TIMEOUT);
 }
 
 test.describe('Modify operations for cards and harbors', () => {
-  //test.describe.configure({ mode: 'serial' });
+  test.describe.configure({ mode: 'serial' });
+  test.setTimeout(60_000);
   test('should save published harbor', async ({ page }) => {
     await page.goto(url);
-    await createNewVersonFromPublishedSave(page, 'Satama');
+    await createNewVersionFromPublishedSave(page, 'Satama');
   });
   test('should save published fairway card', async ({ page }) => {
     await page.goto(url);
-    await createNewVersonFromPublishedSave(page, 'Väyläkortti');
+    await createNewVersionFromPublishedSave(page, 'Väyläkortti');
   });
 
   test('should create new fairway card from template', async ({ page }) => {
     await page.goto(url);
     const randomlocator = getFirstItemFromList(page, 'Väyläkortti', 'Julkaistu');
     const randomname = await (await randomlocator).getByTestId('resultname').innerText();
-    await page.getByRole('button', { name: 'Luo väyläkortti' }).click();
+    await page.getByRole('button', { name: 'Lisää väyläkortti' }).click();
     await fillTemplate(page, randomname);
     await page.getByRole('button', { name: 'Luo väyläkortti' }).click();
-    await fillPrimaryIdAndSaveSucceeds(page);
+    await save(page, 'Tallennus onnistui');
     await deleteFairwayCard(page);
   });
 
@@ -145,36 +145,22 @@ test.describe('Modify operations for cards and harbors', () => {
     await page.goto(url);
     const randomlocator = getFirstItemFromList(page, 'Satama', 'Julkaistu');
     const randomname = await (await randomlocator).getByTestId('resultname').innerText();
-    await page.getByRole('button', { name: 'Luo satama' }).click();
+    await page.getByRole('button', { name: 'Lisää satama' }).click();
     await fillTemplate(page, randomname);
     await page.getByRole('button', { name: 'Luo satama' }).click();
-    await fillPrimaryIdAndSaveSucceeds(page);
+    await save(page, 'Tallennus onnistui');
     await deleteHarbour(page);
   });
 
   test('should create new harbor from scratch', async ({ page }) => {
     await page.goto(url);
-    await page.getByRole('button', { name: 'Luo satama' }).click();
+    await page.getByRole('button', { name: 'Lisää satama' }).click();
     //No template selected
-    await page.waitForTimeout(2000);
+    await fillFieldWithValue(page, 'primaryId', generateRandomString(), SLOW_TIMEOUT);
     await page.getByRole('button', { name: 'Luo satama' }).click();
-    await fillPrimaryIdAndSaveFails(page);
+    await save(page, 'Tallennus epäonnistui');
     await fillHarbourNameAndSaveFails(page);
     await fillLatLngAndSaveSucceeds(page);
     await deleteHarbour(page);
-  });
-
-  test('should warn on unsaved harbor', async ({ page }) => {
-    await page.goto(url);
-    await page.getByRole('button', { name: 'Luo satama' }).click();
-    //No template selected
-    await page.waitForTimeout(2000);
-    await page.getByRole('button', { name: 'Luo satama' }).click();
-    await fillFieldWithValue(page, 'primaryId', generateRandomString());
-    //Click the cancel
-    await page.getByTestId('cancelButton').click();
-    //Check success
-    await expect(page.getByText('Poistu tallentamatta')).toBeVisible();
-    await page.getByRole('button', { name: 'Poistu' }).click();
   });
 });

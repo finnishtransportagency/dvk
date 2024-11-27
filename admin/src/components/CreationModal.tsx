@@ -297,6 +297,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               pattern={'[a-z]+[a-z\\d]*'}
               required
               value={identifier}
+              data-testid="primaryId"
             />
           </IonCol>
         </IonRow>
