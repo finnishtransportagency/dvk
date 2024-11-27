@@ -20,9 +20,19 @@ interface TugInputSectionProps {
   focused?: boolean;
   validationErrors?: ValidationType[];
   disabled?: boolean;
+  readonly?: boolean;
 }
 
-const TugInputSection: React.FC<TugInputSectionProps> = ({ className, section, idx, updateState, focused, validationErrors, disabled }) => {
+const TugInputSection: React.FC<TugInputSectionProps> = ({
+  className,
+  section,
+  idx,
+  updateState,
+  focused,
+  validationErrors,
+  disabled,
+  readonly = false,
+}) => {
   const { t } = useTranslation();
 
   return (
@@ -39,7 +49,8 @@ const TugInputSection: React.FC<TugInputSectionProps> = ({ className, section, i
             ? validationErrors?.find((error) => error.id === 'tugName-' + idx)?.msg
             : undefined
         }
-        disabled={disabled}
+        readonly={readonly}
+        disabled={!readonly && disabled}
         focused={focused}
       />
       <IonRow>
@@ -51,7 +62,8 @@ const TugInputSection: React.FC<TugInputSectionProps> = ({ className, section, i
             actionType="tugEmail"
             actionTarget={idx}
             inputType="email"
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
         <IonCol sizeMd="4">
@@ -64,7 +76,8 @@ const TugInputSection: React.FC<TugInputSectionProps> = ({ className, section, i
             helperText={t('general.use-comma-separated-values')}
             inputType="tel"
             multiple
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
         <IonCol sizeMd="4">
@@ -75,7 +88,8 @@ const TugInputSection: React.FC<TugInputSectionProps> = ({ className, section, i
             actionType="tugFax"
             actionTarget={idx}
             inputType="tel"
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
       </IonRow>

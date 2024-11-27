@@ -15,14 +15,14 @@ interface FairwaySectionProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors: ValidationType[];
+  readonly?: boolean;
 }
 
-const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, validationErrors }) => {
+const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, validationErrors, readonly = false }) => {
   const { t } = useTranslation();
-
   return (
     <>
-      <IonText>
+      <IonText data-testid="fairwayInfo">
         <h2>{t('fairwaycard.fairway-info')}</h2>
       </IonText>
       <IonGrid className="formGrid">
@@ -32,7 +32,8 @@ const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, val
           updateState={updateState}
           actionType="line"
           required={!!state.lineText?.fi || !!state.lineText?.sv || !!state.lineText?.en}
-          disabled={state.status === Status.Removed}
+          disabled={!readonly && state.status === Status.Removed}
+          readonly={readonly}
           error={validationErrors.find((error) => error.id === 'line')?.msg}
           inputType="textarea"
         />
@@ -42,7 +43,8 @@ const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, val
           updateState={updateState}
           actionType="designSpeed"
           required={!!state.designSpeed?.fi || !!state.designSpeed?.sv || !!state.designSpeed?.en}
-          disabled={state.status === Status.Removed}
+          disabled={!readonly && state.status === Status.Removed}
+          readonly={readonly}
           error={validationErrors.find((error) => error.id === 'designSpeed')?.msg}
           inputType="textarea"
         />
@@ -52,7 +54,8 @@ const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, val
           updateState={updateState}
           actionType="speedLimit"
           required={!!state.speedLimit?.fi || !!state.speedLimit?.sv || !!state.speedLimit?.en}
-          disabled={state.status === Status.Removed}
+          disabled={!readonly && state.status === Status.Removed}
+          readonly={readonly}
           error={validationErrors.find((error) => error.id === 'speedLimit')?.msg}
           inputType="textarea"
         />
@@ -62,7 +65,8 @@ const FairwaySection: React.FC<FairwaySectionProps> = ({ state, updateState, val
           updateState={updateState}
           actionType="anchorage"
           required={!!state.anchorage?.fi || !!state.anchorage?.sv || !!state.anchorage?.en}
-          disabled={state.status === Status.Removed}
+          disabled={!readonly && state.status === Status.Removed}
+          readonly={readonly}
           error={validationErrors.find((error) => error.id === 'anchorage')?.msg}
           inputType="textarea"
         />

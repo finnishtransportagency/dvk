@@ -15,9 +15,10 @@ interface HarbourSectionProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors: ValidationType[];
+  readonly: boolean;
 }
 
-const HarbourSection: React.FC<HarbourSectionProps> = ({ state, updateState, validationErrors }) => {
+const HarbourSection: React.FC<HarbourSectionProps> = ({ state, updateState, validationErrors, readonly = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -33,7 +34,8 @@ const HarbourSection: React.FC<HarbourSectionProps> = ({ state, updateState, val
           updateState={updateState}
           actionType="name"
           required
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'name')?.msg}
         />
         <TextInputRow
@@ -42,7 +44,8 @@ const HarbourSection: React.FC<HarbourSectionProps> = ({ state, updateState, val
           updateState={updateState}
           actionType="extraInfo"
           required={!!state.extraInfo?.fi || !!state.extraInfo?.sv || !!state.extraInfo?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'extraInfo')?.msg}
           inputType="textarea"
         />
@@ -52,7 +55,8 @@ const HarbourSection: React.FC<HarbourSectionProps> = ({ state, updateState, val
           updateState={updateState}
           actionType="cargo"
           required={!!state.cargo?.fi || !!state.cargo?.sv || !!state.cargo?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'cargo')?.msg}
           inputType="textarea"
         />
@@ -62,7 +66,8 @@ const HarbourSection: React.FC<HarbourSectionProps> = ({ state, updateState, val
           updateState={updateState}
           actionType="harbourBasin"
           required={!!state.harborBasin?.fi || !!state.harborBasin?.sv || !!state.harborBasin?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'harbourBasin')?.msg}
           inputType="textarea"
         />

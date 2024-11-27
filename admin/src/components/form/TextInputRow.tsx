@@ -14,6 +14,7 @@ interface TextInputRowProps {
   updateState: (value: string, actionType: ActionType) => void;
   required?: boolean;
   disabled?: boolean;
+  readonly?: boolean;
   error?: string;
   helperText?: string | null;
   inputType?: '' | 'input' | 'textarea';
@@ -31,6 +32,7 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
   actionType,
   required,
   disabled,
+  readonly = false,
   error,
   helperText,
   inputType,
@@ -64,7 +66,8 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionType={actionType}
             actionLang="fi"
             required={required}
-            disabled={disabled}
+            disabled={!readonly && disabled}
+            readonly={readonly}
             error={errorTextFi}
             helperText={helperText}
             actionTarget={actionTarget}
@@ -83,7 +86,8 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionLang="fi"
             actionTarget={actionTarget}
             required={required}
-            disabled={disabled}
+            disabled={!readonly && disabled}
+            readonly={readonly}
             error={errorTextFi}
             helperText={helperText}
           />
@@ -99,7 +103,8 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionType={actionType}
             actionLang="sv"
             required={required}
-            disabled={disabled}
+            disabled={!readonly && disabled}
+            readonly={readonly}
             error={errorTextSv}
             helperText={helperText}
             actionTarget={actionTarget}
@@ -117,7 +122,8 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionLang="sv"
             actionTarget={actionTarget}
             required={required}
-            disabled={disabled}
+            disabled={!readonly && disabled}
+            readonly={readonly}
             error={errorTextSv}
             helperText={helperText}
           />
@@ -133,7 +139,8 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionType={actionType}
             actionLang="en"
             required={required}
-            disabled={disabled}
+            disabled={!readonly && disabled}
+            readonly={readonly}
             error={errorTextEn}
             helperText={helperText}
             actionTarget={actionTarget}
@@ -151,7 +158,8 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             actionLang="en"
             actionTarget={actionTarget}
             required={required}
-            disabled={disabled}
+            disabled={!readonly && disabled}
+            readonly={readonly}
             error={errorTextEn}
             helperText={helperText}
           />

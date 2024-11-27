@@ -11,9 +11,10 @@ interface CalendarInputRowProps {
   setValue: (val: string, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number, actionOuterTarget?: string | number) => void;
   validationErrors: ValidationType[];
   disabled?: boolean;
+  readonly?: boolean;
 }
 
-const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setValue, validationErrors, disabled }) => {
+const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setValue, validationErrors, disabled, readonly = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -28,7 +29,8 @@ const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setVa
           helperText={t('general.date-helper-text')}
           actionType="temporaryNotificationStartDate"
           error={validationErrors.find((error) => error.id === 'temporaryNotificationStartDate-' + idx)?.msg}
-          disabled={disabled}
+          readonly={readonly}
+          disabled={!readonly && disabled}
           required={true}
         />
       </IonCol>
@@ -42,7 +44,8 @@ const CalendarInputRow: React.FC<CalendarInputRowProps> = ({ idx, section, setVa
           helperText={t('general.date-helper-text')}
           actionType="temporaryNotificationEndDate"
           error={validationErrors.find((error) => error.id === 'temporaryNotificationEndDate-' + idx)?.msg}
-          disabled={disabled}
+          readonly={readonly}
+          disabled={!readonly && disabled}
         />
       </IonCol>
     </IonRow>

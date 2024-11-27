@@ -6,6 +6,7 @@ import {
   IonFooter,
   IonGrid,
   IonHeader,
+  IonInput,
   IonLabel,
   IonModal,
   IonRow,
@@ -16,21 +17,30 @@ import {
   IonToolbar,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { FairwayCardOrHarbor } from '../graphql/generated';
-import { ItemType, Lang, VERSION } from '../utils/constants';
+import { FairwayCardInput, FairwayCardOrHarbor } from '../graphql/generated';
+import { ErrorMessageKeys, INPUT_MAXLENGTH, ItemType, Lang, VERSION } from '../utils/constants';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import SearchInput from './SearchInput';
 import { useHistory } from 'react-router';
-import { FairwayCardOrHarborGroup, sortItemGroups } from '../utils/common';
+import {
+  FairwayCardOrHarborGroup,
+  getCombinedErrorAndHelperText,
+  getEmptyFairwayCardInput,
+  getEmptyHarborInput,
+  sortItemGroups,
+} from '../utils/common';
+import { useFairwayCardByIdQueryData, useHarbourByIdQueryData, useSaveFairwayCardMutationQuery, useSaveHarborMutationQuery } from '../graphql/api';
+import { mapToFairwayCardInput, mapToHarborInput, mapTrafficService } from '../utils/dataMapper';
 
 interface ModalProps {
   itemList: FairwayCardOrHarbor[];
   itemType: ItemType;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
+  setIsCreating: (isCreating: boolean) => void;
 }
 
-const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIsOpen }) => {
+const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIsOpen, setIsCreating }) => {
   const { t, i18n } = useTranslation();
   const history = useHistory();
 
@@ -38,23 +48,106 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [source, setSource] = useState<FairwayCardOrHarborGroup | undefined>();
   const [version, setVersion] = useState<FairwayCardOrHarbor | undefined>();
+  const [identifier, setIdentifier] = useState<string>('');
+  const [identifierValid, setIdentifierValid] = useState(true);
   const [copyPics, setCopyPics] = useState(false);
 
+  // needed for copying the whole data of but enabled only if there's version selected
+  const { data: fairwayCardData } = useFairwayCardByIdQueryData(version?.id ?? '', version?.version, false, !!version?.id && itemType === 'CARD');
+  const { data: harborData } = useHarbourByIdQueryData(version?.id ?? '', version?.version, false, !!version?.id && itemType === 'HARBOR');
+
+  const reservedIds = itemList.filter((item) => item.type === itemType).map((i) => i.id);
+
   const selectVersionRef = useRef<HTMLIonSelectElement>(null);
+  const identifierInputRef = useRef<HTMLIonInputElement>(null);
+
+  const { mutate: saveFairwayCard, isPending: cardIsPending } = useSaveFairwayCardMutationQuery({
+    onSuccess(data) {
+      setIsCreating(false);
+      modal.current?.dismiss().catch((err) => console.error(err));
+      history.push({
+        pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v1',
+      });
+    },
+    onError: (error: Error) => {
+      setIsCreating(false);
+      console.log(error);
+    },
+  });
+
+  const { mutate: saveHarbor, isPending: harborIsPending } = useSaveHarborMutationQuery({
+    onSuccess(data) {
+      setIsCreating(false);
+      modal.current?.dismiss().catch((err) => console.error(err));
+      history.push({
+        pathname: '/satama/' + data.saveHarbor?.id + '/v1',
+      });
+    },
+    onError: (error: Error) => {
+      setIsCreating(false);
+      console.log(error);
+    },
+  });
 
   const focusVersionSelect = () => {
     selectVersionRef.current?.click();
   };
 
+  const focusIdentifierInput = () => {
+    identifierInputRef.current?.setFocus().catch((err) => {
+      console.error(err.message);
+    });
+  };
+
   const createNewItem = () => {
-    modal.current?.dismiss().catch((err) => console.error(err));
-    if (itemType === 'CARD') history.push({ pathname: '/vaylakortti/', state: { origin: version, copyPictures: copyPics, newVersion: false } });
-    if (itemType === 'HARBOR') history.push({ pathname: '/satama/', state: { origin: version, newVersion: false } });
+    setIsCreating(true);
+    if (itemType === 'CARD') {
+      if (version && fairwayCardData) {
+        const filledCard = mapTrafficService({
+          ...mapToFairwayCardInput(version.id, fairwayCardData),
+          id: identifier,
+          version: 'v1',
+          pictures: copyPics ? fairwayCardData.fairwayCard?.pictures : [],
+        } as FairwayCardInput);
+        const sourceFairwayCard = fairwayCardData.fairwayCard;
+        if (copyPics && !!sourceFairwayCard?.pictures?.length) {
+          saveFairwayCard({
+            card: filledCard,
+            pictureSourceId: sourceFairwayCard?.id,
+            pictureSourceVersion: sourceFairwayCard?.version,
+          });
+        } else {
+          saveFairwayCard({ card: filledCard });
+        }
+      } else if (!version) {
+        const emptyCard = getEmptyFairwayCardInput(identifier);
+        saveFairwayCard({ card: emptyCard });
+      }
+    }
+    if (itemType === 'HARBOR') {
+      if (version && harborData) {
+        const filledHarbor = {
+          ...mapToHarborInput(true, harborData),
+          id: identifier,
+          version: 'v1',
+        };
+        saveHarbor({ harbor: filledHarbor });
+      } else if (!version) {
+        const emptyHarbor = getEmptyHarborInput(identifier);
+        saveHarbor({ harbor: emptyHarbor });
+      }
+    }
+  };
+
+  const handleInputChange = (event: CustomEvent) => {
+    setIdentifier(event.detail.value);
+    checkIdentifierValidity();
   };
 
   const groupedItemList = useMemo(() => {
     const lang = i18n.language as Lang;
-    const filtered = itemList.filter((item) => item.type === itemType) || [];
+    // filter items that have right type and name's not an empty string (that indicates that it's an empty form)
+    const filtered = itemList.filter((item) => item.type === itemType && item.name[lang]?.trim() !== '') || [];
     const groupedItems: FairwayCardOrHarborGroup[] = [];
     for (const item of filtered) {
       const group = groupedItems.find((g) => g.id === item.id);
@@ -69,6 +162,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const closeModal = () => {
     setIsOpen(false);
+    setIdentifier('');
+    setIdentifierValid(true);
     modal.current?.dismiss().catch((err) => console.error(err));
     setTimeout(() => {
       if (!isDropdownOpen) {
@@ -80,6 +175,30 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const compareOptions = (o1: FairwayCardOrHarbor, o2: FairwayCardOrHarbor) => {
     return o1 && o2 ? o1.id === o2.id && o1.version === o2.version : o1 === o2;
+  };
+
+  const checkIdentifierValidity = () => {
+    identifierInputRef.current
+      ?.getInputElement()
+      .then((textinput) => {
+        if (textinput) {
+          const notInUse = !reservedIds.includes(identifier);
+          setIdentifierValid(notInUse ?? textinput.checkValidity());
+        }
+      })
+      .catch((err) => {
+        console.error(err.message);
+      });
+  };
+
+  const getErrorText = (val?: string) => {
+    if (!identifierValid) {
+      if (reservedIds.includes(identifier)) {
+        return t(ErrorMessageKeys.duplicateId);
+      }
+      return !val?.trim()?.length ? t('general.required-field') : t('general.check-input');
+    }
+    return '';
   };
 
   return (
@@ -97,6 +216,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             className="closeButton"
             title={t('general.close') ?? ''}
             aria-label={t('general.close') ?? ''}
+            disabled={cardIsPending || harborIsPending}
           >
             <CloseIcon />
           </IonButton>
@@ -121,7 +241,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
         <IonRow>
           <IonCol>
             <IonLabel className={`formLabel ion-margin-top${!source ? ' disabled' : ''}`} onClick={() => focusVersionSelect()}>
-              {t('general.version-number')}
+              {t('general.version-number')} {'*'}
             </IonLabel>
             <IonSelect
               ref={selectVersionRef}
@@ -152,8 +272,35 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
             </IonSelect>
           </IonCol>
         </IonRow>
+        <IonRow className="ion-margin-top formGrid">
+          <IonCol>
+            <IonLabel className="formLabel">
+              <IonText onClick={() => focusIdentifierInput()}>
+                {itemType === 'CARD' ? t('modal.card-identifier') : t('modal.harbor-identifier')} {'*'}
+              </IonText>
+            </IonLabel>
+            <IonInput
+              ref={identifierInputRef}
+              className={'formInput' + (identifierValid ? '' : ' invalid')}
+              errorText={getCombinedErrorAndHelperText(t('fairwaycard.primary-id-help-text'), getErrorText(identifier))}
+              fill="outline"
+              helperText={identifierValid ? t('fairwaycard.primary-id-help-text') : ''}
+              maxlength={INPUT_MAXLENGTH}
+              name="primaryId"
+              onIonBlur={() => {
+                checkIdentifierValidity();
+              }}
+              debounce={500}
+              onIonInput={(ev) => handleInputChange(ev)}
+              onIonChange={(ev) => handleInputChange(ev)}
+              pattern={'[a-z]+[a-z\\d]*'}
+              required
+              value={identifier}
+            />
+          </IonCol>
+        </IonRow>
         {itemType === 'CARD' && (
-          <IonRow className="ion-margin-top">
+          <IonRow>
             <IonCol>
               <IonCheckbox labelPlacement="end" disabled={!source || !version} checked={copyPics} onIonChange={(e) => setCopyPics(e.detail.checked)}>
                 {t('modal.copy-pictures')}
@@ -164,10 +311,15 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
       </IonGrid>
       <IonFooter>
         <IonToolbar className="buttonBar">
-          <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert">
+          <IonButton slot="end" onClick={() => closeModal()} shape="round" className="invert" disabled={cardIsPending || harborIsPending}>
             {t('general.cancel')}
           </IonButton>
-          <IonButton slot="end" onClick={() => createNewItem()} shape="round" disabled={source && !version}>
+          <IonButton
+            slot="end"
+            onClick={() => createNewItem()}
+            shape="round"
+            disabled={!identifier || !identifierValid || (source && !version) || cardIsPending || harborIsPending}
+          >
             {t('modal.create-' + itemType)}
           </IonButton>
         </IonToolbar>

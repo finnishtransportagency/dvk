@@ -41,7 +41,7 @@ export const filterFairways = (data: FairwayCardPartsFragment[] | undefined, lan
     data
       ?.filter((card) => {
         const nameMatches = (card.name[lang] ?? '').toString().toLowerCase().indexOf(searchQuery.trim()) > -1;
-        const fairwayMatches = card.fairways.find((ff) => ff.id.toString().includes(searchQuery));
+        const fairwayMatches = card.fairways?.find((ff) => ff.id.toString().includes(searchQuery));
 
         return nameMatches || fairwayMatches;
       })

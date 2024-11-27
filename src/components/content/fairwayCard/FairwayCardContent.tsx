@@ -218,7 +218,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             isPending={isPending}
             isFetching={isFetching}
             printDisabled={printDisabled}
-            fairwayIds={fairwayCard.fairways.map((ff) => ff.id)}
+            fairwayIds={fairwayCard.fairways?.map((ff) => ff.id)}
           />
           {fairwayCard?.temporaryNotifications?.map((notification, idx) => {
             if (notification.content && isValidToDisplay(notification.startDate, notification.endDate)) {
@@ -258,12 +258,12 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             <DimensionInfo data={fairwayCard?.fairways} designSpeedText={fairwayCard?.designSpeed} isN2000HeightSystem={isN2000HeightSystem} />
             <IonText>
               <Paragraph title={t('attention')} bodyText={fairwayCard?.attention ?? undefined} />
-              <ProhibitionInfo data={fairwayCard?.fairways} inlineLabel />
-              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} inlineLabel />
+              <ProhibitionInfo data={fairwayCard?.fairways} inlineLabel data-testid="prohibitionAreas" />
+              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} inlineLabel data-testid="speedLimit" />
               <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} inlineLabel />
             </IonText>
 
-            <IonText>
+            <IonText data-testid="navigation">
               <h4>
                 <strong>{t('navigation')}</strong>
               </h4>
@@ -320,7 +320,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <GeneralInfo data={fairwayCard?.fairways} />
               <ProhibitionInfo data={fairwayCard?.fairways} />
               {/* 15 === prohibition area typecode*/}
-              <AreaInfoByType data={fairwayCard?.fairways} typeCode={15} />
+              <AreaInfoByType data={fairwayCard?.fairways ?? []} typeCode={15} />
             </IonText>
             <IonText>
               <h5>{t('speedLimit')}</h5>
@@ -330,7 +330,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               <h5>{t('anchorage')}</h5>
               <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
               {/* 2 === special area typecode*/}
-              <AreaInfoByType data={fairwayCard?.fairways} typeCode={2} />
+              <AreaInfoByType data={fairwayCard?.fairways ?? []} typeCode={2} />
             </IonText>
             <IonText>
               <h5>{t('fairwayAreas')}</h5>

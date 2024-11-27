@@ -22,6 +22,7 @@ interface VhfInputSectionProps {
   focused?: boolean;
   validationErrors?: ValidationType[];
   disabled?: boolean;
+  readonly?: boolean;
   actionOuterTarget?: string | number;
 }
 
@@ -34,6 +35,7 @@ const VhfInputSection: React.FC<VhfInputSectionProps> = ({
   focused,
   validationErrors,
   disabled,
+  readonly = false,
   actionOuterTarget,
 }) => {
   const { t } = useTranslation();
@@ -53,7 +55,8 @@ const VhfInputSection: React.FC<VhfInputSectionProps> = ({
             ? validationErrors?.find((error) => error.id === 'vhfName-' + actionOuterTarget + '-' + idx)?.msg
             : undefined
         }
-        disabled={disabled}
+        readonly={readonly}
+        disabled={!readonly && disabled}
         focused={focused}
       />
       <IonRow className="ion-justify-content-between">
@@ -70,7 +73,8 @@ const VhfInputSection: React.FC<VhfInputSectionProps> = ({
             inputType="number"
             max={999}
             decimalCount={0}
-            disabled={disabled}
+            readonly={readonly}
+            disabled={!readonly && disabled}
           />
         </IonCol>
         <IonCol size="auto" className="ion-align-self-center">
@@ -80,7 +84,7 @@ const VhfInputSection: React.FC<VhfInputSectionProps> = ({
             onClick={() => deleteSection(idx)}
             title={t('general.delete') ?? ''}
             aria-label={t('general.delete') ?? ''}
-            disabled={disabled}
+            disabled={readonly || disabled}
           >
             <BinIcon />
           </IonButton>

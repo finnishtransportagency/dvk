@@ -26,7 +26,7 @@ async function migrateData(oldTableName: string, newTableName: string, fairwayCa
       console.log('Item skipped...');
       continue;
     }
-    console.log('Migrating item... ' + item?.name.fi);
+    console.log('Migrating item... ' + item?.name?.fi);
     const latestVersionItem = {
       ...item,
       version: 'v0_latest',

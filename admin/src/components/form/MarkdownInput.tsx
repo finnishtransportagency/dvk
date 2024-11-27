@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import MDEditor, { ICommand, bold, codeEdit, codeLive, codePreview, italic, link } from '@uiw/react-md-editor';
+import MarkdownPreview from '@uiw/react-markdown-preview';
 import rehypeSanitize from 'rehype-sanitize';
 import { PluggableList } from 'unified';
 import { IonLabel } from '@ionic/react';
@@ -19,6 +20,7 @@ interface MarkdownInputProps {
   disabled?: boolean;
   error?: string;
   helperText?: string;
+  readonly?: boolean;
 }
 
 const MarkdownInput: React.FC<MarkdownInputProps> = ({
@@ -30,6 +32,7 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({
   actionTarget,
   required,
   disabled,
+  readonly = false,
   error,
   helperText,
 }) => {
@@ -118,29 +121,35 @@ const MarkdownInput: React.FC<MarkdownInputProps> = ({
 
   return (
     <>
-      <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
+      <IonLabel className={'formLabel' + (!readonly && disabled ? ' disabled' : '')} onClick={() => focusInput()}>
         {label} {required ? '*' : ''}
       </IonLabel>
       <div className="md-editor-container" ref={editorRef}>
-        <MDEditor
-          className={isValid ? '' : 'error'}
-          value={val}
-          onChange={(value) => handleChange(value)}
-          onBlur={() => {
-            checkValidity();
-            setIsTouched(true);
-          }}
-          previewOptions={{
-            rehypePlugins: rehypePlugins,
-          }}
-          textareaProps={{
-            maxLength: maxLength,
-            required: required,
-          }}
-          commands={[boldCommand, italicCommand, linkCommand]}
-          extraCommands={[editViewCommand, liveViewCommand, previewCommand]}
-          defaultTabEnable
-        />
+        {readonly ? (
+          <div className="markdown-preview-container" ref={editorRef}>
+            <MarkdownPreview className="markdown-text" source={val} rehypePlugins={rehypePlugins} />
+          </div>
+        ) : (
+          <MDEditor
+            className={isValid ? '' : 'error'}
+            value={val}
+            onChange={(value) => handleChange(value)}
+            onBlur={() => {
+              checkValidity();
+              setIsTouched(true);
+            }}
+            previewOptions={{
+              rehypePlugins: rehypePlugins,
+            }}
+            textareaProps={{
+              maxLength: maxLength,
+              required: required,
+            }}
+            commands={[boldCommand, italicCommand, linkCommand]}
+            extraCommands={[editViewCommand, liveViewCommand, previewCommand]}
+            defaultTabEnable
+          />
+        )}
         <div className="textarea-helper">
           {!error && isValid && counterText && <div className="counter">{counterText}</div>}
           {!error && isValid && !counterText && helperText && <div className="helper-text">{helperText}</div>}

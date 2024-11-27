@@ -56,6 +56,7 @@ export type PilotageLimitFeatureProperties = {
 
 export type AreaFeatureProperties = {
   id: number;
+  isN2000?: boolean;
   typeCode: number;
   type: string;
   name?: string;
@@ -93,6 +94,7 @@ export type LineFairway = {
 export type LineFeatureProperties = {
   id: number;
   featureType: string;
+  isN2000?: boolean;
   draft?: number;
   depth?: number;
   length?: number;
@@ -279,3 +281,13 @@ export type ForecastFeatureProperties = {
   pilotPlaceId?: number;
   forecastItems: ForecastItem[];
 };
+
+export function isShowN2000HeightSystem(props: AreaFeatureProperties | LineFeatureProperties): boolean {
+  if (props.n2000HeightSystem !== undefined) {
+    return props.n2000HeightSystem;
+  } else if (props.isN2000 !== undefined) {
+    return props.isN2000;
+  } else {
+    return (props.referenceLevel && props.referenceLevel.indexOf('N2000') !== -1) || !!props.n2000depth || !!props.n2000draft;
+  }
+}
