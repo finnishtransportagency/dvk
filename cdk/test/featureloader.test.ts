@@ -500,6 +500,12 @@ const points = {
   ],
 };
 
+const traficomN2000MapAreas = {
+  type: 'FeatureCollection',
+  features: [
+  ]
+};
+
 async function parseResponse(body: string): Promise<FeatureCollection> {
   const response = new Promise<Error | Buffer>((resolve, reject) =>
     gunzip(Buffer.from(body, 'base64'), (err, data) => {
@@ -543,6 +549,9 @@ jest.mock('../lib/lambda/api/axios', () => ({
   fetchTraficomApi: (path: string) => {
     if (throwError) {
       throw new Error('Fetching from Traficom api failed');
+    }
+    if (path.includes('avoin:tuotejako_kaikki')) {
+      return traficomN2000MapAreas;
     }
     return path.includes('PilotBoardingPlace') ? points : vtsLines;
   },

@@ -16,9 +16,10 @@ interface MainSectionProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors: ValidationType[];
+  readonly: boolean;
 }
 
-const MainSection: React.FC<MainSectionProps> = ({ state, updateState, validationErrors }) => {
+const MainSection: React.FC<MainSectionProps> = ({ state, updateState, validationErrors, readonly = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -32,7 +33,8 @@ const MainSection: React.FC<MainSectionProps> = ({ state, updateState, validatio
             actionType="primaryId"
             name="primaryId"
             required
-            disabled={state.operation === Operation.Update}
+            readonly={readonly}
+            disabled={!readonly && state.operation === Operation.Update}
             error={state.operation === Operation.Update ? '' : validationErrors.find((error) => error.id === 'primaryId')?.msg}
             helperText={t('harbour.primary-id-help-text')}
           />
@@ -47,7 +49,8 @@ const MainSection: React.FC<MainSectionProps> = ({ state, updateState, validatio
             ]}
             setSelected={updateState}
             actionType="referenceLevel"
-            disabled={state.status === Status.Removed}
+            readonly={readonly}
+            disabled={!readonly && state.status === Status.Removed}
           />
         </IonCol>
         <IonCol sizeMd="6"></IonCol>

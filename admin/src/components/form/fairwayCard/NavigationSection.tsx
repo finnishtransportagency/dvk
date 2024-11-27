@@ -15,9 +15,10 @@ interface NavigationSectionProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors: ValidationType[];
+  readonly?: boolean;
 }
 
-const NavigationSection: React.FC<NavigationSectionProps> = ({ state, updateState, validationErrors }) => {
+const NavigationSection: React.FC<NavigationSectionProps> = ({ state, updateState, validationErrors, readonly = false }) => {
   const { t } = useTranslation();
 
   return (
@@ -32,7 +33,8 @@ const NavigationSection: React.FC<NavigationSectionProps> = ({ state, updateStat
           updateState={updateState}
           actionType="navigationCondition"
           required={!!state.navigationCondition?.fi || !!state.navigationCondition?.sv || !!state.navigationCondition?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'navigationCondition')?.msg}
           inputType="textarea"
         />
@@ -42,7 +44,8 @@ const NavigationSection: React.FC<NavigationSectionProps> = ({ state, updateStat
           updateState={updateState}
           actionType="iceCondition"
           required={!!state.iceCondition?.fi || !!state.iceCondition?.sv || !!state.iceCondition?.en}
-          disabled={state.status === Status.Removed}
+          readonly={readonly}
+          disabled={!readonly && state.status === Status.Removed}
           error={validationErrors.find((error) => error.id === 'iceCondition')?.msg}
           inputType="textarea"
         />

@@ -146,7 +146,7 @@ class FairwayCardDBModel {
 
   harbors?: Maybe<Harbor[]>;
 
-  fairways: FairwayDBModel[];
+  fairways?: FairwayDBModel[];
 
   expires?: Maybe<number>;
 

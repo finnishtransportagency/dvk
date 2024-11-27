@@ -9,6 +9,7 @@ import {
   IonItem,
   IonLabel,
   IonPage,
+  IonProgressBar,
   IonRow,
   IonSelect,
   IonSelectOption,
@@ -58,6 +59,8 @@ const MainPage: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [sortBy, setSortBy] = useState('name');
   const [sortDescending, setSortDescending] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+
   const searchRef = useRef<HTMLIonInputElement>(null);
 
   const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, itemStatus, sortBy, sortDescending, t);
@@ -141,6 +144,7 @@ const MainPage: React.FC = () => {
   return (
     <IonPage>
       <IonHeader className="ion-no-border" id="mainPageContent">
+        {isCreating && <IonProgressBar type="indeterminate" />}
         <IonGrid className="optionBar">
           <IonRow className="ion-align-items-end">
             <IonCol size="auto">
@@ -364,7 +368,13 @@ const MainPage: React.FC = () => {
             })}
         </IonGrid>
 
-        <CreationModal itemList={data?.fairwayCardsAndHarbors ?? []} itemType={itemType} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <CreationModal
+          itemList={data?.fairwayCardsAndHarbors ?? []}
+          itemType={itemType}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          setIsCreating={setIsCreating}
+        />
       </IonContent>
     </IonPage>
   );

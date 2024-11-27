@@ -42,28 +42,34 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
     },
     n2000HeightSystem: data?.fairwayCard?.n2000HeightSystem ?? false,
     status: sourceCard ? Status.Draft : (data?.fairwayCard?.status ?? Status.Draft),
-    fairwayIds: data?.fairwayCard?.fairways.flatMap((fairway) => fairway.id).sort() ?? [],
+    fairwayIds:
+      data?.fairwayCard?.fairways
+        ?.flatMap((fairway) => fairway.id)
+        .filter((id): id is number => id !== null && id !== undefined)
+        .sort() ?? [],
     harbors: data?.fairwayCard?.harbors?.flatMap((harbor) => harbor.id) ?? [],
     pilotRoutes: data?.fairwayCard?.pilotRoutes?.map((route) => route.id) ?? [],
     primaryFairwayId:
       data?.fairwayCard?.fairways
-        .filter((fairway) => fairway.primary)
+        ?.filter((fairway) => fairway.primary)
         ?.map((fairway) => {
           return {
             id: fairway.id,
             sequenceNumber: fairway.primarySequenceNumber ?? 1,
           };
         })
+        .filter((item): item is { id: number; sequenceNumber: number } => item.id !== null && item.id !== undefined)
         .sort((a, b) => a.sequenceNumber - b.sequenceNumber) ?? [],
     secondaryFairwayId:
       data?.fairwayCard?.fairways
-        .filter((fairway) => fairway.secondary)
+        ?.filter((fairway) => fairway.secondary)
         ?.map((fairway) => {
           return {
             id: fairway.id,
             sequenceNumber: fairway.secondarySequenceNumber ?? 1,
           };
         })
+        .filter((item): item is { id: number; sequenceNumber: number } => item.id !== null && item.id !== undefined)
         .sort((a, b) => a.sequenceNumber - b.sequenceNumber) ?? [],
     additionalInfo: {
       fi: stringValueOrDefault(data?.fairwayCard?.additionalInfo?.fi),
@@ -368,3 +374,47 @@ export function mapNewHarbourVersion(harbour: HarborInput) {
     operation: Operation.Createversion,
   };
 }
+
+export const mapTrafficService = (card: FairwayCardInput) => {
+  return {
+    ...card,
+    trafficService: {
+      ...card.trafficService,
+      pilot: {
+        ...card.trafficService?.pilot,
+        places: card.trafficService?.pilot?.places?.map((place) => {
+          return { id: place.id, pilotJourney: place.pilotJourney };
+        }),
+      },
+    },
+  };
+};
+
+export const mapQuays = (harbour: HarborInput) => {
+  return {
+    ...harbour,
+    quays: harbour.quays?.map((quay) => {
+      return {
+        ...quay,
+        geometry:
+          !quay?.geometry?.lat || !quay?.geometry?.lon
+            ? ''
+            : {
+                lat: quay?.geometry?.lat,
+                lon: quay?.geometry?.lon,
+              },
+        length: quay?.length ?? '',
+        sections: quay?.sections?.map((quaySection) => {
+          return {
+            ...quaySection,
+            geometry:
+              !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
+                ? { lat: '', lon: '' }
+                : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
+            depth: quaySection?.depth ?? '',
+          };
+        }),
+      };
+    }),
+  };
+};

@@ -1,7 +1,9 @@
-import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Point } from 'geojson';
+import { Feature, FeatureCollection, GeoJsonProperties, Geometry, MultiPolygon, Point, Polygon } from 'geojson';
 import { roundGeometry } from '../util';
 import { PilotPlace } from '../../../graphql/generated';
 import { fetchTraficomApi } from './axios';
+import { union as turf_union } from '@turf/union';
+import * as turf_helpers from '@turf/helpers';
 
 function flattenCoordinates(row: Feature<Geometry, GeoJsonProperties>) {
   if ('coordinates' in row.geometry) {
@@ -85,4 +87,31 @@ export async function fetchProhibitionAreas(): Promise<Feature<Geometry, GeoJson
       },
     };
   });
+}
+
+export async function fetchN2000MapAreas(): Promise<Polygon | MultiPolygon | undefined> {
+  const path =
+    'trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=avoin:tuotejako_kaikki&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4258&cql_filter=IS_N2000=1';
+  let data = undefined;
+  try {
+    data = await fetchTraficomApi<FeatureCollection>(path);
+  } catch(error) {
+    return undefined;
+  }
+  const turfAreas: Feature<Polygon>[] = [];
+
+  data.features.forEach((f) => {
+    const feat = {
+      type: 'Feature',
+      geometry: f.geometry,
+      properties: {},
+    }
+    turfAreas.push(feat as Feature<Polygon>);
+  });
+
+  if (turfAreas.length < 1){
+    return undefined;
+  }
+  const union = turf_union(turf_helpers.featureCollection(turfAreas));
+  return union === null ? undefined : union?.geometry;
 }

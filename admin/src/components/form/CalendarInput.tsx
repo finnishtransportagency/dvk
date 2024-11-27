@@ -15,6 +15,7 @@ interface CalendarInputProps {
   helperText?: string;
   error?: string;
   disabled?: boolean;
+  readonly?: boolean;
   required?: boolean;
 }
 
@@ -28,6 +29,7 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
   helperText,
   error,
   disabled,
+  readonly = false,
   required,
 }) => {
   const { t } = useTranslation();
@@ -71,7 +73,8 @@ const CalendarInput: React.FC<CalendarInputProps> = ({
         setModalOpen={setModalOpen}
         helperText={helperText}
         error={error}
-        disabled={disabled}
+        readonly={readonly}
+        disabled={!readonly && disabled}
         required={required}
         inputType="date"
         infoTitle={id.includes('startDate') ? t('modal.temporary-notification-in-effect-title') : ''}

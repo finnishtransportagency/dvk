@@ -17,9 +17,10 @@ interface NotificationInputProps {
   ) => void;
   state: FairwayCardInput;
   validationErrors: ValidationType[];
+  readonly?: boolean;
 }
 
-const NotificationInput: React.FC<NotificationInputProps> = ({ idx, section, updateState, state, validationErrors }) => {
+const NotificationInput: React.FC<NotificationInputProps> = ({ idx, section, updateState, state, validationErrors, readonly = false }) => {
   return (
     <IonGrid className="formGrid">
       <MarkdownInputRow
@@ -29,7 +30,8 @@ const NotificationInput: React.FC<NotificationInputProps> = ({ idx, section, upd
         actionType="temporaryNotificationContent"
         actionTarget={idx}
         required={!!section.content?.fi || !!section.content?.sv || !!section.content?.en}
-        disabled={state.status === Status.Removed}
+        readonly={readonly}
+        disabled={!readonly && state.status === Status.Removed}
         error={validationErrors.find((error) => error.id === 'temporaryNotifications')?.msg}
       />
       <CalendarInputRow
@@ -37,7 +39,10 @@ const NotificationInput: React.FC<NotificationInputProps> = ({ idx, section, upd
         section={section}
         setValue={updateState}
         validationErrors={validationErrors}
-        disabled={state.status === Status.Removed || section.content?.fi == '' || section.content?.sv == '' || section.content?.en == ''}
+        readonly={readonly}
+        disabled={
+          !readonly && (state.status === Status.Removed || section.content?.fi == '' || section.content?.sv == '' || section.content?.en == '')
+        }
       />
     </IonGrid>
   );

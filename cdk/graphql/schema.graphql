@@ -245,7 +245,7 @@ type FairwayCard {
   modifier: String
   modificationTimestamp: Float
   fairwayIds: String
-  fairways: [Fairway!]!
+  fairways: [Fairway!]
   additionalInfo: Text
   lineText: Text
   designSpeed: Text
