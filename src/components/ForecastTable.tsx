@@ -75,19 +75,21 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
     return (hours < 10 ? '0' : '') + hours + ':' + (minutes < 10 ? '0' : '') + minutes;
   }
 
+  const leftAlign: string = ' ion-text-begin';
+
   return (
     <IonRow className="ForecastRow">
       <IonCol size="2">{getTimeString(new Date(forecastItem.dateTime))}</IonCol>
-      <IonCol size="3" className={windColClass + ' ion-text-end'}>
+      <IonCol size="3" className={windColClass + leftAlign}>
         {Math.round(forecastItem.windSpeed)} m/s, {Math.round(forecastItem.windDirection)}&deg;
       </IonCol>
-      <IonCol size="2" className={windGustColClass + ' ion-text-end'}>
+      <IonCol size="2" className={windGustColClass + leftAlign}>
         {Math.round(forecastItem.windGust)} m/s
       </IonCol>
-      <IonCol size="3" className={waveColClass + ' ion-text-end'}>
+      <IonCol size="3" className={waveColClass + leftAlign}>
         {(Math.round(forecastItem.waveHeight * 10) / 10).toFixed(1)} m, {Math.round(forecastItem.waveDirection)}&deg;
       </IonCol>
-      <IonCol size="2" className={visibilityColClass + ' ion-text-end'}>
+      <IonCol size="2" className={visibilityColClass + leftAlign}>
         {(Math.round(forecastItem.visibility * 10) / 10).toFixed(1)} km
       </IonCol>
     </IonRow>
