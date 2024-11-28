@@ -39,7 +39,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   let description = '';
   let title = '';
 
-  if (confirmationType === 'cancel') {
+  if (confirmationType === 'cancel' || confirmationType === 'changeVersion') {
     buttonTitle = t('general.leave');
     title = t(`modal.cancel-${saveType}-title`);
     description = t(`modal.cancel-${saveType}-description`);

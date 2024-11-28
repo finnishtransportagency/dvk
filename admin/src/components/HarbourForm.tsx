@@ -25,6 +25,7 @@ import { isReadOnly, openPreview } from '../utils/common';
 import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
+import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 
 interface FormProps {
   harbour: HarborInput;
@@ -54,6 +55,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
+  // if confirmation modal comes up because of unsaved changes when changing version, handleConfirmationSubmit gets the value from this
+  const [versionToMoveTo, setVersionToMoveTo] = useState('');
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
@@ -239,6 +242,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         return saveHarbour(Operation.Remove);
       case 'version':
         return saveHarbour(Operation.Createversion);
+      case 'changeVersion':
+        return history.push({ pathname: '/satama/' + state.id + '/' + versionToMoveTo });
       default:
         return;
     }
@@ -256,6 +261,16 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       return modified ? t('general.datetimeFormat', { val: modified }) : '-';
     } else {
       return created ? t('general.datetimeFormat', { val: created }) : '-';
+    }
+  };
+
+  const handleVersionChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
+    const version = event.detail.value;
+    setVersionToMoveTo(version as string);
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('changeVersion');
+    } else {
+      history.push({ pathname: '/satama/' + state.id + '/' + version });
     }
   };
 
@@ -341,6 +356,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handlePreview={handlePreview}
         handleNewVersion={handleNewVersion}
         handlePublish={handlePublish}
+        handleVersionChange={handleVersionChange}
         isError={isError}
         versions={harbourVersions}
       />

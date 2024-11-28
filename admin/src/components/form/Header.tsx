@@ -3,6 +3,8 @@ import { IonButton, IonCol, IonGrid, IonHeader, IonProgressBar, IonRow, IonSelec
 import { useTranslation } from 'react-i18next';
 import { FairwayCardInput, FairwayCardOrHarbor, HarborInput, Operation, Status } from '../../graphql/generated';
 import { hasUnsavedChanges } from '../../utils/formValidations';
+import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core';
+import { ValueType } from '../../utils/constants';
 
 interface HeaderProps {
   currentState: FairwayCardInput | HarborInput;
@@ -15,6 +17,7 @@ interface HeaderProps {
   handlePreview: () => void;
   handleNewVersion: () => void;
   handlePublish: () => void;
+  handleVersionChange: (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => void;
   isError?: boolean;
   versions?: FairwayCardOrHarbor[];
 }
@@ -30,6 +33,7 @@ const Header: React.FC<HeaderProps> = ({
   handlePreview,
   handleNewVersion,
   handlePublish,
+  handleVersionChange,
   isError,
   versions,
 }) => {
@@ -38,6 +42,10 @@ const Header: React.FC<HeaderProps> = ({
   const unsavedChanges = useMemo(() => {
     return hasUnsavedChanges(oldState, currentState);
   }, [oldState, currentState]);
+
+  const getVersionToString = (version: FairwayCardOrHarbor) => {
+    return version.version.slice(1) + ' - ' + t('general.item-status-' + version.status);
+  };
 
   const sortedVersions = versions?.sort((a, b) => Number(b.version.slice(1)) - Number(a.version.slice(1)));
 
@@ -50,15 +58,19 @@ const Header: React.FC<HeaderProps> = ({
           <IonCol className="align-right" />
           <IonCol size="1.5">
             <IonSelect
+              disabled={isError || isLoading}
               className="selectInput"
               interface="popover"
               interfaceOptions={{ size: 'cover', className: 'multiSelect' }}
               labelPlacement="stacked"
+              value={currentState.version}
+              onIonChange={(ev) => handleVersionChange(ev)}
+              fill="outline"
             >
               {sortedVersions?.map((v) => {
                 return (
                   <IonSelectOption key={v.version} value={v.version}>
-                    {v.version.slice(1) + ' - ' + t('general.item-status-' + v.status)}
+                    {getVersionToString(v)}
                   </IonSelectOption>
                 );
               })}

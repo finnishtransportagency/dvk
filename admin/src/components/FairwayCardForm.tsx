@@ -42,6 +42,7 @@ import NotificationSection from './form/fairwayCard/NotificationSection';
 import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
+import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -70,6 +71,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
+  // if confirmation modal comes up because of unsaved changing version,, handleConfirmationSubmit gets the value from this
+  const [versionToMoveTo, setVersionToMoveTo] = useState('');
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -269,6 +272,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         return saveCard(Operation.Remove);
       case 'version':
         return saveCard(Operation.Createversion);
+      case 'changeVersion':
+        return history.push({ pathname: '/vaylakortti/' + state.id + '/' + versionToMoveTo });
       default:
         return;
     }
@@ -286,6 +291,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       return modified ? t('general.datetimeFormat', { val: modified }) : '-';
     } else {
       return created ? t('general.datetimeFormat', { val: created }) : '-';
+    }
+  };
+
+  const handleVersionChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
+    const version = event.detail.value;
+    // set in case of confirmation modal
+    setVersionToMoveTo(version as string);
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('changeVersion');
+    } else {
+      return history.push({ pathname: '/vaylakortti/' + state.id + '/' + version });
     }
   };
 
@@ -360,6 +376,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handlePreview={handlePreview}
         handleNewVersion={handleNewVersion}
         handlePublish={handlePublish}
+        handleVersionChange={handleVersionChange}
         versions={fairwayCardVersions}
         isError={isError}
       />
