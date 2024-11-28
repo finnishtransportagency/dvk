@@ -625,11 +625,11 @@
   },
   "feedback": {
     "title": "Respons på tjänsten",
-    "content": "Kerro Digitaalinen Väyläkortti -palvelun kehittäjille, miten palvelun toimintaa voisi kehittää. Huomaathan, että palvelun parantamista koskeviin palautteisiin ei vastata.",
-    "title2": "Minkä arvosanan antaisit palvelulle?",
-    "content2": "Kuinka todennäköisesti suosittelisit palvelua? Asteikolla 1–10, jolloin 10 suosittelisi erittäin todennäköisesti ja 1 suosittelisi erittäin epätodennäköisesti.",
-    "title3": "Miten kehittäisit palvelua paremmaksi?",
-    "content3": "Palautteesi välitetään Digitaalinen Väyläkortti -palvelun kehittäjille palvelun parantamiseksi. Näitä palautteita ei toimiteta väyläkorttien laatijoille tai muille virastojen tai sidosryhmien henkilöille.",
+    "content": "Berätta för utvecklarna av tjänsten Digital farledskort hur tjänsten kan utvecklas. Observera att respons om hur tjänsten kunde förbättras inte besvaras.",
+    "title2": "Vilket betyg skulle du ge tjänsten?",
+    "content2": "Hur sannolikt är det att du skulle rekommendera tjänsten till en vän på skalan 1–10, då 10 är mycket sannolikt och 1 mycket osannolikt?",
+    "title3": "Hur skulle du utveckla tjänsten så att den blir bättre?",
+    "content3": "Din respons förmedlas till utvecklarna av tjänsten Planering av statens trafikleder för att förbättra tjänsten. Denna respons skickas inte till dem som utarbetat planerna eller till andra personer vid ämbetsverken eller i intressentgrupperna.",
     "thank-you": "Tack för din respons!"
   }
 }
