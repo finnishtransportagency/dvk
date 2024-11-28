@@ -93,6 +93,7 @@
     "@turf/nearest-point-on-line": "^7.1.0",
     "@turf/rhumb-bearing": "^7.1.0",
     "@turf/transform-translate": "^7.1.0",
+    "@turf/union": "^7.1.0",
     "@types/aws-lambda": "^8.10.145",
     "@types/geojson": "^7946.0.14",
     "aws-cdk-lib": "^2.166.0",
