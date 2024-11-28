@@ -47,11 +47,17 @@ export const PrintImages: React.FC<PrintImageProps> = ({
   const savedPicturesLandscape = fairwayCardInput.pictures?.filter(
     (pic) => pic.orientation === Orientation.Landscape && (pic.lang === curLang || !pic.lang)
   );
-
   return (
     <>
       <HelpModal orientation={showOrientationHelp} setIsOpen={setShowOrientationHelp} />
-      <ImageModal fairwayCardInput={fairwayCardInput} picture={showPicture} setIsOpen={setShowPicture} setPicture={setPicture} disabled={disabled} />
+      <ImageModal
+        fairwayCardInput={fairwayCardInput}
+        picture={showPicture}
+        setIsOpen={setShowPicture}
+        setPicture={setPicture}
+        disabled={disabled}
+        readonly={readonly}
+      />
 
       <IonText>
         <h4>

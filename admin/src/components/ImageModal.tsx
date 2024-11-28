@@ -35,11 +35,21 @@ interface ModalProps {
     actionOuterTarget?: string | number
   ) => void;
   disabled: boolean;
+  readonly: boolean;
   sourceCardId?: string;
   sourceCardVersion?: string;
 }
 
-const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen, setPicture, disabled, sourceCardId, sourceCardVersion }) => {
+const ImageModal: React.FC<ModalProps> = ({
+  picture,
+  fairwayCardInput,
+  setIsOpen,
+  setPicture,
+  disabled,
+  sourceCardId,
+  sourceCardVersion,
+  readonly = false,
+}) => {
   const { t, i18n } = useTranslation();
   const fi = i18n.getFixedT('fi');
   const sv = i18n.getFixedT('sv');
@@ -105,7 +115,6 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
 
   const cardId = sourceCardId?.length ? sourceCardId : fairwayCardInput.id;
   const cardVersion = sourceCardId?.length ? sourceCardVersion : fairwayCardInput.version;
-
   return (
     <IonModal ref={modal} isOpen={!!picture} className={'image ' + (picture ? picture.orientation : '')} onDidDismiss={() => closeModal()}>
       <IonHeader>
@@ -170,7 +179,7 @@ const ImageModal: React.FC<ModalProps> = ({ picture, fairwayCardInput, setIsOpen
                             {picture.scaleLabel}
                           </div>
                         )}
-                        {!disabled && (
+                        {!readonly && !disabled && (
                           <>
                             <LegendPositionButton
                               position={POSITION.bottomLeft}
