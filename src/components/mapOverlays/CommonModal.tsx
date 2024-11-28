@@ -159,7 +159,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, setIsOpen,
             <IonRange
               id="ratingNumber"
               aria-label="Arvosana-asteikko"
-              min={0}
+              min={1}
               max={10}
               value={rating}
               pin={true}
@@ -177,7 +177,16 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, setIsOpen,
         </IonRow>
         <IonRow>
           <IonCol>
-            <IonTextarea id="feedbackText" fill="outline" autoGrow value={feedback} onIonChange={handleFeedbackChange} data-test-id="feedbackText" />
+            <IonTextarea
+              id="feedbackText"
+              fill="outline"
+              autoGrow
+              value={feedback}
+              onIonChange={handleFeedbackChange}
+              maxlength={2000}
+              counter={true}
+              data-test-id="feedbackText"
+            />
           </IonCol>
         </IonRow>
         <IonRow>
