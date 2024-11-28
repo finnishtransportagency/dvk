@@ -56,7 +56,7 @@ const Header: React.FC<HeaderProps> = ({
         <IonRow className="ion-align-items-end">
           {/* this 'extra' column keeps everything in it's right place */}
           <IonCol className="align-right" />
-          <IonCol size="1.5">
+          <IonCol size="auto" className="formHeaderCol">
             <IonSelect
               disabled={isError || isLoading}
               className="selectInput"
@@ -66,6 +66,7 @@ const Header: React.FC<HeaderProps> = ({
               value={currentState.version}
               onIonChange={(ev) => handleVersionChange(ev)}
               fill="outline"
+              style={{ width: '200px', height: '43px' }}
             >
               {sortedVersions?.map((v) => {
                 return (
@@ -76,8 +77,6 @@ const Header: React.FC<HeaderProps> = ({
               })}
               ;
             </IonSelect>
-          </IonCol>
-          <IonCol size="auto">
             <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
               {t('general.cancel')}
             </IonButton>

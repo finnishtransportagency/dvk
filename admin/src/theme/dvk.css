@@ -728,6 +728,10 @@ ion-grid.optionBar em {
   line-height: 1rem;
 }
 
+ion-grid.optionBar .formHeaderCol {
+  display: flex;
+}
+
 /* Item table / list */
 ion-grid.itemList {
   font-size: 12px;
