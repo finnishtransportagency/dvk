@@ -8,11 +8,12 @@ type ForecastTableProps = {
   forecastItems: ForecastItem[];
   page?: number;
   clear?: boolean;
+  multitable?: boolean;
 };
 
 type ForecastRowProps = {
   forecastItem: ForecastItem;
-  visible: boolean;
+  visible?: boolean;
 };
 
 const timezoneOffsetMinutesToString = (date: Date) => {
@@ -28,7 +29,7 @@ const timezoneOffsetMinutesToString = (date: Date) => {
   }
 };
 
-const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem, visible }) => {
+const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem, visible = true }) => {
   const { t } = useTranslation();
 
   const hide: string = visible ? '' : ' hidden';
@@ -96,7 +97,7 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem, visible })
   );
 };
 
-const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clear = false }) => {
+const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clear = false, multitable = false }) => {
   const { t } = useTranslation();
   const [startIndex, setStartIndex] = useState<number>(0);
   const pageSize = page ?? 8;
@@ -119,6 +120,8 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clea
   };
 
   const gridClassName = 'ForecastGrid' + ((clear ? ' clear' : '') + ' ion-no-padding');
+  const forecastItemsToShow = multitable ? forecastItems.slice(startIndex, startIndex + pageSize) : forecastItems;
+
   return (
     <IonGrid className={gridClassName}>
       <IonRow className="HeaderRow ion-justify-content-between">
@@ -140,12 +143,14 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clea
           {t('forecastTable.tableHeaders.visibility')}
         </IonCol>
       </IonRow>
-      {forecastItems.length > 0 ? (
-        forecastItems.map((item, index, items) => {
-          const isOnThisPage = index >= startIndex && index < startIndex + pageSize;
+
+      {forecastItemsToShow.length > 0 ? (
+        forecastItemsToShow.map((item, index, items) => {
+          const isOnThisPage = multitable || (index >= startIndex && index < startIndex + pageSize);
           const showDateRow =
             isOnThisPage &&
-            ((index === startIndex && new Date(item.dateTime).getDate() === new Date(items[startIndex + pageSize - 1].dateTime).getDate()) ||
+            ((index === (multitable ? 0 : startIndex) &&
+              new Date(item.dateTime).getDate() === new Date(items[(multitable ? 0 : startIndex) + pageSize - 1].dateTime).getDate()) ||
               (index !== 0 && new Date(items[index].dateTime).getDate() !== new Date(items[index - 1].dateTime).getDate()));
           return (
             <div key={item.dateTime}>

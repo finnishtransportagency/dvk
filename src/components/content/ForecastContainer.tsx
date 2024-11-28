@@ -12,6 +12,7 @@ import './Forecast.css';
 
 type ForecastContentProps = {
   forecast: Feature<Geometry>;
+  multicontainer?: boolean;
 };
 
 export type ForecastProperties = {
@@ -19,7 +20,7 @@ export type ForecastProperties = {
   properties: ForecastFeatureProperties;
 };
 
-const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast }) => {
+const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast, multicontainer = false }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { dataUpdatedAt } = useFeatureData('forecast');
@@ -46,7 +47,7 @@ const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast }) => {
       </IonRow>
       <br />
       <IonRow>
-        <ForecastTable forecastItems={properties.forecastItems} page={12} clear={true} />
+        <ForecastTable forecastItems={properties.forecastItems} page={12} clear={true} multitable={multicontainer} />
       </IonRow>
       <br />
     </IonGrid>
