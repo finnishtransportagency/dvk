@@ -12,7 +12,6 @@ import './Forecast.css';
 
 type ForecastContentProps = {
   forecast: Feature<Geometry>;
-  requiresScrolling?: boolean;
 };
 
 export type ForecastProperties = {
@@ -20,7 +19,7 @@ export type ForecastProperties = {
   properties: ForecastFeatureProperties;
 };
 
-const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast, requiresScrolling }) => {
+const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { dataUpdatedAt } = useFeatureData('forecast');
@@ -47,7 +46,7 @@ const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast, requiresS
       </IonRow>
       <br />
       <IonRow>
-        <ForecastTable forecastItems={properties.forecastItems} page={12} clear={true} requiresScrolling={requiresScrolling} />
+        <ForecastTable forecastItems={properties.forecastItems} page={12} clear={true} />
       </IonRow>
       <br />
     </IonGrid>

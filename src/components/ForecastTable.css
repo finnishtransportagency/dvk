@@ -22,12 +22,20 @@
   border-bottom: 1px solid #cccccc;
 }
 
+.ForecastGrid .DateRow.hidden {
+  display: none;
+}
+
 .ForecastGrid .ForecastRow {
   border-bottom: 1px solid #cccccc;
 }
 
 .ForecastGrid .ForecastRow ion-col:not(:last-child) {
   border-right: 1px solid #cccccc;
+}
+
+.ForecastGrid .ForecastRow.hidden {
+  display: none;
 }
 
 .ForecastGrid .ForecastColGreen {
