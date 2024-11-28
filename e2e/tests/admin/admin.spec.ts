@@ -1,9 +1,29 @@
 import { test, expect, Page } from '@playwright/test';
 
 const PORT = process.env.PORT ?? '3000';
-const url = `http://localhost:${PORT}/yllapito/`;
-const SLOW_TIMEOUT = 2000;
-const REALLY_SLOW_TIMEOUT = 5000;
+const URL = `http://localhost:${PORT}/yllapito/`;
+const HARBOR_NAME = { fi: 'fi_testHarbor', sv: 'sv_testHarbor', en: 'en_testHarbor' };
+const SAVE_FAILED = 'Tallennus epäonnistui';
+const SAVE_SUCCEEDED = 'Tallennus onnistui';
+const FAIRWAY_CARD_REMOVAL = 'Väyläkortin poisto';
+const HARBOR_REMOVAL = 'Sataman poisto';
+const ADD_HARBOR = 'Lisää satama';
+const CREATE_HARBOR = 'Luo satama';
+const ADD_FAIRWAY_CARD = 'Lisää väyläkortti';
+const CREATE_FAIRWAY_CARD = 'Luo väyläkortti';
+const DELETED = 'Poistettu';
+const DELETE = 'Poista';
+const CREATE_NEW_VERSION = 'Lisää uusi versio';
+const SAVE = 'Tallenna';
+const OK = 'Ok';
+const SEARCH_BY_NAME = 'Hae nimellä';
+const PUBLISHED = 'Julkaistu';
+const HARBOR = 'Satama';
+const FAIRWAY_CARD = 'Väyläkortti';
+
+const NEW_HARBOR_FROM_SCRATCH_ID = 'testadd123';
+const FAIRWAY_CARD_FROM_TEMPLATE = 'testmodfc1';
+const HARBOR_FROM_TEMPLATE = 'testmodh12';
 
 async function getFirstItemFromList(page: Page, type: string, state: string) {
   const typeFilter = page.getByTestId('resulttype').filter({ hasText: type });
@@ -27,80 +47,70 @@ function generateRandomString(length: number = 10) {
 }
 
 async function fillHarbourNameAndSaveFails(page: Page) {
-  await fillFieldWithValue(page, 'harbourNamefi', generateRandomString());
-  await fillFieldWithValue(page, 'harbourNamesv', generateRandomString());
-  await fillFieldWithValue(page, 'harbourNameen', generateRandomString());
-  await save(page, 'Tallennus epäonnistui');
+  await fillFieldWithValue(page, 'harbourNamefi', HARBOR_NAME.fi);
+  await fillFieldWithValue(page, 'harbourNamesv', HARBOR_NAME.sv);
+  await fillFieldWithValue(page, 'harbourNameen', HARBOR_NAME.en);
+  await save(page, SAVE_FAILED);
 }
 
 async function fillLatLngAndSaveSucceeds(page: Page) {
   await fillFieldWithValue(page, 'lat', '59');
   await fillFieldWithValue(page, 'lon', '20');
-  await save(page, 'Tallennus onnistui');
+  await save(page, SAVE_SUCCEEDED);
 }
 
-async function fillFieldWithValue(page: Page, id: string, value: string, wait: number = 0) {
-  const field = page.getByTestId(id);
+async function fillFieldWithValue(page: Page, id: string, value: string) {
+  const field = page.getByTestId(id).locator('input');
+  await field.clear();
   await field.click();
-  await field.pressSequentially(value);
-  await field.press('Tab');
-  if (wait > 0) {
-    await page.waitForTimeout(wait);
-  }
+  await field.pressSequentially(value, { delay: 100 });
+  await field.press('Tab', { delay: 100 });
 }
 
-async function save(page: Page, expectMessage: string, screenshot: boolean = false) {
-  await page.waitForTimeout(SLOW_TIMEOUT);
+async function save(page: Page, expectMessage: string) {
   await page.getByTestId('saveButton').click();
-  if (screenshot) {
-    await page.screenshot({ path: 'screenshot.png', fullPage: true });
-  }
-  await expect(page.getByText(expectMessage)).toBeVisible({ timeout: REALLY_SLOW_TIMEOUT });
-  await page.getByRole('button', { name: 'Ok' }).click();
+  await expect(page.getByText(expectMessage)).toBeVisible();
+  await page.getByRole('button', { name: OK }).click();
 }
 
 async function deleteFairwayCard(page: Page) {
-  await deleteItem(page, 'Väyläkortin poisto');
+  await deleteItem(page, FAIRWAY_CARD_REMOVAL);
 }
 
 async function deleteHarbour(page: Page) {
-  await deleteItem(page, 'Sataman poisto');
+  await deleteItem(page, HARBOR_REMOVAL);
 }
 
 async function deleteItem(page: Page, expectMessage: string) {
   //Click the delete buttoon
-  await page.getByRole('button', { name: 'Poista' }).first().click();
+  await page.getByRole('button', { name: DELETE }).first().click();
 
   //Check the info in the modal
   await expect(page.getByText(expectMessage)).toBeVisible();
 
   //Confirm deletion
-  await page.getByRole('button', { name: 'Poista' }).first().click();
-  await expect(page.getByText('Tallennus onnistui')).toBeVisible();
-  await page.getByLabel('Ok', { exact: true }).first().click();
-  await expect(page.getByText('Poistettu')).toBeVisible();
+  await page.getByRole('button', { name: DELETE }).first().click();
+  await expect(page.getByText(SAVE_SUCCEEDED)).toBeVisible();
+  await page.getByLabel(OK, { exact: true }).first().click();
+  await expect(page.getByText(DELETED)).toBeVisible();
 }
 
 async function createNewVersionFromPublishedSave(page: Page, type: string) {
-  //Get random published element
-  await clickOnResultsByTypeAndState(page, type, 'Julkaistu');
-
-  await page.getByRole('button', { name: 'Lisää uusi versio' }).click();
-
+  //Get first published element
+  await clickOnResultsByTypeAndState(page, type, PUBLISHED);
+  await page.getByRole('button', { name: CREATE_NEW_VERSION }).click();
   //Click save in the modal
-  await page.getByRole('button', { name: 'Tallenna' }).click();
-
+  await page.getByRole('button', { name: SAVE }).click();
   //Click save on the main page
   await page.getByTestId('saveButton').locator('button').click();
-
   //Check success
-  await expect(page.getByText('Tallennus onnistui')).toBeVisible();
+  await expect(page.getByText(SAVE_SUCCEEDED)).toBeVisible();
   //Close the modal
-  await page.getByRole('button', { name: 'Ok' }).click();
+  await page.getByRole('button', { name: OK }).click();
 }
 
-async function fillTemplate(page: Page, randomname: string) {
-  const templateLocator = page.getByTitle('Hae nimellä', { exact: true }).first();
+async function fillTemplate(page: Page, randomname: string, id: string) {
+  const templateLocator = page.getByTitle(SEARCH_BY_NAME, { exact: true }).first();
   await templateLocator.click();
 
   //Type search in and select first from list
@@ -113,54 +123,57 @@ async function fillTemplate(page: Page, randomname: string) {
   await versionLocator.click();
   //Select the first
   await page.getByRole('radio').first().click();
-
   //Fill in random id
-  await fillFieldWithValue(page, 'primaryId', generateRandomString(), SLOW_TIMEOUT);
+  await fillFieldWithValue(page, 'primaryId', id);
 }
 
 test.describe('Modify operations for cards and harbors', () => {
-  test.describe.configure({ mode: 'serial' });
-  test.setTimeout(60_000);
   test('should save published harbor', async ({ page }) => {
-    await page.goto(url);
-    await createNewVersionFromPublishedSave(page, 'Satama');
+    await page.goto(URL);
+    await createNewVersionFromPublishedSave(page, HARBOR);
+    await deleteHarbour(page);
   });
+
   test('should save published fairway card', async ({ page }) => {
-    await page.goto(url);
-    await createNewVersionFromPublishedSave(page, 'Väyläkortti');
+    await page.goto(URL);
+    await createNewVersionFromPublishedSave(page, FAIRWAY_CARD);
+    await deleteFairwayCard(page);
   });
 
   test('should create new fairway card from template', async ({ page }) => {
-    await page.goto(url);
-    const randomlocator = getFirstItemFromList(page, 'Väyläkortti', 'Julkaistu');
-    const randomname = await (await randomlocator).getByTestId('resultname').innerText();
-    await page.getByRole('button', { name: 'Lisää väyläkortti' }).click();
-    await fillTemplate(page, randomname);
-    await page.getByRole('button', { name: 'Luo väyläkortti' }).click();
-    await save(page, 'Tallennus onnistui');
+    await page.goto(URL);
+    const selectedname = await (await getFirstItemFromList(page, FAIRWAY_CARD, PUBLISHED)).getByTestId('resultname').innerText();
+    await page.getByRole('button', { name: ADD_FAIRWAY_CARD }).click();
+    await fillTemplate(page, selectedname, FAIRWAY_CARD_FROM_TEMPLATE);
+    await page.getByRole('button', { name: CREATE_FAIRWAY_CARD }).click();
+    await save(page, SAVE_SUCCEEDED);
     await deleteFairwayCard(page);
   });
 
   test('should create new harbor from template', async ({ page }) => {
-    await page.goto(url);
-    const randomlocator = getFirstItemFromList(page, 'Satama', 'Julkaistu');
-    const randomname = await (await randomlocator).getByTestId('resultname').innerText();
-    await page.getByRole('button', { name: 'Lisää satama' }).click();
-    await fillTemplate(page, randomname);
-    await page.getByRole('button', { name: 'Luo satama' }).click();
-    await save(page, 'Tallennus onnistui');
+    await page.goto(URL);
+    const selectedname = await (await getFirstItemFromList(page, HARBOR, PUBLISHED)).getByTestId('resultname').innerText();
+    await page.getByRole('button', { name: ADD_HARBOR }).click();
+    await fillTemplate(page, selectedname, HARBOR_FROM_TEMPLATE);
+    await page.getByRole('button', { name: CREATE_HARBOR }).click();
+    await save(page, SAVE_SUCCEEDED);
     await deleteHarbour(page);
   });
 
   test('should create new harbor from scratch', async ({ page }) => {
-    await page.goto(url);
-    await page.getByRole('button', { name: 'Lisää satama' }).click();
+    await page.goto(URL);
+    await page.getByRole('button', { name: ADD_HARBOR }).click();
     //No template selected
-    await fillFieldWithValue(page, 'primaryId', generateRandomString(), SLOW_TIMEOUT);
-    await page.getByRole('button', { name: 'Luo satama' }).click();
-    await save(page, 'Tallennus epäonnistui');
+    await fillFieldWithValue(page, 'primaryId', NEW_HARBOR_FROM_SCRATCH_ID);
+    await page.getByRole('button', { name: CREATE_HARBOR }).click();
+    await save(page, SAVE_FAILED);
     await fillHarbourNameAndSaveFails(page);
     await fillLatLngAndSaveSucceeds(page);
     await deleteHarbour(page);
+  });
+
+  test.afterEach(async () => {
+    console.log('Running afters');
+    //await page.close();
   });
 });
