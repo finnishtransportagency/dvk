@@ -711,7 +711,7 @@ div.ion-page > ion-header ion-progress-bar {
 }
 
 ion-grid.optionBar {
-  padding: 10px 43px;
+  padding: 20px 43px;
 }
 ion-grid.optionBar ion-grid {
   padding: 0;
@@ -726,10 +726,6 @@ ion-grid.optionBar em {
   display: block;
   font-size: 12px;
   line-height: 1rem;
-}
-
-ion-grid.optionBar .formHeaderCol {
-  display: flex;
 }
 
 /* Item table / list */

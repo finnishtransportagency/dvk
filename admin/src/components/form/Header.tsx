@@ -55,8 +55,8 @@ const Header: React.FC<HeaderProps> = ({
       <IonGrid className="optionBar">
         <IonRow className="ion-align-items-end">
           {/* this 'extra' column keeps everything in it's right place */}
-          <IonCol className="align-right" />
-          <IonCol size="auto" className="formHeaderCol">
+          <IonCol />
+          <IonCol size="auto" className="ion-no-padding">
             <IonSelect
               disabled={isError || isLoading}
               className="selectInput"
@@ -66,7 +66,7 @@ const Header: React.FC<HeaderProps> = ({
               value={currentState.version}
               onIonChange={(ev) => handleVersionChange(ev)}
               fill="outline"
-              style={{ width: '200px', height: '43px' }}
+              style={{ height: '43px' }}
             >
               {sortedVersions?.map((v) => {
                 return (
@@ -77,9 +77,13 @@ const Header: React.FC<HeaderProps> = ({
               })}
               ;
             </IonSelect>
+          </IonCol>
+          <IonCol size="auto" className="ion-no-padding">
             <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
               {t('general.cancel')}
             </IonButton>
+          </IonCol>
+          <IonCol size="auto" className="ion-no-padding">
             {(currentState.status === Status.Public || currentState.status === Status.Draft) && (
               <IonButton
                 id="deleteButton"
@@ -93,24 +97,32 @@ const Header: React.FC<HeaderProps> = ({
                 {currentState.status === Status.Draft ? t('general.delete') : t('general.archive')}
               </IonButton>
             )}
-            {currentState.status === Status.Draft && (
+          </IonCol>
+          {currentState.status === Status.Draft && (
+            <IonCol size="auto" className="ion-no-padding">
               <IonButton shape="round" disabled={isError || isLoading || currentState.operation === Operation.Create} onClick={() => handlePreview()}>
                 {t('general.preview')}
                 <span className="screen-reader-only">{t('general.opens-in-a-new-tab')}</span>
               </IonButton>
-            )}
-            {currentState.status === Status.Draft && (
-              <>
+            </IonCol>
+          )}
+          {currentState.status === Status.Draft && (
+            <>
+              <IonCol size="auto" className="ion-no-padding">
                 <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSave()}>
                   {currentState.operation === Operation.Update || currentState.operation === Operation.Createversion
                     ? t('general.save')
                     : t('general.create-new')}
                 </IonButton>
+              </IonCol>
+              <IonCol size="auto" className="ion-no-padding">
                 <IonButton id="publishVersion" shape="round" disabled={isError || isLoading || unsavedChanges} onClick={() => handlePublish()}>
                   {t('general.publish')}
                 </IonButton>
-              </>
-            )}
+              </IonCol>
+            </>
+          )}
+          <IonCol size="auto" className="ion-no-padding">
             <IonButton id="createNewVersion" shape="round" disabled={isError || isLoading} onClick={() => handleNewVersion()}>
               {t('general.create-new-version')}
             </IonButton>
