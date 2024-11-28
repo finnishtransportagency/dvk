@@ -10,15 +10,19 @@ async function readParameterForEnv(path: string): Promise<string> {
   if (envParameters[path]) {
     return envParameters[path];
   }
-  return new Promise((resolve) => {
-    readParameterByPath('/' + path).then((value) => {
-      if (value) {
-        envParameters[path] = value;
-        resolve(value);
-      } else {
-        throw new Error(`Getting parameter ${path} failed`);
-      }
-    });
+  return new Promise((resolve, reject) => {
+    readParameterByPath('/' + path)
+      .then((value) => {
+        if (value) {
+          envParameters[path] = value;
+          resolve(value);
+        } else {
+          throw new Error(`Getting parameter ${path} failed`);
+        }
+      })
+      .catch((error) => {
+        reject(error instanceof Error ? error : new Error(String(error)));
+      });
   });
 }
 
@@ -239,4 +243,31 @@ export function getNewStaticBucketName() {
   } else {
     return `static2.dvk${getEnvironment()}.testivaylapilvi.fi`;
   }
+}
+
+export async function getFeedbackSQSQueueUrl(): Promise<string> {
+  const path = `${getEnvironment()}/feedback-sqs-queue-url`;
+  return await readParameterForEnv(path);
+}
+
+export async function getEmailConfig(): Promise<{
+  emailHost: string;
+  emailPass: string;
+  emailPort: string;
+  emailUser: string;
+  feedbackAddress: string;
+}> {
+  return await Promise.all([
+    readParameterForEnv(`${getEnvironment()}/email/host`),
+    readParameterForEnv(`${getEnvironment()}/email/pass`),
+    readParameterForEnv(`${getEnvironment()}/email/port`),
+    readParameterForEnv(`${getEnvironment()}/email/user`),
+    readParameterForEnv(`${getEnvironment()}/email/feedbackAddress`),
+  ]).then((values) => ({
+    emailHost: values[0],
+    emailPass: values[1],
+    emailPort: values[2],
+    emailUser: values[3],
+    feedbackAddress: values[4],
+  }));
 }

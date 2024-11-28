@@ -15,7 +15,8 @@
       "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
       "location-service": "Sijaintipalvelu",
       "location-description": "Mahdollistaa päätelaitteesi paikantamisen.",
-      "location-disabled": "Sijainnin käyttöoikeus estetty"
+      "location-disabled": "Sijainnin käyttöoikeus estetty",
+      "leave-feedback": "Anna palvelusta palautetta"
     },
     "map": {
       "controls": {
@@ -576,7 +577,8 @@
     "print": "Tulosta sivu",
     "filter": "Valitse suodatin...",
     "sortOldToNew": "Vanhin ensin",
-    "sortNewToOld": "Uusin ensin"
+    "sortNewToOld": "Uusin ensin",
+    "submit": "Lähetä"
   },
   "tileLoadWarning": {
     "vectorTileError": "Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
@@ -620,5 +622,14 @@
     "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
     "previousPage": "Edelliset",
     "nextPage": "Seuraavat"
+  },
+  "feedback": {
+    "title": "Anna palvelusta palautetta",
+    "content": "Kerro Digitaalinen Väyläkortti -palvelun kehittäjille, miten palvelun toimintaa voisi kehittää. Huomaathan, että palvelun parantamista koskeviin palautteisiin ei vastata.",
+    "title2": "Minkä arvosanan antaisit palvelulle?",
+    "content2": "Kuinka todennäköisesti suosittelisit palvelua? Asteikolla 1–10, jolloin 10 suosittelisi erittäin todennäköisesti ja 1 suosittelisi erittäin epätodennäköisesti.",
+    "title3": "Miten kehittäisit palvelua paremmaksi?",
+    "content3": "Palautteesi välitetään Digitaalinen Väyläkortti -palvelun kehittäjille palvelun parantamiseksi. Näitä palautteita ei toimiteta väyläkorttien laatijoille tai muille virastojen tai sidosryhmien henkilöille.",
+    "thank-you": "Kiitos palautteestasi!"
   }
 }
