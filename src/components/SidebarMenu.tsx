@@ -173,7 +173,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen, setIsFeedbac
                         }}
                       >
                         {t('leave-feedback')}
-                        <IonIcon src={extLink} slot="end" style={{ 'font-size': '10px' }}></IonIcon>
+                        <IonIcon src={extLink} slot="end" style={{ fontSize: '10px' }}></IonIcon>
                       </IonButton>
                     </IonButtons>
                   </IonCol>
