@@ -289,7 +289,7 @@
     "linkedFairwayCards": "Farledskort angående lotsningsrutt"
   },
   "forecast": {
-    "forecastLocation": "Väder- och vågprognosplats",
+    "forecastLocation": "Plats för väder- och vågprognospunkter",
     "updated": "Uppdaterat",
     "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "lowRisk": "Låg risk",
