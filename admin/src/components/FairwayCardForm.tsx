@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
 import {
   ContentType,
   FairwayCardByIdFragment,
@@ -42,6 +42,7 @@ import NotificationSection from './form/fairwayCard/NotificationSection';
 import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
+import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -70,13 +71,15 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
+  // if confirmation modal comes up because of unsaved changing version,, handleConfirmationSubmit gets the value from this
+  const [versionToMoveTo, setVersionToMoveTo] = useState('');
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
   const { data: pilotPlaceList, isLoading: isLoadingPilotPlaces } = usePilotPlacesQueryData();
   const { data: mareographList, isLoading: isLoadingMareographs } = useMareographQueryData();
 
-  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
   // this is for checking the latest version number, so in case creating a new version we get the right url
   const { data: latestFairwayCard } = useFairwayCardLatestByIdQueryData(fairwayCard.id);
 
@@ -101,6 +104,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
         history.push({ pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v' + nextVersionNumber });
         setIsSubmittingVersion(false);
+        // in case saving changes when moving to another version via dropdown select
+      } else if (versionToMoveTo) {
+        history.push({ pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/' + versionToMoveTo });
+        setVersionToMoveTo('');
       }
     },
     onError: (error: Error) => {
@@ -114,10 +121,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const harbourSelection = harbourList?.harbors.filter((item) => state.harbors?.includes(item.id));
   const harbourOptions = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem);
 
+  // no need for all versions for checking reserved id's
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
-    .filter((item) => item.type === ContentType.Card)
+    .filter((item) => item.type === ContentType.Card && item.version === VERSION.LATEST)
     .flatMap((item) => item.id);
-
+  // filter out latest and public versions
+  const fairwayCardVersions = fairwaysAndHarbours?.fairwayCardsAndHarbors.filter(
+    (item) => item.type === ContentType.Card && item.id === fairwayCard.id && item.version !== VERSION.LATEST && item.version !== VERSION.PUBLIC
+  );
   const isLoading = isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces || isLoadingMareographs;
 
   const updateState = (
@@ -253,6 +264,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
+  const handleVersionChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
+    const version = event.detail.value;
+    // set in case of confirmation modal
+    setVersionToMoveTo(version as string);
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('changeVersion');
+    } else {
+      return history.push({ pathname: '/vaylakortti/' + state.id + '/' + version });
+    }
+  };
+
   const handleConfirmationSubmit = () => {
     switch (confirmationType) {
       case 'archive':
@@ -265,6 +287,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         return saveCard(Operation.Remove);
       case 'version':
         return saveCard(Operation.Createversion);
+      case 'changeVersion':
+        return saveCard(Operation.Update);
       default:
         return;
     }
@@ -323,6 +347,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
         setActionPending={setPreviewPending}
+        versionToMoveTo={versionToMoveTo}
       />
       <ConfirmationModal
         saveType="fairwaycard"
@@ -356,6 +381,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handlePreview={handlePreview}
         handleNewVersion={handleNewVersion}
         handlePublish={handlePublish}
+        handleVersionChange={handleVersionChange}
+        type={'fairwaycard'}
+        versions={fairwayCardVersions}
         isError={isError}
       />
 
