@@ -182,8 +182,8 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
       ?.getInputElement()
       .then((textinput) => {
         if (textinput) {
-          const notInUse = !reservedIds.includes(identifier);
-          setIdentifierValid(notInUse ?? textinput.checkValidity());
+          const inUse = reservedIds.includes(textinput.value);
+          setIdentifierValid(!inUse && textinput.checkValidity());
         }
       })
       .catch((err) => {
@@ -193,10 +193,15 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
 
   const getErrorText = (val?: string) => {
     if (!identifierValid) {
-      if (reservedIds.includes(identifier)) {
+      if (reservedIds.includes(val ?? '')) {
         return t(ErrorMessageKeys.duplicateId);
       }
-      return !val?.trim()?.length ? t('general.required-field') : t('general.check-input');
+      if (!val?.trim()?.length) {
+        return t('general.required-field');
+      }
+      if (!/^[a-z]+[a-z\d]*$/.test(val)) {
+        return t('general.check-input');
+      }
     }
     return '';
   };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import LayerModal from './LayerModal';
 import SearchbarDropdown from './SearchbarDropdown';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
@@ -8,11 +8,11 @@ import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useTranslation } from 'react-i18next';
 import { filterFairways, updateIceLayerOpacity } from '../../utils/common';
 import { Lang } from '../../utils/constants';
-import { CommonModal, SourceModal } from './CommonModal';
+import { CommonModal, SourceModal, FeedbackModal } from './CommonModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 import LinePopupContent, { LineProperties } from '../popup/LinePopupContent';
 import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPopupContent';
-import { useFairwayCardListData } from '../../utils/dataLoader';
+import { useFairwayCardListData, useSaveFeedback } from '../../utils/dataLoader';
 import MarineWarningPopupContent, { MarineWarningProperties } from '../popup/MarineWarningPopupContent';
 import MareographPopupContent, { MareographProperties } from '../popup/MareographPopupContent';
 import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
@@ -33,7 +33,8 @@ import PilotageLimitPopupContent, { PilotageLimitProperties } from '../popup/Pil
 import DirwayPopupContent, { DirwayProperties } from '../popup/DirwayPopupContent';
 import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup/RestrictionPortPopupContent';
 import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup/ProhibitionAreaPopupContent';
-import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { IonCol, IonGrid, IonRow, IonText, IonToast } from '@ionic/react';
+import { FeedbackInput } from '../../graphql/generated';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -64,9 +65,11 @@ export type PopupProperties = {
 type MapOverlaysProps = {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
+  isFeedbackOpen: boolean;
+  setIsFeedbackOpen: (open: boolean) => void;
 };
 
-const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen }) => {
+const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOpen: setIsSourceOpen, isFeedbackOpen, setIsFeedbackOpen }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { state, dispatch } = useDvkContext();
@@ -81,6 +84,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const filteredFairways = filterFairways(data?.fairwayCards, lang, searchQuery);
   const [popupProperties, setPopupProperties] = useState<PopupProperties>();
   const [infoModalOpen, setInfoModalOpen] = useState(false);
+  const [isToastOpen, setIsToastOpen] = useState(false);
 
   const openMapLayersModal = () => {
     setIsOpen(true);
@@ -145,6 +149,14 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   sc?.setIsSearchbarOpen(isSearchbarOpen);
   sc?.setCurrentActiveSelection(activeSelection);
   sc?.setFilteredData(filteredFairways);
+
+  const { mutate: saveFeedbackMutation } = useSaveFeedback();
+  const saveFeedback = useCallback(
+    (feedback: FeedbackInput) => {
+      saveFeedbackMutation({ feedback });
+    },
+    [saveFeedbackMutation]
+  );
 
   return (
     <>
@@ -216,6 +228,24 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       </CommonModal>
       <SearchbarDropdown isOpen={isSearchbarOpen} searchQuery={searchQuery} fairwayCards={filteredFairways} selected={activeSelection} />
       <SourceModal isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        setIsOpen={setIsFeedbackOpen}
+        handleSubmit={(rating: number, feedback: string) => {
+          console.log('Arvosana:', rating);
+          console.log('Palaute:', feedback);
+          console.log('Palaute lähetetty!');
+          saveFeedback({ rating, feedback });
+          setIsToastOpen(true);
+        }}
+      />
+      <IonToast
+        isOpen={isToastOpen}
+        message={t('feedback.thank-you')}
+        onDidDismiss={() => setIsToastOpen(false)}
+        duration={3000}
+        position="top"
+      ></IonToast>
       <div className="no-print">
         <MarineWarningNotifications showMarineWarnings={showMarineWarningNotification} />
         <LoadErrorNotifications />
