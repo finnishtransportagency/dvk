@@ -1,5 +1,5 @@
-import React, { useMemo } from 'react';
-import { IonButton, IonCol, IonGrid, IonHeader, IonProgressBar, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import React, { useMemo, useRef } from 'react';
+import { IonButton, IonCol, IonGrid, IonHeader, IonLabel, IonProgressBar, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardInput, FairwayCardOrHarbor, HarborInput, Operation, Status } from '../../graphql/generated';
 import { hasUnsavedChanges } from '../../utils/formValidations';
@@ -39,6 +39,11 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const { t } = useTranslation();
 
+  const selectRef = useRef<HTMLIonSelectElement>(null);
+  const focusInput = () => {
+    selectRef.current?.click();
+  };
+
   const unsavedChanges = useMemo(() => {
     return hasUnsavedChanges(oldState, currentState);
   }, [oldState, currentState]);
@@ -57,7 +62,11 @@ const Header: React.FC<HeaderProps> = ({
           {/* this 'extra' column keeps everything in it's right place */}
           <IonCol />
           <IonCol size="auto" className="ion-no-padding">
+            <IonLabel className="formLabel" onClick={() => focusInput()}>
+              {t('general.version-number')}
+            </IonLabel>
             <IonSelect
+              ref={selectRef}
               disabled={isError || isLoading}
               className="selectInput"
               interface="popover"
