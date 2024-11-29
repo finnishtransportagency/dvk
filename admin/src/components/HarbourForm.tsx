@@ -79,6 +79,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
         history.push({ pathname: '/satama/' + data.saveHarbor?.id + '/v' + nextVersionNumber });
         setIsSubmittingVersion(false);
+        // in case saving changes when moving to another version via dropdown select
+      } else if (versionToMoveTo) {
+        history.push({ pathname: '/satama/' + data.saveHarbor?.id + '/' + versionToMoveTo });
+        setVersionToMoveTo('');
       }
     },
     onError: (error: Error) => {
@@ -230,6 +234,16 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     }
   };
 
+  const handleVersionChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
+    const version = event.detail.value;
+    setVersionToMoveTo(version as string);
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('changeVersion');
+    } else {
+      history.push({ pathname: '/satama/' + state.id + '/' + version });
+    }
+  };
+
   const handleConfirmationSubmit = () => {
     switch (confirmationType) {
       case 'archive':
@@ -243,7 +257,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       case 'version':
         return saveHarbour(Operation.Createversion);
       case 'changeVersion':
-        return history.push({ pathname: '/satama/' + state.id + '/' + versionToMoveTo });
+        return saveHarbour(Operation.Update);
       default:
         return;
     }
@@ -261,16 +275,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       return modified ? t('general.datetimeFormat', { val: modified }) : '-';
     } else {
       return created ? t('general.datetimeFormat', { val: created }) : '-';
-    }
-  };
-
-  const handleVersionChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
-    const version = event.detail.value;
-    setVersionToMoveTo(version as string);
-    if (hasUnsavedChanges(oldState, state)) {
-      setConfirmationType('changeVersion');
-    } else {
-      history.push({ pathname: '/satama/' + state.id + '/' + version });
     }
   };
 
@@ -320,6 +324,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         newStatus={state.status}
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
         setActionPending={setPreviewPending}
+        versionToMoveTo={versionToMoveTo}
       />
       <ConfirmationModal
         saveType="harbor"

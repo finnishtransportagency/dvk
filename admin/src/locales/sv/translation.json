@@ -145,6 +145,7 @@
     "publish-fairwaycard-title": "[sv] Väyläkortin julkaiseminen",
     "publish-fairwaycard-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan väyläkortin julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
     "version-fairwaycard-description": "[sv] Olet lisäämässä väyläkortista uuden version. Uuden version tilaksi tulee luonnos. Oletko varma, että haluat jatkaa?",
+    "change-version-fairwaycard-description": "[sv] Väyläkortilla on tallentamattomia muutoksia. Tallenna tai hylkää muutokset vaihtaaksesi versiota, tai peruuta jatkaaksesi nykyisen version muokkaamista.",
     "cancel-harbor-title": "[sv] Poistu tallentamatta",
     "cancel-harbor-description": "[sv] Satama sisältää tallentamattomia muutoksia. Oletko varma, että haluat poistua tallentamatta?",
     "delete-harbor-title": "[sv] Sataman poisto",
@@ -154,6 +155,7 @@
     "publish-harbor-title": "[sv] Sataman julkaiseminen",
     "publish-harbor-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
     "version-harbor-description": "[sv] Olet lisäämässä satamasta uuden version. Uuden version tilaksi tulee luonnos. Oletko varma, että haluat jatkaa?",
+    "change-version-harbor-description": "[sv] Satamalla on tallentamattomia muutoksia. Tallenna tai hylkää muutokset vaihtaaksesi versiota, tai peruuta jatkaaksesi nykyisen version muokkaamista.",
     "saved-fairwaycard-by-name": "[sv] Väyläkortin \"{{ name }}\" tiedot tallennettu.",
     "saved-harbor-by-name": "[sv] Sataman \"{{ name }}\" tiedot tallennettu.",
     "help-title-PORTRAIT": "[sv] Väyläkortin pystytulosteiden asettaminen",
@@ -175,7 +177,9 @@
     "ending-fairway-description": "[sv] Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span class='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "fairwaycard-publish-details": "[sv] Väyläkortin julkaisutiedot",
     "harbor-publish-details": "[sv] Sataman julkaisutiedot",
-    "adding-publish-details": "[sv] Julkaisutietojen lisääminen"
+    "adding-publish-details": "[sv] Julkaisutietojen lisääminen",
+    "unsaved-changes": "[sv] Tallentamattomia muutoksia",
+    "discard": "[sv] Hylkää"
   },
   "fairwaycard": {
     "publish-details": "[sv] Julkaisutiedot",

@@ -104,6 +104,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
         history.push({ pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/v' + nextVersionNumber });
         setIsSubmittingVersion(false);
+        // in case saving changes when moving to another version via dropdown select
+      } else if (versionToMoveTo) {
+        history.push({ pathname: '/vaylakortti/' + data.saveFairwayCard?.id + '/' + versionToMoveTo });
+        setVersionToMoveTo('');
       }
     },
     onError: (error: Error) => {
@@ -260,6 +264,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     }
   };
 
+  const handleVersionChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
+    const version = event.detail.value;
+    // set in case of confirmation modal
+    setVersionToMoveTo(version as string);
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('changeVersion');
+    } else {
+      return history.push({ pathname: '/vaylakortti/' + state.id + '/' + version });
+    }
+  };
+
   const handleConfirmationSubmit = () => {
     switch (confirmationType) {
       case 'archive':
@@ -273,7 +288,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       case 'version':
         return saveCard(Operation.Createversion);
       case 'changeVersion':
-        return history.push({ pathname: '/vaylakortti/' + state.id + '/' + versionToMoveTo });
+        return saveCard(Operation.Update);
       default:
         return;
     }
@@ -291,17 +306,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       return modified ? t('general.datetimeFormat', { val: modified }) : '-';
     } else {
       return created ? t('general.datetimeFormat', { val: created }) : '-';
-    }
-  };
-
-  const handleVersionChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
-    const version = event.detail.value;
-    // set in case of confirmation modal
-    setVersionToMoveTo(version as string);
-    if (hasUnsavedChanges(oldState, state)) {
-      setConfirmationType('changeVersion');
-    } else {
-      return history.push({ pathname: '/vaylakortti/' + state.id + '/' + version });
     }
   };
 
@@ -343,6 +347,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         newStatus={state.status}
         oldState={savedCard ? (savedCard as StatusName) : fairwayCard}
         setActionPending={setPreviewPending}
+        versionToMoveTo={versionToMoveTo}
       />
       <ConfirmationModal
         saveType="fairwaycard"
