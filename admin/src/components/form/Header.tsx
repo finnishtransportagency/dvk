@@ -1,10 +1,11 @@
-import React, { useMemo, useRef } from 'react';
-import { IonButton, IonCol, IonGrid, IonHeader, IonLabel, IonProgressBar, IonRow, IonSelect, IonSelectOption } from '@ionic/react';
+import React, { useMemo } from 'react';
+import { IonButton, IonCol, IonGrid, IonHeader, IonProgressBar, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardInput, FairwayCardOrHarbor, HarborInput, Operation, Status } from '../../graphql/generated';
 import { hasUnsavedChanges } from '../../utils/formValidations';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core';
 import { ValueType } from '../../utils/constants';
+import SelectVersionInput from './SelectVersionInput';
 
 interface HeaderProps {
   currentState: FairwayCardInput | HarborInput;
@@ -39,20 +40,9 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const selectRef = useRef<HTMLIonSelectElement>(null);
-  const focusInput = () => {
-    selectRef.current?.click();
-  };
-
   const unsavedChanges = useMemo(() => {
     return hasUnsavedChanges(oldState, currentState);
   }, [oldState, currentState]);
-
-  const getVersionToString = (version: FairwayCardOrHarbor) => {
-    return version.version.slice(1) + ' - ' + t('general.item-status-' + version.status);
-  };
-
-  const sortedVersions = versions?.sort((a, b) => Number(b.version.slice(1)) - Number(a.version.slice(1)));
 
   return (
     <IonHeader className="ion-no-border" id="mainPageContent">
@@ -62,30 +52,13 @@ const Header: React.FC<HeaderProps> = ({
           {/* this 'extra' column keeps everything in it's right place */}
           <IonCol />
           <IonCol size="auto" className="ion-no-padding">
-            <IonLabel className="formLabel" onClick={() => focusInput()}>
-              {t('general.version-number')}
-            </IonLabel>
-            <IonSelect
-              ref={selectRef}
-              disabled={isError || isLoading}
-              className="selectInput"
-              interface="popover"
-              interfaceOptions={{ size: 'cover', className: 'multiSelect' }}
-              labelPlacement="stacked"
-              value={currentState.version}
-              onIonChange={(ev) => handleVersionChange(ev)}
-              fill="outline"
-              style={{ height: '43px' }}
-            >
-              {sortedVersions?.map((v) => {
-                return (
-                  <IonSelectOption key={v.version} value={v.version}>
-                    {getVersionToString(v)}
-                  </IonSelectOption>
-                );
-              })}
-              ;
-            </IonSelect>
+            <SelectVersionInput
+              handleVersionChange={handleVersionChange}
+              versions={versions}
+              isError={isError}
+              isLoading={isLoading}
+              version={currentState.version}
+            />
           </IonCol>
           <IonCol size="auto" className="ion-no-padding">
             <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>

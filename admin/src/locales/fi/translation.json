@@ -186,7 +186,8 @@
     "fairwaycard-publish-details": "Väyläkortin julkaisutiedot",
     "harbor-publish-details": "Sataman julkaisutiedot",
     "adding-publish-details": "Julkaisutietojen lisääminen",
-    "unsaved-changes": "Tallentamattomia muutoksia"
+    "unsaved-changes": "Tallentamattomia muutoksia",
+    "discard": "Hylkää"
   },
   "fairwaycard": {
     "publish-details": "Julkaisutiedot",
