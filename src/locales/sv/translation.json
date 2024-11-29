@@ -289,9 +289,12 @@
     "linkedFairwayCards": "Farledskort angående lotsningsrutt"
   },
   "forecast": {
-    "forecastLocation": "[sv] Sää- ja aaltoennustepisteen sijainti",
+    "forecastLocation": "Väder- och vågprognoser",
     "updated": "Uppdaterat",
-    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "lowRisk": "Låg risk",
+    "mediumRisk": "Medelhög risk",
+    "elevatedRisk": "[sv] Kohunnut risk"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
