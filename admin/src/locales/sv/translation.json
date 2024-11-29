@@ -146,6 +146,7 @@
     "publish-fairwaycard-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan väyläkortin julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
     "version-fairwaycard-description": "[sv] Olet lisäämässä väyläkortista uuden version. Uuden version tilaksi tulee luonnos. Oletko varma, että haluat jatkaa?",
     "change-version-fairwaycard-description": "[sv] Väyläkortilla on tallentamattomia muutoksia. Tallenna tai hylkää muutokset vaihtaaksesi versiota, tai peruuta jatkaaksesi nykyisen version muokkaamista.",
+    "description-select-fairwaycard-version": "[sv] Voit vaihtaa väyläkortin versioiden välillä valitsemalla valikosta haluamasi version. Jos olet siirtymässä versiolta joka sisältää tallentamattomia muutoksia, järjestelmä pyytää tallentamaan tai hylkäämään muutokset ennen version vaihtamista.",
     "cancel-harbor-title": "[sv] Poistu tallentamatta",
     "cancel-harbor-description": "[sv] Satama sisältää tallentamattomia muutoksia. Oletko varma, että haluat poistua tallentamatta?",
     "delete-harbor-title": "[sv] Sataman poisto",
@@ -156,6 +157,7 @@
     "publish-harbor-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
     "version-harbor-description": "[sv] Olet lisäämässä satamasta uuden version. Uuden version tilaksi tulee luonnos. Oletko varma, että haluat jatkaa?",
     "change-version-harbor-description": "[sv] Satamalla on tallentamattomia muutoksia. Tallenna tai hylkää muutokset vaihtaaksesi versiota, tai peruuta jatkaaksesi nykyisen version muokkaamista.",
+    "description-select-harbor-version": "[sv] Voit vaihtaa sataman versioiden välillä valitsemalla valikosta haluamasi version. Jos olet siirtymässä versiolta joka sisältää tallentamattomia muutoksia, järjestelmä pyytää tallentamaan tai hylkäämään muutokset ennen version vaihtamista.",
     "saved-fairwaycard-by-name": "[sv] Väyläkortin \"{{ name }}\" tiedot tallennettu.",
     "saved-harbor-by-name": "[sv] Sataman \"{{ name }}\" tiedot tallennettu.",
     "help-title-PORTRAIT": "[sv] Väyläkortin pystytulosteiden asettaminen",
@@ -179,7 +181,8 @@
     "harbor-publish-details": "[sv] Sataman julkaisutiedot",
     "adding-publish-details": "[sv] Julkaisutietojen lisääminen",
     "unsaved-changes": "[sv] Tallentamattomia muutoksia",
-    "discard": "[sv] Hylkää"
+    "discard": "[sv] Hylkää",
+    "changing-version": "[sv] Versioiden välillä vaihtelu"
   },
   "fairwaycard": {
     "publish-details": "[sv] Julkaisutiedot",

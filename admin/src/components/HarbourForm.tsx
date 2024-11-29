@@ -362,6 +362,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handleNewVersion={handleNewVersion}
         handlePublish={handlePublish}
         handleVersionChange={handleVersionChange}
+        type={'harbor'}
         isError={isError}
         versions={harbourVersions}
       />

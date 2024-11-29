@@ -5,16 +5,19 @@ import { FairwayCardOrHarbor } from '../../graphql/generated';
 import { useTranslation } from 'react-i18next';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core';
 import { ValueType } from '../../utils/constants';
+import NotificationModal from '../NotificationModal';
+import { SaveType } from '../ConfirmationModal';
 
 interface SelectVersionInputProps {
   handleVersionChange: (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => void;
+  type: SaveType;
   versions?: FairwayCardOrHarbor[];
   isError?: boolean;
   isLoading?: boolean;
   version?: string;
 }
 
-const SelectVersionInput: React.FC<SelectVersionInputProps> = ({ handleVersionChange, versions, isError, isLoading, version }) => {
+const SelectVersionInput: React.FC<SelectVersionInputProps> = ({ handleVersionChange, versions, isError, isLoading, version, type }) => {
   const { t } = useTranslation();
 
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
@@ -34,8 +37,6 @@ const SelectVersionInput: React.FC<SelectVersionInputProps> = ({ handleVersionCh
   };
 
   const sortedVersions = versions?.sort((a, b) => Number(b.version.slice(1)) - Number(a.version.slice(1)));
-
-  console.log(infoModalOpen);
 
   return (
     <>
@@ -72,6 +73,13 @@ const SelectVersionInput: React.FC<SelectVersionInputProps> = ({ handleVersionCh
         })}
         ;
       </IonSelect>
+      <NotificationModal
+        isOpen={infoModalOpen}
+        closeAction={() => setInfoModalOpen(false)}
+        closeTitle={t('general.close')}
+        header={t('general.version-number') + ' - ' + t('modal.changing-version').toLocaleLowerCase()}
+        message={t(`modal.description-select-${type}-version`)}
+      />
     </>
   );
 };

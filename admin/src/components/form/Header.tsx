@@ -6,6 +6,7 @@ import { hasUnsavedChanges } from '../../utils/formValidations';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core';
 import { ValueType } from '../../utils/constants';
 import SelectVersionInput from './SelectVersionInput';
+import { SaveType } from '../ConfirmationModal';
 
 interface HeaderProps {
   currentState: FairwayCardInput | HarborInput;
@@ -19,6 +20,7 @@ interface HeaderProps {
   handleNewVersion: () => void;
   handlePublish: () => void;
   handleVersionChange: (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => void;
+  type: SaveType;
   isError?: boolean;
   versions?: FairwayCardOrHarbor[];
 }
@@ -37,6 +39,7 @@ const Header: React.FC<HeaderProps> = ({
   handleVersionChange,
   isError,
   versions,
+  type,
 }) => {
   const { t } = useTranslation();
 
@@ -58,6 +61,7 @@ const Header: React.FC<HeaderProps> = ({
               isError={isError}
               isLoading={isLoading}
               version={currentState.version}
+              type={type}
             />
           </IonCol>
           <IonCol size="auto" className="ion-no-padding">

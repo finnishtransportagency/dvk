@@ -382,6 +382,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         handleNewVersion={handleNewVersion}
         handlePublish={handlePublish}
         handleVersionChange={handleVersionChange}
+        type={'fairwaycard'}
         versions={fairwayCardVersions}
         isError={isError}
       />
