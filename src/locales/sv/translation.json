@@ -289,7 +289,7 @@
     "linkedFairwayCards": "Farledskort angående lotsningsrutt"
   },
   "forecast": {
-    "forecastLocation": "Väder- och vågprognoser",
+    "forecastLocation": "Väder- och vågprognosplats",
     "updated": "Uppdaterat",
     "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "lowRisk": "Låg risk",
@@ -442,7 +442,7 @@
       "dateTime": "Beräknat vattenstånd"
     },
     "forecast": {
-      "forecast": "Väder- och vågprognoser",
+      "forecast": "Väder- och vågprognos",
       "coordinates": "Koordinater",
       "extra": "Tilläggsuppgift",
       "extraContent": "Väder- och vågprognoser har hämtats från Meteorologiska institutets datagränssnitt. Prognosvärdena beskriver risknivån för farledsnavigering orsakad av väderförhållandena och fungerar som stöd för beslutsfattande vid bedömning av t.ex. avbrott i lotsningstjänsten. Upplysningarna uppdateras enligt följande: vindprognoser ungefär varje timme, vågprognoser ungefär var sjätte timme och siktprognoser ungefär var tredje timme.",
@@ -520,7 +520,7 @@
         "mareograph": "Mareograf",
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
-        "forecast": "Väder- och vågprognoser",
+        "forecast": "Väder- och vågprognos",
         "pilot": "Lotsplats",
         "pilotagelimit": "Lotspliktslinje",
         "pilotroute": "Lotsningsrutt",
