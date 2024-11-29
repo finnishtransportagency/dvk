@@ -623,7 +623,8 @@
     },
     "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
     "previousPage": "Previous",
-    "nextPage": "Next"
+    "nextPage": "Next",
+    "hours": "h"
   },
   "feedback": {
     "title": "Leave feedback",

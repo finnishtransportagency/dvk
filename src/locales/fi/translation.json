@@ -624,7 +624,8 @@
     },
     "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
     "previousPage": "Edelliset",
-    "nextPage": "Seuraavat"
+    "nextPage": "Seuraavat",
+    "hours": "h"
   },
   "feedback": {
     "title": "Anna palvelusta palautetta",
