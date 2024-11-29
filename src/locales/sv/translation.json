@@ -52,7 +52,7 @@
           "circles": "Vändcirklar",
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
-          "forecast": "[sv] Sää- ja aaltoennusteet",
+          "forecast": "Väder- och vågprognoser",
           "weatherStation": "Kustväderstationerna",
           "buoys": "Vågbojar",
           "vts": "VTS",
@@ -441,7 +441,7 @@
       "forecast": "[sv] Sää- ja aaltoennuste",
       "coordinates": "Koordinater",
       "extra": "Tilläggsuppgift",
-      "extraContent": "[sv] Lorem ipsum...",
+      "extraContent": "Väder- och vågprognoser har hämtats från Meteorologiska institutets datagränssnitt. Prognosvärdena beskriver risknivån för farledsnavigering orsakad av väderförhållandena och fungerar som stöd för beslutsfattande vid bedömning av t.ex. avbrott i lotsningstjänsten. Upplysningarna uppdateras enligt följande: vindprognoser ungefär varje timme, vågprognoser ungefär var sjätte timme och siktprognoser ungefär var tredje timme.",
       "updated": "Uppdaterat",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
     },
@@ -611,11 +611,11 @@
   },
   "forecastTable": {
     "tableHeaders": {
-      "time": "[sv] Aika",
-      "wind": "[sv] Tuulen nopeus ja suunta",
-      "windGust": "[sv] Tuulen puuska\u00ADnopeus",
-      "wave": "[sv] Aallon korkeus ja suunta",
-      "visibility": "[sv] Näkyvyys"
+      "time": "Tid",
+      "wind": "Vindhastighet och riktning",
+      "windGust": "Vindbyhastighet",
+      "wave": " Signifikant våghöjd och -riktning",
+      "visibility": "Sikt"
     },
     "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
     "previousPage": "[sv] Edelliset",

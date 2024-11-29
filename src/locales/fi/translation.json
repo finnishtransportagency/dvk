@@ -441,7 +441,7 @@
       "forecast": "Sää- ja aaltoennuste",
       "coordinates": "Koordinaatit",
       "extra": "Lisätieto",
-      "extraContent": "Lorem ipsum...",
+      "extraContent": "Sää- ja aaltoennusteet on haettu Ilmatieteen laitoksen datarajapinnasta. Ennustearvot kuvaavat olosuhteiden aiheuttamaa väylänavigoinnin riskin tasoa ja toimivat päätöksenteon tukena arvioitaessa mm. luotsauspalvelun keskeyttämistä. Tiedot päivittyvät seuraavasti: tuuliennusteet noin tunnin välein, aallokkoennusteet noin 6 tunnin välein ja näkyvyys noin 3 tunnin välein.",
       "updated": "Päivitetty",
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
     },
@@ -614,7 +614,7 @@
       "time": "Aika",
       "wind": "Tuulen nopeus ja suunta",
       "windGust": "Tuulen puuska\u00ADnopeus",
-      "wave": "Aallon korkeus ja suunta",
+      "wave": "Merkitsevä aallonkorkeus ja suunta",
       "visibility": "Näkyvyys"
     },
     "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
