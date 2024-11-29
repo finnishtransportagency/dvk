@@ -1,13 +1,16 @@
 import axios from 'axios';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient, UseMutationOptions } from '@tanstack/react-query';
 import { FeatureDataId, FeatureDataSources } from './constants';
 import {
+  SaveFeedbackMutation,
+  SaveFeedbackMutationVariables,
   Status,
   useFairwayCardPreviewQuery,
   useFindAllFairwayCardsQuery,
   useFindAllMarineWarningsQuery,
   useFindAllSafetyEquipmentFaultsQuery,
   useHarborPreviewQuery,
+  useSaveFeedbackMutation,
 } from '../graphql/generated';
 import { useEffect } from 'react';
 
@@ -104,4 +107,10 @@ export function useMarineWarningsDataWithRelatedDataInvalidation() {
     queryClient.invalidateQueries({ queryKey: ['area3456'] });
   }, [queryClient]);
   return useFindAllMarineWarningsQuery(datasourceClient, undefined, { refetchOnMount: 'always' });
+}
+
+export function useSaveFeedback<TError = unknown, TContext = unknown>(
+  options?: UseMutationOptions<SaveFeedbackMutation, TError, SaveFeedbackMutationVariables, TContext>
+) {
+  return useSaveFeedbackMutation(datasourceClient, options);
 }

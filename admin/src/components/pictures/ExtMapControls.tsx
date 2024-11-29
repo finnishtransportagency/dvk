@@ -75,6 +75,7 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({
       }
     }
   };
+  const disableModifyingControls = !dvkMap.getOrientationType() || printDisabled;
   return (
     <div className={'extControls ' + orientationType}>
       <div className="extControl selectPortraitControlContainer">
@@ -102,7 +103,7 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({
       <div className="extControl takeScreenshotControlContainer">
         <button
           className="takeScreenshotControl"
-          disabled={!dvkMap.getOrientationType() || printDisabled}
+          disabled={disableModifyingControls}
           onClick={(ev) => {
             ev.preventDefault();
             printCurrentMapView();
@@ -115,7 +116,7 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({
         <button
           className="uploadPictureControl"
           type="button"
-          disabled={!dvkMap.getOrientationType()}
+          disabled={disableModifyingControls}
           onClick={() => {
             fileInputRef.current?.click();
           }}
@@ -126,7 +127,7 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({
             id="fileInput"
             type="file"
             ref={fileInputRef}
-            disabled={!dvkMap.getOrientationType()}
+            disabled={disableModifyingControls}
             onChange={handlePictureUpload}
             accept="image/png"
             style={{ display: 'none' }}

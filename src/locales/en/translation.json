@@ -15,7 +15,8 @@
       "opens-in-a-new-tab": "Opens in a new tab",
       "location-service": "Location service",
       "location-description": "Enables tracking of the end device",
-      "location-disabled": "Use of location prohibited"
+      "location-disabled": "Use of location prohibited",
+      "leave-feedback": "Leave feedback"
     },
     "map": {
       "controls": {
@@ -575,7 +576,8 @@
     "print": "Print page",
     "filter": "Select filter...",
     "sortOldToNew": "Oldest first",
-    "sortNewToOld": "Newest first"
+    "sortNewToOld": "Newest first",
+    "submit": "Submit"
   },
   "tileLoadWarning": {
     "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."
@@ -619,5 +621,14 @@
     "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
     "previousPage": "Previous",
     "nextPage": "Next"
+  },
+  "feedback": {
+    "title": "Leave feedback",
+    "content": "Inform the Digital Fairway Card service developers, how the service could be improved. Please note that a response to the service improvement feedback will not be sent. ",
+    "title2": "What rating would you give to the service?",
+    "content2": "How likely are you to recommend the service to others on a scale of 1–10, 10 being extremely likely and 1 being extremely unlikely?",
+    "title3": "How would you improve the service?",
+    "content3": "Your feedback will be passed along to the Digital Fairway Card service development team for improvement. This feedback is not passed to the creator of the fairway card, or any other agencies or stakeholders.",
+    "thank-you": "Thank you for the feedback!"
   }
 }
