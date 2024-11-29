@@ -355,7 +355,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
             {forecastsReady && forecasts
               ? forecasts.map((f) => {
-                  return <ForecastContainer forecast={f} key={f.getId()} requiresScrolling={forecasts.length === 1} />;
+                  return <ForecastContainer forecast={f} key={f.getId()} multicontainer={forecasts.length > 1} />;
                 })
               : ''}
           </div>

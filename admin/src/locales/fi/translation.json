@@ -151,6 +151,8 @@
     "version-fairwaycard-description": "Olet lisäämässä väyläkortista uuden version. Uuden version tilaksi tulee luonnos. Oletko varma, että haluat jatkaa?",
     "preview-fairwaycard-title": "Väyläkortin esikatselu",
     "preview-fairwaycard-description": "Väyläkortti sisältää tallentamattomia muutoksia. Tallenna muutokset nähdäksesi ne esikatselussa.",
+    "change-version-fairwaycard-description": "Väyläkortilla on tallentamattomia muutoksia. Tallenna tai hylkää muutokset vaihtaaksesi versiota, tai peruuta jatkaaksesi nykyisen version muokkaamista.",
+    "description-select-fairwaycard-version": "Voit vaihtaa väyläkortin versioiden välillä valitsemalla valikosta haluamasi version. Jos olet siirtymässä versiolta joka sisältää tallentamattomia muutoksia, järjestelmä pyytää tallentamaan tai hylkäämään muutokset ennen version vaihtamista.",
     "cancel-harbor-title": "Poistu tallentamatta",
     "cancel-harbor-description": "Satama sisältää tallentamattomia muutoksia. Oletko varma, että haluat poistua tallentamatta?",
     "delete-harbor-title": "Sataman poisto",
@@ -162,6 +164,8 @@
     "version-harbor-description": "Olet lisäämässä satamasta uuden version. Uuden version tilaksi tulee luonnos. Oletko varma, että haluat jatkaa?",
     "preview-harbor-title": "Sataman esikatselu",
     "preview-harbor-description": "Satama sisältää tallentamattomia muutoksia. Tallenna muutokset nähdäksesi ne esikatselussa.",
+    "change-version-harbor-description": "Satamalla on tallentamattomia muutoksia. Tallenna tai hylkää muutokset vaihtaaksesi versiota, tai peruuta jatkaaksesi nykyisen version muokkaamista.",
+    "description-select-harbor-version": "Voit vaihtaa sataman versioiden välillä valitsemalla valikosta haluamasi version. Jos olet siirtymässä versiolta joka sisältää tallentamattomia muutoksia, järjestelmä pyytää tallentamaan tai hylkäämään muutokset ennen version vaihtamista.",
     "saved-fairwaycard-by-name": "Väyläkortin \"{{ name }}\" tiedot tallennettu.",
     "saved-harbor-by-name": "Sataman \"{{ name }}\" tiedot tallennettu.",
     "help-title-PORTRAIT": "Väyläkortin pystytulosteiden asettaminen",
@@ -183,7 +187,10 @@
     "ending-fairway-description": "Voit valita useita päättäviä väyliä. Päättävien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "fairwaycard-publish-details": "Väyläkortin julkaisutiedot",
     "harbor-publish-details": "Sataman julkaisutiedot",
-    "adding-publish-details": "Julkaisutietojen lisääminen"
+    "adding-publish-details": "Julkaisutietojen lisääminen",
+    "unsaved-changes": "Tallentamattomia muutoksia",
+    "discard": "Hylkää",
+    "changing-version": "Versioiden välillä vaihtelu"
   },
   "fairwaycard": {
     "publish-details": "Julkaisutiedot",
