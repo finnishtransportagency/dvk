@@ -188,29 +188,4 @@ test.describe('Modify operations for cards and harbors', () => {
     await fillLatLngAndSaveSucceeds(page);
     await deleteHarbour(page);
   });
-
-  test.afterAll(async ({ browser }) => {
-    //Cleanup all test data
-    const page = await browser.newPage();
-    await openPage(page);
-    let cont = true;
-    while (cont) {
-      const templateLocator = page.getByTitle(SEARCH_BY_NAME_OR_ID, { exact: true }).first();
-      await fillFieldWithValue(page, templateLocator, E2E_TEST_PREFIX);
-      const link = await getFirstItemFromList(page);
-      if (await link.isVisible()) {
-        await link.click();
-        //Main page delete
-        await page.getByRole('button', { name: DELETE }).first().click();
-        //Modal delete
-        await page.getByRole('button', { name: DELETE }).first().click();
-        //Close confirmation dialog
-        await page.getByLabel(OK, { exact: true }).first().click();
-        //Return to search results
-        await page.getByRole('button', { name: CANCEL }).first().click();
-      } else {
-        cont = false;
-      }
-    }
-  });
 });
