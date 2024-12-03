@@ -633,7 +633,7 @@
     "title2": "Minkä arvosanan antaisit palvelulle?",
     "content2": "Kuinka todennäköisesti suosittelisit palvelua? Asteikolla 1–10, jolloin 10 suosittelisi erittäin todennäköisesti ja 1 suosittelisi erittäin epätodennäköisesti.",
     "title3": "Miten kehittäisit palvelua paremmaksi?",
-    "content3": "Palautteesi välitetään Digitaalinen Väyläkortti -palvelun kehittäjille palvelun parantamiseksi. Näitä palautteita ei toimiteta väyläkorttien laatijoille tai muille virastojen tai sidosryhmien henkilöille.",
+    "content3": "Palautteesi välitetään Digitaalinen Väyläkortti -palvelun kehittäjille palvelun parantamiseksi.",
     "thank-you": "Kiitos palautteestasi!"
   }
 }
