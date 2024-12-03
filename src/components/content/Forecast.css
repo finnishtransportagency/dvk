@@ -10,3 +10,34 @@
     margin-top: 4px;
   }
 }
+
+div.legend.text {
+  margin-right: 12px;
+}
+
+div.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0px;
+  margin-top: 5px;
+  margin-right: 2px;
+}
+
+div.legend.box {
+  width: 10px;
+  height: 10px;
+  border: 1px solid rgba(0, 0, 0, 1);
+}
+
+div.legend.box.green {
+  background: #90bda1;
+}
+
+div.legend.box.yellow {
+  background: #ffc300;
+}
+
+div.legend.box.red {
+  background: #f79f9f;
+}

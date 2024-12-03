@@ -10,6 +10,7 @@ import { clearClickSelectionFeatures } from './selectInteraction';
 import CloseButton from './CloseButton';
 import ForecastTable from '../ForecastTable';
 import { useFeatureData } from '../../utils/dataLoader';
+import ForecastLegend from '../content/ForecastLegend';
 
 type ForecastPopupContentProps = {
   forecast: ForecastProperties;
@@ -64,6 +65,7 @@ const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, s
       <IonRow>
         <IonCol>{t('popup.forecast.dateTimeFormat', { val: dataUpdatedAt })}</IonCol>
       </IonRow>
+      <ForecastLegend />
       <IonRow>
         <ForecastTable forecastItems={forecast.properties.forecastItems} />
       </IonRow>

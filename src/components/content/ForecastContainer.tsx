@@ -9,6 +9,7 @@ import { coordinatesToStringHDM } from '../../utils/coordinateUtils';
 import { Feature } from 'ol';
 import { Geometry, Point } from 'ol/geom';
 import './Forecast.css';
+import ForecastLegend from './ForecastLegend';
 
 type ForecastContentProps = {
   forecast: Feature<Geometry>;
@@ -45,7 +46,7 @@ const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast, multicont
       <IonRow>
         <IonCol>{t('forecast.dateTimeFormat', { val: dataUpdatedAt })}</IonCol>
       </IonRow>
-      <br />
+      <ForecastLegend />
       <IonRow>
         <ForecastTable forecastItems={properties.forecastItems} page={12} clear={true} multitable={multicontainer} />
       </IonRow>
