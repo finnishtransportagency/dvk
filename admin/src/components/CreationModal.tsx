@@ -249,6 +249,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               {t('general.version-number')} {'*'}
             </IonLabel>
             <IonSelect
+              data-testid="versionselect"
               ref={selectVersionRef}
               className="selectInput"
               disabled={!source}
@@ -269,7 +270,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
                 .sort((a, b) => Number(b.version.slice(1)) - Number(a.version.slice(1)))
                 .map((item) => {
                   return (
-                    <IonSelectOption key={`${item.id}-${item.version}`} value={item}>
+                    <IonSelectOption data-testid="versionselectitem" key={`${item.id}-${item.version}`} value={item}>
                       {`${item.version.slice(1)} (${t('general.item-status-' + item.status).toLocaleLowerCase()})`}
                     </IonSelectOption>
                   );
@@ -301,6 +302,7 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
               pattern={'[a-z]+[a-z\\d]*'}
               required
               value={identifier}
+              data-testid="primaryId"
             />
           </IonCol>
         </IonRow>

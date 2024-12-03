@@ -183,6 +183,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({ isOpen, setIsOpen,
               autoGrow
               value={feedback}
               onIonChange={handleFeedbackChange}
+              onIonInput={handleFeedbackChange}
               maxlength={2000}
               counter={true}
               data-test-id="feedbackText"

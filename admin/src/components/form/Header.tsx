@@ -65,7 +65,14 @@ const Header: React.FC<HeaderProps> = ({
             />
           </IonCol>
           <IonCol size="auto" className="ion-no-padding">
-            <IonButton id="cancelButton" shape="round" className="invert" onClick={() => handleCancel()} disabled={isLoading}>
+            <IonButton
+              id="cancelButton"
+              data-testid="cancelButton"
+              shape="round"
+              className="invert"
+              onClick={() => handleCancel()}
+              disabled={isLoading}
+            >
               {t('general.cancel')}
             </IonButton>
           </IonCol>
@@ -95,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({
           {currentState.status === Status.Draft && (
             <>
               <IonCol size="auto" className="ion-no-padding">
-                <IonButton id="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSave()}>
+                <IonButton id="saveButton" data-testid="saveButton" shape="round" disabled={isError || isLoading} onClick={() => handleSave()}>
                   {currentState.operation === Operation.Update || currentState.operation === Operation.Createversion
                     ? t('general.save')
                     : t('general.create-new')}
