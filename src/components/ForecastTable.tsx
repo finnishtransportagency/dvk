@@ -8,13 +8,12 @@ type ForecastTableProps = {
   forecastItems: ForecastItem[];
   page?: number;
   clear?: boolean;
-
-  //Remove this when a solution is found in future ticket to fix scroll problem
-  requiresScrolling?: boolean;
+  multitable?: boolean;
 };
 
 type ForecastRowProps = {
   forecastItem: ForecastItem;
+  visible?: boolean;
 };
 
 const timezoneOffsetMinutesToString = (date: Date) => {
@@ -30,11 +29,12 @@ const timezoneOffsetMinutesToString = (date: Date) => {
   }
 };
 
-const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
+const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem, visible = true }) => {
   const { t } = useTranslation();
 
+  const hide: string = visible ? '' : ' hidden';
   return (
-    <IonRow className="DateRow">
+    <IonRow className={'DateRow' + hide}>
       <IonCol size="12" className="ion-text-center">
         {t('forecastTable.dateRowFormat', { val: forecastItem.dateTime })}
       </IonCol>
@@ -42,7 +42,7 @@ const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
   );
 };
 
-const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
+const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem, visible }) => {
   let windColClass = 'ForecastColGreen';
   if (forecastItem.windSpeed >= 14) {
     windColClass = 'ForecastColYellow';
@@ -76,9 +76,10 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
   }
 
   const leftAlign: string = ' ion-text-begin';
+  const hide: string = visible ? '' : ' hidden';
 
   return (
-    <IonRow className="ForecastRow">
+    <IonRow className={'ForecastRow' + hide}>
       <IonCol size="2">{getTimeString(new Date(forecastItem.dateTime))}</IonCol>
       <IonCol size="3" className={windColClass + leftAlign}>
         {Math.round(forecastItem.windSpeed)} m/s, {Math.round(forecastItem.windDirection)}&deg;
@@ -96,7 +97,7 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem }) => {
   );
 };
 
-const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clear = false, requiresScrolling = false }) => {
+const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clear = false, multitable = false }) => {
   const { t } = useTranslation();
   const [startIndex, setStartIndex] = useState<number>(0);
   const pageSize = page ?? 8;
@@ -110,68 +111,55 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clea
     utcDiffStr += ', ' + timezoneOffsetMinutesToString(new Date(forecastItems[endIndex].dateTime));
   }
 
-  let timeoutId: number;
   const showPreviousPage = () => {
     setStartIndex(startIndex >= pageSize ? startIndex - pageSize : 0);
-    //Remove this when a solution is found in future ticket to fix scroll problem
-    timeoutId = window.setTimeout(scroll, 1);
   };
 
   const showNextPage = () => {
     setStartIndex(startIndex + pageSize);
-    //Remove this when a solution is found in future ticket to fix scroll problem
-    timeoutId = window.setTimeout(scroll, 1);
-  };
-
-  const scroll = () => {
-    //Remove this when a solution is found in future ticket to fix scroll problem
-    if (requiresScrolling) {
-      const anchor = document.querySelector('#bottom');
-      anchor?.scrollIntoView({ behavior: 'smooth' });
-    }
-    window.clearTimeout(timeoutId);
   };
 
   const gridClassName = 'ForecastGrid' + ((clear ? ' clear' : '') + ' ion-no-padding');
+  const forecastItemsToShow = multitable ? forecastItems.slice(startIndex, startIndex + pageSize) : forecastItems;
+
   return (
-    <>
-      <IonGrid className={gridClassName}>
-        <IonRow className="HeaderRow ion-justify-content-between">
-          <IonCol size="2" className="header">
-            {t('forecastTable.tableHeaders.time')}
-            <br />
-            <span>({utcDiffStr})</span>
-          </IonCol>
-          <IonCol size="3" className="header">
-            {t('forecastTable.tableHeaders.wind')}
-          </IonCol>
-          <IonCol size="2" className="header">
-            {t('forecastTable.tableHeaders.windGust')}
-          </IonCol>
-          <IonCol size="3" className="header">
-            {t('forecastTable.tableHeaders.wave')}
-          </IonCol>
-          <IonCol size="2" className="header">
-            {t('forecastTable.tableHeaders.visibility')}
-          </IonCol>
-        </IonRow>
-        {forecastItems.length > 0 ? (
-          forecastItems.slice(startIndex, startIndex + pageSize).map((item, index, items) => {
-            const showDateRow =
-              (index === 0 && new Date(items[0].dateTime).getDate() === new Date(items[items.length - 1].dateTime).getDate()) ||
-              (index !== 0 && new Date(items[index].dateTime).getDate() !== new Date(items[index - 1].dateTime).getDate());
-            return (
-              <div key={item.dateTime}>
-                {showDateRow && <ForecastTableDateRow forecastItem={item} />}
-                <ForecastTableRow forecastItem={item} />
-              </div>
-            );
-          })
-        ) : (
-          <IonRow>
-            <IonCol>-</IonCol>
-          </IonRow>
-        )}
+    <IonGrid className={gridClassName}>
+      <IonRow className="HeaderRow ion-justify-content-between">
+        <IonCol size="2" className="header">
+          {t('forecastTable.tableHeaders.time')}
+          <br />
+          <span>({utcDiffStr})</span>
+        </IonCol>
+        <IonCol size="3" className="header">
+          {t('forecastTable.tableHeaders.wind')}
+        </IonCol>
+        <IonCol size="2" className="header">
+          {t('forecastTable.tableHeaders.windGust')}
+        </IonCol>
+        <IonCol size="3" className="header">
+          {t('forecastTable.tableHeaders.wave')}
+        </IonCol>
+        <IonCol size="2" className="header">
+          {t('forecastTable.tableHeaders.visibility')}
+        </IonCol>
+      </IonRow>
+
+      {forecastItemsToShow.length > 0 ? (
+        forecastItemsToShow.map((item, index, items) => {
+          const isOnThisPage = multitable || (index >= startIndex && index < startIndex + pageSize);
+          const showDateRow =
+            isOnThisPage &&
+            ((index === (multitable ? 0 : startIndex) &&
+              new Date(item.dateTime).getDate() === new Date(items[(multitable ? 0 : startIndex) + pageSize - 1].dateTime).getDate()) ||
+              (index !== 0 && new Date(items[index].dateTime).getDate() !== new Date(items[index - 1].dateTime).getDate()));
+          return (
+            <div key={item.dateTime}>
+              {showDateRow && <ForecastTableDateRow forecastItem={item} visible={showDateRow} />}
+              <ForecastTableRow forecastItem={item} visible={isOnThisPage} />
+            </div>
+          );
+        })
+      ) : (
         <IonRow>
           <IonCol size="6">
             <button className="ChangePageButton" onClick={showPreviousPage} disabled={startIndex === 0}>
@@ -186,9 +174,20 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clea
             </button>
           </IonCol>
         </IonRow>
-      </IonGrid>
-      <div id="bottom" />
-    </>
+      )}
+      <IonRow>
+        <IonCol size="6">
+          <button className="ChangePageButton" onClick={showPreviousPage} disabled={startIndex === 0}>
+            {t('forecastTable.previousPage')} {pageSize}h
+          </button>
+        </IonCol>
+        <IonCol size="6">
+          <button className="ChangePageButton ion-float-right" onClick={showNextPage} disabled={startIndex + pageSize >= forecastItems.length}>
+            {t('forecastTable.nextPage')} {pageSize}h
+          </button>
+        </IonCol>
+      </IonRow>
+    </IonGrid>
   );
 };
 

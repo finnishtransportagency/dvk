@@ -9,7 +9,7 @@ export type Lang = 'fi' | 'sv' | 'en';
 
 export type ItemType = '' | 'CARD' | 'HARBOR';
 
-export type ConfirmationType = '' | 'archive' | 'cancel' | 'preview' | 'publish' | 'remove' | 'version';
+export type ConfirmationType = '' | 'archive' | 'cancel' | 'preview' | 'publish' | 'remove' | 'version' | 'changeVersion';
 
 export type ValidationType = {
   id: string;
