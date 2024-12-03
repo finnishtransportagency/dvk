@@ -294,7 +294,7 @@
     "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
     "lowRisk": "Alhainen riski",
     "mediumRisk": "Keskitason riski",
-    "elevatedRisk": "Kohunnut risk"
+    "elevatedRisk": "Kohunnut riski"
   },
   "faults": {
     "title": "Turvalaiteviat",
