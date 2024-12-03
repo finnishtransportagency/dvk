@@ -15,7 +15,8 @@
       "opens-in-a-new-tab": "Öppnas i en ny flik",
       "location-service": "Platstjänst",
       "location-description": "Möjliggör att platsbestämma din mobila enhet.",
-      "location-disabled": "Behörigheter för platsbestämning inaktiverad"
+      "location-disabled": "Behörigheter för platsbestämning inaktiverad",
+      "leave-feedback": "Respons på tjänsten"
     },
     "map": {
       "controls": {
@@ -52,6 +53,7 @@
           "circles": "Vändcirklar",
           "conditions": "Förhållanden",
           "seaLevel": "Vattenståndet",
+          "forecast": "Väder- och vågprognoser",
           "weatherStation": "Kustväderstationerna",
           "buoys": "Vågbojar",
           "vts": "VTS",
@@ -148,6 +150,7 @@
     "harboursTitle": "Farledens hamnar",
     "areasTitle": "Farledsområden",
     "routesTitle": "Lotsningsrutter",
+    "weatherForecastsTitle": "Väderprognoser",
     "information": "Farledsdata",
     "liningAndMarking": "Farledsdragning och utmärkning",
     "starts": "Börjar",
@@ -284,6 +287,14 @@
     "route": "Rutt",
     "rtz": "Ruttfil i RTZ-format",
     "linkedFairwayCards": "Farledskort angående lotsningsrutt"
+  },
+  "forecast": {
+    "forecastLocation": "Plats för väder- och vågprognospunkter",
+    "updated": "Uppdaterat",
+    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "lowRisk": "Låg risk",
+    "mediumRisk": "Medelhög risk",
+    "elevatedRisk": "Förhöjd risk"
   },
   "faults": {
     "title": "Säkerhetsanordningsfelen",
@@ -430,6 +441,14 @@
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Beräknat vattenstånd"
     },
+    "forecast": {
+      "forecast": "Väder- och vågprognos",
+      "coordinates": "Koordinater",
+      "extra": "Tilläggsuppgift",
+      "extraContent": "Väder- och vågprognoser har hämtats från Meteorologiska institutets datagränssnitt. Prognosvärdena beskriver risknivån för farledsnavigering orsakad av väderförhållandena och fungerar som stöd för beslutsfattande vid bedömning av t.ex. avbrott i lotsningstjänsten. Upplysningarna uppdateras enligt följande: vindprognoser ungefär varje timme, vågprognoser ungefär var sjätte timme och siktprognoser ungefär var tredje timme.",
+      "updated": "Uppdaterat",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    },
     "buoy": {
       "coordinates": "Koordinater",
       "temperature": "Vattentemperatur",
@@ -501,6 +520,7 @@
         "mareograph": "Mareograf",
         "marinewarning": "Navigationsvarning",
         "observation": "Kustväderstation",
+        "forecast": "Väder- och vågprognos",
         "pilot": "Lotsplats",
         "pilotagelimit": "Lotspliktslinje",
         "pilotroute": "Lotsningsrutt",
@@ -560,7 +580,8 @@
     "print": "Skriva ut sidan",
     "filter": "Välj filter...",
     "sortOldToNew": "Äldst först",
-    "sortNewToOld": "Nyaste först"
+    "sortNewToOld": "Nyaste först",
+    "submit": "Skicka"
   },
   "tileLoadWarning": {
     "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
@@ -592,5 +613,27 @@
     "KB": "kilobyte",
     "MB": "megabyte",
     "GB": "gigabyte"
+  },
+  "forecastTable": {
+    "tableHeaders": {
+      "time": "Tid",
+      "wind": "Vindhastighet och riktning",
+      "windGust": "Vindbyhastighet",
+      "wave": "Signifikant våghöjd och -riktning",
+      "visibility": "Sikt"
+    },
+    "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
+    "previousPage": "Tidigare",
+    "nextPage": "Nästä",
+    "hours": "t"
+  },
+  "feedback": {
+    "title": "Respons på tjänsten",
+    "content": "Berätta för utvecklarna av tjänsten Digital farledskort hur tjänsten kan utvecklas. Observera att respons om hur tjänsten kunde förbättras inte besvaras.",
+    "title2": "Vilket betyg skulle du ge tjänsten?",
+    "content2": "Hur sannolikt är det att du skulle rekommendera tjänsten till en vän på skalan 1–10, då 10 är mycket sannolikt och 1 mycket osannolikt?",
+    "title3": "Hur skulle du utveckla tjänsten så att den blir bättre?",
+    "content3": "Din respons förmedlas till utvecklarna av tjänsten Digital farledskort för att förbättra tjänsten.",
+    "thank-you": "Tack för din respons!"
   }
 }

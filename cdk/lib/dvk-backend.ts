@@ -24,9 +24,11 @@ import { WafConfig } from './wafConfig';
 import { CanonicalUserPrincipal, Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
 import { BlockPublicAccess, Bucket, BucketEncryption, BucketProps, LifecycleRule } from 'aws-cdk-lib/aws-s3';
 import { ILayerVersion, LayerVersion } from 'aws-cdk-lib/aws-lambda';
-import { DynamoEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
+import { DynamoEventSource, SqsEventSource } from 'aws-cdk-lib/aws-lambda-event-sources';
 import { getNewStaticBucketName } from './lambda/environment';
 import { OriginAccessIdentity } from 'aws-cdk-lib/aws-cloudfront';
+import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as ssm from 'aws-cdk-lib/aws-ssm';
 
 export class DvkBackendStack extends Stack {
   private domainName: string;
@@ -55,16 +57,40 @@ export class DvkBackendStack extends Stack {
       },
       xrayEnabled: false,
     });
-    // Configure the appsync cache using CfnApiCache
-    new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
-      apiCachingBehavior: 'PER_RESOLVER_CACHING',
-      apiId: api.apiId,
-      type: 'SMALL',
-      transitEncryptionEnabled: true,
-      atRestEncryptionEnabled: true,
-      ttl: 3600,
-      healthMetricsConfig: 'ENABLED',
+    // Configure the appsync cache for permantn environments using CfnApiCache
+    if (Config.isPermanentEnvironment()) {
+      new appsync.CfnApiCache(this, 'DvkApiCache' + env, {
+        apiCachingBehavior: 'PER_RESOLVER_CACHING',
+        apiId: api.apiId,
+        type: 'SMALL',
+        transitEncryptionEnabled: true,
+        atRestEncryptionEnabled: true,
+        ttl: 3600,
+        healthMetricsConfig: 'ENABLED',
+      });
+    }
+
+    // Create SQS queue
+    const queue = new sqs.Queue(this, 'DvkFeedbackQueue', {
+      queueName: `dvk-feedback-queue-${env}`,
+      visibilityTimeout: Duration.seconds(60), // same as reader lambda
     });
+
+    // Write SQS queue URL to SSM Parameter Store
+    new ssm.StringParameter(this, 'DvkFeedbackQueueUrl', {
+      parameterName: `/${env}/feedback-sqs-queue-url`,
+      stringValue: queue.queueUrl,
+    });
+
+    const layer = LayerVersion.fromLayerVersionArn(
+      this,
+      'ParameterLayer',
+      'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
+    );
+
+    // Create Lambda function to read from SQS
+    this.createSqsReaderLambda(queue, env, layer);
+
     const config = new Config(this);
     if (Config.isPermanentEnvironment()) {
       try {
@@ -79,13 +105,6 @@ export class DvkBackendStack extends Stack {
     const fairwayCardWithVersionsTable = this.createFairwayCardWithVersionsTable();
     this.createHarborTable();
     const harborWithVersionsTable = this.createHarborWithVersionsTable();
-
-    const layer = LayerVersion.fromLayerVersionArn(
-      this,
-      'ParameterLayer',
-      'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
-    );
-
     const fairwayCardVersioningBucket = this.createVersioningBucket('fairwaycard', env);
     const harborVersioningBucket = this.createVersioningBucket('harbor', env);
 
@@ -150,7 +169,6 @@ export class DvkBackendStack extends Stack {
           DAYS_TO_EXPIRE: Config.isDeveloperOrDevEnvironment() ? '1' : '30',
           API_TIMEOUT: '10000',
         },
-        // logRetention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
         logGroup: new LogGroup(this, `LambdaLogs-${functionName}`, {
           logGroupName: `/dvk/lambda/${functionName}`,
           retention: Config.isPermanentEnvironment() ? RetentionDays.SIX_MONTHS : RetentionDays.ONE_DAY,
@@ -164,7 +182,10 @@ export class DvkBackendStack extends Stack {
       lambdaDataSource.createResolver(`${typeName}${fieldName}Resolver`, {
         typeName: typeName,
         fieldName: fieldName,
-        cachingConfig: lambdaFunc.useCaching ? { cachingKeys: ['$context.arguments'], ttl: cdk.Duration.minutes(60) } : undefined,
+        cachingConfig:
+          Config.isPermanentEnvironment() && lambdaFunc.useCaching
+            ? { cachingKeys: ['$context.arguments'], ttl: cdk.Duration.minutes(60) }
+            : undefined,
       });
       if (typeName === 'Mutation') {
         fairwayCardWithVersionsTable.grantReadWriteData(backendLambda);
@@ -181,6 +202,7 @@ export class DvkBackendStack extends Stack {
       cacheBucket.grantRead(backendLambda);
       staticBucket.grantRead(backendLambda);
       backendLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
+      if (lambdaFunc.useSqs) queue.grantSendMessages(backendLambda);
     }
     Tags.of(fairwayCardWithVersionsTable).add('Backups-' + Config.getEnvironment(), 'true');
     Tags.of(harborWithVersionsTable).add('Backups-' + Config.getEnvironment(), 'true');
@@ -499,5 +521,36 @@ export class DvkBackendStack extends Stack {
     } else {
       return 'DvkDev-VPC';
     }
+  }
+
+  private createSqsReaderLambda(queue: sqs.Queue, env: string, ssmLayer: ILayerVersion): lambda.Function {
+    const sqsReaderLambda = new NodejsFunction(this, 'DvkSqsReaderLambda', {
+      functionName: `dvk-feedback-reader-${env}`,
+      entry: path.join(__dirname, 'lambda', 'sqsReader.ts'),
+      handler: 'handler',
+      runtime: lambda.Runtime.NODEJS_20_X,
+      memorySize: 256,
+      timeout: Duration.seconds(60),
+      layers: [ssmLayer],
+      environment: {
+        QUEUE_URL: queue.queueUrl,
+        LOG_LEVEL: Config.isPermanentEnvironment() ? 'info' : 'debug',
+        ENVIRONMENT: Config.getEnvironment(),
+        TZ: 'Europe/Helsinki',
+        PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
+        PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: Config.isDeveloperEnvironment() ? 'DEBUG' : 'WARN',
+        SSM_PARAMETER_STORE_TTL: '300',
+      },
+    });
+
+    sqsReaderLambda.addToRolePolicy(new PolicyStatement({ effect: Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
+
+    // Grant the Lambda function permission to read from the SQS queue
+    queue.grantConsumeMessages(sqsReaderLambda);
+
+    // Add SQS as an event source for the Lambda function
+    sqsReaderLambda.addEventSource(new SqsEventSource(queue));
+
+    return sqsReaderLambda;
   }
 }

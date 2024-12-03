@@ -9,6 +9,7 @@ import {
   IonItem,
   IonLabel,
   IonPage,
+  IonProgressBar,
   IonRow,
   IonSelect,
   IonSelectOption,
@@ -58,6 +59,8 @@ const MainPage: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [sortBy, setSortBy] = useState('name');
   const [sortDescending, setSortDescending] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+
   const searchRef = useRef<HTMLIonInputElement>(null);
 
   const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, itemStatus, sortBy, sortDescending, t);
@@ -141,6 +144,7 @@ const MainPage: React.FC = () => {
   return (
     <IonPage>
       <IonHeader className="ion-no-border" id="mainPageContent">
+        {isCreating && <IonProgressBar type="indeterminate" />}
         <IonGrid className="optionBar">
           <IonRow className="ion-align-items-end">
             <IonCol size="auto">
@@ -334,30 +338,43 @@ const MainPage: React.FC = () => {
             filteredItemList.map((item) => {
               return (
                 <IonRow
+                  data-testid="resultrow"
                   key={item.id + item.type + item.version}
                   tabIndex={0}
                   onClick={() => selectItem(item.id, item.type, item.version)}
                   onKeyDown={(e) => keyDownAction(e, item.id, item.type, item.version)}
                 >
                   <IonCol size="1">{item.id}</IonCol>
-                  <IonCol size="1.25">{item.name[lang] ?? item.name.fi}</IonCol>
-                  <IonCol size="1">{t('item-type-' + item.type)}</IonCol>
+                  <IonCol data-testid="resultname" size="1.25">
+                    {item.name[lang] ?? item.name.fi}
+                  </IonCol>
+                  <IonCol data-testid="resulttype" size="1">
+                    {t('item-type-' + item.type)}
+                  </IonCol>
                   <IonCol size="1.25">{groups[Number(item.group ?? 0)]}</IonCol>
                   <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
-                  <IonCol size="1" className={'item-status-' + item.status}>
+                  <IonCol data-testid="resultstatus" size="1" className={'item-status-' + item.status}>
                     {t('item-status-' + item.status)}
                   </IonCol>
                   <IonCol size="1">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
                   <IonCol size="1.25">{item.modifier}</IonCol>
                   <IonCol size="1.25">{item.creator}</IonCol>
                   <IonCol size="1">{getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
-                  <IonCol size="1">{item.version.slice(1)}</IonCol>
+                  <IonCol data-testid="resultversion" size="1">
+                    {item.version.slice(1)}
+                  </IonCol>
                 </IonRow>
               );
             })}
         </IonGrid>
 
-        <CreationModal itemList={data?.fairwayCardsAndHarbors ?? []} itemType={itemType} isOpen={isOpen} setIsOpen={setIsOpen} />
+        <CreationModal
+          itemList={data?.fairwayCardsAndHarbors ?? []}
+          itemType={itemType}
+          isOpen={isOpen}
+          setIsOpen={setIsOpen}
+          setIsCreating={setIsCreating}
+        />
       </IonContent>
     </IonPage>
   );

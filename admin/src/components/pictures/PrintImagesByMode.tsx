@@ -27,8 +27,7 @@ interface PrintImagesByModeProps {
   isLoading?: boolean;
   isProcessingCurLang?: boolean;
   validationErrors?: ValidationType[];
-  sourceCardId?: string;
-  sourceCardVersion?: string;
+  readonly?: boolean;
 }
 
 export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
@@ -36,12 +35,11 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   setPicture,
   orientation,
   disabled,
+  readonly = false,
   setShowPicture,
   isLoading,
   isProcessingCurLang,
   validationErrors,
-  sourceCardId,
-  sourceCardVersion,
 }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
@@ -101,8 +99,8 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
     }
   };
 
-  const cardId = sourceCardId?.length ? sourceCardId : fairwayCardInput.id;
-  const cardVersion = sourceCardId?.length ? sourceCardVersion : fairwayCardInput.version;
+  const cardId = fairwayCardInput.id;
+  const cardVersion = fairwayCardInput.version;
 
   return (
     <IonGrid className={'print-images ' + orientation.toLowerCase()}>
@@ -124,7 +122,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                         setShowPicture(pic);
                       }}
                     >
-                      <img src={imgSource + pic.id} alt={sourceCardId?.length ? `${t('fairwaycard.pic-copy')}-${pic.id}` : pic.id} />
+                      <img src={imgSource + pic.id} alt={pic.id} />
                       <IonButton
                         slot="end"
                         onClick={(ev) => {
@@ -133,7 +131,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           toggleSequence(pic);
                         }}
                         fill="clear"
-                        disabled={previewDisabled || disabled}
+                        disabled={readonly || previewDisabled || disabled}
                         className={'icon-only sequenceButton' + (pic.sequenceNumber ? ' selected' : '')}
                         title={t('fairwaycard.toggle-sequence') ?? ''}
                         aria-label={t('fairwaycard.toggle-sequence') ?? ''}
@@ -143,7 +141,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                       <IonButton
                         slot="end"
                         fill="clear"
-                        disabled={previewDisabled || disabled}
+                        disabled={readonly || previewDisabled || disabled}
                         className="icon-only x-small deletePicture"
                         onClick={(ev) => {
                           ev.preventDefault();
@@ -168,11 +166,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                                 setShowPicture(groupedPic);
                               }}
                             >
-                              <img
-                                src={imgSource + groupedPic.id}
-                                alt={sourceCardId?.length ? `${t('fairwaycard.pic-copy')}-${groupedPic.id}` : groupedPic.id}
-                                className="small"
-                              />
+                              <img src={imgSource + groupedPic.id} alt={groupedPic.id} className="small" />
                             </a>
                           </IonCol>
                         ))}
@@ -231,6 +225,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                           actionTarget={pic.groupId ?? ''}
                           required={!!pic.text || !!groupedPics?.filter((gPic) => gPic.text).length}
                           disabled={previewDisabled || disabled}
+                          readonly={readonly}
                           error={
                             pic.text || groupedPics?.filter((gPic) => gPic.text).length
                               ? validationErrors?.find((error) => error.id === 'pictureText-' + pic.groupId)?.msg

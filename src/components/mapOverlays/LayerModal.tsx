@@ -106,6 +106,7 @@ const LayerModal: React.FC<ModalProps> = ({
         title: t('homePage.map.controls.layer.conditions'),
         childLayers: [
           { id: 'mareograph', title: t('homePage.map.controls.layer.seaLevel') },
+          { id: 'forecast', title: t('homePage.map.controls.layer.forecast') },
           { id: 'observation', title: t('homePage.map.controls.layer.weatherStation') },
           { id: 'buoy', title: t('homePage.map.controls.layer.buoys') },
         ],
@@ -225,7 +226,13 @@ const LayerModal: React.FC<ModalProps> = ({
   }, [layers, setMarineWarningNotificationLayer, isOffline]);
 
   return (
-    <IonModal id="layerModalContainer" isOpen={isOpen} onDidDismiss={() => closeLayerModal()} showBackdrop={!infoModalOpen}>
+    <IonModal
+      id="layerModalContainer"
+      isOpen={isOpen}
+      onDidDismiss={() => closeLayerModal()}
+      showBackdrop={!infoModalOpen}
+      data-testid="layerModalContainer"
+    >
       <div id="layerModalContent">
         <IonGrid className="mainGrid ion-no-padding">
           <IonRow className="ion-align-items-center">

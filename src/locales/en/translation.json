@@ -15,7 +15,8 @@
       "opens-in-a-new-tab": "Opens in a new tab",
       "location-service": "Location service",
       "location-description": "Enables tracking of the end device",
-      "location-disabled": "Use of location prohibited"
+      "location-disabled": "Use of location prohibited",
+      "leave-feedback": "Leave feedback"
     },
     "map": {
       "controls": {
@@ -52,6 +53,7 @@
           "circles": "Turning circles",
           "conditions": "Conditions",
           "seaLevel": "Sea level",
+          "forecast": "Weather and wave forecasts",
           "weatherStation": "Weather stations",
           "buoys": "Wave buoys",
           "vts": "VTS",
@@ -148,6 +150,7 @@
     "harboursTitle": "Fairway harbours",
     "areasTitle": "Fairway areas",
     "routesTitle": "Pilot routes",
+    "weatherForecastsTitle": "Weather forecasts",
     "information": "Fairway data",
     "liningAndMarking": "Channel alignment and marking",
     "starts": "Starts",
@@ -284,6 +287,14 @@
     "route": "Route",
     "rtz": "Route file in RTZ-format",
     "linkedFairwayCards": "Fairway cards for the pilot route"
+  },
+  "forecast": {
+    "forecastLocation": "Weather and wave forecast location",
+    "updated": "Updated",
+    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "lowRisk": "Low risk",
+    "mediumRisk": "Medium risk",
+    "elevatedRisk": "Increased risk"
   },
   "faults": {
     "title": "Defective navigation aids",
@@ -430,6 +441,14 @@
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Last observation"
     },
+    "forecast": {
+      "forecast": "Weather and wave forecasts",
+      "coordinates": "Coordinates",
+      "extra": "Additional information",
+      "extraContent": "Weather and wave forecasts have been retrieved from the Finnish Meteorological Institute's data interface. The forecast values describe the level of risk for fairway navigation caused by the weather conditions and serve as support for decision-making when assessing, for example, interruptions to pilot services. The data is updated as follows: wind forecasts approximately every hour, wave forecasts approximately every 6 hours, and visibility forecasts approximately every 3 hours.",
+      "updated": "Updated",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    },
     "buoy": {
       "coordinates": "Coordinates",
       "temperature": "Water temperature",
@@ -501,6 +520,7 @@
         "mareograph": "Mareograph",
         "marinewarning": "Navigational warning",
         "observation": "Weather station",
+        "forecast": "Weather and wave forecasts",
         "pilot": "Pilot boarding position",
         "pilotagelimit": "Compulsory pilotage limit",
         "pilotroute": "Pilot route",
@@ -559,7 +579,8 @@
     "print": "Print page",
     "filter": "Select filter...",
     "sortOldToNew": "Oldest first",
-    "sortNewToOld": "Newest first"
+    "sortNewToOld": "Newest first",
+    "submit": "Submit"
   },
   "tileLoadWarning": {
     "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."
@@ -591,5 +612,27 @@
     "KB": "kilobytes",
     "MB": "megabytes",
     "GB": "gigabytes"
+  },
+  "forecastTable": {
+    "tableHeaders": {
+      "time": "Time",
+      "wind": "Wind speed and direction",
+      "windGust": "Wind gust speed",
+      "wave": "Significant wave height and direction",
+      "visibility": "Visibility"
+    },
+    "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
+    "previousPage": "Previous",
+    "nextPage": "Next",
+    "hours": "h"
+  },
+  "feedback": {
+    "title": "Leave feedback",
+    "content": "Inform the Digital Fairway Card service developers, how the service could be improved. Please note that a response to the service improvement feedback will not be sent. ",
+    "title2": "What rating would you give to the service?",
+    "content2": "How likely are you to recommend the service to others on a scale of 1–10, 10 being extremely likely and 1 being extremely unlikely?",
+    "title3": "How would you improve the service?",
+    "content3": "Your feedback will be passed along to the Digital Fairway Card service development team for improvement.",
+    "thank-you": "Thank you for the feedback!"
   }
 }

@@ -166,20 +166,19 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
 export function validateFairwayCardForm(
   state: FairwayCardInput,
   requiredMsg: string,
-  primaryIdErrorMsg: string,
   invalidErrorMsg: string,
   endDateErrorMsg: string
 ): ValidationType[] {
   const manualValidations = [
     { id: 'name', msg: requiredError(state.name) ? requiredMsg : '' },
-    { id: 'primaryId', msg: primaryIdErrorMsg },
     { id: 'fairwayIds', msg: state.fairwayIds.length < 1 ? requiredMsg : '' },
     { id: 'fairwayPrimary', msg: state.fairwayIds.length > 1 && state.primaryFairwayId && state.primaryFairwayId.length < 1 ? requiredMsg : '' },
     {
       id: 'fairwaySecondary',
       msg: state.fairwayIds.length > 1 && state.secondaryFairwayId && state.secondaryFairwayId.length < 1 ? requiredMsg : '',
     },
-    { id: 'group', msg: state.group.length < 1 ? requiredMsg : '' },
+    // trim because group is given as an empty string so empty form can be saved from creation modal
+    { id: 'group', msg: state.group.trim().length < 1 ? requiredMsg : '' },
     {
       id: 'additionalInfo',
       msg: translationError(state.additionalInfo) ? requiredMsg : '',
@@ -363,12 +362,7 @@ function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocation
   return { quayNameErrors, quayExtraInfoErrors, quayLatErrors, quayLonErrors, quayLocationErrors, sectionLocationErrors, sectionGeometryErrors };
 }
 
-export function validateHarbourForm(
-  state: HarborInput,
-  requiredMsg: string,
-  primaryIdErrorMsg: string,
-  duplicateLocationErrorMsg: string
-): ValidationType[] {
+export function validateHarbourForm(state: HarborInput, requiredMsg: string, duplicateLocationErrorMsg: string): ValidationType[] {
   const manualValidations = [
     { id: 'name', msg: requiredError(state.name) ? requiredMsg : '' },
     {
@@ -387,7 +381,6 @@ export function validateHarbourForm(
       id: 'companyName',
       msg: translationError(state.company) ? requiredMsg : '',
     },
-    { id: 'primaryId', msg: primaryIdErrorMsg },
     { id: 'lat', msg: !state.geometry?.lat ? requiredMsg : '' },
     { id: 'lon', msg: !state.geometry?.lon ? requiredMsg : '' },
   ];

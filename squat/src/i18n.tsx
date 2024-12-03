@@ -1,4 +1,4 @@
-import i18n, { use } from 'i18next';
+import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import translationFI from './locales/fi/translation.json';
@@ -11,7 +11,7 @@ declare module 'i18next' {
   }
 }
 
-use(initReactI18next).init({
+i18n.use(initReactI18next).init({
   returnNull: false,
   resources: {
     fi: {

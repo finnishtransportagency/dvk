@@ -24,9 +24,19 @@ interface SectionProps {
   actionOuterTarget?: string | number;
   validationErrors?: ValidationType[];
   disabled?: boolean;
+  readonly?: boolean;
 }
 
-const Section: React.FC<SectionProps> = ({ title, sections, updateState, sectionType, actionOuterTarget, validationErrors, disabled }) => {
+const Section: React.FC<SectionProps> = ({
+  title,
+  sections,
+  updateState,
+  sectionType,
+  actionOuterTarget,
+  validationErrors,
+  disabled,
+  readonly = false,
+}) => {
   const { t } = useTranslation();
 
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
@@ -80,7 +90,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                 deleteSection={deleteSection}
                 toggleSection={toggleSection}
                 open={sectionOpen}
-                disabled={disabled}
+                readonly={readonly}
+                disabled={!readonly && disabled}
                 infoTitle={helperHeader}
                 infoDescription={helperText}
               />
@@ -95,7 +106,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                   updateState={updateState}
                   focused={isFocused}
                   validationErrors={validationErrors}
-                  disabled={disabled}
+                  readonly={readonly}
+                  disabled={!readonly && disabled}
                 />
                 <Section
                   title={''}
@@ -104,7 +116,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                   sectionType="vhf"
                   actionOuterTarget={idx}
                   validationErrors={validationErrors}
-                  disabled={disabled}
+                  readonly={readonly}
+                  disabled={!readonly && disabled}
                 />
               </div>
             )}
@@ -118,7 +131,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                 deleteSection={deleteSection}
                 focused={isFocused}
                 validationErrors={validationErrors}
-                disabled={disabled}
+                readonly={readonly}
+                disabled={!readonly && disabled}
                 actionOuterTarget={actionOuterTarget}
               />
             )}
@@ -131,7 +145,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                 updateState={updateState}
                 focused={isFocused}
                 validationErrors={validationErrors}
-                disabled={disabled}
+                readonly={readonly}
+                disabled={!readonly && disabled}
               />
             )}
 
@@ -143,7 +158,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                   updateState={updateState}
                   focused={isFocused}
                   validationErrors={validationErrors}
-                  disabled={disabled}
+                  readonly={readonly}
+                  disabled={!readonly && disabled}
                 />
                 <Section
                   title={''}
@@ -152,7 +168,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                   sectionType="section"
                   actionOuterTarget={idx}
                   validationErrors={validationErrors}
-                  disabled={disabled}
+                  readonly={readonly}
+                  disabled={!readonly && disabled}
                 />
               </div>
             )}
@@ -166,7 +183,8 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
                 deleteSection={deleteSection}
                 focused={isFocused}
                 validationErrors={validationErrors}
-                disabled={disabled}
+                readonly={readonly}
+                disabled={!readonly && disabled}
                 actionOuterTarget={actionOuterTarget}
               />
             )}
@@ -177,7 +195,7 @@ const Section: React.FC<SectionProps> = ({ title, sections, updateState, section
       <IonGrid>
         <IonRow className="ion-justify-content-end">
           <IonCol size="auto">
-            <IonButton shape="round" onClick={() => addSection()} disabled={disabled}>
+            <IonButton shape="round" onClick={() => addSection()} disabled={readonly || disabled}>
               {t('general.add-section-' + sectionType)}
             </IonButton>
           </IonCol>

@@ -22,8 +22,7 @@ interface PrintImageProps {
   isLoading?: boolean;
   validationErrors?: ValidationType[];
   isProcessingCurLang?: boolean;
-  sourceCardId?: string;
-  sourceCardVersion?: string;
+  readonly?: boolean;
 }
 
 export const PrintImages: React.FC<PrintImageProps> = ({
@@ -31,10 +30,9 @@ export const PrintImages: React.FC<PrintImageProps> = ({
   setPicture,
   isLoading,
   disabled,
+  readonly = false,
   validationErrors,
   isProcessingCurLang,
-  sourceCardId,
-  sourceCardVersion,
 }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
@@ -49,7 +47,6 @@ export const PrintImages: React.FC<PrintImageProps> = ({
   const savedPicturesLandscape = fairwayCardInput.pictures?.filter(
     (pic) => pic.orientation === Orientation.Landscape && (pic.lang === curLang || !pic.lang)
   );
-
   return (
     <>
       <HelpModal orientation={showOrientationHelp} setIsOpen={setShowOrientationHelp} />
@@ -59,8 +56,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         setIsOpen={setShowPicture}
         setPicture={setPicture}
         disabled={disabled}
-        sourceCardId={sourceCardId}
-        sourceCardVersion={sourceCardVersion}
+        readonly={readonly}
       />
 
       <IonText>
@@ -76,7 +72,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
             }}
             title={t('general.show-help') ?? ''}
             aria-label={t('general.show-help') ?? ''}
-            disabled={!fairwayCardInput.id || !savedPicturesPortrait?.length}
+            disabled={readonly || !fairwayCardInput.id || !savedPicturesPortrait?.length}
           >
             <IonIcon icon={helpIcon} />
           </IonButton>
@@ -86,13 +82,12 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         fairwayCardInput={fairwayCardInput}
         setPicture={setPicture}
         orientation={Orientation.Portrait}
-        disabled={disabled}
+        readonly={readonly}
+        disabled={readonly || disabled}
         setShowPicture={setShowPicture}
         isLoading={dvkMap.getOrientationType() === Orientation.Portrait && isLoading}
         isProcessingCurLang={isProcessingCurLang}
         validationErrors={validationErrors}
-        sourceCardId={sourceCardId}
-        sourceCardVersion={sourceCardVersion}
       />
 
       <IonText>
@@ -108,7 +103,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
             }}
             title={t('general.show-help') ?? ''}
             aria-label={t('general.show-help') ?? ''}
-            disabled={!fairwayCardInput.id || !savedPicturesLandscape?.length}
+            disabled={readonly || !fairwayCardInput.id || !savedPicturesLandscape?.length}
           >
             <IonIcon icon={helpIcon} />
           </IonButton>
@@ -118,13 +113,12 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         fairwayCardInput={fairwayCardInput}
         setPicture={setPicture}
         orientation={Orientation.Landscape}
-        disabled={disabled}
+        readonly={readonly}
+        disabled={readonly || disabled}
         setShowPicture={setShowPicture}
         isLoading={dvkMap.getOrientationType() === Orientation.Landscape && isLoading}
         isProcessingCurLang={isProcessingCurLang}
         validationErrors={validationErrors}
-        sourceCardId={sourceCardId}
-        sourceCardVersion={sourceCardVersion}
       />
     </>
   );

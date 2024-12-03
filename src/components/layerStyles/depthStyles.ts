@@ -3,16 +3,8 @@ import { FeatureLike } from 'ol/Feature';
 import { getMap } from '../DvkMap';
 import depthIconMWsmall from '../../theme/img/depthmw1.svg';
 import depthIconMWbig from '../../theme/img/depthmw2.svg';
-import { AreaFeatureProperties, LineFeatureProperties } from '../features';
+import { AreaFeatureProperties, isShowN2000HeightSystem } from '../features';
 import { Polygon } from 'ol/geom';
-
-export function isShowN2000HeightSystem(props: AreaFeatureProperties | LineFeatureProperties): boolean {
-  if (props.n2000HeightSystem !== undefined) {
-    return props.n2000HeightSystem;
-  } else {
-    return (props.referenceLevel && props.referenceLevel.indexOf('N2000') !== -1) || !!props.n2000depth || !!props.n2000draft;
-  }
-}
 
 export function getDepthStyle(feature: FeatureLike) {
   const props = feature.getProperties() as AreaFeatureProperties;

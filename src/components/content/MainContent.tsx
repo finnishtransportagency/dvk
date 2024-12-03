@@ -241,7 +241,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                           onIonBlur={blurAction}
                           onKeyDown={(e) => keyDownAction(e)}
                           ref={inputRef}
-                          data-testid={!fairwayCardId && !target ? 'searchInput' : ''}
+                          data-testid="searchInput"
                         />
                         <button
                           type="button"
@@ -262,7 +262,7 @@ const MainContent: React.FC<MainContentProps> = ({ fairwayCardId, splitPane, tar
                     <IonCol size="auto">
                       <button
                         className={'icon ' + (widePane ? 'flip invert' : '')}
-                        data-testid={!fairwayCardId && !target ? 'toggleWide' : ''}
+                        data-testid={'toggleWide'}
                         onClick={() => toggleWide()}
                         title={widePane ? t('revertPane') : t('expandPane')}
                         aria-label={widePane ? t('revertPane') : t('expandPane')}

@@ -22,6 +22,7 @@ interface NotificationSectionProps {
   sections?: TemporaryNotificationInput[];
   actionOuterTarget?: string | number;
   disabled?: boolean;
+  readonly?: boolean;
 }
 
 const NotificationSection: React.FC<NotificationSectionProps> = ({
@@ -32,6 +33,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
   sections,
   actionOuterTarget,
   disabled,
+  readonly = false,
 }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
@@ -95,7 +97,14 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
               open={sectionOpen}
             />
             <div className={sectionClassName} key={'notification' + idx}>
-              <NotificationInput idx={idx} section={section} updateState={updateState} state={state} validationErrors={validationErrors} />
+              <NotificationInput
+                idx={idx}
+                section={section}
+                updateState={updateState}
+                state={state}
+                validationErrors={validationErrors}
+                readonly={readonly}
+              />
             </div>
           </div>
         );
@@ -112,7 +121,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
       <IonGrid>
         <IonRow className="ion-justify-content-end">
           <IonCol size="auto">
-            <IonButton shape="round" onClick={() => addSection()} disabled={disabled}>
+            <IonButton shape="round" onClick={() => addSection()} disabled={readonly || disabled}>
               {t('general.add-section-temporary-notification')}
             </IonButton>
           </IonCol>

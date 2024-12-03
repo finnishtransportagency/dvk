@@ -1,21 +1,15 @@
 import axios from 'axios';
 import {
-  getAISHeaders,
+  getAISParameters,
   getExtensionPort,
-  getIBNetApiUrl,
-  getIlmanetPassword,
-  getIlmanetUrl,
-  getIlmanetUsername,
-  getPookiHeaders,
-  getPookiUrl,
-  getSOAApiUrl,
+  getIBNetApiParameters,
+  getIlmanetParameters,
+  getPookiParameters,
+  getSOAApiParameters,
   getTimeout,
-  getTraficomHeaders,
-  getVatuHeaders,
-  getVatuPilotRoutesUrl,
-  getVatuUrl,
+  getVatuParameters,
+  getVatuPilotRoutesParameters,
   getVatuV2ApiSupport,
-  getWeatherHeaders,
 } from '../environment';
 import { log } from '../logger';
 import { FeatureCollection } from 'geojson';
@@ -38,16 +32,21 @@ export function getFetchErrorMessage(api: ExternalAPI): string {
 }
 
 export async function fetchTraficomApi<T>(path: string) {
-  const url = `https://${await getSOAApiUrl()}/${path}`;
+  const { soaApiUrl, weatherHeaders } = await getSOAApiParameters();
+  const url = `https://${soaApiUrl}/${path}`;
   const start = Date.now();
   const response = await axios
     .get(url, {
-      headers: await getTraficomHeaders(),
+      headers: weatherHeaders,
       timeout: getTimeout(),
     })
     .catch(function (error) {
-      const errorObj = error.toJSON();
-      log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      if (error.code === 'ECONNABORTED') {
+        log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch timeout: message=%s`, path, error.message);
+      } else {
+        const errorObj = error.toJSON();
+        log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      }
       throw new Error(getFetchErrorMessage(ExternalAPI.TRAFICOM));
     });
   const duration = Date.now() - start;
@@ -56,11 +55,11 @@ export async function fetchTraficomApi<T>(path: string) {
 }
 
 export async function fetchPilotRoutesApi() {
-  const url = await getVatuPilotRoutesUrl();
+  const { vatuPilotRoutesUrl, vatuHeaders } = await getVatuPilotRoutesParameters();
   const start = Date.now();
   const response = await axios
-    .get(url, {
-      headers: await getVatuHeaders(),
+    .get(vatuPilotRoutesUrl, {
+      headers: vatuHeaders,
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
@@ -73,11 +72,12 @@ export async function fetchPilotRoutesApi() {
 }
 
 async function fetchAISApi(path: string, params: Record<string, string>) {
-  const url = `https://${await getSOAApiUrl()}/${path}`;
+  const { soaApiUrl, aisHeaders } = await getAISParameters();
+  const url = `https://${soaApiUrl}/${path}`;
   const start = Date.now();
   const response = await axios
     .get(url, {
-      headers: await getAISHeaders(),
+      headers: aisHeaders,
       params,
       timeout: getTimeout(),
     })
@@ -114,13 +114,15 @@ async function getVatuAPIVersion(api: string): Promise<string> {
 }
 
 export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeature>(api: string, params: Record<string, string> = {}) {
-  const url = `${await getVatuUrl()}${await getVatuAPIVersion(api)}/${api}`;
+  const { vatuUrl, vatuHeaders } = await getVatuParameters();
+
+  const url = `${vatuUrl}${await getVatuAPIVersion(api)}/${api}`;
   log.debug({ api, url }, `VATU api: ${api}, url=${url}`);
 
   const start = Date.now();
   const response = await axios
     .get(url, {
-      headers: await getVatuHeaders(),
+      headers: vatuHeaders,
       params,
       timeout: getTimeout(),
     })
@@ -151,10 +153,11 @@ export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeatur
 }
 
 export async function fetchMarineWarnings() {
+  const { pookiUrl, pookiHeaders } = await getPookiParameters();
   const start = Date.now();
   const response = await axios
-    .get(await getPookiUrl(), {
-      headers: await getPookiHeaders(),
+    .get(pookiUrl, {
+      headers: pookiHeaders,
       timeout: getTimeout(),
     })
     .catch(function (error) {
@@ -178,7 +181,7 @@ export async function fetchWeatherApi<T>(path: string) {
 }
 
 export async function fetchWeatherApiResponse(path: string) {
-  const [soaApiUrl, weatherHeaders] = await Promise.all([getSOAApiUrl(), getWeatherHeaders()]);
+  const { soaApiUrl, weatherHeaders } = await getSOAApiParameters();
   const start = Date.now();
   log.debug(`Weather api https://${soaApiUrl}/fmi/${path} called`);
   const response = await axios
@@ -197,18 +200,13 @@ export async function fetchWeatherApiResponse(path: string) {
 }
 
 export async function fetchIlmanetApi(): Promise<string> {
-  const [url, username, password, weatherHeaders] = await Promise.all([
-    getIlmanetUrl(),
-    getIlmanetUsername(),
-    getIlmanetPassword(),
-    getWeatherHeaders(),
-  ]);
+  const { ilmanetUrl, ilmanetUserName, ilmanetPassword, weatherHeaders } = await getIlmanetParameters();
   const start = Date.now();
   const response = await axios
-    .get(url, {
+    .get(ilmanetUrl, {
       params: {
-        username: username,
-        password: password,
+        username: ilmanetUserName,
+        password: ilmanetPassword,
         orderId: 165689,
       },
       headers: weatherHeaders,
@@ -225,11 +223,12 @@ export async function fetchIlmanetApi(): Promise<string> {
 }
 
 export async function fetchIBNetApi<T>(path?: string, params?: Record<string, string>) {
-  const url = `${await getIBNetApiUrl()}${path ?? ''}`;
+  const { ibNetApiUrl, vatuHeaders } = await getIBNetApiParameters();
+  const url = `${ibNetApiUrl}${path ?? ''}`;
   const start = Date.now();
   const response = await axios
     .get(url, {
-      headers: await getVatuHeaders(),
+      headers: vatuHeaders,
       params: params ?? [],
       timeout: getTimeout(),
     })

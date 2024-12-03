@@ -60,20 +60,10 @@ interface MapExportToolProps {
     actionOuterTarget?: string | number
   ) => void;
   validationErrors?: ValidationType[];
-  sourceCardId?: string;
-  sourceCardVersion?: string;
+  readonly?: boolean;
 }
 
-const MapExportTool: React.FC<MapExportToolProps> = ({
-  fairwayCardInput,
-  fairways,
-  harbours,
-  setPicture,
-  validationErrors,
-  disabled,
-  sourceCardId,
-  sourceCardVersion,
-}) => {
+const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors, disabled, readonly }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
   const [fileUploader] = useState<FileUploader>(() => new FileUploader());
@@ -326,7 +316,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
               printCurrentMapView={printCurrentMapView}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
-              printDisabled={isLoadingMutation || isMapDisabled}
+              printDisabled={readonly || isLoadingMutation || isMapDisabled}
               fileUploader={fileUploader}
               importExternalImage={importExternalImage}
               setErrors={setPicUploadErrors}
@@ -339,10 +329,9 @@ const MapExportTool: React.FC<MapExportToolProps> = ({
               setPicture={setPicture}
               isLoading={isLoadingMutation}
               isProcessingCurLang={isProcessingCurLang}
-              disabled={disabled}
+              readonly={readonly}
+              disabled={!readonly && disabled}
               validationErrors={validationErrors}
-              sourceCardId={sourceCardId}
-              sourceCardVersion={sourceCardVersion}
             />
           </IonCol>
         </IonRow>

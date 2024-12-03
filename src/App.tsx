@@ -32,6 +32,7 @@ import {
   usePilotageAreaBorderLayer,
   useDirwayLayer,
   useRestrictionPortLayer,
+  useForecastLayer,
 } from './components/FeatureLoader';
 import { useObservationLayer, useObservationFeatures } from './components/ObservationFeatureLoader';
 import {
@@ -207,6 +208,7 @@ const DvkIonApp: React.FC = () => {
   usePilotageAreaBorderLayer();
   useDirwayLayer();
   useRestrictionPortLayer();
+  useForecastLayer();
   /* Initialize observation and merograph data for offline use, needed in fairway cards */
   useObservationFeatures();
   useMareographFeatures();
@@ -298,11 +300,12 @@ const DvkIonApp: React.FC = () => {
   }, []);
 
   const [isSourceOpen, setIsSourceOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   return (
     <IonApp className={appClasses.join(' ')}>
       {initDone && <OfflineStatus />}
       <IonReactRouter basename={state.preview ? '/esikatselu' : '/vaylakortti'}>
-        <SidebarMenu setIsSourceOpen={setIsSourceOpen} />
+        <SidebarMenu setIsSourceOpen={setIsSourceOpen} setIsFeedbackOpen={setIsFeedbackOpen} />
         {(!!isFetching || !initDone || centering) && (
           <IonProgressBar
             value={percentDone}
@@ -352,7 +355,7 @@ const DvkIonApp: React.FC = () => {
             </Switch>
           </IonRouterOutlet>
         </IonContent>
-        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
+        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} isFeedbackOpen={isFeedbackOpen} setIsFeedbackOpen={setIsFeedbackOpen} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
       {fetchError && (

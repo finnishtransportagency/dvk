@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
@@ -15,14 +15,17 @@ import ConfirmationModal, { StatusName } from './ConfirmationModal';
 import { useHistory } from 'react-router';
 import { useQueryClient } from '@tanstack/react-query';
 import NotificationModal from './NotificationModal';
-import { mapNewHarbourVersion, mapToHarborInput } from '../utils/dataMapper';
+import { mapNewHarbourVersion, mapQuays, mapToHarborInput } from '../utils/dataMapper';
 import { hasUnsavedChanges, validateHarbourForm } from '../utils/formValidations';
 import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
-import { openPreview } from '../utils/common';
-import InfoHeader from './InfoHeader';
+import { isReadOnly, openPreview } from '../utils/common';
+import InfoHeader, { InfoHeaderProps } from './InfoHeader';
+import PublishModal from './PublishModal';
+import PublishDetailsSection from './form/PublishDetailsSection';
+import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 
 interface FormProps {
   harbour: HarborInput;
@@ -51,9 +54,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
+  const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
+  // if confirmation modal comes up because of unsaved changes when changing version, handleConfirmationSubmit gets the value from this
+  const [versionToMoveTo, setVersionToMoveTo] = useState('');
 
   const queryClient = useQueryClient();
-  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(false);
+  const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
   const { data: fairwayCardList } = useFairwayCardsQueryData();
   const { data: latestHarbor } = useHarbourLatestByIdQueryData(harbour.id);
   const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
@@ -73,6 +79,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
         history.push({ pathname: '/satama/' + data.saveHarbor?.id + '/v' + nextVersionNumber });
         setIsSubmittingVersion(false);
+        // in case saving changes when moving to another version via dropdown select
+      } else if (versionToMoveTo) {
+        history.push({ pathname: '/satama/' + data.saveHarbor?.id + '/' + versionToMoveTo });
+        setVersionToMoveTo('');
       }
     },
     onError: (error: Error) => {
@@ -81,9 +91,14 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     },
   });
 
+  // no need for all versions for checking reserved id's
   const reservedHarbourIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
-    .filter((item) => item.type === ContentType.Harbor)
+    .filter((item) => item.type === ContentType.Harbor && item.version === VERSION.LATEST)
     .flatMap((item) => item.id);
+  // filter out latest and public versions
+  const harbourVersions = fairwaysAndHarbours?.fairwayCardsAndHarbors.filter(
+    (item) => item.type === ContentType.Harbor && item.id === harbour.id && item.version !== VERSION.LATEST && item.version !== VERSION.PUBLIC
+  );
 
   const updateState = (
     value: ValueType,
@@ -99,38 +114,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const saveHarbour = useCallback(
     (operation: Operation) => {
-      const mapQuays = (harbour: HarborInput) => {
-        return {
-          ...harbour,
-          quays: harbour.quays?.map((quay) => {
-            return {
-              ...quay,
-              geometry:
-                !quay?.geometry?.lat || !quay?.geometry?.lon
-                  ? ''
-                  : {
-                      lat: quay?.geometry?.lat,
-                      lon: quay?.geometry?.lon,
-                    },
-              length: quay?.length ?? '',
-              sections: quay?.sections?.map((quaySection) => {
-                return {
-                  ...quaySection,
-                  geometry:
-                    !quaySection?.geometry?.lat || !quaySection?.geometry?.lon
-                      ? { lat: '', lon: '' }
-                      : { lat: quaySection?.geometry?.lat, lon: quaySection?.geometry?.lon },
-                  depth: quaySection?.depth ?? '',
-                };
-              }),
-            };
-          }),
-        };
-      };
-
       if (operation === Operation.Publish) {
         setState({ ...state, status: Status.Public });
         saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Public, operation }) as HarborInput });
+        setPublishDetailsOpen(false);
       } else if (operation === Operation.Archive) {
         setState({ ...state, status: Status.Archived });
         saveHarbourMutation({ harbor: mapQuays({ ...state, status: Status.Archived, operation }) as HarborInput });
@@ -140,8 +127,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         saveHarbourMutation({ harbor: mapQuays({ ...oldState, status: Status.Removed, operation }) as HarborInput });
       } else if (operation === Operation.Update) {
         saveHarbourMutation({ harbor: mapQuays(state) as HarborInput });
-      } else if (operation === Operation.Create) {
-        saveHarbourMutation({ harbor: mapQuays({ ...state, version: 'v1' }) as HarborInput });
       } else if (operation === Operation.Createversion) {
         setIsSubmittingVersion(true);
         const newVersion = mapNewHarbourVersion(state);
@@ -153,13 +138,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   );
 
   const formValid = (): boolean => {
-    let primaryIdErrorMsg = '';
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
-    if (state.operation === Operation.Create) {
-      if (reservedHarbourIds?.includes(state.id.trim())) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId);
-      if (state.id.trim().length < 1) primaryIdErrorMsg = requiredMsg;
-    }
-    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, primaryIdErrorMsg, t(ErrorMessageKeys?.duplicateLocation));
+    const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, t(ErrorMessageKeys?.duplicateLocation));
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -248,8 +228,19 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const handlePublish = () => {
     if (formValid()) {
       setConfirmationType('publish');
+      setPublishDetailsOpen(true);
     } else {
       setSaveError('MISSING-INFORMATION');
+    }
+  };
+
+  const handleVersionChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
+    const version = event.detail.value;
+    setVersionToMoveTo(version as string);
+    if (hasUnsavedChanges(oldState, state)) {
+      setConfirmationType('changeVersion');
+    } else {
+      history.push({ pathname: '/satama/' + state.id + '/' + version });
     }
   };
 
@@ -265,6 +256,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         return saveHarbour(Operation.Remove);
       case 'version':
         return saveHarbour(Operation.Createversion);
+      case 'changeVersion':
+        return saveHarbour(Operation.Update);
       default:
         return;
     }
@@ -290,9 +283,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     setSaveErrorMsg('');
     setSaveErrorItems([]);
     setNotificationOpen(false);
-    if (!saveError && !!savedHarbour && state.operation === Operation.Create) {
-      if (state.operation === Operation.Create) history.push({ pathname: '/satama/' + savedHarbour.id + '/' + savedHarbour.version });
-    }
   };
 
   const getNotificationTitle = () => {
@@ -305,8 +295,27 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     setOldState(harbour);
   }, [harbour]);
 
+  const infoHeader: InfoHeaderProps = {
+    status: state.status,
+    modified: getDateTimeInfo(true),
+    created: getDateTimeInfo(false),
+    version: harbour.version,
+    modifier: savedHarbour?.modifier ?? savedHarbour?.creator ?? modifier ?? t('general.unknown'),
+    creator: savedHarbour?.creator ?? creator,
+  };
+
+  const readonly = isReadOnly(state);
+
   return (
     <IonPage>
+      <PublishModal
+        state={state}
+        setModalOpen={setPublishDetailsOpen}
+        setValue={updateState}
+        handleConfirmationSubmit={handleConfirmationSubmit}
+        modalOpen={publishDetailsOpen}
+        infoHeader={infoHeader}
+      />
       <ConfirmationModal
         saveType="harbor"
         action={handleConfirmationSubmit}
@@ -315,6 +324,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         newStatus={state.status}
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
         setActionPending={setPreviewPending}
+        versionToMoveTo={versionToMoveTo}
       />
       <ConfirmationModal
         saveType="harbor"
@@ -351,7 +361,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         handlePreview={handlePreview}
         handleNewVersion={handleNewVersion}
         handlePublish={handlePublish}
+        handleVersionChange={handleVersionChange}
+        type={'harbor'}
         isError={isError}
+        versions={harbourVersions}
       />
 
       <IonContent className="mainContent ion-no-padding" data-testid="harbourEditPage">
@@ -367,16 +380,18 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
-              <MainSection state={state} updateState={updateState} validationErrors={validationErrors} />
-              <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} />
-              <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} />
+              <PublishDetailsSection state={state} />
+              <MainSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               <Section
                 title={t('harbour.quay-heading')}
                 sections={state.quays as QuayInput[]}
                 updateState={updateState}
                 sectionType="quay"
                 validationErrors={validationErrors}
-                disabled={state.status === Status.Removed}
+                readonly={readonly}
+                disabled={!readonly && state.status === Status.Removed}
               />
             </form>
           </>
