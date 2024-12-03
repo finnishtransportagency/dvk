@@ -161,18 +161,7 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clea
         })
       ) : (
         <IonRow>
-          <IonCol size="6">
-            <button className="ChangePageButton" onClick={showPreviousPage} disabled={startIndex === 0}>
-              {t('forecastTable.previousPage')} {pageSize}
-              {t('forecastTable.hours')}
-            </button>
-          </IonCol>
-          <IonCol size="6">
-            <button className="ChangePageButton ion-float-right" onClick={showNextPage} disabled={startIndex + pageSize >= forecastItems.length}>
-              {t('forecastTable.nextPage')} {pageSize}
-              {t('forecastTable.hours')}
-            </button>
-          </IonCol>
+          <IonCol>-</IonCol>
         </IonRow>
       )}
       <IonRow>
