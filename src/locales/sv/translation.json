@@ -633,7 +633,7 @@
     "title2": "Vilket betyg skulle du ge tjänsten?",
     "content2": "Hur sannolikt är det att du skulle rekommendera tjänsten till en vän på skalan 1–10, då 10 är mycket sannolikt och 1 mycket osannolikt?",
     "title3": "Hur skulle du utveckla tjänsten så att den blir bättre?",
-    "content3": "Din respons förmedlas till utvecklarna av tjänsten Digital farledskort för att förbättra tjänsten. Denna respons skickas inte till dem som utarbetat farledskorten eller till andra personer vid ämbetsverken eller i intressentgrupperna.",
+    "content3": "Din respons förmedlas till utvecklarna av tjänsten Digital farledskort för att förbättra tjänsten.",
     "thank-you": "Tack för din respons!"
   }
 }
