@@ -24,7 +24,7 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane, dis
         fill: widePane ? 'row' : undefined,
         rows: widePane ? 1 : 2,
       },
-      slidesPerView: widePane ? 'auto' : 3,
+      slidesPerView: widePane ? 6 : 3,
       keyboard: {
         enabled: true,
       },
