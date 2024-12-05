@@ -177,7 +177,8 @@ export function validateFairwayCardForm(
       id: 'fairwaySecondary',
       msg: state.fairwayIds.length > 1 && state.secondaryFairwayId && state.secondaryFairwayId.length < 1 ? requiredMsg : '',
     },
-    { id: 'group', msg: state.group.length < 1 ? requiredMsg : '' },
+    // trim because group is given as an empty string so empty form can be saved from creation modal
+    { id: 'group', msg: state.group.trim().length < 1 ? requiredMsg : '' },
     {
       id: 'additionalInfo',
       msg: translationError(state.additionalInfo) ? requiredMsg : '',

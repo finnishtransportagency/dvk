@@ -633,7 +633,7 @@
     "title2": "What rating would you give to the service?",
     "content2": "How likely are you to recommend the service to others on a scale of 1–10, 10 being extremely likely and 1 being extremely unlikely?",
     "title3": "How would you improve the service?",
-    "content3": "Your feedback will be passed along to the Digital Fairway Card service development team for improvement. This feedback is not passed to the creator of the fairway card, or any other agencies or stakeholders.",
+    "content3": "Your feedback will be passed along to the Digital Fairway Card service development team for improvement.",
     "thank-you": "Thank you for the feedback!"
   }
 }
