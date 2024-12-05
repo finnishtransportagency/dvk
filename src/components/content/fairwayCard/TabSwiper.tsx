@@ -17,7 +17,6 @@ interface TabSwiperProps {
 export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane, disabled }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const swiperRef = useRef<SwiperContainer>(null);
-
   useEffect(() => {
     const params: SwiperOptions = {
       grid: {
@@ -34,10 +33,6 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane, dis
       swiperRef.current.initialize();
     }
   }, [widePane]);
-
-  useEffect(() => {
-    swiperRef.current?.swiper.slideTo(tab - 1);
-  }, [tab]);
 
   return (
     <div className="tabs">
