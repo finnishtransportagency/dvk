@@ -219,7 +219,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const handleNewVersion = () => {
     // if status is public, we can assume that form is valid so no need for validations
     // since form can't be modified
-    if (formValid() || state.status === Status.Public) {
+    if (formValid() || isReadOnly(state)) {
       setConfirmationType('version');
     } else if (!saveError && !saveErrorMsg) {
       setSaveError('OPERATION-BLOCKED');
