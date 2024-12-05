@@ -36,12 +36,10 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
   // sequence numbers are always part of state, so bit of a maneuvering is needed since comparing has to be done by comparing
   // selected array
   const getSortedOptions = () => {
-    // create map to find selected values efficiently
-    const sequenceMap = new Map(selected.map((s) => [s.id, s.sequenceNumber]));
-
     return options?.sort((a, b) => {
-      const seqA = sequenceMap.get(a.id as number);
-      const seqB = sequenceMap.get(b.id as number);
+      // arrays are so small that no need for mapping
+      const seqA = selected.find((sA) => sA.id === a.id)?.sequenceNumber;
+      const seqB = selected.find((sB) => sB.id === b.id)?.sequenceNumber;
       // if both are selected, compare sequence numbers
       if (seqA !== undefined && seqB !== undefined) {
         return seqA - seqB;
