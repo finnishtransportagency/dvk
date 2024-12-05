@@ -7,19 +7,7 @@ swiper-slide {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 29%;
-}
-
-swiper-slide:first-child .not-fully-visible {
-  background: linear-gradient(to left, transparent, var(--ion-color-light));
-}
-
-swiper-slide:last-child .not-fully-visible {
-  background: linear-gradient(to right, transparent, var(--ion-color-light));
-}
-
-.wide swiper-slide {
-  width: 20%;
+  width: auto;
 }
 
 div.tabs {

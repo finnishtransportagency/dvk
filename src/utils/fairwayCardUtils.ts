@@ -39,6 +39,8 @@ export function getTabLabel(t: TFunction, tab: FairwayCardTab): string {
       return t('areasTitle');
     case FairwayCardTab.PilotRoutes:
       return t('routesTitle');
+    case FairwayCardTab.SquatCalculation:
+      return t('squatTitle');
     case FairwayCardTab.WeatherForecasts:
       return t('weatherForecastsTitle');
     default:
