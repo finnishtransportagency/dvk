@@ -217,7 +217,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   };
 
   const handleNewVersion = () => {
-    // if status is public, we can assume that form is valid so no need for validations
+    // if status is read only, we can assume that form is valid so no need for validations
     // since form can't be modified
     if (formValid() || isReadOnly(state)) {
       setConfirmationType('version');
