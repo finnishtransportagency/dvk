@@ -641,3 +641,27 @@ type Mareograph {
   n2000WaterLevel: Float
   calculated: Boolean
 }
+
+enum LimitStatus {
+  GREEN
+  YELLOW
+  RED
+}
+
+type Limit {
+  lowerLimit: Float
+  upperLimit: Float
+  status: LimitStatus!
+}
+
+type WeatherLimit {
+  id: String!
+  type: String!
+  windLimits: [Limit!]!
+  waveLimits: [Limit!]!
+  visibilityLimits: [Limit!]!
+}
+
+type WeatherLimits {
+  limits: [WeatherLimit!]!
+}
