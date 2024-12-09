@@ -1,5 +1,6 @@
 import { S3 } from 'aws-sdk';
 import { Handler } from 'aws-lambda';
+import { getNewStaticBucketName } from '../../environment';
 
 interface Limit {
   lowerLimit?: number;
@@ -20,7 +21,7 @@ interface WeatherLimitsData {
 }
 
 const s3 = new S3();
-const BUCKET_NAME = process.env.WEATHER_LIMITS_BUCKET || 'weather-limits';
+const BUCKET_NAME = process.env.WEATHER_LIMITS_BUCKET || getNewStaticBucketName();
 const FILE_KEY = process.env.WEATHER_LIMITS_KEY || 'weather-limits.json';
 
 export const handler: Handler = async () => {
