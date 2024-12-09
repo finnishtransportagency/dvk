@@ -21,7 +21,7 @@ interface WeatherLimitsData {
 
 const s3 = new S3();
 const BUCKET_NAME = process.env.WEATHER_LIMITS_BUCKET || 'weather-limits';
-const FILE_KEY = 'weather-limits.json';
+const FILE_KEY = process.env.WEATHER_LIMITS_KEY || 'weather-limits.json';
 
 export const handler: Handler = async () => {
   try {
@@ -33,21 +33,7 @@ export const handler: Handler = async () => {
     const weatherLimits: WeatherLimitsData = JSON.parse(response.Body?.toString() || '{"limits": []}');
 
     return {
-      limits: weatherLimits.limits.map(limit => ({
-        ...limit,
-        windLimits: limit.windLimits.map(wl => ({
-          ...wl,
-          status: wl.status.toUpperCase()
-        })),
-        waveLimits: limit.waveLimits.map(wl => ({
-          ...wl,
-          status: wl.status.toUpperCase()
-        })),
-        visibilityLimits: limit.visibilityLimits.map(vl => ({
-          ...vl,
-          status: vl.status.toUpperCase()
-        }))
-      }))
+      limits: weatherLimits.limits
     };
   } catch (error) {
     console.error('Error fetching weather limits:', error);
