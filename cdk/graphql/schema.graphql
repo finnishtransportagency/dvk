@@ -17,6 +17,7 @@ type Query {
   fairways: [Fairway!]!
   fairwayCardsAndHarbors(getAllVersions: Boolean!): [FairwayCardOrHarbor!]!
   mareographs: [Mareograph!]!
+  weatherLimits: WeatherLimits!
 }
 
 type Mutation {
