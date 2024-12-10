@@ -72,7 +72,7 @@ const ObservationPopupContent: React.FC<ObservationPopupContentProps> = ({ obser
               <>
                 {Math.round(observation.properties.windSpeedAvg)}{' '}
                 <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(observation.properties.windSpeedAvg || 0) })}>m/s</dd>,{' '}
-                {Math.round(observation.properties.windDirection)}{' '}
+                {Math.round(observation.properties.windDirection)}
                 <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(observation.properties.windDirection || 0) })}>°</dd>
               </>
             ) : (

@@ -69,7 +69,7 @@ const BuoyPopupContent: React.FC<BuoyPopupContentProps> = ({ buoy, setPopupPrope
                   <>
                     {buoy.properties.waveHeight ? buoy.properties.waveHeight.toLocaleString() : '-'}{' '}
                     <dd aria-label={t('fairwayCards.unit.mDesc', { count: Number(buoy.properties.waveHeight ?? 0) })}>m</dd>,{' '}
-                    {buoy.properties.waveDirection ? Math.round(buoy.properties.waveDirection) : '-'}{' '}
+                    {buoy.properties.waveDirection ? Math.round(buoy.properties.waveDirection) : '-'}
                     <dd aria-label={t('fairwayCards.unit.degDesc', { count: Number(Math.round(buoy.properties.waveDirection ?? 0)) })}>°</dd>
                   </>
                 )) || <InfoParagraph title={t('common.noData')} />}

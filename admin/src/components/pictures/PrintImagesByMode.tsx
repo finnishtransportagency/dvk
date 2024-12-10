@@ -200,7 +200,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                       <br />
                       {pic.rotation !== null ? (
                         <>
-                          {radiansToDegrees(pic.rotation ?? 0)} °{' '}
+                          {radiansToDegrees(pic.rotation ?? 0)}°{' '}
                           <img
                             className="orientation"
                             src={back_arrow}
