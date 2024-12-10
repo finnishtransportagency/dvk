@@ -174,6 +174,36 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
         endDate: stringValueOrDefault(notification.endDate),
       };
     }),
+    squatCalculations:
+      data?.fairwayCard?.squatCalculations?.map((calc) => {
+        return {
+          place: {
+            fi: stringValueOrDefault(calc.place?.fi),
+            sv: stringValueOrDefault(calc.place?.sv),
+            en: stringValueOrDefault(calc.place?.en),
+          },
+          additionalInformation: {
+            fi: stringValueOrDefault(calc.additionalInformation?.fi),
+            sv: stringValueOrDefault(calc.additionalInformation?.sv),
+            en: stringValueOrDefault(calc.additionalInformation?.en),
+          },
+          depth: calc.depth,
+          estimatedWaterDepth: calc.estimatedWaterDepth,
+          fairwayWidth: calc.fairwayWidth,
+          slopeHeight: calc.slopeHeight,
+          slopeScale: calc.slopeScale,
+          suitableFairwayAreas:
+            calc.suitableFairwayAreas
+              ?.flatMap((fairway) => fairway?.id)
+              .filter((id): id is number => id !== null && id !== undefined)
+              .sort() ?? [],
+          targetFairways:
+            calc.targetFairways
+              ?.flatMap((fairway) => fairway?.id)
+              .filter((id): id is number => id !== null && id !== undefined)
+              .sort() ?? [],
+        };
+      }) ?? [],
     publishDetails: stringValueOrDefault(data?.fairwayCard?.publishDetails),
   };
 }
@@ -265,6 +295,7 @@ export function mapNewFairwayCardVersion(card: FairwayCardInput | undefined, cop
     operation: Operation.Createversion,
     pictures: copyPictures ? card?.pictures : [],
     temporaryNotifications: card?.temporaryNotifications,
+    squatCalculations: card?.squatCalculations,
   };
 }
 

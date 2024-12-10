@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, SelectOption, ValidationType, ValueType, VERSION } from '../utils/constants';
 import {
   ContentType,
   FairwayCardByIdFragment,
   FairwayCardInput,
   Operation,
+  SquatCalculationInput,
   Status,
   TemporaryNotificationInput,
   TugInput,
@@ -43,6 +44,7 @@ import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
+import SquatCalculationSection from './form/fairwayCard/SquatCalculationSection';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -120,6 +122,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
   const harbourSelection = harbourList?.harbors.filter((item) => state.harbors?.includes(item.id));
   const harbourOptions = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem);
+  const fairwayAreas: SelectOption[] = [];
 
   // no need for all versions for checking reserved id's
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
@@ -461,6 +464,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 validationErrors={validationErrors}
                 disabled={!readonly && state.status === Status.Removed}
                 readonly={readonly}
+              />
+
+              <SquatCalculationSection
+                sections={state.squatCalculations as SquatCalculationInput[]}
+                updateState={updateState}
+                sectionType="squatCalculations"
+                validationErrors={validationErrors}
+                readonly={readonly}
+                fairwaySelection={fairwaySelection}
+                fairwayAreas={fairwayAreas}
               />
 
               <IonText>

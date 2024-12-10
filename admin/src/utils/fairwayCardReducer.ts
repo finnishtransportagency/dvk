@@ -655,6 +655,153 @@ export const fairwayCardReducer = (
     case 'publishDetails':
       newState = { ...state, publishDetails: value as string };
       break;
+    case 'squatCalculations':
+      // Add and delete
+      if (value && !actionTarget) {
+        newState = {
+          ...state,
+          squatCalculations: state.squatCalculations?.concat({
+            place: { fi: '', sv: '', en: '' },
+            additionalInformation: { fi: '', sv: '', en: '' },
+            depth: 0,
+            estimatedWaterDepth: 0,
+            fairwayWidth: 0,
+            slopeHeight: 0,
+            slopeScale: 0,
+          }),
+        };
+      } else {
+        newState = {
+          ...state,
+          squatCalculations: state.squatCalculations?.filter((_, idx) => idx !== actionTarget),
+        };
+      }
+      break;
+
+    case 'squatCalculationAdditionalInformation':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                additionalInformation: {
+                  ...(calcItem?.additionalInformation ?? { fi: '', sv: '', en: '' }),
+                  [actionLang as string]: value,
+                },
+              }
+            : calcItem
+        ),
+      };
+      break;
+    case 'squatCalculationPlace':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                place: {
+                  ...(calcItem?.place ?? { fi: '', sv: '', en: '' }),
+                  [actionLang as string]: value,
+                },
+              }
+            : calcItem
+        ),
+      };
+      break;
+    case 'squatCalculationDepth':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                depth: value as number,
+              }
+            : calcItem
+        ),
+      };
+      break;
+    case 'squatCalculationEstimatedWaterDepth':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                estimatedWaterDepth: value as number,
+              }
+            : calcItem
+        ),
+      };
+      break;
+    case 'squatCalculationFairwayWidth':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                fairwayWidth: value as number,
+              }
+            : calcItem
+        ),
+      };
+      break;
+    case 'squatCalculationSlopeScale':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                slopeScale: value as number,
+              }
+            : calcItem
+        ),
+      };
+      break;
+    case 'squatCalculationSlopeHeight':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                slopeHeight: value as number,
+              }
+            : calcItem
+        ),
+      };
+      break;
+    case 'squatTargetFairwayIds':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                targetFairways: calcItem.targetFairways,
+              }
+            : calcItem
+        ),
+      };
+      break;
+    case 'squatSuitableFairwayAreaIds':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                suitableFairwayAreas: calcItem.suitableFairwayAreas,
+              }
+            : calcItem
+        ),
+      };
+      break;
+
     default:
       console.warn(`Unknown action type, state not updated.`);
       return state;

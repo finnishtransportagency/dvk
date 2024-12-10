@@ -99,7 +99,17 @@ export type FairwayCardActionType =
   | 'temporaryNotificationContent'
   | 'temporaryNotificationStartDate'
   | 'temporaryNotificationEndDate'
-  | 'publishDetails';
+  | 'publishDetails'
+  | 'squatCalculations'
+  | 'squatCalculationPlace'
+  | 'squatCalculationAdditionalInformation'
+  | 'squatTargetFairwayIds'
+  | 'squatSuitableFairwayAreaIds'
+  | 'squatCalculationDepth'
+  | 'squatCalculationEstimatedWaterDepth'
+  | 'squatCalculationFairwayWidth'
+  | 'squatCalculationSlopeScale'
+  | 'squatCalculationSlopeHeight';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'

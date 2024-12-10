@@ -312,4 +312,38 @@ fragment FairwayCardParts on FairwayCard {
     startDate
     endDate
   }
+  squatCalculations {
+    place {
+      fi
+      sv
+      en
+    }
+    targetFairways {
+      id
+      name {
+        fi
+        sv
+        en
+      }
+    }
+    suitableFairwayAreas {
+      id
+      name {
+        fi
+        sv
+        en
+      }
+    }
+    depth
+    estimatedWaterDepth
+    fairwayWidth
+    slopeScale
+    slopeHeight
+    additionalInformation {
+      fi
+      sv
+      en
+    }
+    fairwayForm
+  }
 }
