@@ -186,8 +186,10 @@ function mapToPilotPlace(pilotPoints: PilotPlace[], extraLocations: ExtraForecas
   const pilotPlace = pilotPoints.find(
     (p) =>
       p.geometry.coordinates != null &&
-      p.geometry.coordinates[0] === parseFloat(latlon?.split(',')[0]?.trim()) &&
-      p.geometry.coordinates[1] === parseFloat(latlon?.split(',')[1]?.trim())
+      // this was changed to [0] === [1], because for some reason suddenly longitude and latitude changed order??
+      // so there wasn't any names for forecast places
+      p.geometry.coordinates[0] === parseFloat(latlon?.split(',')[1]?.trim()) &&
+      p.geometry.coordinates[1] === parseFloat(latlon?.split(',')[0]?.trim())
   );
   if (pilotPlace == null) {
     const extraLocation = extraLocations.find(
