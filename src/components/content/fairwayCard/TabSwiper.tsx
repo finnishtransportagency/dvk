@@ -34,8 +34,11 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane, dis
     }
   }, [widePane]);
 
+  const tabsClass = 'tabs' + (widePane ? ' wide' : '');
+  const tabsIndicatorClass = 'tab-indicator' + (widePane ? ' wide' : '');
+
   return (
-    <div className="tabs">
+    <div className={tabsClass}>
       <swiper-container ref={swiperRef} init={false} className={widePane ? 'wide' : ''}>
         {[
           FairwayCardTab.Information,
@@ -60,7 +63,7 @@ export const TabSwiper: React.FC<TabSwiperProps> = ({ tab, setTab, widePane, dis
               >
                 <div>
                   <IonLabel>{getTabLabel(t, tabId)}</IonLabel>
-                  <div className="tab-indicator" />
+                  <div className={tabsIndicatorClass} />
                 </div>
               </IonButton>
             </swiper-slide>
