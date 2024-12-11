@@ -341,7 +341,9 @@
     "title": "Initializing app",
     "content": "Please wait",
     "errorTitle": "Loading error",
-    "errorContent": "Error occurred when loading data. Please try again later."
+    "bgErrorTitle": "[en] Taustakarttojen latausvirhe",
+    "errorContent": "Error occurred when loading data. Please try again later.",
+    "bgErrorContent": "[en] Taustakarttojen latauksessa tapahtui virhe. Voit jatkaa sovelluksen käyttöä, mutta taustakartta-aineisto voi olla puutteellista."
   },
   "popup": {
     "common": {
@@ -580,7 +582,8 @@
     "filter": "Select filter...",
     "sortOldToNew": "Oldest first",
     "sortNewToOld": "Newest first",
-    "submit": "Submit"
+    "submit": "Submit",
+    "continue": "Continue"
   },
   "tileLoadWarning": {
     "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."

@@ -341,7 +341,9 @@
     "title": "Appen initialiseras",
     "content": "Var vänlig och vänta",
     "errorTitle": "Nedladdningsfel",
-    "errorContent": "Uppstod ett fel i nedladdningen,  var vänlig och försök igen."
+    "bgErrorTitle": "[sv] Taustakarttojen latausvirhe",
+    "errorContent": "Uppstod ett fel i nedladdningen,  var vänlig och försök igen.",
+    "bgErrorContent": "[sv] Taustakarttojen latauksessa tapahtui virhe. Voit jatkaa sovelluksen käyttöä, mutta taustakartta-aineisto voi olla puutteellista."
   },
   "popup": {
     "common": {
@@ -581,7 +583,8 @@
     "filter": "Välj filter...",
     "sortOldToNew": "Äldst först",
     "sortNewToOld": "Nyaste först",
-    "submit": "Skicka"
+    "submit": "Skicka",
+    "continue": "[sv] Jatka"
   },
   "tileLoadWarning": {
     "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."

@@ -330,11 +330,12 @@ const DvkIonApp: React.FC = () => {
       )}
       {!fetchError && bgFetchError && (
         <IonAlert
+          className="bgAlertModal"
           isOpen={initDone}
           backdropDismiss={true}
-          header={'varo vaaraa'}
-          message={'Ei saatu nyt kyl taustakarttoi sori, tosi pahoillani'}
-          buttons={['OK']}
+          header={t('appInitAlert.bgErrorTitle')}
+          message={t('appInitAlert.bgErrorContent')}
+          buttons={[t('common.continue')]}
         />
       )}
       {!fetchError && <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />}
