@@ -137,13 +137,13 @@ const DvkIonApp: React.FC = () => {
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
+  const circleLayer = useCircleLayer();
+  /* Start initializing other layers */
   const bgFinlandLayer = useInitStaticDataLayer('finland', 'finland');
   const bgMmlmeriLayer = useInitStaticDataLayer('mml_meri', 'mml_meri');
   const bgMmlmerirantaviivaLayer = useInitStaticDataLayer('mml_meri_rantaviiva', 'mml_meri_rantaviiva');
   const bgMmljarviLayer = useInitStaticDataLayer('mml_jarvi', 'mml_jarvi');
   const bgMmljarvirantaviivaLayer = useInitStaticDataLayer('mml_jarvi_rantaviiva', 'mml_jarvi_rantaviiva');
-  const circleLayer = useCircleLayer();
-  /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
   useSafetyEquipmentAndFaultLayer();
@@ -183,11 +183,12 @@ const DvkIonApp: React.FC = () => {
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
   const [centering, setCentering] = useState(false);
+  const [bgFetchError, setBgFetchError] = useState(false);
 
   const { state } = useDvkContext();
 
   useEffect(() => {
-    const allLayers: DvkLayerState[] = [
+    const mandatoryLayers: DvkLayerState[] = [
       fairwayCardList,
       line12Layer,
       area12Layer,
@@ -196,11 +197,10 @@ const DvkIonApp: React.FC = () => {
       pilotLayer,
       harborLayer,
       boardLine12Layer,
-      bgFinlandLayer,
-      bgMmlmeriLayer,
-      bgMmljarviLayer,
       circleLayer,
     ];
+    const bgLayers: DvkLayerState[] = [bgFinlandLayer, bgMmlmeriLayer, bgMmljarviLayer];
+    const allLayers: DvkLayerState[] = mandatoryLayers.concat(bgLayers);
 
     let percent = 0;
     const resourcePercentage = 1 / allLayers.length;
@@ -211,9 +211,10 @@ const DvkIonApp: React.FC = () => {
 
     setPercentDone(Math.round(percent * 100) / 100);
 
-    setFetchError(allLayers.some((layer) => layer.isError));
+    setFetchError(mandatoryLayers.some((layer) => layer.isError));
+    setBgFetchError(bgLayers.some((layer) => layer.isError));
 
-    setInitDone(allLayers.every((layer) => layer.ready));
+    setInitDone(mandatoryLayers.every((layer) => layer.ready));
   }, [
     fairwayCardList,
     line12Layer,
@@ -326,6 +327,15 @@ const DvkIonApp: React.FC = () => {
       </IonReactRouter>
       {fetchError && (
         <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.errorTitle')} message={t('appInitAlert.errorContent')} />
+      )}
+      {!fetchError && bgFetchError && (
+        <IonAlert
+          isOpen={initDone}
+          backdropDismiss={true}
+          header={'varo vaaraa'}
+          message={'Ei saatu nyt kyl taustakarttoi sori, tosi pahoillani'}
+          buttons={['OK']}
+        />
       )}
       {!fetchError && <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />}
     </IonApp>
