@@ -123,7 +123,7 @@ const InputField: React.FC<InputProps> = (props) => {
         minimumFractionDigits: countDecimals(Number(props.step)),
         maximumFractionDigits: countDecimals(Number(props.step)),
       });
-    if (props.unit) helper += ' ' + props.unit;
+    if (props.unit) helper += props.unit === '°' ? props.unit : ' ' + props.unit;
     return helper;
   };
 

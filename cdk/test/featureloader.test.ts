@@ -410,12 +410,11 @@ const forecast = [
     windGust: 10.3,
     waveDirection: 247.4,
     waveHeight: 0.8,
-    waveDirectionSaaristomeri: null,
-    waveHeightSaaristomeri: null,
-    waveDirectionHelsinki: null,
-    waveHeightHelsinki: null,
     visibility: 40.0,
   },
+];
+
+const forecastHelsinki = [
   {
     place: '60.044,24.928:5',
     localtime: '2024-10-29 12:00:00',
@@ -424,12 +423,13 @@ const forecast = [
     windGust: 7.8,
     waveDirection: 235.8,
     waveHeight: 0.6,
-    waveDirectionSaaristomeri: null,
-    waveHeightSaaristomeri: null,
     waveDirectionHelsinki: 233.7,
     waveHeightHelsinki: 0.6,
     visibility: 40.0,
   },
+];
+
+const forecastSaaristomeri = [
   {
     place: '60.08,21.11:5',
     localtime: '2024-10-29 12:00:00',
@@ -440,8 +440,6 @@ const forecast = [
     waveHeight: 0.3,
     waveDirectionSaaristomeri: 275.7,
     waveHeightSaaristomeri: 0.3,
-    waveDirectionHelsinki: null,
-    waveHeightHelsinki: null,
     visibility: 40.0,
   },
 ];
@@ -502,8 +500,7 @@ const points = {
 
 const traficomN2000MapAreas = {
   type: 'FeatureCollection',
-  features: [
-  ]
+  features: [],
 };
 
 async function parseResponse(body: string): Promise<FeatureCollection> {
@@ -566,9 +563,26 @@ jest.mock('../lib/lambda/api/axios', () => ({
       return buoys;
     }
   },
-  fetchWeatherApiResponse: () => {
+  fetchWeatherApiResponse: (path: string) => {
     if (throwError) {
       throw new Error('Fetching from Weather forecast api failed');
+    }
+    if (path.includes('waveHeightHelsinki')) {
+      return {
+        data: forecastHelsinki,
+        headers: {
+          date: 0,
+        },
+      };
+    }
+
+    if (path.includes('waveHeightSaaristomeri')) {
+      return {
+        data: forecastSaaristomeri,
+        headers: {
+          date: 0,
+        },
+      };
     }
     return {
       data: forecast,
