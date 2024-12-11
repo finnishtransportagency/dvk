@@ -42,7 +42,7 @@ const LabelField: React.FC<LabelProps> = (props) => {
               })}
               role="definition"
             >
-              &nbsp;{props.unit}
+              {props.unit === '°' ? props.unit : `\u00A0${String(props.unit)}`}
             </span>
           </IonLabel>
         )}
