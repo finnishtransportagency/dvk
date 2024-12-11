@@ -1,11 +1,12 @@
 import React from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../graphql/generated';
-import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../../utils/constants';
+import { ActionType, AreaSelectOption, Lang, SelectOption, ValidationType, ValueType } from '../../utils/constants';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import TextInputRow from './TextInputRow';
 import SelectWithCustomDropdown from './SelectWithCustomDropdown';
 import { useTranslation } from 'react-i18next';
 import TextInput from './TextInput';
+import SelectInput from './SelectInput';
 
 interface SquatCalculationInputProps {
   idx: number;
@@ -21,7 +22,8 @@ interface SquatCalculationInputProps {
   readonly?: boolean;
   disabled?: boolean;
   fairwaySelection?: SelectOption[];
-  fairwayAreas?: SelectOption[];
+  fairwayAreas?: AreaSelectOption[];
+  isLoadingAreas?: boolean;
 }
 
 const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
@@ -33,8 +35,14 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   disabled = false,
   fairwaySelection,
   fairwayAreas,
+  isLoadingAreas,
 }) => {
   const { t } = useTranslation();
+
+  const filteredAreaOptions: AreaSelectOption[] = [];
+  section.targetFairways?.forEach((f) => {
+    fairwayAreas?.filter((item) => item.fairwayIds?.includes(f)).forEach((o) => filteredAreaOptions.push(o));
+  });
 
   return (
     <IonGrid className="formGrid">
@@ -62,6 +70,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             selected={section.targetFairways || []}
             setSelected={updateState}
             actionType="squatTargetFairwayIds"
+            actionTarget={idx}
             required
             showId
             disabled={!readonly && disabled}
@@ -73,12 +82,13 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
           <SelectWithCustomDropdown
             dropdownType="filter"
             label={t('fairwaycard.squat-suitable-fairway-areas')}
-            options={fairwayAreas ?? []}
+            options={filteredAreaOptions ?? []}
             selected={section.suitableFairwayAreas || []}
             setSelected={updateState}
             actionType="squatSuitableFairwayAreaIds"
+            actionTarget={idx}
+            isLoading={isLoadingAreas}
             required
-            showId
             disabled={!readonly && disabled}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'squatSuitableFairwayAreaIds-' + idx)?.msg}
@@ -118,7 +128,24 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
         </IonCol>
       </IonRow>
       <IonRow>
-        <IonCol sizeMd="3"></IonCol>
+        <IonCol sizeMd="3">
+          <SelectInput
+            label={t('fairwaycard.calculation-fairway-form')}
+            selected={section.fairwayForm as number}
+            options={[
+              { name: { fi: t('fairwaycard.calculation-fairway-form.open-water') }, id: 1 },
+              { name: { fi: t('fairwaycard.calculation-fairway-form.channel') }, id: 2 },
+              { name: { fi: t('fairwaycard.calculation-fairway-form.sloped-channel') }, id: 3 },
+            ]}
+            setSelected={updateState}
+            actionType="squatCalculationFairwayForm"
+            actionTarget={idx}
+            required
+            disabled={!readonly && disabled}
+            readonly={readonly}
+            error={validationErrors.find((error) => error.id === 'squatCalculationFairwayForm-' + idx)?.msg}
+          />
+        </IonCol>
         <IonCol>
           <TextInput
             label={t('fairwaycard.calculation-fairway-width')}

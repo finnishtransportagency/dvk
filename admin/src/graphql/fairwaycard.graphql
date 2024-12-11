@@ -179,22 +179,8 @@ fragment FairwayCardById on FairwayCard {
       sv
       en
     }
-    targetFairways {
-      id
-      name {
-        fi
-        sv
-        en
-      }
-    }
-    suitableFairwayAreas {
-      id
-      name {
-        fi
-        sv
-        en
-      }
-    }
+    targetFairways
+    suitableFairwayAreas
     depth
     estimatedWaterDepth
     fairwayWidth

@@ -106,6 +106,7 @@ export type FairwayCardActionType =
   | 'squatTargetFairwayIds'
   | 'squatSuitableFairwayAreaIds'
   | 'squatCalculationDepth'
+  | 'squatCalculationFairwayForm'
   | 'squatCalculationEstimatedWaterDepth'
   | 'squatCalculationFairwayWidth'
   | 'squatCalculationSlopeScale'
@@ -129,6 +130,12 @@ export type SelectOption = {
   id: number | string | boolean;
   name?: Text | null;
   geometry?: GeometryPoint | null;
+};
+
+export type AreaSelectOption = SelectOption & {
+  fairwayIds?: number[] | null;
+  depth?: number;
+  subtext?: string;
 };
 
 export type PictureGroup = {

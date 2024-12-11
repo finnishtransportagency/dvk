@@ -15,8 +15,9 @@ interface SelectWithCustomDropdownProps {
   label: string;
   options: SelectOption[] | null;
   selected: number[] | SelectedFairwayInput[];
-  setSelected: (value: ValueType, actionType: ActionType) => void;
+  setSelected: (value: ValueType, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number) => void;
   actionType: ActionType;
+  actionTarget?: string | number;
   dropdownType: DropdownType;
   required?: boolean;
   showId?: boolean;
@@ -35,6 +36,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   selected,
   setSelected,
   actionType,
+  actionTarget,
   dropdownType,
   required,
   showId,
@@ -76,7 +78,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   };
 
   const handleSelect = (updatedValues: number[] | SelectedFairwayInput[]) => {
-    setSelected(updatedValues, actionType);
+    setSelected(updatedValues, actionType, undefined, actionTarget);
   };
 
   const showInfoModal = () => {

@@ -15,7 +15,7 @@ import {
   TemporaryNotification,
   Text,
 } from '../graphql/generated';
-import { FeatureDataId, FeatureDataSources, ItemType, Lang, SelectOption, VERSION } from './constants';
+import { AreaSelectOption, FeatureDataId, FeatureDataSources, ItemType, Lang, SelectOption, VERSION } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
@@ -150,21 +150,30 @@ export const sortSelectOptions = (options: SelectOption[], lang: Lang) => {
   });
 };
 
+export const sortAreaSelectOptions = (options: AreaSelectOption[]) => {
+  return options.sort((o1, o2) => (o1.depth ?? 0) - (o2.depth ?? 0));
+};
+
 export const sortTypeSafeSelectOptions = (options: SelectOption[], lang: Lang) => {
   const filteredOptions = options.filter((item) => !!item && typeof item.id === 'number');
   return sortSelectOptions(filteredOptions, lang);
 };
 
-export const constructSelectOptionLabel = (item: SelectOption, lang: Lang, showId?: boolean): string => {
+export const constructSelectOptionLabel = (item: SelectOption | AreaSelectOption, lang: Lang, showId?: boolean): string => {
   const nameLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id.toString();
   return showId ? '[' + item.id + '] ' + nameLabel : nameLabel;
 };
 
-export const constructSelectDropdownLabel = (selected: number[], options: SelectOption[] | null, lang: Lang, showId?: boolean): string[] => {
+export const constructSelectDropdownLabel = (
+  selected: number[],
+  options: SelectOption[] | AreaSelectOption[] | null,
+  lang: Lang,
+  showId?: boolean
+): string[] => {
   if (selected.length > 0 && !!options && options.length > 0) {
-    const sortedOptions = sortSelectOptions(options, lang);
+    const sortedOptions = 'depth' in options[0] ? sortAreaSelectOptions(options) : sortSelectOptions(options, lang);
     const selectedOptions = sortedOptions.filter((item) => !!item && typeof item.id === 'number' && selected.includes(item.id));
-    return selectedOptions.map((item) => constructSelectOptionLabel(item, lang, showId));
+    return selectedOptions.map((item: SelectOption | AreaSelectOption) => constructSelectOptionLabel(item, lang, showId));
   }
   return [];
 };
@@ -225,19 +234,32 @@ export function sortPictures(pictures: PictureInput[]) {
 
 export function featureCollectionToSelectOptions(collection: FeatureCollection | undefined) {
   const propertyArray: SelectOption[] = [];
-  collection?.features?.map((route) => {
-    const properties = route.properties;
+  collection?.features?.map((feature) => {
+    const properties = feature.properties;
     const selectOption = {
       id: properties?.id,
       // name declared like this because of constructing label logic
       // related to SelectWithFilter
-      name: {
-        fi: properties?.name,
-      },
+      name: { fi: properties?.name },
     };
     propertyArray.push(selectOption);
   });
+  return propertyArray;
+}
 
+export function featureCollectionToAreaSelectOptions(collection: FeatureCollection | undefined, subtextPrefix: string) {
+  const propertyArray: AreaSelectOption[] = [];
+  collection?.features?.map((feature) => {
+    const properties = feature.properties;
+    const selectOption = {
+      id: properties?.id,
+      name: { fi: properties?.name },
+      fairwayIds: properties?.fairways?.map((f: { fairwayId: number }) => f.fairwayId),
+      depth: properties?.depth,
+      subtext: subtextPrefix + ' ' + (properties?.depth ?? 0) + ' m',
+    };
+    propertyArray.push(selectOption);
+  });
   return propertyArray;
 }
 

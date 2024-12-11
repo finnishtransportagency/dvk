@@ -22,6 +22,7 @@ import {
   mapIds,
   mapInternetAddress,
   mapMandatoryText,
+  mapNumber,
   mapPhoneNumber,
   mapPhoneNumbers,
   mapPilotJourney,
@@ -49,7 +50,7 @@ export function mapFairwayCardToModel(
   return {
     id: mapId(card.id),
     version: mapVersion(card.version),
-    name: card.name?.fi ? mapMandatoryText(card?.name) : { fi: '', sv: '', en: ''},
+    name: card.name?.fi ? mapMandatoryText(card?.name) : { fi: '', sv: '', en: '' },
     status: card.status,
     n2000HeightSystem: !!card.n2000HeightSystem,
     group: mapString(card.group),
@@ -157,6 +158,21 @@ export function mapFairwayCardToModel(
         };
       }) ?? null,
     publishDetails: card.publishDetails,
+    squatCalculations:
+      card.squatCalculations?.map((t) => {
+        return {
+          place: mapText(t?.place),
+          depth: t?.depth,
+          estimatedWaterDepth: t?.estimatedWaterDepth,
+          fairwayWidth: t?.fairwayWidth,
+          targetFairways: t?.targetFairways ?? [],
+          suitableFairwayAreas: t?.suitableFairwayAreas ?? [],
+          slopeScale: t?.slopeScale,
+          slopeHeight: t?.slopeHeight,
+          additionalInformation: mapText(t?.additionalInformation),
+          fairwayForm: t?.fairwayForm,
+        };
+      }) ?? null,
   };
 }
 
@@ -241,6 +257,7 @@ async function clearCardFromFairwayCache(
       const cacheKey = 'fairways:' + fairways.join(':');
       await deleteCacheObjects([cacheKey]);
     }
+    console.log(newModel);
     await FairwayCardDBModel.save(newModel, card.operation, latestVersionNumber, currentPublicCard);
   } catch (e) {
     if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {

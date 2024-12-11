@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, SelectOption, ValidationType, ValueType, VERSION } from '../utils/constants';
+import { ActionType, AreaSelectOption, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
 import {
   ContentType,
   FairwayCardByIdFragment,
@@ -36,7 +36,7 @@ import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
-import { isReadOnly, openPreview } from '../utils/common';
+import { isReadOnly, openPreview, featureCollectionToAreaSelectOptions } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
@@ -88,6 +88,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   // these are derived straight from featureData unlike others through graphQL
   // the graphQL approach's motives are a bit unclear so possible refactor in the future
   const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
+  const { data: areaList, isLoading: isLoadingAreas } = useFeatureData('area12');
 
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
@@ -122,7 +123,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const fairwaySelection = fairwayList?.fairways.filter((item) => state.fairwayIds.includes(item.id));
   const harbourSelection = harbourList?.harbors.filter((item) => state.harbors?.includes(item.id));
   const harbourOptions = harbourList?.harbors.filter((item) => item.n2000HeightSystem === state.n2000HeightSystem);
-  const fairwayAreas: SelectOption[] = [];
+
+  //Filter the selectable areas for the squat calculations based on the fairway card selected fairways
+  //They will also be filtered in the squat calculation section based on that fairway sub selection
+  const areaOptions = featureCollectionToAreaSelectOptions(areaList, t('harbour.depth'));
+  const filteredAreaOptions: AreaSelectOption[] = [];
+  fairwaySelection?.forEach((f) => {
+    areaOptions.filter((item) => item.fairwayIds?.includes(f.id)).forEach((o) => filteredAreaOptions.push(o));
+  });
 
   // no need for all versions for checking reserved id's
   const reservedFairwayCardIds = fairwaysAndHarbours?.fairwayCardsAndHarbors
@@ -132,7 +140,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const fairwayCardVersions = fairwaysAndHarbours?.fairwayCardsAndHarbors.filter(
     (item) => item.type === ContentType.Card && item.id === fairwayCard.id && item.version !== VERSION.LATEST && item.version !== VERSION.PUBLIC
   );
-  const isLoading = isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces || isLoadingMareographs;
+  const isLoading = isLoadingMutation || isLoadingFairways || isLoadingHarbours || isLoadingPilotPlaces || isLoadingMareographs || isLoadingAreas;
 
   const updateState = (
     value: ValueType,
@@ -473,7 +481,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 validationErrors={validationErrors}
                 readonly={readonly}
                 fairwaySelection={fairwaySelection}
-                fairwayAreas={fairwayAreas}
+                fairwayAreas={filteredAreaOptions}
+                isLoadingAreas={isLoadingAreas}
               />
 
               <IonText>

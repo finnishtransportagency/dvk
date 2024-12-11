@@ -192,16 +192,8 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
           fairwayWidth: calc.fairwayWidth,
           slopeHeight: calc.slopeHeight,
           slopeScale: calc.slopeScale,
-          suitableFairwayAreas:
-            calc.suitableFairwayAreas
-              ?.flatMap((fairway) => fairway?.id)
-              .filter((id): id is number => id !== null && id !== undefined)
-              .sort() ?? [],
-          targetFairways:
-            calc.targetFairways
-              ?.flatMap((fairway) => fairway?.id)
-              .filter((id): id is number => id !== null && id !== undefined)
-              .sort() ?? [],
+          suitableFairwayAreas: calc.suitableFairwayAreas?.filter((id): id is number => id !== null && id !== undefined).sort() ?? [],
+          targetFairways: calc.targetFairways?.filter((id): id is number => id !== null && id !== undefined).sort() ?? [],
         };
       }) ?? [],
     publishDetails: stringValueOrDefault(data?.fairwayCard?.publishDetails),

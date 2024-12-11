@@ -24,6 +24,7 @@ interface SquatCalculationSectionProps {
   readonly?: boolean;
   fairwaySelection?: SelectOption[];
   fairwayAreas?: SelectOption[];
+  isLoadingAreas?: boolean;
 }
 
 const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
@@ -36,6 +37,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
   readonly = false,
   fairwaySelection,
   fairwayAreas,
+  isLoadingAreas = false,
 }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
@@ -108,6 +110,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
                 disabled={disabled}
                 fairwaySelection={fairwaySelection}
                 fairwayAreas={fairwayAreas}
+                isLoadingAreas={isLoadingAreas}
               />
             </div>
           </div>

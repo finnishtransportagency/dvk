@@ -443,6 +443,10 @@ ion-popover.multiSelect ion-item ion-label {
   white-space: normal !important;
 }
 
+ion-popover.multiSelect ion-item ion-label.subtext {
+  font-size: 12px;
+}
+
 ion-popover.multiSelect ion-list {
   padding: 0;
 }

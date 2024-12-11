@@ -723,6 +723,19 @@ export const fairwayCardReducer = (
         ),
       };
       break;
+    case 'squatCalculationFairwayForm':
+      newState = {
+        ...state,
+        squatCalculations: state.squatCalculations?.map((calcItem, idx) =>
+          idx === actionTarget
+            ? {
+                ...calcItem,
+                fairwayForm: value as number,
+              }
+            : calcItem
+        ),
+      };
+      break;
     case 'squatCalculationEstimatedWaterDepth':
       newState = {
         ...state,
@@ -782,7 +795,7 @@ export const fairwayCardReducer = (
           idx === actionTarget
             ? {
                 ...calcItem,
-                targetFairways: calcItem.targetFairways,
+                targetFairways: value as number[],
               }
             : calcItem
         ),
@@ -795,7 +808,7 @@ export const fairwayCardReducer = (
           idx === actionTarget
             ? {
                 ...calcItem,
-                suitableFairwayAreas: calcItem.suitableFairwayAreas,
+                suitableFairwayAreas: value as number[],
               }
             : calcItem
         ),

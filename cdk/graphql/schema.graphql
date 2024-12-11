@@ -96,11 +96,11 @@ input SquatCalculationInput {
   place: TextInput!
   targetFairways: [Int!]
   suitableFairwayAreas: [Int!]
-  depth: Float!
-  estimatedWaterDepth: Float!
-  fairwayWidth: Float!
-  slopeScale: Float!
-  slopeHeight: Float!
+  depth: Float
+  estimatedWaterDepth: Float
+  fairwayWidth: Float
+  slopeScale: Float
+  slopeHeight: Float
   additionalInformation: TextInput!
   fairwayForm: Int
 }
@@ -620,15 +620,15 @@ type TemporaryNotification {
 }
 
 type SquatCalculation {
-  place: Text!
-  targetFairways: [Fairway]
-  suitableFairwayAreas: [Fairway]
-  depth: Float!
-  estimatedWaterDepth: Float!
-  fairwayWidth: Float!
-  slopeScale: Float!
-  slopeHeight: Float!
-  additionalInformation: Text!
+  place: Text
+  targetFairways: [Int]
+  suitableFairwayAreas: [Int]
+  depth: Float
+  estimatedWaterDepth: Float
+  fairwayWidth: Float
+  slopeScale: Float
+  slopeHeight: Float
+  additionalInformation: Text
   fairwayForm: Int
 }
 
