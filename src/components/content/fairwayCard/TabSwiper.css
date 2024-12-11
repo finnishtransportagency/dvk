@@ -23,7 +23,8 @@ div.tabs {
 }
 
 .tabs ion-button::part(native) {
-  padding-top: 16px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 
 .tabs ion-label {
@@ -39,7 +40,7 @@ div.tabs {
 .tab-indicator {
   width: 40px;
   height: 2px;
-  margin: 8px auto 0 auto;
+  margin: 4px auto 0 auto;
 }
 
 .selected .tab-indicator {
