@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../graphql/generated';
 import { ActionType, AreaSelectOption, Lang, SelectOption, ValidationType, ValueType } from '../../utils/constants';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
@@ -7,6 +7,7 @@ import SelectWithCustomDropdown from './SelectWithCustomDropdown';
 import { useTranslation } from 'react-i18next';
 import TextInput from './TextInput';
 import SelectInput from './SelectInput';
+import { sortAreaSelectOptions } from '../../utils/common';
 
 interface SquatCalculationInputProps {
   idx: number;
@@ -38,11 +39,28 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   isLoadingAreas,
 }) => {
   const { t } = useTranslation();
+  const [minDepth, setMinDepth] = useState<number>(section.depth ?? 0);
+  const [calcTimeout, setCalcTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
 
   const filteredAreaOptions: AreaSelectOption[] = [];
   section.targetFairways?.forEach((f) => {
     fairwayAreas?.filter((item) => item.fairwayIds?.includes(f)).forEach((o) => filteredAreaOptions.push(o));
   });
+
+  const sortedSelectedAreas = sortAreaSelectOptions(filteredAreaOptions.filter((a) => section.suitableFairwayAreas?.includes(a.id as number)));
+  const calculatedDepth = sortedSelectedAreas && sortedSelectedAreas.length > 0 ? (sortedSelectedAreas[0].depth ?? 0) : 0;
+
+  //Want to persist the calculated value to state if the calculated value is different
+  //Using this ensures that the current depths are used to do the calculation and not the persisted values, if we would persist the depth of each area
+  //Need to use setTimeout here otherwise the render is still happening whille the parent is updated due to the state update.
+  //This is not very clean way, but tried all kinds of useCallback, useRef etc.
+  if (calculatedDepth > 0 && calculatedDepth !== minDepth) {
+    if (calcTimeout) {
+      clearTimeout(calcTimeout);
+    }
+    setMinDepth(calculatedDepth);
+    setCalcTimeout(setTimeout(() => updateState(calculatedDepth, 'squatCalculationDepth', undefined, idx)));
+  }
 
   return (
     <IonGrid className="formGrid">
@@ -104,8 +122,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             actionTarget={idx}
             name={'squatCalculationDepth-' + idx}
             required
-            disabled={!readonly && disabled}
-            readonly={readonly}
+            readonly={true}
             error={validationErrors.find((error) => error.id === 'squatCalculationDepth-' + idx)?.msg}
             helperText={t('fairwaycard.squat-calculation-depth-help-text')}
           />
@@ -115,6 +132,8 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             label={t('fairwaycard.calculation-estimated-water-depth')}
             inputType="number"
             val={section.estimatedWaterDepth}
+            min={section.depth ?? 0}
+            decimalCount={1}
             setValue={updateState}
             actionType="squatCalculationEstimatedWaterDepth"
             actionTarget={idx}

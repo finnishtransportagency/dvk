@@ -56,7 +56,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
   const selectRef = useRef<HTMLIonItemElement>(null);
-  const triggerId = 'select-with-dropdown-' + actionType;
+  const triggerId = 'select-with-dropdown-' + actionType + actionTarget;
 
   const focusSelectItem = () => {
     selectRef.current?.click();

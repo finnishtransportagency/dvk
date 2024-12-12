@@ -162,6 +162,111 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
   };
 }
 
+function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string) {
+  const squatCalculationPlaceErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => (requiredError(calc.place) ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatCalculationPlace-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const squatCalculationTargetFairwaysErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => (!calc.targetFairways ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatTargetFairwayIds-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const squatCalculationAreasErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => (!calc.suitableFairwayAreas ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatSuitableFairwayAreaIds-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const squatCalculationEstimatedWaterDepthErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => (!calc.estimatedWaterDepth ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatCalculationEstimatedWaterDepth-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const squatCalculationFairwayFormErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => (!calc.fairwayForm ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatCalculationFairwayForm-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const squatCalculationFairwayWidthErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => (!calc.fairwayWidth ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatCalculationFairwayWidth-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const squatCalculationSlopeScaleErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => (!calc.slopeScale ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatCalculationSlopeScale-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const squatCalculationSlopeHeightErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => (!calc.slopeHeight ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatCalculationSlopeHeight-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  const squatCalculationAdditionalInformationErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => (requiredError(calc.place) ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatCalculationAdditionalInformation-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+
+  return {
+    squatCalculationPlaceErrors,
+    squatCalculationTargetFairwaysErrors,
+    squatCalculationAreasErrors,
+    squatCalculationEstimatedWaterDepthErrors,
+    squatCalculationFairwayFormErrors,
+    squatCalculationFairwayWidthErrors,
+    squatCalculationSlopeScaleErrors,
+    squatCalculationSlopeHeightErrors,
+    squatCalculationAdditionalInformationErrors,
+  };
+}
+
 // invalidErrorMsg and dateErrorMsg are only for temporaryNotifications, since they're bit of a special case
 export function validateFairwayCardForm(
   state: FairwayCardInput,
@@ -232,6 +337,18 @@ export function validateFairwayCardForm(
     temporaryNotificationEndDateInputErrors,
     temporaryNotificationEndDateErrors,
   } = validateTemporaryNotifications(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
+
+  const {
+    squatCalculationPlaceErrors,
+    squatCalculationTargetFairwaysErrors,
+    squatCalculationAreasErrors,
+    squatCalculationEstimatedWaterDepthErrors,
+    squatCalculationFairwayFormErrors,
+    squatCalculationFairwayWidthErrors,
+    squatCalculationSlopeScaleErrors,
+    squatCalculationSlopeHeightErrors,
+    squatCalculationAdditionalInformationErrors,
+  } = validateSquatCalculations(state, requiredMsg);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
   return manualValidations.concat(
@@ -243,7 +360,16 @@ export function validateFairwayCardForm(
     temporaryNotificationContentErrors,
     temporaryNotificationStartDateErrors,
     temporaryNotificationEndDateInputErrors,
-    temporaryNotificationEndDateErrors
+    temporaryNotificationEndDateErrors,
+    squatCalculationPlaceErrors,
+    squatCalculationTargetFairwaysErrors,
+    squatCalculationAreasErrors,
+    squatCalculationEstimatedWaterDepthErrors,
+    squatCalculationFairwayFormErrors,
+    squatCalculationFairwayWidthErrors,
+    squatCalculationSlopeScaleErrors,
+    squatCalculationSlopeHeightErrors,
+    squatCalculationAdditionalInformationErrors
   );
 }
 

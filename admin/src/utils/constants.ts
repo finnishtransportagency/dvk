@@ -59,6 +59,19 @@ export type HarbourActionType =
   | 'sectionLon'
   | 'publishDetails';
 
+export type FairwayCardSquatCalculationActionType =
+  | 'squatCalculations'
+  | 'squatCalculationPlace'
+  | 'squatCalculationAdditionalInformation'
+  | 'squatTargetFairwayIds'
+  | 'squatSuitableFairwayAreaIds'
+  | 'squatCalculationDepth'
+  | 'squatCalculationFairwayForm'
+  | 'squatCalculationEstimatedWaterDepth'
+  | 'squatCalculationFairwayWidth'
+  | 'squatCalculationSlopeScale'
+  | 'squatCalculationSlopeHeight';
+
 export type FairwayCardActionType =
   | 'name'
   | 'primaryId'
@@ -100,17 +113,7 @@ export type FairwayCardActionType =
   | 'temporaryNotificationStartDate'
   | 'temporaryNotificationEndDate'
   | 'publishDetails'
-  | 'squatCalculations'
-  | 'squatCalculationPlace'
-  | 'squatCalculationAdditionalInformation'
-  | 'squatTargetFairwayIds'
-  | 'squatSuitableFairwayAreaIds'
-  | 'squatCalculationDepth'
-  | 'squatCalculationFairwayForm'
-  | 'squatCalculationEstimatedWaterDepth'
-  | 'squatCalculationFairwayWidth'
-  | 'squatCalculationSlopeScale'
-  | 'squatCalculationSlopeHeight';
+  | FairwayCardSquatCalculationActionType;
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'
