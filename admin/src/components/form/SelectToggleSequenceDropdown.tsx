@@ -32,7 +32,25 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
 
   const popover = useRef<HTMLIonPopoverElement>(null);
 
-  const sortedOptions = options?.sort((a, b) => (a.id as number) - (b.id as number)) as SelectOption[];
+  // fairly complex solution but this is done because options don't have sequence number property attached to them
+  // sequence numbers are always part of state, so bit of a maneuvering is needed since comparing has to be done by comparing
+  // selected array
+  const getSortedOptions = () => {
+    return options?.sort((a, b) => {
+      // arrays are so small that no need for mapping
+      const seqA = selected.find((sA) => sA.id === a.id)?.sequenceNumber;
+      const seqB = selected.find((sB) => sB.id === b.id)?.sequenceNumber;
+      // if both are selected, compare sequence numbers
+      if (seqA !== undefined && seqB !== undefined) {
+        return seqA - seqB;
+      }
+      // if one of them doesn't have a sequence number, place it before
+      if (seqA !== undefined) return -1;
+      if (seqB !== undefined) return 1;
+      // if no sequence numbers to compare, just compare names
+      return a.name?.fi?.localeCompare(b.name?.fi as string) ?? 0;
+    });
+  };
 
   const isOptionSelected = (value: SelectOption) => {
     if (value === undefined) {
@@ -82,7 +100,7 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
       onDidDismiss={handlePopupClose}
     >
       <IonList className="ion-no-padding sequenceList">
-        {sortedOptions?.map((option) => {
+        {getSortedOptions()?.map((option) => {
           const optionSelected = isOptionSelected(option);
           const optionLabel = constructSelectOptionLabel(option, lang, showId);
           const currentSequenceNumber = getSequenceNumber(option.id as number);
