@@ -665,6 +665,12 @@ export const fairwayCardReducer = (
             additionalInformation: { fi: '', sv: '', en: '' },
           }),
         };
+
+        //Add the default value for the target fairway if only one exists in the fairway card
+        if (state.fairwayIds.length === 1 && newState.squatCalculations) {
+          const newCalcIndex = state.squatCalculations ? state.squatCalculations.length : 0;
+          newState.squatCalculations[newCalcIndex].targetFairways = [state.fairwayIds[0]];
+        }
       } else {
         newState = {
           ...state,

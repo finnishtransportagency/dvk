@@ -89,7 +89,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             actionTarget={idx}
             isLoading={isLoadingAreas}
             required
-            disabled={!readonly && disabled}
+            disabled={!readonly && (disabled || (section.targetFairways?.length ?? 0) < 1)}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'squatSuitableFairwayAreaIds-' + idx)?.msg}
           />
