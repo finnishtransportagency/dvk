@@ -1,5 +1,11 @@
 import { GeometryPoint, PictureInput, PilotPlaceInput, Text, TextInput } from '../graphql/generated';
 
+export enum FairwayForm {
+  OpenWater = 1,
+  Channel = 2,
+  SlopedChannel = 3,
+}
+
 export const VERSION = {
   PUBLIC: 'v0_public',
   LATEST: 'v0_latest',

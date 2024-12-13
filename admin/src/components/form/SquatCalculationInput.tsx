@@ -1,6 +1,6 @@
 import React from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../graphql/generated';
-import { ActionType, AreaSelectOption, Lang, SelectOption, ValidationType, ValueType } from '../../utils/constants';
+import { ActionType, AreaSelectOption, FairwayForm, Lang, SelectOption, ValidationType, ValueType } from '../../utils/constants';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import TextInputRow from './TextInputRow';
 import SelectWithCustomDropdown from './SelectWithCustomDropdown';
@@ -170,9 +170,9 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             label={t('fairwaycard.calculation-fairway-form')}
             selected={(section.fairwayForm as number) ?? undefined}
             options={[
-              { name: { fi: t('fairwaycard.calculation-fairway-form.open-water') }, id: 1 },
-              { name: { fi: t('fairwaycard.calculation-fairway-form.channel') }, id: 2 },
-              { name: { fi: t('fairwaycard.calculation-fairway-form.sloped-channel') }, id: 3 },
+              { name: { fi: t('fairwaycard.calculation-fairway-form.open-water') }, id: FairwayForm.OpenWater },
+              { name: { fi: t('fairwaycard.calculation-fairway-form.channel') }, id: FairwayForm.Channel },
+              { name: { fi: t('fairwaycard.calculation-fairway-form.sloped-channel') }, id: FairwayForm.SlopedChannel },
             ]}
             setSelected={updateState}
             actionType="squatCalculationFairwayForm"

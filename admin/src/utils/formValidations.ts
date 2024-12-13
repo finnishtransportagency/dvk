@@ -1,6 +1,6 @@
 import { diff } from 'deep-object-diff';
-import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, InputMaybe } from '../graphql/generated';
-import { PictureGroup, ValidationType } from './constants';
+import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, InputMaybe, SquatCalculationInput } from '../graphql/generated';
+import { FairwayForm, PictureGroup, ValidationType } from './constants';
 import { dateError, endDateError } from './common';
 
 function requiredError(input?: TextInput | Text | null): boolean {
@@ -162,108 +162,65 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
   };
 }
 
-function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string) {
-  const squatCalculationPlaceErrors =
+function validateMandatorySquatField(
+  state: FairwayCardInput,
+  fieldPrefix: string,
+  requiredMsg: string,
+  mapper: (calc: SquatCalculationInput, i: number) => number | null
+) {
+  const errors =
     state.squatCalculations
-      ?.flatMap((calc, i) => (requiredError(calc.place) ? i : null))
+      ?.flatMap(mapper)
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {
-          id: 'squatCalculationPlace-' + vIndex,
+          id: fieldPrefix + '-' + vIndex,
           msg: requiredMsg,
         };
       }) ?? [];
-  const squatCalculationTargetFairwaysErrors =
-    state.squatCalculations
-      ?.flatMap((calc, i) => (!calc.targetFairways ? i : null))
-      .filter((val) => Number.isInteger(val))
-      .map((vIndex) => {
-        return {
-          id: 'squatTargetFairwayIds-' + vIndex,
-          msg: requiredMsg,
-        };
-      }) ?? [];
-  const squatCalculationAreasErrors =
-    state.squatCalculations
-      ?.flatMap((calc, i) => (!calc.suitableFairwayAreas ? i : null))
-      .filter((val) => Number.isInteger(val))
-      .map((vIndex) => {
-        return {
-          id: 'squatSuitableFairwayAreaIds-' + vIndex,
-          msg: requiredMsg,
-        };
-      }) ?? [];
-  const squatCalculationEstimatedWaterDepthErrors =
-    state.squatCalculations
-      ?.flatMap((calc, i) => (!calc.estimatedWaterDepth ? i : null))
-      .filter((val) => Number.isInteger(val))
-      .map((vIndex) => {
-        return {
-          id: 'squatCalculationEstimatedWaterDepth-' + vIndex,
-          msg: requiredMsg,
-        };
-      }) ?? [];
-  const squatCalculationFairwayFormErrors =
-    state.squatCalculations
-      ?.flatMap((calc, i) => (!calc.fairwayForm ? i : null))
-      .filter((val) => Number.isInteger(val))
-      .map((vIndex) => {
-        return {
-          id: 'squatCalculationFairwayForm-' + vIndex,
-          msg: requiredMsg,
-        };
-      }) ?? [];
-  const squatCalculationFairwayWidthErrors =
-    state.squatCalculations
-      ?.flatMap((calc, i) => (calc.fairwayForm != 1 && !calc.fairwayWidth ? i : null))
-      .filter((val) => Number.isInteger(val))
-      .map((vIndex) => {
-        return {
-          id: 'squatCalculationFairwayWidth-' + vIndex,
-          msg: requiredMsg,
-        };
-      }) ?? [];
-  const squatCalculationSlopeScaleErrors =
-    state.squatCalculations
-      ?.flatMap((calc, i) => ((calc.fairwayForm ?? -1) === 3 && !calc.slopeScale ? i : null))
-      .filter((val) => Number.isInteger(val))
-      .map((vIndex) => {
-        return {
-          id: 'squatCalculationSlopeScale-' + vIndex,
-          msg: requiredMsg,
-        };
-      }) ?? [];
-  const squatCalculationSlopeHeightErrors =
-    state.squatCalculations
-      ?.flatMap((calc, i) => ((calc.fairwayForm ?? -1) === 3 && !calc.slopeHeight ? i : null))
-      .filter((val) => Number.isInteger(val))
-      .map((vIndex) => {
-        return {
-          id: 'squatCalculationSlopeHeight-' + vIndex,
-          msg: requiredMsg,
-        };
-      }) ?? [];
-  const squatCalculationAdditionalInformationErrors =
-    state.squatCalculations
-      ?.flatMap((calc, i) => (requiredError(calc.place) ? i : null))
-      .filter((val) => Number.isInteger(val))
-      .map((vIndex) => {
-        return {
-          id: 'squatCalculationAdditionalInformation-' + vIndex,
-          msg: requiredMsg,
-        };
-      }) ?? [];
+  return errors;
+}
 
+function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string) {
+  const squatPlaceErrors = validateMandatorySquatField(state, 'squatCalculationPlace', requiredMsg, (calc, i) =>
+    requiredError(calc.place) ? i : null
+  );
+  const squatTargetFairwaysErrors = validateMandatorySquatField(state, 'squatTargetFairwayIds', requiredMsg, (calc, i) =>
+    !calc.targetFairways ? i : null
+  );
+  const squatAreasErrors = validateMandatorySquatField(state, 'squatSuitableFairwayAreaIds', requiredMsg, (calc, i) =>
+    !calc.suitableFairwayAreas ? i : null
+  );
+  const squatEstimatedWaterDepthErrors = validateMandatorySquatField(state, 'squatCalculationEstimatedWaterDepth', requiredMsg, (calc, i) =>
+    !calc.estimatedWaterDepth ? i : null
+  );
+  const squatFairwayFormErrors = validateMandatorySquatField(state, 'squatCalculationFairwayForm', requiredMsg, (calc, i) =>
+    !calc.fairwayForm ? i : null
+  );
+  const squatFairwayWidthErrors = validateMandatorySquatField(state, 'squatCalculationFairwayWidth', requiredMsg, (calc, i) =>
+    (calc.fairwayForm ?? -1) > FairwayForm.OpenWater && !calc.fairwayWidth ? i : null
+  );
+  const squatSlopeScaleErrors = validateMandatorySquatField(state, 'squatCalculationSlopeScale', requiredMsg, (calc, i) =>
+    (calc.fairwayForm ?? -1) === FairwayForm.SlopedChannel && !calc.slopeScale ? i : null
+  );
+  const squatSlopeHeightErrors = validateMandatorySquatField(state, 'squatCalculationSlopeHeight', requiredMsg, (calc, i) =>
+    (calc.fairwayForm ?? -1) === FairwayForm.SlopedChannel && !calc.slopeHeight ? i : null
+  );
+  const squatAdditionalInformationErrors = validateMandatorySquatField(state, 'squatCalculationAdditionalInformation', requiredMsg, (calc, i) =>
+    requiredError(calc.place) ? i : null
+  );
+
+  console.log('ggg:' + JSON.stringify(squatEstimatedWaterDepthErrors));
   return {
-    squatCalculationPlaceErrors,
-    squatCalculationTargetFairwaysErrors,
-    squatCalculationAreasErrors,
-    squatCalculationEstimatedWaterDepthErrors,
-    squatCalculationFairwayFormErrors,
-    squatCalculationFairwayWidthErrors,
-    squatCalculationSlopeScaleErrors,
-    squatCalculationSlopeHeightErrors,
-    squatCalculationAdditionalInformationErrors,
+    squatPlaceErrors,
+    squatTargetFairwaysErrors,
+    squatAreasErrors,
+    squatEstimatedWaterDepthErrors,
+    squatFairwayFormErrors,
+    squatFairwayWidthErrors,
+    squatSlopeScaleErrors,
+    squatSlopeHeightErrors,
+    squatAdditionalInformationErrors,
   };
 }
 
@@ -339,15 +296,15 @@ export function validateFairwayCardForm(
   } = validateTemporaryNotifications(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
 
   const {
-    squatCalculationPlaceErrors,
-    squatCalculationTargetFairwaysErrors,
-    squatCalculationAreasErrors,
-    squatCalculationEstimatedWaterDepthErrors,
-    squatCalculationFairwayFormErrors,
-    squatCalculationFairwayWidthErrors,
-    squatCalculationSlopeScaleErrors,
-    squatCalculationSlopeHeightErrors,
-    squatCalculationAdditionalInformationErrors,
+    squatPlaceErrors,
+    squatTargetFairwaysErrors,
+    squatAreasErrors,
+    squatEstimatedWaterDepthErrors,
+    squatFairwayFormErrors,
+    squatFairwayWidthErrors,
+    squatSlopeScaleErrors,
+    squatSlopeHeightErrors,
+    squatAdditionalInformationErrors,
   } = validateSquatCalculations(state, requiredMsg);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
@@ -361,15 +318,15 @@ export function validateFairwayCardForm(
     temporaryNotificationStartDateErrors,
     temporaryNotificationEndDateInputErrors,
     temporaryNotificationEndDateErrors,
-    squatCalculationPlaceErrors,
-    squatCalculationTargetFairwaysErrors,
-    squatCalculationAreasErrors,
-    squatCalculationEstimatedWaterDepthErrors,
-    squatCalculationFairwayFormErrors,
-    squatCalculationFairwayWidthErrors,
-    squatCalculationSlopeScaleErrors,
-    squatCalculationSlopeHeightErrors,
-    squatCalculationAdditionalInformationErrors
+    squatPlaceErrors,
+    squatTargetFairwaysErrors,
+    squatAreasErrors,
+    squatEstimatedWaterDepthErrors,
+    squatFairwayFormErrors,
+    squatFairwayWidthErrors,
+    squatSlopeScaleErrors,
+    squatSlopeHeightErrors,
+    squatAdditionalInformationErrors
   );
 }
 

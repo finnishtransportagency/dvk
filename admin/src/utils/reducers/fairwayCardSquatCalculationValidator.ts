@@ -9,6 +9,7 @@ export const fairwayCardSquatCalculationValidator = (
   setValidationErrors: (validationErrors: ValidationType[]) => void,
   actionTarget?: string | number
 ) => {
+  console.log(JSON.stringify(validationErrors));
   if (
     actionType === 'squatCalculationPlace' &&
     actionTarget !== undefined &&
