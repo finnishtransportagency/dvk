@@ -258,7 +258,6 @@ async function clearCardFromFairwayCache(
       const cacheKey = 'fairways:' + fairways.join(':');
       await deleteCacheObjects([cacheKey]);
     }
-    console.log(newModel);
     await FairwayCardDBModel.save(newModel, card.operation, latestVersionNumber, currentPublicCard);
   } catch (e) {
     if (e instanceof ConditionalCheckFailedException && e.name === 'ConditionalCheckFailedException') {
