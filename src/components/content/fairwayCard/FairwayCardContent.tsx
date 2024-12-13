@@ -58,7 +58,8 @@ export enum FairwayCardTab {
   Harbours = 2,
   CommonInformation = 3,
   PilotRoutes = 4,
-  WeatherForecasts = 5,
+  SquatCalculation = 5,
+  WeatherForecasts = 6,
 }
 
 interface FairwayCardContentProps {
@@ -352,6 +353,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             )}
           </div>
 
+          <div className={getTabClassName(FairwayCardTab.SquatCalculation)} />
           <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
             {forecastsReady && forecasts
               ? forecasts.map((f) => {

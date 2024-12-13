@@ -92,41 +92,7 @@ setupIonicReact({
   mode: 'md',
 });
 
-/* Delete old react query ionic storage database "DVK", if still exist */
-if (window.indexedDB) {
-  window.indexedDB.deleteDatabase('DVK');
-}
-
 const idbAsyncStorage = IdbAsyncStorage();
-
-/* Remove old react query cache "REACT_QUERY_OFFLINE_CACHE", if still exist */
-idbAsyncStorage.removeItem('REACT_QUERY_OFFLINE_CACHE');
-
-/* Remove old DVK_REACT_QUERY_STORAGE-* items with stringified values, if still exist */
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["area12"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["area3456"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["boardline12"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["circle"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["depth12"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["findAllFairwayCards",{"status":["PUBLIC"]}]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["findAllMarineWarnings"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["findAllSafetyEquipmentFaults"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["harbor"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["line12"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["line3456"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["marinewarning"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["pilot"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["restrictionarea"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["safetyequipment"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["safetyequipmentfault"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["specialarea2"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["specialarea15"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["vtsline"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["vtspoint"]');
-
-/* Remove old static name and name-buster - moved to use tanstack query */
-idbAsyncStorage.removeItem('name');
-idbAsyncStorage.removeItem('name-buster');
 
 const queryFilter = (query: Query) => {
   // Defaults to true. Do not persist only if meta.persist === false
@@ -171,13 +137,13 @@ const DvkIonApp: React.FC = () => {
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
   const boardLine12Layer = useBoardLine12Layer();
+  const circleLayer = useCircleLayer();
+  /* Start initializing other layers */
   const bgFinlandLayer = useInitStaticDataLayer('finland', 'finland');
   const bgMmlmeriLayer = useInitStaticDataLayer('mml_meri', 'mml_meri');
   const bgMmlmerirantaviivaLayer = useInitStaticDataLayer('mml_meri_rantaviiva', 'mml_meri_rantaviiva');
   const bgMmljarviLayer = useInitStaticDataLayer('mml_jarvi', 'mml_jarvi');
   const bgMmljarvirantaviivaLayer = useInitStaticDataLayer('mml_jarvi_rantaviiva', 'mml_jarvi_rantaviiva');
-  const circleLayer = useCircleLayer();
-  /* Start initializing other layers */
   useDepth12Layer();
   useSpeedLimitLayer();
   useSafetyEquipmentAndFaultLayer();
@@ -217,11 +183,12 @@ const DvkIonApp: React.FC = () => {
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
   const [centering, setCentering] = useState(false);
+  const [bgFetchError, setBgFetchError] = useState(false);
 
   const { state } = useDvkContext();
 
   useEffect(() => {
-    const allLayers: DvkLayerState[] = [
+    const mandatoryLayers: DvkLayerState[] = [
       fairwayCardList,
       line12Layer,
       area12Layer,
@@ -230,11 +197,10 @@ const DvkIonApp: React.FC = () => {
       pilotLayer,
       harborLayer,
       boardLine12Layer,
-      bgFinlandLayer,
-      bgMmlmeriLayer,
-      bgMmljarviLayer,
       circleLayer,
     ];
+    const bgLayers: DvkLayerState[] = [bgFinlandLayer, bgMmlmeriLayer, bgMmljarviLayer];
+    const allLayers: DvkLayerState[] = mandatoryLayers.concat(bgLayers);
 
     let percent = 0;
     const resourcePercentage = 1 / allLayers.length;
@@ -245,9 +211,10 @@ const DvkIonApp: React.FC = () => {
 
     setPercentDone(Math.round(percent * 100) / 100);
 
-    setFetchError(allLayers.some((layer) => layer.isError));
+    setFetchError(mandatoryLayers.some((layer) => layer.isError));
+    setBgFetchError(bgLayers.some((layer) => layer.isError));
 
-    setInitDone(allLayers.every((layer) => layer.ready));
+    setInitDone(mandatoryLayers.every((layer) => layer.ready));
   }, [
     fairwayCardList,
     line12Layer,
@@ -360,6 +327,16 @@ const DvkIonApp: React.FC = () => {
       </IonReactRouter>
       {fetchError && (
         <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.errorTitle')} message={t('appInitAlert.errorContent')} />
+      )}
+      {!fetchError && bgFetchError && (
+        <IonAlert
+          className="bgAlertModal"
+          isOpen={initDone}
+          backdropDismiss={true}
+          header={t('appInitAlert.bgErrorTitle')}
+          message={t('appInitAlert.bgErrorContent')}
+          buttons={[t('common.continue')]}
+        />
       )}
       {!fetchError && <IonAlert isOpen={!initDone} backdropDismiss={false} header={t('appInitAlert.title')} message={t('appInitAlert.content')} />}
     </IonApp>
