@@ -50,8 +50,11 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
     //This function "overloads" the setState to calculate also the depth and set that through the reducer
     const sortedSelectedAreas = sortAreaSelectOptions(filteredAreaOptions.filter((a) => (value as number[])?.includes(a.id as number)));
     const calculatedDepth = sortedSelectedAreas && sortedSelectedAreas.length > 0 ? (sortedSelectedAreas[0].depth ?? 0) : 0;
+    //First updateState doesn't trigger refresh so set the value explicity....
     section.depth = calculatedDepth;
+    //....then call reducer
     updateState(calculatedDepth, 'squatCalculationDepth', undefined, idx, undefined);
+    //Call the reducer with the trigger value
     updateState(value, actionType, actionLang, actionTarget, actionOuterTarget);
   }
 
@@ -68,6 +71,12 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   });
   const sortedAreas = sortAreaSelectOptions(filteredAreaOptions);
 
+  const sortedSelectedAreas = sortAreaSelectOptions(filteredAreaOptions.filter((a) => section.suitableFairwayAreas?.includes(a.id as number)));
+  const multipleDepths =
+    sortedSelectedAreas &&
+    sortedSelectedAreas.length > 1 &&
+    sortedSelectedAreas[0].depth !== sortedSelectedAreas[sortedSelectedAreas.length - 1].depth;
+  console.log(multipleDepths);
   return (
     <IonGrid className="formGrid">
       <TextInputRow
@@ -129,9 +138,10 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             actionType="squatCalculationDepth"
             actionTarget={idx}
             name={'squatCalculationDepth-' + idx}
+            decimalCount={1}
             required
             readonly={true}
-            error={validationErrors.find((error) => error.id === 'squatCalculationDepth-' + idx)?.msg}
+            customerror={multipleDepths ? t('fairwaycard.squat-calculation-depth-warning') : undefined}
             helperText={t('fairwaycard.squat-calculation-depth-help-text')}
           />
         </IonCol>

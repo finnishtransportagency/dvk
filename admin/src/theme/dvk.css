@@ -557,6 +557,11 @@ label.input-wrapper {
   background-color: var(--ion-color-lighter);
 }
 
+.formGrid div.custom-error-text {
+  font-size: 13px;
+  color: var(--ion-color-danger);
+}
+
 .formGrid ion-input.formInput.has-focus.input-fill-outline label.input-wrapper,
 .formGrid ion-textarea.formInput.has-focus.textarea-fill-outline label.textarea-wrapper {
   border-image: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-tertiary));
