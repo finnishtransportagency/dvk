@@ -669,7 +669,7 @@ export const fairwayCardReducer = (
     case 'squatTargetFairwayIds':
     case 'squatSuitableFairwayAreaIds':
       newState = fairwayCardSquatCalculationReducer(state, value, actionType, validationErrors, setValidationErrors, actionLang, actionTarget);
-      fairwayCardSquatCalculationValidator(newState, actionType, validationErrors, setValidationErrors);
+      fairwayCardSquatCalculationValidator(newState, actionType, validationErrors, setValidationErrors, actionTarget);
 
       break;
     default:

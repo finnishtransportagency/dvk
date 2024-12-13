@@ -181,7 +181,7 @@ function validateMandatorySquatField(
   return errors;
 }
 
-function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string) {
+function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string, invalidMsg: string) {
   const squatPlaceErrors = validateMandatorySquatField(state, 'squatCalculationPlace', requiredMsg, (calc, i) =>
     requiredError(calc.place) ? i : null
   );
@@ -210,7 +210,17 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string)
     requiredError(calc.place) ? i : null
   );
 
-  console.log('ggg:' + JSON.stringify(squatEstimatedWaterDepthErrors));
+  const squatFairwayWidthValueErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => ((calc.depth ?? 0) > (calc.estimatedWaterDepth ?? 0) ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatCalculationEstimatedWaterDepth-' + vIndex,
+          msg: invalidMsg,
+        };
+      }) ?? [];
+
   return {
     squatPlaceErrors,
     squatTargetFairwaysErrors,
@@ -218,6 +228,7 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string)
     squatEstimatedWaterDepthErrors,
     squatFairwayFormErrors,
     squatFairwayWidthErrors,
+    squatFairwayWidthValueErrors,
     squatSlopeScaleErrors,
     squatSlopeHeightErrors,
     squatAdditionalInformationErrors,
@@ -302,10 +313,11 @@ export function validateFairwayCardForm(
     squatEstimatedWaterDepthErrors,
     squatFairwayFormErrors,
     squatFairwayWidthErrors,
+    squatFairwayWidthValueErrors,
     squatSlopeScaleErrors,
     squatSlopeHeightErrors,
     squatAdditionalInformationErrors,
-  } = validateSquatCalculations(state, requiredMsg);
+  } = validateSquatCalculations(state, requiredMsg, invalidErrorMsg);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
   return manualValidations.concat(
@@ -324,6 +336,7 @@ export function validateFairwayCardForm(
     squatEstimatedWaterDepthErrors,
     squatFairwayFormErrors,
     squatFairwayWidthErrors,
+    squatFairwayWidthValueErrors,
     squatSlopeScaleErrors,
     squatSlopeHeightErrors,
     squatAdditionalInformationErrors

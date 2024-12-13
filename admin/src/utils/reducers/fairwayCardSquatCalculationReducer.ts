@@ -34,6 +34,7 @@ export const fairwayCardSquatCalculationReducer = (
           squatCalculations: state.squatCalculations?.filter((_, idx) => idx !== actionTarget),
         };
       }
+
       break;
     case 'squatCalculationAdditionalInformation':
       newState = {
@@ -79,7 +80,6 @@ export const fairwayCardSquatCalculationReducer = (
             : calcItem
         ),
       };
-      console.log(newState.squatCalculations ? newState.squatCalculations[0].depth : '');
       break;
     case 'squatCalculationFairwayForm':
       newState = {
