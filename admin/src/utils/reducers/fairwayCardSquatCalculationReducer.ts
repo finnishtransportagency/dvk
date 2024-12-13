@@ -13,9 +13,6 @@ export const fairwayCardSquatCalculationReducer = (
   actionOuterTarget?: string | number,
   reservedIds?: string[]
 ): FairwayCardInput => {
-  console.log(validationErrors);
-  console.log(t);
-  console.log(setValidationErrors);
   console.log(actionOuterTarget);
   console.log(reservedIds);
 
@@ -83,6 +80,7 @@ export const fairwayCardSquatCalculationReducer = (
             : calcItem
         ),
       };
+      console.log(newState.squatCalculations ? newState.squatCalculations[0].depth : '');
       break;
     case 'squatCalculationFairwayForm':
       newState = {

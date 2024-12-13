@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../graphql/generated';
 import { ActionType, AreaSelectOption, Lang, SelectOption, ValidationType, ValueType } from '../../utils/constants';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
@@ -25,6 +25,7 @@ interface SquatCalculationInputProps {
   fairwaySelection?: SelectOption[];
   fairwayAreas?: AreaSelectOption[];
   isLoadingAreas?: boolean;
+  isLoadingFairways?: boolean;
 }
 
 const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
@@ -37,30 +38,35 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   fairwaySelection,
   fairwayAreas,
   isLoadingAreas,
+  isLoadingFairways,
 }) => {
-  const { t } = useTranslation();
-  const [minDepth, setMinDepth] = useState<number>(section.depth ?? 0);
-  const [calcTimeout, setCalcTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
+  function updateStateAndDepth(
+    value: ValueType,
+    actionType: ActionType,
+    actionLang?: Lang,
+    actionTarget?: string | number,
+    actionOuterTarget?: string | number
+  ) {
+    //This function "overloads" the setState to calculate also the depth and set that through the reducer
+    const sortedSelectedAreas = sortAreaSelectOptions(filteredAreaOptions.filter((a) => (value as number[])?.includes(a.id as number)));
+    const calculatedDepth = sortedSelectedAreas && sortedSelectedAreas.length > 0 ? (sortedSelectedAreas[0].depth ?? 0) : 0;
+    section.depth = calculatedDepth;
+    updateState(calculatedDepth, 'squatCalculationDepth', undefined, idx, undefined);
+    updateState(value, actionType, actionLang, actionTarget, actionOuterTarget);
+  }
 
+  const { t } = useTranslation();
   const filteredAreaOptions: AreaSelectOption[] = [];
   section.targetFairways?.forEach((f) => {
-    fairwayAreas?.filter((item) => item.fairwayIds?.includes(f)).forEach((o) => filteredAreaOptions.push(o));
+    fairwayAreas
+      ?.filter((item) => item.fairwayIds?.includes(f))
+      .forEach((o) => {
+        if (filteredAreaOptions.find((a) => a.id === o.id) === undefined) {
+          filteredAreaOptions.push(o);
+        }
+      });
   });
-
-  const sortedSelectedAreas = sortAreaSelectOptions(filteredAreaOptions.filter((a) => section.suitableFairwayAreas?.includes(a.id as number)));
-  const calculatedDepth = sortedSelectedAreas && sortedSelectedAreas.length > 0 ? (sortedSelectedAreas[0].depth ?? 0) : 0;
-
-  //Want to persist the calculated value to state if the calculated value is different
-  //Using this ensures that the current depths are used to do the calculation and not the persisted values, if we would persist the depth of each area
-  //Need to use setTimeout here otherwise the render is still happening whille the parent is updated due to the state update.
-  //This is not very clean way, but tried all kinds of useCallback, useRef etc.
-  if (calculatedDepth > 0 && calculatedDepth !== minDepth) {
-    if (calcTimeout) {
-      clearTimeout(calcTimeout);
-    }
-    setMinDepth(calculatedDepth);
-    setCalcTimeout(setTimeout(() => updateState(calculatedDepth, 'squatCalculationDepth', undefined, idx)));
-  }
+  const sortedAreas = sortAreaSelectOptions(filteredAreaOptions);
 
   return (
     <IonGrid className="formGrid">
@@ -78,6 +84,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
         }
         readonly={readonly}
         disabled={!readonly && disabled}
+        helperText={t('fairwaycard.squat-calculation-place-help-text')}
       />
       <IonRow>
         <IonCol sizeMd="3">
@@ -89,6 +96,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             setSelected={updateState}
             actionType="squatTargetFairwayIds"
             actionTarget={idx}
+            isLoading={isLoadingFairways}
             required
             showId
             disabled={!readonly && disabled}
@@ -100,9 +108,9 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
           <SelectWithCustomDropdown
             dropdownType="filter"
             label={t('fairwaycard.squat-suitable-fairway-areas')}
-            options={filteredAreaOptions ?? []}
+            options={sortedAreas ?? []}
             selected={section.suitableFairwayAreas || []}
-            setSelected={updateState}
+            setSelected={updateStateAndDepth}
             actionType="squatSuitableFairwayAreaIds"
             actionTarget={idx}
             isLoading={isLoadingAreas}
@@ -150,7 +158,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
         <IonCol sizeMd="3">
           <SelectInput
             label={t('fairwaycard.calculation-fairway-form')}
-            selected={section.fairwayForm as number}
+            selected={(section.fairwayForm as number) ?? undefined}
             options={[
               { name: { fi: t('fairwaycard.calculation-fairway-form.open-water') }, id: 1 },
               { name: { fi: t('fairwaycard.calculation-fairway-form.channel') }, id: 2 },
@@ -163,6 +171,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             disabled={!readonly && disabled}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'squatCalculationFairwayForm-' + idx)?.msg}
+            helperText={t('fairwaycard.squat-calculation-fairway-form-help-text')}
           />
         </IonCol>
         <IonCol>
@@ -179,7 +188,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             name={'squatCalculationFairwayWidth-' + idx}
             unit="m"
             required
-            disabled={!readonly && disabled}
+            disabled={!readonly && (disabled || !section.fairwayForm || section.fairwayForm === 1)}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'squatCalculationFairwayWidth-' + idx)?.msg}
             helperText={t('fairwaycard.squat-calculation-fairway-width-help-text')}
@@ -198,7 +207,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             actionTarget={idx}
             name={'squatCalculationSlopeScale-' + idx}
             required
-            disabled={!readonly && disabled}
+            disabled={!readonly && (disabled || !section.fairwayForm || section.fairwayForm !== 3)}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'squatCalculationSlopeScale-' + idx)?.msg}
             helperText={t('fairwaycard.squat-calculation-slope-scale-help-text')}
@@ -217,7 +226,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
             actionTarget={idx}
             name={'squatCalculationSlopeHeight-' + idx}
             required
-            disabled={!readonly && disabled}
+            disabled={!readonly && (disabled || !section.fairwayForm || section.fairwayForm !== 3)}
             readonly={readonly}
             error={validationErrors.find((error) => error.id === 'squatCalculationSlopeHeight-' + idx)?.msg}
             helperText={t('fairwaycard.squat-calculation-slope-height-help-text')}
@@ -238,6 +247,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
         }
         readonly={readonly}
         disabled={!readonly && disabled}
+        helperText={t('fairwaycard.squat-calculation-additional-information-help-text')}
       />
     </IonGrid>
   );

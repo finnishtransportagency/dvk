@@ -25,6 +25,7 @@ interface SquatCalculationSectionProps {
   fairwaySelection?: SelectOption[];
   fairwayAreas?: SelectOption[];
   isLoadingAreas?: boolean;
+  isLoadingFairways?: boolean;
 }
 
 const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
@@ -38,6 +39,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
   fairwaySelection,
   fairwayAreas,
   isLoadingAreas = false,
+  isLoadingFairways = false,
 }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
@@ -111,6 +113,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
                 fairwaySelection={fairwaySelection}
                 fairwayAreas={fairwayAreas}
                 isLoadingAreas={isLoadingAreas}
+                isLoadingFairways={isLoadingFairways}
               />
             </div>
           </div>
@@ -123,7 +126,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
         closeTitle={t('general.close')}
         header={t('fairwaycard.squat-calculation-title')}
         i18nkey="modal.squat-calculation-add"
-        message={t('general.squatCalculation.description')}
+        message={t('general.squat-calculation-description')}
       />
       <IonGrid>
         <IonRow className="ion-justify-content-end">

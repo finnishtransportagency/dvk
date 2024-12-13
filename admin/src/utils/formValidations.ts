@@ -215,7 +215,7 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string)
       }) ?? [];
   const squatCalculationFairwayWidthErrors =
     state.squatCalculations
-      ?.flatMap((calc, i) => (!calc.fairwayWidth ? i : null))
+      ?.flatMap((calc, i) => (calc.fairwayForm != 1 && !calc.fairwayWidth ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {
@@ -225,7 +225,7 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string)
       }) ?? [];
   const squatCalculationSlopeScaleErrors =
     state.squatCalculations
-      ?.flatMap((calc, i) => (!calc.slopeScale ? i : null))
+      ?.flatMap((calc, i) => ((calc.fairwayForm ?? -1) === 3 && !calc.slopeScale ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {
@@ -235,7 +235,7 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string)
       }) ?? [];
   const squatCalculationSlopeHeightErrors =
     state.squatCalculations
-      ?.flatMap((calc, i) => (!calc.slopeHeight ? i : null))
+      ?.flatMap((calc, i) => ((calc.fairwayForm ?? -1) === 3 && !calc.slopeHeight ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {

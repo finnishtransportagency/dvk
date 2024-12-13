@@ -257,6 +257,7 @@ export function featureCollectionToAreaSelectOptions(collection: FeatureCollecti
       fairwayIds: properties?.fairways?.map((f: { fairwayId: number }) => f.fairwayId),
       depth: properties?.depth,
       subtext: subtextPrefix + ' ' + (properties?.depth ?? 0) + ' m',
+      areatype: properties?.typeCode,
     };
     propertyArray.push(selectOption);
   });

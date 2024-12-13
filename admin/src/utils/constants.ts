@@ -139,6 +139,7 @@ export type AreaSelectOption = SelectOption & {
   fairwayIds?: number[] | null;
   depth?: number;
   subtext?: string;
+  areatype?: number;
 };
 
 export type PictureGroup = {

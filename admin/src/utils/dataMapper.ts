@@ -189,6 +189,7 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
           },
           depth: calc.depth,
           estimatedWaterDepth: calc.estimatedWaterDepth,
+          fairwayForm: calc.fairwayForm,
           fairwayWidth: calc.fairwayWidth,
           slopeHeight: calc.slopeHeight,
           slopeScale: calc.slopeScale,

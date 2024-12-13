@@ -165,6 +165,7 @@ export function mapFairwayCardToModel(
           depth: t?.depth,
           estimatedWaterDepth: t?.estimatedWaterDepth,
           fairwayWidth: t?.fairwayWidth,
+          fairwayform: t?.fairwayForm,
           targetFairways: t?.targetFairways ?? [],
           suitableFairwayAreas: t?.suitableFairwayAreas ?? [],
           slopeScale: t?.slopeScale,
