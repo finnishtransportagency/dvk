@@ -13,7 +13,7 @@ import {
   CalculationChecks,
   PrintBar,
 } from 'squatlib';
-import 'squatlib/dist/style.css';
+import 'squatlib/dist/squat-lib.css';
 import './Squat.css';
 import { Lang } from '../../utils/constants';
 
