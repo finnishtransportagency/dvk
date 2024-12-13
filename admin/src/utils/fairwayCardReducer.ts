@@ -3,6 +3,7 @@ import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, SelectedFai
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
 import { dateError, endDateError, removeSequence, sortPictures } from './common';
 import { fairwayCardSquatCalculationReducer } from './reducers/fairwayCardSquatCalculationReducer';
+import { fairwayCardSquatCalculationValidator } from './reducers/fairwayCardSquatCalculationValidator';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -667,17 +668,9 @@ export const fairwayCardReducer = (
     case 'squatCalculationSlopeHeight':
     case 'squatTargetFairwayIds':
     case 'squatSuitableFairwayAreaIds':
-      newState = fairwayCardSquatCalculationReducer(
-        state,
-        value,
-        actionType,
-        validationErrors,
-        setValidationErrors,
-        actionLang,
-        actionTarget,
-        actionOuterTarget,
-        reservedIds
-      );
+      newState = fairwayCardSquatCalculationReducer(state, value, actionType, validationErrors, setValidationErrors, actionLang, actionTarget);
+      fairwayCardSquatCalculationValidator(newState, actionType, validationErrors, setValidationErrors);
+
       break;
     default:
       console.warn(`Unknown action type, state not updated.`);
