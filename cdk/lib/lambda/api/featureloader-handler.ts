@@ -26,7 +26,7 @@ import {
   TurvalaiteVikatiedotFeature,
   TurvalaiteVikatiedotFeatureCollection,
 } from './apiModels';
-import { booleanContains as turf_booleanContains } from '@turf/boolean-contains';
+import { booleanWithin as turf_booleanWithin } from '@turf/boolean-within';
 
 interface FeaturesWithMaxFetchTime {
   featureArray: Feature<Geometry, GeoJsonProperties>[];
@@ -268,7 +268,12 @@ async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
 
 function inOfficialN2000Area(geom: Geometry, traficomN2000MapAreas: Geometry | undefined): boolean | undefined {
   if (traficomN2000MapAreas !== undefined) {
-    return turf_booleanContains(traficomN2000MapAreas, geom);
+    try {
+      return turf_booleanWithin(geom, traficomN2000MapAreas);
+    } catch (e) {
+      log.debug(e);
+      return undefined;
+    }
   }
   return undefined;
 }

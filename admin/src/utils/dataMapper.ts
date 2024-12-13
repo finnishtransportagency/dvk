@@ -422,7 +422,7 @@ export const mapQuays = (harbour: HarborInput) => {
         ...quay,
         geometry:
           !quay?.geometry?.lat || !quay?.geometry?.lon
-            ? ''
+            ? { lat: '', lon: '' }
             : {
                 lat: quay?.geometry?.lat,
                 lon: quay?.geometry?.lon,

@@ -150,6 +150,7 @@
     "harboursTitle": "Väylän satamat",
     "areasTitle": "Väylän alueet",
     "routesTitle": "Luotsausreitit",
+    "squatTitle": "Squat-laskuri",
     "weatherForecastsTitle": "Sääennusteet",
     "information": "Väylätiedot",
     "liningAndMarking": "Linjaus ja merkintä",
@@ -341,7 +342,9 @@
     "title": "Sovellusta alustetaan",
     "content": "Ole hyvä ja odota hetki",
     "errorTitle": "Latausvirhe",
-    "errorContent": "Tietojen latauksessa tapahtui virhe. Ole hyvä ja yritä uudelleen."
+    "bgErrorTitle": "Taustakarttojen latausvirhe",
+    "errorContent": "Tietojen latauksessa tapahtui virhe. Ole hyvä ja yritä uudelleen.",
+    "bgErrorContent": "Taustakarttojen latauksessa tapahtui virhe. Voit jatkaa sovelluksen käyttöä, mutta taustakartta-aineisto voi olla puutteellista."
   },
   "popup": {
     "common": {
@@ -581,7 +584,8 @@
     "filter": "Valitse suodatin...",
     "sortOldToNew": "Vanhin ensin",
     "sortNewToOld": "Uusin ensin",
-    "submit": "Lähetä"
+    "submit": "Lähetä",
+    "continue": "Jatka"
   },
   "tileLoadWarning": {
     "vectorTileError": "Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
