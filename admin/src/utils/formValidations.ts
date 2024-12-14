@@ -84,7 +84,8 @@ function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
           msg: requiredMsg,
         };
       }) ?? [];
-  return { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors };
+
+  return vtsNameErrors.concat(vhfNameErrors, vhfChannelErrors, tugNameErrors);
 }
 
 function validatePictures(state: FairwayCardInput, requiredMsg: string) {
@@ -154,12 +155,12 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
           msg: endDateErrorMsg,
         };
       }) ?? [];
-  return {
-    temporaryNotificationContentErrors,
+
+  return temporaryNotificationContentErrors.concat(
     temporaryNotificationStartDateErrors,
     temporaryNotificationEndDateInputErrors,
-    temporaryNotificationEndDateErrors,
-  };
+    temporaryNotificationEndDateErrors
+  );
 }
 
 function validateMandatorySquatField(
@@ -222,8 +223,8 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string,
         };
       }) ?? [];
 
-  return {
-    squatPlaceErrors,
+  return squatPlaceErrors.concat(
+    squatTargetFairwaysErrors,
     squatTargetFairwaysErrors,
     squatAreasErrors,
     squatEstimatedWaterDepthErrors,
@@ -232,8 +233,8 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string,
     squatFairwayWidthValueErrors,
     squatSlopeScaleErrors,
     squatSlopeHeightErrors,
-    squatAdditionalInformationErrors,
-  };
+    squatAdditionalInformationErrors
+  );
 }
 
 // invalidErrorMsg and dateErrorMsg are only for temporaryNotifications, since they're bit of a special case
@@ -299,49 +300,12 @@ export function validateFairwayCardForm(
     },
   ];
 
-  const { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors } = validateVtsAndTug(state, requiredMsg);
-  const {
-    temporaryNotificationContentErrors,
-    temporaryNotificationStartDateErrors,
-    temporaryNotificationEndDateInputErrors,
-    temporaryNotificationEndDateErrors,
-  } = validateTemporaryNotifications(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
-
-  const {
-    squatPlaceErrors,
-    squatTargetFairwaysErrors,
-    squatAreasErrors,
-    squatEstimatedWaterDepthErrors,
-    squatFairwayFormErrors,
-    squatFairwayWidthErrors,
-    squatFairwayWidthValueErrors,
-    squatSlopeScaleErrors,
-    squatSlopeHeightErrors,
-    squatAdditionalInformationErrors,
-  } = validateSquatCalculations(state, requiredMsg, invalidErrorMsg);
+  const vtsAndTugErrors = validateVtsAndTug(state, requiredMsg);
+  const temporaryNotificationErrors = validateTemporaryNotifications(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
+  const squatErrors = validateSquatCalculations(state, requiredMsg, invalidErrorMsg);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
-  return manualValidations.concat(
-    vtsNameErrors,
-    vhfNameErrors,
-    vhfChannelErrors,
-    tugNameErrors,
-    pictureTextErrors,
-    temporaryNotificationContentErrors,
-    temporaryNotificationStartDateErrors,
-    temporaryNotificationEndDateInputErrors,
-    temporaryNotificationEndDateErrors,
-    squatPlaceErrors,
-    squatTargetFairwaysErrors,
-    squatAreasErrors,
-    squatEstimatedWaterDepthErrors,
-    squatFairwayFormErrors,
-    squatFairwayWidthErrors,
-    squatFairwayWidthValueErrors,
-    squatSlopeScaleErrors,
-    squatSlopeHeightErrors,
-    squatAdditionalInformationErrors
-  );
+  return manualValidations.concat(vtsAndTugErrors, pictureTextErrors, temporaryNotificationErrors, squatErrors);
 }
 
 function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocationMsg: string) {
