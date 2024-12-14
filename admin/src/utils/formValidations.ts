@@ -210,6 +210,7 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string,
     requiredError(calc.place) ? i : null
   );
 
+  //Custom check about depth value
   const squatFairwayWidthValueErrors =
     state.squatCalculations
       ?.flatMap((calc, i) => ((calc.depth ?? 0) > (calc.estimatedWaterDepth ?? 0) ? i : null))

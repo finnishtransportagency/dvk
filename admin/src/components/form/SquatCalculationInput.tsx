@@ -76,6 +76,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
     sortedSelectedAreas &&
     sortedSelectedAreas.length > 1 &&
     sortedSelectedAreas[0].depth !== sortedSelectedAreas[sortedSelectedAreas.length - 1].depth;
+
   return (
     <IonGrid className="formGrid">
       <TextInputRow
