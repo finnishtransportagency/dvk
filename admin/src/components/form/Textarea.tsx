@@ -13,9 +13,11 @@ interface TextareaProps {
   actionTarget?: string | number;
   required?: boolean;
   disabled?: boolean;
+  readonly?: boolean;
   error?: string;
   helperText?: string | null;
   name?: string;
+  rows?: number;
 }
 
 const Textarea: React.FC<TextareaProps> = ({
@@ -24,12 +26,14 @@ const Textarea: React.FC<TextareaProps> = ({
   setValue,
   actionType,
   actionLang,
+  actionTarget,
   required,
   disabled,
+  readonly = false,
   error,
   helperText,
   name,
-  actionTarget,
+  rows,
 }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'general' });
 
@@ -77,6 +81,8 @@ const Textarea: React.FC<TextareaProps> = ({
     }
   }, [required, error, isTouched, val, checkValidity]);
 
+  const textAreaClassLabel = 'ion-align-self-center formInput' + (readonly ? ' readonly' : '') + (isInputOk(isValid, error) ? '' : ' invalid');
+
   return (
     <>
       <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
@@ -94,12 +100,13 @@ const Textarea: React.FC<TextareaProps> = ({
           checkValidity();
           setIsTouched(true);
         }}
-        disabled={disabled}
+        disabled={!readonly && disabled}
+        readonly={readonly}
         autoGrow
-        rows={1}
+        rows={rows ?? 1}
         maxlength={TEXTAREA_MAXLENGTH}
         fill="outline"
-        className={'ion-align-self-center formInput' + (isInputOk(isValid, error) ? '' : ' invalid')}
+        className={textAreaClassLabel}
         helperText={isInputOk(isValid, error) ? (helperText ?? '') : ''}
         errorText={getCombinedErrorAndHelperText(helperText, getErrorText())}
         labelPlacement="fixed"

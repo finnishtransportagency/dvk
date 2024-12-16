@@ -3,6 +3,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { vi } from 'vitest';
+import { Status } from './graphql/generated';
 beforeEach(() => {
   vi.resetAllMocks();
   vi.useFakeTimers();
@@ -159,6 +160,18 @@ vi.mock('./graphql/api', () => ({
       isPaused: false,
       isError: false,
     };
+  },
+  useFairwayCardByIdQueryData: () => {
+    return { id: 'id', name: { fi: 'nimi', sv: 'namn', en: 'name' }, n2000HeightSystem: false, status: Status.Draft, type: 'CARD' };
+  },
+  useHarbourByIdQueryData: () => {
+    return { id: 'id', name: { fi: 'nimi', sv: 'namn', en: 'name' }, n2000HeightSystem: false, status: Status.Draft, type: 'HARBOR' };
+  },
+  useSaveFairwayCardMutationQuery: () => {
+    return { id: 'id', name: { fi: 'nimi', sv: 'namn', en: 'name' }, n2000HeightSystem: false, status: Status.Draft, type: 'CARD' };
+  },
+  useSaveHarborMutationQuery: () => {
+    return { id: 'id', name: { fi: 'nimi', sv: 'namn', en: 'name' }, n2000HeightSystem: false, status: Status.Draft, type: 'HARBOR' };
   },
 }));
 

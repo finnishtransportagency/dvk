@@ -61,7 +61,6 @@ exports[`should get areas from api 1`] = `
         ],
         "featureType": "area",
         "id": 193273,
-        "n2000ReferenceLevel": null,
         "name": null,
         "referenceLevel": "MW2005",
         "type": "Navigointialue",
@@ -298,7 +297,6 @@ exports[`should get navigation lines from api 1`] = `
         "featureType": "line",
         "id": 69883,
         "length": 33,
-        "n2000ReferenceLevel": null,
         "oppositeDirection": 355,
         "referenceLevel": "NN+78.80",
       },
@@ -552,33 +550,6 @@ exports[`should get weather and wave forecast from api 1`] = `
     {
       "geometry": {
         "coordinates": [
-          24.928,
-          60.044,
-        ],
-        "type": "Point",
-      },
-      "id": "60.044,24.928",
-      "properties": {
-        "featureType": "forecast",
-        "forecastItems": [
-          {
-            "dateTime": 1730203200000,
-            "visibility": 40,
-            "waveDirection": 233.7,
-            "waveHeight": 0.6,
-            "windDirection": 292,
-            "windGust": 7.8,
-            "windSpeed": 5.1,
-          },
-        ],
-        "name": null,
-        "pilotPlaceId": null,
-      },
-      "type": "Feature",
-    },
-    {
-      "geometry": {
-        "coordinates": [
           21.11,
           60.08,
         ],
@@ -596,6 +567,33 @@ exports[`should get weather and wave forecast from api 1`] = `
             "windDirection": 262,
             "windGust": 8.2,
             "windSpeed": 5.9,
+          },
+        ],
+        "name": null,
+        "pilotPlaceId": null,
+      },
+      "type": "Feature",
+    },
+    {
+      "geometry": {
+        "coordinates": [
+          24.928,
+          60.044,
+        ],
+        "type": "Point",
+      },
+      "id": "60.044,24.928",
+      "properties": {
+        "featureType": "forecast",
+        "forecastItems": [
+          {
+            "dateTime": 1730203200000,
+            "visibility": 40,
+            "waveDirection": 233.7,
+            "waveHeight": 0.6,
+            "windDirection": 292,
+            "windGust": 7.8,
+            "windSpeed": 5.1,
           },
         ],
         "name": null,

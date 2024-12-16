@@ -24,6 +24,7 @@ exports[`should get draft harbor preview from the DynamoDB 1`] = `
     "sv": "Harbor2sv",
   },
   "phoneNumber": undefined,
+  "publishDetails": undefined,
   "quays": undefined,
   "status": "DRAFT",
   "version": "v1",
@@ -78,6 +79,7 @@ exports[`should get public harbor preview from the DynamoDB 1`] = `
     "12345",
     "22222",
   ],
+  "publishDetails": undefined,
   "quays": [
     {
       "extraInfo": {

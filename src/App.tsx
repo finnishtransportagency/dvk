@@ -32,6 +32,7 @@ import {
   usePilotageAreaBorderLayer,
   useDirwayLayer,
   useRestrictionPortLayer,
+  useForecastLayer,
 } from './components/FeatureLoader';
 import { useObservationLayer, useObservationFeatures } from './components/ObservationFeatureLoader';
 import {
@@ -91,41 +92,7 @@ setupIonicReact({
   mode: 'md',
 });
 
-/* Delete old react query ionic storage database "DVK", if still exist */
-if (window.indexedDB) {
-  window.indexedDB.deleteDatabase('DVK');
-}
-
 const idbAsyncStorage = IdbAsyncStorage();
-
-/* Remove old react query cache "REACT_QUERY_OFFLINE_CACHE", if still exist */
-idbAsyncStorage.removeItem('REACT_QUERY_OFFLINE_CACHE');
-
-/* Remove old DVK_REACT_QUERY_STORAGE-* items with stringified values, if still exist */
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["area12"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["area3456"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["boardline12"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["circle"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["depth12"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["findAllFairwayCards",{"status":["PUBLIC"]}]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["findAllMarineWarnings"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["findAllSafetyEquipmentFaults"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["harbor"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["line12"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["line3456"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["marinewarning"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["pilot"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["restrictionarea"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["safetyequipment"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["safetyequipmentfault"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["specialarea2"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["specialarea15"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["vtsline"]');
-idbAsyncStorage.removeItem('DVK_REACT_QUERY_STORAGE-["vtspoint"]');
-
-/* Remove old static name and name-buster - moved to use tanstack query */
-idbAsyncStorage.removeItem('name');
-idbAsyncStorage.removeItem('name-buster');
 
 const queryFilter = (query: Query) => {
   // Defaults to true. Do not persist only if meta.persist === false
@@ -207,6 +174,7 @@ const DvkIonApp: React.FC = () => {
   usePilotageAreaBorderLayer();
   useDirwayLayer();
   useRestrictionPortLayer();
+  useForecastLayer();
   /* Initialize observation and merograph data for offline use, needed in fairway cards */
   useObservationFeatures();
   useMareographFeatures();
@@ -298,11 +266,12 @@ const DvkIonApp: React.FC = () => {
   }, []);
 
   const [isSourceOpen, setIsSourceOpen] = useState(false);
+  const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
   return (
     <IonApp className={appClasses.join(' ')}>
       {initDone && <OfflineStatus />}
       <IonReactRouter basename={state.preview ? '/esikatselu' : '/vaylakortti'}>
-        <SidebarMenu setIsSourceOpen={setIsSourceOpen} />
+        <SidebarMenu setIsSourceOpen={setIsSourceOpen} setIsFeedbackOpen={setIsFeedbackOpen} />
         {(!!isFetching || !initDone || centering) && (
           <IonProgressBar
             value={percentDone}
@@ -352,7 +321,7 @@ const DvkIonApp: React.FC = () => {
             </Switch>
           </IonRouterOutlet>
         </IonContent>
-        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} />
+        <MapOverlays isOpen={isSourceOpen} setIsOpen={setIsSourceOpen} isFeedbackOpen={isFeedbackOpen} setIsFeedbackOpen={setIsFeedbackOpen} />
         {isMobile() && <ContentModal modal={modal} modalOpen={modalOpen} modalContent={modalContent} />}
       </IonReactRouter>
       {fetchError && (

@@ -146,7 +146,7 @@ class FairwayCardDBModel {
 
   harbors?: Maybe<Harbor[]>;
 
-  fairways: FairwayDBModel[];
+  fairways?: FairwayDBModel[];
 
   expires?: Maybe<number>;
 
@@ -159,6 +159,8 @@ class FairwayCardDBModel {
   latest?: Maybe<number>;
 
   latestVersionUsed?: Maybe<number>;
+
+  publishDetails?: Maybe<string>;
 
   static getLatestSortKey() {
     return 'v0_latest';

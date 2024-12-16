@@ -6,7 +6,7 @@ import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
 import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations, fetchWeatherWaveForecast } from './weather';
-import { fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
+import { fetchN2000MapAreas, fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 import { getNumberValue, invertDegrees, roundDecimals, toBase64Response } from '../util';
@@ -26,6 +26,7 @@ import {
   TurvalaiteVikatiedotFeature,
   TurvalaiteVikatiedotFeatureCollection,
 } from './apiModels';
+import { booleanWithin as turf_booleanWithin } from '@turf/boolean-within';
 
 interface FeaturesWithMaxFetchTime {
   featureArray: Feature<Geometry, GeoJsonProperties>[];
@@ -111,7 +112,7 @@ function mapAreaFeature(area: AlueFeature): Feature {
       referenceLevel: area.properties.vertaustaso,
       n2000draft: area.properties.n2000MitoitusSyvays && area.properties.n2000MitoitusSyvays > 0 ? area.properties.n2000MitoitusSyvays : undefined,
       n2000depth: area.properties.n2000HarausSyvyys && area.properties.n2000HarausSyvyys > 0 ? area.properties.n2000HarausSyvyys : undefined,
-      n2000ReferenceLevel: area.properties.n2000Vertaustaso,
+      n2000ReferenceLevel: area.properties.n2000Vertaustaso ?? undefined,
     },
   };
 }
@@ -134,7 +135,12 @@ function getAreaFilter(type: 'area' | 'specialarea2') {
 }
 
 async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent, featureType: string, areaFilter: (a: AlueFeature) => boolean) {
-  const areas = (await fetchVATUByFairwayClass<AlueFeature>('vaylaalueet', event)).data as AlueFeatureCollection;
+
+  const [areaData, traficomN2000MapAreas] = await Promise.all([
+    fetchVATUByFairwayClass<AlueFeature>('vaylaalueet', event),
+    fetchN2000MapAreas()
+  ]);
+  const areas = areaData.data as AlueFeatureCollection;
   log.debug('areas: %d', areas.features.length);
 
   for (const area of areas.features.filter(areaFilter)) {
@@ -151,9 +157,10 @@ async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
         type: area.properties.tyyppi,
         draft: getNumberValue(area.properties.mitoitusSyvays),
         referenceLevel: area.properties.vertaustaso,
+        isN2000: inOfficialN2000Area(area.geometry, traficomN2000MapAreas),
         n2000draft: getNumberValue(area.properties.n2000MitoitusSyvays),
         n2000depth: getNumberValue(area.properties.n2000HarausSyvyys),
-        n2000ReferenceLevel: area.properties.n2000Vertaustaso,
+        n2000ReferenceLevel: area.properties.n2000Vertaustaso ?? undefined,
         extra: area.properties.lisatieto?.trim(),
         fairways: area.properties.vayla?.map((v) => {
           return {
@@ -245,14 +252,33 @@ async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: A
 }
 
 async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
-  const lines = (await fetchVATUByFairwayClass<NavigointiLinjaFeature>('navigointilinjat', event)).data as NavigointiLinjaFeatureCollection;
+  const [lineData, traficomN2000MapAreas] = await Promise.all([
+    fetchVATUByFairwayClass<NavigointiLinjaFeature>('navigointilinjat', event),
+    fetchN2000MapAreas()
+  ]);
+
+  const lines = lineData.data as NavigointiLinjaFeatureCollection;
+
   log.debug('lines: %d', lines.features.length);
   for (const line of lines.features) {
-    features.featureArray.push(mapLineFeature(line));
+    features.featureArray.push(mapLineFeature(line, traficomN2000MapAreas));
   }
 }
 
-function mapLineFeature(line: NavigointiLinjaFeature): Feature {
+
+function inOfficialN2000Area(geom: Geometry, traficomN2000MapAreas: Geometry | undefined): boolean | undefined {
+  if (traficomN2000MapAreas !== undefined) {
+    try {
+      return turf_booleanWithin(geom, traficomN2000MapAreas);
+    } catch (e) {
+      log.debug(e);
+      return undefined;
+    }
+  }
+  return undefined;
+}
+
+function mapLineFeature(line: NavigointiLinjaFeature, traficomN2000MapAreas: Geometry | undefined): Feature {
   return {
     type: 'Feature',
     id: line.properties?.id,
@@ -265,10 +291,11 @@ function mapLineFeature(line: NavigointiLinjaFeature): Feature {
       oppositeDirection: roundDecimals(invertDegrees(line.properties?.tosisuunta), 1) ?? undefined,
       draft: getNumberValue(line.properties?.mitoitusSyvays),
       length: getNumberValue(line.properties?.pituus),
+      isN2000: inOfficialN2000Area(line.geometry, traficomN2000MapAreas),
       n2000depth: getNumberValue(line.properties?.n2000HarausSyvyys),
       n2000draft: getNumberValue(line.properties?.n2000MitoitusSyvays),
       referenceLevel: line.properties?.vertaustaso,
-      n2000ReferenceLevel: line.properties?.n2000Vertaustaso,
+      n2000ReferenceLevel: line.properties?.n2000Vertaustaso ?? undefined,
       extra: line.properties?.lisatieto?.trim(),
       fairways: line.properties?.vayla?.map((v) => {
         return {

@@ -175,6 +175,7 @@ fragment FairwayCardById on FairwayCard {
   }
   latest
   latestVersionUsed
+  publishDetails
 }
 
 query fairwayCardById($id: String!, $version: String!) {

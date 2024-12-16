@@ -4,9 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { Maybe, Status, TextInput } from '../graphql/generated';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { ConfirmationType, Lang } from '../utils/constants';
+import { useHistory } from 'react-router';
 
 export type StatusName = {
   status?: Maybe<Status>;
+  id?: Maybe<string>;
   name: TextInput;
 };
 
@@ -20,6 +22,7 @@ interface ModalProps {
   newStatus: Status;
   saveType: SaveType;
   setActionPending: Dispatch<SetStateAction<boolean>>;
+  versionToMoveTo?: string;
 }
 
 const ConfirmationModal: React.FC<ModalProps> = ({
@@ -30,9 +33,11 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   oldState,
   saveType,
   setActionPending,
+  versionToMoveTo,
 }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
+  const history = useHistory();
 
   const modal = useRef<HTMLIonModalElement>(null);
   let buttonTitle = t('general.save');
@@ -46,10 +51,6 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   } else if (confirmationType === 'preview') {
     title = t(`modal.preview-${saveType}-title`);
     description = t(`modal.preview-${saveType}-description`);
-  } else if (confirmationType === 'publish') {
-    buttonTitle = t('general.publish');
-    title = t(`modal.publish-${saveType}-title`);
-    description = t(`modal.publish-${saveType}-description`);
   } else if (confirmationType === 'version') {
     title = t('general.create-new-version');
     description = t(`modal.version-${saveType}-description`);
@@ -61,6 +62,9 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     buttonTitle = t('general.archive');
     title = t(`modal.archive-${saveType}-title`);
     description = t(`modal.archive-${saveType}-description`, { name: oldState.name ? oldState.name[lang] : '-' });
+  } else if (confirmationType === 'changeVersion') {
+    title = t(`modal.unsaved-changes`);
+    description = t(`modal.change-version-${saveType}-description`);
   }
 
   const closeModal = () => {
@@ -80,8 +84,17 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     action(confirmationType === 'remove' || newStatus === Status.Removed);
   };
 
+  // move to version without saving changes
+  const moveToVersion = () => {
+    if (versionToMoveTo) {
+      const type = saveType === 'fairwaycard' ? '/vaylakortti/' : '/satama/';
+      history.push({ pathname: type + oldState.id + '/' + versionToMoveTo });
+      closeModal();
+    }
+  };
+
   return (
-    <IonModal ref={modal} isOpen={confirmationType !== ''} className="prompt" onDidDismiss={() => closeModal()}>
+    <IonModal ref={modal} isOpen={confirmationType !== '' && confirmationType !== 'publish'} className="prompt" onDidDismiss={() => closeModal()}>
       <IonHeader>
         <div className="gradient-top" />
         <IonToolbar className="titleBar">
@@ -110,10 +123,15 @@ const ConfirmationModal: React.FC<ModalProps> = ({
         </IonRow>
       </IonGrid>
       <IonFooter>
-        <IonToolbar className="buttonBar">
+        <IonToolbar className="buttonBar" style={{ paddingLeft: '10px' }}>
           <IonButton slot="end" onClick={() => cancelAction()} shape="round" className="invert">
             {t('general.cancel')}
           </IonButton>
+          {confirmationType === 'changeVersion' && (
+            <IonButton slot="end" shape="round" onClick={() => moveToVersion()}>
+              {t('modal.discard')}
+            </IonButton>
+          )}
           <IonButton slot="end" onClick={() => buttonAction()} shape="round">
             {buttonTitle}
           </IonButton>

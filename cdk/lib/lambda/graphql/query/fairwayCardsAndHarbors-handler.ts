@@ -24,7 +24,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardsAndHarborsArgs, Fa
       type: ContentType.Card,
       group: card.group,
       status: card.status || Status.Public,
-      fairwayIds: card.fairways.map((f) => f.id),
+      fairwayIds: card?.fairways?.map((f) => f.id),
       creator: card.creator,
       modifier: card.modifier,
       modificationTimestamp: card.modificationTimestamp,

@@ -15,7 +15,8 @@
       "opens-in-a-new-tab": "Aukeaa uuteen välilehteen",
       "location-service": "Sijaintipalvelu",
       "location-description": "Mahdollistaa päätelaitteesi paikantamisen.",
-      "location-disabled": "Sijainnin käyttöoikeus estetty"
+      "location-disabled": "Sijainnin käyttöoikeus estetty",
+      "leave-feedback": "Anna palvelusta palautetta"
     },
     "map": {
       "controls": {
@@ -52,6 +53,7 @@
           "circles": "Kääntöympyrät",
           "conditions": "Olosuhteet",
           "seaLevel": "Merivedenkorkeus",
+          "forecast": "Sää- ja aaltoennusteet",
           "weatherStation": "Säähavaintoasemat",
           "buoys": "Aaltopoijut",
           "vts": "VTS",
@@ -148,6 +150,7 @@
     "harboursTitle": "Väylän satamat",
     "areasTitle": "Väylän alueet",
     "routesTitle": "Luotsausreitit",
+    "weatherForecastsTitle": "Sääennusteet",
     "information": "Väylätiedot",
     "liningAndMarking": "Linjaus ja merkintä",
     "starts": "Alkaa",
@@ -284,6 +287,14 @@
     "route": "Reitti",
     "rtz": "Reitin RTZ-tiedosto",
     "linkedFairwayCards": "Luotsausreittiin liittyvät väyläkortit"
+  },
+  "forecast": {
+    "forecastLocation": "Sää- ja aaltoennustepisteen sijainti",
+    "updated": "Päivitetty",
+    "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
+    "lowRisk": "Alhainen riski",
+    "mediumRisk": "Keskitason riski",
+    "elevatedRisk": "Kohonnut riski"
   },
   "faults": {
     "title": "Turvalaiteviat",
@@ -430,6 +441,14 @@
       "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}",
       "dateTime": "Viimeisin havainto"
     },
+    "forecast": {
+      "forecast": "Sää- ja aaltoennuste",
+      "coordinates": "Koordinaatit",
+      "extra": "Lisätieto",
+      "extraContent": "Sää- ja aaltoennusteet on haettu Ilmatieteen laitoksen datarajapinnasta. Ennustearvot kuvaavat olosuhteiden aiheuttamaa väylänavigoinnin riskin tasoa ja toimivat päätöksenteon tukena arvioitaessa mm. luotsauspalvelun keskeyttämistä. Tiedot päivittyvät seuraavasti: tuuliennusteet noin tunnin välein, aallokkoennusteet noin 6 tunnin välein ja näkyvyys noin 3 tunnin välein.",
+      "updated": "Päivitetty",
+      "dateTimeFormat": "{{ val, datetime(dateStyle: 'short')}}, {{ val, datetime(timeStyle: 'short')}}"
+    },
     "buoy": {
       "coordinates": "Koordinaatit",
       "temperature": "Veden lämpötila",
@@ -501,6 +520,7 @@
         "mareograph": "Mareografi",
         "marinewarning": "Merivaroitus",
         "observation": "Säähavaintoasema",
+        "forecast": "Sää- ja aaltoennuste",
         "pilot": "Luotsipaikka",
         "pilotagelimit": "Luotsinkäyttölinja",
         "pilotroute": "Luotsausreitti",
@@ -560,7 +580,8 @@
     "print": "Tulosta sivu",
     "filter": "Valitse suodatin...",
     "sortOldToNew": "Vanhin ensin",
-    "sortNewToOld": "Uusin ensin"
+    "sortNewToOld": "Uusin ensin",
+    "submit": "Lähetä"
   },
   "tileLoadWarning": {
     "vectorTileError": "Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
@@ -592,5 +613,27 @@
     "KB": "kilotavua",
     "MB": "megatavua",
     "GB": "gigatavua"
+  },
+  "forecastTable": {
+    "tableHeaders": {
+      "time": "Aika",
+      "wind": "Tuulen nopeus ja suunta",
+      "windGust": "Tuulen puuska\u00ADnopeus",
+      "wave": "Merkitsevä aallonkorkeus ja suunta",
+      "visibility": "Näkyvyys"
+    },
+    "dateRowFormat": "- {{ val, datetime(weekday: 'long')}} {{val, datetime(dateStyle: 'short')}} -",
+    "previousPage": "Edelliset",
+    "nextPage": "Seuraavat",
+    "hours": "h"
+  },
+  "feedback": {
+    "title": "Anna palvelusta palautetta",
+    "content": "Kerro Digitaalinen Väyläkortti -palvelun kehittäjille, miten palvelun toimintaa voisi kehittää. Huomaathan, että palvelun parantamista koskeviin palautteisiin ei vastata.",
+    "title2": "Minkä arvosanan antaisit palvelulle?",
+    "content2": "Kuinka todennäköisesti suosittelisit palvelua? Asteikolla 1–10, jolloin 10 suosittelisi erittäin todennäköisesti ja 1 suosittelisi erittäin epätodennäköisesti.",
+    "title3": "Miten kehittäisit palvelua paremmaksi?",
+    "content3": "Palautteesi välitetään Digitaalinen Väyläkortti -palvelun kehittäjille palvelun parantamiseksi.",
+    "thank-you": "Kiitos palautteestasi!"
   }
 }

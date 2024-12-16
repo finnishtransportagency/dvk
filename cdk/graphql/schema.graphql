@@ -23,6 +23,12 @@ type Mutation {
   saveFairwayCard(card: FairwayCardInput!, pictureSourceId: String, pictureSourceVersion: String): FairwayCard
   saveHarbor(harbor: HarborInput!): Harbor
   uploadPicture(picture: PictureUploadInput!): Boolean
+  saveFeedback(feedback: FeedbackInput!): Boolean
+}
+
+input FeedbackInput {
+  rating: Int!
+  feedback: String!
 }
 
 input PictureUploadInput {
@@ -82,6 +88,7 @@ input FairwayCardInput {
   pictures: [PictureInput!]
   pilotRoutes: [Int!]
   temporaryNotifications: [TemporaryNotificationInput!]
+  publishDetails: String
 }
 
 input PictureInput {
@@ -159,6 +166,7 @@ input HarborInput {
   cargo: TextInput
   quays: [QuayInput]
   geometry: GeometryInput!
+  publishDetails: String
 }
 
 enum Status {
@@ -243,7 +251,7 @@ type FairwayCard {
   modifier: String
   modificationTimestamp: Float
   fairwayIds: String
-  fairways: [Fairway!]!
+  fairways: [Fairway!]
   additionalInfo: Text
   lineText: Text
   designSpeed: Text
@@ -264,6 +272,7 @@ type FairwayCard {
   temporaryNotifications: [TemporaryNotification!]
   latest: Float
   latestVersionUsed: Float
+  publishDetails: String
 }
 
 type Picture {
@@ -343,6 +352,7 @@ type Harbor {
   geometry: GeometryPoint
   latest: Float
   latestVersionUsed: Float
+  publishDetails: String
 }
 
 type Quay {

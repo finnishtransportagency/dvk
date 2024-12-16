@@ -67,6 +67,8 @@ class HarborDBModel {
 
   latestVersionUsed?: Maybe<number>;
 
+  publishDetails?: Maybe<string>;
+
   private static getLatestSortKey() {
     return 'v0_latest';
   }

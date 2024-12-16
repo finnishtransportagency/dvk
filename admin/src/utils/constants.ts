@@ -9,7 +9,7 @@ export type Lang = 'fi' | 'sv' | 'en';
 
 export type ItemType = '' | 'CARD' | 'HARBOR';
 
-export type ConfirmationType = '' | 'archive' | 'cancel' | 'preview' | 'publish' | 'remove' | 'version';
+export type ConfirmationType = '' | 'archive' | 'cancel' | 'preview' | 'publish' | 'remove' | 'version' | 'changeVersion';
 
 export type ValidationType = {
   id: string;
@@ -56,7 +56,8 @@ export type HarbourActionType =
   | 'sectionName'
   | 'sectionDepth'
   | 'sectionLat'
-  | 'sectionLon';
+  | 'sectionLon'
+  | 'publishDetails';
 
 export type FairwayCardActionType =
   | 'name'
@@ -97,7 +98,8 @@ export type FairwayCardActionType =
   | 'temporaryNotifications'
   | 'temporaryNotificationContent'
   | 'temporaryNotificationStartDate'
-  | 'temporaryNotificationEndDate';
+  | 'temporaryNotificationEndDate'
+  | 'publishDetails';
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'
@@ -109,7 +111,9 @@ export type FairwayCardActionTypeSelect =
   | 'group'
   | 'pilotPlaces';
 
-export type ActionType = HarbourActionType | FairwayCardActionType | FairwayCardActionTypeSelect;
+export type EmptyActionTypeSelect = 'empty';
+
+export type ActionType = HarbourActionType | FairwayCardActionType | FairwayCardActionTypeSelect | EmptyActionTypeSelect;
 
 export type SelectOption = {
   id: number | string | boolean;
@@ -167,7 +171,8 @@ export type FeatureDataId =
   | 'specialarea15'
   | 'pilotroute'
   | 'pilotageareaborder'
-  | 'pilotagelimit';
+  | 'pilotagelimit'
+  | 'forecast';
 
 export type FeatureDataProjection = 'EPSG:3067' | 'EPSG:4326' | 'EPSG:3395' | 'EPSG:4258';
 

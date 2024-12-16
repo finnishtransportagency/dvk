@@ -24,6 +24,7 @@ exports[`should get harbor by id and version from the DynamoDB 1`] = `
     "sv": "Harbor2sv",
   },
   "phoneNumber": undefined,
+  "publishDetails": undefined,
   "quays": undefined,
   "status": "DRAFT",
   "version": "v2",
@@ -78,6 +79,7 @@ exports[`should get latest harbor by id from the DynamoDB 1`] = `
     "12345",
     "22222",
   ],
+  "publishDetails": undefined,
   "quays": [
     {
       "extraInfo": {
@@ -164,6 +166,7 @@ exports[`should get latest harbor by id from the DynamoDB when cache expired 1`]
     "12345",
     "22222",
   ],
+  "publishDetails": undefined,
   "quays": [
     {
       "extraInfo": {
@@ -250,6 +253,7 @@ exports[`should get public card when admin role missing 1`] = `
     "12345",
     "22222",
   ],
+  "publishDetails": undefined,
   "quays": [
     {
       "extraInfo": {
@@ -336,6 +340,7 @@ exports[`should get public harbor by id from the DynamoDB 1`] = `
     "12345",
     "22222",
   ],
+  "publishDetails": undefined,
   "quays": [
     {
       "extraInfo": {

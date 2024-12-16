@@ -60,6 +60,7 @@ export function mapHarborToModel(harbor: HarborInput, old: HarborDBModel | undef
         };
       }) ?? null,
     expires: harbor.status === Status.Removed ? getExpires() : null,
+    publishDetails: harbor.publishDetails,
   };
 }
 

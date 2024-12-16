@@ -1,10 +1,15 @@
 import { TFunction } from 'i18next';
 import {
+  FairwayCardInput,
   FairwayCardOrHarbor,
+  HarborInput,
   Mareograph,
   Maybe,
+  Operation,
   Orientation,
   PictureInput,
+  PilotPlace,
+  PilotPlaceInput,
   SelectedFairwayInput,
   Status,
   TemporaryNotification,
@@ -341,4 +346,95 @@ export function mareographsToSelectOptionList(mareographs: Mareograph[] | undefi
 export function getFeatureDataSourceProjection(featureDataId: FeatureDataId) {
   const fds = FeatureDataSources.find((fda) => fda.id === featureDataId);
   return fds?.projection;
+}
+
+export function getEmptyFairwayCardInput(id: string) {
+  // empty strings so schema doesnt need to be changed for group and name
+  return {
+    fairwayIds: [],
+    group: ' ',
+    harbors: [],
+    id: id,
+    version: 'v1',
+    n2000HeightSystem: false,
+    name: { fi: ' ', sv: ' ', en: ' ' },
+    additionalInfo: { fi: '', sv: '', en: '' },
+    lineText: { fi: '', sv: '', en: '' },
+    designSpeed: { fi: '', sv: '', en: '' },
+    speedLimit: { fi: '', sv: '', en: '' },
+    anchorage: { fi: '', sv: '', en: '' },
+    navigationCondition: { fi: '', sv: '', en: '' },
+    iceCondition: { fi: '', sv: '', en: '' },
+    windRecommendation: { fi: '', sv: '', en: '' },
+    vesselRecommendation: { fi: '', sv: '', en: '' },
+    visibility: { fi: '', sv: '', en: '' },
+    trafficService: {
+      pilot: {
+        email: '',
+        phoneNumber: '',
+        fax: '',
+        extraInfo: { fi: '', sv: '', en: '' },
+        places: [],
+      },
+      vts: [],
+      tugs: [],
+    },
+    status: Status.Draft,
+    operation: Operation.Create,
+    pictures: [],
+    pilotRoutes: [],
+    temporaryNotifications: [],
+  };
+}
+
+export function getEmptyHarborInput(id: string) {
+  return {
+    geometry: { lat: '', lon: '' },
+    id: id,
+    version: 'v1',
+    n2000HeightSystem: false,
+    name: { fi: ' ', sv: ' ', en: ' ' },
+    extraInfo: { fi: '', sv: '', en: '' },
+    cargo: { fi: '', sv: '', en: '' },
+    harborBasin: { fi: '', sv: '', en: '' },
+    company: { fi: '', sv: '', en: '' },
+    email: '',
+    fax: '',
+    internet: '',
+    phoneNumber: [],
+    quays: [],
+    status: Status.Draft,
+    operation: Operation.Create,
+  };
+}
+
+export function isReadOnly(state: HarborInput | FairwayCardInput) {
+  return [Status.Removed, Status.Public, Status.Archived].includes(state.status);
+}
+
+export function getSelectedItemsAsText(
+  options: SelectOption[] | PilotPlace[] | null,
+  selected: string | number | boolean | string[] | number[] | PilotPlaceInput[] | PictureInput[] | undefined,
+  lang: Lang,
+  valueSeparator: string = '\n'
+) {
+  if (!options || selected === undefined) {
+    return '';
+  }
+  if (typeof selected === 'string' || typeof selected === 'number' || typeof selected === 'boolean') {
+    return options.find((o) => o.id === selected)?.name?.[lang];
+  }
+
+  const selectedValues = selected.map((s) => {
+    return '' + (typeof s === 'string' || typeof s === 'number' ? s : s.id);
+  });
+  const valueStrings = options
+    .filter((o) => {
+      return selectedValues.includes('' + o.id);
+    })
+    .map((o) => {
+      return o?.name ? o.name[lang] : '';
+    });
+
+  return valueStrings.join(valueSeparator);
 }

@@ -48,6 +48,7 @@
   margin: 0;
 }
 
+.sidebarMenu ion-button.feedbackButton,
 .sidebarMenu ion-button.languageSelection,
 .dvkFooter ion-button.sourceText {
   color: var(--ion-color-dark);
@@ -61,6 +62,10 @@
   --padding-end: 14px;
   --background-hover: unset;
   --background-focused: unset;
+}
+
+.sidebarMenu ion-button.feedbackButton {
+  color: var(--ion-color-primary);
 }
 
 .dvkFooter ion-button.sourceText {
