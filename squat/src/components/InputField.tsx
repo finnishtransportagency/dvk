@@ -162,9 +162,12 @@ const InputField: React.FC<InputProps> = (props) => {
     inputRef?.current?.classList.add('ion-touched');
   };
 
+  console.log(props);
+
   return (
     <>
       <Label
+        id={`${props.name}-label`}
         title={props.title}
         description={props.description}
         required={props.required}
@@ -195,6 +198,7 @@ const InputField: React.FC<InputProps> = (props) => {
         helperText={getHelperText()}
         errorText={getErrorText()}
         data-testid={props.name}
+        aria-labelledby={`${props.name}-label`}
       />
     </>
   );
