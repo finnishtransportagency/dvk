@@ -201,6 +201,8 @@
     "primary-id": "Väyläkortin tunniste",
     "primary-id-help-text": "Yksilöivä tunniste, joka näkyy selaimen osoiterivillä; sallitut merkit: (a-z) ja (0-9).",
     "linked-fairways": "Liitetyt väylät",
+    "cannot-remove-fairway-header": "[fi] Cannot remove fairway",
+    "cannot-remove-fairway": "[fi] The fairway is used in the squat location templates for this card.",
     "starting-fairways": "Aloittavat väylät",
     "ending-fairways": "Päättävät väylät",
     "linked-harbours": "Liitetyt satamat",
@@ -295,7 +297,10 @@
     "squat-calculation-additional-information-help-text": "Laskentaa tarkentavia lisätietoja.",
     "calculation-fairway-form.open-water": "Avovesi",
     "calculation-fairway-form.channel": "Kanava",
-    "calculation-fairway-form.sloped-channel": "Luiska"
+    "calculation-fairway-form.sloped-channel": "Luiska",
+    "squat-calculation-depth-warning": "[fi] There are multiple selected areas with different depths.",
+    "squat-calculation-cannot-remove-fairway-header": "[fi] Cannot remove fairway",
+    "squat-calculation-cannot-remove-fairway": "[fi] The fairway is linked to an area that is in use in this squat calculation template."
   },
   "harbour": {
     "primary-id": "Sataman tunniste",

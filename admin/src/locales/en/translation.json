@@ -190,6 +190,8 @@
     "primary-id": "Fairway card ID",
     "primary-id-help-text": "Unique identifier, visible in browser's address bar; valid characters: (a-z) and (0-9).",
     "linked-fairways": "Linked fairways",
+    "cannot-remove-fairway-header": "Cannot remove fairway",
+    "cannot-remove-fairway": "The fairway is used in the squat location templates for this card",
     "starting-fairways": "Starting fairways",
     "ending-fairways": "Ending fairways",
     "linked-harbours": "Linked harbours",
@@ -284,7 +286,10 @@
     "squat-calculation-additional-information-help-text": "[en] Laskentaa tarkentavia lisätietoja.",
     "calculation-fairway-form.open-water": "[en] Avovesi",
     "calculation-fairway-form.channel": "[en] Kanava",
-    "calculation-fairway-form.sloped-channel": "[en] Luiska"
+    "calculation-fairway-form.sloped-channel": "[en] Luiska",
+    "squat-calculation-depth-warning": "There are multiple selected areas with different depths",
+    "squat-calculation-cannot-remove-fairway-header": "Cannot remove fairway",
+    "squat-calculation-cannot-remove-fairway": "The fairway is linked to an area that is in use in this squat calculation template."
   },
   "harbour": {
     "primary-id": "Harbour ID",

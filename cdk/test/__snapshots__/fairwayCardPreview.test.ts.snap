@@ -131,7 +131,32 @@ exports[`should get public card from the DynamoDB 1`] = `
   ],
   "publishDetails": undefined,
   "speedLimit": undefined,
-  "squatCalculations": [],
+  "squatCalculations": [
+    {
+      "additionalInformation": {
+        "en": "addinfo_en",
+        "fi": "addinfo_fi",
+        "sv": "addinfo_sv",
+      },
+      "depth": 1,
+      "estimatedWaterDepth": 1,
+      "fairwayForm": 1,
+      "fairwayWidth": undefined,
+      "place": {
+        "en": "Place_en",
+        "fi": "Place_fi",
+        "sv": "Place_sv",
+      },
+      "slopeHeight": undefined,
+      "slopeScale": undefined,
+      "suitableFairwayAreas": [
+        1,
+      ],
+      "targetFairways": [
+        1,
+      ],
+    },
+  ],
   "status": "PUBLIC",
   "temporaryNotifications": [],
   "trafficService": {
