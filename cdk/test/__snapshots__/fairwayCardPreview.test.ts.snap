@@ -46,6 +46,7 @@ exports[`should get draft card from the DynamoDB 1`] = `
   ],
   "publishDetails": undefined,
   "speedLimit": undefined,
+  "squatCalculations": [],
   "status": "DRAFT",
   "temporaryNotifications": [],
   "trafficService": {
@@ -130,6 +131,7 @@ exports[`should get public card from the DynamoDB 1`] = `
   ],
   "publishDetails": undefined,
   "speedLimit": undefined,
+  "squatCalculations": [],
   "status": "PUBLIC",
   "temporaryNotifications": [],
   "trafficService": {
