@@ -1,0 +1,35 @@
+.template {
+  color: var(--ion-color-dark);
+  font-size: 12px;
+  line-height: 1.25rem;
+  break-inside: avoid;
+
+  .header {
+    font-weight: bold;
+    letter-spacing: 0;
+    margin-top: 4px;
+  }
+}
+
+.template.warning {
+  color: var(--ion-color-dark);
+  font-size: 14px;
+}
+
+.template.warning.row {
+  align-items: center;
+}
+
+.template.warning.col {
+  margin-left: 16px;
+}
+
+.template.warning.grid {
+  background-color: var(--ion-color-dangerbg);
+  border-width: 1px;
+  border-color: var(--ion-color-danger);
+  vertical-align: center;
+}
+.template.warning.grid.wide {
+  width: 720px;
+}

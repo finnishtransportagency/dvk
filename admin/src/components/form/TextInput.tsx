@@ -19,7 +19,6 @@ interface TextInputProps {
   disabled?: boolean;
   readonly?: boolean;
   error?: string;
-  customerror?: string;
   helperText?: string | null;
   inputType?: 'text' | 'number' | 'tel' | 'email' | 'latitude' | 'longitude' | 'date';
   multiple?: boolean;
@@ -48,7 +47,6 @@ const TextInput: React.FC<TextInputProps> = ({
   disabled,
   readonly = false,
   error,
-  customerror,
   helperText,
   inputType,
   multiple,
@@ -267,7 +265,6 @@ const TextInput: React.FC<TextInputProps> = ({
           </IonButton>
         )}
       </IonInput>
-      {customerror && <div className={'custom-error-text'}>{customerror ?? ''}</div>}
       <NotificationModal
         isOpen={infoModalOpen}
         closeAction={() => setInfoModalOpen(false)}

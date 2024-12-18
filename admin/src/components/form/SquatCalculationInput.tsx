@@ -113,6 +113,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
     sortedSelectedAreas.length > 1 &&
     sortedSelectedAreas[0].depth !== sortedSelectedAreas[sortedSelectedAreas.length - 1].depth;
 
+  console.log(multipleDepths);
   return (
     <>
       <IonGrid className="formGrid">
@@ -163,7 +164,12 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               required
               disabled={!readonly && (disabled || (section.targetFairways?.length ?? 0) < 1)}
               readonly={readonly}
-              error={validationErrors.find((error) => error.id === 'squatSuitableFairwayAreaIds-' + idx)?.msg}
+              ignoreHelperText={multipleDepths}
+              error={
+                multipleDepths
+                  ? t('fairwaycard.squat-calculation-depth-warning')
+                  : validationErrors.find((error) => error.id === 'squatSuitableFairwayAreaIds-' + idx)?.msg
+              }
             />
           </IonCol>
           <IonCol>
@@ -178,7 +184,6 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               decimalCount={1}
               required
               readonly={true}
-              customerror={multipleDepths ? t('fairwaycard.squat-calculation-depth-warning') : undefined}
               helperText={t('fairwaycard.squat-calculation-depth-help-text')}
             />
           </IonCol>

@@ -459,7 +459,15 @@ export function validateHarbourForm(state: HarborInput, requiredMsg: string, dup
   );
 }
 
+function sortArrays(state: FairwayCardInput | HarborInput) {
+  //Add here any sorted arrays that are sorted in some specific way. The deep diff made to detact changes turns arrays into objects so order matters.
+  if ('squatCalculations' in state) {
+    state.squatCalculations?.forEach((a) => a.suitableFairwayAreas?.sort());
+  }
+  return state;
+}
+
 export function hasUnsavedChanges(oldState: FairwayCardInput | HarborInput, currentState: FairwayCardInput | HarborInput) {
-  const diffObj = diff(oldState, currentState);
+  const diffObj = diff(sortArrays(oldState), sortArrays(currentState));
   return JSON.stringify(diffObj) !== '{}';
 }

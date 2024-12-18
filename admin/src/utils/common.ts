@@ -126,8 +126,12 @@ export const isInputOk = (isValid: boolean, error: string | undefined) => {
   return isValid && (!error || error === '');
 };
 
-export const getCombinedErrorAndHelperText = (helperText: string | null | undefined, errorText: string): string => {
-  if (helperText) {
+export const getCombinedErrorAndHelperText = (
+  helperText: string | null | undefined,
+  errorText: string,
+  ignoreHelperText: boolean = false
+): string => {
+  if (helperText && !ignoreHelperText) {
     return errorText.length > 0 ? errorText + '. ' + helperText : helperText;
   }
   return errorText;

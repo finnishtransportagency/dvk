@@ -28,6 +28,7 @@ interface SelectWithCustomDropdownProps {
   isLoading?: boolean;
   infoTitle?: string;
   infoDescription?: string;
+  ignoreHelperText?: boolean;
 }
 
 const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
@@ -47,6 +48,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   isLoading,
   infoTitle,
   infoDescription,
+  ignoreHelperText = false,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
@@ -97,7 +99,6 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   //For readability of tsx
   const readonlyAndNotLoading = readonly && !isLoading;
   const inputOrLoading = !readonlyAndNotLoading;
-
   return (
     <div className={inputClassName}>
       {readonlyAndNotLoading && (
@@ -168,7 +169,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
                 />
               </IonItem>
               {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
-              <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
+              <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText(), ignoreHelperText)}</IonNote>
               {dropdownType === 'filter' && (
                 <SelectDropdownPopup
                   trigger={triggerId}
