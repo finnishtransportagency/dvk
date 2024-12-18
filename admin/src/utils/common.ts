@@ -259,8 +259,8 @@ export function featureCollectionToAreaSelectOptions(collection: FeatureCollecti
       id: properties?.id,
       name: { fi: properties?.name },
       fairwayIds: properties?.fairways?.map((f: { fairwayId: number }) => f.fairwayId),
-      depth: properties?.draft,
-      subtext: subtextPrefix + ' ' + (properties?.draft ?? 0) + ' m',
+      depth: properties?.depth,
+      subtext: subtextPrefix + ' ' + (properties?.depth ?? 0) + ' m',
       areatype: properties?.typeCode,
     };
     propertyArray.push(selectOption);
