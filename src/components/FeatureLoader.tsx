@@ -218,7 +218,7 @@ export function useInitStaticDataLayer(
         layer.set('status', 'loading');
         (async () => {
           get(featureDataId).then(async (data) => {
-            if (data) {
+            if (data && featureLayerId == 'balticsea') {
               initLayer(data);
             } else {
               await axios
