@@ -423,8 +423,9 @@ ion-popover.multiSelect::part(content) {
 .multiSelect ion-select-popover {
   overflow-y: auto;
 }
+
 ion-popover.multiSelect.squatSuitableFairwayAreaIds {
-  overflow: scroll;
+  overflow-y: scroll;
 }
 
 ion-popover.multiSelect.fairwayIds::part(content),
