@@ -162,8 +162,6 @@ const InputField: React.FC<InputProps> = (props) => {
     inputRef?.current?.classList.add('ion-touched');
   };
 
-  console.log(props);
-
   return (
     <>
       <Label
