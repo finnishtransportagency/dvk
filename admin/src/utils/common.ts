@@ -160,11 +160,23 @@ export const constructSelectOptionLabel = (item: SelectOption, lang: Lang, showI
   return showId ? '[' + item.id + '] ' + nameLabel : nameLabel;
 };
 
-export const constructSelectDropdownLabel = (selected: number[], options: SelectOption[] | null, lang: Lang, showId?: boolean): string[] => {
+export const constructSelectDropdownLabel = (
+  selected: number[] | SelectedFairwayInput[],
+  options: SelectOption[] | null,
+  lang: Lang,
+  showId?: boolean
+): string[] => {
+  // for constructing label according to sequence number some extra checks are needed
+  // so here we check if we're constructing sequenced dropdown label or normal (if isIdArray returns true, its type is number[])
+  const isIdArray = selected.some((s) => typeof s === 'number');
   if (selected.length > 0 && !!options && options.length > 0) {
-    const sortedOptions = sortSelectOptions(options, lang);
-    const selectedOptions = sortedOptions.filter((item) => !!item && typeof item.id === 'number' && selected.includes(item.id));
-    return selectedOptions.map((item) => constructSelectOptionLabel(item, lang, showId));
+    const sortedOptions = isIdArray ? sortSelectOptions(options, lang) : getSortedOptions(options, selected as SelectedFairwayInput[]);
+    const selectedOptions = sortedOptions?.filter((item) =>
+      !!item && typeof item.id === 'number' && isIdArray
+        ? (selected as number[]).includes(item.id)
+        : (selected as SelectedFairwayInput[]).find((s) => s.id === item.id)
+    );
+    return selectedOptions?.map((item) => constructSelectOptionLabel(item, lang, showId)) ?? [];
   }
   return [];
 };
@@ -437,4 +449,24 @@ export function getSelectedItemsAsText(
     });
 
   return valueStrings.join(valueSeparator);
+}
+
+// fairly complex solution but this is done because options don't have sequence number property attached to them
+// sequence numbers are always part of state, so bit of a maneuvering is needed since comparing has to be done by comparing
+// selected array
+export function getSortedOptions(options: SelectOption[] | null, selected: SelectedFairwayInput[]) {
+  return options?.sort((a, b) => {
+    // arrays are so small that no need for mapping
+    const seqA = selected.find((sA) => sA.id === a.id)?.sequenceNumber;
+    const seqB = selected.find((sB) => sB.id === b.id)?.sequenceNumber;
+    // if both are selected, compare sequence numbers
+    if (seqA !== undefined && seqB !== undefined) {
+      return seqA - seqB;
+    }
+    // if one of them doesn't have a sequence number, place it before
+    if (seqA !== undefined) return -1;
+    if (seqB !== undefined) return 1;
+    // if no sequence numbers to compare, just compare names
+    return a.name?.fi?.localeCompare(b.name?.fi as string) ?? 0;
+  });
 }
