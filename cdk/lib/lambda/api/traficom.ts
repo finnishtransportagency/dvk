@@ -41,7 +41,7 @@ export async function fetchVTSLines() {
 
 export async function fetchPilotPoints(): Promise<PilotPlace[]> {
   const data = (await fetchTraficomApi<FeatureCollection<Point>>(
-    'trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=avoin:PilotBoardingPlace_P&srsName=urn:ogc:def:crs:EPSG::4258&outputFormat=application/json'
+    'trafiaineistot/inspireplvelu/avoin/wfs?request=getFeature&typename=avoin:PilotBoardingPlace_P&srsName=urn:ogc:def:crs:EPSG::4258&outputFormat=application/json'
   )) as FeatureCollection<Point>;
   data.features.forEach((row) => {
     flattenCoordinates(row);
@@ -61,14 +61,14 @@ export async function fetchPilotPoints(): Promise<PilotPlace[]> {
 
 export async function fetchProhibitionAreas(): Promise<Feature<Geometry, GeoJsonProperties>[]> {
   const path =
-    'trafiaineistot/inspirepalvelu/avoin/wfs?request=GetFeature&service=WFS&version=1.1.0&outputFormat=application/json&typeName=avoin:kohtaamis_ja_ohittamiskieltoalueet';
+    'trafiaineistot/inspireplvelu/avoin/wfs?request=GetFeature&service=WFS&version=1.1.0&outputFormat=application/json&typeName=avoin:kohtaamis_ja_ohittamiskieltoalueet';
   const data = await fetchTraficomApi<FeatureCollection>(path);
   return mapProhibitionAreaFeatures(data.features);
 }
 
 export async function fetchN2000MapAreas(): Promise<Polygon | MultiPolygon | undefined> {
   const path =
-    'trafiaineistot/inspirealvelu/avoin/wfs?request=getFeature&typename=avoin:tuotejako_kaikki&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4258&cql_filter=IS_N2000=1';
+    'trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=avoin:tuotejako_kaikki&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4258&cql_filter=IS_N2000=1';
   let data = undefined;
   try {
     data = await fetchTraficomApi<FeatureCollection>(path);

@@ -9,7 +9,7 @@ import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations, fetchWeatherWav
 import { fetchN2000MapAreas, fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { cacheResponse, getFeatureCacheControlHeaders, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-import { getNumberValue, invertDegrees, mapProhibitionAreaFeatures, roundDecimals, toBase64Response } from '../util';
+import { getNumberValue, invertDegrees, mapPilotFeatures, mapProhibitionAreaFeatures, roundDecimals, toBase64Response } from '../util';
 import {
   AlueFeature,
   AlueFeatureCollection,
@@ -78,37 +78,19 @@ async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
     // pilot points are not saved to s3 like prohibition areas are, since pilot places are
     // saved in many other cases (fairwayCard-handler, fairwayCards-handler, saveFairwayCard-handler)
     log.info(`Fetching ${pilotCacheKey} from traficom api`)
-    const pilotPlaces = await fetchPilotPoints();
-    for (const place of pilotPlaces) {
-      features.featureArray.push({
-        type: 'Feature',
-        geometry: place.geometry as Geometry,
-        id: place.id,
-        properties: {
-          featureType: 'pilot',
-          name: place.name,
-        },
-      });
-    }
+    const data = await fetchPilotPoints();
+    const pilotPlaces = mapPilotFeatures(data) as Feature[];
+    features.featureArray.push(...pilotPlaces);
     log.debug('Prohibition areas: %d', pilotPlaces.length);
   } catch (e) {
     log.error(`Fetching ${pilotCacheKey} from traficom api unsuccesful, retrieving from cache...`);
     log.error(e);
-
+    log.error('mitä');
     const response = await getFromCache(pilotCacheKey);
     if (response.data) {
       const data = JSON.parse(response.data);
-      for (const place of data) {
-        features.featureArray.push({
-          type: 'Feature',
-          geometry: place.geometry as Geometry,
-          id: place.id,
-          properties: {
-            featureType: 'pilot',
-            name: place.name,
-          },
-        });
-      }
+      const pilotPlaces = mapPilotFeatures(data) as Feature[];
+      features.featureArray.push(...pilotPlaces);
     }
 
     log.info(`Fetching ${pilotCacheKey} from cache succesful!`)
@@ -710,8 +692,6 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
       base64Response = await toBase64Response(collection);
     }
   } catch (e) {
-    console.log('eli tänne tuli error!');
-    console.log(e);
     base64Response = undefined;
     statusCode = 503;
   }

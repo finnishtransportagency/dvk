@@ -7,7 +7,7 @@ import { Vessel } from './api/apiModels';
 import { getExpires, getHeaders } from './environment';
 import FairwayCardDBModel from './db/fairwayCardDBModel';
 import HarborDBModel from './db/harborDBModel';
-import { Operation, Status } from '../../graphql/generated';
+import { Operation, PilotPlace, Status } from '../../graphql/generated';
 import { PutCommand, QueryCommand, QueryCommandInput } from '@aws-sdk/lib-dynamodb';
 import { getDynamoDBDocumentClient } from './db/dynamoClient';
 
@@ -474,5 +474,19 @@ export function mapProhibitionAreaFeatures(data: Feature<Geometry, GeoJsonProper
         },
       },
     } as Feature;
+  });
+}
+
+export function mapPilotFeatures(pilotPlaces: PilotPlace[]) {
+  return pilotPlaces.map((place) => {
+    return {
+      type: 'Feature',
+      geometry: place.geometry as Geometry,
+      id: place.id,
+      properties: {
+        featureType: 'pilot',
+        name: place.name,
+      },
+    };
   });
 }
