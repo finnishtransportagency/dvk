@@ -1,4 +1,4 @@
-import { FeatureCollection, Geometry, Position } from 'geojson';
+import { Feature, FeatureCollection, GeoJsonProperties, Geometry, Position } from 'geojson';
 import { gzip } from 'zlib';
 import { log } from './logger';
 import { CacheResponse, cacheResponse, getAisCacheControlHeaders } from './graphql/cache';
@@ -448,4 +448,31 @@ export async function getPreviousVersion(tableName: string, id: string, latestVe
     console.log(error);
     return undefined;
   }
+}
+
+export function mapProhibitionAreaFeatures(data: Feature<Geometry, GeoJsonProperties>[]) {
+  return data.map((row) => {
+    return {
+      type: 'Feature',
+      id: row.properties?.ALUENRO,
+      geometry: row.geometry,
+      properties: {
+        featureType: 'specialarea15',
+        typeCode: 15,
+        type: row.properties?.RAJOITE_TYYPPI,
+        vtsArea: row.properties?.VTS_ALUE,
+        extraInfo: {
+          fi: row.properties?.LISATIETO?.trim(),
+          sv: row.properties?.LISATIETO_SV?.trim(),
+        },
+        fairway: {
+          fairwayId: row.properties?.JNRO,
+          name: {
+            fi: row.properties?.VAYLA_NIMI,
+            sv: row.properties?.VAYLA_NIMI_SV,
+          },
+        },
+      },
+    } as Feature;
+  });
 }

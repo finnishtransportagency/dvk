@@ -1,5 +1,5 @@
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, MultiPolygon, Point, Polygon } from 'geojson';
-import { roundGeometry } from '../util';
+import { mapProhibitionAreaFeatures, roundGeometry } from '../util';
 import { PilotPlace } from '../../../graphql/generated';
 import { fetchTraficomApi } from './axios';
 import { union as turf_union } from '@turf/union';
@@ -63,35 +63,12 @@ export async function fetchProhibitionAreas(): Promise<Feature<Geometry, GeoJson
   const path =
     'trafiaineistot/inspirepalvelu/avoin/wfs?request=GetFeature&service=WFS&version=1.1.0&outputFormat=application/json&typeName=avoin:kohtaamis_ja_ohittamiskieltoalueet';
   const data = await fetchTraficomApi<FeatureCollection>(path);
-  return data.features.map((row) => {
-    return {
-      type: 'Feature',
-      id: row.properties?.ALUENRO,
-      geometry: row.geometry,
-      properties: {
-        featureType: 'specialarea15',
-        typeCode: 15,
-        type: row.properties?.RAJOITE_TYYPPI,
-        vtsArea: row.properties?.VTS_ALUE,
-        extraInfo: {
-          fi: row.properties?.LISATIETO?.trim(),
-          sv: row.properties?.LISATIETO_SV?.trim(),
-        },
-        fairway: {
-          fairwayId: row.properties?.JNRO,
-          name: {
-            fi: row.properties?.VAYLA_NIMI,
-            sv: row.properties?.VAYLA_NIMI_SV,
-          },
-        },
-      },
-    };
-  });
+  return mapProhibitionAreaFeatures(data.features);
 }
 
 export async function fetchN2000MapAreas(): Promise<Polygon | MultiPolygon | undefined> {
   const path =
-    'trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=avoin:tuotejako_kaikki&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4258&cql_filter=IS_N2000=1';
+    'trafiaineistot/inspirealvelu/avoin/wfs?request=getFeature&typename=avoin:tuotejako_kaikki&outputFormat=application/json&srsName=urn:ogc:def:crs:EPSG::4258&cql_filter=IS_N2000=1';
   let data = undefined;
   try {
     data = await fetchTraficomApi<FeatureCollection>(path);

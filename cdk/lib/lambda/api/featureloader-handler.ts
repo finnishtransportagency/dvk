@@ -9,7 +9,7 @@ import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations, fetchWeatherWav
 import { fetchN2000MapAreas, fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
 import { cacheResponse, getFeatureCacheControlHeaders, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-import { getNumberValue, invertDegrees, roundDecimals, toBase64Response } from '../util';
+import { getNumberValue, invertDegrees, mapProhibitionAreaFeatures, roundDecimals, toBase64Response } from '../util';
 import {
   AlueFeature,
   AlueFeatureCollection,
@@ -90,7 +90,6 @@ async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
         },
       });
     }
-
     log.debug('Prohibition areas: %d', pilotPlaces.length);
   } catch (e) {
     log.error(`Fetching ${pilotCacheKey} from traficom api unsuccesful, retrieving from cache...`);
@@ -233,30 +232,7 @@ async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
     const response = await getFromCache(prohibitionCacheKey);
     if (response.data) {
       const data = JSON.parse(response.data);
-      const areas = data.map((row: Feature) => {
-        return {
-          type: 'Feature',
-          id: row.properties?.ALUENRO,
-          geometry: row.geometry,
-          properties: {
-            featureType: 'specialarea15',
-            typeCode: 15,
-            type: row.properties?.RAJOITE_TYYPPI,
-            vtsArea: row.properties?.VTS_ALUE,
-            extraInfo: {
-              fi: row.properties?.LISATIETO?.trim(),
-              sv: row.properties?.LISATIETO_SV?.trim(),
-            },
-            fairway: {
-              fairwayId: row.properties?.JNRO,
-              name: {
-                fi: row.properties?.VAYLA_NIMI,
-                sv: row.properties?.VAYLA_NIMI_SV,
-              },
-            },
-          },
-        };
-      });
+      const areas = mapProhibitionAreaFeatures(data); 
 
       log.debug('prohibition areas: %d', areas.length);
       features.featureArray.push(...areas);
