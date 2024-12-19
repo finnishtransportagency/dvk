@@ -72,17 +72,47 @@ async function addHarborFeatures(features: FeaturesWithMaxFetchTime) {
 }
 
 async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
-  const pilotPlaces = await fetchPilotPoints();
-  for (const place of pilotPlaces) {
-    features.featureArray.push({
-      type: 'Feature',
-      geometry: place.geometry as Geometry,
-      id: place.id,
-      properties: {
-        featureType: 'pilot',
-        name: place.name,
-      },
-    });
+  const pilotCacheKey = 'pilotplaces';
+  
+  try {
+    // pilot points are not saved to s3 like prohibition areas are, since pilot places are
+    // saved in many other cases (fairwayCard-handler, fairwayCards-handler, saveFairwayCard-handler)
+    log.info(`Fetching ${pilotCacheKey} from traficom api`)
+    const pilotPlaces = await fetchPilotPoints();
+    for (const place of pilotPlaces) {
+      features.featureArray.push({
+        type: 'Feature',
+        geometry: place.geometry as Geometry,
+        id: place.id,
+        properties: {
+          featureType: 'pilot',
+          name: place.name,
+        },
+      });
+    }
+
+    log.debug('Prohibition areas: %d', pilotPlaces.length);
+  } catch (e) {
+    log.error(`Fetching ${pilotCacheKey} from traficom api unsuccesful, retrieving from cache...`);
+    log.error(e);
+
+    const response = await getFromCache(pilotCacheKey);
+    if (response.data) {
+      const data = JSON.parse(response.data);
+      for (const place of data) {
+        features.featureArray.push({
+          type: 'Feature',
+          geometry: place.geometry as Geometry,
+          id: place.id,
+          properties: {
+            featureType: 'pilot',
+            name: place.name,
+          },
+        });
+      }
+    }
+
+    log.info(`Fetching ${pilotCacheKey} from cache succesful!`)
   }
 }
 
@@ -181,14 +211,14 @@ async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
 }
 
 async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
-  const cacheKey = 'prohibitionareas';
+  const prohibitionCacheKey = 'prohibitionareas';
 
   try {
-    log.info('Fetching prohibitionareas from traficom api')
+    log.info(`Fetching ${prohibitionCacheKey} from traficom api`)
     const areas = await fetchProhibitionAreas();
     if (areas) {
       log.info('Saving response to S3');
-      await cacheResponse(cacheKey, areas);
+      await cacheResponse(prohibitionCacheKey, areas);
       log.info('Saving successful!');
 
       log.debug('Prohibition areas: %d', areas.length);
@@ -197,10 +227,10 @@ async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
       throw new Error('Fetching error');
     }
   } catch (e) {
-    log.error('Fetching prohibitionareas from traficom api unsuccesful, retrieving from cache...');
+    log.error(`Fetching ${prohibitionCacheKey} from traficom api unsuccesful, retrieving from cache...`);
     log.error(e);
 
-    const response = await getFromCache(cacheKey);
+    const response = await getFromCache(prohibitionCacheKey);
     if (response.data) {
       const data = JSON.parse(response.data);
       const areas = data.map((row: Feature) => {
@@ -230,6 +260,8 @@ async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
 
       log.debug('prohibition areas: %d', areas.length);
       features.featureArray.push(...areas);
+
+      log.info(`Fetching ${prohibitionCacheKey} from cache succesful!`)
     }
   }
 }
