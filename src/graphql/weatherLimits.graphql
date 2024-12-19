@@ -1,0 +1,28 @@
+query weatherLimits {
+    weatherLimits {
+    limits {
+      id
+      type
+      windLimits {
+        lowerLimit
+        upperLimit
+        status
+      }
+      windGustLimits {
+        lowerLimit
+        upperLimit
+        status
+      }
+      waveLimits {
+        lowerLimit
+        upperLimit
+        status
+      }
+      visibilityLimits {
+        lowerLimit
+        upperLimit
+        status
+      }
+    }
+  }
+}
