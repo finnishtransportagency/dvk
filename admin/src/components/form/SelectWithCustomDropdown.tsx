@@ -87,12 +87,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
     setInfoModalOpen(true);
   };
 
-  const labelText = constructSelectDropdownLabel(
-    dropdownType === 'sequence' ? selected.map((s) => (s as SelectedFairwayInput).id) : (selected as number[]),
-    options,
-    lang,
-    showId
-  );
+  const labelText = constructSelectDropdownLabel(dropdownType === 'sequence' ? selected : (selected as number[]), options, lang, showId);
   const disabledStyle = disabled ? ' disabled' : '';
   const inputClassName = 'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid' + disabledStyle);
 
