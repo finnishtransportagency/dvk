@@ -180,7 +180,9 @@ export const constructSelectDropdownLabel = (
   if (selected.length > 0 && !!options && options.length > 0) {
     if ('depth' in options[0]) {
       sortAreaSelectOptions(options);
-      const selectedOptions = sortAreaSelectOptions(options).filter((item) => !!item && typeof item.id === 'number' && selected.includes(item.id));
+      const selectedOptions = sortAreaSelectOptions(options).filter(
+        (item) => !!item && typeof item.id === 'number' && (selected as number[]).includes(item.id)
+      );
       return selectedOptions.map((item: AreaSelectOption) => constructSelectOptionLabel(item, lang, showId));
     }
 
