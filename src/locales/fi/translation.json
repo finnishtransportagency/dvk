@@ -331,6 +331,11 @@
     "faultsLastUpdated": "Turvalaitevikojen tiedot ladattu yli {{ val, number}} h sitten.",
     "faultsLastUpdatedUnknown": "Turvalaitevikatietojen viimeisin latausajankohta ei tiedossa."
   },
+  "squattemplates": {
+    "no-squat-templates": "Väyläkortille ei ole vielä lisätty squat laskentoja.",
+    "no-squat-hint": "Odotellessa voit käyttää palvelusta löytyvää suppeaa",
+    "squat-link": "Squat-laskuria"
+  },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
     "content": "Jatkaaksesi sovelluksen käyttämistä se tulee päivittää.",
