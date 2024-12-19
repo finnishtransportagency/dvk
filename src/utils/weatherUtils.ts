@@ -11,6 +11,7 @@ export type WeatherLimitById = {
   id: string;
   type: string;
   windLimits: Array<Limit>;
+  windGustLimits: Array<Limit>;
   waveLimits: Array<Limit>;
   visibilityLimits: Array<Limit>;
 };
@@ -57,6 +58,12 @@ export const asWeatherLimits = (value: unknown): WeatherLimitsList | undefined =
           (l.upperLimit === null || typeof l.upperLimit === 'number')
       ) &&
       limit.visibilityLimits.every(
+        (l: any) =>
+          typeof l.status === 'string' &&
+          (l.lowerLimit === null || typeof l.lowerLimit === 'number') &&
+          (l.upperLimit === null || typeof l.upperLimit === 'number')
+      ) &&
+      limit.windGustLimits.every(
         (l: any) =>
           typeof l.status === 'string' &&
           (l.lowerLimit === null || typeof l.lowerLimit === 'number') &&
