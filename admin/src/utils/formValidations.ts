@@ -214,7 +214,7 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string,
   //Custom check about depth value
   const squatFairwayWidthValueErrors =
     state.squatCalculations
-      ?.flatMap((calc, i) => ((calc.depth ?? 0) > (calc.estimatedWaterDepth ?? 0) ? i : null))
+      ?.flatMap((calc, i) => ((calc.depth ?? 0) > ((calc.estimatedWaterDepth ?? 0) as number) ? i : null))
       .filter((val) => Number.isInteger(val))
       .map((vIndex) => {
         return {

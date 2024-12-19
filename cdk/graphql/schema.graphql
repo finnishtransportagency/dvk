@@ -97,10 +97,10 @@ input SquatCalculationInput {
   targetFairways: [Int!]
   suitableFairwayAreas: [Int!]
   depth: Float
-  estimatedWaterDepth: Float
-  fairwayWidth: Float
-  slopeScale: Float
-  slopeHeight: Float
+  estimatedWaterDepth: String
+  fairwayWidth: String
+  slopeScale: String
+  slopeHeight: String
   additionalInformation: TextInput!
   fairwayForm: Int
 }

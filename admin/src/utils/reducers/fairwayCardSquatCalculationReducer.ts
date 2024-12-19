@@ -101,7 +101,7 @@ export const fairwayCardSquatCalculationReducer = (
           idx === actionTarget
             ? {
                 ...calcItem,
-                estimatedWaterDepth: value as number,
+                estimatedWaterDepth: value as string,
               }
             : calcItem
         ),
@@ -114,7 +114,7 @@ export const fairwayCardSquatCalculationReducer = (
           idx === actionTarget
             ? {
                 ...calcItem,
-                fairwayWidth: value as number,
+                fairwayWidth: value as string,
               }
             : calcItem
         ),
@@ -127,7 +127,7 @@ export const fairwayCardSquatCalculationReducer = (
           idx === actionTarget
             ? {
                 ...calcItem,
-                slopeScale: value as number,
+                slopeScale: value as string,
               }
             : calcItem
         ),
@@ -140,7 +140,7 @@ export const fairwayCardSquatCalculationReducer = (
           idx === actionTarget
             ? {
                 ...calcItem,
-                slopeHeight: value as number,
+                slopeHeight: value as string,
               }
             : calcItem
         ),
