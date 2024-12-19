@@ -12,7 +12,7 @@ import { CommonModal, SourceModal, FeedbackModal } from './CommonModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 import LinePopupContent, { LineProperties } from '../popup/LinePopupContent';
 import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPopupContent';
-import { useFairwayCardListData, useSaveFeedback } from '../../utils/dataLoader';
+import { useFairwayCardListData, useSaveFeedback, useWeatherLimits } from '../../utils/dataLoader';
 import MarineWarningPopupContent, { MarineWarningProperties } from '../popup/MarineWarningPopupContent';
 import MareographPopupContent, { MareographProperties } from '../popup/MareographPopupContent';
 import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
@@ -35,6 +35,7 @@ import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup
 import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup/ProhibitionAreaPopupContent';
 import { IonCol, IonGrid, IonRow, IonText, IonToast } from '@ionic/react';
 import { FeedbackInput } from '../../graphql/generated';
+import { asWeatherLimits, findWeatherLimitById } from '../../utils/weatherUtils';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -85,6 +86,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const [popupProperties, setPopupProperties] = useState<PopupProperties>();
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
+  const { data: weatherLimits } = useWeatherLimits();
 
   const openMapLayersModal = () => {
     setIsOpen(true);
@@ -187,7 +189,13 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.observation && (
           <ObservationPopupContent observation={popupProperties.observation} setPopupProperties={setPopupProperties} />
         )}
-        {popupProperties?.forecast && <ForecastPopupContent forecast={popupProperties.forecast} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.forecast && (
+          <ForecastPopupContent
+            forecast={popupProperties.forecast}
+            setPopupProperties={setPopupProperties}
+            weatherLimits={findWeatherLimitById(asWeatherLimits(weatherLimits?.weatherLimits), popupProperties.forecast.properties.id)} //TODO: what is the id in the json files acctually?
+          />
+        )}
         {popupProperties?.buoy && <BuoyPopupContent buoy={popupProperties.buoy} setPopupProperties={setPopupProperties} />}
         {popupProperties?.harbor && <HarborPopupContent harbor={popupProperties.harbor} setPopupProperties={setPopupProperties} />}
         {popupProperties?.vtspoint && <VtsPointPopupContent vts={popupProperties.vtspoint} setPopupProperties={setPopupProperties} />}
