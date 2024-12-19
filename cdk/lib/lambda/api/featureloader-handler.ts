@@ -7,7 +7,7 @@ import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations, fetchWeatherWaveForecast } from './weather';
 import { fetchN2000MapAreas, fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { getFeatureCacheControlHeaders } from '../graphql/cache';
+import { cacheResponse, getFeatureCacheControlHeaders, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
 import { getNumberValue, invertDegrees, roundDecimals, toBase64Response } from '../util';
 import {
@@ -181,9 +181,57 @@ async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
 }
 
 async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
-  const areas = await fetchProhibitionAreas();
-  log.debug('prohibition areas: %d', areas.length);
-  features.featureArray.push(...areas);
+  const cacheKey = 'prohibitionareas';
+
+  try {
+    log.info('Fetching prohibitionareas from traficom api')
+    const areas = await fetchProhibitionAreas();
+    if (areas) {
+      log.info('Saving response to S3');
+      await cacheResponse(cacheKey, areas);
+      log.info('Saving successful!');
+
+      log.debug('Prohibition areas: %d', areas.length);
+      features.featureArray.push(...areas);
+    } else {
+      throw new Error('Fetching error');
+    }
+  } catch (e) {
+    log.error('Fetching prohibitionareas from traficom api unsuccesful, retrieving from cache...');
+    log.error(e);
+
+    const response = await getFromCache(cacheKey);
+    if (response.data) {
+      const data = JSON.parse(response.data);
+      const areas = data.map((row: Feature) => {
+        return {
+          type: 'Feature',
+          id: row.properties?.ALUENRO,
+          geometry: row.geometry,
+          properties: {
+            featureType: 'specialarea15',
+            typeCode: 15,
+            type: row.properties?.RAJOITE_TYYPPI,
+            vtsArea: row.properties?.VTS_ALUE,
+            extraInfo: {
+              fi: row.properties?.LISATIETO?.trim(),
+              sv: row.properties?.LISATIETO_SV?.trim(),
+            },
+            fairway: {
+              fairwayId: row.properties?.JNRO,
+              name: {
+                fi: row.properties?.VAYLA_NIMI,
+                sv: row.properties?.VAYLA_NIMI_SV,
+              },
+            },
+          },
+        };
+      });
+
+      log.debug('prohibition areas: %d', areas.length);
+      features.featureArray.push(...areas);
+    }
+  }
 }
 
 async function addRestrictionAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
@@ -654,6 +702,8 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
       base64Response = await toBase64Response(collection);
     }
   } catch (e) {
+    console.log('eli tänne tuli error!');
+    console.log(e);
     base64Response = undefined;
     statusCode = 503;
   }
