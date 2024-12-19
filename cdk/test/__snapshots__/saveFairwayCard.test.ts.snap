@@ -88,6 +88,7 @@ exports[`test mapFairwayCardToModel all 1`] = `
     "fi": "speedLimit",
     "sv": "speedLimitsv",
   },
+  "squatCalculations": null,
   "status": "PUBLIC",
   "temporaryNotifications": null,
   "trafficService": {
@@ -204,6 +205,7 @@ exports[`test mapFairwayCardToModel minimal 1`] = `
   "pilotRoutes": null,
   "publishDetails": undefined,
   "speedLimit": null,
+  "squatCalculations": null,
   "status": "DRAFT",
   "temporaryNotifications": null,
   "trafficService": {

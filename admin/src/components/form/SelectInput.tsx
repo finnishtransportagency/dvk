@@ -17,8 +17,9 @@ interface SelectInputProps {
   label: string;
   selected?: ValueType;
   options: SelectOption[] | PilotPlace[] | null;
-  setSelected: (value: ValueType, actionType: ActionType) => void;
+  setSelected: (value: ValueType, actionType: ActionType, lang: Lang | undefined, actionTarget: string | number | undefined) => void;
   actionType: ActionType;
+  actionTarget?: string | number;
   required?: boolean;
   multiple?: boolean;
   showId?: boolean;
@@ -38,6 +39,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
   options,
   setSelected,
   actionType,
+  actionTarget,
   required,
   multiple,
   showId,
@@ -85,7 +87,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
   const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
     if (isTouched) checkValidity(event);
-    setSelected(event.detail.value, actionType);
+    setSelected(event.detail.value, actionType, undefined, actionTarget);
   };
 
   const getHelperText = () => {

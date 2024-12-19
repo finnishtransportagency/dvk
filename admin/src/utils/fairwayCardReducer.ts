@@ -2,6 +2,8 @@ import { t } from 'i18next';
 import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, SelectedFairwayInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
 import { dateError, endDateError, removeSequence, sortPictures } from './common';
+import { fairwayCardSquatCalculationReducer } from './reducers/fairwayCardSquatCalculationReducer';
+import { fairwayCardSquatCalculationValidator } from './reducers/fairwayCardSquatCalculationValidator';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -654,6 +656,21 @@ export const fairwayCardReducer = (
       break;
     case 'publishDetails':
       newState = { ...state, publishDetails: value as string };
+      break;
+    case 'squatCalculations':
+    case 'squatCalculationAdditionalInformation':
+    case 'squatCalculationPlace':
+    case 'squatCalculationDepth':
+    case 'squatCalculationFairwayForm':
+    case 'squatCalculationEstimatedWaterDepth':
+    case 'squatCalculationFairwayWidth':
+    case 'squatCalculationSlopeScale':
+    case 'squatCalculationSlopeHeight':
+    case 'squatTargetFairwayIds':
+    case 'squatSuitableFairwayAreaIds':
+      newState = fairwayCardSquatCalculationReducer(state, value, actionType, validationErrors, setValidationErrors, actionLang, actionTarget);
+      fairwayCardSquatCalculationValidator(newState, actionType, validationErrors, setValidationErrors, actionTarget);
+
       break;
     default:
       console.warn(`Unknown action type, state not updated.`);

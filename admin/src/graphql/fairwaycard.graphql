@@ -173,6 +173,26 @@ fragment FairwayCardById on FairwayCard {
     startDate
     endDate
   }
+  squatCalculations {
+    place {
+      fi
+      sv
+      en
+    }
+    targetFairways
+    suitableFairwayAreas
+    depth
+    estimatedWaterDepth
+    fairwayWidth
+    slopeScale
+    slopeHeight
+    additionalInformation {
+      fi
+      sv
+      en
+    }
+    fairwayForm
+  }
   latest
   latestVersionUsed
   publishDetails
