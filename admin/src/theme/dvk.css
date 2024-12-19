@@ -426,7 +426,10 @@ ion-popover.multiSelect::part(content) {
 
 ion-popover.multiSelect.squatSuitableFairwayAreaIds {
   overflow-y: auto;
-  max-height: none;
+}
+
+ion-popover.multiSelect.squatTargetFairwayIds {
+  overflow-y: auto;
 }
 
 ion-popover.multiSelect.fairwayIds::part(content),
