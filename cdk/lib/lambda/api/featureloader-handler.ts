@@ -73,11 +73,11 @@ async function addHarborFeatures(features: FeaturesWithMaxFetchTime) {
 
 async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
   const pilotCacheKey = 'pilotplaces';
-  
+
   try {
     // pilot points are not saved to s3 like prohibition areas are, since pilot places are
     // saved in many other cases (fairwayCard-handler, fairwayCards-handler, saveFairwayCard-handler)
-    log.info(`Fetching ${pilotCacheKey} from traficom api`)
+    log.info(`Fetching ${pilotCacheKey} from traficom api`);
     const data = await fetchPilotPoints();
     const pilotPlaces = mapPilotFeatures(data) as Feature[];
     features.featureArray.push(...pilotPlaces);
@@ -93,7 +93,7 @@ async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
       features.featureArray.push(...pilotPlaces);
     }
 
-    log.info(`Fetching ${pilotCacheKey} from cache succesful!`)
+    log.info(`Fetching ${pilotCacheKey} from cache succesful!`);
   }
 }
 
@@ -195,7 +195,7 @@ async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
   const prohibitionCacheKey = 'prohibitionareas';
 
   try {
-    log.info(`Fetching ${prohibitionCacheKey} from traficom api`)
+    log.info(`Fetching ${prohibitionCacheKey} from traficom api`);
     const areas = await fetchProhibitionAreas();
     if (areas) {
       log.info('Saving response to S3');
@@ -214,12 +214,12 @@ async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
     const response = await getFromCache(prohibitionCacheKey);
     if (response.data) {
       const data = JSON.parse(response.data);
-      const areas = mapProhibitionAreaFeatures(data); 
+      const areas = mapProhibitionAreaFeatures(data);
 
       log.debug('prohibition areas: %d', areas.length);
       features.featureArray.push(...areas);
 
-      log.info(`Fetching ${prohibitionCacheKey} from cache succesful!`)
+      log.info(`Fetching ${prohibitionCacheKey} from cache succesful!`);
     }
   }
 }
@@ -292,7 +292,7 @@ async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: A
 async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
   const [lineData, traficomN2000MapAreas] = await Promise.all([
     fetchVATUByFairwayClass<NavigointiLinjaFeature>('navigointilinjat', event),
-    fetchN2000MapAreas()
+    fetchN2000MapAreas(),
   ]);
 
   const lines = lineData.data as NavigointiLinjaFeatureCollection;
@@ -302,7 +302,6 @@ async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
     features.featureArray.push(mapLineFeature(line, traficomN2000MapAreas));
   }
 }
-
 
 function inOfficialN2000Area(geom: Geometry, traficomN2000MapAreas: Geometry | undefined): boolean | undefined {
   if (traficomN2000MapAreas !== undefined) {

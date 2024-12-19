@@ -41,7 +41,7 @@ export async function fetchVTSLines() {
 
 export async function fetchPilotPoints(): Promise<PilotPlace[]> {
   const data = (await fetchTraficomApi<FeatureCollection<Point>>(
-    'trafiaineistot/inspireplvelu/avoin/wfs?request=getFeature&typename=avoin:PilotBoardingPlace_P&srsName=urn:ogc:def:crs:EPSG::4258&outputFormat=application/json'
+    'trafiaineistot/inspirepalvelu/avoin/wfs?request=getFeature&typename=avoin:PilotBoardingPlace_P&srsName=urn:ogc:def:crs:EPSG::4258&outputFormat=application/json'
   )) as FeatureCollection<Point>;
   data.features.forEach((row) => {
     flattenCoordinates(row);
@@ -61,7 +61,7 @@ export async function fetchPilotPoints(): Promise<PilotPlace[]> {
 
 export async function fetchProhibitionAreas(): Promise<Feature<Geometry, GeoJsonProperties>[]> {
   const path =
-    'trafiaineistot/inspireplvelu/avoin/wfs?request=GetFeature&service=WFS&version=1.1.0&outputFormat=application/json&typeName=avoin:kohtaamis_ja_ohittamiskieltoalueet';
+    'trafiaineistot/inspirepalvelu/avoin/wfs?request=GetFeature&service=WFS&version=1.1.0&outputFormat=application/json&typeName=avoin:kohtaamis_ja_ohittamiskieltoalueet';
   const data = await fetchTraficomApi<FeatureCollection>(path);
   return mapProhibitionAreaFeatures(data.features);
 }
@@ -72,7 +72,7 @@ export async function fetchN2000MapAreas(): Promise<Polygon | MultiPolygon | und
   let data = undefined;
   try {
     data = await fetchTraficomApi<FeatureCollection>(path);
-  } catch(error) {
+  } catch (error) {
     return undefined;
   }
   const turfAreas: Feature<Polygon>[] = [];
@@ -82,11 +82,11 @@ export async function fetchN2000MapAreas(): Promise<Polygon | MultiPolygon | und
       type: 'Feature',
       geometry: f.geometry,
       properties: {},
-    }
+    };
     turfAreas.push(feat as Feature<Polygon>);
   });
 
-  if (turfAreas.length < 1){
+  if (turfAreas.length < 1) {
     return undefined;
   }
   const union = turf_union(turf_helpers.featureCollection(turfAreas));
