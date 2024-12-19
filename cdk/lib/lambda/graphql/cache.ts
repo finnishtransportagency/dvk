@@ -48,6 +48,10 @@ const MARINEWARNING_CACHE = {
 
 export const FEATURE_CACHE_DURATION = 7200; // 2 hours
 
+export const TRAFICOM_CACHE_DURATION = 86400 * 3 // 3 days
+
+const traficomS3Keys = ['prohibitionareas', 'pilotplaces'];
+
 function getCacheBucketName() {
   return `featurecache-${getEnvironment()}`;
 }
@@ -57,6 +61,8 @@ export function getFeatureCacheDuration(key: string) {
     return AIS_LOCATION_CACHE.MAX_AGE;
   } else if (key === 'aisvessels') {
     return AIS_VESSEL_CACHE.MAX_AGE;
+  } else if (traficomS3Keys.includes(key)) {
+    return TRAFICOM_CACHE_DURATION;
   } else {
     return FEATURE_CACHE_DURATION;
   }
