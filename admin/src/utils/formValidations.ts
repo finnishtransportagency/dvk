@@ -463,6 +463,7 @@ function sortArrays(state: FairwayCardInput | HarborInput) {
   //Add here any sorted arrays that are sorted in some specific way. The deep diff made to detact changes turns arrays into objects so order matters.
   if ('squatCalculations' in state) {
     state.squatCalculations?.forEach((a) => a.suitableFairwayAreas?.sort());
+    state.squatCalculations?.forEach((a) => a.targetFairways?.sort());
   }
   return state;
 }
