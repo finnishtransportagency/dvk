@@ -658,6 +658,7 @@ type WeatherLimit {
   id: String!
   type: String!
   windLimits: [Limit!]!
+  windGustLimits: [Limit!]!
   waveLimits: [Limit!]!
   visibilityLimits: [Limit!]!
 }

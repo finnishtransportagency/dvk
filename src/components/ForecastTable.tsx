@@ -99,9 +99,10 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem, visible, w
   const windStatus = determineWeatherStatus(forecastItem.windSpeed, weatherLimits?.windLimits);
   const waveStatus = determineWeatherStatus(forecastItem.waveHeight, weatherLimits?.waveLimits);
   const visibilityStatus = determineWeatherStatus(forecastItem.visibility, weatherLimits?.visibilityLimits);
+  const windGustStatus = determineWeatherStatus(forecastItem.windGust, weatherLimits?.windGustLimits);
 
   const windColClass = getColumnClass(windStatus, forecastItem.windSpeed, THRESHOLDS.wind);
-  const windGustColClass = getColumnClass(undefined, forecastItem.windGust, THRESHOLDS.windGust);
+  const windGustColClass = getColumnClass(windGustStatus, forecastItem.windGust, THRESHOLDS.windGust);
   const waveColClass = getColumnClass(waveStatus, forecastItem.waveHeight, THRESHOLDS.wave);
   const visibilityColClass = getColumnClass(visibilityStatus, forecastItem.visibility, THRESHOLDS.visibility, true);
 

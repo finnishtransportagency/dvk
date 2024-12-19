@@ -8,6 +8,11 @@ query weatherLimits {
         upperLimit
         status
       }
+      windGustLimits {
+        lowerLimit
+        upperLimit
+        status
+      }
       waveLimits {
         lowerLimit
         upperLimit
