@@ -175,7 +175,7 @@ class DvkMap {
     this.translate();
   }
   // eslint-disable-next-line
-  private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
+  private readonly setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
     // Font replacement so we do not need to load web fonts in the worker
     const getFonts = (fonts: Array<string>) => {
