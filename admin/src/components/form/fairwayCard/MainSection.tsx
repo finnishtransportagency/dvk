@@ -182,7 +182,7 @@ const MainSection: React.FC<MainSectionProps> = ({
               ]}
               setSelected={updateState}
               actionType="referenceLevel"
-              disabled={!readonly && state.status === Status.Removed}
+              disabled={!readonly && (state.status === Status.Removed || (state.squatCalculations ?? []).length > 0)}
               readonly={readonly}
             />
           </IonCol>
