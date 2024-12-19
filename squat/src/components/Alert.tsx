@@ -37,7 +37,7 @@ const Alert: React.FC<AlertProps> = ({ title, alertType, className, closable = f
     <IonGrid className={'infobox ' + alertType + ' ' + (className ?? '')}>
       <IonRow className="ion-align-items-center">
         <IonCol size="auto" className="icon">
-          <IonIcon icon={iconByType()} />
+          <IonIcon aria-label={alertType} icon={iconByType()} />
         </IonCol>
         <IonCol>
           <IonText>{title}</IonText>
@@ -50,7 +50,7 @@ const Alert: React.FC<AlertProps> = ({ title, alertType, className, closable = f
               title={t('common.close-dialog')}
               aria-label={t('common.close-dialog')}
             >
-              <IonIcon icon={closeOutline} />
+              <IonIcon aria-label={t('common.close-dialog')} icon={closeOutline} />
             </IonButton>
           </IonCol>
         )}

@@ -14,5 +14,9 @@
   "devDependencies": {
     "@playwright/test": "^1.46.1",
     "@types/node": "^22.5.0"
+  },
+  "dependencies": {
+    "@axe-core/playwright": "^4.10.1",
+    "axe-html-reporter": "^2.2.11"
   }
 }

@@ -37,7 +37,7 @@ const Modal: React.FC<ModalProps> = (props) => {
         aria-label={props.triggerTitle ?? t('more-info')}
         disabled={props.disabled}
       >
-        {props.triggerIcon ?? <IonIcon color="primary" slot="icon-only" icon={helpCircleOutline} />}
+        {props.triggerIcon ?? <IonIcon color="primary" slot="icon-only" aria-label={t('more-info')} icon={helpCircleOutline} />}
       </IonButton>
       <IonModal isOpen={isOpen} className={'squatModal ' + (props.size ? props.size : 'medium')} onDidDismiss={handleClickClose}>
         <IonHeader>

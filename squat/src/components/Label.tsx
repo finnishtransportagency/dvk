@@ -3,6 +3,7 @@ import { IonLabel, IonText } from '@ionic/react';
 import Modal from './Modal';
 
 interface LabelProps {
+  id: string;
   title: string;
   description?: string;
   required?: boolean;
@@ -13,7 +14,7 @@ interface LabelProps {
 
 const Label: React.FC<LabelProps> = (props) => {
   return (
-    <IonLabel>
+    <IonLabel id={props.id}>
       <div className="labelContainer">
         <IonText className="collapsible" color="dark" title={props.description ? props.description : props.title}>
           {props.title}
