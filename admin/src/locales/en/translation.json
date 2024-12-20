@@ -287,7 +287,7 @@
     "calculation-fairway-form.open-water": "[en] Avovesi",
     "calculation-fairway-form.channel": "[en] Kanava",
     "calculation-fairway-form.sloped-channel": "[en] Luiska",
-    "squat-calculation-depth-warning": "[en] Olet valinnut väyläalueita eriävillä haraussyvvyksillä. Laskennassa käytetään matalinta haraussyvyyttä",
+    "squat-calculation-depth-warning": "[en] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä",
     "squat-calculation-cannot-remove-fairway-header": "Cannot remove fairway",
     "squat-calculation-cannot-remove-fairway": "The fairway is linked to an area that is in use in this squat calculation template."
   },
