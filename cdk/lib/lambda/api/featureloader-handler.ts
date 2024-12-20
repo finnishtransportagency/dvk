@@ -688,11 +688,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
           },
         };
       }
-      console.log('COLLECTION ON TÄÄLLÄ');
-      console.log(collection);
       base64Response = await toBase64Response(collection);
-      console.log('BASE64RESPONSE');
-      console.log(base64Response);
     }
   } catch (e) {
     base64Response = undefined;
