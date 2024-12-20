@@ -15,7 +15,7 @@ import { CurrentUser } from '../api/login';
 import { fetchPilotPoints } from '../api/traficom';
 import { getFromCache, cacheResponse, CacheResponse } from '../graphql/cache';
 import { log } from '../logger';
-import FairwayCardDBModel, { FairwayDBModel, PilotRoute, TemporaryNotification, TrafficServiceDBModel } from './fairwayCardDBModel';
+import FairwayCardDBModel, { FairwayDBModel, PilotRoute, SquatCalculation, TemporaryNotification, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
 import { fetchPilotRouteData } from '../api/pilotRoutes';
 import { saveResponseToS3 } from '../util';
@@ -305,6 +305,7 @@ export function mapFairwayCardDBModelToGraphqlType(
     fairwayIds: mapFairwayIds(dbModel),
     pictures: dbModel.pictures,
     temporaryNotifications: mapTemporaryNotifications(dbModel.temporaryNotifications ?? []),
+    squatCalculations: mapSquatCalculations(dbModel.squatCalculations ?? []),
     latest: dbModel.latest,
     latestVersionUsed: dbModel.latestVersionUsed,
     publishDetails: dbModel.publishDetails,
@@ -399,6 +400,23 @@ function mapTemporaryNotifications(notifications: TemporaryNotification[]) {
       content: notification.content,
       startDate: notification.startDate,
       endDate: notification.endDate,
+    };
+  });
+}
+
+function mapSquatCalculations(calcs: SquatCalculation[]) {
+  return calcs.map((calc) => {
+    return {
+      place: calc.place,
+      depth: calc.depth,
+      estimatedWaterDepth: calc.estimatedWaterDepth,
+      fairwayWidth: calc.fairwayWidth,
+      targetFairways: calc.targetFairways,
+      suitableFairwayAreas: calc.suitableFairwayAreas,
+      slopeScale: calc.slopeScale,
+      slopeHeight: calc.slopeHeight,
+      additionalInformation: calc.additionalInformation,
+      fairwayForm: calc.fairwayForm,
     };
   });
 }
