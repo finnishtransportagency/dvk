@@ -71,7 +71,7 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
     <IonPopover
       ref={popover}
       trigger={trigger}
-      className={'multiSelect fairways'}
+      className={'multiSelect'}
       showBackdrop={false}
       size="cover"
       dismissOnSelect={false}
