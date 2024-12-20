@@ -479,6 +479,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 updateState={updateState}
                 sectionType="squatCalculations"
                 validationErrors={validationErrors}
+                warningLabel={!state.n2000HeightSystem ? 'WARN' : undefined}
                 disabled={!state.n2000HeightSystem}
                 readonly={readonly}
                 fairwaySelection={fairwaySelection}

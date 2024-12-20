@@ -182,6 +182,7 @@ const MainSection: React.FC<MainSectionProps> = ({
               ]}
               setSelected={updateState}
               actionType="referenceLevel"
+              warningLabel={(state.squatCalculations ?? []).length > 0 ? 'WARN' : undefined}
               disabled={!readonly && (state.status === Status.Removed || (state.squatCalculations ?? []).length > 0)}
               readonly={readonly}
             />

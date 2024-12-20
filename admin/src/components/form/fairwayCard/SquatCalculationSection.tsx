@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../../graphql/generated';
 import { ValueType, ActionType, Lang, ValidationType, SelectOption } from '../../../utils/constants';
-import { IonButton, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonLabel, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import HelpIcon from '../../../theme/img/help_icon.svg?react';
 import NotificationModal from '../../NotificationModal';
@@ -26,6 +26,7 @@ interface SquatCalculationSectionProps {
   fairwayAreas?: SelectOption[];
   isLoadingAreas?: boolean;
   isLoadingFairways?: boolean;
+  warningLabel?: string;
 }
 
 const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
@@ -40,6 +41,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
   fairwayAreas,
   isLoadingAreas = false,
   isLoadingFairways = false,
+  warningLabel,
 }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
@@ -131,6 +133,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
       <IonGrid>
         <IonRow className="ion-justify-content-end">
           <IonCol size="auto">
+            {warningLabel && <IonLabel className={'formLabel'}>{warningLabel}</IonLabel>}
             <IonButton shape="round" onClick={() => addSection()} disabled={readonly || disabled}>
               {t('general.add-section-squat-calculation')}
             </IonButton>
