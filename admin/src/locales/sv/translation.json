@@ -124,6 +124,7 @@
     "create-new-version": "[sv] Lisää uusi versio",
     "version": "[sv] Versio",
     "add-section-squat-calculation": "[sv] Lisää laskennan sijainti",
+    "cannot-add-section-squat-calculation": "[sv] Väyläkortin vertaustasoksi on asetettu MW jolle ei voi lisätä Squat laskennan sijanteja. Lisätäkseksi väyläkortille Squat laskennan sijainteja vaihda vertaustasoksi N2000.",
     "squat-calculation-description": "[sv] Lorem ipsum..."
   },
   "modal": {
@@ -292,7 +293,8 @@
     "calculation-fairway-form.sloped-channel": "[sv] Luiska",
     "squat-calculation-depth-warning": "[sv] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä",
     "squat-calculation-cannot-remove-fairway-header": "[sv] Cannot remove fairway",
-    "squat-calculation-cannot-remove-fairway": "[sv] The fairway is linked to an area that is in use in this squat calculation template."
+    "squat-calculation-cannot-remove-fairway": "[sv] The fairway is linked to an area that is in use in this squat calculation template.",
+    "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laksennan sijainteja. Vertaustaso ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",

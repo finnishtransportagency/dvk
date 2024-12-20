@@ -182,9 +182,9 @@ const MainSection: React.FC<MainSectionProps> = ({
               ]}
               setSelected={updateState}
               actionType="referenceLevel"
-              warningLabel={(state.squatCalculations ?? []).length > 0 ? 'WARN' : undefined}
-              disabled={!readonly && (state.status === Status.Removed || (state.squatCalculations ?? []).length > 0)}
-              readonly={readonly}
+              helperText={(state.squatCalculations ?? []).length > 0 ? t('fairwaycard.cannot-change-reference-level') : undefined}
+              disabled={!readonly && state.status === Status.Removed}
+              readonly={readonly || (state.squatCalculations ?? []).length > 0}
             />
           </IonCol>
           <IonCol sizeMd="3">
