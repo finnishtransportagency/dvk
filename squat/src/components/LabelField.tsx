@@ -22,7 +22,7 @@ const LabelField: React.FC<LabelProps> = (props) => {
 
   return (
     <>
-      <Label title={props.title} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
+      <Label id={`${props.dataTestid}-label`} title={props.title} infoContentTitle={props.infoContentTitle} infoContent={props.infoContent} />
 
       <IonItem lines="none" className="item-static">
         <IonText
