@@ -331,6 +331,11 @@
     "faultsLastUpdated": "Felmeddellanden för säkerhetsanordningar nedladdade för mer än {{ val, number}} h sedan.",
     "faultsLastUpdatedUnknown": "Tidpunkt för senaste nedladdning av felmeddelanden för säkerhetsanordningar är okänd."
   },
+  "squattemplates": {
+    "no-squat-templates": "[sv] Väyläkortille ei ole vielä lisätty squat laskentoja.",
+    "no-squat-hint": "[sv] Odotellessa voit käyttää palvelusta löytyvää suppeaa",
+    "squat-link": "[sv] Squat-laskuria"
+  },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
     "content": "Vid fortsatt användning, bör applikationen uppdateras.",
