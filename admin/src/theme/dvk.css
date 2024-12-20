@@ -424,14 +424,6 @@ ion-popover.multiSelect::part(content) {
   overflow-y: auto;
 }
 
-ion-popover.multiSelect.squatSuitableFairwayAreaIds {
-  overflow-y: auto;
-}
-
-ion-popover.multiSelect.squatTargetFairwayIds {
-  overflow-y: auto;
-}
-
 ion-popover.multiSelect.fairwayIds::part(content),
 ion-popover.multiSelect.pilotRoutes::part(content),
 ion-popover.multiSelect.mareographs::part(content) {
