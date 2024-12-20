@@ -93,6 +93,9 @@ export const fairwayCardSquatCalculationReducer = (
             ? {
                 ...calcItem,
                 fairwayForm: value as number,
+                fairwayWidth: value.toString() === '1' ? '' : calcItem.fairwayWidth,
+                slopeHeight: ['1', '2'].includes(value.toString()) ? '' : calcItem.slopeHeight,
+                slopeScale: ['1', '2'].includes(value.toString()) ? '' : calcItem.slopeScale,
               }
             : calcItem
         ),
