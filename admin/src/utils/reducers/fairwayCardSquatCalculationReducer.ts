@@ -20,6 +20,10 @@ export const fairwayCardSquatCalculationReducer = (
           squatCalculations: state.squatCalculations?.concat({
             place: { fi: '', sv: '', en: '' },
             additionalInformation: { fi: '', sv: '', en: '' },
+            fairwayWidth: '',
+            estimatedWaterDepth: '',
+            slopeHeight: '',
+            slopeScale: '',
           }),
         };
 
