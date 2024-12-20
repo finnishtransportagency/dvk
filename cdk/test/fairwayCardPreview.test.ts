@@ -30,6 +30,17 @@ const card1: FairwayCardDBModel = {
       places: [{ id: 1, pilotJourney: 1 }],
     },
   },
+  squatCalculations: [
+    {
+      targetFairways: [1],
+      suitableFairwayAreas: [1],
+      place: { fi: 'Place_fi', sv: 'Place_sv', en: 'Place_en' },
+      depth: 1,
+      estimatedWaterDepth: 1,
+      fairwayForm: 1,
+      additionalInformation: { fi: 'addinfo_fi', sv: 'addinfo_sv', en: 'addinfo_en' },
+    },
+  ],
   pilotRoutes: [{ id: 1 }],
 };
 

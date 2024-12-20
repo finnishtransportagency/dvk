@@ -91,6 +91,19 @@ export type TemporaryNotification = {
   endDate?: Maybe<string>;
 };
 
+export type SquatCalculation = {
+  place?: Maybe<Text>;
+  depth?: Maybe<number>;
+  estimatedWaterDepth?: Maybe<number>;
+  fairwayWidth?: Maybe<number>;
+  targetFairways?: Maybe<number[]>;
+  suitableFairwayAreas?: Maybe<number[]>;
+  slopeScale?: Maybe<number>;
+  slopeHeight?: Maybe<number>;
+  additionalInformation?: Maybe<Text>;
+  fairwayForm?: Maybe<number>;
+};
+
 class FairwayCardDBModel {
   id: string;
 
@@ -155,6 +168,8 @@ class FairwayCardDBModel {
   pilotRoutes?: Maybe<PilotRoute[]>;
 
   temporaryNotifications?: Maybe<TemporaryNotification[]>;
+
+  squatCalculations?: Maybe<SquatCalculation[]>;
 
   latest?: Maybe<number>;
 
@@ -305,7 +320,7 @@ class FairwayCardDBModel {
       versionNumber,
       latestVersion,
       publicVersionData,
-      previousVersionData,
+      previousVersionData
     );
     await Promise.all(putCommands.map((command) => getDynamoDBDocumentClient().send(command)));
   }

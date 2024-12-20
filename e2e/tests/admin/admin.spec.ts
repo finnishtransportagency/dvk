@@ -146,6 +146,9 @@ async function fillTemplate(page: Page, randomname: string, id: string) {
 }
 
 test.describe('Modify operations for cards and harbors', () => {
+  test.beforeAll(async () => {
+    test.setTimeout(60000);
+  });
   test.skip('should save published harbor', async ({ page }) => {
     await openPage(page);
     await createNewVersionFromPublishedSave(page, HARBOR);

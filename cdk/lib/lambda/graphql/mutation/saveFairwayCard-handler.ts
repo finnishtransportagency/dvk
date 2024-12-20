@@ -22,6 +22,7 @@ import {
   mapIds,
   mapInternetAddress,
   mapMandatoryText,
+  mapNumber,
   mapPhoneNumber,
   mapPhoneNumbers,
   mapPilotJourney,
@@ -49,7 +50,7 @@ export function mapFairwayCardToModel(
   return {
     id: mapId(card.id),
     version: mapVersion(card.version),
-    name: card.name?.fi ? mapMandatoryText(card?.name) : { fi: '', sv: '', en: ''},
+    name: card.name?.fi ? mapMandatoryText(card?.name) : { fi: '', sv: '', en: '' },
     status: card.status,
     n2000HeightSystem: !!card.n2000HeightSystem,
     group: mapString(card.group),
@@ -157,6 +158,22 @@ export function mapFairwayCardToModel(
         };
       }) ?? null,
     publishDetails: card.publishDetails,
+    squatCalculations:
+      card.squatCalculations?.map((t) => {
+        return {
+          place: mapText(t?.place),
+          depth: t?.depth,
+          estimatedWaterDepth: t?.estimatedWaterDepth && t.estimatedWaterDepth !== '' ? parseFloat(t?.estimatedWaterDepth) : null,
+          fairwayWidth: t?.fairwayWidth && t.fairwayWidth !== '' ? parseFloat(t?.fairwayWidth) : null,
+          fairwayform: t?.fairwayForm,
+          targetFairways: t?.targetFairways ?? [],
+          suitableFairwayAreas: t?.suitableFairwayAreas ?? [],
+          slopeScale: t?.slopeScale && t.slopeScale !== '' ? parseFloat(t?.slopeScale) : null,
+          slopeHeight: t?.slopeHeight && t.slopeHeight !== '' ? parseFloat(t?.slopeHeight) : null,
+          additionalInformation: mapText(t?.additionalInformation),
+          fairwayForm: t?.fairwayForm,
+        };
+      }) ?? null,
   };
 }
 

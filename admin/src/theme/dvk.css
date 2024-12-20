@@ -424,6 +424,14 @@ ion-popover.multiSelect::part(content) {
   overflow-y: auto;
 }
 
+ion-popover.multiSelect.squatSuitableFairwayAreaIds {
+  overflow-y: auto;
+}
+
+ion-popover.multiSelect.squatTargetFairwayIds {
+  overflow-y: auto;
+}
+
 ion-popover.multiSelect.fairwayIds::part(content),
 ion-popover.multiSelect.pilotRoutes::part(content),
 ion-popover.multiSelect.mareographs::part(content) {
@@ -441,6 +449,10 @@ ion-popover.multiSelect ion-item.option-selected {
 
 ion-popover.multiSelect ion-item ion-label {
   white-space: normal !important;
+}
+
+ion-popover.multiSelect ion-item ion-label.subtext {
+  font-size: 12px;
 }
 
 ion-popover.multiSelect ion-list {
@@ -551,6 +563,11 @@ label.input-wrapper {
 .formGrid ion-textarea.formInput.readonly .textarea-outline-container {
   border: none;
   background-color: var(--ion-color-lighter);
+}
+
+.formGrid div.custom-error-text {
+  font-size: 13px;
+  color: var(--ion-color-danger);
 }
 
 .formGrid ion-input.formInput.has-focus.input-fill-outline label.input-wrapper,
