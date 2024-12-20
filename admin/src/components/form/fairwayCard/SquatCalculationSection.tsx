@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../../graphql/generated';
 import { ValueType, ActionType, Lang, ValidationType, SelectOption } from '../../../utils/constants';
-import { IonButton, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import HelpIcon from '../../../theme/img/help_icon.svg?react';
 import NotificationModal from '../../NotificationModal';
 import SquatCalculationInput from '../SquatCalculationInput';
 import SectionHeader from '../SectionHeader';
+import alertIcon from '../../../theme/img/alert_icon.svg';
+import './SquatCalculationSection.css';
 
 interface SquatCalculationSectionProps {
   updateState: (
@@ -26,6 +28,7 @@ interface SquatCalculationSectionProps {
   fairwayAreas?: SelectOption[];
   isLoadingAreas?: boolean;
   isLoadingFairways?: boolean;
+  showWarningLabel?: boolean;
 }
 
 const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
@@ -40,6 +43,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
   fairwayAreas,
   isLoadingAreas = false,
   isLoadingFairways = false,
+  showWarningLabel = false,
 }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
@@ -128,6 +132,16 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
         i18nkey="modal.squat-calculation-add"
         message={t('general.squat-calculation-description')}
       />
+      {showWarningLabel && (
+        <IonGrid className={'squat warning grid'}>
+          <IonRow className="squat warning row">
+            <IonCol size="auto" className={'squat warning icon'}>
+              <IonIcon aria-hidden src={alertIcon} color="danger" />
+            </IonCol>
+            <IonCol className={'squat warning col'}>{t('general.cannot-add-section-squat-calculation')}</IonCol>
+          </IonRow>
+        </IonGrid>
+      )}
       <IonGrid>
         <IonRow className="ion-justify-content-end">
           <IonCol size="auto">

@@ -7,9 +7,9 @@ import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations, fetchWeatherWaveForecast } from './weather';
 import { fetchN2000MapAreas, fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { getFeatureCacheControlHeaders } from '../graphql/cache';
+import { cacheResponse, getFeatureCacheControlHeaders, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-import { getNumberValue, invertDegrees, roundDecimals, toBase64Response } from '../util';
+import { getNumberValue, invertDegrees, mapPilotFeatures, mapProhibitionAreaFeatures, roundDecimals, toBase64Response } from '../util';
 import {
   AlueFeature,
   AlueFeatureCollection,
@@ -27,6 +27,7 @@ import {
   TurvalaiteVikatiedotFeatureCollection,
 } from './apiModels';
 import { booleanWithin as turf_booleanWithin } from '@turf/boolean-within';
+import { ProhibitionArea } from '../../../graphql/generated';
 
 interface FeaturesWithMaxFetchTime {
   featureArray: Feature<Geometry, GeoJsonProperties>[];
@@ -72,17 +73,28 @@ async function addHarborFeatures(features: FeaturesWithMaxFetchTime) {
 }
 
 async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
-  const pilotPlaces = await fetchPilotPoints();
-  for (const place of pilotPlaces) {
-    features.featureArray.push({
-      type: 'Feature',
-      geometry: place.geometry as Geometry,
-      id: place.id,
-      properties: {
-        featureType: 'pilot',
-        name: place.name,
-      },
-    });
+  const pilotCacheKey = 'pilotplaces';
+  
+  try {
+    // pilot points are not saved to s3 like prohibition areas are, since pilot places are
+    // saved in many other cases (fairwayCard-handler, fairwayCards-handler, saveFairwayCard-handler)
+    log.info(`Fetching ${pilotCacheKey} from traficom api`)
+    const data = await fetchPilotPoints();
+    const pilotPlaces = mapPilotFeatures(data) as Feature[];
+    features.featureArray.push(...pilotPlaces);
+    log.debug('Prohibition areas: %d', pilotPlaces.length);
+  } catch (e) {
+    log.error(`Fetching ${pilotCacheKey} from traficom api unsuccesful, retrieving from cache...`);
+    log.error(e);
+    log.error('mitä');
+    const response = await getFromCache(pilotCacheKey);
+    if (response.data) {
+      const data = JSON.parse(response.data);
+      const pilotPlaces = mapPilotFeatures(data) as Feature[];
+      features.featureArray.push(...pilotPlaces);
+    }
+
+    log.info(`Fetching ${pilotCacheKey} from cache succesful!`)
   }
 }
 
@@ -181,9 +193,34 @@ async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
 }
 
 async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
-  const areas = await fetchProhibitionAreas();
-  log.debug('prohibition areas: %d', areas.length);
-  features.featureArray.push(...areas);
+  const prohibitionCacheKey = 'prohibitionareas';
+
+  try {
+    log.info(`Fetching ${prohibitionCacheKey} from traficom api`)
+    const areas = await fetchProhibitionAreas();
+    if (areas) {
+      log.info('Saving response to S3');
+      await cacheResponse(prohibitionCacheKey, areas);
+      log.info('Saving successful!');
+      log.debug('Prohibition areas: %d', areas.length);
+      features.featureArray.push(...areas);
+    } else {
+      throw new Error('Fetching error');
+    }
+  } catch (e) {
+    log.error(`Fetching ${prohibitionCacheKey} from traficom api unsuccesful, retrieving from cache...`);
+    log.error(e);
+
+    const response = await getFromCache(prohibitionCacheKey);
+    if (response.data) {
+      const areas = JSON.parse(response.data) as Feature[];
+
+      log.debug('prohibition areas: %d', areas.length);
+      features.featureArray.push(...areas);
+
+      log.info(`Fetching ${prohibitionCacheKey} from cache succesful!`)
+    }
+  }
 }
 
 async function addRestrictionAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
