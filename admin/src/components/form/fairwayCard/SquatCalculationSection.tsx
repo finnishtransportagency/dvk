@@ -136,8 +136,8 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
       />
       {showWarningLabel && (
         <IonGrid className={'squat warning grid'}>
-          <IonRow className="squat warning col">
-            <IonCol size="1" className={'squat warning icon'}>
+          <IonRow className="squat warning row">
+            <IonCol size="auto" className={'squat warning icon'}>
               <IonIcon aria-hidden src={alertIcon} color="danger" />
             </IonCol>
             <IonCol className={'squat warning col'}>{t('general.cannot-add-section-squat-calculation')}</IonCol>

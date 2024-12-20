@@ -128,7 +128,7 @@
     "create-new-version": "Lisää uusi versio",
     "version": "Versio",
     "add-section-squat-calculation": "Lisää laskennan sijainti",
-    "cannot-add-section-squat-calculation": "Väyläkortin vertaustasoksi on asetettu MW jolle ei voi lisätä Squat laskennan sijanteja. Lisätäkseksi väyläkortille Squat laskennan sijainteja vaihda vertaustasoksi N2000.",
+    "cannot-add-section-squat-calculation": "Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
     "squat-calculation-description": "Lorem ipsum..."
   },
   "modal": {

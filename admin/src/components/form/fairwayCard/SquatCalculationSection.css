@@ -1,6 +1,7 @@
 .squat.warning.icon {
-  width: 32px;
-  height: 32px;
+  font-size: 22px;
+  margin-right: 16px;
+  margin-left: 16px;
 }
 
 .squat.warning {
@@ -9,16 +10,11 @@
 }
 
 .squat.warning.grid {
+  margin: 8px;
   background-color: var(--ion-color-dangerbg);
-  border-width: 1px;
-  border-color: var(--ion-color-danger);
-  vertical-align: center;
-}
-
-.squat.warning.row {
-  align-items: center;
+  border: 1px solid var(--ion-color-danger);
 }
 
 .squat.warning.col {
-  margin-left: 16px;
+  align-content: center;
 }
