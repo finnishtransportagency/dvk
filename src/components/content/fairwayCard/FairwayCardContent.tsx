@@ -53,6 +53,7 @@ import { useMareographFeatures } from '../../MareographFeatureLoader';
 import { useForecastFeatures } from '../../ForecastLoader';
 import ForecastContainer from '../ForecastContainer';
 import SquatCalculationTemplateNotAvailable from './SquatCalculationTemplateNotAvailable';
+import SquatCalculationTemplate from './SquatCalculationTemplate';
 
 export enum FairwayCardTab {
   Information = 1,
@@ -360,7 +361,13 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
               (fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? '' : ' onecolumn')
             }
           >
-            {fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? <div /> : <SquatCalculationTemplateNotAvailable />}
+            {fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? (
+              fairwayCard?.squatCalculations.map((calc) => {
+                return <SquatCalculationTemplate squatCalculation={calc} key={'calc_' + calc.place?.en} />;
+              })
+            ) : (
+              <SquatCalculationTemplateNotAvailable />
+            )}
           </div>
           <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
             {forecastsReady && forecasts

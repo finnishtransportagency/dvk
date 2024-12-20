@@ -20,6 +20,7 @@ import boaters from '../theme/img/warning_to_boaters_icon.svg';
 import * as olExtent from 'ol/extent';
 import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
 import { Action } from '../hooks/dvkReducer';
+import { TFunction } from 'i18next';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -300,4 +301,21 @@ export function updateLayerSelection(initialLayers: string[], requiredLayers: Fe
       updateLayers(initialLayers);
     }
   });
+}
+export function getFairwayFormText(id: number, t: TFunction) {
+  enum FairwayForm {
+    OpenWater = 1,
+    Channel = 2,
+    SlopedChannel = 3,
+  }
+  switch (id) {
+    case FairwayForm.OpenWater:
+      return t('squat-calculation-open-water');
+    case FairwayForm.Channel:
+      return t('squat-calculation-channel');
+    case FairwayForm.SlopedChannel:
+      return t('squat-calculation-sloped-channel');
+    default:
+      return '';
+  }
 }
