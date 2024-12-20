@@ -331,6 +331,11 @@
     "faultsLastUpdated": "AtoN defects downloaded more than {{ val, number}} h ago.",
     "faultsLastUpdatedUnknown": "The time of the latest download of the AtoN defects is unknown."
   },
+  "squattemplates": {
+    "no-squat-templates": "[en] Väyläkortille ei ole vielä lisätty squat laskentoja.",
+    "no-squat-hint": "[en] Odotellessa voit käyttää palvelusta löytyvää suppeaa",
+    "squat-link": "[en] Squat-laskuria"
+  },
   "appUpdateAlert": {
     "title": "Update available",
     "content": "To continue using app you must update it.",
