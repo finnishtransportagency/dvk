@@ -126,7 +126,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   //Filter the selectable areas for the squat calculations based on the fairway card selected fairways
   //They will also be filtered in the squat calculation section based on that fairway sub selection
-  const areaOptions = featureCollectionToAreaSelectOptions(areaList, t('harbour.depth')).filter((a) => a.areatype === 1);
+  const areaOptions = featureCollectionToAreaSelectOptions(areaList, t('fairwaycard.calculation-depth')).filter((a) => a.areatype === 1);
   const filteredAreaOptions: AreaSelectOption[] = [];
   fairwaySelection?.forEach((f) => {
     areaOptions.filter((item) => item.fairwayIds?.includes(f.id)).forEach((o) => filteredAreaOptions.push(o));
