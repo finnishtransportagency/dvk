@@ -78,8 +78,6 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
     }
   }, [sections, openSections.length]);
 
-  console.log('warn' + showWarningLabel);
-
   return (
     <>
       <IonText>
