@@ -592,8 +592,9 @@
     "submit": "Lähetä",
     "continue": "Jatka"
   },
-  "tileLoadWarning": {
-    "vectorTileError": "Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
+  "loadWarnings": {
+    "vectorTileError": "Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa.",
+    "conditionsError": "Yllättävä virhe olosuhteet-tasojen latauksessa. Osa Olosuhteet-tasoista on toistaiseksi poissa käytöstä."
   },
   "source": {
     "title": "Tietolähteet ja käyttöehdot",

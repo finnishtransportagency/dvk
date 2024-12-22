@@ -591,8 +591,9 @@
     "submit": "Submit",
     "continue": "Continue"
   },
-  "tileLoadWarning": {
-    "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."
+  "loadWarnings": {
+    "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use.",
+    "conditionsError": "[en] Yllättävä virhe olosuhteet-tasojen latauksessa. Osa Olosuhteet-tasoista on toistaiseksi poissa käytöstä."
   },
   "source": {
     "title": "Data sources and terms of use",

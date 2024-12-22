@@ -592,8 +592,9 @@
     "submit": "Skicka",
     "continue": "[sv] Jatka"
   },
-  "tileLoadWarning": {
-    "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
+  "loadWarnings": {
+    "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat.",
+    "conditionsError": "[sv] Yllättävä virhe olosuhteet-tasojen latauksessa. Osa Olosuhteet-tasoista on toistaiseksi poissa käytöstä."
   },
   "source": {
     "title": "Informationskällor och användningsvillkor",

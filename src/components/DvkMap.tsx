@@ -32,7 +32,7 @@ import Fill from 'ol/style/Fill';
 import { defaults } from 'ol/interaction/defaults';
 import north_arrow_small from '../theme/img/north_arrow_small.svg';
 import InfoTextControl from './mapControls/InfoTextControl';
-import { isMobile } from '../utils/common';
+import { isMobile, setResponseState } from '../utils/common';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { Icon, Stroke } from 'ol/style';
 import locationIcon from '../theme/img/user_location_indicator.svg';
@@ -299,19 +299,10 @@ class DvkMap {
         } catch {
           tile.setState(3);
           if (response) {
-            this.setResponseState(dispatch, response.status, response.statusText, this.t('tileLoadWarning.vectorTileError'));
+            setResponseState(dispatch, response.status, response.statusText, this.t('loadWarnings.vectorTileError'));
           }
         }
       });
-    });
-  };
-
-  private setResponseState = (dispatch: Dispatch<Action>, statusCode: number, statusText: string, errorText: string) => {
-    dispatch({
-      type: 'setResponse',
-      payload: {
-        value: [String(statusCode), statusText, errorText],
-      },
     });
   };
 
