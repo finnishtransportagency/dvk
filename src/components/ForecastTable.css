@@ -4,6 +4,7 @@
 
 .ForecastGrid {
   background: #ffffff;
+  max-width: 450px;
 }
 
 .ForecastGrid ion-col {
