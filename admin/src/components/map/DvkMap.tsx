@@ -29,7 +29,6 @@ import InfoTextControl from './mapControls/InfoTextControl';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import MapMaskControl from './mapControls/MapMaskControl';
 import { Orientation } from '../../graphql/generated';
-import { Extent } from 'ol/extent';
 import { Stroke } from 'ol/style';
 
 type OrientationType = Orientation | '';
@@ -63,7 +62,6 @@ class DvkMap {
 
   public initialized = false;
 
-  public currentExtent: Extent | null = null;
   // eslint-disable-next-line
   init(t: any, i18n: any) {
     if (this.initialized) {
