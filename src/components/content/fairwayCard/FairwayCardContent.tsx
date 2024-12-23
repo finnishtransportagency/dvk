@@ -363,11 +363,13 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             {fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? <div /> : <SquatCalculationTemplateNotAvailable />}
           </div>
           <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
-            {forecastsReady && forecasts
-              ? forecasts.map((f) => {
-                  return <ForecastContainer forecast={f} key={f.getId()} multicontainer={forecasts.length > 1} />;
-                })
-              : ''}
+            {forecastsReady && forecasts ? (
+              forecasts.map((f) => {
+                return <ForecastContainer forecast={f} key={f.getId()} multicontainer={forecasts.length > 1} />;
+              })
+            ) : (
+              <Alert errorText={t('forecastNotFound')}></Alert>
+            )}
           </div>
 
           {!isMobile() && (

@@ -66,7 +66,7 @@ export const LayerAlert: React.FC<AlertProps> = ({ title, icon, color, className
 
   useEffect(() => {
     if (mainLegendOpen && isError && !isFeatures) {
-      setResponseState(dispatch, 503, 'Service Unavailable', t('warning.layerLoadError'));
+      setResponseState(dispatch, 503, 'Service Unavailable', t('warnings.layerLoadError'));
     }
   }, [dispatch, mainLegendOpen, isError, isFeatures]);
 
