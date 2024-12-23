@@ -32,8 +32,9 @@ const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, s
     clearClickSelectionFeatures();
   };
 
+  // width 450px so pop up's style 'max-width: fit-content' doesn't make rows ridiculously wide
   return (
-    <IonGrid className="ion-no-padding">
+    <IonGrid className="ion-no-padding" style={{ width: '450px' }}>
       <IonRow className="ion-justify-content-between">
         <IonCol size="auto" className="header">
           {forecast.properties.name?.[lang]}
