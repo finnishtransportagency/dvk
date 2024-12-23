@@ -1,3 +1,4 @@
+import { FeatureLike } from 'ol/Feature';
 import { Style, Stroke } from 'ol/style';
 
 const lineStyle = new Style({
@@ -14,6 +15,8 @@ const selectedLineStyle = new Style({
   }),
 });
 
-export function getNavigationLine3456Style(selected: boolean) {
-  return selected ? selectedLineStyle : lineStyle;
+export function getNavigationLine3456Style(feature: FeatureLike) {
+  const selectedCard = !!feature.get('selected');
+  const hovered = !!feature.get('hoverStyle');
+  return selectedCard || hovered ? selectedLineStyle : lineStyle;
 }

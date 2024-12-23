@@ -107,7 +107,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'line12':
       return getNavigationLine12Style(feature, resolution, true);
     case 'line3456':
-      return getNavigationLine3456Style(true);
+      return getNavigationLine3456Style(feature);
     case 'area12':
       return resolution <= 100 ? getAreaStyleBySource('area12', highlighted, highlighted) : undefined;
     case 'area12Borderline':
@@ -118,7 +118,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'specialarea15':
       return getSpecialAreaStyle(feature);
     case 'boardline12':
-      return getBoardLineStyle(true);
+      return getBoardLineStyle(feature);
     case 'safetyequipmentfault':
       return getSafetyEquipmentStyle(feature, resolution, highlighted, true);
     case 'coastalwarning':
@@ -401,7 +401,7 @@ export function addAPILayers(map: Map) {
     id: 'boardline12',
     maxResolution: 75,
     renderBuffer: 1,
-    style: getBoardLineStyle(false),
+    style: getBoardLineStyle,
     zIndex: 204,
   });
   addFeatureVectorLayer({
@@ -426,7 +426,7 @@ export function addAPILayers(map: Map) {
     id: 'line3456',
     maxResolution: 75,
     renderBuffer: 1,
-    style: (feature) => getNavigationLine3456Style(!!feature.get('hoverStyle')),
+    style: getNavigationLine3456Style,
     zIndex: 203,
   });
 

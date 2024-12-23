@@ -75,8 +75,6 @@ a {
 }
 a[target='_blank'] {
   color: var(--ion-color-primary);
-  /*padding-right: 14px;
-  background: url('./img/externalLink.svg') no-repeat right center;*/
 }
 a:hover {
   background-color: var(--ion-color-light);
