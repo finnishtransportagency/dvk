@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
-import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
+import { ContentType, FairwayCard, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
   useFairwayCardsAndHarborsQueryData,
@@ -99,6 +99,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const harbourVersions = fairwaysAndHarbours?.fairwayCardsAndHarbors.filter(
     (item) => item.type === ContentType.Harbor && item.id === harbour.id && item.version !== VERSION.LATEST && item.version !== VERSION.PUBLIC
   );
+  const linkedFairwayCards = fairwayCardList?.fairwayCards.filter(
+    (card) => card.harbors?.filter((harbourItem) => harbourItem.id === harbour.id).length
+  ) as FairwayCard[];
 
   const updateState = (
     value: ValueType,
@@ -145,12 +148,8 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   };
 
   const checkLinkedFairwayCards = (operation: Operation) => {
-    const linkedFairwayCards = fairwayCardList?.fairwayCards.filter(
-      (card) => card.harbors?.filter((harbourItem) => harbourItem.id === harbour.id).length
-    );
-
     if ((linkedFairwayCards || []).length > 0) {
-      if (operation === Operation.Remove || operation === Operation.Archive) {
+      if (operation === Operation.Remove) {
         const translatedMsg =
           operation === Operation.Remove
             ? t('harbour.linked-fairwaycards-exist-cannot-remove-harbour', { count: linkedFairwayCards?.length })
@@ -327,6 +326,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
         setActionPending={setPreviewPending}
         versionToMoveTo={versionToMoveTo}
+        linkedFairwayCards={linkedFairwayCards}
       />
       <ConfirmationModal
         saveType="harbor"

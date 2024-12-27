@@ -1,7 +1,7 @@
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import React, { Dispatch, SetStateAction, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Maybe, Status, TextInput } from '../graphql/generated';
+import { Trans, useTranslation } from 'react-i18next';
+import { FairwayCard, Maybe, Status, TextInput } from '../graphql/generated';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { ConfirmationType, Lang } from '../utils/constants';
 import { useHistory } from 'react-router';
@@ -23,6 +23,7 @@ interface ModalProps {
   saveType: SaveType;
   setActionPending: Dispatch<SetStateAction<boolean>>;
   versionToMoveTo?: string;
+  linkedFairwayCards?: FairwayCard[];
 }
 
 const ConfirmationModal: React.FC<ModalProps> = ({
@@ -34,6 +35,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
   saveType,
   setActionPending,
   versionToMoveTo,
+  linkedFairwayCards,
 }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
@@ -58,6 +60,10 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     buttonTitle = t('general.delete');
     title = t(`modal.delete-${saveType}-title`);
     description = t(`modal.delete-${saveType}-description`, { name: oldState.name ? oldState.name[lang] : '-' });
+  } else if (confirmationType === 'archive' && !!linkedFairwayCards?.length) {
+    buttonTitle = t('general.archive');
+    title = t('modal.archive-harbor-title-blocked');
+    description = t('modal.archive-harbor-description-blocked');
   } else if (confirmationType === 'archive') {
     buttonTitle = t('general.archive');
     title = t(`modal.archive-${saveType}-title`);
@@ -117,7 +123,25 @@ const ConfirmationModal: React.FC<ModalProps> = ({
         <IonRow className="content">
           <IonCol>
             <IonText>
-              <p>{description}</p>
+              <p>
+                <Trans t={t} i18nKey={description} components={{ strong: <strong /> }} />
+              </p>
+              {!!linkedFairwayCards?.length && (
+                <p>
+                  <Trans
+                    t={t}
+                    i18nKey={t('modal.archive-harbor-linked-fairwayCards', { name: oldState.name ? oldState.name[lang] : '-' })}
+                    components={{ strong: <strong /> }}
+                  />
+                  {linkedFairwayCards.map((f) => {
+                    return (
+                      <div style={{ marginTop: '5px' }} key={f.name.fi}>
+                        -{f.name.fi}
+                      </div>
+                    );
+                  })}
+                </p>
+              )}
             </IonText>
           </IonCol>
         </IonRow>
