@@ -2,11 +2,11 @@ import Control from 'ol/control/Control';
 import { isMobile } from '../../utils/common';
 
 class MapDetailsControl extends Control {
-  private mousePositionLabelElement: HTMLDivElement = document.createElement('div');
+  private readonly mousePositionLabelElement: HTMLDivElement = document.createElement('div');
 
-  private mousePositionElement: HTMLDivElement = document.createElement('div');
+  private readonly mousePositionElement: HTMLDivElement = document.createElement('div');
 
-  private scaleLineElement: HTMLDivElement = document.createElement('div');
+  private readonly scaleLineElement: HTMLDivElement = document.createElement('div');
 
   constructor() {
     const element = document.createElement('div');

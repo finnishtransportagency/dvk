@@ -29,7 +29,6 @@ import InfoTextControl from './mapControls/InfoTextControl';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import MapMaskControl from './mapControls/MapMaskControl';
 import { Orientation } from '../../graphql/generated';
-import { Extent } from 'ol/extent';
 import { Stroke } from 'ol/style';
 
 type OrientationType = Orientation | '';
@@ -63,7 +62,6 @@ class DvkMap {
 
   public initialized = false;
 
-  public currentExtent: Extent | null = null;
   // eslint-disable-next-line
   init(t: any, i18n: any) {
     if (this.initialized) {
@@ -175,7 +173,7 @@ class DvkMap {
     this.translate();
   }
   // eslint-disable-next-line
-  private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
+  private readonly setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
     // Font replacement so we do not need to load web fonts in the worker
     const getFonts = (fonts: Array<string>) => {
