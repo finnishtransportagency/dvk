@@ -61,7 +61,7 @@ const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTit
                 </p>
               )}
               {messages?.map((str, i) => <p key={`${i}-${str.length}`}>{str}</p>)}
-              {itemList && (
+              {!!itemList?.length && (
                 <>
                   <div>
                     <Trans
@@ -71,8 +71,8 @@ const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTit
                     />
                   </div>
                   <ul>
-                    {itemList.map((item) => (
-                      <li key={item}>{item}</li>
+                    {itemList.map((item, i) => (
+                      <li key={item + i}>{item}</li>
                     ))}
                   </ul>
                 </>

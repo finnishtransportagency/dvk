@@ -298,6 +298,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         return '';
       case 'OPERATION-BLOCKED':
         return t('general.error-' + saveError);
+      case 'MISSING-INFORMATION':
+        console.log('hei');
+        return t('general.error-' + saveError);
       case '':
         return t('modal.saved-harbor-by-name', {
           name: savedHarbour?.name ? (savedHarbour?.name[lang] ?? savedHarbour.name.fi) : savedHarbour?.id,

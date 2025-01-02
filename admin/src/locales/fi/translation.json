@@ -148,7 +148,7 @@
     "delete-fairwaycard-title": "Väyläkortin poisto",
     "delete-fairwaycard-description": "Olet poistamassa väyläkorttia \"{{name}}\". Oletko varma, että haluat poistaa väyläkortin?",
     "archive-fairwaycard-title": "Julkaistun väyläkortin arkistointi",
-    "archive-fairwaycard-description": "Olet arkistoimassa julkaistua väyläkorttia. Arkistoitu satama poistuu välittömästi palvelusta, eikä ole loppukäyttäjien käytettävissä. Oletko varma, että haluat arkistoida <strong>\"{{name}}\"</strong> -väyläkortin?",
+    "archive-fairwaycard-description": "Olet arkistoimassa julkaistua väyläkorttia. Arkistoitu väyläkortti poistuu välittömästi palvelusta, eikä ole loppukäyttäjien käytettävissä. Oletko varma, että haluat arkistoida <strong>\"{{name}}\"</strong> -väyläkortin?",
     "publish-fairwaycard-title": "Väyläkortin julkaiseminen",
     "publish-fairwaycard-description": "Painamalla Julkaise asetat väyläkortin julkiseksi nykyisessä muodossaan ja arkistoit mahdollisen aiemman version.",
     "version-fairwaycard-description": "Olet lisäämässä väyläkortista uuden version. Uuden version tilaksi tulee luonnos. Oletko varma, että haluat jatkaa?",
