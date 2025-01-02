@@ -376,3 +376,9 @@ export const POSITION = {
 };
 
 export type DropdownType = 'filter' | 'sequence';
+
+export const saveErrorTitle = {
+  MISSING: 'MISSING-INFORMATION',
+  BLOCKED: 'OPERATION-BLOCKED',
+  ARCHIVE: 'ARCHIVE-OPERATION-BLOCKED',
+};

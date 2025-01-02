@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, saveErrorTitle, ValidationType, ValueType, VERSION } from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
@@ -154,7 +154,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
           operation === Operation.Remove
             ? t('harbour.linked-fairwaycards-exist-cannot-remove-harbour', { count: linkedFairwayCards?.length })
             : t('modal.archive-harbor-description-blocked');
-        setSaveError(operation === Operation.Remove ? 'OPERATION-BLOCKED' : 'ARCHIVE-OPERATION-BLOCKED');
+        setSaveError(operation === Operation.Remove ? saveErrorTitle.BLOCKED : saveErrorTitle.ARCHIVE);
         setSaveErrorMsg(translatedMsg);
         setSaveErrorItems(linkedFairwayCards?.map((card) => card.name[lang] ?? card.name.fi ?? card.id));
         return true;
@@ -179,7 +179,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     if (formValid()) {
       saveHarbour(state.operation);
     } else {
-      setSaveError('MISSING-INFORMATION');
+      setSaveError(saveErrorTitle.MISSING);
       setPreviewPending(false);
     }
   };
@@ -221,7 +221,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     if (formValid() || isReadOnly(state)) {
       setConfirmationType('version');
     } else if (!saveError && !saveErrorMsg) {
-      setSaveError('OPERATION-BLOCKED');
+      setSaveError(saveErrorTitle.BLOCKED);
       setSaveErrorMsg(t('general.fix-errors-try-again'));
     }
   };
@@ -231,7 +231,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       setConfirmationType('publish');
       setPublishDetailsOpen(true);
     } else {
-      setSaveError('MISSING-INFORMATION');
+      setSaveError(saveErrorTitle.MISSING);
     }
   };
 
@@ -287,19 +287,18 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   };
 
   const getNotificationTitle = () => {
-    if (saveError === 'OPERATION-BLOCKED') return '';
-    if (saveError === 'ARCHIVE-OPERATION-BLOCKED') return t('modal.archive-harbor-title-blocked');
+    if (saveError === saveErrorTitle.BLOCKED) return '';
+    if (saveError === saveErrorTitle.ARCHIVE) return t('modal.archive-harbor-title-blocked');
     return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
   };
 
   const getSubHeader = () => {
     switch (saveError) {
-      case 'ARCHIVE-OPERATION-BLOCKED':
+      case saveErrorTitle.ARCHIVE:
         return '';
-      case 'OPERATION-BLOCKED':
+      case saveErrorTitle.BLOCKED:
         return t('general.error-' + saveError);
-      case 'MISSING-INFORMATION':
-        console.log('hei');
+      case saveErrorTitle.MISSING:
         return t('general.error-' + saveError);
       case '':
         return t('modal.saved-harbor-by-name', {
