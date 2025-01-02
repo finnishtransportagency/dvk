@@ -11,10 +11,12 @@ import CloseButton from './CloseButton';
 import ForecastTable from '../ForecastTable';
 import { useFeatureData } from '../../utils/dataLoader';
 import ForecastLegend from '../content/ForecastLegend';
+import { WeatherLimitById } from '../../utils/weatherUtils';
 
 type ForecastPopupContentProps = {
   forecast: ForecastProperties;
   setPopupProperties?: (properties: PopupProperties) => void;
+  weatherLimits?: WeatherLimitById;
 };
 
 export type ForecastProperties = {
@@ -22,7 +24,7 @@ export type ForecastProperties = {
   properties: ForecastFeatureProperties;
 };
 
-const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, setPopupProperties }) => {
+const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, setPopupProperties, weatherLimits }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { dataUpdatedAt } = useFeatureData('forecast');
@@ -68,7 +70,7 @@ const ForecastPopupContent: React.FC<ForecastPopupContentProps> = ({ forecast, s
       </IonRow>
       <ForecastLegend />
       <IonRow>
-        <ForecastTable forecastItems={forecast.properties.forecastItems} />
+        <ForecastTable forecastItems={forecast.properties.forecastItems} weatherLimits={weatherLimits} />
       </IonRow>
     </IonGrid>
   );
