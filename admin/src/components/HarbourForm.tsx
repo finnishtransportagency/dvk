@@ -2,12 +2,12 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, saveErrorTitle, ValidationType, ValueType, VERSION } from '../utils/constants';
-import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
+import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status, useFindAllFairwayCardsQuery } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
   useFairwayCardsAndHarborsQueryData,
-  useFairwayCardsQueryData,
   useSaveHarborMutationQuery,
+  useFindAllPublicFairwayCardsQueryData,
 } from '../graphql/api';
 import { harbourReducer } from '../utils/harbourReducer';
 import Section from './form/Section';
@@ -60,7 +60,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
-  const { data: fairwayCardList } = useFairwayCardsQueryData();
+  const { data: fairwayCardList } = useFindAllPublicFairwayCardsQueryData();
   const { data: latestHarbor } = useHarbourLatestByIdQueryData(harbour.id);
   const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {

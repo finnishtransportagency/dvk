@@ -53,7 +53,7 @@ export function useFairwaysQueryData() {
   return useFairwaysQuery(datasourceClient, undefined, { refetchOnWindowFocus: false, refetchOnMount: false });
 }
 
-export function useFairwayCardsQueryData() {
+export function useFindAllPublicFairwayCardsQueryData() {
   return useFindAllFairwayCardsQuery(datasourceClient, { status: [Status.Public] }, { refetchOnWindowFocus: false });
 }
 
