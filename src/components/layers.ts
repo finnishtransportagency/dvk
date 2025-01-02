@@ -1040,27 +1040,33 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
     }
 
-    fairwayFeatures.forEach((f) => f.set('selected', true, true));
     selectedFairwayCardSource.addFeatures(fairwayFeatures);
-
-    const extent = olExtent.createEmpty();
-    // pilot excludes pilot, pilotagelimit and pilotroute
-    const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot', 'observation', 'mareograph'];
-    for (const feature of fairwayFeatures) {
-      const dataSource = feature.getProperties().dataSource;
-      const isWrongDataSource = excludedDatasources.some((source) => dataSource.includes(source));
-      if (!isWrongDataSource) {
-        const geom = feature.getGeometry();
-        if (geom) {
-          olExtent.extend(extent, geom.getExtent());
-        }
-      }
-    }
-    if (!olExtent.isEmpty(extent)) {
-      dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
-    }
+    zoomToExtent(fairwayFeatures);
   }
   dvkMap.getFeatureLayer('selectedfairwaycard').setVisible(true);
+}
+
+function zoomToExtent(features: Feature<Geometry>[]) {
+  features.forEach((f) => f.set('selected', true, true));
+
+  const extent = olExtent.createEmpty();
+  // pilot excludes pilot, pilotagelimit and pilotroute
+  const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot', 'observation', 'mareograph'];
+  for (const feature of features) {
+    const dataSource = feature.getProperties().dataSource;
+    const isWrongDataSource = excludedDatasources.some((source) => dataSource.includes(source));
+    if (!isWrongDataSource) {
+      const geom = feature.getGeometry();
+      if (geom) {
+        olExtent.extend(extent, geom.getExtent());
+      }
+    }
+  }
+  if (!olExtent.isEmpty(extent)) {
+    getMap()
+      .olMap?.getView()
+      .fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
+  }
 }
 
 export function setSelectedPilotPlace(id?: number | string) {
@@ -1086,11 +1092,22 @@ export function setSelectedPilotageLimit(id?: number | string) {
 export function setSelectedFairwayArea(id?: number | string) {
   const dvkMap = getMap();
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-
   for (const f of selectedFairwayCardSource.getFeatures()) {
     f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && f.getId() === id);
   }
   selectedFairwayCardSource.dispatchEvent('change');
+}
+
+export function zoomToFairwayAreas(ids: number[]) {
+  const source = getMap().getVectorSource('selectedfairwaycard');
+  const features: Feature<Geometry>[] = [];
+  ids.forEach((element) => {
+    const feature = source.getFeatureById(element) as Feature<Geometry>;
+    if (feature) {
+      features.push(feature);
+    }
+  });
+  zoomToExtent(features);
 }
 
 export function setSelectedMareograph(id?: number | string) {

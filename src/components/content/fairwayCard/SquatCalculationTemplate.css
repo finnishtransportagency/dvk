@@ -11,6 +11,10 @@
   }
 }
 
+.template.zoomlink {
+  font-style: italic;
+}
+
 .template.warning {
   color: var(--ion-color-dark);
   font-size: 14px;

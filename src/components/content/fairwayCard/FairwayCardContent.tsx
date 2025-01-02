@@ -363,7 +363,13 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           >
             {fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? (
               fairwayCard?.squatCalculations.map((calc) => {
-                return <SquatCalculationTemplate squatCalculation={calc} key={'calc_' + calc.place?.en} />;
+                return (
+                  <SquatCalculationTemplate
+                    squatCalculation={calc}
+                    key={'calc_' + calc.place?.en}
+                    fairways={fairwayCard?.fairways?.filter((f) => calc.targetFairways?.includes(f.id))}
+                  />
+                );
               })
             ) : (
               <SquatCalculationTemplateNotAvailable />
