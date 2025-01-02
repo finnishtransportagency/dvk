@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
-import { ContentType, FairwayCard, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
+import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
   useFairwayCardsAndHarborsQueryData,
@@ -101,7 +101,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   );
   const linkedFairwayCards = fairwayCardList?.fairwayCards.filter(
     (card) => card.harbors?.filter((harbourItem) => harbourItem.id === harbour.id).length
-  ) as FairwayCard[];
+  );
 
   const updateState = (
     value: ValueType,
@@ -149,12 +149,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const checkLinkedFairwayCards = (operation: Operation) => {
     if ((linkedFairwayCards || []).length > 0) {
-      if (operation === Operation.Remove) {
+      if (operation === Operation.Remove || operation === Operation.Archive) {
         const translatedMsg =
           operation === Operation.Remove
             ? t('harbour.linked-fairwaycards-exist-cannot-remove-harbour', { count: linkedFairwayCards?.length })
-            : t('harbour.linked-fairwaycards-exist-cannot-archive-harbour', { count: linkedFairwayCards?.length });
-        setSaveError('OPERATION-BLOCKED');
+            : t('modal.archive-harbor-description-blocked');
+        setSaveError(operation === Operation.Remove ? 'OPERATION-BLOCKED' : 'ARCHIVE-OPERATION-BLOCKED');
         setSaveErrorMsg(translatedMsg);
         setSaveErrorItems(linkedFairwayCards?.map((card) => card.name[lang] ?? card.name.fi ?? card.id));
         return true;
@@ -288,7 +288,23 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const getNotificationTitle = () => {
     if (saveError === 'OPERATION-BLOCKED') return '';
+    if (saveError === 'ARCHIVE-OPERATION-BLOCKED') return t('modal.archive-harbor-title-blocked');
     return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
+  };
+
+  const getSubHeader = () => {
+    switch (saveError) {
+      case 'ARCHIVE-OPERATION-BLOCKED':
+        return '';
+      case 'OPERATION-BLOCKED':
+        return t('general.error-' + saveError);
+      case '':
+        return t('modal.saved-harbor-by-name', {
+          name: savedHarbour?.name ? (savedHarbour?.name[lang] ?? savedHarbour.name.fi) : savedHarbour?.id,
+        });
+      default:
+        return t('general.fix-errors-try-again');
+    }
   };
 
   useEffect(() => {
@@ -326,7 +342,6 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         oldState={savedHarbour ? (savedHarbour as StatusName) : harbour}
         setActionPending={setPreviewPending}
         versionToMoveTo={versionToMoveTo}
-        linkedFairwayCards={linkedFairwayCards}
       />
       <ConfirmationModal
         saveType="harbor"
@@ -342,15 +357,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         closeAction={closeNotification}
         closeTitle={t('general.button-ok')}
         header={getNotificationTitle()}
-        subHeader={
-          (saveError
-            ? t('general.error-' + saveError)
-            : t('modal.saved-harbor-by-name', {
-                name: savedHarbour?.name ? (savedHarbour?.name[lang] ?? savedHarbour.name.fi) : savedHarbour?.id,
-              })) ?? ''
-        }
+        subHeader={getSubHeader()}
         message={saveError ? (saveErrorMsg ?? t('general.fix-errors-try-again') ?? '') : ''}
         itemList={saveErrorItems}
+        targetName={state.name.fi ?? state.name[lang]}
       />
       <Header
         currentState={state}
