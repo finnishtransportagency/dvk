@@ -1,3 +1,4 @@
+import { FeatureLike } from 'ol/Feature';
 import { Style, Stroke } from 'ol/style';
 
 const boardLineStyle = new Style({
@@ -17,6 +18,7 @@ const selectedBoardLineStyle = new Style({
   zIndex: 202,
 });
 
-export function getBoardLineStyle(selected: boolean) {
-  return selected ? selectedBoardLineStyle : boardLineStyle;
+export function getBoardLineStyle(feature: FeatureLike) {
+  const selectedCard = !!feature.get('selected');
+  return selectedCard ? selectedBoardLineStyle : boardLineStyle;
 }
