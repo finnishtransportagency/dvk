@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Lang } from '../../../utils/constants';
 import { FairwayForm, getFairwayFormText } from '../../../utils/common';
 import { Link, useLocation } from 'react-router-dom';
-import { setSelectedFairwayArea, zoomToFairwayAreas } from '../../layers';
+import { setSelectedFairwayAreas, zoomToFairwayAreas } from '../../layers';
 
 export type SquatCalculationProps = {
   squatCalculation?: SquatCalculation | null;
@@ -64,8 +64,8 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
     '&slopeHeight=' +
     (squatCalculation?.slopeHeight ?? 0);
 
-  const highlightArea = (id: string | number | undefined) => {
-    setSelectedFairwayArea(id ?? 0);
+  const highlightAreas = (ids: (string | number)[]) => {
+    setSelectedFairwayAreas(ids ?? []);
   };
 
   return (
@@ -82,7 +82,7 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
                 </IonText>
               </IonCol>
               <IonCol size="auto" className="ion-align-items-end">
-                <IonText className="template no-margin-top" data-testid="squatCalculationZoomToAreas">
+                <IonText className="template zoomlink no-margin-top" data-testid="squatCalculationZoomToAreas">
                   <Link to="/" onClick={zoomTo}>
                     <p>{t('squat-calculation-zoom-to-areas')}</p>
                   </Link>
@@ -103,23 +103,26 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
           Object.keys(groupedAreas ?? [])
             .sort((a, b) => a.localeCompare(b))
             .map((fairway) => (
-              <IonText data-testid="squatfairway" key={fairway}>
-                {fairway}:<br />
-                <ol>
-                  {groupedAreas[fairway]
-                    .toSorted((a, b) => a - b)
-                    .map((area) => (
-                      <IonText
-                        onMouseEnter={() => highlightArea(area)}
-                        onFocus={() => highlightArea(area)}
-                        onMouseLeave={() => highlightArea(0)}
-                        onBlur={() => highlightArea(0)}
-                        key={area}
-                      >
-                        <li className="group inlineHoverText">{area}</li>
-                      </IonText>
-                    ))}
-                </ol>
+              <IonText
+                data-testid="squatfairway"
+                key={fairway}
+                onMouseEnter={() => highlightAreas(groupedAreas[fairway])}
+                onFocus={() => highlightAreas(groupedAreas[fairway])}
+                onMouseLeave={() => highlightAreas([0])}
+                onBlur={() => highlightAreas([0])}
+              >
+                <div className="inlineHoverText">
+                  {fairway}:<br />
+                  <ol>
+                    {groupedAreas[fairway]
+                      .toSorted((a, b) => a - b)
+                      .map((area) => (
+                        <IonText key={area}>
+                          <li className="group">{area}</li>
+                        </IonText>
+                      ))}
+                  </ol>
+                </div>
               </IonText>
             ))}
 
