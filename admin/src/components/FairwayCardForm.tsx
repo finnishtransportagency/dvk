@@ -1,7 +1,17 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, AreaSelectOption, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
+import {
+  ActionType,
+  AreaSelectOption,
+  ConfirmationType,
+  ErrorMessageKeys,
+  Lang,
+  saveErrorTitle,
+  ValidationType,
+  ValueType,
+  VERSION,
+} from '../utils/constants';
 import {
   ContentType,
   FairwayCardByIdFragment,
@@ -231,7 +241,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     if (formValid()) {
       saveCard(state.operation);
     } else {
-      setSaveError('MISSING-INFORMATION');
+      setSaveError(saveErrorTitle.MISSING);
       setPreviewPending(false);
     }
   };
@@ -262,7 +272,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     if (formValid()) {
       setConfirmationType('version');
     } else if (!saveError) {
-      setSaveError('OPERATION-BLOCKED');
+      setSaveError(saveErrorTitle.BLOCKED);
     }
   };
 
@@ -271,7 +281,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setConfirmationType('publish');
       setPublishDetailsOpen(true);
     } else {
-      setSaveError('MISSING-INFORMATION');
+      setSaveError(saveErrorTitle.MISSING);
     }
   };
 

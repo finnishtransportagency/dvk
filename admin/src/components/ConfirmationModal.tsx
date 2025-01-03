@@ -1,6 +1,6 @@
 import { IonButton, IonCol, IonFooter, IonGrid, IonHeader, IonModal, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
 import React, { Dispatch, SetStateAction, useRef } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Maybe, Status, TextInput } from '../graphql/generated';
 import CloseIcon from '../theme/img/close_black_24dp.svg?react';
 import { ConfirmationType, Lang } from '../utils/constants';
@@ -117,7 +117,9 @@ const ConfirmationModal: React.FC<ModalProps> = ({
         <IonRow className="content">
           <IonCol>
             <IonText>
-              <p>{description}</p>
+              <p>
+                <Trans t={t} i18nKey={description} components={{ strong: <strong /> }} />
+              </p>
             </IonText>
           </IonCol>
         </IonRow>

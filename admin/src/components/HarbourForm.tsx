@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, ValidationType, ValueType, VERSION } from '../utils/constants';
+import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, saveErrorTitle, ValidationType, ValueType, VERSION } from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
   useFairwayCardsAndHarborsQueryData,
-  useFairwayCardsQueryData,
   useSaveHarborMutationQuery,
+  useFindAllPublicFairwayCardsQueryData,
 } from '../graphql/api';
 import { harbourReducer } from '../utils/harbourReducer';
 import Section from './form/Section';
@@ -60,7 +60,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
-  const { data: fairwayCardList } = useFairwayCardsQueryData();
+  const { data: fairwayCardList } = useFindAllPublicFairwayCardsQueryData();
   const { data: latestHarbor } = useHarbourLatestByIdQueryData(harbour.id);
   const { mutate: saveHarbourMutation, isPending: isLoadingMutation } = useSaveHarborMutationQuery({
     onSuccess(data) {
@@ -98,6 +98,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   // filter out latest and public versions
   const harbourVersions = fairwaysAndHarbours?.fairwayCardsAndHarbors.filter(
     (item) => item.type === ContentType.Harbor && item.id === harbour.id && item.version !== VERSION.LATEST && item.version !== VERSION.PUBLIC
+  );
+  const linkedFairwayCards = fairwayCardList?.fairwayCards.filter(
+    (card) => card.harbors?.filter((harbourItem) => harbourItem.id === harbour.id).length
   );
 
   const updateState = (
@@ -145,17 +148,13 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   };
 
   const checkLinkedFairwayCards = (operation: Operation) => {
-    const linkedFairwayCards = fairwayCardList?.fairwayCards.filter(
-      (card) => card.harbors?.filter((harbourItem) => harbourItem.id === harbour.id).length
-    );
-
     if ((linkedFairwayCards || []).length > 0) {
       if (operation === Operation.Remove || operation === Operation.Archive) {
         const translatedMsg =
           operation === Operation.Remove
             ? t('harbour.linked-fairwaycards-exist-cannot-remove-harbour', { count: linkedFairwayCards?.length })
-            : t('harbour.linked-fairwaycards-exist-cannot-archive-harbour', { count: linkedFairwayCards?.length });
-        setSaveError('OPERATION-BLOCKED');
+            : t('modal.archive-harbor-description-blocked');
+        setSaveError(operation === Operation.Remove ? saveErrorTitle.BLOCKED : saveErrorTitle.ARCHIVE);
         setSaveErrorMsg(translatedMsg);
         setSaveErrorItems(linkedFairwayCards?.map((card) => card.name[lang] ?? card.name.fi ?? card.id));
         return true;
@@ -180,7 +179,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     if (formValid()) {
       saveHarbour(state.operation);
     } else {
-      setSaveError('MISSING-INFORMATION');
+      setSaveError(saveErrorTitle.MISSING);
       setPreviewPending(false);
     }
   };
@@ -222,7 +221,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     if (formValid() || isReadOnly(state)) {
       setConfirmationType('version');
     } else if (!saveError && !saveErrorMsg) {
-      setSaveError('OPERATION-BLOCKED');
+      setSaveError(saveErrorTitle.BLOCKED);
       setSaveErrorMsg(t('general.fix-errors-try-again'));
     }
   };
@@ -232,7 +231,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       setConfirmationType('publish');
       setPublishDetailsOpen(true);
     } else {
-      setSaveError('MISSING-INFORMATION');
+      setSaveError(saveErrorTitle.MISSING);
     }
   };
 
@@ -288,8 +287,26 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   };
 
   const getNotificationTitle = () => {
-    if (saveError === 'OPERATION-BLOCKED') return '';
+    if (saveError === saveErrorTitle.BLOCKED) return '';
+    if (saveError === saveErrorTitle.ARCHIVE) return t('modal.archive-harbor-title-blocked');
     return (saveError ? t('general.save-failed') : t('general.save-successful')) || '';
+  };
+
+  const getSubHeader = () => {
+    switch (saveError) {
+      case saveErrorTitle.ARCHIVE:
+        return '';
+      case saveErrorTitle.BLOCKED:
+        return t('general.error-' + saveError);
+      case saveErrorTitle.MISSING:
+        return t('general.error-' + saveError);
+      case '':
+        return t('modal.saved-harbor-by-name', {
+          name: savedHarbour?.name ? (savedHarbour?.name[lang] ?? savedHarbour.name.fi) : savedHarbour?.id,
+        });
+      default:
+        return t('general.fix-errors-try-again');
+    }
   };
 
   useEffect(() => {
@@ -342,15 +359,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         closeAction={closeNotification}
         closeTitle={t('general.button-ok')}
         header={getNotificationTitle()}
-        subHeader={
-          (saveError
-            ? t('general.error-' + saveError)
-            : t('modal.saved-harbor-by-name', {
-                name: savedHarbour?.name ? (savedHarbour?.name[lang] ?? savedHarbour.name.fi) : savedHarbour?.id,
-              })) ?? ''
-        }
+        subHeader={getSubHeader()}
         message={saveError ? (saveErrorMsg ?? t('general.fix-errors-try-again') ?? '') : ''}
         itemList={saveErrorItems}
+        targetName={state.name.fi ?? state.name[lang]}
       />
       <Header
         currentState={state}
