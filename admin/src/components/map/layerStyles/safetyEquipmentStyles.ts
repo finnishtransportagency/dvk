@@ -126,6 +126,39 @@ const symbol2Icon = {
   '?': { icon: questionmark, center: false, anchorY: 28 },
 };
 
+function getVirtualEquipmentStyle(feature: FeatureLike, selected: boolean) {
+  const props = feature.getProperties() as EquipmentFeatureProperties;
+  let text;
+  if (props.aisType === 2 || props.aisType === 3) {
+    text = 'AIS';
+  } else {
+    text = 'V-AIS';
+  }
+
+  return new Style({
+    image: new Icon({
+      src: virtual,
+      anchor: [0.5, 0.5],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'fraction',
+      scale: selected ? 1.2 : 1,
+    }),
+    text: text
+      ? new Text({
+          font: '12px "Exo2"',
+          placement: 'line',
+          offsetY: selected ? 17 : 15,
+          text,
+          scale: selected ? 1.2 : 1,
+          fill: new Fill({
+            color: '#FF00FF',
+          }),
+          stroke: new Stroke({ width: 1, color: 'rgba(255,255,255,0.75)' }),
+        })
+      : undefined,
+  });
+}
+
 export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number, selected: boolean) => {
   const props = feature.getProperties() as EquipmentFeatureProperties;
   const key = props.symbol as keyof typeof symbol2Icon;
@@ -165,36 +198,7 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
       }),
     ];
     if (props.aisType !== undefined && props.aisType !== 1) {
-      let text;
-      if (props.aisType === 2 || props.aisType === 3) {
-        text = 'AIS';
-      } else {
-        text = 'V-AIS';
-      }
-      styles.push(
-        new Style({
-          image: new Icon({
-            src: virtual,
-            anchor: [0.5, 0.5],
-            anchorXUnits: 'fraction',
-            anchorYUnits: 'fraction',
-            scale: selected ? 1.2 : 1,
-          }),
-          text: text
-            ? new Text({
-                font: '12px "Exo2"',
-                placement: 'line',
-                offsetY: selected ? 17 : 15,
-                text,
-                scale: selected ? 1.2 : 1,
-                fill: new Fill({
-                  color: '#FF00FF',
-                }),
-                stroke: new Stroke({ width: 1, color: 'rgba(255,255,255,0.75)' }),
-              })
-            : undefined,
-        })
-      );
+      styles.push(getVirtualEquipmentStyle(feature, selected));
     }
     return styles;
   }

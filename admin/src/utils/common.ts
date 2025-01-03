@@ -270,15 +270,18 @@ export function featureCollectionToAreaSelectOptions(collection: FeatureCollecti
   const propertyArray: AreaSelectOption[] = [];
   collection?.features?.map((feature) => {
     const properties = feature.properties;
-    const selectOption = {
-      id: properties?.id,
-      name: { fi: properties?.name },
-      fairwayIds: properties?.fairways?.map((f: { fairwayId: number }) => f.fairwayId),
-      depth: properties?.depth,
-      subtext: subtextPrefix + ' ' + (properties?.depth ?? 0) + ' m',
-      areatype: properties?.typeCode,
-    };
-    propertyArray.push(selectOption);
+    const depth = properties?.referenceLevel === 'N2000' ? properties?.depth : properties?.n2000depth;
+    if (depth) {
+      const selectOption = {
+        id: properties?.id,
+        name: { fi: properties?.name },
+        fairwayIds: properties?.fairways?.map((f: { fairwayId: number }) => f.fairwayId),
+        depth: depth,
+        subtext: subtextPrefix + ' ' + (properties?.depth ?? 0) + ' m',
+        areatype: properties?.typeCode,
+      };
+      propertyArray.push(selectOption);
+    }
   });
   return propertyArray;
 }
