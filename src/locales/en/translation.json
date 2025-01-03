@@ -347,7 +347,8 @@
     "squat-calculation-channel": "[en] Kanava",
     "squat-calculation-sloped-channel": "[en] Luiska",
     "squat-calculation-zoom-to-areas": "[en] Keskitä laskennan alueisiin",
-    "squat-calculation-open-link": "[en] Siirry esitäytettyyn laajan Squat-laskuriin"
+    "squat-calculation-open-link": "[en] Siirry esitäytettyyn laajan Squat-laskuriin",
+    "areaType1": "Navigation area"
   },
   "appUpdateAlert": {
     "title": "Update available",

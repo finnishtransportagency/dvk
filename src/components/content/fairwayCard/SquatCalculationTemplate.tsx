@@ -118,7 +118,7 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
                       .toSorted((a, b) => a - b)
                       .map((area) => (
                         <IonText key={area}>
-                          <li className="group">{area}</li>
+                          <li className="group">{t('areaType1')}</li>
                         </IonText>
                       ))}
                   </ol>

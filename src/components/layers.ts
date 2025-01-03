@@ -1102,7 +1102,7 @@ export function setSelectedFairwayAreas(id?: (number | string)[]) {
   const dvkMap = getMap();
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   for (const f of selectedFairwayCardSource.getFeatures()) {
-    f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && id.includes(f.getId()));
+    f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && id.includes(f.getId() ?? -1));
   }
   selectedFairwayCardSource.dispatchEvent('change');
 }

@@ -347,7 +347,8 @@
     "squat-calculation-channel": "Kanava",
     "squat-calculation-sloped-channel": "Luiska",
     "squat-calculation-zoom-to-areas": "Keskitä laskennan alueisiin",
-    "squat-calculation-open-link": "Siirry esitäytettyyn laajan Squat-laskuriin"
+    "squat-calculation-open-link": "Siirry esitäytettyyn laajan Squat-laskuriin",
+    "areaType1": "Navigointialue"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
