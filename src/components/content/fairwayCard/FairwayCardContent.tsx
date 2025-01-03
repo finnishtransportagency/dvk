@@ -368,13 +368,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                   return a.place[lang].localeCompare(b.place[lang]);
                 })
                 .map((calc) => {
-                  return (
-                    <SquatCalculationTemplate
-                      squatCalculation={calc}
-                      key={'calc_' + calc.place?.en}
-                      fairways={fairwayCard?.fairways?.filter((f) => calc.targetFairways?.includes(f.id))}
-                    />
-                  );
+                  return <SquatCalculationTemplate squatCalculation={calc} key={'calc_' + calc.place?.en} fairways={fairwayCard.fairways} />;
                 })
             ) : (
               <SquatCalculationTemplateNotAvailable />

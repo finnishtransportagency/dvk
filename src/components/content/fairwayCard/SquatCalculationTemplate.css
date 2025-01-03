@@ -6,8 +6,12 @@
 }
 
 a p,
-h4,
-li {
+h4 {
+  margin-bottom: 0px !important;
+}
+
+.template.nolist {
+  list-style-type: none;
   margin-bottom: 0px !important;
 }
 

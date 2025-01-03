@@ -17,12 +17,27 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
   const lang = i18n.resolvedLanguage as Lang;
   useLocation();
 
+  const filteredFairways = fairways?.filter((f) => squatCalculation?.targetFairways?.includes(f.id));
+
+  const allAreas: number[] = [];
+  fairways?.forEach((f) => {
+    f.areas
+      ?.filter((area) => {
+        return area.typeCode && area.typeCode !== 2;
+      })
+      .forEach((a) => {
+        allAreas.push(a.id);
+      });
+  });
+
+  console.log(allAreas.length);
+
   const groupedAreas = squatCalculation?.suitableFairwayAreas?.reduce<Record<string, number[]>>(
     (acc, item) => {
       if (!item) {
         return acc;
       }
-      const match = fairways?.find((f) => f.areas?.find((a) => a.id === item));
+      const match = filteredFairways?.find((f) => f.areas?.find((a) => a.id === item));
       if (match?.name && match.id && match.name[lang]) {
         const ftext = match.name[lang] + ' ' + match.id;
         if (!acc[ftext]) {
@@ -113,15 +128,15 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
               >
                 <div className="inlineHoverText">
                   {fairway}:<br />
-                  <ol>
-                    {groupedAreas[fairway]
-                      .toSorted((a, b) => a - b)
-                      .map((area) => (
-                        <IonText key={area}>
-                          <li className="group">{t('areaType1')}</li>
-                        </IonText>
-                      ))}
-                  </ol>
+                  {groupedAreas[fairway]
+                    .toSorted((a, b) => allAreas.indexOf(a) - allAreas.indexOf(b))
+                    .map((area) => (
+                      <IonText key={area}>
+                        <li className="template nolist" key="area">
+                          {allAreas.indexOf(area) + 1 + '. ' + t('areaType1')}
+                        </li>
+                      </IonText>
+                    ))}
                 </div>
               </IonText>
             ))}
