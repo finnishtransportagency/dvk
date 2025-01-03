@@ -232,9 +232,6 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         isOpen={isFeedbackOpen}
         setIsOpen={setIsFeedbackOpen}
         handleSubmit={(rating: number, feedback: string) => {
-          console.log('Arvosana:', rating);
-          console.log('Palaute:', feedback);
-          console.log('Palaute lähetetty!');
           saveFeedback({ rating, feedback });
           setIsToastOpen(true);
         }}
