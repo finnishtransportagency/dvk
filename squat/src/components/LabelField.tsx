@@ -35,15 +35,14 @@ const LabelField: React.FC<LabelProps> = (props) => {
           {props.value}
         </IonText>
         {props.unit && (
-          <IonLabel color={props.error ? 'danger' : 'medium'} className="unit">
-            <span
-              aria-label={t('unit.' + (props.unitId ? String(props.unitId) : String(props.unit)), {
-                count: Number((props.value || 0).toLocaleString(i18n.language)),
-              })}
-              role="definition"
-            >
-              {props.unit === '°' ? props.unit : `\u00A0${String(props.unit)}`}
-            </span>
+          <IonLabel
+            color={props.error ? 'danger' : 'medium'}
+            className="unit"
+            aria-label={t('unit.' + (props.unitId ? String(props.unitId) : String(props.unit)), {
+              count: Number((props.value ?? 0).toLocaleString(i18n.language)),
+            })}
+          >
+            {props.unit === '°' ? props.unit : `\u00A0${String(props.unit)}`}
           </IonLabel>
         )}
       </IonItem>
