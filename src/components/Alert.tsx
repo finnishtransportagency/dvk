@@ -7,6 +7,7 @@ import { Lang } from '../utils/constants';
 import { Text } from '../graphql/generated';
 import { format, parseISO } from 'date-fns';
 import MarkdownParagraph from './content/MarkdownParagraph';
+import { setResponseState } from '../utils/common';
 
 interface AlertProps {
   title: string | ReactElement;
@@ -65,12 +66,7 @@ export const LayerAlert: React.FC<AlertProps> = ({ title, icon, color, className
 
   useEffect(() => {
     if (mainLegendOpen && isError && !isFeatures) {
-      dispatch({
-        type: 'setResponse',
-        payload: {
-          value: [String(503), 'Service Unavailable', t('warnings.layerLoadError')],
-        },
-      });
+      setResponseState(dispatch, 503, 'Service Unavailable', t('warnings.layerLoadError'));
     }
   }, [dispatch, mainLegendOpen, isError, isFeatures]);
 
