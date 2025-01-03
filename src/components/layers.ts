@@ -1089,15 +1089,6 @@ export function setSelectedPilotageLimit(id?: number | string) {
   pilotageLimitSource.dispatchEvent('change');
 }
 
-export function setSelectedFairwayArea(id?: number | string) {
-  const dvkMap = getMap();
-  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  for (const f of selectedFairwayCardSource.getFeatures()) {
-    f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && f.getId() === id);
-  }
-  selectedFairwayCardSource.dispatchEvent('change');
-}
-
 export function setSelectedFairwayAreas(id?: (number | string)[]) {
   const dvkMap = getMap();
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');

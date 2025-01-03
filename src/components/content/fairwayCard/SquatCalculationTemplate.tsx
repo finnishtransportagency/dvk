@@ -4,8 +4,9 @@ import { Fairway, SquatCalculation } from '../../../graphql/generated';
 import { useTranslation } from 'react-i18next';
 import { Lang } from '../../../utils/constants';
 import { FairwayForm, getFairwayFormText } from '../../../utils/common';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { setSelectedFairwayAreas, zoomToFairwayAreas } from '../../layers';
+import { fairwayAreaExludeType2Filter } from '../../../utils/fairwayCardUtils';
 
 export type SquatCalculationProps = {
   squatCalculation?: SquatCalculation | null;
@@ -15,29 +16,18 @@ export type SquatCalculationProps = {
 const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalculation, fairways }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'squattemplates' });
   const lang = i18n.resolvedLanguage as Lang;
-  useLocation();
-
-  const filteredFairways = fairways?.filter((f) => squatCalculation?.targetFairways?.includes(f.id));
 
   const allAreas: number[] = [];
   fairways?.forEach((f) => {
-    f.areas
-      ?.filter((area) => {
-        return area.typeCode && area.typeCode !== 2;
-      })
-      .forEach((a) => {
-        allAreas.push(a.id);
-      });
+    allAreas.push(...(f.areas?.filter(fairwayAreaExludeType2Filter).map((a) => a.id) ?? []));
   });
-
-  console.log(allAreas.length);
 
   const groupedAreas = squatCalculation?.suitableFairwayAreas?.reduce<Record<string, number[]>>(
     (acc, item) => {
       if (!item) {
         return acc;
       }
-      const match = filteredFairways?.find((f) => f.areas?.find((a) => a.id === item));
+      const match = fairways?.filter((f) => squatCalculation?.targetFairways?.includes(f.id)).find((f) => f.areas?.find((a) => a.id === item));
       if (match?.name && match.id && match.name[lang]) {
         const ftext = match.name[lang] + ' ' + match.id;
         if (!acc[ftext]) {
@@ -58,7 +48,10 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
   };
 
   //For dev env use a different port, otherwise link opens inside DVK app
-  const port = window.location.hostname === 'localhost' ? '' + (parseInt(window.location.port) + 1) : window.location.port;
+  const port =
+    window.location.hostname === 'localhost' && window.location.port && window.location.port.length > 0
+      ? '' + (parseInt(window.location.port) + 1)
+      : window.location.port;
   //Note that fairwayForm maps 1,2,3 -> 0,1,2
   const squatLink =
     window.location.protocol +
