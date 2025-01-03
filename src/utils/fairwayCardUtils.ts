@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, ProhibitionFairway } from '../graphql/generated';
+import { Area, FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, ProhibitionFairway } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
 import { Geometry, Point, Polygon } from 'ol/geom';
 import { Feature } from 'ol';
@@ -198,3 +198,7 @@ export function getFairwayListFairwayCards(
   const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
   return fairwayCards.filter((card) => card.fairways?.some((fairway) => fairwayIds.includes(fairway.id)));
 }
+
+export const fairwayAreaExludeType2Filter = (area: Area) => {
+  return area.typeCode && area.typeCode !== 2;
+};
