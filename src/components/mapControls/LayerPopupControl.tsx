@@ -1,7 +1,7 @@
 import Control from 'ol/control/Control';
 
 class LayerPopupControl extends Control {
-  private buttonElement = document.createElement('button');
+  private readonly buttonElement = document.createElement('button');
 
   private setIsOpen: ((isOpen: boolean) => void) | undefined = undefined;
 

@@ -6,7 +6,7 @@ import { Point } from 'ol/geom';
 import { getMap } from '../DvkMap';
 
 class CenterToOwnLocationControl extends Control {
-  private buttonElement = document.createElement('button');
+  private readonly buttonElement = document.createElement('button');
 
   geolocation = new Geolocation({
     trackingOptions: {

@@ -2,7 +2,7 @@ import Control from 'ol/control/Control';
 import { menuController } from '@ionic/core/components';
 
 class OpenSidebarMenuControl extends Control {
-  private buttonElement = document.createElement('button');
+  private readonly buttonElement = document.createElement('button');
 
   constructor() {
     const element = document.createElement('div');

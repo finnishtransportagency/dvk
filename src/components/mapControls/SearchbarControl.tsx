@@ -4,9 +4,9 @@ import { FairwayCardPartsFragment } from '../../graphql/generated';
 import { MINIMUM_QUERYLENGTH } from '../../utils/constants';
 
 class SearchbarControl extends Control {
-  private inputElement = document.createElement('input');
+  private readonly inputElement = document.createElement('input');
 
-  private clearBtn = document.createElement('button');
+  private readonly clearBtn = document.createElement('button');
 
   private setIsOpen: (isOpen: boolean) => void = () => {};
 
@@ -71,43 +71,63 @@ class SearchbarControl extends Control {
       setTimeout(closeDropdown, 200);
     });
 
+    const handleEscape = () => {
+      closeDropdown();
+    };
+
+    const handleTab = () => {
+      this.setIsOpen(false);
+    };
+
+    const handleArrowDown = () => {
+      if (!this.isOpen) {
+        this.setIsOpen(true);
+      } else if (this.filteredData.length > 0) {
+        this.setActiveSelection(this.activeSelection >= this.filteredData.length ? 1 : this.activeSelection + 1);
+      }
+    };
+
+    const handleArrowUp = () => {
+      this.setActiveSelection(this.activeSelection < 2 ? this.filteredData.length : this.activeSelection - 1);
+    };
+
+    const handleEnter = () => {
+      closeDropdown();
+
+      if (this.activeSelection) {
+        this.history.push('/kortit/' + this.filteredData[this.activeSelection - 1].id);
+      } else if (this.filteredData.length === 1) {
+        this.history.push('/kortit/' + this.filteredData[0].id);
+      } else {
+        const searchTerm = this.inputElement.value.trim().toLowerCase();
+        const card = this.filteredData
+          .filter(
+            (data) =>
+              data.name.fi?.toLowerCase() === searchTerm || data.name.sv?.toLowerCase() === searchTerm || data.name.en?.toLowerCase() === searchTerm
+          )
+          .pop();
+        if (card) {
+          this.history.push('/kortit/' + card.id);
+        }
+      }
+    };
+
     this.inputElement.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') closeDropdown();
+      if (event.key === 'Escape') handleEscape();
       if (event.key === 'Tab' && this.isOpen && this.inputElement.value.trim().length >= MINIMUM_QUERYLENGTH) {
         event.preventDefault();
-        this.setIsOpen(false);
+        handleTab();
       }
       if (event.key === 'ArrowDown') {
         event.preventDefault();
-        if (!this.isOpen) {
-          this.setIsOpen(true);
-        } else if (this.filteredData.length > 0) {
-          this.setActiveSelection(this.activeSelection >= this.filteredData.length ? 1 : this.activeSelection + 1);
-        }
+        handleArrowDown();
       }
       if (event.key === 'ArrowUp') {
         event.preventDefault();
-        this.setActiveSelection(this.activeSelection < 2 ? this.filteredData.length : this.activeSelection - 1);
+        handleArrowUp();
       }
       if (event.key === 'Enter' && this.isOpen) {
-        closeDropdown();
-
-        if (this.activeSelection) {
-          this.history.push('/kortit/' + this.filteredData[this.activeSelection - 1].id);
-        } else if (this.filteredData.length === 1) {
-          this.history.push('/kortit/' + this.filteredData[0].id);
-        } else {
-          const searchTerm = this.inputElement.value.trim().toLowerCase();
-          const card = this.filteredData
-            .filter(
-              (data) =>
-                data.name.fi?.toLowerCase() === searchTerm || data.name.sv?.toLowerCase() === searchTerm || data.name.en?.toLowerCase() === searchTerm
-            )
-            .pop();
-          if (card) {
-            this.history.push('/kortit/' + card.id);
-          }
-        }
+        handleEnter();
       }
     });
 
