@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, saveErrorTitle, ValidationType, ValueType, VERSION } from '../utils/constants';
-import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status, useFindAllFairwayCardsQuery } from '../graphql/generated';
+import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
   useFairwayCardsAndHarborsQueryData,
