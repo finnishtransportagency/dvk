@@ -302,12 +302,14 @@ export function updateLayerSelection(initialLayers: string[], requiredLayers: Fe
     }
   });
 }
+
+export enum FairwayForm {
+  OpenWater = 1,
+  Channel = 2,
+  SlopedChannel = 3,
+}
+
 export function getFairwayFormText(id: number, t: TFunction) {
-  enum FairwayForm {
-    OpenWater = 1,
-    Channel = 2,
-    SlopedChannel = 3,
-  }
   switch (id) {
     case FairwayForm.OpenWater:
       return t('squat-calculation-open-water');

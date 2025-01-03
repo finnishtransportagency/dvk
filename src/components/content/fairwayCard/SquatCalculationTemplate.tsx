@@ -3,7 +3,7 @@ import React from 'react';
 import { Fairway, SquatCalculation } from '../../../graphql/generated';
 import { useTranslation } from 'react-i18next';
 import { Lang } from '../../../utils/constants';
-import { getFairwayFormText } from '../../../utils/common';
+import { FairwayForm, getFairwayFormText } from '../../../utils/common';
 import { Link, useLocation } from 'react-router-dom';
 import { setSelectedFairwayArea, zoomToFairwayAreas } from '../../layers';
 
@@ -42,12 +42,14 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
     }
   };
 
+  //For dev env use a different port, otherwise link opens inside DVK app
+  const port = window.location.hostname === 'localhost' ? '' + (parseInt(window.location.port) + 1) : window.location.port;
   //Note that fairwayForm maps 1,2,3 -> 0,1,2
   const squatLink =
     window.location.protocol +
     '//' +
     window.location.hostname +
-    (window.location.port && window.location.port.length > 0 ? ':' + window.location.port : '') +
+    (port && port.length > 0 ? ':' + port : '') +
     '/squat' +
     '?sweptDepth=' +
     squatCalculation?.depth +
@@ -67,80 +69,105 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
   };
 
   return (
-    <IonGrid className="template ion-no-padding">
-      <IonGrid>
-        <IonRow>
-          <IonCol>
-            <IonText className="no-margin-top" data-testid="squatCalculationPlace">
-              <h4>
-                <strong>{squatCalculation?.place?.[lang]}</strong>
-              </h4>
+    <>
+      <IonGrid className="template ion-no-padding">
+        <div className="template underline">
+          <IonGrid className="template ion-no-padding no-margin-bottom">
+            <IonRow>
+              <IonCol>
+                <IonText className="template no-margin-top" data-testid="squatCalculationPlace">
+                  <h4>
+                    <strong>{squatCalculation?.place?.[lang]}</strong>
+                  </h4>
+                </IonText>
+              </IonCol>
+              <IonCol size="auto" className="ion-align-items-end">
+                <IonText className="template no-margin-top" data-testid="squatCalculationZoomToAreas">
+                  <Link to="/" onClick={zoomTo}>
+                    <p>{t('squat-calculation-zoom-to-areas')}</p>
+                  </Link>
+                </IonText>
+              </IonCol>
+            </IonRow>
+          </IonGrid>
+        </div>
+        <IonText data-testid="depth">
+          <h5>{t('squat-calculation-depth') + ':'}</h5>
+          <p>{squatCalculation?.depth} m</p>
+        </IonText>
+
+        <IonText className="no-margin-top" data-testid="squatCalculationAreas">
+          <h5>{t('squat-calculation-areas') + ':'}</h5>
+        </IonText>
+        {groupedAreas &&
+          Object.keys(groupedAreas ?? [])
+            .sort((a, b) => a.localeCompare(b))
+            .map((fairway) => (
+              <IonText data-testid="squatfairway" key={fairway}>
+                {fairway}:<br />
+                <ol>
+                  {groupedAreas[fairway]
+                    .toSorted((a, b) => a - b)
+                    .map((area) => (
+                      <IonText
+                        onMouseEnter={() => highlightArea(area)}
+                        onFocus={() => highlightArea(area)}
+                        onMouseLeave={() => highlightArea(0)}
+                        onBlur={() => highlightArea(0)}
+                        key={area}
+                      >
+                        <li className="group inlineHoverText">{area}</li>
+                      </IonText>
+                    ))}
+                </ol>
+              </IonText>
+            ))}
+
+        <br />
+        <IonText className="no-margin-top" data-testid="squatCalculationEstimatedWaterDepth">
+          <h5>{t('squat-calculation-estimated-water-depth') + ':'}</h5>
+          <p>{squatCalculation?.estimatedWaterDepth} m</p>
+        </IonText>
+
+        <IonText className="no-margin-top" data-testid="fairwayForm">
+          <h5>{t('squat-calculation-fairway-form') + ':'}</h5>
+          <p>{getFairwayFormText(squatCalculation?.fairwayForm as number, t)}</p>
+        </IonText>
+
+        {(squatCalculation?.fairwayForm ?? 0) > FairwayForm.OpenWater && (
+          <IonText className="no-margin-top" data-testid="fairwayWidth">
+            <h5>{t('squat-calculation-fairway-width') + ':'}</h5>
+            <p>{squatCalculation?.fairwayWidth} m</p>
+          </IonText>
+        )}
+
+        {(squatCalculation?.fairwayForm ?? 0) > FairwayForm.Channel && (
+          <>
+            <IonText className="no-margin-top" data-testid="slopeScale">
+              <h5>{t('squat-calculation-slope-scale') + ':'}</h5>
+              <p>{squatCalculation?.slopeScale}</p>
             </IonText>
-          </IonCol>
-          <IonCol size="auto" className="ion-align-items-end">
-            <IonText className="template zoomlink no-margin-top" data-testid="squatCalculationZoomToAreas">
-              <Link to="/" onClick={zoomTo}>
-                <p>{t('squat-calculation-zoom-to-areas')}</p>
-              </Link>
+            <IonText className="no-margin-top" data-testid="slopeHeight">
+              <h5>{t('squat-calculation-slope-height') + ':'}</h5>
+              <p>{squatCalculation?.slopeHeight} m</p>
             </IonText>
-          </IonCol>
-        </IonRow>
+          </>
+        )}
+
+        <IonText className="no-margin-top" data-testid="squatCalculationAdditionalInformation">
+          <p>
+            <strong>{t('squat-calculation-additional-information') + ': '}</strong>
+            {squatCalculation?.additionalInformation?.[lang]}
+          </p>
+        </IonText>
+
+        <a href={squatLink} target="_blank" rel="noreferrer" className="ion-no-padding external">
+          {t('squat-calculation-open-link')}
+          <span className="screen-reader-only">{t('common.opens-in-a-new-tab')}</span>
+        </a>
       </IonGrid>
-
-      <IonText data-testid="depth">
-        <h5>{t('squat-calculation-depth') + ':'}</h5>
-        <p>{squatCalculation?.depth} m</p>
-      </IonText>
-
-      <IonText className="no-margin-top" data-testid="squatCalculationAreas">
-        <h5>{t('squat-calculation-areas') + ':'}</h5>
-      </IonText>
-      {groupedAreas &&
-        Object.keys(groupedAreas ?? [])
-          .sort((a, b) => a.localeCompare(b))
-          .map((fairway) => (
-            <IonText data-testid="squatfairway" key={fairway}>
-              {fairway}:<br />
-              <ol>
-                {groupedAreas[fairway]
-                  .toSorted((a, b) => a - b)
-                  .map((area) => (
-                    <IonText
-                      onMouseEnter={() => highlightArea(area)}
-                      onFocus={() => highlightArea(area)}
-                      onMouseLeave={() => highlightArea(0)}
-                      onBlur={() => highlightArea(0)}
-                      key={area}
-                    >
-                      <li className="group inlineHoverText">{area}</li>
-                    </IonText>
-                  ))}
-              </ol>
-            </IonText>
-          ))}
-
-      <IonText className="no-margin-top" data-testid="squatCalculationEstimatedWaterDepth">
-        <h5>{t('squat-calculation-estimated-water-depth') + ':'}</h5>
-        <p>{squatCalculation?.estimatedWaterDepth} m</p>
-      </IonText>
-
-      <IonText className="no-margin-top" data-testid="fairwayForm">
-        <h5>{t('squat-calculation-fairway-form') + ':'}</h5>
-        <p>{getFairwayFormText(squatCalculation?.fairwayForm as number, t)}</p>
-      </IonText>
-
-      <IonText className="no-margin-top" data-testid="squatCalculationAdditionalInformation">
-        <p>
-          <strong>{t('squat-calculation-additional-information') + ': '}</strong>
-          {squatCalculation?.additionalInformation?.[lang]}
-        </p>
-      </IonText>
-
-      <a href={squatLink} target="_blank" rel="noreferrer" className="ion-no-padding external">
-        {t('squat-calculation-open-link')}
-        <span className="screen-reader-only">{t('common.opens-in-a-new-tab')}</span>
-      </a>
-    </IonGrid>
+      <br />
+    </>
   );
 };
 

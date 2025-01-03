@@ -362,15 +362,20 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             }
           >
             {fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? (
-              fairwayCard?.squatCalculations.map((calc) => {
-                return (
-                  <SquatCalculationTemplate
-                    squatCalculation={calc}
-                    key={'calc_' + calc.place?.en}
-                    fairways={fairwayCard?.fairways?.filter((f) => calc.targetFairways?.includes(f.id))}
-                  />
-                );
-              })
+              fairwayCard?.squatCalculations
+                .toSorted((a, b) => {
+                  if (!a.place || !b.place || !a.place[lang] || !b.place[lang]) return 0;
+                  return a.place[lang].localeCompare(b.place[lang]);
+                })
+                .map((calc) => {
+                  return (
+                    <SquatCalculationTemplate
+                      squatCalculation={calc}
+                      key={'calc_' + calc.place?.en}
+                      fairways={fairwayCard?.fairways?.filter((f) => calc.targetFairways?.includes(f.id))}
+                    />
+                  );
+                })
             ) : (
               <SquatCalculationTemplateNotAvailable />
             )}
