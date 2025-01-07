@@ -92,51 +92,139 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
       return squatHG;
     };
 
+    const getHGSquatFunc = (C0Coefficient: number) => {
+      return (speed: number) => {
+        return calculateHGSquat(speed, C0Coefficient);
+      };
+    };
+
     const calculateBarrassSquat = (speed: number) => {
       return calculateSquatBarrass(draught, blockCoefficient, sweptDepth, speed);
     };
 
+    const getSquatData = (
+      calculateSquat: (speed: number) => number,
+      minSpeed: number,
+      maxSpeed: number,
+      yDomainWaterDepth: number,
+      step: number = 0.1
+    ) => {
+      const data: Array<[number, number]> = [];
+
+      for (let i = minSpeed; i < maxSpeed; i += step) {
+        const squat = calculateSquat(i);
+        if (squat < yDomainWaterDepth) {
+          data.push([i, squat]);
+        } else {
+          if (step / 10 > 0.0005) {
+            const d = getSquatData(calculateSquat, i - step, maxSpeed, yDomainWaterDepth, step / 10);
+            if (d.length) {
+              data.push(d[d.length - 1]);
+            }
+          }
+          break;
+        }
+      }
+      return data;
+    };
+
+    const areParamsValid = () => {
+      const isBetween = (value: number, min: number, max: number) => {
+        return value >= min && value <= max;
+      };
+      if (lengthBPP <= 0) return false;
+      if (breadth <= 0) return false;
+      if (draught <= 0) return false;
+      if (vesselSpeed < 0) return false;
+      if (sweptDepth < draught) return false;
+      if (state.status.showBarrass) return true;
+      if (!isBetween(blockCoefficient, 0.6, 0.8)) return false;
+      if (!isBetween(breadth / draught, 2.19, 3.5)) return false;
+      if (!isBetween(lengthBPP / breadth, 5.5, 8.5)) return false;
+      const fn = calculateFroudeNumber(vesselSpeed, sweptDepth, waterLevel);
+      if (fn > 0.7) return false;
+      return true;
+    };
+
+    const addHGLegend = (
+      container: d3.Selection<SVGGElement, unknown, null, undefined>,
+      marginLeft: number,
+      squatHG20Color: string,
+      squatHG24Color: string
+    ) => {
+      const legend20 = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
+      legend20.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatHG20Color);
+      legend20
+        .append('text')
+        .text(t('legends.squatHG20'))
+        .attr('text-anchor', 'left')
+        .attr('dominant-baseline', 'middle')
+        .attr('x', 15)
+        .attr('y', 10 / 2)
+        .attr('font-size', '12px')
+        .attr('fill', '#000000');
+
+      const box = legend20.node()?.getBBox();
+      const legend20Width = box ? box.width : 0;
+      // when not wide, add legend beneath the first one
+      const legend24 = container.append('g').attr('transform', `translate(${wideChart ? marginLeft + legend20Width + 15 : marginLeft}, 10)`);
+      legend24
+        .append('rect')
+        .attr('width', 10)
+        .attr('height', 10)
+        .attr('y', wideChart ? 0 : 25)
+        .attr('fill', squatHG24Color);
+      legend24
+        .append('text')
+        .text(t('legends.squatHG24'))
+        .attr('text-anchor', 'left')
+        .attr('dominant-baseline', 'middle')
+        .attr('x', 15)
+        .attr('y', wideChart ? 10 / 2 : 30)
+        .attr('font-size', '12px')
+        .attr('fill', '#000000');
+    };
+
     const buildGraph = () => {
-      const height = Math.round(wideChart ? width / 2 : width / 1.2);
+      const getHeight = () => {
+        return Math.round(wideChart ? width / 2 : width / 1.2);
+      };
+      const getMarginRight = () => {
+        return wideChart ? 30 : 15;
+      };
+      const getMarginTop = () => {
+        return wideChart ? 30 : 60;
+      };
+      const getMinSpeed = (vesselSpeed: number) => {
+        return vesselSpeed > 5 ? vesselSpeed - 5 : 0;
+      };
+
+      const height = getHeight();
       const marginLeft = 50;
       // leave empty space little as possible without breaking styles
-      const marginRight = wideChart ? 30 : 15;
+      const marginRight = getMarginRight();
       // when not wide, leave room for legends on separate lines
-      const marginTop = wideChart ? 30 : 60;
+      const marginTop = getMarginTop();
       const marginBottom = 50;
 
       const squatHG20Color = '#0000ff';
       const squatHG24Color = '#ff0000';
       const squatBarrassColor = '#BB00BB';
 
-      const minSpeed = vesselSpeed > 5 ? vesselSpeed - 5 : 0;
+      const minSpeed = getMinSpeed(vesselSpeed);
       const maxSpeed = minSpeed + 10;
-
-      const paramsValid = (() => {
-        const isBetween = (value: number, min: number, max: number) => {
-          return value >= min && value <= max;
-        };
-        if (lengthBPP <= 0) return false;
-        if (breadth <= 0) return false;
-        if (draught <= 0) return false;
-        if (vesselSpeed < 0) return false;
-        if (sweptDepth < draught) return false;
-        if (state.status.showBarrass) return true;
-        if (!isBetween(blockCoefficient, 0.6, 0.8)) return false;
-        if (!isBetween(breadth / draught, 2.19, 3.5)) return false;
-        if (!isBetween(lengthBPP / breadth, 5.5, 8.5)) return false;
-        const fn = calculateFroudeNumber(vesselSpeed, sweptDepth, waterLevel);
-        if (fn > 0.7) return false;
-        return true;
-      })();
+      const paramsValid = areParamsValid();
 
       const yDomainSweptDepth = sweptDepth + waterLevel / 100 - draught;
 
-      let yDomainWaterDepth = waterDepth - draught;
+      const yDomainWaterDepth = (() => {
+        let yDomainWaterDepth = waterDepth - draught;
 
-      if (Number.isNaN(yDomainWaterDepth) || yDomainWaterDepth < yDomainSweptDepth) {
-        yDomainWaterDepth = yDomainSweptDepth;
-      }
+        if (Number.isNaN(yDomainWaterDepth) || yDomainWaterDepth < yDomainSweptDepth) {
+          yDomainWaterDepth = yDomainSweptDepth;
+        }
+        return yDomainWaterDepth;
+      })();
 
       const yDomainOtherMovementHeight = motionClearance;
 
@@ -162,15 +250,11 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
 
       /* Clear svg */
       svg.selectAll('*').remove();
+      const container = svg.append('g');
 
       if (!paramsValid) {
         const gsFilter = svg.append('filter').attr('id', 'grayscale');
         gsFilter.append('feColorMatrix').attr('type', 'matrix').attr('values', '0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 0 0 1 0');
-      }
-
-      const container = svg.append('g');
-
-      if (!paramsValid) {
         container.attr('filter', 'url(#grayscale)');
       }
 
@@ -296,40 +380,6 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
 
       /* Add legends */
 
-      const addHGLegend = () => {
-        const legend20 = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
-        legend20.append('rect').attr('width', 10).attr('height', 10).attr('fill', squatHG20Color);
-        legend20
-          .append('text')
-          .text(t('legends.squatHG20'))
-          .attr('text-anchor', 'left')
-          .attr('dominant-baseline', 'middle')
-          .attr('x', 15)
-          .attr('y', 10 / 2)
-          .attr('font-size', '12px')
-          .attr('fill', '#000000');
-
-        const box = legend20.node()?.getBBox();
-        const legend20Width = box ? box.width : 0;
-        // when not wide, add legend beneath the first one
-        const legend24 = container.append('g').attr('transform', `translate(${wideChart ? marginLeft + legend20Width + 15 : marginLeft}, 10)`);
-        legend24
-          .append('rect')
-          .attr('width', 10)
-          .attr('height', 10)
-          .attr('y', wideChart ? 0 : 25)
-          .attr('fill', squatHG24Color);
-        legend24
-          .append('text')
-          .text(t('legends.squatHG24'))
-          .attr('text-anchor', 'left')
-          .attr('dominant-baseline', 'middle')
-          .attr('x', 15)
-          .attr('y', wideChart ? 10 / 2 : 30)
-          .attr('font-size', '12px')
-          .attr('fill', '#000000');
-      };
-
       const addBarrassLegend = () => {
         const legend = container.append('g').attr('transform', `translate(${marginLeft}, 10)`);
         legend
@@ -350,75 +400,73 @@ const SquatChart: React.FC<SquatChartProps> = ({ wideChart }) => {
       };
 
       /* Add squat lines */
-
-      const addSquatLine = (calculateSquat: (speed: number) => number, color: string) => {
-        const data: Array<[number, number]> = [];
-
-        for (let i = minSpeed, step = 0.1; i < maxSpeed; i += step) {
-          const squat = calculateSquat(i);
-          if (squat >= yDomainWaterDepth) {
-            i -= step;
-            step /= 10;
-            if (step < 0.0005) {
-              data.push([i, squat]);
-              break;
-            }
-          } else {
-            data.push([i, squat]);
-          }
-        }
-        if (data[data.length - 1][1] < yDomainWaterDepth) {
-          const maxSpeedSquat = calculateSquat(maxSpeed);
-          if (maxSpeedSquat < yDomainWaterDepth) {
-            data.push([maxSpeed, maxSpeedSquat]);
-          } else {
-            for (let i = data[data.length - 1][0] + 0.001; i < maxSpeed; i += 0.001) {
-              const squat = calculateSquat(i);
-              if (squat >= yDomainWaterDepth) {
-                data.push([i, squat]);
-                break;
-              }
-            }
-          }
-        }
-
-        container
-          .append('path')
-          .datum(data)
-          .attr(
-            'd',
-            d3
-              .line()
-              .x((d) => {
-                return xScale(d[0]);
-              })
-              .y((d) => {
-                return yScale(d[1]);
-              })
-          )
-          .attr('transform', `translate(${marginLeft}, ${marginTop})`)
-          .attr('stroke', color)
-          .attr('stroke-width', '2px')
-          .attr('fill', 'none');
-        return data;
-      };
-
       if (state.status.showBarrass) {
         addBarrassLegend();
         if (paramsValid) {
-          setBarrass(addSquatLine(calculateBarrassSquat, squatBarrassColor));
+          const barrassData = getSquatData(calculateBarrassSquat, minSpeed, maxSpeed, yDomainWaterDepth);
+          container
+            .append('path')
+            .datum(barrassData)
+            .attr(
+              'd',
+              d3
+                .line()
+                .x((d) => {
+                  return xScale(d[0]);
+                })
+                .y((d) => {
+                  return yScale(d[1]);
+                })
+            )
+            .attr('transform', `translate(${marginLeft}, ${marginTop})`)
+            .attr('stroke', squatBarrassColor)
+            .attr('stroke-width', '2px')
+            .attr('fill', 'none');
+          setBarrass(barrassData);
         }
       } else {
-        addHGLegend();
+        addHGLegend(container, marginLeft, squatHG20Color, squatHG24Color);
         if (paramsValid) {
-          const getHGSquatFunc = (C0Coefficient: number) => {
-            return (speed: number) => {
-              return calculateHGSquat(speed, C0Coefficient);
-            };
-          };
-
-          setHuuskaGuliev20(addSquatLine(getHGSquatFunc(2.0), squatHG20Color));
-          setHuuskaGuliev24(addSquatLine(getHGSquatFunc(2.4), squatHG24Color));
+          const hg20Data = getSquatData(getHGSquatFunc(2.0), minSpeed, maxSpeed, yDomainWaterDepth);
+          const hg24Data = getSquatData(getHGSquatFunc(2.4), minSpeed, maxSpeed, yDomainWaterDepth);
+          container
+            .append('path')
+            .datum(hg20Data)
+            .attr(
+              'd',
+              d3
+                .line()
+                .x((d) => {
+                  return xScale(d[0]);
+                })
+                .y((d) => {
+                  return yScale(d[1]);
+                })
+            )
+            .attr('transform', `translate(${marginLeft}, ${marginTop})`)
+            .attr('stroke', squatHG20Color)
+            .attr('stroke-width', '2px')
+            .attr('fill', 'none');
+          container
+            .append('path')
+            .datum(hg24Data)
+            .attr(
+              'd',
+              d3
+                .line()
+                .x((d) => {
+                  return xScale(d[0]);
+                })
+                .y((d) => {
+                  return yScale(d[1]);
+                })
+            )
+            .attr('transform', `translate(${marginLeft}, ${marginTop})`)
+            .attr('stroke', squatHG24Color)
+            .attr('stroke-width', '2px')
+            .attr('fill', 'none');
+          setHuuskaGuliev20(hg20Data);
+          setHuuskaGuliev24(hg24Data);
         }
       }
     };
