@@ -2,10 +2,8 @@ import { ALBEvent, ALBResult } from 'aws-lambda';
 import { log } from '../logger';
 import { toBase64Response } from '../util';
 import { getHeaders } from '../environment';
-import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchRestrictions } from './ibnet';
-
-export const RESTRICTIONS_KEY = 'restrictions';
+import { getFeatureCacheControlHeaders } from '../../cache';
 
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `restrictions()`);
@@ -26,7 +24,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getFeatureCacheControlHeaders(RESTRICTIONS_KEY),
+      ...getFeatureCacheControlHeaders(),
       'Content-Type': ['application/geo+json'],
     },
   };

@@ -10,7 +10,7 @@ import { gunzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
-import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
+import { getFeatureCacheControlHeaders } from '../lib/cache';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
 const s3Mock = mockClient(S3Client);
@@ -724,7 +724,7 @@ it('should get weather and wave forecast from api', async () => {
 });
 
 it('should return same cache headers for various features of non buoy/mareograph/observation', async () => {
-  const featureCacheHeaders = getFeatureCacheControlHeaders('circle')?.['Cache-Control'];
+  const featureCacheHeaders = getFeatureCacheControlHeaders()?.['Cache-Control'];
 
   const vtsResponse = await handler(mockFeaturesALBEvent('vtsline'));
   assert(vtsResponse.body);

@@ -1,7 +1,6 @@
 import { ALBResult } from 'aws-lambda';
 import { Feature, FeatureCollection, GeoJsonProperties, Geometry, LineString } from 'geojson';
 import { getPilotRoutesHeaders } from '../environment';
-import { getPilotRouteCacheControlHeaders } from '../graphql/cache';
 import { roundGeometry, toBase64Response } from '../util';
 import { RtzData, RtzWaypoint, Coordinate, RtzReittipiste } from './apiModels';
 import { fetchPilotRoutesApi } from './axios';
@@ -11,6 +10,7 @@ import { transformTranslate as turf_transformTranslate } from '@turf/transform-t
 import { lineIntersect as turf_lineIntersect } from '@turf/line-intersect';
 import { nearestPointOnLine as turf_nearestPointOnLine } from '@turf/nearest-point-on-line';
 import { lineArc as turf_lineArc } from '@turf/line-arc';
+import { getFeatureCacheControlHeaders } from '../../cache';
 
 type TurningDirection = 'left' | 'right';
 
@@ -180,7 +180,7 @@ export async function fetchPilotRoutes(): Promise<ALBResult> {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getPilotRoutesHeaders(),
-      ...getPilotRouteCacheControlHeaders(),
+      ...getFeatureCacheControlHeaders('pilotroutes'),
     },
   };
 }

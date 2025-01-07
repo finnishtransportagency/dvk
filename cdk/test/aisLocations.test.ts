@@ -4,7 +4,7 @@ import { gunzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import { VesselLocationFeatureCollection } from '../lib/lambda/api/apiModels';
-import { getAisCacheControlHeaders } from '../lib/lambda/graphql/cache';
+import { getAisCacheControlHeaders } from '../lib/cache';
 
 const path = 'aislocations';
 
