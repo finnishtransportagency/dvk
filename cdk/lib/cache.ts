@@ -84,31 +84,38 @@ export function getAisCacheControlHeaders(key: string): Record<string, string[]>
   }
 }
 
-export function getFeatureCacheControlHeaders(key?: CloudFrontCacheKey): Record<string, string[]> {
+export function isCloudFrontCacheKey(key: string): key is CloudFrontCacheKey {
+  const cloudFrontKeys: CloudFrontCacheKey[] = ['aislocations', 'aisvessels', 'mareograph', 'observation', 'buoy', 'marinewarning', 'feature', 'pilotroutes', 'forecast'];
+  return (cloudFrontKeys as string[]).includes(key);
+}
+
+export function getFeatureCacheControlHeaders(key: string): Record<string, string[]> {
   let maxAge = FEATURE_CACHE.MAX_AGE;
   let staleWhileRevalidate = FEATURE_CACHE.STALE_WHILE_REVALIDATE;
   let staleIfError = FEATURE_CACHE.STALE_IF_ERROR;
 
-  if (key === 'mareograph') {
-    maxAge = MAREOGRAPH_CACHE.MAX_AGE;
-    staleWhileRevalidate = MAREOGRAPH_CACHE.STALE_WHILE_REVALIDATE;
-    staleIfError = MAREOGRAPH_CACHE.STALE_IF_ERROR;
-  } else if (key === 'observation') {
-    maxAge = OBSERVATION_CACHE.MAX_AGE;
-    staleWhileRevalidate = OBSERVATION_CACHE.STALE_WHILE_REVALIDATE;
-    staleIfError = OBSERVATION_CACHE.STALE_IF_ERROR;
-  } else if (key === 'buoy') {
-    maxAge = BUOY_CACHE.MAX_AGE;
-    staleWhileRevalidate = BUOY_CACHE.STALE_WHILE_REVALIDATE;
-    staleIfError = BUOY_CACHE.STALE_IF_ERROR;
-  } else if (key === 'marinewarning') {
-    maxAge = MARINEWARNING_CACHE.MAX_AGE;
-    staleWhileRevalidate = MARINEWARNING_CACHE.STALE_WHILE_REVALIDATE;
-    staleIfError = MARINEWARNING_CACHE.STALE_IF_ERROR;
-  } else if (key === 'pilotroutes') {
-    maxAge = PILOTROUTE_CACHE.MAX_AGE;
-    staleWhileRevalidate = PILOTROUTE_CACHE.STALE_WHILE_REVALIDATE;
-    staleIfError = PILOTROUTE_CACHE.STALE_IF_ERROR;
+  if (isCloudFrontCacheKey(key)) {
+    if (key === 'mareograph') {
+      maxAge = MAREOGRAPH_CACHE.MAX_AGE;
+      staleWhileRevalidate = MAREOGRAPH_CACHE.STALE_WHILE_REVALIDATE;
+      staleIfError = MAREOGRAPH_CACHE.STALE_IF_ERROR;
+    } else if (key === 'observation') {
+      maxAge = OBSERVATION_CACHE.MAX_AGE;
+      staleWhileRevalidate = OBSERVATION_CACHE.STALE_WHILE_REVALIDATE;
+      staleIfError = OBSERVATION_CACHE.STALE_IF_ERROR;
+    } else if (key === 'buoy') {
+      maxAge = BUOY_CACHE.MAX_AGE;
+      staleWhileRevalidate = BUOY_CACHE.STALE_WHILE_REVALIDATE;
+      staleIfError = BUOY_CACHE.STALE_IF_ERROR;
+    } else if (key === 'marinewarning') {
+      maxAge = MARINEWARNING_CACHE.MAX_AGE;
+      staleWhileRevalidate = MARINEWARNING_CACHE.STALE_WHILE_REVALIDATE;
+      staleIfError = MARINEWARNING_CACHE.STALE_IF_ERROR;
+    } else if (key === 'pilotroutes') {
+      maxAge = PILOTROUTE_CACHE.MAX_AGE;
+      staleWhileRevalidate = PILOTROUTE_CACHE.STALE_WHILE_REVALIDATE;
+      staleIfError = PILOTROUTE_CACHE.STALE_IF_ERROR;
+    }
   }
 
   return {

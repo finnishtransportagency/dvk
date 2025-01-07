@@ -5,6 +5,8 @@ import { getHeaders } from '../environment';
 import { fetchRestrictions } from './ibnet';
 import { getFeatureCacheControlHeaders } from '../../cache';
 
+export const RESTRICTIONS_KEY = 'restrictions';
+
 export const handler = async (event: ALBEvent): Promise<ALBResult> => {
   log.info({ event }, `restrictions()`);
   let base64Response: string | undefined;
@@ -24,7 +26,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getFeatureCacheControlHeaders(),
+      ...getFeatureCacheControlHeaders(RESTRICTIONS_KEY),
       'Content-Type': ['application/geo+json'],
     },
   };

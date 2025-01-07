@@ -639,7 +639,6 @@ it('should get areas from api', async () => {
 
 it('should get warnings always from api', async () => {
   const response = await handler(mockFeaturesALBEvent('marinewarning'));
-  console.log(response);
   assert(response.body);
   const responseObj = await parseResponse(response.body);
 
@@ -726,7 +725,7 @@ it('should get weather and wave forecast from api', async () => {
 });
 
 it('should return same cache headers for various features of non buoy/mareograph/observation', async () => {
-  const featureCacheHeaders = getFeatureCacheControlHeaders()?.['Cache-Control'];
+  const featureCacheHeaders = getFeatureCacheControlHeaders('circle')?.['Cache-Control'];
 
   const vtsResponse = await handler(mockFeaturesALBEvent('vtsline'));
   assert(vtsResponse.body);

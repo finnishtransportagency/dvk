@@ -26,7 +26,7 @@ import {
   TurvalaiteVikatiedotFeatureCollection,
 } from './apiModels';
 import { booleanWithin as turf_booleanWithin } from '@turf/boolean-within';
-import { CloudFrontCacheKey, getFeatureCacheControlHeaders } from '../../cache';
+import { getFeatureCacheControlHeaders, isCloudFrontCacheKey } from '../../cache';
 import { cacheResponse, getFromCache } from '../s3Cache';
 
 interface FeaturesWithMaxFetchTime {
@@ -675,7 +675,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
       };
       fetchedDate = features.fetchedDate ?? '';
       // all the types that have different caching values than default (so basically features utilizing cloudfront cache)
-      if (type === 'observation' || type === 'mareograph' || type === 'buoy' || type === 'forecast' || type === 'marinewarning') {
+      if (type === 'observation' || type === 'mareograph' || type === 'buoy' || type === 'forecast') {
         const responseData = JSON.stringify(collection);
         return {
           statusCode,
@@ -683,7 +683,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
           isBase64Encoded: false,
           multiValueHeaders: {
             ...getWeatherResponseHeaders(),
-            ...getFeatureCacheControlHeaders(key as CloudFrontCacheKey),
+            ...getFeatureCacheControlHeaders(key),
             'Content-Length': ['"' + new Blob([responseData]).size + '"'],
             fetchedDate: [fetchedDate],
           },
@@ -701,7 +701,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getFeatureCacheControlHeaders(),
+      ...getFeatureCacheControlHeaders(key),
       'Content-Type': ['application/geo+json'],
       fetchedDate: [fetchedDate],
     },
