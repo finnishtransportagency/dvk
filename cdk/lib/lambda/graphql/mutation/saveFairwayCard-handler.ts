@@ -22,7 +22,6 @@ import {
   mapIds,
   mapInternetAddress,
   mapMandatoryText,
-  mapNumber,
   mapPhoneNumber,
   mapPhoneNumbers,
   mapPilotJourney,
@@ -37,7 +36,7 @@ import { ConditionalCheckFailedException } from '@aws-sdk/client-dynamodb';
 import { getExpires, getNewStaticBucketName } from '../../environment';
 import { CopyObjectCommand, PutObjectTaggingCommand, S3Client } from '@aws-sdk/client-s3';
 import { FeatureCollection, GeoJsonProperties, Geometry } from 'geojson';
-import { deleteCacheObjects } from '../cache';
+import { deleteCacheObjects } from '../../s3Cache';
 
 export function mapFairwayCardToModel(
   card: FairwayCardInput,

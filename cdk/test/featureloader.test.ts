@@ -639,8 +639,10 @@ it('should get areas from api', async () => {
 
 it('should get warnings always from api', async () => {
   const response = await handler(mockFeaturesALBEvent('marinewarning'));
+  console.log(response);
   assert(response.body);
   const responseObj = await parseResponse(response.body);
+
   expect(responseObj.features.length).toBe(2);
   expect(responseObj).toMatchSnapshot();
 });
