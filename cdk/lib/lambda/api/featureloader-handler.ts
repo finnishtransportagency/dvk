@@ -674,7 +674,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
         features: features.featureArray,
       };
       fetchedDate = features.fetchedDate ?? '';
-      // all the types that have different caching values than default (so basically features utilizing cloudfront cache)
+
       if (type === 'observation' || type === 'mareograph' || type === 'buoy' || type === 'forecast') {
         const responseData = JSON.stringify(collection);
         return {
