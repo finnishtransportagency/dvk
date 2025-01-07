@@ -103,6 +103,14 @@ export class DvkSonarPipelineStack extends Stack {
               'cd ..',
               'cd e2e',
               'PLAYWRIGHT_JUNIT_OUTPUT_NAME=squat-results.xml PORT=3001 xvfb-run --server-args="-screen 0 1920x1080x24 -ac" npx playwright test tests/squat',
+              'cd ..',
+              'cd admin',
+              'npm run build',
+              'npx serve -p 3002 -s build &',
+              'until curl -s http://localhost:3002 > /dev/null; do sleep 1; done',
+              'cd ..',
+              'cd e2e',
+              'PLAYWRIGHT_JUNIT_OUTPUT_NAME=admin-results.xml PORT=3002 xvfb-run --server-args="-screen 0 1920x1080x24 -ac" npx playwright test tests/admin',
             ],
           },
         },
@@ -110,7 +118,7 @@ export class DvkSonarPipelineStack extends Stack {
         reports: {
           'squat-robot-tests': { files: 'e2e/xml-report/squat-results.xml' },
           'dvk-robot-tests': { files: 'e2e/xml-report/dvk-results.xml' },
-          'admin-robot-tests': { files: 'e2e/xml-report/dvk-results.xml' },
+          'admin-robot-tests': { files: 'e2e/xml-report/admin-results.xml' },
         },
         artifacts: {
           'base-directory': 'e2e/xml-report',
