@@ -334,7 +334,21 @@
   "squattemplates": {
     "no-squat-templates": "[sv] Väyläkortille ei ole vielä lisätty squat laskentoja.",
     "no-squat-hint": "[sv] Odotellessa voit käyttää palvelusta löytyvää suppeaa",
-    "squat-link": "[sv] Squat-laskuria"
+    "squat-link": "[sv] Squat-laskuria",
+    "squat-calculation-depth": "[sv] Haraussyvyys",
+    "squat-calculation-areas": "[sv] Väyläalueet joihin laskentaa voi soveltaa",
+    "squat-calculation-estimated-water-depth": "[sv] Arvioitu vesisyvyys",
+    "squat-calculation-fairway-form": "[sv] Laskentakohdan poikkileikkaustyyppi",
+    "squat-calculation-fairway-width": "[sv] Väylän leveys",
+    "squat-calculation-slope-scale": "[sv] Luiskan kaltevuus",
+    "squat-calculation-slope-height": "[sv] Luiskan korkeus",
+    "squat-calculation-additional-information": "[sv] Lisätiedot",
+    "squat-calculation-open-water": "[sv] Avovesi",
+    "squat-calculation-channel": "[sv] Kanava",
+    "squat-calculation-sloped-channel": "[sv] Luiska",
+    "squat-calculation-zoom-to-areas": "[sv] Keskitä laskennan alueisiin",
+    "squat-calculation-open-link": "[sv] Siirry esitäytettyyn laajan Squat-laskuriin",
+    "areaType1": "Navigationsområde"
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
