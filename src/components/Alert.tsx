@@ -14,12 +14,9 @@ interface AlertProps {
   icon: string;
   color?: string;
   className?: string;
-  mainLegendOpen?: boolean;
   startDate?: string;
   endDate?: string;
   markdownText?: Text;
-  isError?: boolean;
-  isFeatures?: boolean;
 }
 
 const Alert: React.FC<AlertProps> = ({ title, icon, color, className, startDate, endDate, markdownText }) => {
@@ -61,7 +58,17 @@ const Alert: React.FC<AlertProps> = ({ title, icon, color, className, startDate,
   );
 };
 
-export const LayerAlert: React.FC<AlertProps> = ({ title, icon, color, className, mainLegendOpen, isError, isFeatures }) => {
+interface LayerAlertProps {
+  title: string | ReactElement;
+  icon: string;
+  color?: string;
+  className?: string;
+  mainLegendOpen?: boolean;
+  isError?: boolean;
+  isFeatures?: boolean;
+}
+
+export const LayerAlert: React.FC<LayerAlertProps> = ({ title, icon, color, className, mainLegendOpen, isError, isFeatures }) => {
   const { dispatch } = useDvkContext();
 
   useEffect(() => {
