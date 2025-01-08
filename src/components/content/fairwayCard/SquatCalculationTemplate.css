@@ -1,14 +1,29 @@
 .template {
   color: var(--ion-color-dark);
   font-size: 12px;
-  line-height: 1.25rem;
   break-inside: avoid;
+  line-height: 1.25rem;
+}
 
-  .header {
-    font-weight: bold;
-    letter-spacing: 0;
-    margin-top: 4px;
-  }
+a p,
+h4 {
+  margin-bottom: 0px !important;
+}
+
+.template.nolist {
+  list-style-type: none;
+  margin-bottom: 0px !important;
+}
+
+.template.underline {
+  border: 1px solid var(--ion-color-light);
+  border-width: 0 0 1px 0;
+  margin-bottom: 0px;
+}
+
+.template.zoomlink {
+  font-style: italic;
+  margin-bottom: 0px;
 }
 
 .template.warning {
@@ -30,6 +45,7 @@
   border-color: var(--ion-color-danger);
   vertical-align: center;
 }
+
 .template.warning.grid.wide {
   column-count: 1;
   width: 100%;

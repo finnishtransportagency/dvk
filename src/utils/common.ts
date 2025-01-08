@@ -21,6 +21,7 @@ import * as olExtent from 'ol/extent';
 import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
 import { Action } from '../hooks/dvkReducer';
 import { Dispatch } from 'react';
+import { TFunction } from 'i18next';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -310,4 +311,23 @@ export function setResponseState(dispatch: Dispatch<Action>, statusCode: number,
       value: [String(statusCode), statusText, errorText],
     },
   });
+}
+
+export enum FairwayForm {
+  OpenWater = 1,
+  Channel = 2,
+  SlopedChannel = 3,
+}
+
+export function getFairwayFormText(id: number, t: TFunction) {
+  switch (id) {
+    case FairwayForm.OpenWater:
+      return t('squat-calculation-open-water');
+    case FairwayForm.Channel:
+      return t('squat-calculation-channel');
+    case FairwayForm.SlopedChannel:
+      return t('squat-calculation-sloped-channel');
+    default:
+      return '';
+  }
 }
