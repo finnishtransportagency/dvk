@@ -7,8 +7,14 @@ import { useFeatureData } from '../utils/dataLoader';
 import { useEffect, useState } from 'react';
 import { DvkLayerState } from './FeatureLoader';
 import { useDvkContext } from '../hooks/dvkContext';
-import _ from 'lodash';
-import { calculateVesselDimensions, isVesselMoving, getVesselHeading, translatePoint, getPointRotationAngle } from '../utils/aisUtils';
+import {
+  calculateVesselDimensions,
+  isVesselMoving,
+  getVesselHeading,
+  translatePoint,
+  getPointRotationAngle,
+  getAisVesselShipType,
+} from '../utils/aisUtils';
 import VectorSource from 'ol/source/Vector';
 import { AisFeatureProperties } from './features';
 import { Coordinate } from 'ol/coordinate';
@@ -32,19 +38,14 @@ type VesselData = {
   destination: string;
 };
 
-type AisLayer = {
-  id: FeatureDataLayerId;
-  shipTypes: Array<number>;
-};
-
-const aisLayers: Array<AisLayer> = [
-  { id: 'aisvesselcargo', shipTypes: _.range(70, 79) },
-  { id: 'aisvesseltanker', shipTypes: _.range(80, 89) },
-  { id: 'aisvesselpassenger', shipTypes: _.range(60, 69) },
-  { id: 'aisvesselhighspeed', shipTypes: _.range(40, 49) },
-  { id: 'aisvesseltugandspecialcraft', shipTypes: [31, 32, 33, 34, 35, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59] },
-  { id: 'aisvesselpleasurecraft', shipTypes: [36, 37] },
-  { id: 'aisunspecified', shipTypes: _.range(90, 99) },
+const aisLayers = [
+  'aisvesselcargo',
+  'aisvesseltanker',
+  'aisvesselpassenger',
+  'aisvesselhighspeed',
+  'aisvesseltugandspecialcraft',
+  'aisvesselpleasurecraft',
+  'aisunspecified',
 ];
 
 function addVesselData(locationFeatures: Feature<Geometry>[], vesselData: Array<VesselData>) {
@@ -80,7 +81,7 @@ function addVesselData(locationFeatures: Feature<Geometry>[], vesselData: Array<
 function useAisFeatures() {
   const { state } = useDvkContext();
   const [ready, setReady] = useState(false);
-  const [enabled, setEnabled] = useState(aisLayers.some((layer) => state.layers.includes(layer.id)));
+  const [enabled, setEnabled] = useState(aisLayers.some((layer) => state.layers.includes(layer)));
   const [aisFeatures, setAisFeatures] = useState<Feature<Geometry>[]>([]);
   const vesselQuery = useFeatureData('aisvessel', enabled);
   const locationQuery = useFeatureData('aislocation', enabled);
@@ -90,7 +91,7 @@ function useAisFeatures() {
   const isError = vesselQuery.isError || locationQuery.isError;
 
   useEffect(() => {
-    setEnabled(aisLayers.some((layer) => state.layers.includes(layer.id)));
+    setEnabled(aisLayers.some((layer) => state.layers.includes(layer)));
   }, [state.layers]);
 
   useEffect(() => {
@@ -209,10 +210,10 @@ export function getPathPredictorGeometry(feature: Feature, startFromBow: boolean
 }
 
 function updateAisLayerFeatures(id: FeatureDataLayerId, aisFeatures: Feature<Geometry>[]) {
-  const aisLayer = aisLayers.find((al) => al.id === id);
+  const aisLayer = aisLayers.find((al) => al === id);
   const source = dvkMap.getVectorSource(id);
   if (aisLayer && source) {
-    const features = aisFeatures.filter((f) => aisLayer.shipTypes.includes(f.get('shipType')));
+    const features = aisFeatures.filter((f) => getAisVesselShipType(f.get('shipType')) === aisLayer);
     source.clear(true);
 
     /* Add vessel features */
