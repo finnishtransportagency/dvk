@@ -384,6 +384,6 @@ it('should get internal server error when api call fails', async () => {
 it('should return right cache headers', async () => {
   const response = await handler(mockALBEvent(RESTRICTIONS_KEY));
   assert(response.body);
-  const headers = getFeatureCacheControlHeaders(RESTRICTIONS_KEY)?.['Cache-Control'];
+  const headers = getFeatureCacheControlHeaders()?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });

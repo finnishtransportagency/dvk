@@ -26,7 +26,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getFeatureCacheControlHeaders(RESTRICTIONS_KEY),
+      ...getFeatureCacheControlHeaders(),
       'Content-Type': ['application/geo+json'],
     },
   };

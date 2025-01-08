@@ -6,7 +6,7 @@ import { mockALBEvent } from './mocks';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import { RtzData } from '../lib/lambda/api/apiModels';
-import { getFeatureCacheControlHeaders } from '../lib/cache';
+import { getCloudFrontCacheControlHeaders, getFeatureCacheControlHeaders } from '../lib/cache';
 
 const s3Mock = mockClient(S3Client);
 const path = 'pilotroutes';
@@ -380,6 +380,6 @@ it('should get internal server error when api call fails', async () => {
 it('should return right cache headers for pilotroutes', async () => {
   const response = await handler(mockALBEvent(path));
   assert(response.body);
-  const headers = getFeatureCacheControlHeaders('pilotroutes')?.['Cache-Control'];
+  const headers = getCloudFrontCacheControlHeaders('pilotroutes')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });

@@ -10,7 +10,7 @@ import { transformTranslate as turf_transformTranslate } from '@turf/transform-t
 import { lineIntersect as turf_lineIntersect } from '@turf/line-intersect';
 import { nearestPointOnLine as turf_nearestPointOnLine } from '@turf/nearest-point-on-line';
 import { lineArc as turf_lineArc } from '@turf/line-arc';
-import { getFeatureCacheControlHeaders } from '../../cache';
+import { getCloudFrontCacheControlHeaders } from '../../cache';
 
 type TurningDirection = 'left' | 'right';
 
@@ -180,7 +180,7 @@ export async function fetchPilotRoutes(): Promise<ALBResult> {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getPilotRoutesHeaders(),
-      ...getFeatureCacheControlHeaders('pilotroutes'),
+      ...getCloudFrontCacheControlHeaders('pilotroutes'),
     },
   };
 }
