@@ -1,15 +1,13 @@
-query fairwayCards {
-  fairwayCards {
+fragment LinkedFairwayCardParts on FairwayCard {
+  id
+  version
+  name {
+    fi
+    sv
+    en
+  }
+  harbors {
     id
-    version
-    name {
-      fi
-      sv
-      en
-    }
-    harbors {
-      id
-    }
   }
 }
 
@@ -331,5 +329,11 @@ fragment FairwayCardParts on FairwayCard {
       en
     }
     fairwayForm
+  }
+}
+
+query findAllFairwayCards($status: [Status!]) {
+  fairwayCards(status: $status) {
+    ...LinkedFairwayCardParts
   }
 }
