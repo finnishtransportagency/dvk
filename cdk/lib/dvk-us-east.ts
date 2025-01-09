@@ -44,6 +44,22 @@ export class DvkUsEast extends Construct {
             none: {},
           },
         },
+        {
+          name: 'AWSManagedIPReputationList',
+          priority: 10,
+          overrideAction: { none: {} },
+          statement: {
+            managedRuleGroupStatement: {
+              name: 'AWSManagedRulesAmazonIpReputationList',
+              vendorName: 'AWS',
+            },
+          },
+          visibilityConfig: {
+            cloudWatchMetricsEnabled: true,
+            metricName: `DVK-${Config.getEnvironment()}-AWSManagedIPReputationListMetric`,
+            sampledRequestsEnabled: true,
+          },
+        },
       ],
     };
     return new CfnWebACL(this, 'ACL', props);
