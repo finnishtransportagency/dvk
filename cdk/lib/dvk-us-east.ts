@@ -60,6 +60,53 @@ export class DvkUsEast extends Construct {
             sampledRequestsEnabled: true,
           },
         },
+        {
+          name: 'GraphQLMutationRateLimit',
+          priority: 20,
+          statement: {
+            rateBasedStatement: {
+              limit: 50, // 50 requests per 5 minutes
+              aggregateKeyType: 'IP',
+              scopeDownStatement: {
+                // Use scopeDownStatement to narrow the rate based limit to only apply to specific requests
+                andStatement: {
+                  statements: [
+                    {
+                      byteMatchStatement: {
+                        searchString: '/graphql',
+                        fieldToMatch: {
+                          uriPath: {},
+                        },
+                        textTransformations: [{ priority: 1, type: 'NONE' }],
+                        positionalConstraint: 'EXACTLY',
+                      },
+                    },
+                    {
+                      byteMatchStatement: {
+                        searchString: 'mutation',
+                        fieldToMatch: {
+                          body: {
+                            oversizeHandling: 'CONTINUE',
+                          },
+                        },
+                        textTransformations: [{ priority: 1, type: 'NONE' }],
+                        positionalConstraint: 'CONTAINS',
+                      },
+                    },
+                  ],
+                },
+              },
+            },
+          },
+          action: {
+            count: {}, // testing before applying block
+          },
+          visibilityConfig: {
+            cloudWatchMetricsEnabled: true,
+            metricName: `DVK-${Config.getEnvironment()}-GraphQLMutationRateLimit`,
+            sampledRequestsEnabled: true,
+          },
+        },
       ],
     };
     return new CfnWebACL(this, 'ACL', props);
