@@ -43,7 +43,7 @@ export const PilotInfo: React.FC<PilotInfoProps> = ({ pilotageLimits, pilot }) =
             <br />
             <PhoneNumber title={t('phone')} showEmpty number={pilot.phoneNumber} primaryColorLink={true} />
             <br />
-            {t('fax')}: {pilot.fax || '-'}
+            {t('fax')}: {pilot.fax ?? '-'}
             {pilot.extraInfo && (
               <>
                 <br />
