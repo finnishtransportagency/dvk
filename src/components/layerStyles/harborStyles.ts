@@ -69,26 +69,14 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, selecte
   return s;
 }
 
-export function getRestrictionStyle() {
+export function getRestrictionStyle(selected: boolean) {
   return new Style({
     image: new Icon({
-      src: restrictionIcon,
+      src: selected ? restrictionIconActive : restrictionIcon,
       anchor: [0.5, 43],
       anchorXUnits: 'fraction',
       anchorYUnits: 'pixels',
     }),
-    zIndex: 1,
-  });
-}
-
-export function getSelectedRestrictionStyle() {
-  return new Style({
-    image: new Icon({
-      src: restrictionIconActive,
-      anchor: [0.5, 43],
-      anchorXUnits: 'fraction',
-      anchorYUnits: 'pixels',
-    }),
-    zIndex: 10,
+    zIndex: selected ? 10 : 1,
   });
 }

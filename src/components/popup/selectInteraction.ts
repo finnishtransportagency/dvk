@@ -19,7 +19,7 @@ import { getPilotageLimitStyle } from '../layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from '../layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from '../layerStyles/navigationLine3456Styles';
 import { getQuayStyle } from '../layerStyles/quayStyles';
-import { getHarborStyle, getSelectedRestrictionStyle } from '../layerStyles/harborStyles';
+import { getHarborStyle, getRestrictionStyle } from '../layerStyles/harborStyles';
 import { getDirwayStyle } from '../layerStyles/dirwayStyles';
 
 function getLayers() {
@@ -104,7 +104,7 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
     case 'dirway':
       return getDirwayStyle(feature, resolution, true);
     case 'restrictionport':
-      return getSelectedRestrictionStyle();
+      return getRestrictionStyle(true);
     default:
       return undefined;
   }
