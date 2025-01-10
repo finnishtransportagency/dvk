@@ -280,7 +280,8 @@
     "mareographLocation": "Location of the measurement site",
     "observationLocation": "Location of the observation station",
     "fairwayNumber": "Fairway ID",
-    "fairwayNumbers": "Fairway IDs"
+    "fairwayNumbers": "Fairway IDs",
+    "forecastNotFound": "[en] Sääennusteiden latauksessa tapahtui virhe. Sääennusteet yritetään ladata mahdollisimman pian uudelleen."
   },
   "routes": {
     "info": "The provided pilotage routes do not as such account for a vessel spesific pilotage plan referred to in the Pilotage Act (561/2023). Pilotage routes are presented as general indicative presentations and the correctness of an individual pilotage route cannot be guaranteed.  Any possible use of a pilotage route provided in the Digital Fairway Card for navigational purposes of a specific vessel falls exclusively under the responsibility of the master of the vessel.",
@@ -330,6 +331,25 @@
     "faultsOnFairway": "AtoN defects in the fairway",
     "faultsLastUpdated": "AtoN defects downloaded more than {{ val, number}} h ago.",
     "faultsLastUpdatedUnknown": "The time of the latest download of the AtoN defects is unknown."
+  },
+  "squattemplates": {
+    "no-squat-templates": "[en] Väyläkortille ei ole vielä lisätty squat laskentoja.",
+    "no-squat-hint": "[en] Odotellessa voit käyttää palvelusta löytyvää suppeaa",
+    "squat-link": "[en] Squat-laskuria",
+    "squat-calculation-depth": "[en] Haraussyvyys",
+    "squat-calculation-areas": "[en] Väyläalueet joihin laskentaa voi soveltaa",
+    "squat-calculation-estimated-water-depth": "[en] Arvioitu vesisyvyys",
+    "squat-calculation-fairway-form": "[en] Laskentakohdan poikkileikkaustyyppi",
+    "squat-calculation-fairway-width": "[en] Väylän leveys",
+    "squat-calculation-slope-scale": "[en] Luiskan kaltevuus",
+    "squat-calculation-slope-height": "[en] Luiskan korkeus",
+    "squat-calculation-additional-information": "[en] Lisätiedot",
+    "squat-calculation-open-water": "[en] Avovesi",
+    "squat-calculation-channel": "[en] Kanava",
+    "squat-calculation-sloped-channel": "[en] Luiska",
+    "squat-calculation-zoom-to-areas": "[en] Keskitä laskennan alueisiin",
+    "squat-calculation-open-link": "[en] Siirry esitäytettyyn laajan Squat-laskuriin",
+    "areaType1": "Navigation area"
   },
   "appUpdateAlert": {
     "title": "Update available",
@@ -586,8 +606,9 @@
     "submit": "Submit",
     "continue": "Continue"
   },
-  "tileLoadWarning": {
-    "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."
+  "loadWarnings": {
+    "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use.",
+    "conditionsError": "[en] Yllättävä virhe olosuhteet-tasojen latauksessa. Osa Olosuhteet-tasoista on toistaiseksi poissa käytöstä."
   },
   "source": {
     "title": "Data sources and terms of use",

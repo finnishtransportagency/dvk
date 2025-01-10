@@ -262,7 +262,7 @@ jest.mock('../lib/lambda/api/axios', () => ({
   fetchPilotRoutesApi: () => routes,
 }));
 
-jest.mock('../lib/lambda/graphql/cache', () => ({
+jest.mock('../lib/lambda/s3Cache', () => ({
   getFromCache: () => {
     return { expired: true };
   },

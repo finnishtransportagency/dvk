@@ -1,5 +1,5 @@
 import { TFunction } from 'i18next';
-import { FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, ProhibitionFairway } from '../graphql/generated';
+import { Area, FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, ProhibitionFairway } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
 import { Geometry, Point, Polygon } from 'ol/geom';
 import { Feature } from 'ol';
@@ -89,17 +89,26 @@ function getFairwayCardFairwayAreas(fairwayCard: FairwayCardPartsFragment) {
   const area12Source = dvkMap.getVectorSource('area12');
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   const fairwayAreas: Feature<Geometry>[] = [];
+
+  function getFairwayCardArea(id: number) {
+    const f = area12Source.getFeatureById(id) as Feature<Geometry>;
+    if (f) {
+      return f;
+    } else {
+      const selectedFairwayCardFeature = selectedFairwayCardSource.getFeatureById(id) as Feature<Geometry>;
+      if (selectedFairwayCardFeature && selectedFairwayCardFeature.get('featureType') === 'area') {
+        return selectedFairwayCardFeature;
+      }
+    }
+    return null;
+  }
+
   for (const fairway of fairwayCard?.fairways || []) {
     for (const area of fairway.areas ?? []) {
-      if (fairwayAreas.findIndex((f) => f.getId() === area.id) === -1) {
-        const feature = area12Source.getFeatureById(area.id) as Feature<Geometry>;
+      if (!fairwayAreas.find((f) => f.getId() === area.id)) {
+        const feature = getFairwayCardArea(area.id);
         if (feature) {
           fairwayAreas.push(feature);
-        } else if (!feature) {
-          const selectedFairwayCardFeature = selectedFairwayCardSource.getFeatureById(area.id) as Feature<Geometry>;
-          if (selectedFairwayCardFeature && selectedFairwayCardFeature.get('featureType') === 'area') {
-            fairwayAreas.push(selectedFairwayCardFeature);
-          }
         }
       }
     }
@@ -198,3 +207,7 @@ export function getFairwayListFairwayCards(
   const fairwayIds = fairways.map((fairway) => fairway.fairwayId) ?? [];
   return fairwayCards.filter((card) => card.fairways?.some((fairway) => fairwayIds.includes(fairway.id)));
 }
+
+export const fairwayAreaExludeType2Filter = (area: Area) => {
+  return area.typeCode && area.typeCode !== 2;
+};

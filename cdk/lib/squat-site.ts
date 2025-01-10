@@ -28,7 +28,7 @@ import * as fs from 'fs';
 import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { SSMParameterReader } from './ssm-parameter-reader';
 import { getNewStaticBucketName } from './lambda/environment';
-import { FEATURE_CACHE_DURATION } from './lambda/graphql/cache';
+import { FEATURE_CACHE_DURATION } from './cache';
 
 interface SquatSiteProps {
   domainName: string;
@@ -183,6 +183,7 @@ export class SquatSite extends Construct {
 
       authFunction = new cloudfront.Function(this, 'DvkAuthFunction' + props.env, {
         code: cloudfront.FunctionCode.fromInline(authFunctionCode),
+        runtime: cloudfront.FunctionRuntime.JS_2_0,
       });
     }
 
@@ -190,6 +191,7 @@ export class SquatSite extends Construct {
     const routerSourceCode = fs.readFileSync(`${__dirname}/lambda/router/squatRequestRouter.js`).toString('utf-8');
     const cfFunction = new cloudfront.Function(this, 'SquatRouterFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(routerSourceCode),
+      runtime: cloudfront.FunctionRuntime.JS_2_0,
     });
 
     const strictTransportSecurityResponsePolicy = new cloudfront.ResponseHeadersPolicy(this, 'STSResponsePolicy', {
@@ -216,6 +218,7 @@ export class SquatSite extends Construct {
     const adminRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/adminRequestRouter.js`).toString('utf-8');
     const adminCfFunction = new cloudfront.Function(this, 'AdminRouterFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(adminRouterSourceCode),
+      runtime: cloudfront.FunctionRuntime.JS_2_0,
     });
     const key = new SSMParameterReader(this, 'FrontendPublicKey' + Config.getEnvironment(), {
       parameterName: `/${Config.getEnvironment()}/CloudFrontPublicKey`,
@@ -258,6 +261,7 @@ export class SquatSite extends Construct {
     const previewRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/previewRequestRouter.js`).toString('utf-8');
     const previewCfFunction = new cloudfront.Function(this, 'PreviewRouterFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(previewRouterSourceCode),
+      runtime: cloudfront.FunctionRuntime.JS_2_0,
     });
 
     const previewBehavior: BehaviorOptions = {
@@ -278,6 +282,7 @@ export class SquatSite extends Construct {
     const dvkRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/dvkRequestRouter.js`).toString('utf-8');
     const dvkCfFunction = new cloudfront.Function(this, 'DvkRouterFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(dvkRouterSourceCode),
+      runtime: cloudfront.FunctionRuntime.JS_2_0,
     });
 
     const dvkBehavior = {
@@ -318,6 +323,7 @@ export class SquatSite extends Construct {
     });
     const staticCfFunction = new cloudfront.Function(this, 'StaticRouterFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(staticFunctionCode),
+      runtime: cloudfront.FunctionRuntime.JS_2_0,
     });
     const staticBucket = s3.Bucket.fromBucketName(this, 'NewStaticBucket', getNewStaticBucketName());
     const originAccessIdentityId = cdk.Fn.importValue('OriginAccessIdentityId' + props.env);

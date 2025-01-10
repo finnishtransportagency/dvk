@@ -1,0 +1,20 @@
+.squat.warning.icon {
+  font-size: 22px;
+  margin-right: 16px;
+  margin-left: 16px;
+}
+
+.squat.warning {
+  color: var(--ion-color-dark);
+  font-size: 14px;
+}
+
+.squat.warning.grid {
+  margin: 8px;
+  background-color: var(--ion-color-dangerbg);
+  border: 1px solid var(--ion-color-danger);
+}
+
+.squat.warning.col {
+  align-content: center;
+}

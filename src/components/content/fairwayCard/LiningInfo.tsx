@@ -95,10 +95,8 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
             })}
             {lineText && (
               <span>
-                <>
-                  <br />
-                  {formatSentence(lineText[lang], true)}
-                </>
+                <br />
+                {formatSentence(lineText[lang], true)}
               </span>
             )}
           </p>

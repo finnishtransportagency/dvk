@@ -93,6 +93,7 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({
       onWillPresent={handlePopupWillOpen}
       onDidPresent={handlePopupOpen}
       onDidDismiss={handlePopupClose}
+      keepContentsMounted={true}
     >
       <SelectDropdownFilter
         ref={searchRef}

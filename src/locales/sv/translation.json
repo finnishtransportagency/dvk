@@ -280,7 +280,8 @@
     "mareographLocation": "Mareografens plats",
     "observationLocation": "Observationsstations läge",
     "fairwayNumber": "Farleds nummer",
-    "fairwayNumbers": "Farleds nummer"
+    "fairwayNumbers": "Farleds nummer",
+    "forecastNotFound": "[sv] Sääennusteiden latauksessa tapahtui virhe. Sääennusteet yritetään ladata mahdollisimman pian uudelleen."
   },
   "routes": {
     "info": "De presenterade lotsningsrutterna är inte som sådana lämpade som enligt lotslagen (561/2023) hänvisade individuella lotsningsplaner för ett enskilt fartyg. Lotsningsrutterna har utarbetats som vägledande allmänna presentationer och felfriheten i enskilda lotsleder kan inte garanteras. Användning av lotsningsrutt, som presenteras i det digitala farledskortet, för navigering av ett fartyg är alltid på befälhavarens ansvar.",
@@ -330,6 +331,25 @@
     "faultsOnFairway": "Farleden innehåller felmeddellanden för säkerhetsanordningar",
     "faultsLastUpdated": "Felmeddellanden för säkerhetsanordningar nedladdade för mer än {{ val, number}} h sedan.",
     "faultsLastUpdatedUnknown": "Tidpunkt för senaste nedladdning av felmeddelanden för säkerhetsanordningar är okänd."
+  },
+  "squattemplates": {
+    "no-squat-templates": "[sv] Väyläkortille ei ole vielä lisätty squat laskentoja.",
+    "no-squat-hint": "[sv] Odotellessa voit käyttää palvelusta löytyvää suppeaa",
+    "squat-link": "[sv] Squat-laskuria",
+    "squat-calculation-depth": "[sv] Haraussyvyys",
+    "squat-calculation-areas": "[sv] Väyläalueet joihin laskentaa voi soveltaa",
+    "squat-calculation-estimated-water-depth": "[sv] Arvioitu vesisyvyys",
+    "squat-calculation-fairway-form": "[sv] Laskentakohdan poikkileikkaustyyppi",
+    "squat-calculation-fairway-width": "[sv] Väylän leveys",
+    "squat-calculation-slope-scale": "[sv] Luiskan kaltevuus",
+    "squat-calculation-slope-height": "[sv] Luiskan korkeus",
+    "squat-calculation-additional-information": "[sv] Lisätiedot",
+    "squat-calculation-open-water": "[sv] Avovesi",
+    "squat-calculation-channel": "[sv] Kanava",
+    "squat-calculation-sloped-channel": "[sv] Luiska",
+    "squat-calculation-zoom-to-areas": "[sv] Keskitä laskennan alueisiin",
+    "squat-calculation-open-link": "[sv] Siirry esitäytettyyn laajan Squat-laskuriin",
+    "areaType1": "Navigationsområde"
   },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
@@ -587,8 +607,9 @@
     "submit": "Skicka",
     "continue": "[sv] Jatka"
   },
-  "tileLoadWarning": {
-    "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
+  "loadWarnings": {
+    "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat.",
+    "conditionsError": "[sv] Yllättävä virhe olosuhteet-tasojen latauksessa. Osa Olosuhteet-tasoista on toistaiseksi poissa käytöstä."
   },
   "source": {
     "title": "Informationskällor och användningsvillkor",

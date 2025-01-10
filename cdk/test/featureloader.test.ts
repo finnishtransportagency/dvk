@@ -10,7 +10,7 @@ import { gunzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
 import HarborDBModel from '../lib/lambda/db/harborDBModel';
-import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
+import { getCloudFrontCacheControlHeaders, getFeatureCacheControlHeaders } from '../lib/cache';
 
 const ddbMock = mockClient(DynamoDBDocumentClient);
 const s3Mock = mockClient(S3Client);
@@ -641,6 +641,7 @@ it('should get warnings always from api', async () => {
   const response = await handler(mockFeaturesALBEvent('marinewarning'));
   assert(response.body);
   const responseObj = await parseResponse(response.body);
+
   expect(responseObj.features.length).toBe(2);
   expect(responseObj).toMatchSnapshot();
 });
@@ -681,21 +682,21 @@ it('should get buoys from api', async () => {
 it('should return right cache headers for buoy', async () => {
   const response = await handler(mockFeaturesALBEvent('buoy'));
   assert(response.body);
-  const headers = getFeatureCacheControlHeaders('buoy')?.['Cache-Control'];
+  const headers = getCloudFrontCacheControlHeaders('buoy')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });
 
 it('should return right cache headers for mareograph', async () => {
   const response = await handler(mockFeaturesALBEvent('mareograph'));
   assert(response.body);
-  const headers = getFeatureCacheControlHeaders('mareograph')?.['Cache-Control'];
+  const headers = getCloudFrontCacheControlHeaders('mareograph')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });
 
 it('should return right cache headers for observation', async () => {
   const response = await handler(mockFeaturesALBEvent('observation'));
   assert(response.body);
-  const headers = getFeatureCacheControlHeaders('observation')?.['Cache-Control'];
+  const headers = getCloudFrontCacheControlHeaders('observation')?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });
 
@@ -724,7 +725,7 @@ it('should get weather and wave forecast from api', async () => {
 });
 
 it('should return same cache headers for various features of non buoy/mareograph/observation', async () => {
-  const featureCacheHeaders = getFeatureCacheControlHeaders('circle')?.['Cache-Control'];
+  const featureCacheHeaders = getFeatureCacheControlHeaders()?.['Cache-Control'];
 
   const vtsResponse = await handler(mockFeaturesALBEvent('vtsline'));
   assert(vtsResponse.body);
@@ -738,6 +739,6 @@ it('should return same cache headers for various features of non buoy/mareograph
   assert(linesResponse.body);
   expect(linesResponse?.multiValueHeaders?.['Cache-Control']).toStrictEqual(featureCacheHeaders);
 
-  const observationFeatureHeaders = getFeatureCacheControlHeaders('observation')?.['Cache-Control'];
+  const observationFeatureHeaders = getCloudFrontCacheControlHeaders('observation')?.['Cache-Control'];
   expect(featureCacheHeaders).not.toEqual(observationFeatureHeaders);
 });

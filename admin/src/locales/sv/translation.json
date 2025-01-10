@@ -124,6 +124,7 @@
     "create-new-version": "[sv] Lisää uusi versio",
     "version": "[sv] Versio",
     "add-section-squat-calculation": "[sv] Lisää laskennan sijainti",
+    "cannot-add-section-squat-calculation": "[sv] Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
     "squat-calculation-description": "[sv] Lorem ipsum..."
   },
   "modal": {
@@ -142,8 +143,8 @@
     "cancel-fairwaycard-description": "[sv] Väyläkortti sisältää tallentamattomia muutoksia. Oletko varma, että haluat poistua tallentamatta?",
     "delete-fairwaycard-title": "[sv] Väyläkortin poisto",
     "delete-fairwaycard-description": "[sv] Olet poistamassa väyläkorttia \"{{name}}\". Oletko varma, että haluat poistaa väyläkortin?",
-    "archive-fairwaycard-title": "[sv] Väyläkortin arkistointi",
-    "archive-fairwaycard-description": "[sv] Olet siirtämässä julkisen väyläkortin \"{{name}}\" arkistoon. Oletko varma, että haluat arkistoida väyläkortin?",
+    "archive-fairwaycard-title": "[sv] Julkaistun väyläkortin arkistointi",
+    "archive-fairwaycard-description": "[sv] Olet arkistoimassa julkaistua väyläkorttia. Arkistoitu väyläkortti poistuu välittömästi palvelusta, eikä ole loppukäyttäjien käytettävissä. Oletko varma, että haluat arkistoida \"{{name}}\" -väyläkortin?",
     "publish-fairwaycard-title": "[sv] Väyläkortin julkaiseminen",
     "publish-fairwaycard-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan väyläkortin julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
     "version-fairwaycard-description": "[sv] Olet lisäämässä väyläkortista uuden version. Uuden version tilaksi tulee luonnos. Oletko varma, että haluat jatkaa?",
@@ -153,8 +154,9 @@
     "cancel-harbor-description": "[sv] Satama sisältää tallentamattomia muutoksia. Oletko varma, että haluat poistua tallentamatta?",
     "delete-harbor-title": "[sv] Sataman poisto",
     "delete-harbor-description": "[sv] Olet poistamassa satamaa \"{{name}}\". Oletko varma, että haluat poistaa sataman?",
-    "archive-harbor-title": "[sv] Sataman arkistointi",
-    "archive-harbor-description": "[sv] Olet siirtämässä julkisen sataman \"{{name}}\" arkistoon. Oletko varma, että haluat arkistoida sataman?",
+    "archive-harbor-title": "[sv] Julkaistun sataman arkistointi",
+    "archive-harbor-title-blocked": "[sv] Julkaistun sataman arkistointi estetty",
+    "archive-harbor-description": "[sv] Olet arkistoimassa julkaistua satamaa. Arkistoitu satama poistuu välittömästi palvelusta, eikä ole loppukäyttäjien käytettävissä. Oletko varma, että haluat arkistoida \"{{name}}\" -sataman?",
     "publish-harbor-title": "[sv] Sataman julkaiseminen",
     "publish-harbor-description": "[sv] Olet asettamassa \"Luonnos\"-tilassa olevan sataman julkiseksi. Edellinen julkinen versio siirtyy arkistoon. Oletko varma, että haluat jatkaa?",
     "version-harbor-description": "[sv] Olet lisäämässä satamasta uuden version. Uuden version tilaksi tulee luonnos. Oletko varma, että haluat jatkaa?",
@@ -292,7 +294,8 @@
     "calculation-fairway-form.sloped-channel": "[sv] Luiska",
     "squat-calculation-depth-warning": "[sv] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä",
     "squat-calculation-cannot-remove-fairway-header": "[sv] Cannot remove fairway",
-    "squat-calculation-cannot-remove-fairway": "[sv] The fairway is linked to an area that is in use in this squat calculation template."
+    "squat-calculation-cannot-remove-fairway": "[sv] The fairway is linked to an area that is in use in this squat calculation template.",
+    "cannot-change-reference-level": "[sv] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu."
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
