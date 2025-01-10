@@ -124,7 +124,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'coastalwarning':
     case 'localwarning':
     case 'boaterwarning':
-      return getMarineWarningStyle(feature, highlighted);
+      return getMarineWarningStyle(feature);
     case 'harbor':
       return getHarborStyle(feature, resolution, highlighted, minResolutionHarbor);
     case 'circle':
@@ -235,7 +235,7 @@ function addMarineWarningClusterLayer({
     new VectorLayer({
       source: cluster,
       declutter,
-      style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
+      style: getMarineWarningStyle,
       properties: { id },
       maxResolution,
       minResolution,

@@ -102,7 +102,7 @@ const OfflineStatus: React.FC = () => {
     dispatch({
       type: 'setOffline',
       payload: {
-        value: dvkMap.tileStatus === 'error' ? true : false,
+        value: dvkMap.tileStatus === 'error',
       },
     });
   };
