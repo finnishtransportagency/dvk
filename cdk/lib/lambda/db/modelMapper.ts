@@ -13,13 +13,13 @@ import {
 } from '../../../graphql/generated';
 import { CurrentUser } from '../api/login';
 import { fetchPilotPoints } from '../api/traficom';
-import { getFromCache, cacheResponse, CacheResponse } from '../graphql/cache';
 import { log } from '../logger';
 import FairwayCardDBModel, { FairwayDBModel, PilotRoute, SquatCalculation, TemporaryNotification, TrafficServiceDBModel } from './fairwayCardDBModel';
 import HarborDBModel from './harborDBModel';
 import { fetchPilotRouteData } from '../api/pilotRoutes';
 import { saveResponseToS3 } from '../util';
 import zlib from 'zlib';
+import { cacheResponse, CacheResponse, getFromCache } from '../s3Cache';
 
 const MAX_TEXT_LENGTH = 2000;
 const MAX_NUMBER_LENGTH = 10;

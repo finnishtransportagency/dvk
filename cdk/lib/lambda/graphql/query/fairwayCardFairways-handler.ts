@@ -14,7 +14,6 @@ import {
 } from '../../../../graphql/generated';
 import { log } from '../../logger';
 import { fetchVATUByFairwayId } from './vatu';
-import { cacheResponse, getFromCache } from '../cache';
 import {
   AlueFeature,
   AlueFeatureCollection,
@@ -31,6 +30,7 @@ import {
   VaylaGeojsonFeature,
 } from '../../api/apiModels';
 import { fetchProhibitionAreas } from '../../api/traficom';
+import { cacheResponse, getFromCache } from '../../s3Cache';
 
 export function mapAPIModelToFairway(apiModel: VaylaFeature): Fairway {
   const fairway: Fairway = {

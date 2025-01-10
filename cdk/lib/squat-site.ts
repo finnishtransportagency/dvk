@@ -28,7 +28,7 @@ import * as fs from 'fs';
 import { BucketEncryption } from 'aws-cdk-lib/aws-s3';
 import { SSMParameterReader } from './ssm-parameter-reader';
 import { getNewStaticBucketName } from './lambda/environment';
-import { FEATURE_CACHE_DURATION } from './lambda/graphql/cache';
+import { FEATURE_CACHE_DURATION } from './cache';
 
 interface SquatSiteProps {
   domainName: string;
