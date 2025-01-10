@@ -117,6 +117,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
     <>
       <IonGrid className="formGrid">
         <TextInputRow
+          name="squatCalculationPlace"
           labelKey="fairwaycard.calculation-place"
           value={section.place}
           actionType="squatCalculationPlace"
@@ -135,6 +136,8 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
         <IonRow>
           <IonCol sizeMd="3">
             <SelectWithCustomDropdown
+              name="squatTargetFairwayIds"
+              data-testid="squatTargetFairwayIds"
               dropdownType="filter"
               label={t('fairwaycard.squat-target-fairways')}
               options={fairwaySelection ?? []}
@@ -152,6 +155,8 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
           </IonCol>
           <IonCol sizeMd="3">
             <SelectWithCustomDropdown
+              name="squatSuitableFairwayAreaIds"
+              data-testid="squatSuitableFairwayAreaIds"
               dropdownType="filter"
               label={t('fairwaycard.squat-suitable-fairway-areas')}
               options={sortedAreas ?? []}
@@ -208,6 +213,8 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
         <IonRow>
           <IonCol sizeMd="3">
             <SelectInput
+              data-testid="squatCalculationFairwayForm"
+              name="squatCalculationFairwayForm"
               label={t('fairwaycard.calculation-fairway-form')}
               selected={(section.fairwayForm as number) ?? undefined}
               options={[
@@ -285,6 +292,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
           </IonCol>
         </IonRow>
         <TextInputRow
+          name="squatCalculationAdditionalInformation"
           labelKey="fairwaycard.calculation-additional-information"
           value={section.additionalInformation}
           actionType="squatCalculationAdditionalInformation"
