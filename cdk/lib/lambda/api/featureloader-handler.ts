@@ -7,9 +7,8 @@ import HarborDBModel from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations, fetchWeatherWaveForecast } from './weather';
 import { fetchN2000MapAreas, fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
-import { cacheResponse, getFeatureCacheControlHeaders, getFromCache } from '../graphql/cache';
 import { fetchVATUByApi, fetchMarineWarnings } from './axios';
-import { getNumberValue, invertDegrees, mapPilotFeatures, mapProhibitionAreaFeatures, roundDecimals, toBase64Response } from '../util';
+import { getNumberValue, invertDegrees, mapPilotFeatures, roundDecimals, toBase64Response } from '../util';
 import {
   AlueFeature,
   AlueFeatureCollection,
@@ -27,7 +26,8 @@ import {
   TurvalaiteVikatiedotFeatureCollection,
 } from './apiModels';
 import { booleanWithin as turf_booleanWithin } from '@turf/boolean-within';
-import { ProhibitionArea } from '../../../graphql/generated';
+import { cacheResponse, getFromCache } from '../s3Cache';
+import { CloudFrontCacheKey, getCloudFrontCacheControlHeaders, getFeatureCacheControlHeaders, isCloudFrontCacheKey } from '../../cache';
 
 interface FeaturesWithMaxFetchTime {
   featureArray: Feature<Geometry, GeoJsonProperties>[];
@@ -674,6 +674,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
         features: features.featureArray,
       };
       fetchedDate = features.fetchedDate ?? '';
+
       if (type === 'observation' || type === 'mareograph' || type === 'buoy' || type === 'forecast') {
         const responseData = JSON.stringify(collection);
         return {
@@ -682,7 +683,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
           isBase64Encoded: false,
           multiValueHeaders: {
             ...getWeatherResponseHeaders(),
-            ...getFeatureCacheControlHeaders(key),
+            ...getCloudFrontCacheControlHeaders(key as CloudFrontCacheKey),
             'Content-Length': ['"' + new Blob([responseData]).size + '"'],
             fetchedDate: [fetchedDate],
           },
@@ -700,7 +701,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getFeatureCacheControlHeaders(key),
+      ...(isCloudFrontCacheKey(key) ? getCloudFrontCacheControlHeaders(key) : getFeatureCacheControlHeaders()),
       'Content-Type': ['application/geo+json'],
       fetchedDate: [fetchedDate],
     },

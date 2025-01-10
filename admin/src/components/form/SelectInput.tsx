@@ -14,6 +14,7 @@ interface SelectChangeEventDetail<ValueType> {
 }
 
 interface SelectInputProps {
+  name?: string;
   label: string;
   warningLabel?: string;
   selected?: ValueType;
@@ -35,6 +36,7 @@ interface SelectInputProps {
 }
 
 const SelectInput: React.FC<SelectInputProps> = ({
+  name,
   label,
   warningLabel,
   selected,
@@ -143,6 +145,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
           ) : (
             <>
               <IonSelect
+                data-testid={name + 'Select'}
                 ref={selectRef}
                 className="selectInput"
                 placeholder={t('choose') ?? ''}

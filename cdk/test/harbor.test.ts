@@ -173,7 +173,7 @@ jest.mock('../lib/lambda/environment', () => ({
   getHarborTableName: () => 'Harbor-mock',
 }));
 
-jest.mock('../lib/lambda/graphql/cache', () => ({
+jest.mock('../lib/lambda/s3Cache', () => ({
   getFromCache: () => {
     return { expired: true };
   },

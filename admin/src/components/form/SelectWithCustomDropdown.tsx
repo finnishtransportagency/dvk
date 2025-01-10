@@ -12,6 +12,7 @@ import NotificationModal from '../NotificationModal';
 import Textarea from './Textarea';
 
 interface SelectWithCustomDropdownProps {
+  name?: string;
   label: string;
   options: SelectOption[] | null;
   selected: number[] | SelectedFairwayInput[];
@@ -32,6 +33,7 @@ interface SelectWithCustomDropdownProps {
 }
 
 const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
+  name,
   label,
   options,
   selected,
@@ -133,6 +135,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
           ) : (
             <>
               <IonItem
+                data-testid={name + 'Select'}
                 ref={selectRef}
                 id={triggerId}
                 button={true}

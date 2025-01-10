@@ -4,14 +4,15 @@ import {
   SaveFairwayCardMutationVariables,
   SaveHarborMutation,
   SaveHarborMutationVariables,
+  Status,
   UploadMapPictureMutation,
   UploadMapPictureMutationVariables,
   useCurrentUserQuery,
   useFairwayCardByIdQuery,
   useFairwayCardLatestByIdQuery,
   useFairwayCardsAndHarborsQuery,
-  useFairwayCardsQuery,
   useFairwaysQuery,
+  useFindAllFairwayCardsQuery,
   useHarborsQuery,
   useHarbourByIdQuery,
   useHarbourLatestByIdQuery,
@@ -52,8 +53,8 @@ export function useFairwaysQueryData() {
   return useFairwaysQuery(datasourceClient, undefined, { refetchOnWindowFocus: false, refetchOnMount: false });
 }
 
-export function useFairwayCardsQueryData() {
-  return useFairwayCardsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
+export function useFindAllPublicFairwayCardsQueryData() {
+  return useFindAllFairwayCardsQuery(datasourceClient, { status: [Status.Public] }, { refetchOnWindowFocus: false });
 }
 
 export function useHarboursQueryData() {

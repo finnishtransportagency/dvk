@@ -2,9 +2,11 @@ import { mockALBEvent } from './mocks';
 import { gunzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
-import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
-import { RESTRICTIONS_KEY, handler } from '../lib/lambda/api/restriction-handler';
+import { handler } from '../lib/lambda/api/restriction-handler';
 import { LOCATION_PATH, RESTRICTION_PATH, Restriction } from '../lib/lambda/api/ibnet';
+import { getFeatureCacheControlHeaders } from '../lib/cache';
+
+const RESTRICTIONS_KEY = 'restrictions';
 
 jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
@@ -382,6 +384,6 @@ it('should get internal server error when api call fails', async () => {
 it('should return right cache headers', async () => {
   const response = await handler(mockALBEvent(RESTRICTIONS_KEY));
   assert(response.body);
-  const headers = getFeatureCacheControlHeaders(RESTRICTIONS_KEY)?.['Cache-Control'];
+  const headers = getFeatureCacheControlHeaders()?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });

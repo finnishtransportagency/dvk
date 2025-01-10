@@ -350,7 +350,9 @@ const MainPage: React.FC = () => {
                     {t('item-type-' + item.type)}
                   </IonCol>
                   <IonCol size="1.25">{groups[Number(item.group ?? 0)]}</IonCol>
-                  <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
+                  <IonCol data-testid="n2000" size="1">
+                    {item.n2000HeightSystem ? 'N2000' : 'MW'}
+                  </IonCol>
                   <IonCol data-testid="resultstatus" size="1" className={'item-status-' + item.status}>
                     {t('item-status-' + item.status)}
                   </IonCol>
