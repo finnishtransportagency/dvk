@@ -280,7 +280,8 @@
     "mareographLocation": "Mareografin sijainti",
     "observationLocation": "Säähavaintoaseman sijainti",
     "fairwayNumber": "Väylän numero",
-    "fairwayNumbers": "Väylän numerot"
+    "fairwayNumbers": "Väylän numerot",
+    "forecastNotFound": "Sääennusteiden latauksessa tapahtui virhe. Sääennusteet yritetään ladata mahdollisimman pian uudelleen."
   },
   "routes": {
     "info": "Esitetyt luotsausreitit eivät sellaisenaan sovellu luotsauslain (561/2023) tarkoittamaksi yksittäisen aluksen luotsaussuunnitelmaksi. Luotsausreitit on laadittu suuntaa-antavina yleisesityksinä ja yksittäisen luotsausreitin virheettömyyttä ei voida taata. Digitaalisessa väyläkortissa esitetyn luotsausreitin mahdollinen hyödyntäminen aluksen navigointiin on aina aluksen päällikön vastuulla.",
@@ -334,7 +335,21 @@
   "squattemplates": {
     "no-squat-templates": "Väyläkortille ei ole vielä lisätty squat laskentoja.",
     "no-squat-hint": "Odotellessa voit käyttää palvelusta löytyvää suppeaa",
-    "squat-link": "Squat-laskuria"
+    "squat-link": "Squat-laskuria",
+    "squat-calculation-depth": "Haraussyvyys",
+    "squat-calculation-areas": "Väyläalueet joihin laskentaa voi soveltaa",
+    "squat-calculation-estimated-water-depth": "Arvioitu vesisyvyys",
+    "squat-calculation-fairway-form": "Laskentakohdan poikkileikkaustyyppi",
+    "squat-calculation-fairway-width": "Väylän leveys",
+    "squat-calculation-slope-scale": "Luiskan kaltevuus",
+    "squat-calculation-slope-height": "Luiskan korkeus",
+    "squat-calculation-additional-information": "Lisätiedot",
+    "squat-calculation-open-water": "Avovesi",
+    "squat-calculation-channel": "Kanava",
+    "squat-calculation-sloped-channel": "Luiska",
+    "squat-calculation-zoom-to-areas": "Keskitä laskennan alueisiin",
+    "squat-calculation-open-link": "Siirry esitäytettyyn laajan Squat-laskuriin",
+    "areaType1": "Navigointialue"
   },
   "appUpdateAlert": {
     "title": "Päivitys saatavilla",
@@ -592,8 +607,9 @@
     "submit": "Lähetä",
     "continue": "Jatka"
   },
-  "tileLoadWarning": {
-    "vectorTileError": "Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa."
+  "loadWarnings": {
+    "vectorTileError": "Yllättävä virhe kartan vektoritiilien latauksessa. Kartta käyttää väliaikaisesti rasteritaustakarttaa.",
+    "conditionsError": "Yllättävä virhe olosuhteet-tasojen latauksessa. Osa Olosuhteet-tasoista on toistaiseksi poissa käytöstä."
   },
   "source": {
     "title": "Tietolähteet ja käyttöehdot",

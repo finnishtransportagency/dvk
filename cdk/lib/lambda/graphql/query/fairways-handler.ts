@@ -3,10 +3,10 @@ import { Boardline, Fairway, ProhibitionArea, TurningCircle } from '../../../../
 import { log } from '../../logger';
 import { mapAPIModelToFairway } from './fairwayCardFairways-handler';
 import { fetchVATUByFairwayId } from './vatu';
-import { cacheResponse, getFromCache } from '../cache';
 import { fetchVATUByApi } from '../../api/axios';
 import { VaylaFeature, VaylaFeatureCollection, VaylaGeojsonFeature } from '../../api/apiModels';
 import { fetchProhibitionAreas } from '../../api/traficom';
+import { cacheResponse, getFromCache } from '../../s3Cache';
 
 function mapIdModels(models: APIFeature[]) {
   return models.map((model) => {

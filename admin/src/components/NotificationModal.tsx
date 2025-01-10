@@ -12,9 +12,11 @@ interface ModalProps {
   message?: string;
   itemList?: string[];
   i18nkey?: string;
+  // used when harbor is tried to get archived and there's still linked fairway card(s)
+  targetName?: string;
 }
 
-const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTitle, header, subHeader, message, itemList, i18nkey }) => {
+const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTitle, header, subHeader, message, itemList, i18nkey, targetName }) => {
   const { t } = useTranslation();
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -59,12 +61,21 @@ const NotificationModal: React.FC<ModalProps> = ({ isOpen, closeAction, closeTit
                 </p>
               )}
               {messages?.map((str, i) => <p key={`${i}-${str.length}`}>{str}</p>)}
-              {itemList && (
-                <ul>
-                  {itemList.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
+              {!!itemList?.length && (
+                <>
+                  <div>
+                    <Trans
+                      t={t}
+                      i18nKey={t('modal.archive-harbor-linked-fairwayCards', { name: targetName })}
+                      components={{ strong: <strong />, span: <span /> }}
+                    />
+                  </div>
+                  <ul>
+                    {itemList.map((item, i) => (
+                      <li key={item + i}>{item}</li>
+                    ))}
+                  </ul>
+                </>
               )}
             </IonText>
           </IonCol>

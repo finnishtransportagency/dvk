@@ -82,14 +82,14 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
       if (feature.getProperties().dataSource === 'line12') {
         return getNavigationLine12Style(feature, resolution, true);
       } else {
-        return getNavigationLine3456Style(true);
+        return getNavigationLine3456Style(feature);
       }
     case 'safetyequipment':
       return getSafetyEquipmentStyle(feature, resolution, true, feature.get('faultListStyle'));
     case 'safetyequipmentfault':
       return getSafetyEquipmentStyle(feature, resolution, true, true);
     case 'marinewarning':
-      return getMarineWarningStyle(feature, true);
+      return getMarineWarningStyle(feature);
     case 'mareograph':
       return getMareographStyle(feature, true, resolution);
     case 'buoy':
@@ -124,7 +124,7 @@ export function addPointerMoveInteraction(map: Map, types: string[]) {
 
   const handleSelect = (f: Feature) => {
     const type = f.getProperties().featureType;
-    if (['specialarea2', 'specialarea15', 'observation', 'forecast'].includes(type)) {
+    if (['specialarea2', 'specialarea15', 'observation', 'forecast', 'line', 'marinewarning'].includes(type)) {
       // These features are in two layers, so do not set styles to features, but set flag to indicate hover
       f.set('hoverStyle', true);
     } else {
@@ -136,14 +136,17 @@ export function addPointerMoveInteraction(map: Map, types: string[]) {
 
   const handleDeselect = (f: Feature) => {
     const type = f.getProperties().featureType;
-    if (['specialarea2', 'specialarea15', 'observation', 'forecast'].includes(type)) {
+    if (['specialarea2', 'specialarea15', 'observation', 'forecast', 'line', 'marinewarning'].includes(type)) {
       // Set hoverStye flag to false only if feature has not been click-selected
       const clickInteraction = getClickSelection();
       let found = false;
       if (clickInteraction) {
         clickInteraction.getFeatures().forEach((feat) => {
           const featType = feat.getProperties().featureType;
-          if (['specialarea2', 'specialarea15', 'observation', 'forecast'].includes(featType) && feat.getId() === f.getId()) {
+          if (
+            ['specialarea2', 'specialarea15', 'observation', 'forecast', 'line', 'marinewarning'].includes(featType) &&
+            feat.getId() === f.getId()
+          ) {
             found = true;
           }
         });

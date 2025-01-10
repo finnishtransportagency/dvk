@@ -42,7 +42,7 @@ const Breadcrumb: React.FC<BreadcrumbProps> = ({ path }) => {
               <IonBreadcrumb
                 disabled={state.preview}
                 aria-disabled={state.preview}
-                key={item.route || item.title}
+                key={item.route ?? item.title}
                 routerLink={idx < path.length - 1 ? item.route : undefined}
                 onClick={item.onClick}
                 className={item.onClick ? 'ion-activatable ion-focusable' : undefined}

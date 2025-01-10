@@ -1,7 +1,7 @@
 import React from 'react';
 import { IonText } from '@ionic/react';
 import { uniqueId } from 'lodash';
-import { setSelectedFairwayArea } from '../../layers';
+import { setSelectedFairwayAreas } from '../../layers';
 import { Area } from '../../../graphql/generated';
 import { useTranslation } from 'react-i18next';
 import { getAreaName } from './AreaInfo';
@@ -16,7 +16,7 @@ type AreaInfoListItemProps = {
 export const AreaInfoListItem: React.FC<AreaInfoListItemProps> = ({ area, isN2000HeightSystem, isDraftAvailable, sizingSpeeds }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const highlightArea = (id: string | number | undefined) => {
-    setSelectedFairwayArea(id ?? 0);
+    setSelectedFairwayAreas([id ?? 0]);
   };
 
   return (
