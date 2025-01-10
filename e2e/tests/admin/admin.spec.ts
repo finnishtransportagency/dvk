@@ -63,7 +63,7 @@ async function clickOnResultsByTypeAndState(page: Page, type: string, state: str
 }
 
 function generateRandomNumberAsString(length: number = 5) {
-  const randomNumber = Math.floor(Math.pow(10, length) * Math.random());
+  const randomNumber = Math.floor(Math.pow(10, length) * Math.random()); // NOSONAR - ignore security issue with random number as it's only a test
   return ('' + randomNumber).padStart(length, '0');
 }
 
