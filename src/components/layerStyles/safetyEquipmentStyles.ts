@@ -13,6 +13,9 @@ const faultIconStyles: Array<{ key: keyof typeof symbol2Icon; style: Style }> = 
 const COLORS = {
   fault: '#EC0E0E',
   default: '#231F20',
+  aisTextFill: '#FF00FF',
+  aisTextStroke: 'rgba(255,255,255,0.75)',
+  circleFill: 'rgba(0,0,0,0)',
 };
 
 function getImage(icon: string, selected: boolean, color: string) {
@@ -107,9 +110,9 @@ function getAisStyles(aisType: number, selected: boolean) {
             text,
             scale: selected ? 1.2 : 1,
             fill: new Fill({
-              color: '#FF00FF',
+              color: COLORS.aisTextFill,
             }),
-            stroke: new Stroke({ width: 1, color: 'rgba(255,255,255,0.75)' }),
+            stroke: new Stroke({ width: 1, color: COLORS.aisTextStroke }),
           })
         : undefined,
     }),
@@ -120,7 +123,7 @@ const hitAreaStyle = new Style({
   image: new CircleStyle({
     radius: 10,
     fill: new Fill({
-      color: 'rgba(0,0,0,0)',
+      color: COLORS.circleFill,
     }),
   }),
 });

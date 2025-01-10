@@ -6,6 +6,13 @@ import Text from 'ol/style/Text';
 import { EquipmentFeatureProperties } from '../features';
 import { symbol2Icon } from './safetyEquipmentIcons';
 
+const COLORS = {
+  default: '#231F20',
+  aisTextFill: '#FF00FF',
+  aisTextStroke: 'rgba(255,255,255,0.75)',
+  circleFill: 'rgba(0,0,0,0)',
+};
+
 function getVirtualEquipmentStyle(feature: FeatureLike, selected: boolean) {
   const props = feature.getProperties() as EquipmentFeatureProperties;
   let text;
@@ -31,9 +38,9 @@ function getVirtualEquipmentStyle(feature: FeatureLike, selected: boolean) {
           text,
           scale: selected ? 1.2 : 1,
           fill: new Fill({
-            color: '#FF00FF',
+            color: COLORS.aisTextFill,
           }),
-          stroke: new Stroke({ width: 1, color: 'rgba(255,255,255,0.75)' }),
+          stroke: new Stroke({ width: 1, color: COLORS.aisTextStroke }),
         })
       : undefined,
   });
@@ -42,7 +49,7 @@ function getVirtualEquipmentStyle(feature: FeatureLike, selected: boolean) {
 function getImage(icon: string, selected: boolean) {
   return new Icon({
     src: icon,
-    color: '#231F20',
+    color: COLORS.default,
     scale: selected ? 1.2 : 1,
   });
 }
@@ -50,7 +57,7 @@ function getImage(icon: string, selected: boolean) {
 function getAnchoredImage(icon: string, selected: boolean, anchorY: number): Icon {
   return new Icon({
     src: icon,
-    color: '#231F20',
+    color: COLORS.default,
     anchor: [0.5, anchorY],
     anchorXUnits: 'fraction',
     anchorYUnits: 'pixels',
@@ -74,7 +81,7 @@ export const getSafetyEquipmentStyle = (feature: FeatureLike, resolution: number
         image: new CircleStyle({
           radius: 10,
           fill: new Fill({
-            color: 'rgba(0,0,0,0)',
+            color: COLORS.circleFill,
           }),
         }),
       }),
