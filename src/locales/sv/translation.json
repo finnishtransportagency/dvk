@@ -334,7 +334,7 @@
   },
   "squattemplates": {
     "no-squat-templates": "[sv] Väyläkortille ei ole vielä lisätty squat laskentoja.",
-    "no-squat-hint": "[sv] Odotellessa voit käyttää palvelusta löytyvää suppeaa",
+    "no-squat-hint": "[sv] Voit tästä huolimatta käyttää palvelusta löytyvää suppeaa",
     "squat-link": "[sv] Squat-laskuria",
     "squat-calculation-depth": "[sv] Haraussyvyys",
     "squat-calculation-areas": "[sv] Väyläalueet joihin laskentaa voi soveltaa",
