@@ -145,7 +145,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
       <IonGrid>
         <IonRow className="ion-justify-content-end">
           <IonCol size="auto">
-            <IonButton shape="round" onClick={() => addSection()} disabled={readonly || disabled}>
+            <IonButton data-testid="addNewCalcSection" shape="round" onClick={() => addSection()} disabled={readonly || disabled}>
               {t('general.add-section-squat-calculation')}
             </IonButton>
           </IonCol>

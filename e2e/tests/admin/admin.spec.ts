@@ -24,7 +24,6 @@ const SEARCH_BY_NAME_OR_ID = 'Hae nimellä tai tunnisteella';
 const PUBLISHED = 'Julkaistu';
 const HARBOR = 'Satama';
 const FAIRWAY_CARD = 'Väyläkortti';
-
 const E2E_TEST_PREFIX = 'e2etest';
 const NEW_HARBOR_FROM_SCRATCH_ID = E2E_TEST_PREFIX + 'nh' + generateRandomNumberAsString();
 const FAIRWAY_CARD_FROM_TEMPLATE = E2E_TEST_PREFIX + 'modfc' + generateRandomNumberAsString();
@@ -59,8 +58,8 @@ async function getFirstItemFromList(page: Page, type?: string, state?: string, i
   return searchLocator.first();
 }
 
-async function clickOnResultsByTypeAndState(page: Page, type: string, state: string) {
-  (await getFirstItemFromList(page, type, state)).click();
+async function clickOnResultsByTypeAndState(page: Page, type: string, state: string, isN2000: boolean) {
+  (await getFirstItemFromList(page, type, state, isN2000)).click();
 }
 
 function generateRandomNumberAsString(length: number = 5) {
@@ -82,7 +81,7 @@ async function fillLatLngAndSaveSucceeds(page: Page) {
 }
 
 async function fillSquatTemplateAndSaveSucceeds(page: Page) {
-  const addNewButton = page.getByRole('button', { name: 'Lisää laskennan sijainti' });
+  const addNewButton = page.getByTestId('addNewCalcSection');
   await addNewButton.click();
   const newId = await page.getByTestId('squatCalculationPlacefi').count();
   await fillFieldWithValue(page, 'squatCalculationPlacefi', SQUAT_PLACE.fi);
@@ -160,18 +159,13 @@ async function deleteItem(page: Page, expectMessage: string) {
   await expect(page.getByText(DELETED, { exact: true }).first()).toBeVisible();
 }
 
-async function createNewVersionFromPublishedSave(page: Page, type: string) {
+async function createNewVersionFromPublishedSave(page: Page, type: string, isN2000: boolean = false) {
   //Get first published element
-  await clickOnResultsByTypeAndState(page, type, PUBLISHED);
+  await clickOnResultsByTypeAndState(page, type, PUBLISHED, isN2000);
   await page.getByRole('button', { name: CREATE_NEW_VERSION }).click();
   //Click save in the modal
   await page.getByRole('button', { name: SAVE }).click();
-  //Click save on the main page
-  await page.getByTestId('saveButton').locator('button').click();
-  //Check success
-  await expect(page.getByText(SAVE_SUCCEEDED)).toBeVisible();
-  //Close the modal
-  await page.getByRole('button', { name: OK }).click();
+  await page.waitForTimeout(3000);
 }
 
 async function fillTemplate(page: Page, randomname: string, id: string) {
@@ -199,11 +193,15 @@ test.describe('Modify operations for cards and harbors', () => {
   test.skip('should save published harbor', async ({ page }) => {
     await openPage(page);
     await createNewVersionFromPublishedSave(page, HARBOR);
+    await save(page, SAVE_SUCCEEDED);
+    await deleteHarbour(page);
   });
 
   test.skip('should save published fairway card', async ({ page }) => {
     await openPage(page);
     await createNewVersionFromPublishedSave(page, FAIRWAY_CARD);
+    await save(page, SAVE_SUCCEEDED);
+    await deleteHarbour(page);
   });
 
   test('should create new fairway card from template', async ({ page }) => {
@@ -218,11 +216,7 @@ test.describe('Modify operations for cards and harbors', () => {
 
   test('should add squat calculation template', async ({ page }) => {
     await openPage(page);
-    //Copy published card to make sure there is one available
-    const selectedname = await (await getFirstItemFromList(page, FAIRWAY_CARD, PUBLISHED, true)).getByTestId('resultname').innerText();
-    await page.getByRole('button', { name: ADD_FAIRWAY_CARD }).click();
-    await fillTemplate(page, selectedname, FAIRWAY_CARD_FROM_TEMPLATE);
-    await page.getByRole('button', { name: CREATE_FAIRWAY_CARD }).click();
+    await createNewVersionFromPublishedSave(page, FAIRWAY_CARD, true);
     await fillSquatTemplateAndSaveSucceeds(page);
     await deleteFairwayCard(page);
   });
