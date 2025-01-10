@@ -134,7 +134,7 @@ export function handleLoaderError(response: CacheResponse, e: unknown): ALBResul
 }
 
 export async function handleAisCall(
-  key: string,
+  key: 'aisvessels' | 'aislocations',
   fetchAisData: () => Promise<FeatureCollection> | Promise<Vessel[]>,
   contentType: string[]
 ): Promise<ALBResult> {
