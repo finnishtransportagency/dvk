@@ -14,7 +14,8 @@ type AreaInfoListItemProps = {
 };
 
 export const AreaInfoListItem: React.FC<AreaInfoListItemProps> = ({ area, isN2000HeightSystem, isDraftAvailable, sizingSpeeds }) => {
-  const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const { t, i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
+  const lang = i18n.language;
   const highlightArea = (id: string | number | undefined) => {
     setSelectedFairwayAreas([id ?? 0]);
   };
@@ -32,21 +33,21 @@ export const AreaInfoListItem: React.FC<AreaInfoListItemProps> = ({ area, isN200
         {isDraftAvailable && (
           <>
             <br />
-            {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString() ?? '-'}&nbsp;
+            {t('designDraft', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000draft : area?.draft)?.toLocaleString(lang) ?? '-'}&nbsp;
             <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000draft : area?.draft) })}>m</dd>
           </>
         )}
         <br />
         {area.typeCode !== 15 && (
           <>
-            {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString() ?? '-'}&nbsp;
+            {t('sweptDepth', { count: 1 })}: {(isN2000HeightSystem ? area?.n2000depth : area?.depth)?.toLocaleString(lang) ?? '-'}&nbsp;
             <dd aria-label={t('unit.mDesc', { count: Number(isN2000HeightSystem ? area?.n2000depth : area?.depth) })}>m</dd>
           </>
         )}
         {sizingSpeeds.length > 0 && (
           <>
             <br />
-            {t('designSpeed')}: {sizingSpeeds.join(' / ').toLocaleString()}&nbsp;
+            {t('designSpeed')}: {sizingSpeeds.join(' / ').toLocaleString(lang)}&nbsp;
             <dd aria-label={t('unit.ktsDesc', { count: 0 })}>kts</dd>
           </>
         )}
