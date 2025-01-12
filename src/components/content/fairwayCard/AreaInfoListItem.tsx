@@ -47,7 +47,7 @@ export const AreaInfoListItem: React.FC<AreaInfoListItemProps> = ({ area, isN200
         {sizingSpeeds.length > 0 && (
           <>
             <br />
-            {t('designSpeed')}: {sizingSpeeds.join(' / ').toLocaleString(lang)}&nbsp;
+            {t('designSpeed')}: {sizingSpeeds.join(' / ').toLocaleString()}&nbsp;
             <dd aria-label={t('unit.ktsDesc', { count: 0 })}>kts</dd>
           </>
         )}
