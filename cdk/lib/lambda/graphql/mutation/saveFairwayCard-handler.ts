@@ -22,6 +22,7 @@ import {
   mapIds,
   mapInternetAddress,
   mapMandatoryText,
+  mapNumber,
   mapPhoneNumber,
   mapPhoneNumbers,
   mapPilotJourney,

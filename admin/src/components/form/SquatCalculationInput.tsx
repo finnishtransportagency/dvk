@@ -186,6 +186,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               actionTarget={idx}
               name={'squatCalculationDepth-' + idx}
               decimalCount={1}
+              unit="m"
               required
               readonly={true}
               helperText={t('fairwaycard.squat-calculation-depth-help-text')}
@@ -203,6 +204,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               actionTarget={idx}
               name={'squatCalculationEstimatedWaterDepth-' + idx}
               required
+              unit="m"
               disabled={!readonly && disabled}
               readonly={readonly}
               error={validationErrors.find((error) => error.id === 'squatCalculationEstimatedWaterDepth-' + idx)?.msg}
@@ -238,6 +240,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               inputType="number"
               min={0}
               max={300}
+              ignoreAllowedValueText={true}
               decimalCount={0}
               val={section.fairwayWidth}
               setValue={updateState}
@@ -249,7 +252,6 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               disabled={!readonly && (disabled || !section.fairwayForm || section.fairwayForm === 1)}
               readonly={readonly}
               error={validationErrors.find((error) => error.id === 'squatCalculationFairwayWidth-' + idx)?.msg}
-              helperText={t('fairwaycard.squat-calculation-fairway-width-help-text')}
             />
           </IonCol>
           <IonCol>
@@ -258,6 +260,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               inputType="number"
               min={0.1}
               max={10}
+              ignoreAllowedValueText={true}
               decimalCount={1}
               val={section.slopeScale}
               setValue={updateState}
@@ -268,7 +271,6 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               disabled={!readonly && (disabled || !section.fairwayForm || section.fairwayForm !== 3)}
               readonly={readonly}
               error={validationErrors.find((error) => error.id === 'squatCalculationSlopeScale-' + idx)?.msg}
-              helperText={t('fairwaycard.squat-calculation-slope-scale-help-text')}
             />
           </IonCol>
           <IonCol>
@@ -277,17 +279,18 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               inputType="number"
               min={0}
               max={12}
+              ignoreAllowedValueText={true}
               decimalCount={1}
               val={section.slopeHeight}
               setValue={updateState}
               actionType="squatCalculationSlopeHeight"
               actionTarget={idx}
               name={'squatCalculationSlopeHeight-' + idx}
+              unit="m"
               required
               disabled={!readonly && (disabled || !section.fairwayForm || section.fairwayForm !== 3)}
               readonly={readonly}
               error={validationErrors.find((error) => error.id === 'squatCalculationSlopeHeight-' + idx)?.msg}
-              helperText={t('fairwaycard.squat-calculation-slope-height-help-text')}
             />
           </IonCol>
         </IonRow>

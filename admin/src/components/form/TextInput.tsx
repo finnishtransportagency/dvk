@@ -33,6 +33,7 @@ interface TextInputProps {
   infoTitle?: string;
   infoDescription?: string;
   setModalOpen?: (open: boolean) => void;
+  ignoreAllowedValueText?: boolean;
 }
 
 const TextInput: React.FC<TextInputProps> = ({
@@ -61,8 +62,10 @@ const TextInput: React.FC<TextInputProps> = ({
   infoTitle,
   infoDescription,
   setModalOpen,
+  ignoreAllowedValueText = false,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
+
   const inputRef = useRef<HTMLIonInputElement>(null);
 
   const [isValid, setIsValid] = useState(!error);
@@ -120,7 +123,7 @@ const TextInput: React.FC<TextInputProps> = ({
       minimumFractionDigits: decimalCount ?? 0,
       maximumFractionDigits: decimalCount ?? 0,
     });
-    return t('allowed-values') + ': ' + minVal + ' - ' + maxVal + (unit ? ' ' + t('unit.' + unit) : '');
+    return (ignoreAllowedValueText ? '' : t('allowed-values') + ': ') + minVal + ' - ' + maxVal + (unit ? ' ' + t('unit.' + unit) : '');
   };
 
   const getHelperText = () => {
