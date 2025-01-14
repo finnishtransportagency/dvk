@@ -277,7 +277,7 @@ export function featureCollectionToAreaSelectOptions(collection: FeatureCollecti
         name: { fi: properties?.name },
         fairwayIds: properties?.fairways?.map((f: { fairwayId: number }) => f.fairwayId),
         depth: depth,
-        subtext: subtextPrefix + ' ' + ((properties?.depth ?? 0) as number).toLocaleString(lang) + ' m',
+        subtext: subtextPrefix + ' ' + depth.toLocaleString(lang) + ' m',
         areatype: properties?.typeCode,
       };
       propertyArray.push(selectOption);
