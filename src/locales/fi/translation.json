@@ -333,9 +333,10 @@
     "faultsLastUpdatedUnknown": "Turvalaitevikatietojen viimeisin latausajankohta ei tiedossa."
   },
   "squattemplates": {
-    "no-squat-templates": "Väyläkortille ei ole vielä lisätty squat laskentoja.",
-    "no-squat-hint": "Odotellessa voit käyttää palvelusta löytyvää suppeaa",
+    "no-squat-templates": "Väyläkortille ei ole vielä lisätty squat laskentapohjia.",
+    "no-squat-hint": "Voit tästä huolimatta käyttää palvelusta löytyvää ",
     "squat-link": "Squat-laskuria",
+    "no-squat-hint-post": "",
     "squat-calculation-depth": "Haraussyvyys",
     "squat-calculation-areas": "Väyläalueet joihin laskentaa voi soveltaa",
     "squat-calculation-estimated-water-depth": "Arvioitu vesisyvyys",

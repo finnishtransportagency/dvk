@@ -58,8 +58,9 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
     '//' +
     window.location.hostname +
     (port && port.length > 0 ? ':' + port : '') +
-    '/squat' +
-    '?sweptDepth=' +
+    '/squat?lang=' +
+    lang +
+    '&sweptDepth = ' +
     squatCalculation?.depth +
     '&waterDepth=' +
     squatCalculation?.estimatedWaterDepth +
@@ -101,7 +102,13 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
         </div>
         <IonText data-testid="depth">
           <h5>{t('squat-calculation-depth') + ':'}</h5>
-          <p>{squatCalculation?.depth} m</p>
+          <p>
+            {squatCalculation?.depth?.toLocaleString(lang, {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}{' '}
+            m
+          </p>
         </IonText>
 
         <IonText className="no-margin-top" data-testid="squatCalculationAreas">
@@ -137,7 +144,13 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
         <br />
         <IonText className="no-margin-top" data-testid="squatCalculationEstimatedWaterDepth">
           <h5>{t('squat-calculation-estimated-water-depth') + ':'}</h5>
-          <p>{squatCalculation?.estimatedWaterDepth} m</p>
+          <p>
+            {squatCalculation?.estimatedWaterDepth?.toLocaleString(lang, {
+              minimumFractionDigits: 1,
+              maximumFractionDigits: 1,
+            })}{' '}
+            m
+          </p>
         </IonText>
 
         <IonText className="no-margin-top" data-testid="fairwayForm">
@@ -148,7 +161,7 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
         {(squatCalculation?.fairwayForm ?? 0) > FairwayForm.OpenWater && (
           <IonText className="no-margin-top" data-testid="fairwayWidth">
             <h5>{t('squat-calculation-fairway-width') + ':'}</h5>
-            <p>{squatCalculation?.fairwayWidth} m</p>
+            <p>{squatCalculation?.fairwayWidth?.toLocaleString(lang)} m</p>
           </IonText>
         )}
 
@@ -156,11 +169,22 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
           <>
             <IonText className="no-margin-top" data-testid="slopeScale">
               <h5>{t('squat-calculation-slope-scale') + ':'}</h5>
-              <p>{squatCalculation?.slopeScale}</p>
+              <p>
+                {squatCalculation?.slopeScale?.toLocaleString(lang, {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                })}
+              </p>
             </IonText>
             <IonText className="no-margin-top" data-testid="slopeHeight">
               <h5>{t('squat-calculation-slope-height') + ':'}</h5>
-              <p>{squatCalculation?.slopeHeight} m</p>
+              <p>
+                {squatCalculation?.slopeHeight?.toLocaleString(lang, {
+                  minimumFractionDigits: 1,
+                  maximumFractionDigits: 1,
+                })}{' '}
+                m
+              </p>
             </IonText>
           </>
         )}

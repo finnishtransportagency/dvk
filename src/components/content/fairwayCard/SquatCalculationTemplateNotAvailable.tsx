@@ -22,8 +22,9 @@ const SquatCalculationTemplateNotAvailable: React.FC = () => {
             <br />
             {t('squattemplates.no-squat-hint')} &nbsp;
             <u>
-              <Link to={{ pathname: '/squat/' }}>{t('squattemplates.squat-link')}</Link>.
+              <Link to={{ pathname: '/squat/' }}>{t('squattemplates.squat-link')}</Link>
             </u>
+            {t('squattemplates.no-squat-hint-post')}.
           </IonCol>
         </IonRow>
       </IonGrid>
