@@ -141,11 +141,6 @@ export async function getVatuParameters() {
   }));
 }
 
-//This function to be removed once VATU returns geojson only
-export async function getVatuV2ApiSupport() {
-  return isProductionEnvironment() ? '' : readOptionalParameterForEnvWithDefault(ParamStore.VATU_V2_APIS, '');
-}
-
 export async function getVatuPilotRoutesParameters() {
   return await Promise.all([
     readParameterForEnv(ParamStore.VATU_PILOT_ROUTE_URL),
