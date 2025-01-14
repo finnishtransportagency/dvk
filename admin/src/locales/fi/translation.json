@@ -206,7 +206,7 @@
     "primary-id-help-text": "Yksilöivä tunniste, joka näkyy selaimen osoiterivillä; sallitut merkit: (a-z) ja (0-9).",
     "linked-fairways": "Liitetyt väylät",
     "cannot-remove-fairway-header": "Väylää ei voi poistaa",
-    "cannot-remove-fairway": "Väylä on käytössä tämän väyläkortin squat laskennassa.",
+    "cannot-remove-fairway": "Väylä on käytössä tämän väyläkortin squat-laskennassa.",
     "starting-fairways": "Aloittavat väylät",
     "ending-fairways": "Päättävät väylät",
     "linked-harbours": "Liitetyt satamat",
@@ -304,8 +304,8 @@
     "calculation-fairway-form.sloped-channel": "Luiska",
     "squat-calculation-depth-warning": "Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä.",
     "squat-calculation-cannot-remove-fairway-header": "Väylää ei voi poistaa",
-    "squat-calculation-cannot-remove-fairway": "väylä on linkitetty alueeseen, jota käytetään squat laskennassa.",
-    "cannot-change-reference-level": "Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu."
+    "squat-calculation-cannot-remove-fairway": "Väylä on linkitetty alueeseen, jota käytetään squat laskennassa.",
+    "cannot-change-reference-level": "Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin squat-laskennan sijainnit on poistettu."
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
