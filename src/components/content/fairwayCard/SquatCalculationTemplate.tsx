@@ -60,7 +60,7 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
     (port && port.length > 0 ? ':' + port : '') +
     '/squat?lang=' +
     lang +
-    '&sweptDepth = ' +
+    '&sweptDepth=' +
     squatCalculation?.depth +
     '&waterDepth=' +
     squatCalculation?.estimatedWaterDepth +
