@@ -304,8 +304,8 @@
     "calculation-fairway-form.sloped-channel": "Luiska",
     "squat-calculation-depth-warning": "Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä.",
     "squat-calculation-cannot-remove-fairway-header": "Väylää ei voi poistaa",
-    "squat-calculation-cannot-remove-fairway": "Väylä on linkitetty alueeseen, jota käytetään squat laskennassa.",
-    "cannot-change-reference-level": "Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin squat-laskennan sijainnit on poistettu."
+    "squat-calculation-cannot-remove-fairway": "Väylä on linkitetty alueeseen, jota käytetään squat-laskennassa.",
+    "cannot-change-reference-level": "Väyläkortille on lisätty squat-laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin squat-laskennan sijainnit on poistettu."
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
