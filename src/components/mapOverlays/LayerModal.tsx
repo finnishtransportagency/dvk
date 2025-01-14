@@ -286,6 +286,7 @@ const LayerModal: React.FC<ModalProps> = ({
               {/*IonItem just for focusing purposes*/}
               <IonItem className="ion-no-padding" lines="none">
                 <IonCheckbox
+                  aria-label={t('homePage.map.controls.layer.selectAll')}
                   labelPlacement="end"
                   justify="start"
                   checked={selectAllChecked}
