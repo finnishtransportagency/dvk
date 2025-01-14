@@ -268,7 +268,7 @@
     "temporary-notification": "Notice",
     "temporary-notification-start": "[en] Huomion voimaantulopäivä",
     "temporary-notification-end": "[en] Huomion päättymispäivämäärä",
-    "squat-calculation-title": "[en] Squat laskennan sijainnin lisääminen",
+    "squat-calculation-title": "[en] Squat-laskennan sijainnin lisääminen",
     "calculation-place": "Calculation location name",
     "squat-calculation": "[en] Sijainti",
     "squat-target-fairways": "[en] Väylä johon laskenta kohdistetaan",
@@ -280,8 +280,8 @@
     "calculation-slope-scale": "[en] Luiskan kaltevuus",
     "calculation-slope-height": "[en] Luiskan korkeus",
     "calculation-additional-information": "Additional calculation information",
-    "squat-calculation-place-help-text": "[en] Selkokielinen nimi mihin laskentaa sijoituu.",
-    "squat-calculation-depth-help-text": "[en] Määräytyy väyläalue valintojen mukaan.",
+    "squat-calculation-place-help-text": "[en] Selkokielinen nimi laskennan kohteesta.",
+    "squat-calculation-depth-help-text": "[en] Määräytyy valittujen väyläalueiden mukaan.",
     "squat-calculation-estimated-water-depth-help-text": "[en] Arvio laskennan alueella vallitsevasta vesisyvyydestä.",
     "squat-calculation-fairway-form-help-text": "[en] Valitse väylän poikkileikkaustyyppi johon laskenta suoritetaan ja täydennä tarvittavat lisätiedot.",
     "squat-calculation-fairway-width-help-text": "0 - 300 m",
@@ -291,10 +291,10 @@
     "calculation-fairway-form.open-water": "[en] Avovesi",
     "calculation-fairway-form.channel": "[en] Kanava",
     "calculation-fairway-form.sloped-channel": "[en] Luiska",
-    "squat-calculation-depth-warning": "[en] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä",
+    "squat-calculation-depth-warning": "[en] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä.",
     "squat-calculation-cannot-remove-fairway-header": "Cannot remove fairway",
     "squat-calculation-cannot-remove-fairway": "The fairway is linked to an area that is in use in this squat calculation template.",
-    "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu."
+    "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat-laskennan sijainnit on poistettu."
   },
   "harbour": {
     "primary-id": "Harbour ID",
