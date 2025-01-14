@@ -20,7 +20,7 @@ const SquatCalculationTemplateNotAvailable: React.FC = () => {
             {t('squattemplates.no-squat-templates')}
             <br />
             <br />
-            {t('squattemplates.no-squat-hint')} &nbsp;
+            {t('squattemplates.no-squat-hint')}
             <u>
               <Link to={{ pathname: '/squat/' }}>{t('squattemplates.squat-link')}</Link>
             </u>
