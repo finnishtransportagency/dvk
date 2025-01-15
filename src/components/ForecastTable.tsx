@@ -16,6 +16,9 @@ type ForecastTableProps = {
 type ForecastRowProps = {
   forecastItem: ForecastItem;
   visible?: boolean;
+};
+
+type ForecastWeatherLimitRowProps = ForecastRowProps & {
   weatherLimits?: WeatherLimitById;
 };
 
@@ -92,7 +95,7 @@ const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem, visibl
   );
 };
 
-const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem, visible, weatherLimits }) => {
+const ForecastTableRow: React.FC<ForecastWeatherLimitRowProps> = ({ forecastItem, visible, weatherLimits }) => {
   const { i18n } = useTranslation();
   const lang = i18n.language;
 
