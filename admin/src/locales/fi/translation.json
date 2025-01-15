@@ -129,7 +129,7 @@
     "version": "Versio",
     "add-section-squat-calculation": "Lisää laskennan sijainti",
     "cannot-add-section-squat-calculation": "Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
-    "squat-calculation-description": "Lorem ipsum..."
+    "squat-calculation-description": "Haraussyvyytenä käytetään valittujen väyläalueiden matalinta haraussyvyyttä. Huomioithan, että jos väylän alueisiin tulee muutoksia, pitää laskentapisteet tarkistaa ja niihin tehdä tarvittavat muutokset. Mikäli jokin laskentapisteeseen liitetty väyläalue on poistettu VATU-tietokannasta, ei laskentapistettä näytetä DVK-sovelluksessa. Tällöin väyläkortista tulee julkaista uusi versio, jossa laskentapiste on päivitetty."
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
@@ -187,7 +187,7 @@
     "temporary-notification-add": "Väyläkortille on mahdollista lisätä huomioteksti, joka sijoitetaan väyläkortin alkuun erilliseen elementtiin. Huomiolle tulee aina lisätä vähintään <strong>voimaantulopäivämäärä</strong>. Jos huomiolle ei merkitä <strong>päättymispäivämäärää</strong>, on huomio voimassa toistaiseksi.",
     "temporary-notification-in-effect-content": "Väliaikaiselle huomiolle on aina asetettava vähintään voimaantulopäivämäärä. Ilman päättymispäivämäärää huomio on toistaiseksi voimassa, ja huomio tulee poistaa näkyvistä käsin.",
     "temporary-notification-in-effect-title": "Väliaikaisen huomion voimassaoloaika",
-    "squat-calculation-add": "Väyläkortille on mahdollista lisätä ....",
+    "squat-calculation-add": "Väyläkortille voidaan lisätä squat-laskentapisteitä, joilla voidaan helpottaa loppukäyttäjien squat-laskennan suorittamista tietyille väylän kohdille tai alueille.",
     "starting-fairway-title": "Aloittavat väylät järjestyksen valinta",
     "starting-fairway-description": "Voit valita useita aloittavia väyliä. Aloittavien väylien järjestys määräytyy sen mukaan, missä järjestyksessä suoritat valinnat <span className='sequenceButtonAsSpan'></span>-painikkeella. Järjestyksen määrittely vaikuttaa siihen, missä järjestyksessä väylien tiedot esitetään väyläkortin tekstiosuuksissa.",
     "ending-fairway-title": "Päättävät väylät järjestyksen valinta",
