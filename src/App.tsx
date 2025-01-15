@@ -153,6 +153,7 @@ const DvkIonApp: React.FC = () => {
   useNameLayer();
   const mareographLayer = useMareographLayer();
   const observationLayer = useObservationLayer();
+  const forecastLayer = useForecastLayer();
   const buoyLayer = useBuoyLayer();
   useVtsLineLayer();
   useVtsPointLayer();
@@ -174,7 +175,6 @@ const DvkIonApp: React.FC = () => {
   usePilotageAreaBorderLayer();
   useDirwayLayer();
   useRestrictionPortLayer();
-  useForecastLayer();
   /* Initialize observation and merograph data for offline use, needed in fairway cards */
   useObservationFeatures();
   useMareographFeatures();
@@ -202,7 +202,7 @@ const DvkIonApp: React.FC = () => {
     ];
     const bgLayers: DvkLayerState[] = [bgFinlandLayer, bgMmlmeriLayer, bgMmljarviLayer];
     const allLayers: DvkLayerState[] = mandatoryLayers.concat(bgLayers);
-    const conditionsLayers: DvkLayerState[] = [mareographLayer, observationLayer, buoyLayer];
+    const conditionsLayers: DvkLayerState[] = [mareographLayer, observationLayer, forecastLayer, buoyLayer];
 
     let percent = 0;
     const resourcePercentage = 1 / allLayers.length;
@@ -235,6 +235,7 @@ const DvkIonApp: React.FC = () => {
     specialArea15Layer,
     mareographLayer,
     observationLayer,
+    forecastLayer,
     buoyLayer,
   ]);
 

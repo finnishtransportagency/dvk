@@ -163,13 +163,13 @@ export function mapFairwayCardToModel(
         return {
           place: mapText(t?.place),
           depth: t?.depth,
-          estimatedWaterDepth: t?.estimatedWaterDepth && t.estimatedWaterDepth !== '' ? parseFloat(t?.estimatedWaterDepth) : null,
-          fairwayWidth: t?.fairwayWidth && t.fairwayWidth !== '' ? parseFloat(t?.fairwayWidth) : null,
+          estimatedWaterDepth: t?.estimatedWaterDepth && t.estimatedWaterDepth !== '' ? Number(t?.estimatedWaterDepth) : null,
+          fairwayWidth: t?.fairwayWidth && t.fairwayWidth !== '' ? Number(t?.fairwayWidth) : null,
           fairwayform: t?.fairwayForm,
           targetFairways: t?.targetFairways ?? [],
           suitableFairwayAreas: t?.suitableFairwayAreas ?? [],
-          slopeScale: t?.slopeScale && t.slopeScale !== '' ? parseFloat(t?.slopeScale) : null,
-          slopeHeight: t?.slopeHeight && t.slopeHeight !== '' ? parseFloat(t?.slopeHeight) : null,
+          slopeScale: t?.slopeScale && t.slopeScale !== '' ? Number(t?.slopeScale) : null,
+          slopeHeight: t?.slopeHeight && t.slopeHeight !== '' ? Number(t?.slopeHeight) : null,
           additionalInformation: mapText(t?.additionalInformation),
           fairwayForm: t?.fairwayForm,
         };

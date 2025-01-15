@@ -294,7 +294,7 @@
     "squat-calculation-depth-warning": "[en] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä.",
     "squat-calculation-cannot-remove-fairway-header": "Cannot remove fairway",
     "squat-calculation-cannot-remove-fairway": "The fairway is linked to an area that is in use in this squat calculation template.",
-    "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu."
+    "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat-laskennan sijainnit on poistettu."
   },
   "harbour": {
     "primary-id": "Harbour ID",
