@@ -35,7 +35,7 @@ export const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
                   {' - '}
                   <em>
                     {t('length')} {quay?.length?.toLocaleString()}&nbsp;
-                    <dd aria-label={t('unit.mDesc', { count: Number(quay?.length) })}>m</dd>
+                    <span aria-label={t('unit.mDesc', { count: Number(quay?.length) })}>m</span>
                   </em>
                 </>
               )}
@@ -45,7 +45,7 @@ export const QuayInfo: React.FC<QuayInfoProps> = ({ data }) => {
                   <span key={sectionUuid}>
                     <br />
                     {section?.name && section.name + ': '} {t('sweptDepth', { count: 1 })} {section?.depth?.toLocaleString()}&nbsp;
-                    <dd aria-label={t('unit.mDesc', { count: Number(section?.depth) })}>m</dd>
+                    <span aria-label={t('unit.mDesc', { count: Number(section?.depth) })}>m</span>
                   </span>
                 );
               })}

@@ -28,7 +28,6 @@ import alertIcon from '../theme/img/alert_icon.svg';
 import weatherIcon from '../theme/img/weather_icon.svg';
 import calculateIcon from '../theme/img/calculate_icon.svg';
 import routeIcon from '../theme/img/route_icon.svg';
-import extLink from '../theme/img/ext_link.svg';
 import LocationPermissionControl from './LocationPermissionControl';
 import LanguageBar from './LanguageBar';
 import { useDvkContext } from '../hooks/dvkContext';
@@ -60,7 +59,7 @@ const RouteItem: React.FC<RouteItemProps> = ({ routerLink, icon, title, dataTest
       disabled={router.routeInfo.pathname === routerLink}
       data-testid={dataTestId}
     >
-      <IonIcon slot="start" src={icon} />
+      <IonIcon slot="start" src={icon} aria-hidden="true" />
       {title}
     </IonItem>
   );
@@ -125,7 +124,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen, setIsFeedbac
                       title={t('closeMenu')}
                       aria-label={t('closeMenu')}
                     >
-                      <IonIcon className="otherIconLarge" src={closeIcon} />
+                      <IonIcon className="otherIconLarge" src={closeIcon} aria-hidden="true" />
                     </IonButton>
                   </IonCol>
                 </IonRow>
@@ -173,7 +172,6 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ setIsSourceOpen, setIsFeedbac
                         }}
                       >
                         {t('leave-feedback')}
-                        <IonIcon src={extLink} slot="end" style={{ fontSize: '10px' }}></IonIcon>
                       </IonButton>
                     </IonButtons>
                   </IonCol>

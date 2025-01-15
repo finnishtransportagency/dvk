@@ -576,6 +576,10 @@ label.input-wrapper {
   line-height: 1rem;
 }
 
+.formGrid .formInput .input-bottom .helper-text {
+  color: red;
+}
+
 .formGrid .formInput.invalid .input-bottom,
 .formGrid .formInput.invalid .textarea-bottom {
   flex-direction: column-reverse;

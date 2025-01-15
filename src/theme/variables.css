@@ -115,12 +115,12 @@ http://ionicframework.com/docs/theming/ */
   --ion-color-dark-tint: #474747;
 
   /** medium **/
-  --ion-color-medium: #757575;
-  --ion-color-medium-rgb: 117,117,117;
+  --ion-color-medium: #727272;
+  --ion-color-medium-rgb: 114,114,114;
   --ion-color-medium-contrast: #ffffff;
   --ion-color-medium-contrast-rgb: 255,255,255;
-  --ion-color-medium-shade: #676767;
-  --ion-color-medium-tint: #838383;
+  --ion-color-medium-shade: #646464;
+  --ion-color-medium-tint: #808080;
 
   /** light **/
   --ion-color-light: #d8d8d8;

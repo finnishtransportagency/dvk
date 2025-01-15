@@ -144,7 +144,7 @@ const MainPage: React.FC = () => {
   return (
     <IonPage>
       <IonHeader className="ion-no-border" id="mainPageContent">
-        {isCreating && <IonProgressBar type="indeterminate" />}
+        {isCreating && <IonProgressBar type="indeterminate" aria-hidden="true" />}
         <IonGrid className="optionBar">
           <IonRow className="ion-align-items-end">
             <IonCol size="auto">

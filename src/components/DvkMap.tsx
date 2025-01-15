@@ -515,7 +515,7 @@ class DvkMap {
     this.olMap?.addControl(this.zoomControl);
 
     const span = document.createElement('span');
-    span.innerHTML = '<img src="' + north_arrow_small + '">';
+    span.innerHTML = '<img src="' + north_arrow_small + '" alt="">';
     this.olMap?.removeControl(this.rotateControl);
     this.rotateControl = new Rotate({
       autoHide: false,

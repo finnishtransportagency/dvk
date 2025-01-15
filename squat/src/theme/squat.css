@@ -241,11 +241,16 @@ ion-item.item.align-center ion-radio {
   padding-left: 0;
 }
 
+.sc-ion-input-md-h .input-bottom .helper-text.sc-ion-input-md {
+  color: var(--ion-color-medium);
+}
+
 .input-fill-outline.sc-ion-input-md-h {
   --border-color: var(--ion-color-dark);
 }
 
 ion-note.input-helper {
+  color: var(--ion-color-medium);
   display: inline-block;
   font-size: 12px;
   padding-left: 16px;

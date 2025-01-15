@@ -310,6 +310,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
                 buffer={percentDone}
                 type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
                 className={fetchError ? 'danger' : ''}
+                aria-hidden="true"
               />
             )}
             <ExtMapControls

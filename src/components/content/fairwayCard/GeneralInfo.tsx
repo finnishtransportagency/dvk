@@ -17,13 +17,13 @@ export const GeneralInfo: React.FC<GeneralInfoProps> = ({ data }) => {
   return (
     <p>
       {t('minimumWidth', { count: minimumWidths.length })}: {minimumWidths.join(' / ') || '-'}&nbsp;
-      <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
+      <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>
       <br />
       {t('minimumTurningCircle', { count: minimumTurningCircles.length })}: {minimumTurningCircles.join(' / ') || '-'}&nbsp;
-      <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
+      <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>
       <br />
       {t('reserveWater', { count: reserveWaters.length })}: {reserveWaters.join(' / ').replaceAll('.', getCurrentDecimalSeparator()) || '-'}&nbsp;
-      <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
+      <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>
     </p>
   );
 };
