@@ -67,6 +67,7 @@ const RadioSelectField: React.FC<RadioSelectProps> = (props) => {
   return (
     <IonRadioGroup value={props.value} name={props.name} onIonChange={handleChange} aria-label={props.title}>
       <Label
+        id={`${props.actionType}-label`}
         title={props.title}
         required={props.required}
         infoContentTitle={props.infoContentTitle}

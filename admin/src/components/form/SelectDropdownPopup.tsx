@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { IonCheckbox, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Lang, SelectOption } from '../../utils/constants';
+import { AreaSelectOption, Lang, SelectOption } from '../../utils/constants';
 import { constructSelectOptionLabel, sortTypeSafeSelectOptions } from '../../utils/common';
 import type { CheckboxCustomEvent } from '@ionic/react';
 import SelectDropdownFilter from './SelectDropdownFilter';
@@ -9,7 +9,7 @@ import SelectDropdownFilter from './SelectDropdownFilter';
 interface SelectDropdownPopupProps {
   trigger: string;
   triggerRef: React.RefObject<HTMLIonItemElement>;
-  options: SelectOption[] | null;
+  options: SelectOption[] | AreaSelectOption[] | null;
   selected: number[];
   setSelected: (selected: number[]) => void;
   setIsExpanded: (expanded: boolean) => void;
@@ -93,6 +93,7 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({
       onWillPresent={handlePopupWillOpen}
       onDidPresent={handlePopupOpen}
       onDidDismiss={handlePopupClose}
+      keepContentsMounted={true}
     >
       <SelectDropdownFilter
         ref={searchRef}
@@ -106,6 +107,7 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({
         {filteredItems.map((item) => {
           const optionLabel = constructSelectOptionLabel(item, lang, showId);
           const optionSelected = isOptionSelected(item);
+
           return (
             <IonItem key={item.id.toString()} className={optionSelected ? 'option-selected' : ''} lines="none">
               <IonCheckbox
@@ -117,6 +119,11 @@ const SelectDropdownPopup: React.FC<SelectDropdownPopupProps> = ({
                 value={item}
               >
                 <IonLabel color={optionSelected ? 'primary' : 'dark'}>{optionLabel}</IonLabel>
+                {'subtext' in item && (item as AreaSelectOption).subtext && (
+                  <IonLabel color={optionSelected ? 'primary' : 'dark'} className="multiSelect subtext">
+                    {(item as AreaSelectOption).subtext}
+                  </IonLabel>
+                )}
               </IonCheckbox>
             </IonItem>
           );

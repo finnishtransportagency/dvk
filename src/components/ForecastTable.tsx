@@ -43,6 +43,8 @@ const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem, visibl
 };
 
 const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem, visible }) => {
+  const { i18n } = useTranslation();
+  const lang = i18n.language;
   let windColClass = 'ForecastColGreen';
   if (forecastItem.windSpeed >= 14) {
     windColClass = 'ForecastColYellow';
@@ -88,10 +90,18 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem, visible })
         {Math.round(forecastItem.windGust)} m/s
       </IonCol>
       <IonCol size="3" className={waveColClass + leftAlign}>
-        {(Math.round(forecastItem.waveHeight * 10) / 10).toFixed(1)} m, {Math.round(forecastItem.waveDirection)}&deg;
+        {(Math.round(forecastItem.waveHeight * 10) / 10).toLocaleString(lang, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        })}{' '}
+        m, {Math.round(forecastItem.waveDirection)}&deg;
       </IonCol>
       <IonCol size="2" className={visibilityColClass + leftAlign}>
-        {(Math.round(forecastItem.visibility * 10) / 10).toFixed(1)} km
+        {(Math.round(forecastItem.visibility * 10) / 10).toLocaleString(lang, {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        })}{' '}
+        km
       </IonCol>
     </IonRow>
   );

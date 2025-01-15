@@ -150,6 +150,7 @@
     "harboursTitle": "Farledens hamnar",
     "areasTitle": "Farledsområden",
     "routesTitle": "Lotsningsrutter",
+    "squatTitle": "Squat beräkning",
     "weatherForecastsTitle": "Väderprognoser",
     "information": "Farledsdata",
     "liningAndMarking": "Farledsdragning och utmärkning",
@@ -279,7 +280,8 @@
     "mareographLocation": "Mareografens plats",
     "observationLocation": "Observationsstations läge",
     "fairwayNumber": "Farleds nummer",
-    "fairwayNumbers": "Farleds nummer"
+    "fairwayNumbers": "Farleds nummer",
+    "forecastNotFound": "Ett fel uppstod vid laddning av väderprognoser. Väderprognoserna kommer att laddas om så snart som möjligt."
   },
   "routes": {
     "info": "De presenterade lotsningsrutterna är inte som sådana lämpade som enligt lotslagen (561/2023) hänvisade individuella lotsningsplaner för ett enskilt fartyg. Lotsningsrutterna har utarbetats som vägledande allmänna presentationer och felfriheten i enskilda lotsleder kan inte garanteras. Användning av lotsningsrutt, som presenteras i det digitala farledskortet, för navigering av ett fartyg är alltid på befälhavarens ansvar.",
@@ -330,6 +332,26 @@
     "faultsLastUpdated": "Felmeddellanden för säkerhetsanordningar nedladdade för mer än {{ val, number}} h sedan.",
     "faultsLastUpdatedUnknown": "Tidpunkt för senaste nedladdning av felmeddelanden för säkerhetsanordningar är okänd."
   },
+  "squattemplates": {
+    "no-squat-templates": "Squat-beräkningsmallar har ännu inte lagts till i farledskortet.",
+    "no-squat-hint": "Du kan ändå använda den ",
+    "squat-link": "Squat beräkning",
+    "no-squat-hint-post": " som finns i tjänsten",
+    "squat-calculation-depth": "Ramningsdjup",
+    "squat-calculation-areas": "Farledsområden där beräkningen kan tillämpas",
+    "squat-calculation-estimated-water-depth": "Estimerad vattendjup",
+    "squat-calculation-fairway-form": "Typskärning av farleds för beräkningspunkten",
+    "squat-calculation-fairway-width": "Farledsbredd",
+    "squat-calculation-slope-scale": "Släntlutning",
+    "squat-calculation-slope-height": "Slänthöjd",
+    "squat-calculation-additional-information": "Ytterligare information",
+    "squat-calculation-open-water": "Öppet vatten",
+    "squat-calculation-channel": "Kanal",
+    "squat-calculation-sloped-channel": "Farledsslänt",
+    "squat-calculation-zoom-to-areas": "Fokusera på beräkningsområdena",
+    "squat-calculation-open-link": "Gå till den förifyllda avancerad Squat-kalkylatorn",
+    "areaType1": "Navigationsområde"
+  },
   "appUpdateAlert": {
     "title": "Uppdatering tillgänglig",
     "content": "Vid fortsatt användning, bör applikationen uppdateras.",
@@ -341,7 +363,9 @@
     "title": "Appen initialiseras",
     "content": "Var vänlig och vänta",
     "errorTitle": "Nedladdningsfel",
-    "errorContent": "Uppstod ett fel i nedladdningen,  var vänlig och försök igen."
+    "bgErrorTitle": "Fel vid nedladdning av bakgrundskartor",
+    "errorContent": "Uppstod ett fel i nedladdningen,  var vänlig och försök igen.",
+    "bgErrorContent": "Det uppstod ett fel vid nedladdning av bakgrundskartor. Du kan fortsätta använda applikationen, men bakgrundskartmaterialet kan vara ofullständigt."
   },
   "popup": {
     "common": {
@@ -581,10 +605,12 @@
     "filter": "Välj filter...",
     "sortOldToNew": "Äldst först",
     "sortNewToOld": "Nyaste först",
-    "submit": "Skicka"
+    "submit": "Skicka",
+    "continue": "Fortsätta"
   },
-  "tileLoadWarning": {
-    "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat."
+  "loadWarnings": {
+    "vectorTileError": "Fel i laddning av kartans vektortegel. Karta använder tillfälligt bakgrundskarta i rasterformat.",
+    "conditionsError": "Oväntat fel vid laddning av förhållandelager. Vissa förhållandelager är tillfälligt otillgängliga."
   },
   "source": {
     "title": "Informationskällor och användningsvillkor",

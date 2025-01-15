@@ -12,7 +12,7 @@ import {
   Polygon as turf_Polygon,
   FeatureCollection as turf_FeatureCollection,
 } from 'geojson';
-import { intersects } from 'ol/extent';
+import { Extent, intersects } from 'ol/extent';
 
 function createFeature(featCoords: Array<turf_Position>, area1Properties: object | null, area2Properties: object | null) {
   const format = new GeoJSON();
@@ -20,8 +20,13 @@ function createFeature(featCoords: Array<turf_Position>, area1Properties: object
     dataProjection: 'EPSG:4326',
     featureProjection: MAP.EPSG,
   }) as Feature<Geometry>;
-  feat.setProperties({ area1Properties: area1Properties }, true);
-  feat.setProperties({ area2Properties: area2Properties }, true);
+  feat.setProperties(
+    {
+      area1Properties: area1Properties,
+      area2Properties: area2Properties,
+    },
+    true
+  );
   return feat;
 }
 
@@ -57,38 +62,56 @@ export function getFairwayAreaBorderFeatures(areas: Feature<Geometry>[]) {
   const format = new GeoJSON();
   const borderLineFeatures: Feature<Geometry>[] = [];
   const turfPolygons: Array<turf_Polygon> = [];
+  const areaExtents: Array<Extent | undefined> = [];
 
   areas.forEach((area, i) => {
     turfPolygons[i] = format.writeGeometryObject(area.getGeometry() as Geometry, {
       dataProjection: 'EPSG:4326',
       featureProjection: MAP.EPSG,
     }) as turf_Polygon;
+    areaExtents[i] = area.getGeometry()?.getExtent();
   });
 
-  areas.forEach((area1, i) => {
-    const turfPolygonLineSegments = turf_lineSegment(turfPolygons[i]);
+  const closeAreaPairs: Array<{ a: number; b: number }> = [];
+
+  for (let i = 0; i < areaExtents.length; i++) {
+    const ae1 = areaExtents[i];
+    if (ae1) {
+      for (let j = i + 1; j < areaExtents.length; j++) {
+        const ae2 = areaExtents[j];
+        if (ae2 && intersects(ae1, ae2)) {
+          closeAreaPairs.push({ a: i, b: j });
+        }
+      }
+    }
+  }
+
+  turfPolygons.forEach((turfPolygon, i) => {
+    const turfPolygonLineSegments = turf_lineSegment(turfPolygon);
     const segmentsNeighbour: Array<number | null> = Array(turfPolygonLineSegments.features.length).fill(null);
-    const area1Extent = area1.getGeometry()?.getExtent();
 
-    areas.forEach((area2, j) => {
-      // Do not self compare
-      if (area1.getProperties().id === area2.getProperties().id) return;
+    const closeIds: Array<number> = [];
+    for (const closeAreaPair of closeAreaPairs) {
+      if (closeAreaPair.a === i) {
+        closeIds.push(closeAreaPair.b);
+      } else if (closeAreaPair.b === i) {
+        closeIds.push(closeAreaPair.a);
+      }
+    }
 
-      const area2Extent = area2.getGeometry()?.getExtent();
-      if (!area1Extent || !area2Extent || !intersects(area1Extent, area2Extent)) return;
-
+    for (const closeId of closeIds) {
       turfPolygonLineSegments.features.forEach((turfPolygonLineSegment, k) => {
         if (segmentsNeighbour[k] === null) {
           const segmentLineString = turfPolygonLineSegment.geometry;
-          const turfOverlappingSegment = turf_lineOverlap(segmentLineString, turfPolygons[j], { tolerance: 0.002 });
+          const turfOverlappingSegment = turf_lineOverlap(segmentLineString, turfPolygons[closeId], { tolerance: 0.002 });
           // Do not consider polygon edge overlapping if segment length is small (for example polygon touches only in corner)
           const turfOverlapFeatures = turfOverlappingSegment.features.filter((v) => turf_length(v) > 0.002);
           if (turfOverlapFeatures.length > 0) {
-            segmentsNeighbour[k] = j;
+            segmentsNeighbour[k] = closeId;
           }
         }
       });
-    });
+    }
     borderLineFeatures.push(...getAreaBorderlineFeatures(areas, i, turfPolygonLineSegments, segmentsNeighbour));
   });
   return borderLineFeatures;

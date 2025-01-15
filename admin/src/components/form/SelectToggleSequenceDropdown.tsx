@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Lang, SelectOption } from '../../utils/constants';
 import { IonButton, IonItem, IonLabel, IonList, IonPopover } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { addSequence, constructSelectOptionLabel, removeSequence } from '../../utils/common';
+import { addSequence, constructSelectOptionLabel, getSortedOptions, removeSequence } from '../../utils/common';
 import './SelectToggleSequenceDropdown.css';
 import { SelectedFairwayInput } from '../../graphql/generated';
 
@@ -31,8 +31,6 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
   const lang = i18n.resolvedLanguage as Lang;
 
   const popover = useRef<HTMLIonPopoverElement>(null);
-
-  const sortedOptions = options?.sort((a, b) => (a.id as number) - (b.id as number)) as SelectOption[];
 
   const isOptionSelected = (value: SelectOption) => {
     if (value === undefined) {
@@ -80,9 +78,10 @@ const SelectToggleSequenceDropdown: React.FC<SelectToggleSequenceDropdownProps> 
       arrow={false}
       onDidPresent={handlePopupOpen}
       onDidDismiss={handlePopupClose}
+      keepContentsMounted={true}
     >
-      <IonList className="ion-no-padding sequenceList">
-        {sortedOptions?.map((option) => {
+      <IonList className="sequenceList">
+        {getSortedOptions(options, selected)?.map((option) => {
           const optionSelected = isOptionSelected(option);
           const optionLabel = constructSelectOptionLabel(option, lang, showId);
           const currentSequenceNumber = getSequenceNumber(option.id as number);

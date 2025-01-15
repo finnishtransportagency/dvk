@@ -32,7 +32,7 @@ import Fill from 'ol/style/Fill';
 import { defaults } from 'ol/interaction/defaults';
 import north_arrow_small from '../theme/img/north_arrow_small.svg';
 import InfoTextControl from './mapControls/InfoTextControl';
-import { isMobile } from '../utils/common';
+import { isMobile, setResponseState } from '../utils/common';
 import VectorImageLayer from 'ol/layer/VectorImage';
 import { Icon, Stroke } from 'ol/style';
 import locationIcon from '../theme/img/user_location_indicator.svg';
@@ -266,7 +266,7 @@ class DvkMap {
 
   // Custom function (overrides tileloaderror) to load vectortiles in order to get response status code and check timeout
   // Throws error if timeout and sets status code accordingly in case of response
-  private useCustomVectorTileLoader = (source: VectorTileSource, dispatch: Dispatch<Action>) => {
+  private readonly useCustomVectorTileLoader = (source: VectorTileSource, dispatch: Dispatch<Action>) => {
     const retryCodes = [404, 408, 429, 500, 502, 503, 504];
     // eslint-disable-next-line
     source.setTileLoadFunction((tile: any, url: string) => {
@@ -299,24 +299,15 @@ class DvkMap {
         } catch {
           tile.setState(3);
           if (response) {
-            this.setResponseState(dispatch, response.status, response.statusText, this.t('tileLoadWarning.vectorTileError'));
+            setResponseState(dispatch, response.status, response.statusText, this.t('loadWarnings.vectorTileError'));
           }
         }
       });
     });
   };
 
-  private setResponseState = (dispatch: Dispatch<Action>, statusCode: number, statusText: string, errorText: string) => {
-    dispatch({
-      type: 'setResponse',
-      payload: {
-        value: [String(statusCode), statusText, errorText],
-      },
-    });
-  };
-
   // eslint-disable-next-line
-  private setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
+  private readonly setBackgroundLayers = (olMap: Map, styleJson: any, bgColor: string, waterColor: string) => {
     const resolutions = [8192, 4096, 2048, 1024, 512, 256, 128, 64, 32, 16, 8, 4, 2, 1, 0.5];
     // Font replacement so we do not need to load web fonts in the worker
     const getFonts = (fonts: Array<string>) => {
@@ -481,6 +472,7 @@ class DvkMap {
     } else if (this.olMap && bgMapType === 'land') {
       this.setBackgroundLayers(this.olMap, bgLandMapStyles, '#ffffff', 'rgb(158,189,255)');
     }
+    this.backgroundMapType = bgMapType;
   };
 
   public setOfflineMode(isOffline: boolean) {

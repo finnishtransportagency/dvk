@@ -150,6 +150,7 @@
     "harboursTitle": "Fairway harbours",
     "areasTitle": "Fairway areas",
     "routesTitle": "Pilot routes",
+    "squatTitle": "Squat calculator",
     "weatherForecastsTitle": "Weather forecasts",
     "information": "Fairway data",
     "liningAndMarking": "Channel alignment and marking",
@@ -279,7 +280,8 @@
     "mareographLocation": "Location of the measurement site",
     "observationLocation": "Location of the observation station",
     "fairwayNumber": "Fairway ID",
-    "fairwayNumbers": "Fairway IDs"
+    "fairwayNumbers": "Fairway IDs",
+    "forecastNotFound": "An error occurred while loading weather forecasts. The weather forecasts will be reloaded as soon as possible."
   },
   "routes": {
     "info": "The provided pilotage routes do not as such account for a vessel spesific pilotage plan referred to in the Pilotage Act (561/2023). Pilotage routes are presented as general indicative presentations and the correctness of an individual pilotage route cannot be guaranteed.  Any possible use of a pilotage route provided in the Digital Fairway Card for navigational purposes of a specific vessel falls exclusively under the responsibility of the master of the vessel.",
@@ -330,6 +332,26 @@
     "faultsLastUpdated": "AtoN defects downloaded more than {{ val, number}} h ago.",
     "faultsLastUpdatedUnknown": "The time of the latest download of the AtoN defects is unknown."
   },
+  "squattemplates": {
+    "no-squat-templates": "Squat calculation templates have not yet been added to this fairway card.",
+    "no-squat-hint": "You can still use the ",
+    "squat-link": "Squat calculator",
+    "no-squat-hint-post": " available in the service",
+    "squat-calculation-depth": "Swept depth",
+    "squat-calculation-areas": "Fairway areas to which the calculation can be applied",
+    "squat-calculation-estimated-water-depth": "Estimated water depth",
+    "squat-calculation-fairway-form": "Form of the fairway in the calculation point",
+    "squat-calculation-fairway-width": "Channel width",
+    "squat-calculation-slope-scale": "Scale of slope",
+    "squat-calculation-slope-height": "Height of slope",
+    "squat-calculation-additional-information": "Additional information",
+    "squat-calculation-open-water": "Open water",
+    "squat-calculation-channel": "Channnel",
+    "squat-calculation-sloped-channel": "Sloped channel",
+    "squat-calculation-zoom-to-areas": "Zoom to the calculation areas",
+    "squat-calculation-open-link": "Open the pre-filled extensive Squat calculator",
+    "areaType1": "Navigation area"
+  },
   "appUpdateAlert": {
     "title": "Update available",
     "content": "To continue using app you must update it.",
@@ -341,7 +363,9 @@
     "title": "Initializing app",
     "content": "Please wait",
     "errorTitle": "Loading error",
-    "errorContent": "Error occurred when loading data. Please try again later."
+    "bgErrorTitle": "Error downloading background maps",
+    "errorContent": "Error occurred when loading data. Please try again later.",
+    "bgErrorContent": "An error occurred while downloading background maps. You can continue using the application, but the background map data may be incomplete."
   },
   "popup": {
     "common": {
@@ -580,10 +604,12 @@
     "filter": "Select filter...",
     "sortOldToNew": "Oldest first",
     "sortNewToOld": "Newest first",
-    "submit": "Submit"
+    "submit": "Submit",
+    "continue": "Continue"
   },
-  "tileLoadWarning": {
-    "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use."
+  "loadWarnings": {
+    "vectorTileError": "Unexpected error in loading of vector chart data. A raster chart is temporarily in use.",
+    "conditionsError": "Unexpected error in loading condition layers. Some condition layers are temporarily unavailable."
   },
   "source": {
     "title": "Data sources and terms of use",

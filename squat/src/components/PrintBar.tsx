@@ -80,7 +80,9 @@ const PrintBar: React.FC = () => {
                 />
               </>
             }
-            triggerIcon={<IonIcon src={shareIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />}
+            triggerIcon={
+              <IonIcon aria-label={t('header.shareable-link-title')} src={shareIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />
+            }
             triggerTitle={t('header.shareable-link-title')}
             triggerClassName={embeddedSquat ? 'small no-print' : 'large no-background-focused'}
             handleDismiss={handleToastDismiss}
@@ -94,7 +96,7 @@ const PrintBar: React.FC = () => {
             title={t('header.print')}
             aria-label={t('header.print')}
           >
-            <IonIcon color="primary" src={printIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />
+            <IonIcon aria-label={t('header.print')} color="primary" src={printIcon} size={embeddedSquat ? 'small' : 'medium'} slot="icon-only" />
           </IonButton>
         </IonCol>
       </IonRow>

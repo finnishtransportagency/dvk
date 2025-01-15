@@ -22,7 +22,6 @@ import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
 import ClearSearchButton from '../components/ClearSearchButton';
-import { getMap } from '../components/map/DvkMap';
 import { Status, TemporaryNotification } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
 
@@ -44,7 +43,6 @@ const HeaderButton: React.FC<HeaderButtonProps> = ({ headername, text, sortBy, h
 };
 
 const MainPage: React.FC = () => {
-  getMap().currentExtent = null;
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.language as Lang;
   const history = useHistory();
@@ -352,7 +350,9 @@ const MainPage: React.FC = () => {
                     {t('item-type-' + item.type)}
                   </IonCol>
                   <IonCol size="1.25">{groups[Number(item.group ?? 0)]}</IonCol>
-                  <IonCol size="1">{item.n2000HeightSystem ? 'N2000' : 'MW'}</IonCol>
+                  <IonCol data-testid="n2000" size="1">
+                    {item.n2000HeightSystem ? 'N2000' : 'MW'}
+                  </IonCol>
                   <IonCol data-testid="resultstatus" size="1" className={'item-status-' + item.status}>
                     {t('item-status-' + item.status)}
                   </IonCol>
