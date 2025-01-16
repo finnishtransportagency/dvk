@@ -245,9 +245,18 @@ test.describe('DVK Automated accessibility testing', () => {
       expect(accessibilityScanResults.violations).toEqual([]);
     });
 
-    // Fairway Squat Calculator -> enabled later on
-    // await page.locator('[data-testid="tabButton-5"]').click();
-    // await expect(page.locator('.tabContent.tab5.active')).toBeVisible();
+    // Fairway Squat Calculator
+    await page.locator('[data-testid="tabButton-5"]').click();
+    await expect(page.locator('.tabContent.tab5.active')).toBeVisible();
+    await test.step('Check fifth tab', async() => {
+      const accessibilityScanResults = await new AxeBuilder({ page })
+        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
+        .disableRules('meta-viewport')
+        .include('.tabContent.tab5')
+        .analyze();
+
+      expect(accessibilityScanResults.violations).toEqual([]);
+    });
 
     // Fairway Weather Forecasts
     await page.locator('[data-testid="tabButton-6"]').click();
