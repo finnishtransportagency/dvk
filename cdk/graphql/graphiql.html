@@ -84,12 +84,13 @@
         });
       }
 
-      ReactDOM.render(
+      const root = ReactDom.createRoot(document.getElementById('graphiql'));
+
+      root.render(
         React.createElement(GraphiQL, {
           fetcher: graphQLFetcher,
           defaultVariableEditorOpen: true,
         }),
-        document.getElementById('graphiql'),
       );
     </script>
   </body>
