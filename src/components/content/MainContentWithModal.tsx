@@ -24,7 +24,7 @@ import SquatCalculator from './SquatCalculator';
 import PilotRoutes from './PilotRoutes';
 
 interface ModalContentProps {
-  modal: React.RefObject<HTMLIonModalElement>;
+  modal: React.RefObject<HTMLIonModalElement | null>;
   modalOpen: boolean;
   modalContent?: string;
 }

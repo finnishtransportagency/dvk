@@ -19,7 +19,7 @@ function getFocusableElementId(activeElement: string | null | undefined, trigger
 }
 
 export function setNextFocusableElement(
-  popoverRef: React.RefObject<HTMLIonPopoverElement>,
+  popoverRef: React.RefObject<HTMLIonPopoverElement | null>,
   trigger: string,
   isTabPressed: boolean,
   isEnterPressed: boolean
