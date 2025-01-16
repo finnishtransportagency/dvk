@@ -1,5 +1,5 @@
 function handler(event) {
-  const request = event.request;
+  var request = event.request;
   if (!request || !request.uri) {
     return {
       statusCode: 404,
