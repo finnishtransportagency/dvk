@@ -24,19 +24,10 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
   const [legendOpen, setLegendOpen] = useState(false);
-  const [legends, setLegends] = useState<string[]>([]);
   const dvkMap = getMap();
 
   const toggleDetails = () => {
     setLegendOpen(!legendOpen);
-    setTimeout(() => {
-      setLegends((prev) => {
-        if (prev.includes(id)) {
-          return [...prev.filter((l) => l !== id)];
-        }
-        return [...prev, id];
-      });
-    }, 250);
   };
 
   let alertProps:
@@ -137,8 +128,8 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
           {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea' || id === 'depthcontour') && (
             <IonButton
               fill="clear"
-              className={'toggleButton' + (legendOpen || legends.includes(id) ? ' close' : ' open')}
-              aria-label={legendOpen || legends.includes(id) ? t('common.close') : t('common.open')}
+              className={'toggleButton' + (legendOpen ? ' close' : ' open')}
+              aria-label={legendOpen ? t('common.close') : t('common.open')}
               onClick={() => toggleDetails()}
             >
               <IonIcon icon={arrowDownIcon} aria-hidden="true" />
@@ -158,7 +149,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
         />
       )}
       {(id === 'speedlimit' || id === 'ice' || id === 'depth12' || id === 'deptharea' || id === 'depthcontour') && (
-        <IonRow className={'toggle ' + (legendOpen || legends.includes(id) ? 'show' : 'hide')}>
+        <IonRow className={'toggle ' + (legendOpen ? 'show' : 'hide')}>
           <IonCol>
             {id === 'speedlimit' && <LegendSpeedlimits />}
             {id === 'ice' && <LegendIce />}

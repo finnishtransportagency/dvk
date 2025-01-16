@@ -1,9 +1,9 @@
 import { GeometryPoint, SafetyEquipmentFault } from '../../../../graphql/generated';
 import { AppSyncResolverEvent } from 'aws-lambda';
 import { log } from '../../logger';
-import { cacheResponse, getFromCache } from '../cache';
 import { fetchVATUByApi } from '../../api/axios';
 import { TurvalaiteVikatiedotFeature, TurvalaiteVikatiedotFeatureCollection } from '../../api/apiModels';
+import { cacheResponse, getFromCache } from '../../s3Cache';
 
 function getKey() {
   return 'safetyequipmentfault-graphql';

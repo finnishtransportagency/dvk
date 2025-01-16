@@ -1,7 +1,7 @@
 import React from 'react';
 // import { IonText } from '@ionic/react';
 import { uniqueId } from 'lodash';
-import { setSelectedFairwayArea } from '../../layers';
+import { setSelectedFairwayAreas } from '../../layers';
 import { ProhibitionArea } from '../../../graphql/generated';
 import { useTranslation } from 'react-i18next';
 import { Lang } from '../../../utils/constants';
@@ -16,7 +16,7 @@ export const ProhibitionAreaInfoListItem: React.FC<ProhibitionAreaInfoListItemPr
   const lang = i18n.resolvedLanguage as Lang;
 
   const highlightArea = (id: string | number | undefined) => {
-    setSelectedFairwayArea(id ?? 0);
+    setSelectedFairwayAreas([id ?? 0]);
   };
 
   return (

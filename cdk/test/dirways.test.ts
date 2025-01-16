@@ -2,9 +2,11 @@ import { mockALBEvent } from './mocks';
 import { gunzip } from 'zlib';
 import assert from 'assert';
 import { FeatureCollection } from 'geojson';
-import { getFeatureCacheControlHeaders } from '../lib/lambda/graphql/cache';
 import { DIRWAY_PATH, DIRWAY_POINT_PATH } from '../lib/lambda/api/ibnet';
-import { handler, DIRWAYS_KEY } from '../lib/lambda/api/dirway-handler';
+import { handler } from '../lib/lambda/api/dirway-handler';
+import { getFeatureCacheControlHeaders } from '../lib/cache';
+
+const DIRWAYS_KEY = 'dirways';
 
 jest.mock('../lib/lambda/environment', () => ({
   getEnvironment: () => 'mock',
@@ -225,6 +227,6 @@ it('should get internal server error when api call fails', async () => {
 it('should return right cache headers', async () => {
   const response = await handler(mockALBEvent(DIRWAYS_KEY));
   assert(response.body);
-  const headers = getFeatureCacheControlHeaders(DIRWAYS_KEY)?.['Cache-Control'];
+  const headers = getFeatureCacheControlHeaders()?.['Cache-Control'];
   expect(response?.multiValueHeaders?.['Cache-Control']).toStrictEqual(headers);
 });

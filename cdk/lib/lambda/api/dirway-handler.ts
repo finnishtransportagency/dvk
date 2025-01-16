@@ -2,8 +2,8 @@ import { ALBEvent, ALBResult } from 'aws-lambda';
 import { log } from '../logger';
 import { toBase64Response } from '../util';
 import { getHeaders } from '../environment';
-import { getFeatureCacheControlHeaders } from '../graphql/cache';
 import { fetchDirways } from './ibnet';
+import { getFeatureCacheControlHeaders } from '../../cache';
 
 export const DIRWAYS_KEY = 'dirways';
 
@@ -26,7 +26,7 @@ export const handler = async (event: ALBEvent): Promise<ALBResult> => {
     isBase64Encoded: true,
     multiValueHeaders: {
       ...getHeaders(),
-      ...getFeatureCacheControlHeaders(DIRWAYS_KEY),
+      ...getFeatureCacheControlHeaders(),
       'Content-Type': ['application/geo+json'],
     },
   };

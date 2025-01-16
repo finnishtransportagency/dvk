@@ -1,6 +1,6 @@
 import { diff } from 'deep-object-diff';
-import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, InputMaybe } from '../graphql/generated';
-import { PictureGroup, ValidationType } from './constants';
+import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, InputMaybe, SquatCalculationInput } from '../graphql/generated';
+import { FairwayForm, PictureGroup, ValidationType } from './constants';
 import { dateError, endDateError } from './common';
 
 function requiredError(input?: TextInput | Text | null): boolean {
@@ -84,7 +84,8 @@ function validateVtsAndTug(state: FairwayCardInput, requiredMsg: string) {
           msg: requiredMsg,
         };
       }) ?? [];
-  return { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors };
+
+  return vtsNameErrors.concat(vhfNameErrors, vhfChannelErrors, tugNameErrors);
 }
 
 function validatePictures(state: FairwayCardInput, requiredMsg: string) {
@@ -154,12 +155,86 @@ function validateTemporaryNotifications(state: FairwayCardInput, requiredMsg: st
           msg: endDateErrorMsg,
         };
       }) ?? [];
-  return {
-    temporaryNotificationContentErrors,
+
+  return temporaryNotificationContentErrors.concat(
     temporaryNotificationStartDateErrors,
     temporaryNotificationEndDateInputErrors,
-    temporaryNotificationEndDateErrors,
-  };
+    temporaryNotificationEndDateErrors
+  );
+}
+
+function validateMandatorySquatField(
+  state: FairwayCardInput,
+  fieldPrefix: string,
+  requiredMsg: string,
+  mapper: (calc: SquatCalculationInput, i: number) => number | null
+) {
+  const errors =
+    state.squatCalculations
+      ?.flatMap(mapper)
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: fieldPrefix + '-' + vIndex,
+          msg: requiredMsg,
+        };
+      }) ?? [];
+  return errors;
+}
+
+function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string, invalidMsg: string) {
+  const squatPlaceErrors = validateMandatorySquatField(state, 'squatCalculationPlace', requiredMsg, (calc, i) =>
+    requiredError(calc.place) ? i : null
+  );
+  const squatTargetFairwaysErrors = validateMandatorySquatField(state, 'squatTargetFairwayIds', requiredMsg, (calc, i) =>
+    !calc.targetFairways ? i : null
+  );
+  const squatAreasErrors = validateMandatorySquatField(state, 'squatSuitableFairwayAreaIds', requiredMsg, (calc, i) =>
+    !calc.suitableFairwayAreas ? i : null
+  );
+  const squatEstimatedWaterDepthErrors = validateMandatorySquatField(state, 'squatCalculationEstimatedWaterDepth', requiredMsg, (calc, i) =>
+    !calc.estimatedWaterDepth ? i : null
+  );
+  const squatFairwayFormErrors = validateMandatorySquatField(state, 'squatCalculationFairwayForm', requiredMsg, (calc, i) =>
+    !calc.fairwayForm ? i : null
+  );
+  const squatFairwayWidthErrors = validateMandatorySquatField(state, 'squatCalculationFairwayWidth', requiredMsg, (calc, i) =>
+    (calc.fairwayForm ?? -1) > FairwayForm.OpenWater && !calc.fairwayWidth ? i : null
+  );
+  const squatSlopeScaleErrors = validateMandatorySquatField(state, 'squatCalculationSlopeScale', requiredMsg, (calc, i) =>
+    (calc.fairwayForm ?? -1) === FairwayForm.SlopedChannel && !calc.slopeScale ? i : null
+  );
+  const squatSlopeHeightErrors = validateMandatorySquatField(state, 'squatCalculationSlopeHeight', requiredMsg, (calc, i) =>
+    (calc.fairwayForm ?? -1) === FairwayForm.SlopedChannel && !calc.slopeHeight ? i : null
+  );
+  const squatAdditionalInformationErrors = validateMandatorySquatField(state, 'squatCalculationAdditionalInformation', requiredMsg, (calc, i) =>
+    requiredError(calc.place) ? i : null
+  );
+
+  //Custom check about depth value
+  const squatFairwayWidthValueErrors =
+    state.squatCalculations
+      ?.flatMap((calc, i) => ((calc.depth ?? 0) > ((calc.estimatedWaterDepth ?? 0) as number) ? i : null))
+      .filter((val) => Number.isInteger(val))
+      .map((vIndex) => {
+        return {
+          id: 'squatCalculationEstimatedWaterDepth-' + vIndex,
+          msg: invalidMsg,
+        };
+      }) ?? [];
+
+  return squatPlaceErrors.concat(
+    squatTargetFairwaysErrors,
+    squatTargetFairwaysErrors,
+    squatAreasErrors,
+    squatEstimatedWaterDepthErrors,
+    squatFairwayFormErrors,
+    squatFairwayWidthErrors,
+    squatFairwayWidthValueErrors,
+    squatSlopeScaleErrors,
+    squatSlopeHeightErrors,
+    squatAdditionalInformationErrors
+  );
 }
 
 // invalidErrorMsg and dateErrorMsg are only for temporaryNotifications, since they're bit of a special case
@@ -225,26 +300,12 @@ export function validateFairwayCardForm(
     },
   ];
 
-  const { vtsNameErrors, vhfNameErrors, vhfChannelErrors, tugNameErrors } = validateVtsAndTug(state, requiredMsg);
-  const {
-    temporaryNotificationContentErrors,
-    temporaryNotificationStartDateErrors,
-    temporaryNotificationEndDateInputErrors,
-    temporaryNotificationEndDateErrors,
-  } = validateTemporaryNotifications(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
+  const vtsAndTugErrors = validateVtsAndTug(state, requiredMsg);
+  const temporaryNotificationErrors = validateTemporaryNotifications(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
+  const squatErrors = validateSquatCalculations(state, requiredMsg, invalidErrorMsg);
   const pictureTextErrors = validatePictures(state, requiredMsg);
 
-  return manualValidations.concat(
-    vtsNameErrors,
-    vhfNameErrors,
-    vhfChannelErrors,
-    tugNameErrors,
-    pictureTextErrors,
-    temporaryNotificationContentErrors,
-    temporaryNotificationStartDateErrors,
-    temporaryNotificationEndDateInputErrors,
-    temporaryNotificationEndDateErrors
-  );
+  return manualValidations.concat(vtsAndTugErrors, pictureTextErrors, temporaryNotificationErrors, squatErrors);
 }
 
 function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocationMsg: string) {
@@ -398,7 +459,16 @@ export function validateHarbourForm(state: HarborInput, requiredMsg: string, dup
   );
 }
 
+function sortArrays(state: FairwayCardInput | HarborInput) {
+  //Add here any sorted arrays that are sorted in some specific way. The deep diff made to detact changes turns arrays into objects so order matters.
+  if ('squatCalculations' in state) {
+    state.squatCalculations?.forEach((a) => a.suitableFairwayAreas?.sort());
+    state.squatCalculations?.forEach((a) => a.targetFairways?.sort());
+  }
+  return state;
+}
+
 export function hasUnsavedChanges(oldState: FairwayCardInput | HarborInput, currentState: FairwayCardInput | HarborInput) {
-  const diffObj = diff(oldState, currentState);
+  const diffObj = diff(sortArrays(oldState), sortArrays(currentState));
   return JSON.stringify(diffObj) !== '{}';
 }

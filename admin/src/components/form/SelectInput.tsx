@@ -14,11 +14,14 @@ interface SelectChangeEventDetail<ValueType> {
 }
 
 interface SelectInputProps {
+  name?: string;
   label: string;
+  warningLabel?: string;
   selected?: ValueType;
   options: SelectOption[] | PilotPlace[] | null;
-  setSelected: (value: ValueType, actionType: ActionType) => void;
+  setSelected: (value: ValueType, actionType: ActionType, lang: Lang | undefined, actionTarget: string | number | undefined) => void;
   actionType: ActionType;
+  actionTarget?: string | number;
   required?: boolean;
   multiple?: boolean;
   showId?: boolean;
@@ -33,11 +36,14 @@ interface SelectInputProps {
 }
 
 const SelectInput: React.FC<SelectInputProps> = ({
+  name,
   label,
+  warningLabel,
   selected,
   options,
   setSelected,
   actionType,
+  actionTarget,
   required,
   multiple,
   showId,
@@ -85,7 +91,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
   const handleChange = (event: IonSelectCustomEvent<SelectChangeEventDetail<ValueType>>) => {
     if (isTouched) checkValidity(event);
-    setSelected(event.detail.value, actionType);
+    setSelected(event.detail.value, actionType, undefined, actionTarget);
   };
 
   const getHelperText = () => {
@@ -124,7 +130,12 @@ const SelectInput: React.FC<SelectInputProps> = ({
 
       {inputOrLoading && (
         <>
-          {!hideLabel && (
+          {warningLabel && (
+            <IonLabel className={'formLabel'} onClick={() => focusInput()}>
+              {warningLabel} {required ? '*' : ''}
+            </IonLabel>
+          )}
+          {!warningLabel && !hideLabel && (
             <IonLabel className={'formLabel' + (disabled ? ' disabled' : '')} onClick={() => focusInput()}>
               {label} {required ? '*' : ''}
             </IonLabel>
@@ -134,6 +145,7 @@ const SelectInput: React.FC<SelectInputProps> = ({
           ) : (
             <>
               <IonSelect
+                data-testid={name + 'Select'}
                 ref={selectRef}
                 className="selectInput"
                 placeholder={t('choose') ?? ''}

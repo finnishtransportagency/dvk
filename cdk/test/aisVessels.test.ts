@@ -3,7 +3,7 @@ import { mockALBEvent } from './mocks';
 import { gunzip } from 'zlib';
 import assert from 'assert';
 import { Vessel, VesselAPIModel } from '../lib/lambda/api/apiModels';
-import { getAisCacheControlHeaders } from '../lib/lambda/graphql/cache';
+import { getAisCacheControlHeaders } from '../lib/cache';
 
 const path = 'aisvessels';
 

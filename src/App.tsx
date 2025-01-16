@@ -73,7 +73,7 @@ import './theme/print.css';
 import HomePage from './pages/HomePage';
 import SidebarMenu from './components/SidebarMenu';
 import MapOverlays from './components/mapOverlays/MapOverlays';
-import { isMobile, refreshPrintableMap } from './utils/common';
+import { isMobile, refreshPrintableMap, setResponseState } from './utils/common';
 import FairwayCardPage from './pages/FairwayCardPage';
 import FairwayCardListPage from './pages/FairwayCardListPage';
 import SafetyEquipmentFaultPage from './pages/SafetyEquipmentFaultPage';
@@ -151,9 +151,10 @@ const DvkIonApp: React.FC = () => {
   useMarineWarningLayer('localwarning');
   useMarineWarningLayer('boaterwarning');
   useNameLayer();
-  useMareographLayer();
-  useObservationLayer();
-  useBuoyLayer();
+  const mareographLayer = useMareographLayer();
+  const observationLayer = useObservationLayer();
+  const forecastLayer = useForecastLayer();
+  const buoyLayer = useBuoyLayer();
   useVtsLineLayer();
   useVtsPointLayer();
   useLine3456Layer();
@@ -174,7 +175,6 @@ const DvkIonApp: React.FC = () => {
   usePilotageAreaBorderLayer();
   useDirwayLayer();
   useRestrictionPortLayer();
-  useForecastLayer();
   /* Initialize observation and merograph data for offline use, needed in fairway cards */
   useObservationFeatures();
   useMareographFeatures();
@@ -184,8 +184,9 @@ const DvkIonApp: React.FC = () => {
   const [fetchError, setFetchError] = useState(false);
   const [centering, setCentering] = useState(false);
   const [bgFetchError, setBgFetchError] = useState(false);
+  const [conditionsLayerError, setConditionsLayerError] = useState(false);
 
-  const { state } = useDvkContext();
+  const { state, dispatch } = useDvkContext();
 
   useEffect(() => {
     const mandatoryLayers: DvkLayerState[] = [
@@ -201,6 +202,7 @@ const DvkIonApp: React.FC = () => {
     ];
     const bgLayers: DvkLayerState[] = [bgFinlandLayer, bgMmlmeriLayer, bgMmljarviLayer];
     const allLayers: DvkLayerState[] = mandatoryLayers.concat(bgLayers);
+    const conditionsLayers: DvkLayerState[] = [mareographLayer, observationLayer, forecastLayer, buoyLayer];
 
     let percent = 0;
     const resourcePercentage = 1 / allLayers.length;
@@ -213,6 +215,7 @@ const DvkIonApp: React.FC = () => {
 
     setFetchError(mandatoryLayers.some((layer) => layer.isError));
     setBgFetchError(bgLayers.some((layer) => layer.isError));
+    setConditionsLayerError(conditionsLayers.some((layer) => layer.isError));
 
     setInitDone(mandatoryLayers.every((layer) => layer.ready));
   }, [
@@ -230,6 +233,10 @@ const DvkIonApp: React.FC = () => {
     circleLayer,
     specialArea2Layer,
     specialArea15Layer,
+    mareographLayer,
+    observationLayer,
+    forecastLayer,
+    buoyLayer,
   ]);
 
   const modal = useRef<HTMLIonModalElement>(null);
@@ -265,6 +272,12 @@ const DvkIonApp: React.FC = () => {
       refreshPrintableMap();
     };
   }, []);
+
+  useEffect(() => {
+    if (conditionsLayerError) {
+      setResponseState(dispatch, 500, 'Unexpected Error', t('loadWarnings.conditionsError'));
+    }
+  }, [conditionsLayerError, dispatch, t]);
 
   const [isSourceOpen, setIsSourceOpen] = useState(false);
   const [isFeedbackOpen, setIsFeedbackOpen] = useState(false);
