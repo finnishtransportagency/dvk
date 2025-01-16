@@ -18,7 +18,7 @@ interface CustomSelectDropdownProps {
 }
 
 interface SelectDropdownPopupProps {
-  triggerRef: React.RefObject<HTMLIonItemElement>;
+  triggerRef: React.RefObject<HTMLIonItemElement | null>;
   trigger: string;
   selected: string[];
   setSelected: (selected: string[]) => void;
@@ -27,8 +27,8 @@ interface SelectDropdownPopupProps {
 }
 
 interface CheckBoxItemsProps {
-  triggerRef: React.RefObject<HTMLIonItemElement>;
-  popoverRef: React.RefObject<HTMLIonPopoverElement>;
+  triggerRef: React.RefObject<HTMLIonItemElement | null>;
+  popoverRef: React.RefObject<HTMLIonPopoverElement | null>;
   items: WarningFilter[];
   trigger: string;
   selected: string[];

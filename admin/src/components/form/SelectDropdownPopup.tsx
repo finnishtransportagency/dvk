@@ -8,7 +8,7 @@ import SelectDropdownFilter from './SelectDropdownFilter';
 
 interface SelectDropdownPopupProps {
   trigger: string;
-  triggerRef: React.RefObject<HTMLIonItemElement>;
+  triggerRef: React.RefObject<HTMLIonItemElement | null>;
   options: SelectOption[] | AreaSelectOption[] | null;
   selected: number[];
   setSelected: (selected: number[]) => void;
