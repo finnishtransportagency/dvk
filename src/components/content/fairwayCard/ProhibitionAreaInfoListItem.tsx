@@ -1,5 +1,4 @@
 import React from 'react';
-// import { IonText } from '@ionic/react';
 import { uniqueId } from 'lodash';
 import { setSelectedFairwayAreas } from '../../layers';
 import { ProhibitionArea } from '../../../graphql/generated';
