@@ -13,7 +13,7 @@ interface SelectToggleSequenceDropdownProps {
   setExpanded: (expanded: boolean) => void;
   checkValidity: () => void;
   trigger: string;
-  triggerRef: React.RefObject<HTMLIonItemElement>;
+  triggerRef: React.RefObject<HTMLIonItemElement | null>;
   showId?: boolean;
 }
 
