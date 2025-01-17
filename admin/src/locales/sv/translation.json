@@ -295,7 +295,8 @@
     "squat-calculation-depth-warning": "[sv] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä.",
     "squat-calculation-cannot-remove-fairway-header": "[sv] Cannot remove fairway",
     "squat-calculation-cannot-remove-fairway": "[sv] The fairway is linked to an area that is in use in this squat calculation template.",
-    "cannot-change-reference-level": "[sv] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu."
+    "cannot-change-reference-level": "[sv] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu.",
+    "main-section-title": "[sv] Väyläkortin perustiedot"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",

@@ -11,9 +11,17 @@ interface WrapperComponentProps {
   notificationHeader?: string;
   notificationI18nKey?: string;
   notificationMessage?: string;
+  dataTestId?: string;
 }
 
-const WrapperComponent: React.FC<WrapperComponentProps> = ({ title, children, notificationHeader, notificationI18nKey, notificationMessage }) => {
+const WrapperComponent: React.FC<WrapperComponentProps> = ({
+  title,
+  children,
+  notificationHeader,
+  notificationI18nKey,
+  notificationMessage,
+  dataTestId,
+}) => {
   const { t } = useTranslation();
 
   const [sectionOpen, setSectionOpen] = useState<boolean>(true);
@@ -24,11 +32,12 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({ title, children, no
   return (
     <>
       <IonItem className="sectionHeader">
-        <IonText>
+        <IonText className="ion-no-padding">
           <h2>
             {title}
             {notificationHeader && notificationMessage && (
               <IonButton
+                data-testid={dataTestId}
                 fill="clear"
                 className="icon-only xx-small labelButton"
                 onClick={() => setInfoModalOpen(!infoModalOpen)}

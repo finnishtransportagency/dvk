@@ -55,6 +55,7 @@ import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import SquatCalculationSection from './form/fairwayCard/SquatCalculationSection';
+import WrapperComponent from './form/WrapperComponent';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -422,20 +423,22 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
             />
             <form ref={formRef}>
               <PublishDetailsSection state={state} />
-              <MainSection
-                state={state}
-                updateState={updateState}
-                validationErrors={validationErrors}
-                setValidity={setValidity}
-                isLoadingFairways={isLoadingFairways}
-                isLoadingHarbours={isLoadingHarbours}
-                fairwayOptions={fairwayList?.fairways}
-                fairwaySelection={fairwaySelection}
-                harbourOptions={harbourOptions}
-                isLoadingPilotRoutes={isLoadingPilotRoutes}
-                pilotRouteOptions={pilotRouteList}
-                readonly={readonly}
-              />
+              <WrapperComponent title={t('fairwaycard.main-section-title')}>
+                <MainSection
+                  state={state}
+                  updateState={updateState}
+                  validationErrors={validationErrors}
+                  setValidity={setValidity}
+                  isLoadingFairways={isLoadingFairways}
+                  isLoadingHarbours={isLoadingHarbours}
+                  fairwayOptions={fairwayList?.fairways}
+                  fairwaySelection={fairwaySelection}
+                  harbourOptions={harbourOptions}
+                  isLoadingPilotRoutes={isLoadingPilotRoutes}
+                  pilotRouteOptions={pilotRouteList}
+                  readonly={readonly}
+                />
+              </WrapperComponent>
               <NotificationSection
                 state={state}
                 sections={state.temporaryNotifications as TemporaryNotificationInput[]}
