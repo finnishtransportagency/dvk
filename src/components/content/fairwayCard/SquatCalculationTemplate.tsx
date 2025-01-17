@@ -6,21 +6,18 @@ import { Lang } from '../../../utils/constants';
 import { FairwayForm, getFairwayFormText } from '../../../utils/common';
 import { Link } from 'react-router-dom';
 import { setSelectedFairwayAreas, zoomToFairwayAreas } from '../../layers';
-import { fairwayAreaExludeType2Filter } from '../../../utils/fairwayCardUtils';
+import { getAreaIdsFromFairwayArray } from '../../../utils/fairwayCardUtils';
 
 export type SquatCalculationProps = {
   squatCalculation?: SquatCalculation | null;
-  fairways?: Fairway[] | null;
+  fairways: Fairway[] | null;
 };
 
 const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalculation, fairways }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'squattemplates' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const allAreas: number[] = [];
-  fairways?.forEach((f) => {
-    allAreas.push(...(f.areas?.filter(fairwayAreaExludeType2Filter).map((a) => a.id) ?? []));
-  });
+  const allCardAreas = getAreaIdsFromFairwayArray(fairways);
 
   const groupedAreas = squatCalculation?.suitableFairwayAreas?.reduce<Record<string, number[]>>(
     (acc, item) => {
@@ -129,11 +126,11 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
                 <div className="inlineHoverText">
                   {fairway}:<br />
                   {groupedAreas[fairway]
-                    .toSorted((a, b) => allAreas.indexOf(a) - allAreas.indexOf(b))
+                    .toSorted((a, b) => allCardAreas.indexOf(a) - allCardAreas.indexOf(b))
                     .map((area) => (
                       <IonText key={area}>
                         <li className="template nolist" key="area">
-                          {allAreas.indexOf(area) + 1 + '. ' + t('areaType1')}
+                          {allCardAreas.indexOf(area) + 1 + '. ' + t('areaType1')}
                         </li>
                       </IonText>
                     ))}

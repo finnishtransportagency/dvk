@@ -6,7 +6,7 @@ import { Lang } from '../../../utils/constants';
 import uniqueId from 'lodash/uniqueId';
 import { TFunction } from 'i18next';
 import { AreaInfoListItem } from './AreaInfoListItem';
-import { fairwayAreaExludeType2Filter } from '../../../utils/fairwayCardUtils';
+import { fairwayAreaExcludeType2Filter } from '../../../utils/fairwayCardUtils';
 
 type AreaInfoProps = {
   data?: Fairway[] | null;
@@ -47,7 +47,7 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
   return (
     <>
       {fairways.map((fairway) => {
-        const fairwayAreas = getFairwayAreas(fairway).filter(fairwayAreaExludeType2Filter); // special areas moved to separate lists
+        const fairwayAreas = getFairwayAreas(fairway).filter(fairwayAreaExcludeType2Filter); // special areas moved to separate lists
         startIndex += fairwayAreas.length;
         return (
           <div key={uniqueId()}>
