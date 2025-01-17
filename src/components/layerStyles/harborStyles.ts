@@ -69,26 +69,14 @@ export function getHarborStyle(feature: FeatureLike, resolution: number, selecte
   return s;
 }
 
-const restrictionStyle = new Style({
-  image: new Icon({
-    src: restrictionIcon,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  }),
-  zIndex: 1,
-});
-
-const selectedRestrictionStyle = new Style({
-  image: new Icon({
-    src: restrictionIconActive,
-    anchor: [0.5, 43],
-    anchorXUnits: 'fraction',
-    anchorYUnits: 'pixels',
-  }),
-  zIndex: 10,
-});
-
-export function getRestrictionPortStyle(selected = false) {
-  return selected ? selectedRestrictionStyle : restrictionStyle;
+export function getRestrictionStyle(selected: boolean) {
+  return new Style({
+    image: new Icon({
+      src: selected ? restrictionIconActive : restrictionIcon,
+      anchor: [0.5, 43],
+      anchorXUnits: 'fraction',
+      anchorYUnits: 'pixels',
+    }),
+    zIndex: selected ? 10 : 1,
+  });
 }
