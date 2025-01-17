@@ -439,14 +439,21 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                 />
               </WrapperComponent>
-              <NotificationSection
-                state={state}
-                sections={state.temporaryNotifications as TemporaryNotificationInput[]}
-                updateState={updateState}
-                sectionType="temporaryNotifications"
-                validationErrors={validationErrors}
-                readonly={readonly}
-              />
+              <WrapperComponent
+                title={t('fairwaycard.temporary-notification-title')}
+                infoHeader={t('fairwaycard.temporary-notification-title')}
+                infoI18nKey="modal.temporary-notification-add"
+                infoMessage={t('general.markdown.description')}
+              >
+                <NotificationSection
+                  state={state}
+                  sections={state.temporaryNotifications as TemporaryNotificationInput[]}
+                  updateState={updateState}
+                  sectionType="temporaryNotifications"
+                  validationErrors={validationErrors}
+                  readonly={readonly}
+                />
+              </WrapperComponent>
               <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               <RecommendationsSection

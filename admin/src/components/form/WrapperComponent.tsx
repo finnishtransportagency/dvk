@@ -14,18 +14,11 @@ interface WrapperComponentProps {
   dataTestId?: string;
 }
 
-const WrapperComponent: React.FC<WrapperComponentProps> = ({
-  title,
-  children,
-  infoHeader,
-  infoI18nKey,
-  infoMessage,
-  dataTestId,
-}) => {
+const WrapperComponent: React.FC<WrapperComponentProps> = ({ title, children, infoHeader, infoI18nKey, infoMessage, dataTestId }) => {
   const { t } = useTranslation();
 
   const [sectionOpen, setSectionOpen] = useState<boolean>(true);
-  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(true);
+  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
   const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
 
