@@ -28,8 +28,8 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
         return acc;
       }
       const match = fairways?.filter((f) => squatCalculation?.targetFairways?.includes(f.id)).find((f) => f.areas?.find((a) => a.id === item));
-      if (match?.name && match.id && match.name[lang]) {
-        const ftext = match.name[lang] + ' ' + match.id;
+      if (match?.name && match.id) {
+        const ftext = (match.name[lang] ?? match.name['fi']) + ' ' + match.id;
         if (!acc[ftext]) {
           acc[ftext] = [];
         }
