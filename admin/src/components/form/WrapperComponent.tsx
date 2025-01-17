@@ -8,18 +8,18 @@ import NotificationModal from '../NotificationModal';
 interface WrapperComponentProps {
   title: string;
   children: React.ReactNode;
-  notificationHeader?: string;
-  notificationI18nKey?: string;
-  notificationMessage?: string;
+  infoHeader?: string;
+  infoI18nKey?: string;
+  infoMessage?: string;
   dataTestId?: string;
 }
 
 const WrapperComponent: React.FC<WrapperComponentProps> = ({
   title,
   children,
-  notificationHeader,
-  notificationI18nKey,
-  notificationMessage,
+  infoHeader,
+  infoI18nKey,
+  infoMessage,
   dataTestId,
 }) => {
   const { t } = useTranslation();
@@ -35,7 +35,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
         <IonText className="ion-no-padding">
           <h2>
             {title}
-            {notificationHeader && notificationMessage && (
+            {infoHeader && infoMessage && (
               <IonButton
                 fill="clear"
                 className="icon-only xx-small labelButton"
@@ -63,14 +63,14 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
       <div className={sectionClassName}>
         <div>{children}</div>
       </div>
-      {notificationHeader && notificationMessage && (
+      {infoHeader && infoMessage && (
         <NotificationModal
           isOpen={infoModalOpen}
           closeAction={() => setInfoModalOpen(false)}
           closeTitle={t('general.close')}
-          header={notificationHeader}
-          i18nkey={notificationI18nKey}
-          message={notificationMessage}
+          header={infoHeader}
+          i18nkey={infoI18nKey}
+          message={infoMessage}
         />
       )}
     </>
