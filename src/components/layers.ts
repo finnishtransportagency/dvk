@@ -45,7 +45,7 @@ import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
 import { anchorageAreaIconStyle, meetAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
 import { getQuayStyle } from './layerStyles/quayStyles';
-import { getHarborStyle, getRestrictionPortStyle } from './layerStyles/harborStyles';
+import { getHarborStyle, getRestrictionStyle } from './layerStyles/harborStyles';
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
 import { getDirwayStyle } from './layerStyles/dirwayStyles';
 import { Cluster } from 'ol/source';
@@ -613,7 +613,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'restrictionport',
     renderBuffer: 100,
-    style: (feature) => getRestrictionPortStyle(!!feature.get('hoverStyle')),
+    style: (feature) => getRestrictionStyle(!!feature.get('hoverStyle')),
     zIndex: 306,
   });
 

@@ -17,11 +17,11 @@ import { Feature } from 'ol';
 import { Geometry } from 'ol/geom';
 import { useVaylaWaterAreaData } from '../FeatureLoader';
 import { InfoParagraph } from './Paragraph';
-import { symbol2Icon } from '../layerStyles/safetyEquipmentStyles';
 import CustomSelectDropdown from './CustomSelectDropdown';
 import sortArrow from '../../theme/img/back_arrow-1.svg';
 import PageHeader from './PageHeader';
 import VectorSource from 'ol/source/Vector';
+import { symbol2Icon } from '../layerStyles/safetyEquipmentIcons';
 
 type FaultGroupProps = {
   data: SafetyEquipmentFault[];
