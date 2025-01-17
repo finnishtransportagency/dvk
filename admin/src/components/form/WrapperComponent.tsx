@@ -37,7 +37,6 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
             {title}
             {notificationHeader && notificationMessage && (
               <IonButton
-                data-testid={dataTestId}
                 fill="clear"
                 className="icon-only xx-small labelButton"
                 onClick={() => setInfoModalOpen(!infoModalOpen)}
@@ -50,10 +49,13 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
           </h2>
         </IonText>
         <IonButton
+          data-testid={dataTestId}
           slot="end"
           fill="clear"
           className={'icon-only small toggle ' + (sectionOpen ? 'open' : 'closed')}
           onClick={() => setSectionOpen(!sectionOpen)}
+          title={sectionOpen ? t('general.close') : t('general.open')}
+          aria-label={sectionOpen ? t('general.close') : t('general.open')}
         >
           <ChevronIcon />
         </IonButton>
