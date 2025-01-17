@@ -1,5 +1,6 @@
+process.env['NODE_DEV'] = 'TEST';
 import { FairwayCardPartsFragment, SquatCalculation } from '../graphql/generated';
-import { getAreaIdsFromFairwayArray, getOrphanedAreas, getValidSquatCalculations, isSquatAreaOrphaned } from './fairwayCardUtils';
+import { getAreaIdsFromFairwayArray, getValidSquatCalculations, _testInternals } from './fairwayCardUtils';
 
 const validSquat: SquatCalculation = { suitableFairwayAreas: [20, 21], targetFairways: [1, 2] };
 const invalidSquat: SquatCalculation = { suitableFairwayAreas: [10, 99], targetFairways: [1, 2] };
@@ -49,13 +50,13 @@ test('if the areas from the fairwaycard is correct', () => {
 });
 
 test('if orphaned areas are found from fairway card', () => {
-  expect(isSquatAreaOrphaned(validSquat, cardWithOrphanedSquatAreas)).toBeFalsy();
-  expect(isSquatAreaOrphaned(invalidSquat, cardWithOrphanedSquatAreas)).toBeTruthy();
+  expect(_testInternals.isSquatAreaOrphaned(validSquat, cardWithOrphanedSquatAreas)).toBeFalsy();
+  expect(_testInternals.isSquatAreaOrphaned(invalidSquat, cardWithOrphanedSquatAreas)).toBeTruthy();
 });
 
 test('if returned orphaned areas are correct', () => {
-  expect(getOrphanedAreas(validSquat, cardWithOrphanedSquatAreas) as number[]).toMatchObject([]);
-  expect(getOrphanedAreas(invalidSquat, cardWithOrphanedSquatAreas) as number[]).toMatchObject([99]);
+  expect(_testInternals.getOrphanedAreas(validSquat, cardWithOrphanedSquatAreas) as number[]).toMatchObject([]);
+  expect(_testInternals.getOrphanedAreas(invalidSquat, cardWithOrphanedSquatAreas) as number[]).toMatchObject([99]);
 });
 
 test('if valid squat calculations are returned correctly', () => {

@@ -232,13 +232,18 @@ export function getValidSquatCalculations(fairwayCard: FairwayCardPartsFragment)
   return fairwayCard.squatCalculations?.filter((s) => !isSquatAreaOrphaned(s, fairwayCard));
 }
 
-export function getOrphanedAreas(calc: SquatCalculation, fairwayCard: FairwayCardPartsFragment) {
+function getOrphanedAreas(calc: SquatCalculation, fairwayCard: FairwayCardPartsFragment) {
   const validAreaIds = getAreaIdsFromFairwayArray(fairwayCard.fairways?.filter((f) => calc.targetFairways?.includes(f.id)));
   return (calc.suitableFairwayAreas ?? []).filter((a) => !validAreaIds.includes(a as number));
 }
 
-export const isSquatAreaOrphaned = (calc: SquatCalculation, fairwayCard: FairwayCardPartsFragment) => {
+const isSquatAreaOrphaned = (calc: SquatCalculation, fairwayCard: FairwayCardPartsFragment) => {
   if (!calc.suitableFairwayAreas) return true;
   if (!fairwayCard.fairways) return false;
   return getOrphanedAreas(calc, fairwayCard).length > 0;
+};
+
+export const _testInternals = {
+  getOrphanedAreas,
+  isSquatAreaOrphaned,
 };
