@@ -40,6 +40,8 @@ afterAll(() => {
   global.fetch = fetch;
 });
 
+vi.useFakeTimers();
+
 it('renders without crashing', () => {
   const { baseElement } = render(<App />);
   expect(baseElement).toBeDefined();
