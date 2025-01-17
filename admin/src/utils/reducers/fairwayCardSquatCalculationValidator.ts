@@ -57,10 +57,6 @@ export const fairwayCardSquatCalculationValidator = (
     case 'squatCalculationSlopeHeight':
       validateMandatoryField(actionTarget, validationErrors, actionType, (calc) => !calc?.slopeHeight);
       break;
-    case 'squatCalculationAdditionalInformation':
-      validateMandatoryField(actionTarget, validationErrors, actionType, (calc) => isTextTranslationEmpty(calc?.additionalInformation));
-      break;
-
     default:
       break;
   }
