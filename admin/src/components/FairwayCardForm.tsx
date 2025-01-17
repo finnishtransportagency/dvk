@@ -457,15 +457,20 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               <WrapperComponent title={t('fairwaycard.fairway-info')}>
                 <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               </WrapperComponent>
-              <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <RecommendationsSection
-                state={state}
-                updateState={updateState}
-                validationErrors={validationErrors}
-                isLoadingMareographs={isLoadingMareographs}
-                mareographOptions={mareographList?.mareographs}
-                readonly={readonly}
-              />
+              <WrapperComponent title={t('fairwaycard.navigation')}>
+                <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              </WrapperComponent>
+              <WrapperComponent title={t('fairwaycard.recommendation')}>
+                <RecommendationsSection
+                  state={state}
+                  updateState={updateState}
+                  validationErrors={validationErrors}
+                  isLoadingMareographs={isLoadingMareographs}
+                  mareographOptions={mareographList?.mareographs}
+                  readonly={readonly}
+                />
+              </WrapperComponent>
+
               <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               <TrafficServiceSection
                 state={state}
