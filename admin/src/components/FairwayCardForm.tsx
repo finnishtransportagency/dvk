@@ -470,8 +470,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                 />
               </WrapperComponent>
-
-              <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              <WrapperComponent
+                title={t('fairwaycard.fairway-additional-info')}
+                infoHeader={t('fairwaycard.fairway-additional-info-notification-header')}
+                infoMessage={`${t('fairwaycard.fairway-additional-info-notification-body') ?? ''}\n${t('general.markdown.description')}`}
+              >
+                <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              </WrapperComponent>
               <TrafficServiceSection
                 state={state}
                 updateState={updateState}
