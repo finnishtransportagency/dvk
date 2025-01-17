@@ -1,9 +1,9 @@
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import React from 'react';
-import { Fairway, SquatCalculation } from '../../../graphql/generated';
+import { Area, Fairway, SquatCalculation } from '../../../graphql/generated';
 import { useTranslation } from 'react-i18next';
 import { Lang } from '../../../utils/constants';
-import { FairwayForm, getFairwayFormText } from '../../../utils/common';
+import { FairwayForm, getAreaName, getFairwayFormText, getFairwayName } from '../../../utils/common';
 import { Link } from 'react-router-dom';
 import { setSelectedFairwayAreas, zoomToFairwayAreas } from '../../layers';
 import { fairwayAreaExludeType2Filter } from '../../../utils/fairwayCardUtils';
@@ -17,9 +17,9 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'squattemplates' });
   const lang = i18n.resolvedLanguage as Lang;
 
-  const allAreas: number[] = [];
+  const allAreas: Area[] = [];
   fairways?.forEach((f) => {
-    allAreas.push(...(f.areas?.filter(fairwayAreaExludeType2Filter).map((a) => a.id) ?? []));
+    allAreas.push(...(f.areas?.filter(fairwayAreaExludeType2Filter) ?? []));
   });
 
   const groupedAreas = squatCalculation?.suitableFairwayAreas?.reduce<Record<string, number[]>>(
@@ -29,7 +29,7 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
       }
       const match = fairways?.filter((f) => squatCalculation?.targetFairways?.includes(f.id)).find((f) => f.areas?.find((a) => a.id === item));
       if (match?.name && match.id) {
-        const ftext = (match.name[lang] ?? match.name['fi']) + ' ' + match.id;
+        const ftext = getFairwayName(match, lang) + ' ' + match.id;
         if (!acc[ftext]) {
           acc[ftext] = [];
         }
@@ -129,11 +129,11 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
                 <div className="inlineHoverText">
                   {fairway}:<br />
                   {groupedAreas[fairway]
-                    .toSorted((a, b) => allAreas.indexOf(a) - allAreas.indexOf(b))
+                    .toSorted((a, b) => allAreas.map((a) => a.id).indexOf(a) - allAreas.map((a) => a.id).indexOf(b))
                     .map((area) => (
                       <IonText key={area}>
                         <li className="template nolist" key="area">
-                          {allAreas.indexOf(area) + 1 + '. ' + t('areaType1')}
+                          {allAreas.map((a) => a.id).indexOf(area) + 1 + '. ' + getAreaName(allAreas[allAreas.map((a) => a.id).indexOf(area)], t)}
                         </li>
                       </IonText>
                     ))}
