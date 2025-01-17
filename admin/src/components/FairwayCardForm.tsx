@@ -454,7 +454,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                 />
               </WrapperComponent>
-              <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              <WrapperComponent title={t('fairwaycard.fairway-info')}>
+                <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              </WrapperComponent>
               <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               <RecommendationsSection
                 state={state}
