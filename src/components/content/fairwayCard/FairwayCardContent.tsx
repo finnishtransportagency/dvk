@@ -54,6 +54,7 @@ import { useForecastFeatures } from '../../ForecastLoader';
 import ForecastContainer from '../ForecastContainer';
 import SquatCalculationTemplateNotAvailable from './SquatCalculationTemplateNotAvailable';
 import SquatCalculationTemplate from './SquatCalculationTemplate';
+import { uniqueId } from 'lodash';
 
 export enum FairwayCardTab {
   Information = 1,
@@ -368,7 +369,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
                   return a.place[lang].localeCompare(b.place[lang]);
                 })
                 .map((calc) => {
-                  return <SquatCalculationTemplate squatCalculation={calc} key={'calc_' + calc.place?.en} fairways={fairwayCard.fairways} />;
+                  return <SquatCalculationTemplate squatCalculation={calc} key={uniqueId()} fairways={fairwayCard.fairways} />;
                 })
             ) : (
               <SquatCalculationTemplateNotAvailable />
