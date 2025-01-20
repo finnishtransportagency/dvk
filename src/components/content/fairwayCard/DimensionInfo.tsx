@@ -7,6 +7,7 @@ import uniqueId from 'lodash/uniqueId';
 import { Fairway, SizingVessel, Text } from '../../../graphql/generated';
 import { metresToNauticalMiles } from '../../../utils/conversions';
 import { TFunction } from 'i18next';
+import { getFairwayName } from '../../../utils/common';
 
 export type DimensionInfoProps = {
   data?: Fairway[] | null;
@@ -32,13 +33,6 @@ function getSizingVesselsText(sizingVessels: SizingVessel[], t: TFunction) {
       ;
     </>
   );
-}
-
-export function getFairwayName(fairway: Fairway, lang: Lang): string {
-  if (fairway.name) {
-    return fairway.name[lang] ?? fairway.name.fi ?? '';
-  }
-  return '';
 }
 
 export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedText, isN2000HeightSystem }) => {
