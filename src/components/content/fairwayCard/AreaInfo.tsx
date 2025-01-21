@@ -4,24 +4,14 @@ import { Area, Fairway } from '../../../graphql/generated';
 import { IonText } from '@ionic/react';
 import { Lang } from '../../../utils/constants';
 import uniqueId from 'lodash/uniqueId';
-import { TFunction } from 'i18next';
 import { AreaInfoListItem } from './AreaInfoListItem';
 import { fairwayAreaExcludeType2Filter } from '../../../utils/fairwayCardUtils';
+import { getFairwayName } from '../../../utils/common';
 
 type AreaInfoProps = {
   data?: Fairway[] | null;
   isN2000HeightSystem?: boolean;
 };
-
-export function getAreaName(area: Area, t: TFunction) {
-  const name = area.name;
-  const type = t('areaType' + area.typeCode);
-  // ankkurointialueet pitkässä muodossa esim. osa 'c' -> 'ankkurointialue c'
-  if (area.typeCode == 2) {
-    return name ? type + ' ' + name : type;
-  }
-  return name ?? type;
-}
 
 export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem }) => {
   const { i18n } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
@@ -30,13 +20,6 @@ export const AreaInfo: React.FC<AreaInfoProps> = ({ data, isN2000HeightSystem })
   const fairways = data || [];
 
   const numberOfFairways = data ? data.length : 0;
-
-  function getFairwayName(fairway: Fairway, lang: Lang): string {
-    if (fairway.name) {
-      return fairway.name[lang] ?? fairway.name.fi ?? '';
-    }
-    return '';
-  }
 
   function getFairwayAreas(fairway: Fairway): Area[] {
     return fairway.areas ?? [];

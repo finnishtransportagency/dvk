@@ -101,7 +101,7 @@ input SquatCalculationInput {
   fairwayWidth: String
   slopeScale: String
   slopeHeight: String
-  additionalInformation: TextInput!
+  additionalInformation: TextInput
   fairwayForm: Int
 }
 

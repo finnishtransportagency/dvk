@@ -207,9 +207,6 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string,
   const squatSlopeHeightErrors = validateMandatorySquatField(state, 'squatCalculationSlopeHeight', requiredMsg, (calc, i) =>
     (calc.fairwayForm ?? -1) === FairwayForm.SlopedChannel && !calc.slopeHeight ? i : null
   );
-  const squatAdditionalInformationErrors = validateMandatorySquatField(state, 'squatCalculationAdditionalInformation', requiredMsg, (calc, i) =>
-    requiredError(calc.place) ? i : null
-  );
 
   //Custom check about depth value
   const squatFairwayWidthValueErrors =
@@ -232,8 +229,7 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string,
     squatFairwayWidthErrors,
     squatFairwayWidthValueErrors,
     squatSlopeScaleErrors,
-    squatSlopeHeightErrors,
-    squatAdditionalInformationErrors
+    squatSlopeHeightErrors
   );
 }
 

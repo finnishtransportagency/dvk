@@ -29,7 +29,6 @@ import {
   getFairwayCardObservations,
   getFairwayCardMareographs,
   getFairwayCardForecasts,
-  getValidSquatCalculations,
 } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
@@ -55,6 +54,7 @@ import { useForecastFeatures } from '../../ForecastLoader';
 import ForecastContainer from '../ForecastContainer';
 import SquatCalculationTemplateNotAvailable from './SquatCalculationTemplateNotAvailable';
 import SquatCalculationTemplate from './SquatCalculationTemplate';
+import { uniqueId } from 'lodash';
 
 export enum FairwayCardTab {
   Information = 1,
@@ -208,10 +208,6 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
     },
   ];
 
-  //Check validity of squat calculation templates
-  //all Areas
-  const validSquats = fairwayCard ? getValidSquatCalculations(fairwayCard) : [];
-
   return (
     <>
       {isPending && <PendingPlaceholder widePane={widePane} />}
@@ -360,15 +356,20 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             )}
           </div>
 
-          <div className={getTabClassName(FairwayCardTab.SquatCalculation) + ((validSquats ?? []).length > 0 ? '' : ' onecolumn')}>
-            {validSquats && validSquats.length > 0 ? (
-              validSquats
+          <div
+            className={
+              getTabClassName(FairwayCardTab.SquatCalculation) +
+              (fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? '' : ' onecolumn')
+            }
+          >
+            {fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? (
+              fairwayCard?.squatCalculations
                 .toSorted((a, b) => {
                   if (!a.place || !b.place || !a.place[lang] || !b.place[lang]) return 0;
                   return a.place[lang].localeCompare(b.place[lang]);
                 })
                 .map((calc) => {
-                  return <SquatCalculationTemplate squatCalculation={calc} key={'calc_' + calc.place?.en} fairways={fairwayCard.fairways ?? []} />;
+                  return <SquatCalculationTemplate squatCalculation={calc} key={uniqueId()} fairways={fairwayCard.fairways} />;
                 })
             ) : (
               <SquatCalculationTemplateNotAvailable />
