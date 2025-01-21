@@ -507,19 +507,26 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                 />
               </WrapperComponent>
-              <SquatCalculationSection
-                sections={state.squatCalculations as SquatCalculationInput[]}
-                updateState={updateState}
-                sectionType="squatCalculations"
-                validationErrors={validationErrors}
-                showWarningLabel={!state.n2000HeightSystem}
-                disabled={!state.n2000HeightSystem}
-                readonly={readonly}
-                fairwaySelection={fairwaySelection}
-                fairwayAreas={filteredAreaOptions}
-                isLoadingAreas={isLoadingAreas}
-                isLoadingFairways={isLoadingFairways}
-              />
+              <WrapperComponent
+                title={t('fairwaycard.squat-calculation-title')}
+                infoHeader={t('fairwaycard.squat-calculation-title')}
+                infoI18nKey={'modal.squat-calculation-add'}
+                infoMessage={t('general.squat-calculation-description')}
+              >
+                <SquatCalculationSection
+                  sections={state.squatCalculations as SquatCalculationInput[]}
+                  updateState={updateState}
+                  sectionType="squatCalculations"
+                  validationErrors={validationErrors}
+                  showWarningLabel={!state.n2000HeightSystem}
+                  disabled={!state.n2000HeightSystem}
+                  readonly={readonly}
+                  fairwaySelection={fairwaySelection}
+                  fairwayAreas={filteredAreaOptions}
+                  isLoadingAreas={isLoadingAreas}
+                  isLoadingFairways={isLoadingFairways}
+                />
+              </WrapperComponent>
 
               <IonText>
                 <h2>{t('fairwaycard.print-images')}</h2>

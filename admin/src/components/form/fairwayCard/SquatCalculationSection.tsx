@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../../graphql/generated';
 import { ValueType, ActionType, Lang, ValidationType, SelectOption } from '../../../utils/constants';
-import { IonButton, IonCol, IonGrid, IonIcon, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import HelpIcon from '../../../theme/img/help_icon.svg?react';
-import NotificationModal from '../../NotificationModal';
 import SquatCalculationInput from '../SquatCalculationInput';
 import SectionHeader from '../SectionHeader';
 import alertIcon from '../../../theme/img/alert_icon.svg';
@@ -46,12 +44,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
   showWarningLabel = false,
 }) => {
   const { t } = useTranslation();
-  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
-
-  const showInfoModal = () => {
-    setInfoModalOpen(true);
-  };
 
   const toggleSection = (position: number) => {
     const opened = openSections.map((s, idx) => (idx === position ? !s : s));
@@ -80,20 +73,6 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
 
   return (
     <>
-      <IonText>
-        <h2>
-          {t('fairwaycard.squat-calculation-title')}
-          <IonButton
-            fill="clear"
-            className="icon-only xx-small labelButton"
-            onClick={() => showInfoModal()}
-            title={t('info') ?? ''}
-            aria-label={t('info') ?? ''}
-          >
-            <HelpIcon />
-          </IonButton>
-        </h2>
-      </IonText>
       {sections?.map((section, idx) => {
         const sectionOpen = !!openSections[idx];
         const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
@@ -124,14 +103,6 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
         );
       })}
 
-      <NotificationModal
-        isOpen={infoModalOpen}
-        closeAction={() => setInfoModalOpen(false)}
-        closeTitle={t('general.close')}
-        header={t('fairwaycard.squat-calculation-title')}
-        i18nkey="modal.squat-calculation-add"
-        message={t('general.squat-calculation-description')}
-      />
       {showWarningLabel && (
         <IonGrid className={'squat warning grid'}>
           <IonRow className="squat warning row">
