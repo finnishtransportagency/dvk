@@ -1,19 +1,9 @@
 import { t } from 'i18next';
-import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput } from '../graphql/generated';
+import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput, SelectedFairwayInput, Status } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
-import { dateError, endDateError, sortPictures } from './common';
-import { squatCalculationReducer } from './fairwayCardReducers/squatCalculationReducer';
-import { fairwayCardSquatCalculationValidator } from './fairwayCardReducers/squatCalculationValidator';
-import { tugReducer } from './fairwayCardReducers/tugReducer';
-import { vhfReducer } from './fairwayCardReducers/vhfReducer';
-import { vtsReducer } from './fairwayCardReducers/vtsReducer';
-import { generalInfoReducer } from './fairwayCardReducers/generalInfoReducer';
-import { temporaryNotificationReducer } from './fairwayCardReducers/temporaryNotificationReducer';
-import { fairwayInfoReducer } from './fairwayCardReducers/fairwayInfoReducer';
-import { navigationReducer } from './fairwayCardReducers/navigationReducer';
-import { recommendationsReducer } from './fairwayCardReducers/recommendationsReducer';
-import { pilotOrderReducer } from './fairwayCardReducers/pilotOrderReducer';
-import { pictureReducer } from './fairwayCardReducers/pictureReducer';
+import { dateError, endDateError, removeSequence, sortPictures } from './common';
+import { fairwayCardSquatCalculationReducer } from './reducers/fairwayCardSquatCalculationReducer';
+import { fairwayCardSquatCalculationValidator } from './reducers/fairwayCardSquatCalculationValidator';
 
 export const fairwayCardReducer = (
   state: FairwayCardInput,
@@ -79,73 +69,593 @@ export const fairwayCardReducer = (
   let newState;
   switch (actionType) {
     case 'name':
-    case 'primaryId':
-    case 'status':
-    case 'fairwayIds':
-    case 'fairwayPrimary':
-    case 'fairwaySecondary':
-    case 'harbours':
-    case 'pilotRoutes':
-    case 'referenceLevel':
-    case 'group':
-    case 'publishDetails':
-    case 'additionalInfo':
-      newState = generalInfoReducer(state, value, actionType, actionLang, actionTarget);
+      if (!actionLang) return state;
+      newState = { ...state, name: { ...state.name, [actionLang as string]: value as string } };
       break;
+    case 'primaryId':
+      newState = { ...state, id: (value as string).toLowerCase() };
+      break;
+    case 'status':
+      newState = { ...state, status: value as Status };
+      break;
+    case 'fairwayIds': {
+      newState = {
+        ...state,
+        fairwayIds: (value as number[]).sort((a, b) => a - b),
+      };
+      if ((value as number[]).length === 1) {
+        const onlyLinkedFairwayInArray = [{ id: (value as number[])[0], sequenceNumber: 1 }] as SelectedFairwayInput[];
+        newState.primaryFairwayId = onlyLinkedFairwayInArray;
+        newState.secondaryFairwayId = onlyLinkedFairwayInArray;
+      }
+      // this monster of a conditional clause is to update sequencing when one of the linked fairways are removed
+      if (state.fairwayIds && state.fairwayIds.length > newState.fairwayIds.length) {
+        const removedId = state.fairwayIds.find((id) => !(value as number[]).includes(id));
+        const removedStartingFairway = state.primaryFairwayId?.find((fairway) => fairway.id === removedId) as SelectedFairwayInput;
+        const newPrimaryValues = state.primaryFairwayId?.filter((f) => f.id !== removedId) as SelectedFairwayInput[];
 
+        const removedEndingFairway = state.secondaryFairwayId?.find((fairway) => fairway.id === removedId) as SelectedFairwayInput;
+        const newSecondaryValues = state.secondaryFairwayId?.filter((f) => f.id !== removedId) as SelectedFairwayInput[];
+
+        if (removedStartingFairway) {
+          newState.primaryFairwayId = removeSequence(
+            removedStartingFairway,
+            newPrimaryValues,
+            removedStartingFairway?.sequenceNumber
+          ) as SelectedFairwayInput[];
+        }
+        if (removedEndingFairway) {
+          newState.secondaryFairwayId = removeSequence(
+            removedEndingFairway,
+            newSecondaryValues,
+            removedEndingFairway?.sequenceNumber
+          ) as SelectedFairwayInput[];
+        }
+      }
+      break;
+    }
+    case 'fairwayPrimary':
+      newState = { ...state, primaryFairwayId: (value as SelectedFairwayInput[]).sort((a, b) => a.sequenceNumber - b.sequenceNumber) };
+      break;
+    case 'fairwaySecondary':
+      newState = { ...state, secondaryFairwayId: (value as SelectedFairwayInput[]).sort((a, b) => a.sequenceNumber - b.sequenceNumber) };
+      break;
+    case 'harbours':
+      newState = { ...state, harbors: value as string[] };
+      break;
+    case 'pilotRoutes':
+      newState = { ...state, pilotRoutes: value as number[] };
+      break;
+    case 'referenceLevel':
+      newState = { ...state, n2000HeightSystem: !!value, harbors: [] };
+      break;
+    case 'group':
+      newState = { ...state, group: value as string };
+      break;
+    case 'additionalInfo':
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        additionalInfo: {
+          ...(state.additionalInfo ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
+      break;
     case 'line':
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        lineText: {
+          ...(state.lineText ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
+      break;
     case 'speedLimit':
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        speedLimit: {
+          ...(state.speedLimit ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
+      break;
     case 'designSpeed':
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        designSpeed: {
+          ...(state.designSpeed ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
+      break;
     case 'anchorage':
-      newState = fairwayInfoReducer(state, value, actionType, actionLang, actionTarget, actionOuterTarget);
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        anchorage: {
+          ...(state.anchorage ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
       break;
     case 'navigationCondition':
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        navigationCondition: {
+          ...(state.navigationCondition ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
+      break;
     case 'iceCondition':
-      newState = navigationReducer(state, value, actionType, actionLang, actionTarget, actionOuterTarget);
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        iceCondition: {
+          ...(state.iceCondition ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
       break;
     case 'windRecommendation':
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        windRecommendation: {
+          ...(state.windRecommendation ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
+      break;
     case 'vesselRecommendation':
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        vesselRecommendation: {
+          ...(state.vesselRecommendation ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
+      break;
     case 'visibility':
+      if (!actionLang) return state;
+      newState = {
+        ...state,
+        visibility: {
+          ...(state.visibility ?? { fi: '', sv: '', en: '' }),
+          [actionLang as string]: value as string,
+        },
+      };
+      break;
     case 'mareographs':
-      newState = recommendationsReducer(state, value, actionType, actionLang, actionTarget);
+      newState = { ...state, mareographs: value as number[] };
       break;
     case 'pilotEmail':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          pilot: {
+            ...state.trafficService?.pilot,
+            email: value as string,
+          },
+        },
+      };
+      break;
     case 'pilotPhone':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          pilot: {
+            ...state.trafficService?.pilot,
+            phoneNumber: value as string,
+          },
+        },
+      };
+      break;
     case 'pilotFax':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          pilot: {
+            ...state.trafficService?.pilot,
+            fax: value as string,
+          },
+        },
+      };
+      break;
     case 'pilotExtraInfo':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          pilot: {
+            ...state.trafficService?.pilot,
+            extraInfo: {
+              ...(state.trafficService?.pilot?.extraInfo ?? { fi: '', sv: '', en: '' }),
+              [actionLang as string]: value as string,
+            },
+          },
+        },
+      };
+      break;
     case 'pilotPlaces':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          pilot: {
+            ...state.trafficService?.pilot,
+            // check if one of the values is already in state and if found, attach it's pilotjourney value to the new value
+            places: (value as PilotPlaceInput[]).map((place) => {
+              const oldPlace = state.trafficService?.pilot?.places?.find((op) => op.id === place.id);
+              return oldPlace ? { ...place, ...oldPlace } : place;
+            }),
+          },
+        },
+      };
+      break;
     case 'pilotJourney':
-      newState = pilotOrderReducer(state, value, actionType, actionLang, actionTarget);
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          pilot: {
+            ...state.trafficService?.pilot,
+            places: state.trafficService?.pilot?.places?.map((place) =>
+              place.id === actionTarget ? { ...place, pilotJourney: value as string } : place
+            ),
+          },
+        },
+      };
       break;
     case 'vts':
+      // Add and delete
+      if (value && !actionTarget) {
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vts: state.trafficService?.vts?.concat([
+              {
+                email: [],
+                name: { fi: '', sv: '', en: '' },
+                phoneNumber: '',
+                vhf: [],
+              },
+            ]),
+          },
+        };
+      } else {
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vts: state.trafficService?.vts?.filter((vtsItem, idx) => idx !== actionTarget),
+          },
+        };
+      }
+      break;
     case 'vtsName':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+            idx === actionTarget
+              ? {
+                  ...vtsItem,
+                  name: {
+                    ...(vtsItem?.name ?? { fi: '', sv: '', en: '' }),
+                    [actionLang as string]: value as string,
+                  },
+                }
+              : vtsItem
+          ),
+        },
+      };
+      break;
     case 'vtsEmail':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+            idx === actionTarget
+              ? {
+                  ...vtsItem,
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
+                  email: (value as string).split(',').map((item) => item.trim()),
+                }
+              : vtsItem
+          ),
+        },
+      };
+      break;
     case 'vtsPhone':
-      newState = vtsReducer(state, value, actionType, actionLang, actionTarget, actionOuterTarget);
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+            idx === actionTarget
+              ? {
+                  ...vtsItem,
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
+                  phoneNumber: ((value as string) || '').trim(),
+                }
+              : vtsItem
+          ),
+        },
+      };
       break;
     case 'vhf':
+      // Add and delete
+      if (value && actionOuterTarget !== undefined) {
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vts: state.trafficService?.vts?.map((vtsItem, i) =>
+              i === actionOuterTarget
+                ? {
+                    ...vtsItem,
+                    name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
+                    vhf: vtsItem?.vhf?.concat([{ channel: '', name: { fi: '', sv: '', en: '' } }]),
+                  }
+                : vtsItem
+            ),
+          },
+        };
+      } else if (!value && actionTarget !== undefined) {
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vts: state.trafficService?.vts?.map((vtsItem, i) => {
+              if (i === actionOuterTarget) {
+                return {
+                  ...vtsItem,
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
+                  vhf: vtsItem?.vhf?.filter((vhfItem, idx) => idx !== actionTarget),
+                };
+              } else {
+                return { ...vtsItem, name: vtsItem?.name ?? { fi: '', sv: '', en: '' } };
+              }
+            }),
+          },
+        };
+      } else {
+        return state;
+      }
+      break;
     case 'vhfName':
+      if (actionTarget === undefined || actionOuterTarget === undefined) return state;
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+            idx === actionOuterTarget
+              ? {
+                  ...vtsItem,
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
+                  vhf: vtsItem?.vhf?.map((vhfItem, j) =>
+                    j === actionTarget
+                      ? {
+                          name: {
+                            ...(vhfItem?.name ?? { fi: '', sv: '', en: '' }),
+                            [actionLang as string]: value as string,
+                          },
+                          channel: vhfItem?.channel?.toString() ?? '',
+                        }
+                      : vhfItem
+                  ),
+                }
+              : vtsItem
+          ),
+        },
+      };
+      break;
     case 'vhfChannel':
-      newState = vhfReducer(state, value, actionType, actionLang, actionTarget, actionOuterTarget);
+      if (actionTarget === undefined || actionOuterTarget === undefined) return state;
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          vts: state.trafficService?.vts?.map((vtsItem, idx) =>
+            idx === actionOuterTarget
+              ? {
+                  ...vtsItem,
+                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
+                  vhf: vtsItem?.vhf?.map((vhfItem, j) =>
+                    j === actionTarget
+                      ? {
+                          name: vhfItem?.name ?? { fi: '', sv: '', en: '' },
+                          channel: value as string,
+                        }
+                      : vhfItem
+                  ),
+                }
+              : vtsItem
+          ),
+        },
+      };
       break;
     case 'tug':
-    case 'tugName':
-    case 'tugEmail':
-    case 'tugPhone':
-    case 'tugFax':
-      newState = tugReducer(state, value, actionType, actionLang, actionTarget);
+      // Add and delete
+      if (value && !actionTarget) {
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            tugs: state.trafficService?.tugs?.concat([
+              {
+                email: '',
+                name: { fi: '', sv: '', en: '' },
+                phoneNumber: [],
+                fax: '',
+              },
+            ]),
+          },
+        };
+      } else {
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            tugs: state.trafficService?.tugs?.filter((tugItem, idx) => idx !== actionTarget),
+          },
+        };
+      }
       break;
-
+    case 'tugName':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
+            idx === actionTarget
+              ? {
+                  ...tugItem,
+                  name: {
+                    ...(tugItem?.name ?? { fi: '', sv: '', en: '' }),
+                    [actionLang as string]: value as string,
+                  },
+                }
+              : tugItem
+          ),
+        },
+      };
+      break;
+    case 'tugEmail':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
+            idx === actionTarget
+              ? {
+                  ...tugItem,
+                  name: tugItem?.name ?? { fi: '', sv: '', en: '' },
+                  email: ((value as string) || '').trim(),
+                }
+              : tugItem
+          ),
+        },
+      };
+      break;
+    case 'tugPhone':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
+            idx === actionTarget
+              ? {
+                  ...tugItem,
+                  name: tugItem?.name ?? { fi: '', sv: '', en: '' },
+                  phoneNumber: (value as string).split(',').map((item) => item.trim()),
+                }
+              : tugItem
+          ),
+        },
+      };
+      break;
+    case 'tugFax':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          tugs: state.trafficService?.tugs?.map((tugItem, idx) =>
+            idx === actionTarget
+              ? {
+                  ...tugItem,
+                  name: tugItem?.name ?? { fi: '', sv: '', en: '' },
+                  fax: ((value as string) || '').trim(),
+                }
+              : tugItem
+          ),
+        },
+      };
+      break;
     case 'picture':
+      newState = {
+        ...state,
+        pictures: sortPictures(value as PictureInput[]),
+      };
+      break;
     case 'pictureDescription':
+      newState = {
+        ...state,
+        pictures: state.pictures?.map((pic) => (pic.groupId === actionTarget && pic.lang === actionLang ? { ...pic, text: value as string } : pic)),
+      };
+      break;
     case 'pictureLegendPosition':
-      newState = pictureReducer(state, value, actionType, actionLang, actionTarget);
+      newState = {
+        ...state,
+        pictures: state.pictures?.map((pic) => (pic.groupId === actionTarget ? { ...pic, legendPosition: value as string } : pic)),
+      };
       break;
     case 'temporaryNotifications':
+      // Add and delete
+      if (value && !actionTarget) {
+        newState = {
+          ...state,
+          temporaryNotifications: state.temporaryNotifications?.concat({
+            content: { fi: '', sv: '', en: '' },
+            startDate: '',
+            endDate: '',
+          }),
+        };
+      } else {
+        newState = {
+          ...state,
+          temporaryNotifications: state.temporaryNotifications?.filter((_, idx) => idx !== actionTarget),
+        };
+      }
+      break;
     case 'temporaryNotificationContent':
+      newState = {
+        ...state,
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget
+            ? {
+                ...notification,
+                content: {
+                  ...(notification?.content ?? { fi: '', sv: '', en: '' }),
+                  [actionLang as string]: value as string,
+                },
+              }
+            : notification
+        ),
+      };
+      break;
     case 'temporaryNotificationStartDate':
+      newState = {
+        ...state,
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget ? { ...notification, startDate: value as string } : notification
+        ),
+      };
+      break;
     case 'temporaryNotificationEndDate':
-      newState = temporaryNotificationReducer(state, value, actionType, actionLang, actionTarget);
+      newState = {
+        ...state,
+        temporaryNotifications: state.temporaryNotifications?.map((notification, idx) =>
+          idx === actionTarget ? { ...notification, endDate: value as string } : notification
+        ),
+      };
+      break;
+    case 'publishDetails':
+      newState = { ...state, publishDetails: value as string };
       break;
     case 'squatCalculations':
     case 'squatCalculationAdditionalInformation':
@@ -158,8 +668,9 @@ export const fairwayCardReducer = (
     case 'squatCalculationSlopeHeight':
     case 'squatTargetFairwayIds':
     case 'squatSuitableFairwayAreaIds':
-      newState = squatCalculationReducer(state, value, actionType, actionLang, actionTarget);
+      newState = fairwayCardSquatCalculationReducer(state, value, actionType, validationErrors, setValidationErrors, actionLang, actionTarget);
       fairwayCardSquatCalculationValidator(newState, actionType, validationErrors, setValidationErrors, actionTarget);
+
       break;
     default:
       console.warn(`Unknown action type, state not updated.`);
