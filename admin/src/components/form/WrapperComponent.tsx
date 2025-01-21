@@ -14,6 +14,7 @@ interface WrapperComponentProps {
   dataTestId?: string;
   titleDataTestId?: string;
   subSection?: boolean;
+  disabled?: boolean;
 }
 
 const WrapperComponent: React.FC<WrapperComponentProps> = ({
@@ -25,6 +26,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
   dataTestId,
   titleDataTestId,
   subSection,
+  disabled,
 }) => {
   const { t } = useTranslation();
 
@@ -42,7 +44,15 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
         <IonText className="ion-no-padding">
           {/* This row is to keep header and button in same level */}
           <IonRow className="ion-no-padding">
-            {subSection ? <h3 data-testid={titleDataTestId}>{title}</h3> : <h2 data-testid={titleDataTestId}>{title}</h2>}
+            {subSection ? (
+              <h3 data-testid={titleDataTestId} className={disabled ? 'disabled' : ''}>
+                {title}
+              </h3>
+            ) : (
+              <h2 data-testid={titleDataTestId} className={disabled ? 'disabled' : ''}>
+                {title}
+              </h2>
+            )}
             {infoHeader && infoMessage && (
               <IonButton
                 fill="clear"
@@ -64,6 +74,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
           onClick={() => setSectionOpen(!sectionOpen)}
           title={sectionOpen ? t('general.close') : t('general.open')}
           aria-label={sectionOpen ? t('general.close') : t('general.open')}
+          disabled={disabled}
         >
           <ChevronIcon />
         </IonButton>

@@ -422,7 +422,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
-              <PublishDetailsSection state={state} />
+              <WrapperComponent title={t('fairwaycard.publish-details')} dataTestId="toggleOpenPublishDetails" disabled={!state.publishDetails}>
+                <PublishDetailsSection state={state} />
+              </WrapperComponent>
               <WrapperComponent title={t('fairwaycard.main-section-title')}>
                 <MainSection
                   state={state}
