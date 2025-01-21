@@ -6,7 +6,7 @@ import { Lang } from '../../../utils/constants';
 import { FairwayForm, getAreaName, getFairwayFormText, getFairwayName } from '../../../utils/common';
 import { Link } from 'react-router-dom';
 import { setSelectedFairwayAreas, zoomToFairwayAreas } from '../../layers';
-import { fairwayAreaExludeType2Filter } from '../../../utils/fairwayCardUtils';
+import { fairwayAreaExcludeType2Filter } from '../../../utils/fairwayCardUtils';
 
 export type SquatCalculationProps = {
   squatCalculation?: SquatCalculation | null;
@@ -19,7 +19,7 @@ const SquatCalculationTemplate: React.FC<SquatCalculationProps> = ({ squatCalcul
 
   const allAreas: Area[] = [];
   fairways?.forEach((f) => {
-    allAreas.push(...(f.areas?.filter(fairwayAreaExludeType2Filter) ?? []));
+    allAreas.push(...(f.areas?.filter(fairwayAreaExcludeType2Filter) ?? []));
   });
 
   const groupedAreas = squatCalculation?.suitableFairwayAreas?.reduce<Record<string, number[]>>(
