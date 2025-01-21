@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IonContent, IonPage, IonText } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import {
   ActionType,
@@ -527,20 +527,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   isLoadingFairways={isLoadingFairways}
                 />
               </WrapperComponent>
-
-              <IonText>
-                <h2>{t('fairwaycard.print-images')}</h2>
-              </IonText>
-
-              <MapExportTool
-                fairwayCardInput={state}
-                readonly={readonly}
-                disabled={!readonly && state.status === Status.Removed}
-                validationErrors={validationErrors.concat(innerValidationErrors)}
-                setPicture={updateState}
-                fairways={fairwaySelection}
-                harbours={harbourSelection}
-              />
+              <WrapperComponent title={t('fairwaycard.print-images')}>
+                <MapExportTool
+                  fairwayCardInput={state}
+                  readonly={readonly}
+                  disabled={!readonly && state.status === Status.Removed}
+                  validationErrors={validationErrors.concat(innerValidationErrors)}
+                  setPicture={updateState}
+                  fairways={fairwaySelection}
+                  harbours={harbourSelection}
+                />
+              </WrapperComponent>
             </form>
           </>
         )}
