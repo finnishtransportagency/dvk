@@ -30,7 +30,8 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
 }) => {
   const { t } = useTranslation();
 
-  const [sectionOpen, setSectionOpen] = useState<boolean>(true);
+  // !disabled because if there's no content, no need to section be open
+  const [sectionOpen, setSectionOpen] = useState<boolean>(!disabled);
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
   const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
@@ -43,7 +44,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
       <IonItem className="sectionHeader" style={isPilotOrder ? { margin: '0px' } : {}}>
         <IonText className="ion-no-padding">
           {/* This row is to keep header and button in same level */}
-          <IonRow className="ion-no-padding">
+          <IonRow className="ion-no-padding align-items">
             {subSection ? (
               <h3 data-testid={titleDataTestId} className={disabled ? 'disabled' : ''}>
                 {title}
@@ -70,7 +71,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
           data-testid={dataTestId}
           slot="end"
           fill="clear"
-          className={'icon-only small toggle ' + (sectionOpen ? 'open' : 'closed')}
+          className={'icon-only small toggle' + (sectionOpen ? ' close' : ' open')}
           onClick={() => setSectionOpen(!sectionOpen)}
           title={sectionOpen ? t('general.close') : t('general.open')}
           aria-label={sectionOpen ? t('general.close') : t('general.open')}

@@ -7,11 +7,14 @@ interface PublishDetailsSectionProps {
 }
 
 const PublishDetailsSection: React.FC<PublishDetailsSectionProps> = ({ state }) => {
+  const sectionClassName = 'sectionContent' + (state.publishDetails ? ' open' : ' closed');
   return (
     <div className="formSection" key={'publishSectionContainer'}>
-      <IonText className="sectionContent">
-        <p>{state.publishDetails}</p>
-      </IonText>
+      <div className={sectionClassName}>
+        <IonText className="sectionContent">
+          <p>{state.publishDetails}</p>
+        </IonText>
+      </div>
       <br />
     </div>
   );

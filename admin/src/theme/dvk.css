@@ -830,8 +830,7 @@ ion-grid.formGrid ion-col:last-of-type {
   line-height: 1.5rem;
   font-weight: bold;
   text-transform: uppercase;
-  margin: 0;
-  border-bottom: 1px solid var(--ion-color-light);
+  margin: 10px 0px 0px 0px;
 }
 .mainContent form ion-text h3 {
   font-size: 14px;
@@ -1384,4 +1383,8 @@ ion-header.infoHeader .infoHeaderDivider {
   color: var(--ion-color-medium);
   font-style: italic;
   font-size: 14px;
+}
+
+ion-row.align-items {
+  align-items: center;
 }
