@@ -26,15 +26,6 @@ async function readParameterForEnv(path: string): Promise<string> {
   });
 }
 
-//Function will be removed when GeoJson support for VATU is in prod
-async function readOptionalParameterForEnvWithDefault(path: string, defaultValue: string): Promise<string> {
-  return new Promise((resolve) => {
-    readParameterByPath('/' + path).then((value) => {
-      resolve(value ?? defaultValue);
-    });
-  });
-}
-
 function getBasicAuthHeaders(username: string, password: string, acceptEncoding = 'gzip') {
   return {
     Authorization: 'Basic ' + Buffer.from(`${username}:${password}`).toString('base64'),
@@ -139,11 +130,6 @@ export async function getVatuParameters() {
     vatuUrl: values[0],
     vatuHeaders: getBasicAuthHeaders(values[1], values[2]),
   }));
-}
-
-//This function to be removed once VATU returns geojson only
-export async function getVatuV2ApiSupport() {
-  return isProductionEnvironment() ? '' : readOptionalParameterForEnvWithDefault(ParamStore.VATU_V2_APIS, '');
 }
 
 export async function getVatuPilotRoutesParameters() {
