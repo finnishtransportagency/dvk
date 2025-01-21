@@ -106,7 +106,6 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             disabled={!readonly && disabled}
             readonly={readonly}
             error={errorTextSv}
-            helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
             maxCharLength={maxCharLength}
@@ -125,7 +124,6 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             disabled={!readonly && disabled}
             readonly={readonly}
             error={errorTextSv}
-            helperText={helperText}
           />
         )}
       </IonCol>
@@ -142,7 +140,6 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             disabled={!readonly && disabled}
             readonly={readonly}
             error={errorTextEn}
-            helperText={helperText}
             actionTarget={actionTarget}
             actionOuterTarget={actionOuterTarget}
             maxCharLength={maxCharLength}
@@ -161,7 +158,6 @@ const TextInputRow: React.FC<TextInputRowProps> = ({
             disabled={!readonly && disabled}
             readonly={readonly}
             error={errorTextEn}
-            helperText={helperText}
           />
         )}
       </IonCol>

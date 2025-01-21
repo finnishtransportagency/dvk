@@ -52,13 +52,17 @@ import MareographInfo from './MareographInfo';
 import { useMareographFeatures } from '../../MareographFeatureLoader';
 import { useForecastFeatures } from '../../ForecastLoader';
 import ForecastContainer from '../ForecastContainer';
+import SquatCalculationTemplateNotAvailable from './SquatCalculationTemplateNotAvailable';
+import SquatCalculationTemplate from './SquatCalculationTemplate';
+import { uniqueId } from 'lodash';
 
 export enum FairwayCardTab {
   Information = 1,
   Harbours = 2,
   CommonInformation = 3,
   PilotRoutes = 4,
-  WeatherForecasts = 5,
+  SquatCalculation = 5,
+  WeatherForecasts = 6,
 }
 
 interface FairwayCardContentProps {
@@ -352,12 +356,33 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             )}
           </div>
 
-          <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
-            {forecastsReady && forecasts
-              ? forecasts.map((f) => {
-                  return <ForecastContainer forecast={f} key={f.getId()} multicontainer={forecasts.length > 1} />;
+          <div
+            className={
+              getTabClassName(FairwayCardTab.SquatCalculation) +
+              (fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? '' : ' onecolumn')
+            }
+          >
+            {fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? (
+              fairwayCard?.squatCalculations
+                .toSorted((a, b) => {
+                  if (!a.place || !b.place || !a.place[lang] || !b.place[lang]) return 0;
+                  return a.place[lang].localeCompare(b.place[lang]);
                 })
-              : ''}
+                .map((calc) => {
+                  return <SquatCalculationTemplate squatCalculation={calc} key={uniqueId()} fairways={fairwayCard.fairways} />;
+                })
+            ) : (
+              <SquatCalculationTemplateNotAvailable />
+            )}
+          </div>
+          <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
+            {forecastsReady && forecasts ? (
+              forecasts.map((f) => {
+                return <ForecastContainer forecast={f} key={f.getId()} multicontainer={forecasts.length > 1} />;
+              })
+            ) : (
+              <Alert errorText={t('forecastNotFound')}></Alert>
+            )}
           </div>
 
           {!isMobile() && (

@@ -5,25 +5,31 @@ import { point as turf_point } from '@turf/helpers';
 import { transformTranslate as turf_transformTranslate } from '@turf/transform-translate';
 import { MAP } from './constants';
 
-export const getAisVesselShipType = (typeNumber?: number): string => {
-  if (!typeNumber) {
+export type AisVesselType =
+  | 'aisvesselpleasurecraft'
+  | 'aisvesseltugandspecialcraft'
+  | 'aisvesselhighspeed'
+  | 'aisvesselpassenger'
+  | 'aisvesselcargo'
+  | 'aisvesseltanker'
+  | 'aisunspecified';
+
+const shipTypes: Array<AisVesselType> = Array(100);
+shipTypes.fill('aisunspecified', 0, 100);
+shipTypes.fill('aisvesselpleasurecraft', 36, 38);
+shipTypes.fill('aisvesseltugandspecialcraft', 31, 36);
+shipTypes.fill('aisvesseltugandspecialcraft', 50, 60);
+shipTypes.fill('aisvesselhighspeed', 40, 50);
+shipTypes.fill('aisvesselpassenger', 60, 70);
+shipTypes.fill('aisvesselcargo', 70, 80);
+shipTypes.fill('aisvesseltanker', 80, 90);
+
+export const getAisVesselShipType = (typeNumber?: number): AisVesselType => {
+  if (!typeNumber || typeNumber < 0 || typeNumber > 100) {
     return 'aisunspecified';
   }
-  if (typeNumber == 36 || typeNumber == 37) {
-    return 'aisvesselpleasurecraft';
-  } else if ((typeNumber >= 31 && typeNumber <= 35) || (typeNumber >= 50 && typeNumber <= 59)) {
-    return 'aisvesseltugandspecialcraft';
-  } else if (typeNumber >= 40 && typeNumber <= 49) {
-    return 'aisvesselhighspeed';
-  } else if (typeNumber >= 60 && typeNumber <= 69) {
-    return 'aisvesselpassenger';
-  } else if (typeNumber >= 70 && typeNumber <= 79) {
-    return 'aisvesselcargo';
-  } else if (typeNumber >= 80 && typeNumber <= 89) {
-    return 'aisvesseltanker';
-  } else {
-    return 'aisunspecified';
-  }
+
+  return shipTypes[typeNumber];
 };
 
 export const getNavState = (t: TFunction, navState: number): string | undefined => {

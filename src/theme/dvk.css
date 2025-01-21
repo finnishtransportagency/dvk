@@ -332,3 +332,7 @@ ion-range::part(bar) {
 ion-range::part(bar-active) {
   background: var(--ion-color-secondary)
 }
+
+.bgAlertModal .alert-message.sc-ion-alert-md {
+  padding-bottom: 0px; /* Add space below the message */
+}

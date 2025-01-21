@@ -1,11 +1,12 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap, { getMap } from '../components/DvkMap';
-import { FairwayCardPartsFragment, Text } from '../graphql/generated';
+import { Area, Fairway, FairwayCardPartsFragment, Text } from '../graphql/generated';
 import {
   FeatureDataId,
   FeatureDataLayerId,
   FeatureDataSources,
   FeatureLayerId,
+  Lang,
   LAYER_IDB_KEY,
   MAP,
   MAX_HITS,
@@ -20,6 +21,8 @@ import boaters from '../theme/img/warning_to_boaters_icon.svg';
 import * as olExtent from 'ol/extent';
 import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
 import { Action } from '../hooks/dvkReducer';
+import { Dispatch } from 'react';
+import { TFunction } from 'i18next';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -300,4 +303,49 @@ export function updateLayerSelection(initialLayers: string[], requiredLayers: Fe
       updateLayers(initialLayers);
     }
   });
+}
+
+export function setResponseState(dispatch: Dispatch<Action>, statusCode: number, statusText: string, errorText: string) {
+  dispatch({
+    type: 'setResponse',
+    payload: {
+      value: [String(statusCode), statusText, errorText],
+    },
+  });
+}
+
+export enum FairwayForm {
+  OpenWater = 1,
+  Channel = 2,
+  SlopedChannel = 3,
+}
+
+export function getFairwayFormText(id: number, t: TFunction) {
+  switch (id) {
+    case FairwayForm.OpenWater:
+      return t('squat-calculation-open-water');
+    case FairwayForm.Channel:
+      return t('squat-calculation-channel');
+    case FairwayForm.SlopedChannel:
+      return t('squat-calculation-sloped-channel');
+    default:
+      return '';
+  }
+}
+
+export function getFairwayName(fairway: Fairway, lang: Lang) {
+  if (fairway.name) {
+    return (fairway.name[lang] ?? '').length === 0 ? fairway.name.fi : fairway.name[lang];
+  }
+  return '';
+}
+
+export function getAreaName(area: Area, t: TFunction) {
+  const name = area.name;
+  const type = t('areaType' + area.typeCode);
+  // ankkurointialueet pitkässä muodossa esim. osa 'c' -> 'ankkurointialue c'
+  if (area.typeCode == 2) {
+    return name ? type + ' ' + name : type;
+  }
+  return name ?? type;
 }

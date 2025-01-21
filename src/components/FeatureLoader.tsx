@@ -218,7 +218,7 @@ export function useInitStaticDataLayer(
         layer.set('status', 'loading');
         (async () => {
           get(featureDataId).then(async (data) => {
-            if (data) {
+            if (data && featureLayerId == 'balticsea') {
               initLayer(data);
             } else {
               await axios
@@ -277,12 +277,10 @@ export function useVtsPointLayer() {
 
 function addSpeedLimits(fafs: Feature<Geometry>[], rafs: Feature<Geometry>[]) {
   const format = new GeoJSON();
-  for (const raf of rafs) {
+  // Only analyse restriction areas with speed limit value
+  for (const raf of rafs.filter((r) => r.getProperties().value !== null)) {
     const speedLimit = raf.getProperties().value;
-    // Only analyse restriction areas with speed limit value
-    if (speedLimit === null) {
-      continue;
-    }
+
     const rafExtent = raf.getGeometry()?.getExtent();
     const raGeomPoly = format.writeGeometryObject(raf.getGeometry() as Geometry);
 

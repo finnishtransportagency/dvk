@@ -15,7 +15,8 @@ const marineAreaSelectedImage = new Image();
 marineAreaSelectedImage.src = marineareaSelected;
 let selectedAreaStyle: Style | undefined = undefined;
 
-function getAreaStyle(feature: FeatureLike, selected: boolean) {
+function getAreaStyle(feature: FeatureLike) {
+  const selected = feature.get('hoverStyle');
   let s = selected ? selectedAreaStyle : areaStyle;
   if (!s) {
     const canvas = document.createElement('canvas');
@@ -58,7 +59,8 @@ function getLineStyle(feature: FeatureLike) {
   });
 }
 
-function getIconStyle(feature: FeatureLike, selected: boolean) {
+function getIconStyle(feature: FeatureLike) {
+  const selected = feature.get('hoverStyle');
   const selectedScale = selected ? 1.2 : 1;
   const featureProperties = feature.getProperties() as MarineWarningFeatureProperties;
   const iconScale = isGeneralMarineWarning(featureProperties.area) ? 1.5 * selectedScale : 1 * selectedScale;
@@ -109,48 +111,46 @@ function getClusterCountStyle(count: number, selected: boolean) {
   });
 }
 
-export function getMarineWarningStyle(feature: FeatureLike, selected: boolean) {
+function getClusterStyles(feature: FeatureLike) {
+  const feats = feature.get('features') as Array<Feature>;
   const styles: Style[] = [];
-  let selectedIcon = selected;
-  let feat = feature;
-  if (feature.get('cluster')) {
-    const feats = feature.get('features') as Array<Feature>;
-    if (feats.length < 1) {
-      return undefined;
-    } else if (feats.length === 1) {
-      feat = feature.get('features')[0];
-      if (feat.get('hoverStyle') === true) {
-        selectedIcon = true;
+  if (feats.length >= 1) {
+    const clusterSelected = feature.get('hoverStyle');
+
+    for (const f of feats) {
+      const feat = new Feature();
+      feat.setProperties(f.getProperties());
+      feat.set('hoverStyle', feat.get('hoverStyle') || clusterSelected);
+      feat.setGeometry(f.getGeometry());
+      if (feat.getGeometry()?.getType() === 'Polygon') {
+        styles.push(getAreaStyle(feat));
+      } else if (feat.getGeometry()?.getType() === 'LineString') {
+        styles.push(getLineStyle(feat));
       }
-    } else {
-      for (const f of feats) {
-        feat = new Feature();
-        feat.setProperties(f.getProperties());
-        feat.setGeometry(f.getGeometry());
-        if (feat.getGeometry()?.getType() === 'Polygon') {
-          styles.push(getAreaStyle(feat, selected));
-        } else if (feat.getGeometry()?.getType() === 'LineString') {
-          styles.push(getLineStyle(feat));
-        }
-        if (feat.get('hoverStyle') === true) {
-          selectedIcon = true;
-        }
-      }
-      feat = new Feature();
-      feat.setProperties((feature.get('features')[0] as Feature).getProperties());
-      feat.setGeometry((feature as Feature).getGeometry());
-      styles.push(getClusterCountStyle(feats.length, selectedIcon));
     }
-  } else if (feature.get('hoverStyle') === true) {
-    selectedIcon = true;
-  }
+    const feat = new Feature();
+    feat.setProperties((feature.get('features')[0] as Feature).getProperties());
+    feat.set('hoverStyle', feats.some((f) => f.get('hoverStyle')) || clusterSelected);
+    feat.setGeometry((feature as Feature).getGeometry());
+    styles.push(getIconStyle(feat));
 
-  styles.push(getIconStyle(feat, selectedIcon));
-
-  if (feat.getGeometry()?.getType() === 'Polygon') {
-    styles.push(getAreaStyle(feat, selected));
-  } else if (feat.getGeometry()?.getType() === 'LineString') {
-    styles.push(getLineStyle(feat));
+    if (feats.length > 1) {
+      styles.push(getClusterCountStyle(feats.length, feat.get('hoverStyle')));
+    }
   }
+  return styles;
+}
+
+export function getMarineWarningStyle(feature: FeatureLike) {
+  if (feature.get('cluster')) {
+    return getClusterStyles(feature);
+  }
+  const styles: Style[] = [];
+  if (feature.getGeometry()?.getType() === 'Polygon') {
+    styles.push(getAreaStyle(feature));
+  } else if (feature.getGeometry()?.getType() === 'LineString') {
+    styles.push(getLineStyle(feature));
+  }
+  styles.push(getIconStyle(feature));
   return styles;
 }

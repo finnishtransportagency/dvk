@@ -24,7 +24,7 @@ export type AreaProperties = {
   properties: AreaFeatureProperties;
 };
 
-export function getAreaName(area: AreaProperties, t: TFunction) {
+function getAreaName(area: AreaProperties, t: TFunction) {
   const name = area.properties.name;
   const type = t('fairwayCards.areaType' + area.properties.typeCode);
   // ankkurointialueet pitkässä muodossa esim. osa 'c' -> 'ankkurointialue c'

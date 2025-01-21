@@ -12,11 +12,13 @@ import NotificationModal from '../NotificationModal';
 import Textarea from './Textarea';
 
 interface SelectWithCustomDropdownProps {
+  name?: string;
   label: string;
   options: SelectOption[] | null;
   selected: number[] | SelectedFairwayInput[];
-  setSelected: (value: ValueType, actionType: ActionType) => void;
+  setSelected: (value: ValueType, actionType: ActionType, actionLang?: Lang, actionTarget?: string | number) => void;
   actionType: ActionType;
+  actionTarget?: string | number;
   dropdownType: DropdownType;
   required?: boolean;
   showId?: boolean;
@@ -27,14 +29,17 @@ interface SelectWithCustomDropdownProps {
   isLoading?: boolean;
   infoTitle?: string;
   infoDescription?: string;
+  ignoreHelperText?: boolean;
 }
 
 const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
+  name,
   label,
   options,
   selected,
   setSelected,
   actionType,
+  actionTarget,
   dropdownType,
   required,
   showId,
@@ -45,6 +50,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   isLoading,
   infoTitle,
   infoDescription,
+  ignoreHelperText = false,
 }) => {
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'general' });
   const lang = i18n.resolvedLanguage as Lang;
@@ -54,7 +60,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
   const selectRef = useRef<HTMLIonItemElement>(null);
-  const triggerId = 'select-with-dropdown-' + actionType;
+  const triggerId = 'select-with-dropdown-' + actionType + actionTarget;
 
   const focusSelectItem = () => {
     selectRef.current?.click();
@@ -76,26 +82,20 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   };
 
   const handleSelect = (updatedValues: number[] | SelectedFairwayInput[]) => {
-    setSelected(updatedValues, actionType);
+    setSelected(updatedValues, actionType, undefined, actionTarget);
   };
 
   const showInfoModal = () => {
     setInfoModalOpen(true);
   };
 
-  const labelText = constructSelectDropdownLabel(
-    dropdownType === 'sequence' ? selected.map((s) => (s as SelectedFairwayInput).id) : (selected as number[]),
-    options,
-    lang,
-    showId
-  );
+  const labelText = constructSelectDropdownLabel(dropdownType === 'sequence' ? selected : (selected as number[]), options, lang, showId);
   const disabledStyle = disabled ? ' disabled' : '';
   const inputClassName = 'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid' + disabledStyle);
 
   //For readability of tsx
   const readonlyAndNotLoading = readonly && !isLoading;
   const inputOrLoading = !readonlyAndNotLoading;
-
   return (
     <div className={inputClassName}>
       {readonlyAndNotLoading && (
@@ -135,6 +135,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
           ) : (
             <>
               <IonItem
+                data-testid={name + 'Select'}
                 ref={selectRef}
                 id={triggerId}
                 button={true}
@@ -166,7 +167,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
                 />
               </IonItem>
               {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
-              <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText())}</IonNote>
+              <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText(), ignoreHelperText)}</IonNote>
               {dropdownType === 'filter' && (
                 <SelectDropdownPopup
                   trigger={triggerId}

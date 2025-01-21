@@ -7,18 +7,16 @@ import { Lang } from '../utils/constants';
 import { Text } from '../graphql/generated';
 import { format, parseISO } from 'date-fns';
 import MarkdownParagraph from './content/MarkdownParagraph';
+import { setResponseState } from '../utils/common';
 
 interface AlertProps {
   title: string | ReactElement;
   icon: string;
   color?: string;
   className?: string;
-  mainLegendOpen?: boolean;
   startDate?: string;
   endDate?: string;
   markdownText?: Text;
-  isError?: boolean;
-  isFeatures?: boolean;
 }
 
 const Alert: React.FC<AlertProps> = ({ title, icon, color, className, startDate, endDate, markdownText }) => {
@@ -60,17 +58,22 @@ const Alert: React.FC<AlertProps> = ({ title, icon, color, className, startDate,
   );
 };
 
-export const LayerAlert: React.FC<AlertProps> = ({ title, icon, color, className, mainLegendOpen, isError, isFeatures }) => {
+interface LayerAlertProps {
+  title: string | ReactElement;
+  icon: string;
+  color?: string;
+  className?: string;
+  mainLegendOpen?: boolean;
+  isError?: boolean;
+  isFeatures?: boolean;
+}
+
+export const LayerAlert: React.FC<LayerAlertProps> = ({ title, icon, color, className, mainLegendOpen, isError, isFeatures }) => {
   const { dispatch } = useDvkContext();
 
   useEffect(() => {
     if (mainLegendOpen && isError && !isFeatures) {
-      dispatch({
-        type: 'setResponse',
-        payload: {
-          value: [String(503), 'Service Unavailable', t('warnings.layerLoadError')],
-        },
-      });
+      setResponseState(dispatch, 503, 'Service Unavailable', t('warnings.layerLoadError'));
     }
   }, [dispatch, mainLegendOpen, isError, isFeatures]);
 

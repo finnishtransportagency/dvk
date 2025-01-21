@@ -20,15 +20,15 @@ const Squat: React.FC = () => {
       <Alert className="page-top" alertType="info" title={t('pakolliset-kentat-info')} closable />
       <IonGrid className="content">
         <IonRow>
-          <IonCol size="12" sizeSm="6" sizeLg="4">
+          <IonCol data-testid="vessel-column" size="12" sizeSm="6" sizeLg="4">
             <Vessel />
           </IonCol>
 
-          <IonCol size="12" sizeSm="6" sizeLg="4">
+          <IonCol data-testid="environment-column" size="12" sizeSm="6" sizeLg="4">
             <Environment />
           </IonCol>
 
-          <IonCol size="12" sizeLg="4" className="block-in-print">
+          <IonCol data-testid="calculations-column" size="12" sizeLg="4" className="block-in-print">
             <Calculations />
           </IonCol>
         </IonRow>

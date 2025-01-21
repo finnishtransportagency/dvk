@@ -15,7 +15,7 @@ import {
   TemporaryNotification,
   Text,
 } from '../graphql/generated';
-import { FeatureDataId, FeatureDataSources, ItemType, Lang, SelectOption, VERSION } from './constants';
+import { AreaSelectOption, FeatureDataId, FeatureDataSources, ItemType, Lang, SelectOption, VERSION } from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
@@ -126,8 +126,12 @@ export const isInputOk = (isValid: boolean, error: string | undefined) => {
   return isValid && (!error || error === '');
 };
 
-export const getCombinedErrorAndHelperText = (helperText: string | null | undefined, errorText: string): string => {
-  if (helperText) {
+export const getCombinedErrorAndHelperText = (
+  helperText: string | null | undefined,
+  errorText: string,
+  ignoreHelperText: boolean = false
+): string => {
+  if (helperText && !ignoreHelperText) {
     return errorText.length > 0 ? errorText + '. ' + helperText : helperText;
   }
   return errorText;
@@ -150,21 +154,45 @@ export const sortSelectOptions = (options: SelectOption[], lang: Lang) => {
   });
 };
 
+export const sortAreaSelectOptions = (options: AreaSelectOption[]) => {
+  return options.sort((o1, o2) => (o1.depth ?? 0) - (o2.depth ?? 0));
+};
+
 export const sortTypeSafeSelectOptions = (options: SelectOption[], lang: Lang) => {
   const filteredOptions = options.filter((item) => !!item && typeof item.id === 'number');
   return sortSelectOptions(filteredOptions, lang);
 };
 
-export const constructSelectOptionLabel = (item: SelectOption, lang: Lang, showId?: boolean): string => {
+export const constructSelectOptionLabel = (item: SelectOption | AreaSelectOption, lang: Lang, showId?: boolean): string => {
   const nameLabel = (item.name && (item.name[lang] || item.name.fi)) || item.id.toString();
   return showId ? '[' + item.id + '] ' + nameLabel : nameLabel;
 };
 
-export const constructSelectDropdownLabel = (selected: number[], options: SelectOption[] | null, lang: Lang, showId?: boolean): string[] => {
+export const constructSelectDropdownLabel = (
+  selected: number[] | SelectedFairwayInput[],
+  options: SelectOption[] | AreaSelectOption[] | null,
+  lang: Lang,
+  showId?: boolean
+): string[] => {
+  // for constructing label according to sequence number some extra checks are needed
+  // so here we check if we're constructing sequenced dropdown label or normal (if isIdArray returns true, its type is number[])
+  const isIdArray = selected.some((s) => typeof s === 'number');
   if (selected.length > 0 && !!options && options.length > 0) {
-    const sortedOptions = sortSelectOptions(options, lang);
-    const selectedOptions = sortedOptions.filter((item) => !!item && typeof item.id === 'number' && selected.includes(item.id));
-    return selectedOptions.map((item) => constructSelectOptionLabel(item, lang, showId));
+    if ('depth' in options[0]) {
+      sortAreaSelectOptions(options);
+      const selectedOptions = sortAreaSelectOptions(options).filter(
+        (item) => !!item && typeof item.id === 'number' && (selected as number[]).includes(item.id)
+      );
+      return selectedOptions.map((item: AreaSelectOption) => constructSelectOptionLabel(item, lang, showId));
+    }
+
+    const sortedOptions = isIdArray ? sortSelectOptions(options, lang) : getSortedOptions(options, selected as SelectedFairwayInput[]);
+    const selectedOptions = sortedOptions?.filter((item) =>
+      !!item && typeof item.id === 'number' && isIdArray
+        ? (selected as number[]).includes(item.id)
+        : (selected as SelectedFairwayInput[]).find((s) => s.id === item.id)
+    );
+    return selectedOptions?.map((item) => constructSelectOptionLabel(item, lang, showId)) ?? [];
   }
   return [];
 };
@@ -225,19 +253,36 @@ export function sortPictures(pictures: PictureInput[]) {
 
 export function featureCollectionToSelectOptions(collection: FeatureCollection | undefined) {
   const propertyArray: SelectOption[] = [];
-  collection?.features?.map((route) => {
-    const properties = route.properties;
+  collection?.features?.map((feature) => {
+    const properties = feature.properties;
     const selectOption = {
       id: properties?.id,
       // name declared like this because of constructing label logic
       // related to SelectWithFilter
-      name: {
-        fi: properties?.name,
-      },
+      name: { fi: properties?.name },
     };
     propertyArray.push(selectOption);
   });
+  return propertyArray;
+}
 
+export function featureCollectionToAreaSelectOptions(collection: FeatureCollection | undefined, subtextPrefix: string, lang: Lang) {
+  const propertyArray: AreaSelectOption[] = [];
+  collection?.features?.map((feature) => {
+    const properties = feature.properties;
+    const depth = properties?.referenceLevel === 'N2000' ? properties?.depth : properties?.n2000depth;
+    if (depth) {
+      const selectOption = {
+        id: properties?.id,
+        name: { fi: properties?.name },
+        fairwayIds: properties?.fairways?.map((f: { fairwayId: number }) => f.fairwayId),
+        depth: depth,
+        subtext: subtextPrefix + ' ' + depth.toLocaleString(lang) + ' m',
+        areatype: properties?.typeCode,
+      };
+      propertyArray.push(selectOption);
+    }
+  });
   return propertyArray;
 }
 
@@ -437,4 +482,24 @@ export function getSelectedItemsAsText(
     });
 
   return valueStrings.join(valueSeparator);
+}
+
+// fairly complex solution but this is done because options don't have sequence number property attached to them
+// sequence numbers are always part of state, so bit of a maneuvering is needed since comparing has to be done by comparing
+// selected array
+export function getSortedOptions(options: SelectOption[] | null, selected: SelectedFairwayInput[]) {
+  return options?.sort((a, b) => {
+    // arrays are so small that no need for mapping
+    const seqA = selected.find((sA) => sA.id === a.id)?.sequenceNumber;
+    const seqB = selected.find((sB) => sB.id === b.id)?.sequenceNumber;
+    // if both are selected, compare sequence numbers
+    if (seqA !== undefined && seqB !== undefined) {
+      return seqA - seqB;
+    }
+    // if one of them doesn't have a sequence number, place it before
+    if (seqA !== undefined) return -1;
+    if (seqB !== undefined) return 1;
+    // if no sequence numbers to compare, just compare names
+    return a.name?.fi?.localeCompare(b.name?.fi as string) ?? 0;
+  });
 }

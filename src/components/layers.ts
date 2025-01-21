@@ -107,7 +107,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'line12':
       return getNavigationLine12Style(feature, resolution, true);
     case 'line3456':
-      return getNavigationLine3456Style(true);
+      return getNavigationLine3456Style(feature);
     case 'area12':
       return resolution <= 100 ? getAreaStyleBySource('area12', highlighted, highlighted) : undefined;
     case 'area12Borderline':
@@ -118,13 +118,13 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'specialarea15':
       return getSpecialAreaStyle(feature);
     case 'boardline12':
-      return getBoardLineStyle(true);
+      return getBoardLineStyle(feature);
     case 'safetyequipmentfault':
       return getSafetyEquipmentStyle(feature, resolution, highlighted, true);
     case 'coastalwarning':
     case 'localwarning':
     case 'boaterwarning':
-      return getMarineWarningStyle(feature, highlighted);
+      return getMarineWarningStyle(feature);
     case 'harbor':
       return getHarborStyle(feature, resolution, highlighted, minResolutionHarbor);
     case 'circle':
@@ -235,7 +235,7 @@ function addMarineWarningClusterLayer({
     new VectorLayer({
       source: cluster,
       declutter,
-      style: (feature) => getMarineWarningStyle(feature, !!feature.get('hoverStyle')),
+      style: getMarineWarningStyle,
       properties: { id },
       maxResolution,
       minResolution,
@@ -401,7 +401,7 @@ export function addAPILayers(map: Map) {
     id: 'boardline12',
     maxResolution: 75,
     renderBuffer: 1,
-    style: getBoardLineStyle(false),
+    style: getBoardLineStyle,
     zIndex: 204,
   });
   addFeatureVectorLayer({
@@ -426,7 +426,7 @@ export function addAPILayers(map: Map) {
     id: 'line3456',
     maxResolution: 75,
     renderBuffer: 1,
-    style: (feature) => getNavigationLine3456Style(!!feature.get('hoverStyle')),
+    style: getNavigationLine3456Style,
     zIndex: 203,
   });
 
@@ -1040,27 +1040,33 @@ export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | u
       }
     }
 
-    fairwayFeatures.forEach((f) => f.set('selected', true, true));
     selectedFairwayCardSource.addFeatures(fairwayFeatures);
-
-    const extent = olExtent.createEmpty();
-    // pilot excludes pilot, pilotagelimit and pilotroute
-    const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot', 'observation', 'mareograph'];
-    for (const feature of fairwayFeatures) {
-      const dataSource = feature.getProperties().dataSource;
-      const isWrongDataSource = excludedDatasources.some((source) => dataSource.includes(source));
-      if (!isWrongDataSource) {
-        const geom = feature.getGeometry();
-        if (geom) {
-          olExtent.extend(extent, geom.getExtent());
-        }
-      }
-    }
-    if (!olExtent.isEmpty(extent)) {
-      dvkMap.olMap?.getView().fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
-    }
+    zoomToExtent(fairwayFeatures);
   }
   dvkMap.getFeatureLayer('selectedfairwaycard').setVisible(true);
+}
+
+function zoomToExtent(features: Feature<Geometry>[]) {
+  features.forEach((f) => f.set('selected', true, true));
+
+  const extent = olExtent.createEmpty();
+  // pilot excludes pilot, pilotagelimit and pilotroute
+  const excludedDatasources = ['boardline12', 'safetyequipmentfault', 'pilot', 'observation', 'mareograph'];
+  for (const feature of features) {
+    const dataSource = feature.getProperties().dataSource;
+    const isWrongDataSource = excludedDatasources.some((source) => dataSource.includes(source));
+    if (!isWrongDataSource) {
+      const geom = feature.getGeometry();
+      if (geom) {
+        olExtent.extend(extent, geom.getExtent());
+      }
+    }
+  }
+  if (!olExtent.isEmpty(extent)) {
+    getMap()
+      .olMap?.getView()
+      .fit(extent, { padding: [50, 50, 50, 50], duration: 1000 });
+  }
 }
 
 export function setSelectedPilotPlace(id?: number | string) {
@@ -1083,14 +1089,25 @@ export function setSelectedPilotageLimit(id?: number | string) {
   pilotageLimitSource.dispatchEvent('change');
 }
 
-export function setSelectedFairwayArea(id?: number | string) {
+export function setSelectedFairwayAreas(ids?: (number | string)[]) {
   const dvkMap = getMap();
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-
   for (const f of selectedFairwayCardSource.getFeatures()) {
-    f.set('hoverStyle', id && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && f.getId() === id);
+    f.set('hoverStyle', ids && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && ids.includes(f.getId() ?? -1));
   }
   selectedFairwayCardSource.dispatchEvent('change');
+}
+
+export function zoomToFairwayAreas(ids: number[]) {
+  const source = getMap().getVectorSource('selectedfairwaycard');
+  const features: Feature<Geometry>[] = [];
+  ids.forEach((element) => {
+    const feature = source.getFeatureById(element) as Feature<Geometry>;
+    if (feature) {
+      features.push(feature);
+    }
+  });
+  zoomToExtent(features);
 }
 
 export function setSelectedMareograph(id?: number | string) {

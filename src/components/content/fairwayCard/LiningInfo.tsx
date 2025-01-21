@@ -5,7 +5,7 @@ import { Lang } from '../../../utils/constants';
 import { Fairway, Text } from '../../../graphql/generated';
 import { TFunction } from 'i18next';
 import { uniqueId } from 'lodash';
-import { getFairwayName } from './DimensionInfo';
+import { getFairwayName } from '../../../utils/common';
 
 export type LiningInfoProps = {
   data?: Fairway[] | null;
@@ -95,10 +95,8 @@ export const LiningInfo: React.FC<LiningInfoProps> = ({ data, lineText }) => {
             })}
             {lineText && (
               <span>
-                <>
-                  <br />
-                  {formatSentence(lineText[lang], true)}
-                </>
+                <br />
+                {formatSentence(lineText[lang], true)}
               </span>
             )}
           </p>

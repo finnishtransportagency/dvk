@@ -1,7 +1,7 @@
 import { TFunction } from 'i18next';
 
 export function metresToNauticalMiles(x?: number | null) {
-  return (x || 0) / 1852;
+  return (x ?? 0) / 1852;
 }
 
 export function nauticalMilesToMeters(x: number) {

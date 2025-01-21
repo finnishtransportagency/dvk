@@ -1,5 +1,11 @@
 import { GeometryPoint, PictureInput, PilotPlaceInput, Text, TextInput } from '../graphql/generated';
 
+export enum FairwayForm {
+  OpenWater = 1,
+  Channel = 2,
+  SlopedChannel = 3,
+}
+
 export const VERSION = {
   PUBLIC: 'v0_public',
   LATEST: 'v0_latest',
@@ -59,6 +65,19 @@ export type HarbourActionType =
   | 'sectionLon'
   | 'publishDetails';
 
+export type FairwayCardSquatCalculationActionType =
+  | 'squatCalculations'
+  | 'squatCalculationPlace'
+  | 'squatCalculationAdditionalInformation'
+  | 'squatTargetFairwayIds'
+  | 'squatSuitableFairwayAreaIds'
+  | 'squatCalculationDepth'
+  | 'squatCalculationFairwayForm'
+  | 'squatCalculationEstimatedWaterDepth'
+  | 'squatCalculationFairwayWidth'
+  | 'squatCalculationSlopeScale'
+  | 'squatCalculationSlopeHeight';
+
 export type FairwayCardActionType =
   | 'name'
   | 'primaryId'
@@ -99,7 +118,8 @@ export type FairwayCardActionType =
   | 'temporaryNotificationContent'
   | 'temporaryNotificationStartDate'
   | 'temporaryNotificationEndDate'
-  | 'publishDetails';
+  | 'publishDetails'
+  | FairwayCardSquatCalculationActionType;
 
 export type FairwayCardActionTypeSelect =
   | 'fairwayIds'
@@ -119,6 +139,13 @@ export type SelectOption = {
   id: number | string | boolean;
   name?: Text | null;
   geometry?: GeometryPoint | null;
+};
+
+export type AreaSelectOption = SelectOption & {
+  fairwayIds?: number[] | null;
+  depth?: number;
+  subtext?: string;
+  areatype?: number;
 };
 
 export type PictureGroup = {
@@ -349,3 +376,9 @@ export const POSITION = {
 };
 
 export type DropdownType = 'filter' | 'sequence';
+
+export const saveErrorTitle = {
+  MISSING: 'MISSING-INFORMATION',
+  BLOCKED: 'OPERATION-BLOCKED',
+  ARCHIVE: 'ARCHIVE-OPERATION-BLOCKED',
+};
