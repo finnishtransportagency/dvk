@@ -477,35 +477,36 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               >
                 <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               </WrapperComponent>
-              <TrafficServiceSection
-                state={state}
-                updateState={updateState}
-                validationErrors={validationErrors}
-                isLoadingPilotPlaces={isLoadingPilotPlaces}
-                pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
-                readonly={readonly}
-              />
+              <WrapperComponent title={t('fairwaycard.traffic-services')} titleDataTestId="trafficServices">
+                <TrafficServiceSection
+                  state={state}
+                  updateState={updateState}
+                  validationErrors={validationErrors}
+                  isLoadingPilotPlaces={isLoadingPilotPlaces}
+                  pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
+                  readonly={readonly}
+                />
 
-              <Section
-                title={t('fairwaycard.vts-heading')}
-                sections={state.trafficService?.vts as VtsInput[]}
-                updateState={updateState}
-                sectionType="vts"
-                validationErrors={validationErrors}
-                disabled={!readonly && state.status === Status.Removed}
-                readonly={readonly}
-              />
+                <Section
+                  title={t('fairwaycard.vts-heading')}
+                  sections={state.trafficService?.vts as VtsInput[]}
+                  updateState={updateState}
+                  sectionType="vts"
+                  validationErrors={validationErrors}
+                  disabled={!readonly && state.status === Status.Removed}
+                  readonly={readonly}
+                />
 
-              <Section
-                title={t('fairwaycard.tug-heading')}
-                sections={state.trafficService?.tugs as TugInput[]}
-                updateState={updateState}
-                sectionType="tug"
-                validationErrors={validationErrors}
-                disabled={!readonly && state.status === Status.Removed}
-                readonly={readonly}
-              />
-
+                <Section
+                  title={t('fairwaycard.tug-heading')}
+                  sections={state.trafficService?.tugs as TugInput[]}
+                  updateState={updateState}
+                  sectionType="tug"
+                  validationErrors={validationErrors}
+                  disabled={!readonly && state.status === Status.Removed}
+                  readonly={readonly}
+                />
+              </WrapperComponent>
               <SquatCalculationSection
                 sections={state.squatCalculations as SquatCalculationInput[]}
                 updateState={updateState}

@@ -1,11 +1,12 @@
 import React from 'react';
-import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../../../utils/constants';
 import { FairwayCardInput, PilotPlace, PilotPlaceInput, Status } from '../../../graphql/generated';
 import TextInputRow from '../TextInputRow';
 import { useTranslation } from 'react-i18next';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
+import WrapperComponent from '../WrapperComponent';
 
 interface TrafficServiceSectionProps {
   state: FairwayCardInput;
@@ -34,11 +35,7 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
   const lang = i18n.resolvedLanguage as Lang;
 
   return (
-    <>
-      <IonText>
-        <h2 data-testid="trafficServices">{t('fairwaycard.traffic-services')}</h2>
-        <h3 data-testid="pilotOrder">{t('fairwaycard.pilot-order')}</h3>
-      </IonText>
+    <WrapperComponent title={t('fairwaycard.pilot-order')} dataTestId="pilotOrder" subSection={true}>
       <IonGrid className="formGrid">
         <IonRow>
           <IonCol sizeMd="4">
@@ -129,7 +126,7 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
           })}
         </IonRow>
       </IonGrid>
-    </>
+    </WrapperComponent>
   );
 };
 

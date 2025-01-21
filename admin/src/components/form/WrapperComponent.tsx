@@ -1,4 +1,4 @@
-import { IonButton, IonItem, IonText } from '@ionic/react';
+import { IonButton, IonItem, IonRow, IonText } from '@ionic/react';
 import React, { useState } from 'react';
 import ChevronIcon from '../../theme/img/chevron.svg?react';
 import HelpIcon from '../../theme/img/help_icon.svg?react';
@@ -12,9 +12,20 @@ interface WrapperComponentProps {
   infoI18nKey?: string;
   infoMessage?: string;
   dataTestId?: string;
+  titleDataTestId?: string;
+  subSection?: boolean;
 }
 
-const WrapperComponent: React.FC<WrapperComponentProps> = ({ title, children, infoHeader, infoI18nKey, infoMessage, dataTestId }) => {
+const WrapperComponent: React.FC<WrapperComponentProps> = ({
+  title,
+  children,
+  infoHeader,
+  infoI18nKey,
+  infoMessage,
+  dataTestId,
+  titleDataTestId,
+  subSection,
+}) => {
   const { t } = useTranslation();
 
   const [sectionOpen, setSectionOpen] = useState<boolean>(true);
@@ -22,12 +33,16 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({ title, children, in
 
   const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
 
+  // pilot order header has style exception
+  const isPilotOrder = title.includes('Luotsintilaus');
+
   return (
     <>
-      <IonItem className="sectionHeader">
+      <IonItem className="sectionHeader" style={isPilotOrder ? { margin: '0px' } : {}}>
         <IonText className="ion-no-padding">
-          <h2>
-            {title}
+          {/* This row is to keep header and button in same level */}
+          <IonRow className="ion-no-padding">
+            {subSection ? <h3 data-testid={titleDataTestId}>{title}</h3> : <h2 data-testid={titleDataTestId}>{title}</h2>}
             {infoHeader && infoMessage && (
               <IonButton
                 fill="clear"
@@ -39,7 +54,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({ title, children, in
                 <HelpIcon />
               </IonButton>
             )}
-          </h2>
+          </IonRow>
         </IonText>
         <IonButton
           data-testid={dataTestId}
