@@ -1,0 +1,379 @@
+{
+  "anchorage": {
+    "en": "The anchorage area of the channel is situated north of Helsinki Lighthouse. Anchoring is permitted only according to pilot or VTS instructions. There is a widened fairway area where the safe clearance depth is less than in the rest of the channel. The safe clearance depth (Sc) in the widened fairway area is 10.2 m.",
+    "fi": "Väylän ankkurointialue sijaitsee Helsingin majakan pohjoispuolella. Ankkuroinnissa on noudatettava luotsin tai VTS - keskuksen antamia ohjeita. Melkin itäpuolella sijaitsee väylänosaa matalampi levitysalue, jonka haraussyvyys on 10,2 m.",
+    "sv": "Farledens ankringsområde ligger norr om Helsingfors fyr. Vid ankring bör lotsens eller VTS-centralens anvisningar följas. Öster om Melkö finns ett breddat område som är grundare än farledsavsnittet i övrigt. Det ramade djupet (Rd) på det breddade området är 10,2 m."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": {
+    "en": "All ships should have a visibility of at least 300 m. In addition, for ships of more than 200 m in length, visibility should be at least 1.0 nm.",
+    "fi": "Näkyvyyden tulisi olla vähintään 300 m kaikilla aluksilla. Lisäksi yli 200 m:n pituiselle alukselle näkyvyyttä tulisi olla vähintään 1,0 mpk.",
+    "sv": "Alla fartyg bör ha en sikt på minst 300 m. Därtill bör ett fartyg som är över 200 m långt ha en sikt på minst 1,0 nm."
+  },
+  "pictures": [
+    {
+      "scaleWidth": "68",
+      "sequenceNumber": 1,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1698218509960,
+      "id": "lansisatama-1698218509960-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1732274013255
+    },
+    {
+      "scaleWidth": "68",
+      "sequenceNumber": 1,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1698218509960,
+      "id": "lansisatama-1698218509960-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1732274013267
+    },
+    {
+      "scaleWidth": "68",
+      "sequenceNumber": 1,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "2 km",
+      "groupId": 1698218509960,
+      "id": "lansisatama-1698218509960-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1732274013267
+    },
+    {
+      "scaleWidth": "102",
+      "sequenceNumber": 2,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698218572293,
+      "id": "lansisatama-1698218572293-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1732274013267
+    },
+    {
+      "scaleWidth": "102",
+      "sequenceNumber": 2,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698218572293,
+      "id": "lansisatama-1698218572293-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1732274013267
+    },
+    {
+      "scaleWidth": "102",
+      "sequenceNumber": 2,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698218572293,
+      "id": "lansisatama-1698218572293-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1732274013267
+    },
+    {
+      "scaleWidth": "80",
+      "sequenceNumber": 3,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698305851718,
+      "id": "lansisatama-1698305851718-fi",
+      "text": "Länsisatama",
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1732274013267
+    },
+    {
+      "scaleWidth": "80",
+      "sequenceNumber": 3,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698305851718,
+      "id": "lansisatama-1698305851718-sv",
+      "text": "Västra hamnbassängerna",
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1732274013268
+    },
+    {
+      "scaleWidth": "80",
+      "sequenceNumber": 3,
+      "orientation": "PORTRAIT",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698305851718,
+      "id": "lansisatama-1698305851718-en",
+      "text": "Helsinki West harbour",
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1732274013268
+    },
+    {
+      "scaleWidth": "126",
+      "sequenceNumber": 1,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "5 km",
+      "groupId": 1698218837125,
+      "id": "lansisatama-1698218837125-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1732274013268
+    },
+    {
+      "scaleWidth": "126",
+      "sequenceNumber": 1,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "5 km",
+      "groupId": 1698218837125,
+      "id": "lansisatama-1698218837125-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1732274013268
+    },
+    {
+      "scaleWidth": "126",
+      "sequenceNumber": 1,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "5 km",
+      "groupId": 1698218837125,
+      "id": "lansisatama-1698218837125-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1732274013268
+    },
+    {
+      "scaleWidth": "86",
+      "sequenceNumber": 2,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698218891034,
+      "id": "lansisatama-1698218891034-fi",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1732274013268
+    },
+    {
+      "scaleWidth": "86",
+      "sequenceNumber": 2,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698218891034,
+      "id": "lansisatama-1698218891034-sv",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1732274013268
+    },
+    {
+      "scaleWidth": "86",
+      "sequenceNumber": 2,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "500 m",
+      "groupId": 1698218891034,
+      "id": "lansisatama-1698218891034-en",
+      "text": null,
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1732274013269
+    },
+    {
+      "scaleWidth": "87",
+      "sequenceNumber": 3,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698218958851,
+      "id": "lansisatama-1698218958851-fi",
+      "text": "Länsisatama",
+      "legendPosition": "bottomLeft",
+      "lang": "fi",
+      "modificationTimestamp": 1732274013269
+    },
+    {
+      "scaleWidth": "87",
+      "sequenceNumber": 3,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698218958851,
+      "id": "lansisatama-1698218958851-sv",
+      "text": "Västra hamnbassängerna",
+      "legendPosition": "bottomLeft",
+      "lang": "sv",
+      "modificationTimestamp": 1732274013270
+    },
+    {
+      "scaleWidth": "87",
+      "sequenceNumber": 3,
+      "orientation": "LANDSCAPE",
+      "rotation": 0,
+      "scaleLabel": "200 m",
+      "groupId": 1698218958851,
+      "id": "lansisatama-1698218958851-en",
+      "text": "Helsinki West Harbour",
+      "legendPosition": "bottomLeft",
+      "lang": "en",
+      "modificationTimestamp": 1732274013270
+    }
+  ],
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 132310
+    }
+  ],
+  "name": {
+    "en": "Helsinki West Harbour channel",
+    "fi": "Helsingin Länsisataman väylä",
+    "sv": "Farleden till Västra hamnen i Helsingfors"
+  },
+  "attention": null,
+  "creationTimestamp": 1732275705118,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The approach is in the open sea and unsheltered from E-S-W winds. From Katajaluoto to the harbour, the channel is protected by islands and skerries.",
+    "fi": "Väylän ulko-osalla väylä on avomerta ja suojaton E-S-W- tuulille. Katajaluodosta väylä jatkuu saarien ja karien suojaamana satamaan.",
+    "sv": "Farledens yttre del är öppen sjö och oskyddad för vindar från O-S-V. Från Stora Enskär löper farleden i skydd av holmar och skär."
+  },
+  "generalInfo": null,
+  "id": "lansisatama",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "There are 6 lines, 4 of which are marked by boards, sector lights and direction lights.",
+    "fi": "Linjoja 6, joista 4 on merkitty linjatauluin tai sektori- ja suuntaloistoin.",
+    "sv": "Sex linjer varav fyra är utmärkta med enstavlor och sektor- och riktfyrar."
+  },
+  "version": "v2",
+  "harbors": [
+    {
+      "id": "lansisatama"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Max. recommended wind speed for vessels of more than 215 m in length is 15 m/s.",
+    "fi": "Yli 215 m:n pituisilla aluksilla maksimituulennopeus 15 m/s.",
+    "sv": "Max. vindhastighet för fartyg med en längd av 215 m eller mera 15 m/s."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": false,
+      "id": 4685,
+      "primary": false
+    },
+    {
+      "secondary": true,
+      "primarySequenceNumber": 1,
+      "id": 4710,
+      "primary": true,
+      "secondarySequenceNumber": 1
+    },
+    {
+      "secondary": false,
+      "id": 4720,
+      "primary": false
+    }
+  ],
+  "speedLimit": {
+    "en": "North of latitude 60°06'N (Koirasaari), the speed limit for all merchant vessels is 30 km/h. West of Hernesaari in the harbour area, the speed limit is 10 km/h.",
+    "fi": "Leveyspiiriltä 60°06' P (Koirasaaren kohdalta) pohjoiseen nopeusrajoitus kaikille kauppa-aluksille 30 km/h. Hernesaaren länsipuolella satama-altaassa nopeusrajoitus 10 km/h.",
+    "sv": "Från latitud 60°06'N (Koirasaari) mot norr 30 km/h för alla handelsfartyg. Den västra sidan av Ärtholmen i hamnen 10 km/h."
+  },
+  "modificationTimestamp": 1732275705118,
+  "pilotRoutes": [
+    {
+      "id": 46
+    },
+    {
+      "id": 47
+    }
+  ],
+  "iceCondition": {
+    "en": "Ice usually causes problems only in the harbour basins, where slush may make manoeuvring difficult. Occasionally ice ridges between Hramtsow and Gråskärsbådan.",
+    "fi": "Jääongelmia esiintyy yleensä vain satama-altaissa, joissa jääsohjo saattaa vaikeuttaa aluksen käsittelyä. Ajoittain ahtautumista välillä Hramtsow Gråskärsbådan.",
+    "sv": "Isproblem förekommer vanligen endast i hamnbassängerna, där issörja kan försvåra manövreringen. Tidvis vallbildning mellan Hramtsow och Gråskärsbådan."
+  },
+  "fairwayIds": "#4685#4710#4720#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Helsinki VTS, sector 1",
+          "fi": "Helsinki VTS, sektori 1",
+          "sv": "Helsingfors VTS, sektor 1"
+        },
+        "phoneNumber": "+358204485385",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 71
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 457900602,
+          "pilotJourney": 10
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs available.",
+          "fi": "Yksityiset hinaajat tarvittaessa.",
+          "sv": "Privata bogserbåtar vid behov."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

@@ -17,12 +17,7 @@
     "sv": "Kristinedstad - Björnö farled"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Kaskinen mareograph.",
-    "fi": "Kaskinen mareografi.",
-    "sv": "Kaskö mareograf."
-  },
-  "creationTimestamp": 1694761541491,
+  "creationTimestamp": 1735633231222,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The channel is unsheltered as far as the roadstead. Especially S-W-N winds may create heavy seas.",
@@ -31,15 +26,20 @@
   },
   "generalInfo": null,
   "id": "kristiinank15",
-  "currentPublic": 1,
+  "currentPublic": 4,
   "n2000HeightSystem": true,
   "lineText": {
     "en": "Two lines marked with boards.",
     "fi": "Väylä-linjoja on kaksi, jotka on merkitty linjatauluin.",
     "sv": "Två linjer utmärkta med enstavlor."
   },
+  "publishDetails": "Korjattu N2000 sataman linkintys",
   "version": "v0_public",
-  "harbors": [],
+  "harbors": [
+    {
+      "id": "karhusaari"
+    }
+  ],
   "windRecommendation": {
     "en": "Ship-specific recommendations; wind speeds exceeding 10 m/s make navigation more difficult.",
     "fi": "Aluskohtainen, yli 10 m/s tuulen nopeudet voivat vaikeuttaa navigointia.",
@@ -49,13 +49,22 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 1040,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718864184951,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1735633231222,
+  "pilotRoutes": [
+    {
+      "id": 108
+    },
+    {
+      "id": 109
+    }
+  ],
   "iceCondition": {
     "en": "In winter ice fields are in motion in the channel as far as the breakwater. Ice movement may cause buoys and spar buoys to be pressed under ice (surface). In cold winters the fast ice edge extends far out to sea.",
     "fi": "Talvella jääkentät liikkuvat sataman aallonmurtajan edustalle asti. Jäiden liikkuessa poijut ja viitat saattavat olla jään alla. Kylminä talvina kiintojään alue ulottuu kauas avomerelle.",

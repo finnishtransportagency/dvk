@@ -1,0 +1,141 @@
+{
+  "anchorage": {
+    "en": "Anchoring in the anchorage area of the Inkoo channel, SW of Sommarö. Cardinal marks.",
+    "fi": "Ankkuroida voi Sommarön saaren lounaispuolella olevalle Inkoon 13,0 m väylän ankkurointialueelle. Kardinaalimerkintä.",
+    "sv": "Ankringsmöjlighet i sydväst om Sommarö i Ingås 13 m farleds ankringsområde. Kardinalutmärkning."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Vessels with a maximum authorised draught are requested to beware of shoals and the causing of squat when traveling over 11 knots.",
+    "fi": "Maksimikulkusyvyydessä kulkevien alusten tulee huomioida nopeuspainuma yli 11 solmun nopeuksissa Äspskärin edustan matalikolla.",
+    "sv": "Fartyg i maximalt leddjupgående och en fart över 11 knop skall beakta squateffekten vid grundet Äspskär."
+  },
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 132310
+    }
+  ],
+  "name": {
+    "en": "Porkkala-Helsinki",
+    "fi": "Porkkala-Helsinki talviväylä",
+    "sv": "Porkala-Helsingfors"
+  },
+  "attention": null,
+  "creationTimestamp": 1732532913266,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The section between the pilot boarding position in the Inkoo channel and the island Träskön Storlandet is unsheltered against SW-S-SE winds and rough seas. The section between Träskön Storlandet and Äspskär is sheltered by islands. The last section from Äspskär to the area N of Isosaari is dotted by a few islands only and periodically fairly open to southerly winds.",
+    "fi": "Väylän alkuosa Inkoon 13,0 m väylän luotsipaikalta Träskön Storlandetiin on suojaton SW-S-SE tuulille ja aallokolle. Träskön Storlandetista väylä jatkuu saarien ja karien hyvin suojaamana Äspkäriin. Ja edelleen harvojen saarien ja karien lomitse Isosaaren pohjoispuolelle jatkuva väylä on ajoittain melko avoin etelän puoleisille tuulille.",
+    "sv": "Sträckan från lotsplatsen i Ingåleden till Träskön Storlandet är oskyddad för SV-S-SO vindar och sjögång. Mellan Träskön Storlandet och Äspskär är farleden väl skyddad av holmar och skär. Den sista sträckan, som går mellan ett fåtal holmar och skär till området N om Mjölö, är tidvis rätt öppen för sydliga vindar."
+  },
+  "generalInfo": null,
+  "id": "porkkala",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "The fairway is marked by boards.",
+    "fi": "Merkitty linjatauluin.",
+    "sv": "Farleden är utmärkt med enstavlor."
+  },
+  "version": "v2",
+  "harbors": [],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "primarySequenceNumber": 1,
+      "id": 4455,
+      "primary": true,
+      "secondarySequenceNumber": 1
+    }
+  ],
+  "speedLimit": {
+    "en": "The speed limit for all merchant vessels is 30 km/h between Koiraluoto and Harmaja.",
+    "fi": "Koiraluodon ja Harmajan välillä nopeusrajoitus kaikille kauppa-aluksille 30 km/h.",
+    "sv": "Fartbegränsningar 30 km/h för alla handelsfartyg mellan Koiraluoto och Gråhara."
+  },
+  "modificationTimestamp": 1732532913266,
+  "pilotRoutes": [
+    {
+      "id": 41
+    },
+    {
+      "id": 49
+    }
+  ],
+  "iceCondition": {
+    "en": "Southerly winds may cause ridging in the fairway.",
+    "fi": "Väylällä voi etelänpuoleisilla tuulilla esiintyä ajoittain jääahtaumia.",
+    "sv": "Vid sydlig vind kan vallbildning tidvis förekomma i farleden."
+  },
+  "fairwayIds": "#4455#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Helsinki VTS",
+          "fi": "Helsinki VTS",
+          "sv": "Helsingfors VTS"
+        },
+        "phoneNumber": "+358204485385",
+        "vhf": [
+          {
+            "name": {
+              "en": "Helsinki",
+              "fi": "Helsinki",
+              "sv": "Helsingfors"
+            },
+            "channel": 71
+          },
+          {
+            "name": {
+              "en": "Porkkala",
+              "fi": "Porkkala",
+              "sv": "Porkala"
+            },
+            "channel": 9
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 457800602,
+          "pilotJourney": null
+        },
+        {
+          "id": 27529222400,
+          "pilotJourney": null
+        }
+      ],
+      "phoneNumber": "+358295253420",
+      "fax": null,
+      "email": "pilotdispatch.hankohelsinki@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately owned tugs.",
+          "fi": "Yksityiset hinaajat.",
+          "sv": "Privatägda bogserbåtar."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": null
+}

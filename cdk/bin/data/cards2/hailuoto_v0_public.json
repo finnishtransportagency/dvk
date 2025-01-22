@@ -28,12 +28,7 @@
     "sv": "Karlö Angöring - Oulu 1"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Oulu mareograph outside of Oulu , Toppila harbour.",
-    "fi": "Oulu mareografi Toppilansalmen suulla.",
-    "sv": "Uleåborg mareograf, Uleåborg - Toppilasundet"
-  },
-  "creationTimestamp": 1683095536879,
+  "creationTimestamp": 1732283602882,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approach between Oulun portti and Kattilankalla consists of open sea; SW to NW winds create heavy seas. Sea state is reduced by shallows from Oulu 3 onwards. Between Kattilankalla and port the fairway is sheltered by some small islands and skerries. Between Oulu 5 and Hammasmatala there is a 1.4 km long and 170 m wide channel. The final, approximately 2.5 km long part, between Kyrönkari anchoring area and port, is a dredged, 116 m wide channel.",
@@ -42,7 +37,7 @@
   },
   "generalInfo": null,
   "id": "hailuoto",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": true,
   "lineText": {
     "en": "10 navigation lines, of which the outermost two marked by sector lights, the rest by boards.",
@@ -60,6 +55,7 @@
   "fairways": [
     {
       "secondary": false,
+      "primarySequenceNumber": 1,
       "id": 212,
       "primary": true
     },
@@ -71,7 +67,8 @@
     {
       "secondary": true,
       "id": 220,
-      "primary": false
+      "primary": false,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": {
@@ -79,8 +76,15 @@
     "fi": "Välillä Löyhänmutka - Kotakari on 22 km/h nopeusrajoitus.",
     "sv": "I avsnittet mellan Löyhänmutka och Kotakari gäller en 22 km/n fartbegränsning."
   },
-  "modificationTimestamp": 1718864329834,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732283602882,
+  "pilotRoutes": [
+    {
+      "id": 150
+    },
+    {
+      "id": 153
+    }
+  ],
   "iceCondition": {
     "en": "In early winter there is drifting ice along the entire fairway; outside Oulu 3 the ice is usually also ridged. May cause buoys and spar buoys to be pressed under ice (surface) all the way to Kattilankalla. From January to April there is 50–80 cm thick fast ice between port and Oulu 3. Warm water effluents alleviate ice conditions in Oritkari harbour. If ice conditions require, the alignment W of Hailuoto and S of Merikallat can be used for winter navigation.",
     "fi": "Alkutalvesta jää liikkuu koko väyläalueella. Oulu 3:lla merelle päin esiintyy yleensä ahtautunutta jäätä. Poijut ja viitat saattavat olla jään alla mereltä Kattilankallaan asti. Sataman ja Oulu 3:n välisellä väyläosuudella tammikuusta huhtikuuhun n. 50-80 cm paksua kiintojäätä. Lauhdevedet helpottavat Oritkarin sataman jääoloja. Jääolojen takia talviliikenteessä käytetään myös Hailuodon länsipuolella etelänpuolista Raahe-Oulu-Kemi 10,0 m sisääntuloa.",

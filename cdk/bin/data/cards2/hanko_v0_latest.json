@@ -21,8 +21,7 @@
     "sv": "Hangö havsfarled"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095538546,
+  "creationTimestamp": 1732276874433,
   "temporaryNotifications": [],
   "navigationCondition": null,
   "generalInfo": null,
@@ -44,14 +43,20 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 4110,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718775198319,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732276874433,
+  "pilotRoutes": [
+    {
+      "id": 70
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "Very variable ice conditions. The fairway can be open all winter or there can be formation of thin ice.",
     "fi": "Jääolosuhteet ovat erittäin vaihtelevat. Väylä voi olla avoin koko talven tai siihen muodostuu vain ohut jääpeite.",

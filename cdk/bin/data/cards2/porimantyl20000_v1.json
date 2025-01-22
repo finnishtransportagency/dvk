@@ -10,7 +10,7 @@
     "fi": "Maksimisyvyydessä kulkevien alusten tulee huomioida nopeuspainuma (mitoitusnopeus väylällä minimiharaussyvyydellä on 12,5 solmua).",
     "sv": "Fartyg i maximalt leddjupgående ska beakta squateffekten (dimensionerande fart i farleden med minsta ramade djup är 12,5 knop)."
   },
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "visibility": null,
   "group": "1",
   "modifier": "System",

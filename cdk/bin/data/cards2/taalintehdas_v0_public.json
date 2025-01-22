@@ -24,7 +24,7 @@
     "sv": "Dalsbruksleden"
   },
   "attention": null,
-  "creationTimestamp": 1683095538196,
+  "creationTimestamp": 1732277111002,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The whole fairway is sheltered by mainland, islands and skerries. The narrowest part of the fairway is the narrow passage at Märaströmmen, width 90 m. Vessels with maximum draught should take the suction effect into consideration.",
@@ -33,7 +33,7 @@
   },
   "generalInfo": null,
   "id": "taalintehdas",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": false,
   "lineText": {
     "en": "Six lines marked with boards.",
@@ -51,13 +51,22 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 3705,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718791259960,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732277111002,
+  "pilotRoutes": [
+    {
+      "id": 82
+    },
+    {
+      "id": 100
+    }
+  ],
   "iceCondition": {
     "en": "During normal winters there is fast ice in the fairway.",
     "fi": "Väylällä esiintyy normaalitalvina kiintojäätä.",

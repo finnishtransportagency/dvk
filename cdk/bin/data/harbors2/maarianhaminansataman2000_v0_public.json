@@ -1,7 +1,204 @@
 {
-  "id": "maarianhaminansataman2000",
-  "currenPublic": null,
+  "phoneNumber": [
+    "+358185310",
+    "+35818531476"
+  ],
   "version": "v0_public",
   "creator": "System",
-  "modifier": "System"
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Maximum draught -9,2 m, maximum vessel length approx. 270 m depending on navigability.",
+    "fi": "Maksimi syväys -9,2 m, maksimi aluspituus n. 270 m riippuen navigoitavuudesta.",
+    "sv": "Max djupgående -9,2 m, max fartygslängd ca. 270 m beroende på navigerbarheten."
+  },
+  "modifier": "System",
+  "email": null,
+  "name": {
+    "en": "Port of Mariehamn N2000",
+    "fi": "Maarianhaminan satama N2000",
+    "sv": "Mariehamns hamn N2000"
+  },
+  "cargo": {
+    "en": "Quay 1-2 only for passanger ships. Quay 3-6 only for ro-ro ships. The oil terminal is located in the northern part of the bay. Privately owned cranes.",
+    "fi": "Laiturit 1-2, ainoastaan matkustajalaivoille. Laiturit 3-6, ainoastaan ro-ro aluksille. Öljyterminaali sijaitsee pohjoisempana lahdessa. Nostureita yksityisillä yrittäjillä.",
+    "sv": "Kaj 1-2 endast passagerartrafik över landgång, kaj 3-6 endast ro-ro. En oljeterminal längre norrut i viken. Privatägda krana."
+  },
+  "modificationTimestamp": 1735800631154,
+  "company": {
+    "en": "Port of Mariehamn",
+    "fi": "Maarianhaminan satama ",
+    "sv": "Mariehamns hamn"
+  },
+  "quays": [
+    {
+      "length": 250,
+      "name": {
+        "en": "Quays 1 and 2",
+        "fi": "Laituri 1 ja 2",
+        "sv": "Kajerna 1 och 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.92644,
+          60.09553
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.9
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 205,
+      "name": {
+        "en": "Quay 3",
+        "fi": "Laituri 3",
+        "sv": "Kaj 3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.92737,
+          60.09354
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.3
+        }
+      ],
+      "extraInfo": {
+        "en": "ro-ro ramp",
+        "fi": "ro-ro ramppi",
+        "sv": "ro-ro ramp"
+      }
+    },
+    {
+      "length": 156,
+      "name": {
+        "en": "Quay 4",
+        "fi": "Laituri 4",
+        "sv": "Kaj 4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.92822,
+          60.09172
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 8.2
+        }
+      ],
+      "extraInfo": {
+        "en": "ro-ro ramp",
+        "fi": "ro-ro ramppi",
+        "sv": "ro-ro ramp"
+      }
+    },
+    {
+      "length": 140,
+      "name": {
+        "en": "Quay 5",
+        "fi": "Laituri 5",
+        "sv": "Kaj 5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.92894,
+          60.09082
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.6
+        }
+      ],
+      "extraInfo": {
+        "en": "ro-ro ramp",
+        "fi": "ro-ro ramppi",
+        "sv": "ro-ro ramp"
+      }
+    },
+    {
+      "length": 150,
+      "name": {
+        "en": "Quay 6",
+        "fi": "Laituri 6",
+        "sv": "Kaj 6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.93006,
+          60.0896
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 7.8
+        }
+      ],
+      "extraInfo": {
+        "en": "ro-ro ramp",
+        "fi": "ro-ro ramppi",
+        "sv": "ro-ro ramp"
+      }
+    },
+    {
+      "length": 30,
+      "name": {
+        "en": "Klintkajen",
+        "fi": "Klintkajen",
+        "sv": "Klintkajen"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          19.92345,
+          60.10393
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 5.4
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "creationTimestamp": 1718779299272,
+  "id": "maarianhaminansataman2000",
+  "fax": null,
+  "currentPublic": 1,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      19.92891,
+      60.09182
+    ]
+  },
+  "publishDetails": "N2000 jukaisu"
 }
