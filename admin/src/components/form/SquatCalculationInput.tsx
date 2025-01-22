@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../graphql/generated';
 import { ActionType, AreaSelectOption, FairwayForm, Lang, SelectOption, ValidationType, ValueType } from '../../utils/constants';
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { IonCol, IonGrid, IonNote, IonRow } from '@ionic/react';
 import TextInputRow from './TextInputRow';
 import SelectWithCustomDropdown from './SelectWithCustomDropdown';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import TextInput from './TextInput';
 import SelectInput from './SelectInput';
 import { sortAreaSelectOptions } from '../../utils/common';
 import NotificationModal from '../NotificationModal';
+import { getOrphanedAreaIdsFromSquatCalculation } from '../../utils/squatCalculationUtils';
 
 interface SquatCalculationInputProps {
   idx: number;
@@ -106,13 +107,22 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   const { t } = useTranslation();
 
   const filteredAreaOptions = getPossibleAreas(section.targetFairways ?? []);
-  const sortedAreas = sortAreaSelectOptions(filteredAreaOptions);
+  let sortedAreas = sortAreaSelectOptions(filteredAreaOptions);
   const sortedSelectedAreas = sortAreaSelectOptions(filteredAreaOptions.filter((a) => section.suitableFairwayAreas?.includes(a.id as number)));
   const multipleDepths =
     sortedSelectedAreas &&
     sortedSelectedAreas.length > 1 &&
     sortedSelectedAreas[0].depth !== sortedSelectedAreas[sortedSelectedAreas.length - 1].depth;
+  const orphanedAreasInSquatCalculation = getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions);
+  sortedAreas = sortedAreas.concat(
+    orphanedAreasInSquatCalculation.map((a) => {
+      return { id: a, subtext: '-' } as AreaSelectOption;
+    })
+  );
 
+  const areaErrorText = multipleDepths
+    ? t('fairwaycard.squat-calculation-depth-warning')
+    : validationErrors.find((error) => error.id === 'squatSuitableFairwayAreaIds-' + idx)?.msg;
   return (
     <>
       <IonGrid className="formGrid">
@@ -168,13 +178,21 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               required
               disabled={!readonly && (disabled || (section.targetFairways?.length ?? 0) < 1)}
               readonly={readonly}
-              ignoreHelperText={multipleDepths}
-              error={
-                multipleDepths
-                  ? t('fairwaycard.squat-calculation-depth-warning')
-                  : validationErrors.find((error) => error.id === 'squatSuitableFairwayAreaIds-' + idx)?.msg
-              }
+              ignoreHelperText={multipleDepths || orphanedAreasInSquatCalculation.length > 0}
+              warning={orphanedAreasInSquatCalculation.length > 0}
+              error={orphanedAreasInSquatCalculation.length > 0 ? '' : areaErrorText}
             />
+            {!isLoadingAreas && orphanedAreasInSquatCalculation.length > 0 && (
+              <IonNote className="input-warning">
+                <Trans
+                  t={t}
+                  i18nKey={t('fairwaycard.squat-calculation-area-orphaned', {
+                    count: orphanedAreasInSquatCalculation?.length,
+                    ids: orphanedAreasInSquatCalculation.join(', '),
+                  })}
+                />
+              </IonNote>
+            )}
           </IonCol>
           <IonCol>
             <TextInput

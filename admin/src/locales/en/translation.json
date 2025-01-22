@@ -125,7 +125,9 @@
     "version": "[en] Versio",
     "add-section-squat-calculation": "[en] Lisää laskennan sijainti",
     "cannot-add-section-squat-calculation": "[en] Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
-    "squat-calculation-description": "[en] Lorem ipsum..."
+    "squat-calculation-description": "[en] Haraussyvyytenä käytetään valittujen väyläalueiden matalinta haraussyvyyttä. Huomioithan, että jos väylän alueisiin tulee muutoksia, pitää laskentapisteet tarkistaa ja niihin tehdä tarvittavat muutokset. Mikäli jokin laskentapisteeseen liitetty väyläalue on poistettu VATU-tietokannasta, ei laskentapistettä näytetä DVK-sovelluksessa. Tällöin väyläkortista tulee julkaista uusi versio, jossa laskentapiste on päivitetty.",
+    "squat-calculation-section-area-orphaned_one": "[en] Väyläalue <strong>{ids}</strong> on poistettu. Ole hyvä ja poista sijaintiin liitetty <strong>{ids}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy.",
+    "squat-calculation-section-area-orphaned_other": "[en] [MULTIPLE] Väyläalue <strong>{ids}</strong> on poistettu. Ole hyvä ja poista sijaintiin liitetty <strong>{ids}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy."
   },
   "modal": {
     "title-new-CARD": "New fairway card",
@@ -294,7 +296,9 @@
     "squat-calculation-depth-warning": "[en] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä.",
     "squat-calculation-cannot-remove-fairway-header": "Cannot remove fairway",
     "squat-calculation-cannot-remove-fairway": "The fairway is linked to an area that is in use in this squat calculation template.",
-    "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat-laskennan sijainnit on poistettu."
+    "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat-laskennan sijainnit on poistettu.",
+    "squat-calculation-area-orphaned_one": "[en] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan.",
+    "squat-calculation-area-orphaned_other": "[en] [MULTIPLE] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan."
   },
   "harbour": {
     "primary-id": "Harbour ID",

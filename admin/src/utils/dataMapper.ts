@@ -1,6 +1,15 @@
-import { FairwayCardByIdQuery, Status, Operation, HarbourByIdQuery, FairwayCardInput, HarborInput } from '../graphql/generated';
+import {
+  FairwayCardByIdQuery,
+  Status,
+  Operation,
+  HarbourByIdQuery,
+  FairwayCardInput,
+  HarborInput,
+  SquatCalculationInput,
+} from '../graphql/generated';
 import { sortPictures } from './common';
-import { POSITION } from './constants';
+import { AreaSelectOption, POSITION } from './constants';
+import { filterOrphanedAreas } from './squatCalculationUtils';
 
 const stringValueOrDefault = (value: string | null | undefined): string => {
   return value ?? '';
@@ -201,7 +210,7 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
   };
 }
 
-export function mapNewFairwayCardVersion(card: FairwayCardInput | undefined, copyPictures?: boolean) {
+export function mapNewFairwayCardVersion(card: FairwayCardInput | undefined, copyPictures?: boolean, areas: AreaSelectOption[]) {
   return {
     id: stringValueOrDefault(card?.id),
     version: card?.version ?? 'v1',
@@ -288,7 +297,7 @@ export function mapNewFairwayCardVersion(card: FairwayCardInput | undefined, cop
     operation: Operation.Createversion,
     pictures: copyPictures ? card?.pictures : [],
     temporaryNotifications: card?.temporaryNotifications,
-    squatCalculations: card?.squatCalculations,
+    squatCalculations: filterOrphanedAreas(card?.squatCalculations as SquatCalculationInput[], areas),
   };
 }
 

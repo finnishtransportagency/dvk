@@ -199,7 +199,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         saveFairwayCard({ card: mapTrafficService(state) as FairwayCardInput });
       } else if (operation === Operation.Createversion) {
         setIsSubmittingVersion(true);
-        const newVersion = mapNewFairwayCardVersion(state, !!state.pictures?.length);
+        const newVersion = mapNewFairwayCardVersion(state, !!state.pictures?.length, areaOptions);
         setState(newVersion);
         const newCard = mapTrafficService(newVersion) as FairwayCardInput;
         if (state.pictures?.length) {
@@ -213,7 +213,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         }
       }
     },
-    [state, oldState, saveFairwayCard]
+    [state, oldState, saveFairwayCard, areaOptions]
   );
 
   const formValid = (): boolean => {
