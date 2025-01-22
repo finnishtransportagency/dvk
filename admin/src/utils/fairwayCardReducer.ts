@@ -1,7 +1,7 @@
 import { t } from 'i18next';
-import { FairwayCardInput, Operation, PictureInput, PilotPlaceInput } from '../graphql/generated';
+import { FairwayCardInput, Operation } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
-import { dateError, endDateError, sortPictures } from './common';
+import { dateError, endDateError } from './common';
 import { squatCalculationReducer } from './fairwayCardReducers/squatCalculationReducer';
 import { fairwayCardSquatCalculationValidator } from './fairwayCardReducers/squatCalculationValidator';
 import { tugReducer } from './fairwayCardReducers/tugReducer';
@@ -92,7 +92,6 @@ export const fairwayCardReducer = (
     case 'additionalInfo':
       newState = generalInfoReducer(state, value, actionType, actionLang, actionTarget);
       break;
-
     case 'line':
     case 'speedLimit':
     case 'designSpeed':
@@ -135,7 +134,6 @@ export const fairwayCardReducer = (
     case 'tugFax':
       newState = tugReducer(state, value, actionType, actionLang, actionTarget);
       break;
-
     case 'picture':
     case 'pictureDescription':
     case 'pictureLegendPosition':
