@@ -27,7 +27,7 @@ const ContactInfoSection: React.FC<ContactInfoSectionProps> = ({ state, updateSt
       <IonText>
         <h3>{t('harbour.contact-info')}</h3>
       </IonText>
-      <IonGrid className="formGrid">
+      <IonGrid className="formGrid subSectionMargin">
         <TextInputRow
           labelKey="harbour.company-name"
           value={state.company}

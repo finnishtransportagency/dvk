@@ -26,7 +26,7 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
   const { t } = useTranslation();
 
   return (
-    <IonGrid className="formGrid">
+    <IonGrid className="formGrid subSectionMargin">
       <TextInputRow
         labelKey="harbour.quay-name"
         value={section.name}

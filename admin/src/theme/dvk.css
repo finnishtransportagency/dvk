@@ -832,6 +832,10 @@ ion-grid.formGrid.subSectionMargin {
   margin-left: 25px;
 }
 
+.formSection.subSectionMargin {
+  margin-left: 25px;
+}
+
 ion-grid.formGrid ion-col:last-of-type {
   padding-right: 0;
 }

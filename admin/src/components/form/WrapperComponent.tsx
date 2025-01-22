@@ -40,7 +40,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
   const isPilotOrder = title.includes('Luotsintilaus');
 
   return (
-    <div className="wrapper">
+    <>
       <IonItem className="sectionHeader" style={isPilotOrder ? { margin: '0px' } : {}}>
         <IonText className="ion-no-padding">
           {/* This row is to keep header and button in same level */}
@@ -93,7 +93,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
           message={infoMessage}
         />
       )}
-    </div>
+    </>
   );
 };
 
