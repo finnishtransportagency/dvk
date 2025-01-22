@@ -36,7 +36,7 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
 
   return (
     <WrapperComponent title={t('fairwaycard.pilot-order')} dataTestId="pilotOrder" subSection={true}>
-      <IonGrid className="formGrid">
+      <IonGrid className="formGrid" style={{ overflow: 'visible' }}>
         <IonRow>
           <IonCol sizeMd="4">
             <TextInput

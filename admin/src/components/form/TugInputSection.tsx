@@ -36,7 +36,7 @@ const TugInputSection: React.FC<TugInputSectionProps> = ({
   const { t } = useTranslation();
 
   return (
-    <IonGrid className={'formGrid ' + className}>
+    <IonGrid className={'formGrid ' + className + ' subSectionMargin'}>
       <TextInputRow
         labelKey="fairwaycard.tug-name"
         value={section.name}
