@@ -313,6 +313,7 @@
     "primary-id-help-text": "Sataman yksilöivä tunniste; sallitut merkit: (a-z) ja (0-9).",
     "error-duplicate-id": "Tunniste on jo käytössä",
     "harbour-info": "Satamatiedot",
+    "harbour-basic-info": "Sataman perustiedot",
     "name": "Sataman nimi",
     "extra-info": "Sataman rajoitukset",
     "cargo": "Lastinkäsittely",

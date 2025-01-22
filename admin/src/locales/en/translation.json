@@ -302,6 +302,7 @@
     "primary-id-help-text": "Harbour unique identifier; valid characters: (a-z) and (0-9).",
     "error-duplicate-id": "[en] Tunniste on jo käytössä",
     "harbour-info": "[en] Satamatiedot",
+    "harbour-basic-info": "[en] Sataman perustiedot",
     "name": "Port name",
     "extra-info": "Harbour restrictions",
     "cargo": "Cargo handling",

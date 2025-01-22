@@ -303,6 +303,7 @@
     "primary-id-help-text": "[sv] Sataman yksilöivä tunniste; sallitut merkit: (a-z) ja (0-9).",
     "error-duplicate-id": "[sv] Tunniste on jo käytössä",
     "harbour-info": "[sv] Satamatiedot",
+    "harbour-basic-info": "[sv] Sataman perustiedot",
     "name": "Portnamn",
     "extra-info": "Hamnens begränsningar",
     "cargo": "Lasthantering",

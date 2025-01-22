@@ -26,6 +26,7 @@ import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
+import WrapperComponent from './form/WrapperComponent';
 
 interface FormProps {
   harbour: HarborInput;
@@ -394,19 +395,25 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
-              <PublishDetailsSection state={state} />
-              <MainSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <Section
-                title={t('harbour.quay-heading')}
-                sections={state.quays as QuayInput[]}
-                updateState={updateState}
-                sectionType="quay"
-                validationErrors={validationErrors}
-                readonly={readonly}
-                disabled={!readonly && state.status === Status.Removed}
-              />
+              <WrapperComponent title={t('fairwaycard.publish-details')} dataTestId="toggleOpenPublishDetails" disabled={!state.publishDetails}>
+                <PublishDetailsSection state={state} />
+              </WrapperComponent>
+              <WrapperComponent title={t('harbour.harbour-basic-info')}>
+                <MainSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              </WrapperComponent>
+              <WrapperComponent title={t('harbour.harbour-info')}>
+                <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+                <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+                <Section
+                  title={t('harbour.quay-heading')}
+                  sections={state.quays as QuayInput[]}
+                  updateState={updateState}
+                  sectionType="quay"
+                  validationErrors={validationErrors}
+                  readonly={readonly}
+                  disabled={!readonly && state.status === Status.Removed}
+                />
+              </WrapperComponent>
             </form>
           </>
         )}
