@@ -39,7 +39,7 @@ const Alert: React.FC<AlertProps> = ({ title, icon, color, className, startDate,
     <IonGrid className={className ?? undefined}>
       <IonRow className="ion-align-items-center">
         <IonCol size="auto" className="icon">
-          <IonIcon icon={icon} color={color} />
+          <IonIcon icon={icon} color={color} aria-hidden="true" />
         </IonCol>
         <IonCol>
           {markdownText ? <MarkdownParagraph markdownText={markdownText} /> : <IonText>{title}</IonText>}

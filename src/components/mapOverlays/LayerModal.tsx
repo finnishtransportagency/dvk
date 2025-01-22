@@ -250,7 +250,7 @@ const LayerModal: React.FC<ModalProps> = ({
                 title={t('common.close')}
                 aria-label={t('common.close')}
               >
-                <IonIcon className="otherIconLarge" src={closeIcon} />
+                <IonIcon className="otherIconLarge" src={closeIcon} aria-hidden="true" />
               </IonButton>
             </IonCol>
           </IonRow>
