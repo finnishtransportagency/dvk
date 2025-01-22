@@ -25,8 +25,7 @@
     "sv": "Farleden till Björneborg, Mäntyluoto N2000"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1701168975963,
+  "creationTimestamp": 1732283174803,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The channel consists of open sea and is unsheltered as far as the breakwaters at the harbour entrance. Strong especially S-W-NW winds create heavy seas.",
@@ -52,14 +51,23 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 2115,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718777752086,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732283174803,
+  "pilotRoutes": [
+    {
+      "id": 112
+    },
+    {
+      "id": 113
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "Fast ice in the channel only during very cold winters. In normal winters the ice is in movement in the fairway all winter. Westerly winds cause ridges at the channel entrance. Ice movement may cause buoys to be pressed beneath the surface and their lighting devices of the light buoys may be damaged.",
     "fi": "Väylällä esiintyy kiintojäätä vain erittäin kovina talvina. Normaalitalvina jäät liikkuvat väyläalueella koko talven. Länsituulilla jää ahtautuu väylän suulle. Jäiden liikkuessa poijut voivat olla ajoittain jään alla ja valolaitteet voivat olla vahingoittuneet.",

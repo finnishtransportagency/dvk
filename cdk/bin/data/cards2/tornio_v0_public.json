@@ -29,12 +29,7 @@
     "sv": "Torneå Röyttä farled"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Kemi mareograph.",
-    "fi": "Kemi mareografi.",
-    "sv": "Kemi mareograf."
-  },
-  "creationTimestamp": 1683095537585,
+  "creationTimestamp": 1732283934808,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The one-way fairway has been broadened for anchorage, passage and meeting traffic at Pohjoiskraaseli and Lehtikari. The area between Kemi 2 (not visible on the chart supplement) and the edge mark Pohjantähti is open sea and unsheltered against southerly winds. A 158 m narrow passage at Keilakrunni. The last section of the fairway, 2 nautical miles before the harbour basin, is a dredged fairway, width 120 m. No significant wave formation in the inner section of the fairway or in the harbour, but  strong winds and currents from the Tornio river can affect the manoeuvring of the vessels.",
@@ -43,7 +38,7 @@
   },
   "generalInfo": null,
   "id": "tornio",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": true,
   "lineText": {
     "en": "4 lines is marked with boards.",
@@ -65,13 +60,22 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 25,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718863195362,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732283934808,
+  "pilotRoutes": [
+    {
+      "id": 146
+    },
+    {
+      "id": 160
+    }
+  ],
   "iceCondition": {
     "en": "Between the approach and the edge mark Pohjantähti there is ice movement in autumn and spring, which can cause buoys and spar buoys to be pressed under ice surface. Ice ridges occur in wintertime from the open sea to Pohjantähti. Approx. 50 - 80 cm fast ice from Pohjantähti to the Röyttä harbour from December / January to April.",
     "fi": "Välillä ulko-osa - RM Pohjantähti, jää liikkuessa syksyisin ja keväisin, poijut ja viitat voivat olla jään alla. Talvikautena jää ahtautumia mereltä Pohjantähteen asti. Pohjantähdestä Röyttän satamaan yleensä n. 50 - 80 cm paksuista kiintojäätä joulu-tammikuusta huhtikuuhun saakka.",

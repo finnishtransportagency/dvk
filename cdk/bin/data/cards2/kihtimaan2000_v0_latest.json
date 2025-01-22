@@ -2,7 +2,7 @@
   "anchorage": null,
   "expires": null,
   "vesselRecommendation": null,
-  "status": "DRAFT",
+  "status": "PUBLIC",
   "visibility": null,
   "group": "1",
   "modifier": "System",
@@ -17,7 +17,7 @@
     "sv": "Farleden Skiftet-Mariehamn N2000"
   },
   "attention": null,
-  "creationTimestamp": 1718791399037,
+  "creationTimestamp": 1735798823360,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "From the Kihti open to Brändö the channel passes through an archipelago where the channel becomes narrow, has many turns and is difficult to navigate. From Brändö to Ledskär the channel is clearly navigable and sheltered by islands and reefs. From Ledskär to Korsö the channel is unsheltered, S-W winds can create heavy seas. Parallel and short-cut channels have been built to improve and expedite traffic flow on the channel (Askö-, Ledskär-, Prästkär- and Apteekkari channels).",
@@ -32,6 +32,7 @@
     "fi": "Merkitty linjatauluin ja sektoriloistoin.",
     "sv": "Utmärkta med enstavlor och fyrar."
   },
+  "publishDetails": "N2000 julkaisu",
   "version": "v0_latest",
   "harbors": [
     {
@@ -59,7 +60,7 @@
     "fi": "Maarianhaminan satamassa 17 km/h.",
     "sv": "I Mariehamns hamn, 17 km/h."
   },
-  "modificationTimestamp": 1724311144771,
+  "modificationTimestamp": 1735798823360,
   "pilotRoutes": [],
   "latest": 1,
   "iceCondition": {

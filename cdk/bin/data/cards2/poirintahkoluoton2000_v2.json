@@ -1,0 +1,130 @@
+{
+  "anchorage": {
+    "en": "Anchorage in the channel approach, NE of Annabella edge mark, cardinal marking. Anchorage in the inner section off the harbour in the Kissahauta area (which also serves as the harbour basin).",
+    "fi": "Väylän ulko-osalla on ankkurointialue Annabella reunamerkin koillispuolella, kardinaalimerkintä. Sisäosalla voi ankkuroida sataman edustalla Kissahaudassa (toimii myös sataman kääntöaltaana).",
+    "sv": "I den yttre delen av farleden finns en ankarplats nordost om randmärket Annabella. Kardinalutmärkning. I farledens inre del kan man ankra utanför hamnen i Kissahauta området (fungerar också som svängbassäng)."
+  },
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "1",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134266
+    }
+  ],
+  "name": {
+    "en": "Pori, Tahkoluoto channel N2000",
+    "fi": "Porin Tahkoluodon väylä N2000",
+    "sv": "Tahkoluoto farled, Björneborg N2000"
+  },
+  "attention": null,
+  "creationTimestamp": 1732283234583,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The channel consists of open sea and is unsheltered all the way to port. Strong especially SW and N winds create heavy seas. Attention is to be paid to the shallow waters E and S of Pori lighthouse. A bottom-mounted breakwater of dredged spoils has been built off the port. Its highest point reaches about 3 m below sea level.",
+    "fi": "Väylä on avomerta ja suojaton satamaan asti; varsinkin SW - N tuulilla merenkäynti on voimakasta. Varottava Porin majakan itä- ja eteläpuolella olevia matalia. Sataman edustalle on rakennettu väylän ruoppausmassoista nk. pohja-aallonmurtaja, jonka harjan syvyys vesipinnasta on n. 3 m.",
+    "sv": "Farleden ligger i öppen sjö och är oskyddad ända fram till hamnen; i synnerhet vid vindar från SW - N kan sjögången vara kraftig. Varning för grunden öster och söder om Björneborgs fyr. Framför hamnen har byggts en s.k. bottenvågbrytare av muddermassa; vågbrytarens rygg höjer sig till ca 3 m under vattenytan."
+  },
+  "generalInfo": null,
+  "id": "poirintahkoluoton2000",
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Two leading lines, the outer line marked by leading marks.",
+    "fi": "Linjoja 2, ulompi merkitty linjatauluin.",
+    "sv": "Två linjer, den yttre utmärkt med enslinjetavlor."
+  },
+  "version": "v2",
+  "harbors": [
+    {
+      "id": "tahkoluodonsyvasatn2000"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "primarySequenceNumber": 1,
+      "id": 2100,
+      "primary": true,
+      "secondarySequenceNumber": 1
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1732283234583,
+  "pilotRoutes": [
+    {
+      "id": 122
+    },
+    {
+      "id": 123
+    }
+  ],
+  "iceCondition": {
+    "en": "Fast ice in the channel only during very cold winters. In normal winters there is ice movement in the fairway all winter. Westerly winds cause ridges at the channel entrance. Ice movement may cause buoys to be pressed beneath the surface and their lighting devices of the light buoys may be damaged.",
+    "fi": "Väylällä esiintyy kiintojäätä vain erittäin kovina talvina. Normaali talvina jäät liikkuvat väyläalueella koko talven. Länsituulilla jää ahtautuu väylälle; itätuulilla väylä saattaa olla jäästä vapaa. Jäiden liikkuessa poijut voivat olla ajoittain jään alla ja valopoijujen valolaitteet voivat olla vahingoittuneet.",
+    "sv": "I farleden förekommer fast is endast under mycket hårda vintrar. Under normala vintrar är isarna i farleden rörliga hela vintern. Vid västliga vindar packas isen i farleden; vid östliga vindar kan farleden vara isfri. När isarna är i rörelse kan bojarna tidvis hamna under isen och lysbojarnas ljusapparatur kan vara skadad."
+  },
+  "fairwayIds": "#2100#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "West Coast VTS",
+          "fi": "West Coast VTS",
+          "sv": "West Coast VTS"
+        },
+        "phoneNumber": "+358204486645",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 9
+          }
+        ],
+        "email": [
+          "westcoast.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 609900599,
+          "pilotJourney": 9
+        }
+      ],
+      "phoneNumber": "+358295253450",
+      "fax": null,
+      "email": "pilotdispatch.westcoast@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. Pilot boarding position to be agreed upon in winter and in adverse weather conditions.",
+        "fi": "Huom. talviaikana ja huonolla säällä luotsipaikka sovittava erikseen.",
+        "sv": "Anm. vintertid eller vid dåligt väder bör platsen där lots möter överenskommas."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "First tug to be ordered 2 h and second tug 4 h in advance.",
+          "fi": "Alfons Håkansin hinaajat. Konventionaalisen hinaajan ennakkotilausaika 3 h, toisen 5 h. ASD hinaajan tilausaika aina 6 h.",
+          "sv": "Den första bogserbåten ska beställas 2 h, den andra 4 h i förväg."
+        },
+        "phoneNumber": [
+          "+358400591560"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed for squat in the inner section 14 knots.",
+    "fi": "Mitoitusnopeus nopeuspainumalle (squat) väylän sisäosalla 14 solmua.",
+    "sv": "Dimensionerande hastighet beräknad med sättning p.g.a. fart (squat) i farledens inre del 14 knop."
+  }
+}

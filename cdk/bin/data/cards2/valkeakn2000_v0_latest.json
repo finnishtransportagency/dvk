@@ -25,8 +25,7 @@
     "sv": "Valkeakarileden till Raumo N2000 "
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1700564095932,
+  "creationTimestamp": 1732283091743,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The outer channel consists of open sea and is unsheltered against S-W-N winds. From Pihlus the channel continues sheltered by skerries and islands with scarce edge marking to the Port of Rauma. The minimum width of the channel on the Suokari-line is 123 m, on the Pihlus-line 120 m and on the Valkeakari-line 140 m. At Valkeakari there is a narrow s-shaped bend. The channel is more sheltered than the 12.0-metre fairway to the Port of Rauma.",
@@ -52,8 +51,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 2265,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": {
@@ -61,9 +62,16 @@
     "fi": "Yli 7 m syväyksessä kulkeville aluksille on väylällä nopeusrajoitus 8 kn (15 km/h). Aluksen ohjailun vaatiessa suurempaa nopeutta tulee sen käyttää 12 m väylää. Mitoitusalusta suuremman aluksen tulee käyttää 12 m väylää.",
     "sv": "Fartyg med djupgående på över 7 m har fartbegränsningen 8 knop (15km/h). Om det krävs högre hastighet för att manövrera fartyget skall 12 m-farleden användas. Fartyg som är större än det dimensionerande fartyget skall också använda 12 m-farleden."
   },
-  "modificationTimestamp": 1718777848846,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732283091743,
+  "pilotRoutes": [
+    {
+      "id": 124
+    },
+    {
+      "id": 125
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "In winter ice fields are moving in the outer channel as far as Pihlus. Ice movement may cause buoys to be pressed beneath the surface and their lighting devices may be damaged. Under severe ice conditions the channel is closed to traffic.",
     "fi": "Talvella jääkentät liikkuvat väylän ulko-osalla Pihlukseen asti. Jäiden liikkuessa poijut voivat olla ajoittain jään alla ja valopoijujen valolaitteet voivat olla vahingoittuneet. Jääolosuhteiden vaikeutuessa väylä suljetaan liikenteeltä.",

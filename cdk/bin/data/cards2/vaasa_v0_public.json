@@ -10,18 +10,15 @@
   "visibility": null,
   "group": "3",
   "modifier": "System",
+  "mareographs": [],
   "name": {
     "en": "Vaasa fairway",
     "fi": "Vaasan väylä",
     "sv": "Vasa farled"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Vaasa mareograph (mareograph is located in Port of Vaasa area at Vaasa fairway depot).",
-    "fi": "Vaasa mareografi on satama-alueella, Vaasan väyläasemalla.",
-    "sv": "Vasa mareograf är inom hamnområdet vid Vasa farledsdepå."
-  },
-  "creationTimestamp": 1683095537638,
+  "creationTimestamp": 1732531654275,
+  "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approaches consist of open sea up to Norra Gloppsten, unsheltered against SW-N winds. For shelter, between Norra Gloppsten and Storhästen there are scarce isles, and from Storhästen up to Port of Vaasa is larger islands and archipelago. The Nygrund line requires accuracy and care from large vessels (there is a steep starboard bend of 65° at the beginning and a 26° bend to port at the end). Within the inner section strong side wind may affect navigation adversely.",
     "fi": "Ulko-osa Norra Gloppsteniin saakka avomerta, suojaton LU - P tuulille. Välillä Norra Gloppsten - Storhästen suojana harvaa saaristoa ja Storhästenistä Vaasan satamaan sisäsaaristoa. Nygrundin kohta vaatii suurilta aluksilta tarkkuutta ja varovaisuutta (alussa jyrkkä 65° käännös oikealle, lopussa 26° käännös vasemmalle). Sisäosalla voi kova sivutuuli vaikeuttaa navigointia.",
@@ -29,7 +26,7 @@
   },
   "generalInfo": null,
   "id": "vaasa",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": true,
   "lineText": {
     "en": "Nine or eight (9/8) leading lines, mainly marked boards with boards, edge marks, buoys, spar buoys in combined use.",
@@ -51,8 +48,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 770,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     },
     {
       "secondary": false,
@@ -60,17 +59,26 @@
       "primary": false
     }
   ],
-  "windGauge": {
-    "en": "Marine weather observations, Maalahti Strömmingsbådan, Mustasaari Valassaaret.",
-    "fi": "Rannikkoasemat, Maalahti Strömmingsbådan, Mustasaari Valassaaret.",
-    "sv": "Vädret vid kuststationerna, Malax Strömmingsbådan, Korsholm Valsörarna."
-  },
   "speedLimit": {
     "en": "There is a 15 knot speed limit between Nygrund and Port of Vaasa. A speed limit of 8 knots is recommended for the whole fairway. In the inner section the maximum speed of large vessels is normally approx. 5 knots.",
     "fi": "Välillä Nygrund-Vaasan satama on 15 solmun nopeusrajoitus. Koko väylällä suositellaan noudatettavaksi 8 solmun nopeutta. Sisäosalla suurten alusten maksiminopeus on käytännössä n. 5 solmua.",
     "sv": "I avsnittet mellan Nygrund och Vasa hamn gäller en 15 knops fartbegränsning. Rekommenderad fart i hela farleden är 8 knop. I farledens inre del är maximifarten för stora fartyg i praktiken ca 5 knop."
   },
-  "modificationTimestamp": 1698231242872,
+  "modificationTimestamp": 1732531654275,
+  "pilotRoutes": [
+    {
+      "id": 285
+    },
+    {
+      "id": 286
+    },
+    {
+      "id": 287
+    },
+    {
+      "id": 288
+    }
+  ],
   "iceCondition": {
     "en": "Further out ice conditions vary according to winds and temperature. The outmost buoys are normally removed for winter. Very often ice moves or is stacked between Ensten and Norra Gloppsten. Ice movement may cause buoys and spar buoys to be pressed under ice (surface). Normaly during wintertime there is from 20 to 40 cm thick fast ice between Vaskiluoto and Ensten.",
     "fi": "Ulompana jäätilanne vaihtelee tuulen ja lämpötilan mukaan. Uloimmat poijut yleensä poistetaan talveksi. Usein välillä Ensten-Norra Gloppsten jää liikkuu tai on kerrostunutta. Jäiden liikkuessa poijut ja viitat saattavat olla jään alla. Vaskiluodosta Ensteniin on yleensä talvisin noin 20-40 cm paksua kiintojäätä.",
@@ -135,6 +143,7 @@
       }
     ]
   },
+  "additionalInfo": null,
   "designSpeed": {
     "en": "Design speed in the outer fairway 12 knots, 10 knots from position where safe clearance depth alters to harbour.",
     "fi": "Mitoitusnopeus ulko-osalla 12 solmua, haraussyvyyden muutoskohdasta satamaan 10 solmua.",

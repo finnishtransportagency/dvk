@@ -27,12 +27,7 @@
     "sv": "Kustleden Brahestad-Uleåborg-Kemi"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Raahe mareograph.",
-    "fi": "Raahe mareografi.",
-    "sv": "Brahestad mareograf."
-  },
-  "creationTimestamp": 1683095537428,
+  "creationTimestamp": 1732283501140,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The fairway is open sea area and unsheltered against all winds. Heavy seas. The narrowest passage, only 250 m wide, is located approx. 3 km SW of Oulu 1 lighthouse.",
@@ -41,7 +36,7 @@
   },
   "generalInfo": null,
   "id": "raaheoulukemi",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": true,
   "lineText": {
     "en": "9 navigation lines.",
@@ -55,13 +50,19 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 206,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718864375273,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732283501140,
+  "pilotRoutes": [
+    {
+      "id": 148
+    }
+  ],
   "iceCondition": {
     "en": "Drift ice throughout the fairway in early and late winter. Buoys may be pressed under the ice surface. Ridging in mid-winter.",
     "fi": "Jäät liikkuvat alku- ja lopputalvesta koko väyläalueella, jolloin poijut voivat olla jään alla. Keskitalvella väylällä esiintyy yleensä ahtautunutta jäätä.",

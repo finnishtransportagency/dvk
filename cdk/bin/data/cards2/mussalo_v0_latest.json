@@ -24,8 +24,7 @@
     "sv": "Mussalöleden"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095539047,
+  "creationTimestamp": 1732276066232,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approach as far as the island Viikarinsaari consists of open sea, unsheltered against E-S-W winds. Navigation may be hampered by strong winds and sea state.",
@@ -51,8 +50,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 5510,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     },
     {
       "secondary": false,
@@ -65,9 +66,16 @@
     "fi": "Maksimikulkusyvyydessä olevien alusten tulee huomioida nopeuspainuma; mitoitusnopeus väylän ulko-osalla 16,5 solmua (Hs -18,4 m) ja satamassa 12,5 solmua (Hs -17,5 m).",
     "sv": "Fartyg med maximalt djupgående bör ta hänsyn till squateffekten; dimensionerande fart i yttre delen av farleden 16,5 knop (Rd -18,4) och i hamnen 12,5 knop (Rd -17,5 m)."
   },
-  "modificationTimestamp": 1718775803423,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732276066232,
+  "pilotRoutes": [
+    {
+      "id": 31
+    },
+    {
+      "id": 33
+    }
+  ],
+  "latest": 2,
   "iceCondition": null,
   "fairwayIds": "#5510#5532#",
   "trafficService": {

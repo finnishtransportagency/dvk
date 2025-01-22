@@ -14,18 +14,15 @@
   "visibility": null,
   "group": "2",
   "modifier": "System",
+  "mareographs": [],
   "name": {
     "en": "Sköldvik channel",
     "fi": "Sköldvikin väylä",
     "sv": "Sköldviksleden"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Emäsalo",
-    "fi": "Emäsalo",
-    "sv": "Emsalö"
-  },
-  "creationTimestamp": 1683095539146,
+  "creationTimestamp": 1732276424411,
+  "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The outer channel, from the pilot boarding position to the S edge of Emäsalo is unsheltered and open to E-S-W winds. Further on the channel is sheltered by isles and mainland. The narrowest passage, with a width of 270 m, is located W of Prästudden. Vessels with a draught close or equal to the maximum authorised draught are warned to beware of the impact of suction on the steering of the vessel",
     "fi": "Väylän ulko-osa luotsipaikalta Emäsalon eteläkärkeen on avomerta ja suojaton ES-W tuulille. Emäsalon eteläkärjestä väylä jatkuu mantereen ja saariston suojaamana Sköldvikin satamaan. Väylän kapein kohta, leveydeltään 270 m, sijaitsee Prästuddenin länsipuolella. Maksimikulkusyvyydellä kulkevien alusten on ohjailussa huomioitava mahdollinen imuvaikutus.",
@@ -49,13 +46,18 @@
   "creator": "System",
   "fairways": [
     {
-      "secondary": true,
-      "id": 5150,
-      "primary": true
+      "secondary": false,
+      "id": 5125,
+      "primary": false
     },
     {
       "secondary": false,
-      "id": 5155,
+      "id": 5128,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5131,
       "primary": false
     },
     {
@@ -74,31 +76,37 @@
       "primary": false
     },
     {
-      "secondary": false,
-      "id": 5125,
-      "primary": false
+      "secondary": true,
+      "primarySequenceNumber": 1,
+      "id": 5150,
+      "primary": true,
+      "secondarySequenceNumber": 1
     },
     {
       "secondary": false,
-      "id": 5128,
-      "primary": false
-    },
-    {
-      "secondary": false,
-      "id": 5131,
+      "id": 5155,
       "primary": false
     }
   ],
-  "windGauge": {
-    "en": "Emäsalo Pilot Station.",
-    "fi": "Emäsalon tukiasemalla.",
-    "sv": "Emsalö station."
-  },
   "speedLimit": null,
-  "modificationTimestamp": 1711090626477,
-  "latest": 1,
+  "modificationTimestamp": 1732276424411,
+  "pilotRoutes": [
+    {
+      "id": 50
+    },
+    {
+      "id": 51
+    },
+    {
+      "id": 52
+    },
+    {
+      "id": 53
+    }
+  ],
+  "latest": 2,
   "iceCondition": null,
-  "fairwayIds": "#5150#5155#5136#5137#5138#5125#5128#5131#",
+  "fairwayIds": "#5125#5128#5131#5136#5137#5138#5150#5155#",
   "trafficService": {
     "vts": [
       {
@@ -154,6 +162,7 @@
       }
     ]
   },
+  "additionalInfo": null,
   "designSpeed": {
     "en": "Vessel speed 12 knots in the inner channel.",
     "fi": "Mitoitusnopeus väylän sisäosalla 12 solmua.",

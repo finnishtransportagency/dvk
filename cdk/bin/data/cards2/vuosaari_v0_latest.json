@@ -28,8 +28,7 @@
     "sv": "Nordsjöleden"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095539196,
+  "creationTimestamp": 1732276335931,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approach is at open sea and is unsheltered against E-S-W winds. From Eestiluoto to the harbour the channel is protected by islands and skerries.",
@@ -64,8 +63,10 @@
     },
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 4927,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": {
@@ -73,9 +74,16 @@
     "fi": "Talvikaudella (1.11 - 31.3) Vuosaaren väylän välillä Krokholmshället - Vuosaaren satama on voimassa vuosittain jatkuva nopeusrajoitus 24 km/h.",
     "sv": "Under vintersäsongen (1.11 - 31.3) är en fartbegränsning 24 km/h i kraft (I farleden) mellan Krokholmshället och Nordsjö hamn."
   },
-  "modificationTimestamp": 1718776035584,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732276335931,
+  "pilotRoutes": [
+    {
+      "id": 54
+    },
+    {
+      "id": 55
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "Ice usually causes problems only in the harbour basins, where slush may make manoeuvring difficult. Occasional ice ridging in the areas S and N of Eestiluoto.",
     "fi": "Jää ongelmia esiintyy yleensä vain satama-altaissa, joissa jääsohjo saattaa vaikeuttaa aluksen käsittelyä. Ajoittain ahtautumista saattaa esiintyä Eestiluodon etelä- ja pohjoispuoleisilla alueilla.",

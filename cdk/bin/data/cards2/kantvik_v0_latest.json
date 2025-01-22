@@ -32,8 +32,7 @@
     "sv": "Kantviksleden"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095538848,
+  "creationTimestamp": 1732276488831,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approach from the pilot boarding position to Upinniemi is unsheltered against southerly winds. From Upinniemi on the fairway continues to Kantvik harbour sheltered by shoals, isles and mainland.",
@@ -63,14 +62,23 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 4410,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718775637421,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732276488831,
+  "pilotRoutes": [
+    {
+      "id": 58
+    },
+    {
+      "id": 59
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "Very variable ice conditions. The fairway can be open almost all winter or there can be formation of thin ice. Southerly winds may cause ridging in the fairway.",
     "fi": "Jääolosuhteet ovat erittäin vaihtelevia. Väylä voi olla avoin lähes koko talven tai siihen muodostuu vain ohut jääpeite. Väylällä voi etelänpuoleisilla tuulilla esiintyä ajoittain jää ahtautumia.",
