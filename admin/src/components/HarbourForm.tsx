@@ -38,8 +38,8 @@ import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
-import WrapperComponent from './form/WrapperComponent';
-import ExpandableButtons from './ExpandableButtons';
+import CollapsableWrapper from './form/CollapsableWrapper';
+import CollapsableButtons from './CollapsableButtons';
 
 interface FormProps {
   harbour: HarborInput;
@@ -418,9 +418,9 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
-              <ExpandableButtons toggleAllSections={toggleAllSections} sectionsOpen={sectionsOpen} />
+              <CollapsableButtons toggleAllSections={toggleAllSections} sectionsOpen={sectionsOpen} />
 
-              <WrapperComponent
+              <CollapsableWrapper
                 title={t('fairwaycard.publish-details')}
                 dataTestId="toggleOpenPublishDetails"
                 toggleSection={toggleSection}
@@ -428,12 +428,13 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
                 disabled={!state.publishDetails}
               >
                 <PublishDetailsSection state={state} />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent title={t('harbour.harbour-basic-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+              <CollapsableWrapper title={t('harbour.harbour-basic-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <MainSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              </WrapperComponent>
-              <WrapperComponent title={t('harbour.harbour-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+              </CollapsableWrapper>
+
+              <CollapsableWrapper title={t('harbour.harbour-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
                 <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
                 <Section
@@ -445,7 +446,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
                   readonly={readonly}
                   disabled={!readonly && state.status === Status.Removed}
                 />
-              </WrapperComponent>
+              </CollapsableWrapper>
             </form>
           </>
         )}

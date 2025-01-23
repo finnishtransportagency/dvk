@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import NotificationModal from '../NotificationModal';
 import { MainSectionTitle, MainSectionType } from '../../utils/constants';
 
-interface WrapperComponentProps {
+interface CollapsableWrapperProps {
   title: string;
   children: React.ReactNode;
   sectionsOpen: MainSectionType[];
@@ -20,7 +20,7 @@ interface WrapperComponentProps {
   disabled?: boolean;
 }
 
-const WrapperComponent: React.FC<WrapperComponentProps> = ({
+const CollapsableWrapper: React.FC<CollapsableWrapperProps> = ({
   title,
   children,
   toggleSection,
@@ -38,7 +38,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
   const open = !disabled && sectionsOpen.find((s) => s.id === title)?.open;
-  const sectionClassName = 'sectionContent' + (open ? ' open' : ' closed');
+  const sectionOpen = 'collapsableContent ' + (open ? 'open' : 'closed');
 
   // pilot order header has style exception
   const isPilotOrder = title.includes('Luotsintilaus');
@@ -84,9 +84,7 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
           <ChevronIcon />
         </IonButton>
       </IonItem>
-      <div className={sectionClassName}>
-        <div>{children}</div>
-      </div>
+      <div className={sectionOpen}>{children}</div>
       {infoHeader && infoMessage && (
         <NotificationModal
           isOpen={infoModalOpen}
@@ -101,4 +99,4 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
   );
 };
 
-export default WrapperComponent;
+export default CollapsableWrapper;

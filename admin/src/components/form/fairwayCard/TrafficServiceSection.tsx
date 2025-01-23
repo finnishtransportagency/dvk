@@ -6,7 +6,7 @@ import TextInputRow from '../TextInputRow';
 import { useTranslation } from 'react-i18next';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
-import WrapperComponent from '../WrapperComponent';
+import CollapsableWrapper from '../CollapsableWrapper';
 
 interface TrafficServiceSectionProps {
   state: FairwayCardInput;
@@ -39,7 +39,7 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
   const lang = i18n.resolvedLanguage as Lang;
 
   return (
-    <WrapperComponent
+    <CollapsableWrapper
       title={t('fairwaycard.pilot-order')}
       dataTestId="pilotOrder"
       subSection={true}
@@ -136,7 +136,7 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
           })}
         </IonRow>
       </IonGrid>
-    </WrapperComponent>
+    </CollapsableWrapper>
   );
 };
 

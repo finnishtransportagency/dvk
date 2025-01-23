@@ -895,7 +895,6 @@ ion-grid.formGrid ion-col:last-of-type {
 .mainContent .sectionContent {
   transition: all 150ms;
   max-height: 199vh;
-  overflow: visible;
 }
 .mainContent .sectionContent.closed {
   max-height: 0;
@@ -904,6 +903,12 @@ ion-grid.formGrid ion-col:last-of-type {
 .mainContent .sectionContent p {
   margin: 10px 5px 0;
   font-size: 14px;
+}
+
+/* had to give to CollapsableWrapper children own class, since weird clipping or odd overflow scrolling was happening when using sectionContent*/
+.collapsableContent.closed {
+  max-height: 0;
+  overflow: hidden;
 }
 
 /* Footer */

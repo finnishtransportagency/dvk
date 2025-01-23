@@ -3,11 +3,11 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { MainSectionType } from '../utils/constants';
 
-interface ExpandableButtonsProps {
+interface CollapsableButtonsProps {
   toggleAllSections: (open: boolean) => void;
   sectionsOpen: MainSectionType[];
 }
-const ExpandableButtons: React.FC<ExpandableButtonsProps> = ({ toggleAllSections, sectionsOpen }) => {
+const CollapsableButtons: React.FC<CollapsableButtonsProps> = ({ toggleAllSections, sectionsOpen }) => {
   const { t } = useTranslation();
 
   const expandDisabled = sectionsOpen.every((s) => s.open);
@@ -32,4 +32,4 @@ const ExpandableButtons: React.FC<ExpandableButtonsProps> = ({ toggleAllSections
   );
 };
 
-export default ExpandableButtons;
+export default CollapsableButtons;

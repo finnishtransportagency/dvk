@@ -58,8 +58,8 @@ import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import SquatCalculationSection from './form/fairwayCard/SquatCalculationSection';
-import WrapperComponent from './form/WrapperComponent';
-import ExpandableButtons from './ExpandableButtons';
+import CollapsableWrapper from './form/CollapsableWrapper';
+import CollapsableButtons from './CollapsableButtons';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -436,9 +436,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
-              <ExpandableButtons toggleAllSections={toggleAllSections} sectionsOpen={sectionsOpen} />
+              <CollapsableButtons toggleAllSections={toggleAllSections} sectionsOpen={sectionsOpen} />
 
-              <WrapperComponent
+              <CollapsableWrapper
                 title={t('fairwaycard.publish-details')}
                 dataTestId="toggleOpenPublishDetails"
                 toggleSection={toggleSection}
@@ -446,9 +446,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 disabled={!state.publishDetails}
               >
                 <PublishDetailsSection state={state} />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent title={t('fairwaycard.main-section-title')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+              <CollapsableWrapper title={t('fairwaycard.main-section-title')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <MainSection
                   state={state}
                   updateState={updateState}
@@ -463,9 +463,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   pilotRouteOptions={pilotRouteList}
                   readonly={readonly}
                 />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent
+              <CollapsableWrapper
                 title={t('fairwaycard.temporary-notification-title')}
                 infoHeader={t('fairwaycard.temporary-notification-title')}
                 infoI18nKey="modal.temporary-notification-add"
@@ -481,17 +481,17 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   validationErrors={validationErrors}
                   readonly={readonly}
                 />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent title={t('fairwaycard.fairway-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+              <CollapsableWrapper title={t('fairwaycard.fairway-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent title={t('fairwaycard.navigation')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+              <CollapsableWrapper title={t('fairwaycard.navigation')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent title={t('fairwaycard.recommendation')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+              <CollapsableWrapper title={t('fairwaycard.recommendation')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <RecommendationsSection
                   state={state}
                   updateState={updateState}
@@ -500,9 +500,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   mareographOptions={mareographList?.mareographs}
                   readonly={readonly}
                 />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent
+              <CollapsableWrapper
                 title={t('fairwaycard.fairway-additional-info')}
                 infoHeader={t('fairwaycard.fairway-additional-info-notification-header')}
                 infoMessage={`${t('fairwaycard.fairway-additional-info-notification-body') ?? ''}\n${t('general.markdown.description')}`}
@@ -510,9 +510,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 toggleSection={toggleSection}
               >
                 <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent
+              <CollapsableWrapper
                 title={t('fairwaycard.traffic-services')}
                 titleDataTestId="trafficServices"
                 sectionsOpen={sectionsOpen}
@@ -548,9 +548,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   disabled={!readonly && state.status === Status.Removed}
                   readonly={readonly}
                 />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent
+              <CollapsableWrapper
                 title={t('fairwaycard.squat-calculation-title')}
                 infoHeader={t('fairwaycard.squat-calculation-title')}
                 infoI18nKey={'modal.squat-calculation-add'}
@@ -571,9 +571,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   isLoadingAreas={isLoadingAreas}
                   isLoadingFairways={isLoadingFairways}
                 />
-              </WrapperComponent>
+              </CollapsableWrapper>
 
-              <WrapperComponent title={t('fairwaycard.print-images')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+              <CollapsableWrapper title={t('fairwaycard.print-images')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <MapExportTool
                   fairwayCardInput={state}
                   readonly={readonly}
@@ -583,7 +583,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   fairways={fairwaySelection}
                   harbours={harbourSelection}
                 />
-              </WrapperComponent>
+              </CollapsableWrapper>
             </form>
           </>
         )}
