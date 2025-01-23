@@ -1,11 +1,10 @@
 import { HarborInput } from '../../graphql/generated';
-import { ActionType, Lang, ValueType } from '../constants';
+import { ActionType, ValueType } from '../constants';
 
 export const sectionReducer = (
   state: HarborInput,
   value: ValueType,
   actionType: ActionType,
-  actionLang?: Lang,
   actionTarget?: string | number,
   actionOuterTarget?: string | number
 ): HarborInput => {

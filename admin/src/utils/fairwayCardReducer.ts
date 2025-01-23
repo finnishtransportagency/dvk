@@ -90,23 +90,23 @@ export const fairwayCardReducer = (
     case 'group':
     case 'publishDetails':
     case 'additionalInfo':
-      newState = generalInfoReducer(state, value, actionType, actionLang, actionTarget);
+      newState = generalInfoReducer(state, value, actionType, actionLang);
       break;
     case 'line':
     case 'speedLimit':
     case 'designSpeed':
     case 'anchorage':
-      newState = fairwayInfoReducer(state, value, actionType, actionLang, actionTarget, actionOuterTarget);
+      newState = fairwayInfoReducer(state, value, actionType, actionLang);
       break;
     case 'navigationCondition':
     case 'iceCondition':
-      newState = navigationReducer(state, value, actionType, actionLang, actionTarget, actionOuterTarget);
+      newState = navigationReducer(state, value, actionType, actionLang);
       break;
     case 'windRecommendation':
     case 'vesselRecommendation':
     case 'visibility':
     case 'mareographs':
-      newState = recommendationsReducer(state, value, actionType, actionLang, actionTarget);
+      newState = recommendationsReducer(state, value, actionType, actionLang);
       break;
     case 'pilotEmail':
     case 'pilotPhone':
@@ -120,7 +120,7 @@ export const fairwayCardReducer = (
     case 'vtsName':
     case 'vtsEmail':
     case 'vtsPhone':
-      newState = vtsReducer(state, value, actionType, actionLang, actionTarget, actionOuterTarget);
+      newState = vtsReducer(state, value, actionType, actionLang, actionTarget);
       break;
     case 'vhf':
     case 'vhfName':

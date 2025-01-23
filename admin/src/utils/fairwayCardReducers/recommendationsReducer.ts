@@ -1,13 +1,7 @@
 import { FairwayCardInput } from '../../graphql/generated';
 import { ActionType, Lang, ValueType } from '../constants';
 
-export const recommendationsReducer = (
-  state: FairwayCardInput,
-  value: ValueType,
-  actionType: ActionType,
-  actionLang?: Lang,
-  actionTarget?: string | number
-): FairwayCardInput => {
+export const recommendationsReducer = (state: FairwayCardInput, value: ValueType, actionType: ActionType, actionLang?: Lang): FairwayCardInput => {
   let newState;
   switch (actionType) {
     case 'windRecommendation':

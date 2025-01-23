@@ -6,8 +6,7 @@ export const vtsReducer = (
   value: ValueType,
   actionType: ActionType,
   actionLang?: Lang,
-  actionTarget?: string | number,
-  actionOuterTarget?: string | number
+  actionTarget?: string | number
 ): FairwayCardInput => {
   let newState;
   switch (actionType) {

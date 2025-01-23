@@ -1,14 +1,7 @@
 import { HarborInput } from '../../graphql/generated';
 import { ActionType, Lang, ValueType } from '../constants';
 
-export const contactReducer = (
-  state: HarborInput,
-  value: ValueType,
-  actionType: ActionType,
-  actionLang?: Lang,
-  actionTarget?: string | number,
-  actionOuterTarget?: string | number
-): HarborInput => {
+export const contactReducer = (state: HarborInput, value: ValueType, actionType: ActionType, actionLang?: Lang): HarborInput => {
   let newState;
   switch (actionType) {
     case 'companyName':

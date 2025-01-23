@@ -1,5 +1,5 @@
 import { t } from 'i18next';
-import { HarborInput, Operation, Status } from '../graphql/generated';
+import { HarborInput, Operation } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
 import { locationError, QuayOrSection } from './formValidations';
 import { infoReducer } from './harbourReducers/infoReducer';
@@ -54,7 +54,7 @@ export const harbourReducer = (
     case 'harbourBasin':
     case 'status':
     case 'publishDetails':
-      newState = infoReducer(state, value, actionType, actionLang, actionTarget);
+      newState = infoReducer(state, value, actionType, actionLang);
       break;
     case 'companyName':
     case 'email':
@@ -63,7 +63,7 @@ export const harbourReducer = (
     case 'internet':
     case 'lat':
     case 'lon':
-      newState = contactReducer(state, value, actionType, actionLang, actionTarget);
+      newState = contactReducer(state, value, actionType, actionLang);
       break;
     case 'quay':
     case 'quayName':
@@ -78,7 +78,7 @@ export const harbourReducer = (
     case 'sectionDepth':
     case 'sectionLat':
     case 'sectionLon':
-      newState = sectionReducer(state, value, actionType, actionLang, actionTarget, actionOuterTarget);
+      newState = sectionReducer(state, value, actionType, actionTarget, actionOuterTarget);
       break;
     default:
       console.warn(`Unknown action type, state not updated.`);

@@ -2,14 +2,7 @@ import { FairwayCardInput, SelectedFairwayInput, Status } from '../../graphql/ge
 import { removeSequence } from '../common';
 import { ActionType, Lang, ValueType } from '../constants';
 
-export const generalInfoReducer = (
-  state: FairwayCardInput,
-  value: ValueType,
-  actionType: ActionType,
-  actionLang?: Lang,
-  actionTarget?: string | number,
-  actionOuterTarget?: string | number
-): FairwayCardInput => {
+export const generalInfoReducer = (state: FairwayCardInput, value: ValueType, actionType: ActionType, actionLang?: Lang): FairwayCardInput => {
   let newState;
   switch (actionType) {
     case 'name':
