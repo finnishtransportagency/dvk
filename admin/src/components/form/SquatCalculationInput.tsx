@@ -28,6 +28,7 @@ interface SquatCalculationInputProps {
   fairwayAreas?: AreaSelectOption[];
   isLoadingAreas?: boolean;
   isLoadingFairways?: boolean;
+  areasLoaded?: boolean;
 }
 
 const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
@@ -41,6 +42,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   fairwayAreas,
   isLoadingAreas,
   isLoadingFairways,
+  areasLoaded = false,
 }) => {
   function updateStateAndDepth(
     value: ValueType,
@@ -113,7 +115,8 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
     sortedSelectedAreas &&
     sortedSelectedAreas.length > 1 &&
     sortedSelectedAreas[0].depth !== sortedSelectedAreas[sortedSelectedAreas.length - 1].depth;
-  const orphanedAreasInSquatCalculation = getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions);
+  const orphanedAreasInSquatCalculation = areasLoaded ? getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions) : [];
+
   sortedAreas = sortedAreas.concat(
     orphanedAreasInSquatCalculation.map((a) => {
       return { id: a, subtext: '-' } as AreaSelectOption;
@@ -182,7 +185,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               warning={orphanedAreasInSquatCalculation.length > 0}
               error={orphanedAreasInSquatCalculation.length > 0 ? '' : areaErrorText}
             />
-            {!isLoadingAreas && orphanedAreasInSquatCalculation.length > 0 && (
+            {areasLoaded && orphanedAreasInSquatCalculation.length > 0 && (
               <IonNote className="input-warning">
                 <Trans
                   t={t}

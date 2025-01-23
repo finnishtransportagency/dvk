@@ -114,7 +114,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
             rows={labelText.length}
             required={required}
           />
-          <IonNote className="helper">{getHelperText()}</IonNote>
+          {!ignoreHelperText && <IonNote className="helper">{getHelperText()}</IonNote>}
         </>
       )}
       {inputOrLoading && (

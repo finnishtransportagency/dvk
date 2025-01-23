@@ -79,3 +79,17 @@ test('should filter orphaned areas from input', () => {
   expect(output[3].suitableFairwayAreas).toEqual([]);
   expect(output[3].depth).toEqual(0);
 });
+
+test('should empty area area does not filter orphaned areas from input', () => {
+  const areas: AreaSelectOption[] = [];
+  const input: SquatCalculationInput[] = [
+    {
+      place: { fi: '', sv: '', en: '' },
+      suitableFairwayAreas: [1, 2, 3],
+      depth: 9,
+    },
+  ];
+  const output: SquatCalculationInput[] = filterOrphanedAreas(input, areas) ?? [];
+  expect(output).toHaveLength(input.length);
+  expect(output[0].suitableFairwayAreas).toEqual([1, 2, 3]);
+});

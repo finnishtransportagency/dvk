@@ -30,6 +30,7 @@ interface SquatCalculationSectionProps {
   isLoadingAreas?: boolean;
   isLoadingFairways?: boolean;
   showWarningLabel?: boolean;
+  areasLoaded?: boolean;
 }
 
 const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
@@ -45,6 +46,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
   isLoadingAreas = false,
   isLoadingFairways = false,
   showWarningLabel = false,
+  areasLoaded = false,
 }) => {
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
@@ -81,10 +83,8 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
   }, [sections, openSections.length]);
 
   useEffect(() => {
-    setOrphanedAreaIdsInSquatSection(
-      sections && fairwayAreas && fairwayAreas.length > 0 ? getOrphanedAreaIdsFromSquatSection(sections, fairwayAreas) : []
-    );
-  }, [sections, fairwayAreas]);
+    setOrphanedAreaIdsInSquatSection(sections && fairwayAreas && areasLoaded ? getOrphanedAreaIdsFromSquatSection(sections, fairwayAreas) : []);
+  }, [sections, fairwayAreas, areasLoaded]);
 
   return (
     <>
@@ -144,6 +144,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
                 fairwayAreas={fairwayAreas}
                 isLoadingAreas={isLoadingAreas}
                 isLoadingFairways={isLoadingFairways}
+                areasLoaded={areasLoaded}
               />
             </div>
           </div>

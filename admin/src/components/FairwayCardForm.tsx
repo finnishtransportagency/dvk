@@ -407,7 +407,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         versions={fairwayCardVersions}
         isError={isError}
       />
-
       <IonContent className="mainContent ion-no-padding" data-testid="fairwayCardEditPage">
         {isError && <p>{t('general.loading-error')}</p>}
 
@@ -496,6 +495,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 fairwayAreas={filteredAreaOptions}
                 isLoadingAreas={isLoadingAreas}
                 isLoadingFairways={isLoadingFairways}
+                areasLoaded={areaList && areaList.features.length > 0}
               />
 
               <IonText>

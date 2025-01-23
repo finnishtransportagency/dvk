@@ -210,7 +210,7 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
   };
 }
 
-export function mapNewFairwayCardVersion(card: FairwayCardInput | undefined, copyPictures?: boolean, areas: AreaSelectOption[]) {
+export function mapNewFairwayCardVersion(card: FairwayCardInput | undefined, copyPictures?: boolean, areas?: AreaSelectOption[]) {
   return {
     id: stringValueOrDefault(card?.id),
     version: card?.version ?? 'v1',
@@ -297,7 +297,8 @@ export function mapNewFairwayCardVersion(card: FairwayCardInput | undefined, cop
     operation: Operation.Createversion,
     pictures: copyPictures ? card?.pictures : [],
     temporaryNotifications: card?.temporaryNotifications,
-    squatCalculations: filterOrphanedAreas(card?.squatCalculations as SquatCalculationInput[], areas),
+    squatCalculations:
+      areas && areas.length > 0 ? filterOrphanedAreas(card?.squatCalculations as SquatCalculationInput[], areas) : card?.squatCalculations,
   };
 }
 
