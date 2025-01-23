@@ -125,7 +125,9 @@
     "version": "[en] Versio",
     "add-section-squat-calculation": "[en] Lisää laskennan sijainti",
     "cannot-add-section-squat-calculation": "[en] Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
-    "squat-calculation-description": "[en] Lorem ipsum..."
+    "squat-calculation-description": "[en] Lorem ipsum...",
+    "expand-sections": "[en] Laajenna osiot",
+    "collapse-sections": "[en] Sulje kaikki osiot"
   },
   "modal": {
     "title-new-CARD": "New fairway card",

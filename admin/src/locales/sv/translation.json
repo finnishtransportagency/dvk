@@ -125,7 +125,9 @@
     "version": "[sv] Versio",
     "add-section-squat-calculation": "[sv] Lisää laskennan sijainti",
     "cannot-add-section-squat-calculation": "[sv] Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
-    "squat-calculation-description": "[sv] Lorem ipsum..."
+    "squat-calculation-description": "[sv] Lorem ipsum...",
+    "expand-sections": "[sv] Laajenna osiot",
+    "collapse-sections": "[sv] Sulje kaikki osiot"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",

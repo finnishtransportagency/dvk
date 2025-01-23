@@ -825,15 +825,17 @@ ion-grid.formGrid ion-col:first-of-type {
 
 ion-grid.formGrid.subSectionMargin ion-row {
   border-left: 1px solid var(--ion-color-lighter);
-  padding: 0px 25px;
+  padding: 0px 0px 0px 25px;
 }
-
 ion-grid.formGrid.subSectionMargin {
   margin-left: 25px;
 }
-
 .formSection.subSectionMargin {
   margin-left: 25px;
+}
+ion-grid .plainButton.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
 ion-grid.formGrid ion-col:last-of-type {

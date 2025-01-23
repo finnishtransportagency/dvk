@@ -6,7 +6,10 @@ import {
   AreaSelectOption,
   ConfirmationType,
   ErrorMessageKeys,
+  FairwayCardMainSections,
   Lang,
+  MainSectionTitle,
+  MainSectionType,
   saveErrorTitle,
   ValidationType,
   ValueType,
@@ -56,6 +59,7 @@ import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import SquatCalculationSection from './form/fairwayCard/SquatCalculationSection';
 import WrapperComponent from './form/WrapperComponent';
+import ExpandableButtons from './ExpandableButtons';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -84,8 +88,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
-  // if confirmation modal comes up because of unsaved changing version,, handleConfirmationSubmit gets the value from this
+  // if confirmation modal comes up because of unsaved changing version, handleConfirmationSubmit gets the value from this
   const [versionToMoveTo, setVersionToMoveTo] = useState('');
+  const [sectionsOpen, setSectionsOpen] = useState<MainSectionType[]>(FairwayCardMainSections);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -351,6 +356,15 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
   const readonly = isReadOnly(state);
 
+  const toggleAllSections = (open: boolean) => {
+    setSectionsOpen(sectionsOpen.map((s) => ({ ...s, open })));
+  };
+
+  const toggleSection = (id: MainSectionTitle, open: boolean) => {
+    const opened = sectionsOpen.map((s) => (s.id === id ? { ...s, open: open } : s));
+    setSectionsOpen(opened);
+  };
+
   return (
     <IonPage>
       <PublishModal
@@ -422,10 +436,19 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
-              <WrapperComponent title={t('fairwaycard.publish-details')} dataTestId="toggleOpenPublishDetails" disabled={!state.publishDetails}>
+              <ExpandableButtons toggleAllSections={toggleAllSections} sectionsOpen={sectionsOpen} />
+
+              <WrapperComponent
+                title={t('fairwaycard.publish-details')}
+                dataTestId="toggleOpenPublishDetails"
+                toggleSection={toggleSection}
+                sectionsOpen={sectionsOpen}
+                disabled={!state.publishDetails}
+              >
                 <PublishDetailsSection state={state} />
               </WrapperComponent>
-              <WrapperComponent title={t('fairwaycard.main-section-title')}>
+
+              <WrapperComponent title={t('fairwaycard.main-section-title')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <MainSection
                   state={state}
                   updateState={updateState}
@@ -441,11 +464,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                 />
               </WrapperComponent>
+
               <WrapperComponent
                 title={t('fairwaycard.temporary-notification-title')}
                 infoHeader={t('fairwaycard.temporary-notification-title')}
                 infoI18nKey="modal.temporary-notification-add"
                 infoMessage={t('general.markdown.description')}
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
               >
                 <NotificationSection
                   state={state}
@@ -456,13 +482,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                 />
               </WrapperComponent>
-              <WrapperComponent title={t('fairwaycard.fairway-info')}>
+
+              <WrapperComponent title={t('fairwaycard.fairway-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               </WrapperComponent>
-              <WrapperComponent title={t('fairwaycard.navigation')}>
+
+              <WrapperComponent title={t('fairwaycard.navigation')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               </WrapperComponent>
-              <WrapperComponent title={t('fairwaycard.recommendation')}>
+
+              <WrapperComponent title={t('fairwaycard.recommendation')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <RecommendationsSection
                   state={state}
                   updateState={updateState}
@@ -472,19 +501,30 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                 />
               </WrapperComponent>
+
               <WrapperComponent
                 title={t('fairwaycard.fairway-additional-info')}
                 infoHeader={t('fairwaycard.fairway-additional-info-notification-header')}
                 infoMessage={`${t('fairwaycard.fairway-additional-info-notification-body') ?? ''}\n${t('general.markdown.description')}`}
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
               >
                 <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               </WrapperComponent>
-              <WrapperComponent title={t('fairwaycard.traffic-services')} titleDataTestId="trafficServices">
+
+              <WrapperComponent
+                title={t('fairwaycard.traffic-services')}
+                titleDataTestId="trafficServices"
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
+              >
                 <TrafficServiceSection
                   state={state}
                   updateState={updateState}
                   validationErrors={validationErrors}
                   isLoadingPilotPlaces={isLoadingPilotPlaces}
+                  sectionsOpen={sectionsOpen}
+                  toggleSection={toggleSection}
                   pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
                   readonly={readonly}
                 />
@@ -509,11 +549,14 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                 />
               </WrapperComponent>
+
               <WrapperComponent
                 title={t('fairwaycard.squat-calculation-title')}
                 infoHeader={t('fairwaycard.squat-calculation-title')}
                 infoI18nKey={'modal.squat-calculation-add'}
                 infoMessage={t('general.squat-calculation-description')}
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
               >
                 <SquatCalculationSection
                   sections={state.squatCalculations as SquatCalculationInput[]}
@@ -529,7 +572,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   isLoadingFairways={isLoadingFairways}
                 />
               </WrapperComponent>
-              <WrapperComponent title={t('fairwaycard.print-images')}>
+
+              <WrapperComponent title={t('fairwaycard.print-images')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <MapExportTool
                   fairwayCardInput={state}
                   readonly={readonly}

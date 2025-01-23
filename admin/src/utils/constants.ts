@@ -382,3 +382,43 @@ export const saveErrorTitle = {
   BLOCKED: 'OPERATION-BLOCKED',
   ARCHIVE: 'ARCHIVE-OPERATION-BLOCKED',
 };
+
+export type MainSectionTitle =
+  | 'Julkaisutiedot'
+  | 'Väyläkortin perustiedot'
+  | 'Sataman perustiedot'
+  | 'Satamatiedot'
+  | 'Väliaikaisen huomion lisääminen väyläkortille'
+  | 'Väylätiedot'
+  | 'Väylän navigoitavuus'
+  | 'Käyttösuositukset'
+  | 'Lisätiedot'
+  | 'Liikennepalvelut'
+  | 'Luotsintilaus'
+  | 'Squat-laskennan sijainnin lisääminen'
+  | 'Väyläkortin tuloste';
+
+export type MainSectionType = {
+  id: MainSectionTitle;
+  open: boolean;
+};
+
+export const FairwayCardMainSections: MainSectionType[] = [
+  { id: 'Julkaisutiedot', open: true },
+  { id: 'Väyläkortin perustiedot', open: true },
+  { id: 'Väliaikaisen huomion lisääminen väyläkortille', open: true },
+  { id: 'Väylätiedot', open: true },
+  { id: 'Väylän navigoitavuus', open: true },
+  { id: 'Käyttösuositukset', open: true },
+  { id: 'Lisätiedot', open: true },
+  { id: 'Liikennepalvelut', open: true },
+  { id: 'Luotsintilaus', open: true },
+  { id: 'Squat-laskennan sijainnin lisääminen', open: true },
+  { id: 'Väyläkortin tuloste', open: true },
+];
+
+export const HarborMainSections: MainSectionType[] = [
+  { id: 'Julkaisutiedot', open: true },
+  { id: 'Sataman perustiedot', open: true },
+  { id: 'Satamatiedot', open: true },
+];

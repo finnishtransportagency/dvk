@@ -4,10 +4,13 @@ import ChevronIcon from '../../theme/img/chevron.svg?react';
 import HelpIcon from '../../theme/img/help_icon.svg?react';
 import { useTranslation } from 'react-i18next';
 import NotificationModal from '../NotificationModal';
+import { MainSectionTitle, MainSectionType } from '../../utils/constants';
 
 interface WrapperComponentProps {
   title: string;
   children: React.ReactNode;
+  sectionsOpen: MainSectionType[];
+  toggleSection: (id: MainSectionTitle, open: boolean) => void;
   infoHeader?: string;
   infoI18nKey?: string;
   infoMessage?: string;
@@ -20,6 +23,8 @@ interface WrapperComponentProps {
 const WrapperComponent: React.FC<WrapperComponentProps> = ({
   title,
   children,
+  toggleSection,
+  sectionsOpen,
   infoHeader,
   infoI18nKey,
   infoMessage,
@@ -29,12 +34,11 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
   disabled,
 }) => {
   const { t } = useTranslation();
-
   // !disabled because if there's no content, no need to section be open
-  const [sectionOpen, setSectionOpen] = useState<boolean>(!disabled);
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
-  const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
+  const open = !disabled && sectionsOpen.find((s) => s.id === title)?.open;
+  const sectionClassName = 'sectionContent' + (open ? ' open' : ' closed');
 
   // pilot order header has style exception
   const isPilotOrder = title.includes('Luotsintilaus');
@@ -71,10 +75,10 @@ const WrapperComponent: React.FC<WrapperComponentProps> = ({
           data-testid={dataTestId}
           slot="end"
           fill="clear"
-          className={'icon-only small toggle' + (sectionOpen ? ' close' : ' open')}
-          onClick={() => setSectionOpen(!sectionOpen)}
-          title={sectionOpen ? t('general.close') : t('general.open')}
-          aria-label={sectionOpen ? t('general.close') : t('general.open')}
+          className={'icon-only small toggle' + (open ? ' close' : ' open')}
+          onClick={() => toggleSection(title as MainSectionTitle, !open)}
+          title={open ? t('general.close') : t('general.open')}
+          aria-label={open ? t('general.close') : t('general.open')}
           disabled={disabled}
         >
           <ChevronIcon />

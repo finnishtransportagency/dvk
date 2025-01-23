@@ -1,7 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, saveErrorTitle, ValidationType, ValueType, VERSION } from '../utils/constants';
+import {
+  ActionType,
+  ConfirmationType,
+  ErrorMessageKeys,
+  HarborMainSections,
+  Lang,
+  MainSectionTitle,
+  MainSectionType,
+  saveErrorTitle,
+  ValidationType,
+  ValueType,
+  VERSION,
+} from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
@@ -27,6 +39,7 @@ import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import WrapperComponent from './form/WrapperComponent';
+import ExpandableButtons from './ExpandableButtons';
 
 interface FormProps {
   harbour: HarborInput;
@@ -58,6 +71,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
   // if confirmation modal comes up because of unsaved changes when changing version, handleConfirmationSubmit gets the value from this
   const [versionToMoveTo, setVersionToMoveTo] = useState('');
+  const [sectionsOpen, setSectionsOpen] = useState<MainSectionType[]>(HarborMainSections);
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
@@ -326,6 +340,15 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const readonly = isReadOnly(state);
 
+  const toggleAllSections = (open: boolean) => {
+    setSectionsOpen(sectionsOpen.map((s) => ({ ...s, open })));
+  };
+
+  const toggleSection = (id: MainSectionTitle, open: boolean) => {
+    const opened = sectionsOpen.map((s) => (s.id === id ? { ...s, open: open } : s));
+    setSectionsOpen(opened);
+  };
+
   return (
     <IonPage>
       <PublishModal
@@ -395,13 +418,22 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
-              <WrapperComponent title={t('fairwaycard.publish-details')} dataTestId="toggleOpenPublishDetails" disabled={!state.publishDetails}>
+              <ExpandableButtons toggleAllSections={toggleAllSections} sectionsOpen={sectionsOpen} />
+
+              <WrapperComponent
+                title={t('fairwaycard.publish-details')}
+                dataTestId="toggleOpenPublishDetails"
+                toggleSection={toggleSection}
+                sectionsOpen={sectionsOpen}
+                disabled={!state.publishDetails}
+              >
                 <PublishDetailsSection state={state} />
               </WrapperComponent>
-              <WrapperComponent title={t('harbour.harbour-basic-info')}>
+
+              <WrapperComponent title={t('harbour.harbour-basic-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <MainSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               </WrapperComponent>
-              <WrapperComponent title={t('harbour.harbour-info')}>
+              <WrapperComponent title={t('harbour.harbour-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
                 <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
                 <Section
