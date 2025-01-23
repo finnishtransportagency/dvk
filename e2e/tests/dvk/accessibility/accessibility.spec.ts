@@ -43,7 +43,8 @@ test.describe('DVK Automated accessibility testing', () => {
       expect(accessibilityScanResults.violations).toEqual([]);
       await page.locator('#layerModalContent [data-testid="closeMenu"]').click(); // close menu
     });
-    
+
+    await expect(page.locator('#layerModalContent')).toBeHidden();
     await test.step('Check whole page', async() => {
       const accessibilityScanResults = await new AxeBuilder({ page })
         .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa'])
