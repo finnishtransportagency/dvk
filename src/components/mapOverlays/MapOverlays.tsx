@@ -193,7 +193,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
           <ForecastPopupContent
             forecast={popupProperties.forecast}
             setPopupProperties={setPopupProperties}
-            weatherLimits={findWeatherLimitById(asWeatherLimits(weatherLimits?.weatherLimits), popupProperties.forecast.properties.id)} //TODO: what is the id in the json files acctually?
+            weatherLimits={findWeatherLimitById(asWeatherLimits(weatherLimits?.weatherLimits), popupProperties.forecast.properties.id)}
           />
         )}
         {popupProperties?.buoy && <BuoyPopupContent buoy={popupProperties.buoy} setPopupProperties={setPopupProperties} />}
