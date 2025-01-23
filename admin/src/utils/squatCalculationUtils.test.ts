@@ -1,4 +1,9 @@
-import { filterOrphanedAreas, getOrphanedAreaIdsFromSquatCalculation, getOrphanedAreaIdsFromSquatSection } from './squatCalculationUtils';
+import {
+  filterOrphanedAreas,
+  getOrphanedAreaIdsFromSquatCalculation,
+  getOrphanedAreaIdsFromSquatSection,
+  getPossibleAreas,
+} from './squatCalculationUtils';
 import { Area, SquatCalculationInput } from '../graphql/generated';
 import { AreaSelectOption } from './constants';
 
@@ -92,4 +97,21 @@ test('should empty area area does not filter orphaned areas from input', () => {
   const output: SquatCalculationInput[] = filterOrphanedAreas(input, areas) ?? [];
   expect(output).toHaveLength(input.length);
   expect(output[0].suitableFairwayAreas).toEqual([1, 2, 3]);
+});
+
+test('should filter correct area options based on fairway ids', () => {
+  const areaOptions: AreaSelectOption[] = [
+    { id: 1, fairwayIds: [10] },
+    { id: 2, fairwayIds: [20] },
+    { id: 3, fairwayIds: [10, 20] },
+  ];
+  const output: AreaSelectOption[] = getPossibleAreas(areaOptions, [10]);
+  expect(output).toHaveLength(2);
+  expect(
+    output
+      .map((o) => o.id as number)
+      .sort((a, b) => {
+        return a - b;
+      })
+  ).toEqual([1, 3]);
 });

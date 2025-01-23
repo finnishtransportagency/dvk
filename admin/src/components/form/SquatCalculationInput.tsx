@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../graphql/generated';
 import { ActionType, AreaSelectOption, FairwayForm, Lang, SelectOption, ValidationType, ValueType } from '../../utils/constants';
 import { IonCol, IonGrid, IonNote, IonRow } from '@ionic/react';
@@ -9,7 +9,7 @@ import TextInput from './TextInput';
 import SelectInput from './SelectInput';
 import { sortAreaSelectOptions } from '../../utils/common';
 import NotificationModal from '../NotificationModal';
-import { getOrphanedAreaIdsFromSquatCalculation } from '../../utils/squatCalculationUtils';
+import { getPossibleAreas, getOrphanedAreaIdsFromSquatCalculation } from '../../utils/squatCalculationUtils';
 
 interface SquatCalculationInputProps {
   idx: number;
@@ -44,6 +44,12 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   isLoadingFairways,
   areasLoaded = false,
 }) => {
+  const [deleteWarningModalOpen, setDeleteWarningModalOpen] = useState<boolean>(false);
+  const { t } = useTranslation();
+  const [filteredAreaOptions, setFilteredAreaOptions] = useState<AreaSelectOption[]>([]);
+  const [sortedAreas, setSortedAreas] = useState<AreaSelectOption[]>([]);
+  const [sortedSelectedAreas, setSortedSelectedAreas] = useState<AreaSelectOption[]>([]);
+
   function updateStateAndDepth(
     value: ValueType,
     actionType: ActionType,
@@ -75,7 +81,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
       section.targetFairways.length > ids.length &&
       section.suitableFairwayAreas?.find(
         (a) =>
-          !getPossibleAreas(ids)
+          !getPossibleAreas(fairwayAreas, ids)
             .map((a) => a.id)
             .includes(a)
       )
@@ -86,42 +92,29 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
     updateState(value, actionType, actionLang, actionTarget, actionOuterTarget);
   }
 
-  function getPossibleAreas(fairwayIds: number[]) {
-    const filteredAreaOptions: AreaSelectOption[] = [];
-    fairwayIds.forEach((f) => {
-      fairwayAreas
-        ?.filter((item) => item.fairwayIds?.includes(f))
-        .forEach((o) => {
-          filteredAreaOptions.push(o);
-        });
-    });
+  useEffect(() => {
+    setFilteredAreaOptions(getPossibleAreas(fairwayAreas, section.targetFairways ?? []));
+  }, [fairwayAreas, section.targetFairways]);
 
-    //Filter out duplicates - done in seperate line to avoid 4 nested Sonar warning
-    return filteredAreaOptions.reduce(function (pre: AreaSelectOption[], cur: AreaSelectOption) {
-      if (!pre.find((a) => a.id === cur.id)) {
-        pre.push(cur);
-      }
-      return pre;
-    }, []);
-  }
+  useEffect(() => {
+    setSortedSelectedAreas(sortAreaSelectOptions(filteredAreaOptions.filter((a) => section.suitableFairwayAreas?.includes(a.id as number))));
+    const orphanedAreasInSquatCalculation = areasLoaded ? getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions) : undefined;
+    let sa = sortAreaSelectOptions(filteredAreaOptions);
+    if (orphanedAreasInSquatCalculation) {
+      sa = sa.concat(
+        orphanedAreasInSquatCalculation.map((a) => {
+          return { id: a, subtext: '-' } as AreaSelectOption;
+        })
+      );
+    }
+    setSortedAreas(sa);
+  }, [areasLoaded, section, filteredAreaOptions]);
 
-  const [deleteWarningModalOpen, setDeleteWarningModalOpen] = useState<boolean>(false);
-  const { t } = useTranslation();
-
-  const filteredAreaOptions = getPossibleAreas(section.targetFairways ?? []);
-  let sortedAreas = sortAreaSelectOptions(filteredAreaOptions);
-  const sortedSelectedAreas = sortAreaSelectOptions(filteredAreaOptions.filter((a) => section.suitableFairwayAreas?.includes(a.id as number)));
   const multipleDepths =
     sortedSelectedAreas &&
     sortedSelectedAreas.length > 1 &&
     sortedSelectedAreas[0].depth !== sortedSelectedAreas[sortedSelectedAreas.length - 1].depth;
   const orphanedAreasInSquatCalculation = areasLoaded ? getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions) : [];
-
-  sortedAreas = sortedAreas.concat(
-    orphanedAreasInSquatCalculation.map((a) => {
-      return { id: a, subtext: '-' } as AreaSelectOption;
-    })
-  );
 
   const areaErrorText = multipleDepths
     ? t('fairwaycard.squat-calculation-depth-warning')

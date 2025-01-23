@@ -16,6 +16,7 @@ export function getOrphanedAreaIdsFromSquatCalculation(squatSection: SquatCalcul
 
 export function filterOrphanedAreas(calcs: SquatCalculationInput[] | undefined, areas: AreaSelectOption[]) {
   if (!calcs) return undefined;
+  if (!areas || areas.length === 0) return calcs;
   const filteredCalcs: SquatCalculationInput[] = [...calcs];
   filteredCalcs.forEach((calc) => {
     const numAreas = calc.suitableFairwayAreas?.length;
@@ -26,4 +27,23 @@ export function filterOrphanedAreas(calcs: SquatCalculationInput[] | undefined, 
     }
   });
   return filteredCalcs;
+}
+
+export function getPossibleAreas(areas: AreaSelectOption[] | undefined, fairwayIds: number[]) {
+  const filteredAreaOptions: AreaSelectOption[] = [];
+  fairwayIds.forEach((f) => {
+    areas
+      ?.filter((item) => item.fairwayIds?.includes(f))
+      .forEach((o) => {
+        filteredAreaOptions.push(o);
+      });
+  });
+
+  //Filter out duplicates - done in seperate line to avoid 4 nested Sonar warning
+  return filteredAreaOptions.reduce(function (pre: AreaSelectOption[], cur: AreaSelectOption) {
+    if (!pre.find((a) => a.id === cur.id)) {
+      pre.push(cur);
+    }
+    return pre;
+  }, []);
 }

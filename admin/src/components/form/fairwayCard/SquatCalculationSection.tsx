@@ -51,7 +51,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
   const { t } = useTranslation();
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
-  const [orphanedAreaIdsInSquatSection, setOrphanedAreaIdsInSquatSection] = useState<number[]>([]);
+  const [orphanedAreaIdsInSquatSection, setOrphanedAreaIdsInSquatSection] = useState<number[]>();
 
   const showInfoModal = () => {
     setInfoModalOpen(true);
@@ -102,7 +102,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
           </IonButton>
         </h2>
       </IonText>
-      {orphanedAreaIdsInSquatSection.length > 0 && (
+      {orphanedAreaIdsInSquatSection && orphanedAreaIdsInSquatSection.length > 0 && (
         <IonGrid className={'squat info grid'}>
           <IonRow className="squat info row">
             <IonCol size="auto" className={'squat info icon'}>
