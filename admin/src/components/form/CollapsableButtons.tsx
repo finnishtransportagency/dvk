@@ -17,6 +17,7 @@ const CollapsableButtons: React.FC<CollapsableButtonsProps> = ({ toggleAllSectio
     <IonGrid className="ion-no-padding" style={{ margin: '0px 5px' }}>
       <IonRow className="ion-justify-content-end">
         <IonButton
+          data-testid="expandAllSections"
           fill="clear"
           className={'plainButton' + (expandDisabled ? ' disabled' : '')}
           onClick={() => toggleAllSections(true)}
@@ -24,7 +25,12 @@ const CollapsableButtons: React.FC<CollapsableButtonsProps> = ({ toggleAllSectio
         >
           {t('general.expand-sections')}
         </IonButton>
-        <IonButton fill="clear" className={'plainButton' + (collapseDisabled ? ' disabled' : '')} onClick={() => toggleAllSections(false)}>
+        <IonButton
+          data-testid="collapseAllSections"
+          fill="clear"
+          className={'plainButton' + (collapseDisabled ? ' disabled' : '')}
+          onClick={() => toggleAllSections(false)}
+        >
           {t('general.collapse-sections')}
         </IonButton>
       </IonRow>

@@ -899,6 +899,8 @@ ion-grid.formGrid ion-col:last-of-type {
 .mainContent .sectionContent.closed {
   max-height: 0;
   overflow: hidden;
+  /* This is mostly because of playwright tests, since max-height counts as visible when testing "expect().toBeHidden()"*/
+  display: none;
 }
 .mainContent .sectionContent p {
   margin: 10px 5px 0;
@@ -909,6 +911,8 @@ ion-grid.formGrid ion-col:last-of-type {
 .collapsableContent.closed {
   max-height: 0;
   overflow: hidden;
+  /* This is mostly because of playwright tests, since max-height counts as visible when testing "expect().toBeHidden()"*/
+  display: none;
 }
 
 /* Footer */

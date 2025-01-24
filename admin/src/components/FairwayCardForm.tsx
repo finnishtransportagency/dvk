@@ -557,6 +557,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 infoMessage={t('general.squat-calculation-description')}
                 sectionsOpen={sectionsOpen}
                 toggleSection={toggleSection}
+                dataTestId="toggleOpenSquatCalculations"
               >
                 <SquatCalculationSection
                   sections={state.squatCalculations as SquatCalculationInput[]}
