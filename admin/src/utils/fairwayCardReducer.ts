@@ -3,7 +3,7 @@ import { FairwayCardInput, Operation } from '../graphql/generated';
 import { ActionType, ErrorMessageKeys, Lang, ValidationType, ValueType } from './constants';
 import { dateError, endDateError } from './common';
 import { squatCalculationReducer } from './fairwayCardReducers/squatCalculationReducer';
-import { fairwayCardSquatCalculationValidator } from './fairwayCardReducers/squatCalculationValidator';
+import { squatCalculationValidator } from './fairwayCardReducers/squatCalculationValidator';
 import { tugReducer } from './fairwayCardReducers/tugReducer';
 import { vhfReducer } from './fairwayCardReducers/vhfReducer';
 import { vtsReducer } from './fairwayCardReducers/vtsReducer';
@@ -157,7 +157,7 @@ export const fairwayCardReducer = (
     case 'squatTargetFairwayIds':
     case 'squatSuitableFairwayAreaIds':
       newState = squatCalculationReducer(state, value, actionType, actionLang, actionTarget);
-      fairwayCardSquatCalculationValidator(newState, actionType, validationErrors, setValidationErrors, actionTarget);
+      squatCalculationValidator(newState, actionType, validationErrors, setValidationErrors, actionTarget);
       break;
     default:
       console.warn(`Unknown action type, state not updated.`);

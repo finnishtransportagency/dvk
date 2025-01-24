@@ -1,8 +1,9 @@
 import { fairwayCardReducer } from '../fairwayCardReducer';
 import { ValidationType } from '../constants';
-import { testState } from '../fairwayCardReducer.test';
+import { getTestState } from '../fairwayCardReducer.test';
 
 test('if vts name updates correctly', () => {
+  const testState = getTestState();
   let newState = fairwayCardReducer(testState, 'modvts1fi', 'vtsName', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, '', []);
   expect(newState.trafficService?.vts ? newState.trafficService?.vts[0]?.name.fi : '').toBe('modvts1fi');
   newState = fairwayCardReducer(testState, 'modvts1sv', 'vtsName', [], (validationErrors: ValidationType[]) => {}, 'sv', 0, '', []);
@@ -12,16 +13,19 @@ test('if vts name updates correctly', () => {
 });
 
 test('if email updates correctly', () => {
+  const testState = getTestState();
   const newState = fairwayCardReducer(testState, 'modvts1@gmail.com', 'vtsEmail', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, '', []);
   expect(newState.trafficService?.vts ? newState.trafficService?.vts[0]?.email : '').toEqual(['modvts1@gmail.com']);
 });
 
 test('if phone number updates correctly', () => {
+  const testState = getTestState();
   const newState = fairwayCardReducer(testState, '0334567890', 'vtsPhone', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, '', []);
   expect(newState.trafficService?.vts ? newState.trafficService?.vts[0]?.phoneNumber : '').toEqual('0334567890');
 });
 
 test('if vts list updates correctly', () => {
+  const testState = getTestState();
   let newState = fairwayCardReducer(testState, 'y', 'vts', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, '', []);
   expect(newState.trafficService?.vts?.length).toBe(2);
 

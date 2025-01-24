@@ -1,8 +1,9 @@
 import { fairwayCardReducer } from '../fairwayCardReducer';
 import { ValidationType } from '../constants';
-import { testState } from '../fairwayCardReducer.test';
+import { getTestState } from '../fairwayCardReducer.test';
 
 test('if temporary notification content updates correctly', () => {
+  const testState = getTestState();
   let newState = fairwayCardReducer(
     testState,
     'modnote1fi',
@@ -42,6 +43,7 @@ test('if temporary notification content updates correctly', () => {
 });
 
 test('if temporary notification start date updates correctly', () => {
+  const testState = getTestState();
   const newState = fairwayCardReducer(
     testState,
     '02022002',
@@ -57,6 +59,7 @@ test('if temporary notification start date updates correctly', () => {
 });
 
 test('if temporary notification start date updates correctly', () => {
+  const testState = getTestState();
   const newState = fairwayCardReducer(
     testState,
     '11112011',
@@ -72,6 +75,7 @@ test('if temporary notification start date updates correctly', () => {
 });
 
 test('if temporaryNotifications list updates correctly', () => {
+  const testState = getTestState();
   let newState = fairwayCardReducer(testState, 'y', 'temporaryNotifications', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, '', []);
   expect(newState.temporaryNotifications?.length).toBe(2);
 

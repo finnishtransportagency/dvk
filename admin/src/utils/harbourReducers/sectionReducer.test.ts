@@ -1,8 +1,9 @@
 import { ValidationType } from '../constants';
 import { harbourReducer } from '../harbourReducer';
-import { testState } from '../harbourReducer.test';
+import { getTestState } from '../harbourReducer.test';
 
 test('if section name updates correctly', () => {
+  const testState = getTestState();
   let newState = harbourReducer(testState, 'modsection1', 'sectionName', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, 0, []);
   if (!newState.quays) {
     fail();
@@ -14,6 +15,7 @@ test('if section name updates correctly', () => {
 });
 
 test('if section depth updates correctly', () => {
+  const testState = getTestState();
   let newState = harbourReducer(testState, '101', 'sectionDepth', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, 0, []);
   if (!newState.quays) {
     fail();
@@ -25,6 +27,7 @@ test('if section depth updates correctly', () => {
 });
 
 test('if section latitude updates correctly', () => {
+  const testState = getTestState();
   let newState = harbourReducer(testState, '21.2', 'sectionLat', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, 0, []);
   if (!newState.quays) {
     fail();
@@ -37,6 +40,7 @@ test('if section latitude updates correctly', () => {
 });
 
 test('if section longitude updates correctly', () => {
+  const testState = getTestState();
   let newState = harbourReducer(testState, '59.2', 'sectionLon', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, 0, []);
   if (!newState.quays) {
     fail();
@@ -49,6 +53,7 @@ test('if section longitude updates correctly', () => {
 });
 
 test('if section list updates correctly', () => {
+  const testState = getTestState();
   let newState = harbourReducer(testState, 'y', 'section', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, 0, []);
   if (newState.quays) {
     expect(newState.quays[0]?.sections?.length).toBe(2);

@@ -1,9 +1,10 @@
 import { fairwayCardReducer } from '../fairwayCardReducer';
 import { ValidationType } from '../constants';
-import { testState } from '../fairwayCardReducer.test';
+import { getTestState } from '../fairwayCardReducer.test';
 import { Orientation, PictureInput } from '../../graphql/generated';
 
 test('if pic updates correctly', () => {
+  const testState = getTestState();
   const newPic = [
     {
       groupId: 2,
@@ -24,10 +25,12 @@ test('if pic updates correctly', () => {
 });
 
 test('if pic text updates correctly', () => {
+  const testState = getTestState();
   const newState = fairwayCardReducer(testState, 'modtext', 'pictureDescription', [], (validationErrors: ValidationType[]) => {}, 'fi', 1, '', []);
   expect(newState.pictures ? newState.pictures[0].text : '').toBe('modtext');
 });
 test('if pic legend position updates correctly', () => {
+  const testState = getTestState();
   const newState = fairwayCardReducer(testState, 'ne', 'pictureLegendPosition', [], (validationErrors: ValidationType[]) => {}, 'fi', 1, '', []);
   expect(newState.pictures ? newState.pictures[0].legendPosition : '').toBe('ne');
 });

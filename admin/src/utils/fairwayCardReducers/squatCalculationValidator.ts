@@ -2,7 +2,7 @@ import { t } from 'i18next';
 import { FairwayCardInput, SquatCalculationInput, TextInput } from '../../graphql/generated';
 import { ActionType, ErrorMessageKeys, ValidationType } from '../constants';
 
-export const fairwayCardSquatCalculationValidator = (
+export const squatCalculationValidator = (
   newState: FairwayCardInput,
   actionType: ActionType,
   validationErrors: ValidationType[],

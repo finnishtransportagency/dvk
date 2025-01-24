@@ -1,9 +1,10 @@
 import { fairwayCardReducer } from '../fairwayCardReducer';
 import { ValidationType } from '../constants';
-import { testState } from '../fairwayCardReducer.test';
+import { getTestState } from '../fairwayCardReducer.test';
 import { PilotPlaceInput } from '../../graphql/generated';
 
 test('if pilot email updates correctly', () => {
+  const testState = getTestState();
   const newState = fairwayCardReducer(
     testState,
     'modpilots@gmail.com',
@@ -19,15 +20,18 @@ test('if pilot email updates correctly', () => {
 });
 
 test('if pilot phone updates correctly', () => {
+  const testState = getTestState();
   const newState = fairwayCardReducer(testState, '050987654', 'pilotPhone', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, '', []);
   expect(newState.trafficService?.pilot?.phoneNumber).toEqual('050987654');
 });
 test('if pilot fax updates correctly', () => {
+  const testState = getTestState();
   const newState = fairwayCardReducer(testState, '050999999', 'pilotFax', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, '', []);
   expect(newState.trafficService?.pilot?.fax).toEqual('050999999');
 });
 
 test('if pilot extra info updates correctly', () => {
+  const testState = getTestState();
   let newState = fairwayCardReducer(testState, 'modextrainfofi', 'pilotExtraInfo', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, '', []);
   expect(newState.trafficService?.pilot?.extraInfo?.fi).toBe('modextrainfofi');
   newState = fairwayCardReducer(testState, 'modextrainfosv', 'pilotExtraInfo', [], (validationErrors: ValidationType[]) => {}, 'sv', 0, '', []);
@@ -37,6 +41,7 @@ test('if pilot extra info updates correctly', () => {
 });
 
 test('if pilot places update correctly', () => {
+  const testState = getTestState();
   const newPilotPlace = [
     { id: 1, pilotJourney: '9' },
     { id: 2, pilotJourney: '10' },
