@@ -4,12 +4,12 @@ import ChevronIcon from '../../theme/img/chevron.svg?react';
 import HelpIcon from '../../theme/img/help_icon.svg?react';
 import { useTranslation } from 'react-i18next';
 import NotificationModal from '../NotificationModal';
-import { MainSectionTitle, MainSectionType } from '../../utils/constants';
+import { MainSectionTitle, MainSectionOpenType } from '../../utils/constants';
 
 interface CollapsableWrapperProps {
   title: string;
   children: React.ReactNode;
-  sectionsOpen: MainSectionType[];
+  sectionsOpen: MainSectionOpenType[];
   toggleSection: (id: MainSectionTitle, open: boolean) => void;
   infoHeader?: string;
   infoI18nKey?: string;

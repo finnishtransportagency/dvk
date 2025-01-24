@@ -8,8 +8,8 @@ import {
   ErrorMessageKeys,
   FairwayCardMainSections,
   Lang,
+  MainSectionOpenType,
   MainSectionTitle,
-  MainSectionType,
   saveErrorTitle,
   ValidationType,
   ValueType,
@@ -90,7 +90,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
   // if confirmation modal comes up because of unsaved changing version, handleConfirmationSubmit gets the value from this
   const [versionToMoveTo, setVersionToMoveTo] = useState('');
-  const [sectionsOpen, setSectionsOpen] = useState<MainSectionType[]>(FairwayCardMainSections);
+  const [sectionsOpen, setSectionsOpen] = useState<MainSectionOpenType[]>(FairwayCardMainSections);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();

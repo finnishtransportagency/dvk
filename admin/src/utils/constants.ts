@@ -398,12 +398,12 @@ export type MainSectionTitle =
   | 'Squat-laskennan sijainnin lisääminen'
   | 'Väyläkortin tuloste';
 
-export type MainSectionType = {
+export type MainSectionOpenType = {
   id: MainSectionTitle;
   open: boolean;
 };
 
-export const FairwayCardMainSections: MainSectionType[] = [
+export const FairwayCardMainSections: MainSectionOpenType[] = [
   { id: 'Julkaisutiedot', open: true },
   { id: 'Väyläkortin perustiedot', open: true },
   { id: 'Väliaikaisen huomion lisääminen väyläkortille', open: true },
@@ -417,7 +417,7 @@ export const FairwayCardMainSections: MainSectionType[] = [
   { id: 'Väyläkortin tuloste', open: true },
 ];
 
-export const HarborMainSections: MainSectionType[] = [
+export const HarborMainSections: MainSectionOpenType[] = [
   { id: 'Julkaisutiedot', open: true },
   { id: 'Sataman perustiedot', open: true },
   { id: 'Satamatiedot', open: true },

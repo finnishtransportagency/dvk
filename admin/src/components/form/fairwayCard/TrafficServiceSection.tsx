@@ -1,6 +1,6 @@
 import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import { ActionType, Lang, MainSectionTitle, MainSectionType, SelectOption, ValidationType, ValueType } from '../../../utils/constants';
+import { ActionType, Lang, MainSectionTitle, MainSectionOpenType, SelectOption, ValidationType, ValueType } from '../../../utils/constants';
 import { FairwayCardInput, PilotPlace, PilotPlaceInput, Status } from '../../../graphql/generated';
 import TextInputRow from '../TextInputRow';
 import { useTranslation } from 'react-i18next';
@@ -19,7 +19,7 @@ interface TrafficServiceSectionProps {
   ) => void;
   validationErrors: ValidationType[];
   isLoadingPilotPlaces: boolean;
-  sectionsOpen: MainSectionType[];
+  sectionsOpen: MainSectionOpenType[];
   toggleSection: (id: MainSectionTitle, open: boolean) => void;
   pilotPlaceOptions?: SelectOption[];
   readonly?: boolean;

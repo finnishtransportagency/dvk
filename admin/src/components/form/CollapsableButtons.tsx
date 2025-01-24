@@ -1,11 +1,11 @@
 import { IonButton, IonGrid, IonRow } from '@ionic/react';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { MainSectionType } from '../utils/constants';
+import { MainSectionOpenType } from '../../utils/constants';
 
 interface CollapsableButtonsProps {
   toggleAllSections: (open: boolean) => void;
-  sectionsOpen: MainSectionType[];
+  sectionsOpen: MainSectionOpenType[];
 }
 const CollapsableButtons: React.FC<CollapsableButtonsProps> = ({ toggleAllSections, sectionsOpen }) => {
   const { t } = useTranslation();
