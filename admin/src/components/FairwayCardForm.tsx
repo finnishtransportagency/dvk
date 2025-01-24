@@ -59,7 +59,7 @@ import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import SquatCalculationSection from './form/fairwayCard/SquatCalculationSection';
 import CollapsableWrapper from './form/CollapsableWrapper';
-import CollapsableButtons from './CollapsableButtons';
+import CollapsableButtons from './form/CollapsableButtons';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
