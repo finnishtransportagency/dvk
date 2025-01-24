@@ -4,7 +4,7 @@ import { getTestState } from '../fairwayCardReducer.test';
 
 test('if vhf name updates correctly', () => {
   const testState = getTestState();
-  let newState = fairwayCardReducer(testState, 'modvhf1fi', 'vhfName', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, 0, []);
+  let newState = fairwayCardReducer(testState, 'modvhf1fi', 'vhfName', [], () => {}, 'fi', 0, 0, []);
   if (!newState.trafficService?.vts) {
     fail();
   } else if (!newState.trafficService?.vts[0]?.vhf) {
@@ -13,7 +13,7 @@ test('if vhf name updates correctly', () => {
     expect(newState.trafficService?.vts[0]?.vhf[0]?.name?.fi).toBe('modvhf1fi');
   }
 
-  newState = fairwayCardReducer(testState, 'modvhf1sv', 'vhfName', [], (validationErrors: ValidationType[]) => {}, 'sv', 0, 0, []);
+  newState = fairwayCardReducer(testState, 'modvhf1sv', 'vhfName', [], () => {}, 'sv', 0, 0, []);
   if (!newState.trafficService?.vts) {
     fail();
   } else if (!newState.trafficService?.vts[0]?.vhf) {
@@ -22,7 +22,7 @@ test('if vhf name updates correctly', () => {
     expect(newState.trafficService?.vts[0]?.vhf[0]?.name?.sv).toBe('modvhf1sv');
   }
 
-  newState = fairwayCardReducer(testState, 'modvhf1en', 'vhfName', [], (validationErrors: ValidationType[]) => {}, 'en', 0, 0, []);
+  newState = fairwayCardReducer(testState, 'modvhf1en', 'vhfName', [], () => {}, 'en', 0, 0, []);
   if (!newState.trafficService?.vts) {
     fail();
   } else if (!newState.trafficService?.vts[0]?.vhf) {
@@ -34,7 +34,7 @@ test('if vhf name updates correctly', () => {
 
 test('if vhf channel correctly', () => {
   const testState = getTestState();
-  const newState = fairwayCardReducer(testState, 'modchannel1', 'vhfChannel', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, 0, []);
+  const newState = fairwayCardReducer(testState, 'modchannel1', 'vhfChannel', [], () => {}, 'fi', 0, 0, []);
   if (!newState.trafficService?.vts) {
     fail();
   } else if (!newState.trafficService?.vts[0]?.vhf) {
@@ -46,14 +46,14 @@ test('if vhf channel correctly', () => {
 
 test('if vhf list updates correctly', () => {
   const testState = getTestState();
-  let newState = fairwayCardReducer(testState, 'y', 'vhf', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, 0, []);
+  let newState = fairwayCardReducer(testState, 'y', 'vhf', [], () => {}, 'fi', 0, 0, []);
   if (newState.trafficService?.vts) {
     expect(newState.trafficService?.vts[0]?.vhf?.length).toBe(2);
   } else {
     fail();
   }
 
-  newState = fairwayCardReducer(testState, '', 'vhf', [], (validationErrors: ValidationType[]) => {}, 'fi', 0, 0, []);
+  newState = fairwayCardReducer(testState, '', 'vhf', [], () => {}, 'fi', 0, 0, []);
   if (newState.trafficService?.vts) {
     expect(newState.trafficService?.vts[0]?.vhf?.length).toBe(0);
   } else {
