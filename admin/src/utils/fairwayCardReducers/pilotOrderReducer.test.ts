@@ -1,5 +1,4 @@
 import { fairwayCardReducer } from '../fairwayCardReducer';
-import { ValidationType } from '../constants';
 import { getTestState } from '../fairwayCardReducer.test';
 import { PilotPlaceInput } from '../../graphql/generated';
 

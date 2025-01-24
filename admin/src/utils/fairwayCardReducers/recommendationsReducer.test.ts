@@ -1,5 +1,4 @@
 import { fairwayCardReducer } from '../fairwayCardReducer';
-import { ValidationType } from '../constants';
 import { getTestState } from '../fairwayCardReducer.test';
 
 test('if wind recommendation updates correctly', () => {

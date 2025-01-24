@@ -1,4 +1,3 @@
-import { ValidationType } from '../constants';
 import { harbourReducer } from '../harbourReducer';
 import { getTestState } from '../harbourReducer.test';
 
@@ -33,8 +32,7 @@ test('if quay extra info updates correctly', () => {
 
 test('if quay length updates correctly', () => {
   const testState = getTestState();
-  let newState = harbourReducer(testState, '11', 'quayLength', [], () => {}, 'fi', 0, '', []);
-  console.log(newState);
+  const newState = harbourReducer(testState, '11', 'quayLength', [], () => {}, 'fi', 0, '', []);
   expect(newState.quays ? newState.quays[0]?.length : '').toEqual('11');
 });
 

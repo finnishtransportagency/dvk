@@ -1,5 +1,4 @@
 import { Status } from '../../graphql/generated';
-import { ValidationType } from '../constants';
 import { harbourReducer } from '../harbourReducer';
 import { getTestState } from '../harbourReducer.test';
 
