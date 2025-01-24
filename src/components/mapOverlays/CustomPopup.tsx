@@ -27,7 +27,7 @@ const CustomPopup: React.FC<CustomPopupProps> = ({ isOpen, closePopup, icon, chi
       <IonGrid className="ion-no-margin ion-no-padding">
         <IonRow>
           <IonCol size="auto" className="ion-align-self-center">
-            <IonIcon className="infoIcon" icon={icon} />
+            <IonIcon className="infoIcon" icon={icon} aria-hidden="true" />
           </IonCol>
           {children}
           <IonCol size="auto">
@@ -38,7 +38,7 @@ const CustomPopup: React.FC<CustomPopupProps> = ({ isOpen, closePopup, icon, chi
               title={t('common.close-dialog')}
               aria-label={t('common.close-dialog')}
             >
-              <IonIcon className="otherIconLarge" src={closeIcon} />
+              <IonIcon className="otherIconLarge" src={closeIcon} aria-hidden="true" />
             </IonButton>
           </IonCol>
         </IonRow>

@@ -10,7 +10,7 @@
     "fi": "Yli 7 m syväyksessä kulkeville aluksille on väylällä nopeusrajoitus 8 kn (15 km/h). Aluksen ohjailun vaatiessa suurempaa nopeutta tulee sen käyttää 12 m väylää. Mitoitusalusta suuremman aluksen tulee käyttää 12 m väylää.",
     "sv": "Fartyg med djupgående på över 7 m har fartbegränsningen 8 knop (15 km/h). Om det krävs högre hastighet för att manövrera fartyget skall 12 m-farleden användas. Fartyg som är större än det dimensionerande fartyget skall också använda 12 m-farleden."
   },
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "visibility": null,
   "group": "1",
   "modifier": "System",

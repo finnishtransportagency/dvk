@@ -1,6 +1,6 @@
 {
   "phoneNumber": [
-    "+35816258100"
+    "+358 40 356 3410"
   ],
   "version": "v0_latest",
   "creator": "System",
@@ -13,7 +13,7 @@
     "sv": "Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj."
   },
   "modifier": "System",
-  "email": null,
+  "email": "satamavalvojat@keminsatama.fi",
   "name": {
     "en": "Port of Kemi",
     "fi": "Kemin satama",
@@ -24,7 +24,7 @@
     "fi": "Öljylaituri: Autonosturi 6-100 t. Laiturit I-IV: Autonosturi 6-100 t, peräporttipaikka.",
     "sv": "Oljekajen: Mobilkranar  6-100 t. Kajerna I-IV: Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg."
   },
-  "modificationTimestamp": 1728631164705,
+  "modificationTimestamp": 1729667448215,
   "company": {
     "en": "Kemi Port Ltd",
     "fi": "Kemin Satama Oy",
@@ -204,7 +204,7 @@
     }
   ],
   "extraInfo": null,
-  "latest": 1,
+  "latest": 2,
   "creationTimestamp": 1687236433749,
   "id": "kesat12",
   "fax": null,

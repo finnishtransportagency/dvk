@@ -25,8 +25,7 @@
     "sv": "Porkala-Helsingfors"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095539096,
+  "creationTimestamp": 1732532913266,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The section between the pilot boarding position in the Inkoo channel and the island Träskön Storlandet is unsheltered against SW-S-SE winds and rough seas. The section between Träskön Storlandet and Äspskär is sheltered by islands. The last section from Äspskär to the area N of Isosaari is dotted by a few islands only and periodically fairly open to southerly winds.",
@@ -35,7 +34,7 @@
   },
   "generalInfo": null,
   "id": "porkkala",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": false,
   "lineText": {
     "en": "The fairway is marked by boards.",
@@ -49,8 +48,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 4455,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": {
@@ -58,8 +59,15 @@
     "fi": "Koiraluodon ja Harmajan välillä nopeusrajoitus kaikille kauppa-aluksille 30 km/h.",
     "sv": "Fartbegränsningar 30 km/h för alla handelsfartyg mellan Koiraluoto och Gråhara."
   },
-  "modificationTimestamp": 1718775966383,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732532913266,
+  "pilotRoutes": [
+    {
+      "id": 41
+    },
+    {
+      "id": 49
+    }
+  ],
   "iceCondition": {
     "en": "Southerly winds may cause ridging in the fairway.",
     "fi": "Väylällä voi etelänpuoleisilla tuulilla esiintyä ajoittain jääahtaumia.",

@@ -1,0 +1,129 @@
+{
+  "anchorage": null,
+  "expires": null,
+  "vesselRecommendation": null,
+  "status": "ARCHIVED",
+  "visibility": null,
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 134251
+    }
+  ],
+  "name": {
+    "en": "Kristiinankaupunki - Björnö fairway",
+    "fi": "Kristiinankaupunki  - Karhusaari väylä",
+    "sv": "Kristinedstad - Björnö farled"
+  },
+  "attention": null,
+  "creationTimestamp": 1735629684754,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The channel is unsheltered as far as the roadstead. Especially S-W-N winds may create heavy seas.",
+    "fi": "Väylä kulkee avoimella merialueella ja on suojaton sataman edustalle saakka, varsikin kovilla E-L-P tuulilla merenkäynti voi olla voimakasta.",
+    "sv": "Farleden går i öppen sjö och är oskyddad ända fram till hamnens vågbrytare. I synnerhet vid hård S-V-N vind kan sjögången vara kraftig."
+  },
+  "generalInfo": null,
+  "id": "kristiinank15",
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "Two lines marked with boards.",
+    "fi": "Väylä-linjoja on kaksi, jotka on merkitty linjatauluin.",
+    "sv": "Två linjer utmärkta med enstavlor."
+  },
+  "publishDetails": "Väyläkortille liitetty Karhusaaren satama N2000 tiedoilla",
+  "version": "v3",
+  "harbors": [
+    {
+      "id": "karhusaarisat15"
+    }
+  ],
+  "windRecommendation": {
+    "en": "Ship-specific recommendations; wind speeds exceeding 10 m/s make navigation more difficult.",
+    "fi": "Aluskohtainen, yli 10 m/s tuulen nopeudet voivat vaikeuttaa navigointia.",
+    "sv": "Rekommendationerna är fartygsspecifika, vindhastigheter som överstiger 10 m/s kan försvåra navigeringen."
+  },
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "primarySequenceNumber": 1,
+      "id": 1040,
+      "primary": true,
+      "secondarySequenceNumber": 1
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1735629684754,
+  "pilotRoutes": [
+    {
+      "id": 108
+    },
+    {
+      "id": 109
+    }
+  ],
+  "iceCondition": {
+    "en": "In winter ice fields are in motion in the channel as far as the breakwater. Ice movement may cause buoys and spar buoys to be pressed under ice (surface). In cold winters the fast ice edge extends far out to sea.",
+    "fi": "Talvella jääkentät liikkuvat sataman aallonmurtajan edustalle asti. Jäiden liikkuessa poijut ja viitat saattavat olla jään alla. Kylminä talvina kiintojään alue ulottuu kauas avomerelle.",
+    "sv": "På vintern är isfälten i rörelse ytter om hamnens vågbrytare. Bojarna och prickarna kan då vara tryckta under isen. Under kalla vintrar sträcker sig den fasta isen långt ut till havs."
+  },
+  "fairwayIds": "#1040#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "West Coast VTS",
+          "fi": "West Coast VTS",
+          "sv": "West Coast VTS"
+        },
+        "phoneNumber": "+358204486645",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 9
+          }
+        ],
+        "email": [
+          "westcoast.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 23693523900,
+          "pilotJourney": 7.3
+        }
+      ],
+      "phoneNumber": "+358295253450",
+      "fax": null,
+      "email": "pilotdispatch.westcoast@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. Pilot boarding position to be agreed upon in winter and in adverse weather conditions.",
+        "fi": "Huom. talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Anm. Vintertid och i dåligt väder bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Privately operated tugboats, commissioned by the ship's agent.",
+          "fi": "Yksityiset hinaajat, tilataan meklarin toimesta.",
+          "sv": "Privata bogserare, beställs av mäklaren."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed 14,5 knots.",
+    "fi": "Mitoitusnopeus 14,5 solmua.",
+    "sv": "Dimensionerande fart 14,5 knop."
+  }
+}

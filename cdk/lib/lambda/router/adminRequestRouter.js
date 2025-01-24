@@ -1,5 +1,6 @@
 function handler(event) {
-  const request = event.request;
+  //NB : Use var here as cloudfront supports only 5.1
+  var request = event.request;
   if (!request || !request.uri) {
     return {
       statusCode: 404,

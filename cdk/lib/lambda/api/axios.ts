@@ -9,11 +9,10 @@ import {
   getTimeout,
   getVatuParameters,
   getVatuPilotRoutesParameters,
-  getVatuV2ApiSupport,
 } from '../environment';
 import { log } from '../logger';
 import { FeatureCollection } from 'geojson';
-import { convertToGeoJson, roundGeometry } from '../util';
+import { roundGeometry } from '../util';
 import { VaylaGeojsonFeature, RtzData, VesselAPIModel, VesselLocationFeatureCollection, VaylaFeature } from './apiModels';
 
 export enum ExternalAPI {
@@ -45,7 +44,13 @@ export async function fetchTraficomApi<T>(path: string) {
         log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch timeout: message=%s`, path, error.message);
       } else {
         const errorObj = error.toJSON();
-        log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+        log.fatal(
+          `${ExternalAPI.TRAFICOM} api %s fetch failed: status=%d code=%s message=%s`,
+          path,
+          errorObj.status,
+          errorObj.code,
+          errorObj.message
+        );
       }
       throw new Error(getFetchErrorMessage(ExternalAPI.TRAFICOM));
     });
@@ -103,20 +108,10 @@ export async function fetchAISFeatureCollection(path: string, params: Record<str
     : ({ type: 'FeatureCollection', features: [] } as VesselLocationFeatureCollection);
 }
 
-async function getVatuAPIVersion(api: string): Promise<string> {
-  //During transition phase between V1 and V2, separate different environments support for API
-  return (await getVatuV2ApiSupport())
-    .split(';')
-    .map((s) => s.trim().toLowerCase())
-    .includes(api)
-    ? '-v2'
-    : '';
-}
-
 export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeature>(api: string, params: Record<string, string> = {}) {
   const { vatuUrl, vatuHeaders } = await getVatuParameters();
 
-  const url = `${vatuUrl}${await getVatuAPIVersion(api)}/${api}`;
+  const url = `${vatuUrl}/${api}`;
   log.debug({ api, url }, `VATU api: ${api}, url=${url}`);
 
   const start = Date.now();
@@ -138,11 +133,6 @@ export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeatur
       throw new Error(getFetchErrorMessage(ExternalAPI.VATU));
     });
   log.debug(`/${api} response time: ${Date.now() - start} ms`);
-
-  if (!('features' in response.data)) {
-    //Convert the data to GeoJson
-    response.data = convertToGeoJson(response.data);
-  }
 
   for (const obj of response.data.features as T[]) {
     if ('geometry' in obj) {

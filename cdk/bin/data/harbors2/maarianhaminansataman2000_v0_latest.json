@@ -7,7 +7,7 @@
   "creator": "System",
   "expires": null,
   "internet": null,
-  "status": "DRAFT",
+  "status": "PUBLIC",
   "harborBasin": {
     "en": "Maximum draught -9,2 m, maximum vessel length approx. 270 m depending on navigability.",
     "fi": "Maksimi syväys -9,2 m, maksimi aluspituus n. 270 m riippuen navigoitavuudesta.",
@@ -25,7 +25,7 @@
     "fi": "Laiturit 1-2, ainoastaan matkustajalaivoille. Laiturit 3-6, ainoastaan ro-ro aluksille. Öljyterminaali sijaitsee pohjoisempana lahdessa. Nostureita yksityisillä yrittäjillä.",
     "sv": "Kaj 1-2 endast passagerartrafik över landgång, kaj 3-6 endast ro-ro. En oljeterminal längre norrut i viken. Privatägda krana."
   },
-  "modificationTimestamp": 1724311436772,
+  "modificationTimestamp": 1735800631154,
   "company": {
     "en": "Port of Mariehamn",
     "fi": "Maarianhaminan satama ",
@@ -181,7 +181,7 @@
         {
           "name": null,
           "geometry": null,
-          "depth": 5.9
+          "depth": 5.4
         }
       ],
       "extraInfo": null
@@ -199,5 +199,6 @@
       19.92891,
       60.09182
     ]
-  }
+  },
+  "publishDetails": "N2000 jukaisu"
 }

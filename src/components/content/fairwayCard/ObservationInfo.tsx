@@ -114,9 +114,9 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                         {o.windSpeedAvg && o.windDirection && !isOffline ? (
                           <>
                             {Math.round(o.windSpeedAvg)}&nbsp;
-                            <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(o.windSpeedAvg || 0) })}>m/s</dd>,&nbsp;
+                            <span aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(o.windSpeedAvg || 0) })}>m/s</span>,&nbsp;
                             {Math.round(o.windDirection)}{' '}
-                            <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(o.windDirection || 0) })}>°</dd>
+                            <span aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(o.windDirection || 0) })}>°</span>
                           </>
                         ) : (
                           <>
@@ -139,7 +139,7 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                         {o.windSpeedMax && !isOffline ? (
                           <>
                             {Math.round(o.windSpeedMax)}&nbsp;
-                            <dd aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(o.windSpeedMax || 0) })}>m/s</dd>
+                            <span aria-label={t('fairwayCards.unit.msDesc', { count: Math.round(o.windSpeedMax || 0) })}>m/s</span>
                           </>
                         ) : (
                           <>
@@ -162,7 +162,7 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                         {o.temperature && !isOffline ? (
                           <>
                             {Math.round(o.temperature)}&nbsp;
-                            <dd aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(o.temperature || 0) }) + ' (Celsius)'}>°C</dd>
+                            <span aria-label={t('fairwayCards.unit.degDesc', { count: Math.round(o.temperature || 0) }) + ' (Celsius)'}>°C</span>
                           </>
                         ) : (
                           <>
@@ -185,7 +185,7 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                         {o.visibility && !isOffline ? (
                           <>
                             {Math.round((o.visibility ?? 0) / 1000)}&nbsp;
-                            <dd aria-label={t('fairwayCards.unit.kmDesc', { count: Math.round((o.visibility || 0) / 1000) })}>km</dd>
+                            <span aria-label={t('fairwayCards.unit.kmDesc', { count: Math.round((o.visibility || 0) / 1000) })}>km</span>
                           </>
                         ) : (
                           <>

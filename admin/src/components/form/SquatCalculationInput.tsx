@@ -299,14 +299,9 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
           labelKey="fairwaycard.calculation-additional-information"
           value={section.additionalInformation}
           actionType="squatCalculationAdditionalInformation"
+          required={!!section.additionalInformation?.fi || !!section.additionalInformation?.sv || !!section.additionalInformation?.en}
           updateState={updateState}
           actionTarget={idx}
-          required
-          error={
-            !section.additionalInformation?.fi || !section.additionalInformation?.sv || !section.additionalInformation?.en
-              ? validationErrors?.find((error) => error.id === 'squatCalculationAdditionalInformation-' + idx)?.msg
-              : undefined
-          }
           readonly={readonly}
           disabled={!readonly && disabled}
           helperText={t('fairwaycard.squat-calculation-additional-information-help-text')}

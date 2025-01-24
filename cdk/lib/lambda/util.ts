@@ -39,19 +39,6 @@ function transformArray3(coordinates: Position[][][], power: number) {
   }
 }
 
-export function convertToGeoJson(source: any): any {
-  const features: any[] = [];
-  for (let obj of source) {
-    if ('geometria' in obj) {
-      const { geometria, ...rem } = obj;
-      features.push({ type: 'Feature', properties: rem, geometry: geometria });
-    } else {
-      features.push({ type: 'Feature', properties: obj });
-    }
-  }
-  return { type: 'FeatureCollection', features: features };
-}
-
 export function roundGeometry(geometry: Geometry, decimals = GEOMETRY_DECIMALS) {
   const power = Math.pow(10, decimals);
   if (geometry.type === 'Point') {
@@ -350,7 +337,12 @@ function getRemoveCommands(
     updateCommands.push(
       new PutCommand({
         TableName: tableName,
-        Item: { ...previousVersionData, version: 'v0_latest', latest: previousVersionNumber, latestVersionUsed: latestVersionUsed ?? latestVersionNumber },
+        Item: {
+          ...previousVersionData,
+          version: 'v0_latest',
+          latest: previousVersionNumber,
+          latestVersionUsed: latestVersionUsed ?? latestVersionNumber,
+        },
         ConditionExpression: 'attribute_exists(id)',
       })
     );

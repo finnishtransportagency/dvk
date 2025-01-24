@@ -1,5 +1,5 @@
 import React, { Dispatch, Fragment, SetStateAction, useEffect, useMemo, useState } from 'react';
-import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon, IonCheckbox, CheckboxCustomEvent } from '@ionic/react';
+import { IonCol, IonRow, IonGrid, IonList, IonModal, IonText, IonButton, IonIcon, IonCheckbox, CheckboxCustomEvent, IonItem } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import dvkMap, { BackgroundMapType } from '../DvkMap';
 import './LayerModal.css';
@@ -250,15 +250,24 @@ const LayerModal: React.FC<ModalProps> = ({
                 title={t('common.close')}
                 aria-label={t('common.close')}
               >
-                <IonIcon className="otherIconLarge" src={closeIcon} />
+                <IonIcon className="otherIconLarge" src={closeIcon} aria-hidden="true" />
               </IonButton>
             </IonCol>
           </IonRow>
           <IonRow>
             <IonCol size="auto">
-              <IonCheckbox labelPlacement="end" justify="start" checked={state.saveLayerSelection} onIonChange={(e) => saveLayerSelection(e)}>
-                {t('homePage.map.controls.layer.saveSelection')}
-              </IonCheckbox>
+              {/*IonItem just for focusing purposes*/}
+              <IonItem className="ion-no-padding" lines="none">
+                <IonCheckbox
+                  aria-label={t('homePage.map.controls.layer.saveSelection')}
+                  labelPlacement="end"
+                  justify="start"
+                  checked={state.saveLayerSelection}
+                  onIonChange={(e) => saveLayerSelection(e)}
+                >
+                  {t('homePage.map.controls.layer.saveSelection')}
+                </IonCheckbox>
+              </IonItem>
             </IonCol>
             <IonCol>
               <IonButton
@@ -274,15 +283,19 @@ const LayerModal: React.FC<ModalProps> = ({
           </IonRow>
           <IonRow className="divider-bottom">
             <IonCol>
-              <IonCheckbox
-                labelPlacement="end"
-                justify="start"
-                checked={selectAllChecked}
-                indeterminate={selectAllIndeterminate}
-                onIonChange={(e) => handleSelectAll(e)}
-              >
-                {t('homePage.map.controls.layer.selectAll')}
-              </IonCheckbox>
+              {/*IonItem just for focusing purposes*/}
+              <IonItem className="ion-no-padding" lines="none">
+                <IonCheckbox
+                  aria-label={t('homePage.map.controls.layer.selectAll')}
+                  labelPlacement="end"
+                  justify="start"
+                  checked={selectAllChecked}
+                  indeterminate={selectAllIndeterminate}
+                  onIonChange={(e) => handleSelectAll(e)}
+                >
+                  {t('homePage.map.controls.layer.selectAll')}
+                </IonCheckbox>
+              </IonItem>
             </IonCol>
           </IonRow>
           <IonList lines="none" className="ion-no-padding" aria-labelledby="layerlist-label">

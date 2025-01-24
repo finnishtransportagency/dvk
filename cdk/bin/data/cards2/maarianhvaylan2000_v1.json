@@ -6,7 +6,7 @@
   },
   "expires": null,
   "vesselRecommendation": null,
-  "status": "DRAFT",
+  "status": "PUBLIC",
   "visibility": null,
   "group": "1",
   "modifier": "System",
@@ -21,7 +21,7 @@
     "sv": "Mariehamnleden"
   },
   "attention": null,
-  "creationTimestamp": 1718780166493,
+  "creationTimestamp": 1735801091360,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The outer channel is unsheltered against S-W winds. The channel continues W of Korsö sheltered by the archipelago and mainland to the port of Mariehamn.",
@@ -36,6 +36,7 @@
     "fi": "Linjoja 7 kpl.",
     "sv": "7 linjer."
   },
+  "publishDetails": "N2000 julkaisu",
   "version": "v1",
   "harbors": [
     {
@@ -58,7 +59,7 @@
     "fi": "Korvikista alkaen 17 km/h. Koskee yli 24 metriä pitkiä aluksia. Aallonmuodostuskielto kaikilla aluksilla. Ns Stenkrossenista alkaen nopeusrajoitus on 17 km/h sekä aallonmuodostuskielto. Koskee kaikkia aluksia.",
     "sv": "Från Korrvik 17 km/h, vilket gäller för farkoster över 24 m längd. Svallförbud för alla farkoster. Från den s.k. Stenkrossen 17 km/h och svallförbud för alla farkoster."
   },
-  "modificationTimestamp": 1724311373710,
+  "modificationTimestamp": 1735801091360,
   "pilotRoutes": [],
   "iceCondition": {
     "en": "The fairway is often open in the winter or there can be formation of thin ice.",

@@ -335,8 +335,8 @@ ion-grid.table {
   color: var(--ion-color-dark);
 }
 ion-grid.table ion-row {
-  font-size: 12px;
-  line-height: 12px;
+  font-size: .75rem;
+  line-height: 1.5rem;
   border-bottom: 1px solid var(--ion-color-light);
 }
 ion-grid.table ion-row:last-child {
@@ -346,8 +346,13 @@ ion-grid.table ion-row.header {
   font-weight: bold;
 }
 ion-grid.table ion-row > ion-col {
-  padding: 5px;
+  padding: 0 5px;
   border-right: 1px solid var(--ion-color-light);
+}
+ion-grid.table ion-row > ion-col > ion-label a {
+  display: flex;
+  margin: 0 -5px;
+  padding: 0 5px;
 }
 ion-grid.table ion-row > ion-col:last-child {
   border-right: none;

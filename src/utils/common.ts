@@ -1,11 +1,12 @@
 import { isPlatform } from '@ionic/react';
 import dvkMap, { getMap } from '../components/DvkMap';
-import { FairwayCardPartsFragment, Text } from '../graphql/generated';
+import { Area, Fairway, FairwayCardPartsFragment, Text } from '../graphql/generated';
 import {
   FeatureDataId,
   FeatureDataLayerId,
   FeatureDataSources,
   FeatureLayerId,
+  Lang,
   LAYER_IDB_KEY,
   MAP,
   MAX_HITS,
@@ -330,4 +331,21 @@ export function getFairwayFormText(id: number, t: TFunction) {
     default:
       return '';
   }
+}
+
+export function getFairwayName(fairway: Fairway, lang: Lang) {
+  if (fairway.name) {
+    return (fairway.name[lang] ?? '').length === 0 ? fairway.name.fi : fairway.name[lang];
+  }
+  return '';
+}
+
+export function getAreaName(area: Area, t: TFunction) {
+  const name = area.name;
+  const type = t('areaType' + area.typeCode);
+  // ankkurointialueet pitkässä muodossa esim. osa 'c' -> 'ankkurointialue c'
+  if (area.typeCode == 2) {
+    return name ? type + ' ' + name : type;
+  }
+  return name ?? type;
 }
