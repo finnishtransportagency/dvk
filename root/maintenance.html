@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="fi" aria-live="polite">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="shortcut icon" type="image/png" href="/vaylakortti/assets/icon/vayla_v_rgb_192x192.png" />
+    <title>Digitaalinen väyläkortti - 500</title>
+  </head>
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+    }
+    body.page {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    h1 {
+      color: #000;
+      font-family: 'Exo2', sans-serif;
+      font-size: 32px;
+      font-weight: bold;
+      letter-spacing: 0;
+      line-height: 38px;
+      text-align: center;
+      margin: 0;
+    }
+    h2.http-status {
+      color: #0064af;
+      font-family: 'Exo2', sans-serif;
+      font-size: 320px;
+      font-weight: bold;
+      line-height: 1.2em;
+      text-align: center;
+      background-image: url('/ship.svg');
+      background-repeat: no-repeat;
+      background-position: calc(50% - 12px) calc(50% + 35px);
+      margin: 0;
+    }
+    h3 {
+      max-width: 750px;
+      color: #000;
+      font-family: 'Exo2', sans-serif;
+      font-size: 24px;
+      letter-spacing: 0;
+      line-height: 29px;
+      text-align: center;
+      font-weight: normal;
+      margin: 0;
+    }
+
+    a {
+      color: #0064af;
+    }
+    a:hover {
+      color: #1a74b7;
+      text-decoration: none;
+    }
+    a:focus-visible {
+      outline: 1px solid #000;
+    }
+
+    @font-face {
+      font-family: 'Exo2';
+      font-weight: 400;
+      font-style: normal;
+      src: url('/vaylakortti/assets/Exo2-Regular.ttf') format('truetype');
+    }
+    @font-face {
+      font-family: 'Exo2';
+      font-weight: 600;
+      font-style: normal;
+      src: url('/vaylakortti/assets/Exo2-SemiBold.ttf') format('truetype');
+    }
+  </style>
+
+  <body class="page">
+    <h1>Error: 503 Service Unavailable</h1>
+    <h2 class="http-status">503</h2>
+    <h3>
+      Down for maintenance. Underhållsavbrott. Huoltokatko.
+    </h3>
+  </body>
+</html>
