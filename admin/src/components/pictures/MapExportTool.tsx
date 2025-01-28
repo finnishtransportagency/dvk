@@ -26,7 +26,7 @@ import {
   useVtsPointLayer,
 } from '../map/FeatureLoader';
 import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput } from '../../graphql/generated';
-import { setSelectedFairwayCard } from '../map/FairwayCardSetter';
+import { setSelectedFairwayCard } from '../map/fairwayCardSetter';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useTranslation } from 'react-i18next';
