@@ -21,19 +21,11 @@ export const tugValidator = (
 
   //Refactor the whole of this validation module to a common place as it's used elsewhere
   if (actionType === 'tug' && actionTarget !== undefined) {
-    const tugFieldErrors: ValidationType[] = [];
-    validationErrors
+    const tugFieldErrors: ValidationType[] = validationErrors
       .filter((error) => error.id.startsWith('tugName-'))
-      .forEach((error) => {
-        const errorIndex = error.id.split('tugName-')[1];
-        if (errorIndex < actionTarget) tugFieldErrors.push(error);
-        if (errorIndex > actionTarget) {
-          tugFieldErrors.push({
-            id: 'tugName-' + (Number(errorIndex) - 1),
-            msg: error.msg,
-          });
-        }
-        return error;
+      .filter((error) => error.id !== 'tugName-' + actionTarget)
+      .map((error, index) => {
+        return { id: 'tugName-' + index, msg: error.msg };
       });
     setValidationErrors(validationErrors.filter((error) => !error.id.startsWith('tugName-')).concat(tugFieldErrors));
   } else if (

@@ -11,51 +11,46 @@ export const sectionValidator = (
   actionTarget?: string | number,
   actionOuterTarget?: string | number
 ) => {
+  if (actionTarget == undefined || actionOuterTarget == undefined) {
+    return;
+  }
+
   const currentQuay = newState.quays?.find((_quayItem, idx) => idx === actionOuterTarget);
   const currentSection = currentQuay?.sections?.find((_sectionItem, jdx) => jdx === actionTarget);
 
+  const itemLocate = (actionType: string, includeActionTarget: boolean = true): string => {
+    return actionType + '-' + actionOuterTarget + '-' + (includeActionTarget ? actionTarget : '');
+  };
+
   //Refactor the whole of this validation module to a common place as it's used elsewhere
-  if (actionType === 'section' && actionTarget !== undefined && actionOuterTarget !== undefined) {
-    const sectionFieldErrors: ValidationType[] = [];
-    validationErrors
-      .filter((error) => error.id.startsWith('sectionGeometry-' + actionOuterTarget + '-'))
-      .forEach((error) => {
-        const errorIndex = error.id.split('sectionGeometry-' + actionOuterTarget + '-')[1];
-        if (errorIndex < actionTarget) sectionFieldErrors.push(error);
-        if (errorIndex > actionTarget) {
-          sectionFieldErrors.push({
-            id: 'sectionGeometry-' + actionOuterTarget + '-' + (Number(errorIndex) - 1),
-            msg: error.msg,
-          });
-        }
-        return error;
+  if (actionType === 'section') {
+    const sectionFieldErrors = validationErrors
+      .filter((error) => error.id.startsWith(itemLocate('sectionGeometry', false)))
+      .filter((error) => error.id !== itemLocate('sectionGeometry'))
+      .map((error, index) => {
+        return { id: itemLocate('sectionGeometry', false) + index, msg: error.msg };
       });
-    setValidationErrors(
-      validationErrors.filter((error) => !error.id.startsWith('sectionGeometry-' + actionOuterTarget + '-')).concat(sectionFieldErrors)
-    );
+    setValidationErrors(validationErrors.filter((error) => !error.id.startsWith(itemLocate('sectionGeometry', false))).concat(sectionFieldErrors));
   } else if (
     (actionType === 'sectionLat' || actionType === 'sectionLon') &&
-    actionTarget !== undefined &&
-    actionOuterTarget !== undefined &&
-    validationErrors.find((error) => error.id === 'sectionGeometry-' + actionOuterTarget + '-' + actionTarget)?.msg
+    validationErrors.find((error) => error.id === itemLocate('sectionGeometry'))?.msg
   ) {
     setValidationErrors(
       validationErrors
-        .filter((error) => error.id !== 'sectionGeometry-' + actionOuterTarget + '-' + actionTarget)
+        .filter((error) => error.id !== itemLocate('sectionGeometry'))
         .concat({
-          id: 'sectionGeometry-' + actionOuterTarget + '-' + actionTarget,
+          id: itemLocate('sectionGeometry'),
           msg: currentSection?.geometry?.lat.trim() || currentSection?.geometry?.lon.trim() ? t(ErrorMessageKeys?.required) || '' : '',
         })
     );
-  } else if ((actionType === 'sectionLat' || actionType === 'sectionLon') && actionTarget !== undefined && actionOuterTarget !== undefined) {
-    const target = actionOuterTarget + '-' + actionTarget;
+  } else if (actionType === 'sectionLat' || actionType === 'sectionLon') {
     setValidationErrors(
       validationErrors
-        .filter((error) => error.id !== 'sectionLocation-' + actionOuterTarget + '-' + actionTarget)
+        .filter((error) => error.id !== itemLocate('sectionLocation'))
         .concat({
-          id: 'sectionLocation-' + target,
+          id: itemLocate('sectionLocation'),
           msg: locationError(
-            { actionTarget: target, geometry: currentSection?.geometry } as QuayOrSection,
+            { actionTarget: actionOuterTarget + '-' + actionTarget, geometry: currentSection?.geometry } as QuayOrSection,
             newState.quays?.flatMap(
               (q, qIdx) => q?.sections?.map((s, sIdx) => ({ geometry: s?.geometry, actionTarget: qIdx + '-' + sIdx }) as QuayOrSection) ?? []
             )

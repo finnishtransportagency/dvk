@@ -11,9 +11,9 @@ export const quayValidator = (
   setValidationErrors: (validationErrors: ValidationType[]) => void,
   actionTarget?: string | number
 ) => {
+  const currentQuay = newState.quays?.find((c, idx) => idx === actionTarget) as QuayInput;
   const validateMandatoryField = (nullCheck: (calc: QuayInput | undefined) => boolean) => {
     if (actionTarget !== undefined && validationErrors.find((error) => error.id === actionType + '-' + actionTarget)?.msg) {
-      const currentQuay = newState.quays?.find((c, idx) => idx === actionTarget) as QuayInput;
       setValidationErrors(
         validationErrors
           .filter((error) => error.id !== actionType + '-' + actionTarget)
