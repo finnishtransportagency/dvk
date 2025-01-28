@@ -43,7 +43,7 @@ import { Cluster } from 'ol/source';
 
 export type BackgroundMapType = 'sea' | 'land';
 
-class DvkMap {
+export class DvkMap {
   public olMap: Map | null = null;
 
   private zoomControl: Zoom = new Zoom({

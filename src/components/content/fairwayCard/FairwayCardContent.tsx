@@ -3,7 +3,7 @@ import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
-import { setSelectedFairwayCard } from '../../layers';
+import { setSelectedFairwayCard } from '../../fairwayCardSetter';
 import { Lang, MAP } from '../../../utils/constants';
 import PrintMap from '../../PrintMap';
 import Breadcrumb from '../Breadcrumb';

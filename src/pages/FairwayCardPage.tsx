@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useParams } from 'react-router-dom';
-import { setSelectedFairwayCard, unsetSelectedFairwayCard } from '../components/layers';
+import { setSelectedFairwayCard, unsetSelectedFairwayCard } from '../components/fairwayCardSetter';
 import { useTranslation } from 'react-i18next';
 import MainContent from '../components/content/MainContent';
 import { useFairwayCardListData, useFairwayCardPreviewData } from '../utils/dataLoader';
