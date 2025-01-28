@@ -52,6 +52,7 @@ const ConfirmationModal: React.FC<ModalProps> = ({
     title = t(`modal.preview-${saveType}-title`);
     description = t(`modal.preview-${saveType}-description`);
   } else if (confirmationType === 'version') {
+    buttonTitle = t('general.create-new');
     title = t('general.create-new-version');
     description = t(`modal.version-${saveType}-description`);
   } else if (confirmationType === 'remove') {
