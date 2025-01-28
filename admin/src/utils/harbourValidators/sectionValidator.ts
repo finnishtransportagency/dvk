@@ -11,6 +11,9 @@ export const sectionValidator = (
   actionTarget?: string | number,
   actionOuterTarget?: string | number
 ) => {
+  const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionOuterTarget);
+  const currentSection = currentQuay?.sections?.find((sectionItem, jdx) => jdx === actionTarget);
+
   if (actionType === 'section' && actionTarget !== undefined && actionOuterTarget !== undefined) {
     const sectionFieldErrors: ValidationType[] = [];
     validationErrors
@@ -35,8 +38,6 @@ export const sectionValidator = (
     actionOuterTarget !== undefined &&
     validationErrors.find((error) => error.id === 'sectionGeometry-' + actionOuterTarget + '-' + actionTarget)?.msg
   ) {
-    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionOuterTarget);
-    const currentSection = currentQuay?.sections?.find((sectionItem, jdx) => jdx === actionTarget);
     setValidationErrors(
       validationErrors
         .filter((error) => error.id !== 'sectionGeometry-' + actionOuterTarget + '-' + actionTarget)
@@ -46,8 +47,6 @@ export const sectionValidator = (
         })
     );
   } else if ((actionType === 'sectionLat' || actionType === 'sectionLon') && actionTarget !== undefined && actionOuterTarget !== undefined) {
-    const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionOuterTarget);
-    const currentSection = currentQuay?.sections?.find((sectionItem, jdx) => jdx === actionTarget);
     const target = actionOuterTarget + '-' + actionTarget;
     setValidationErrors(
       validationErrors

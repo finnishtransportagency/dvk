@@ -8,21 +8,12 @@ export const conditionValidator = (
   validationErrors: ValidationType[],
   setValidationErrors: (validationErrors: ValidationType[]) => void
 ) => {
+  const validateMandatory = (input: TextInput) => {
+    validateMandatoryField(input, validationErrors, actionType, (v) => isTextTranslationEmpty(v as TextInput), setValidationErrors);
+  };
   if (actionType === 'navigationCondition') {
-    validateMandatoryField(
-      newState.navigationCondition as TextInput,
-      validationErrors,
-      'navigationCondition',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.navigationCondition as TextInput);
   } else if (actionType === 'iceCondition') {
-    validateMandatoryField(
-      newState.iceCondition as TextInput,
-      validationErrors,
-      'iceCondition',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.iceCondition as TextInput);
   }
 };

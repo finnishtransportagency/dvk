@@ -11,43 +11,28 @@ export const quayValidator = (
   setValidationErrors: (validationErrors: ValidationType[]) => void,
   actionTarget?: string | number
 ) => {
-  function validateMandatoryField(
-    actionTarget: string | number | undefined,
-    validationErrors: ValidationType[],
-    errorPrefix: string,
-    nullCheck: (calc: QuayInput | undefined) => boolean
-  ) {
-    if (actionTarget !== undefined && validationErrors.find((error) => error.id === errorPrefix + '-' + actionTarget)?.msg) {
+  const validateMandatoryField = (nullCheck: (calc: QuayInput | undefined) => boolean) => {
+    if (actionTarget !== undefined && validationErrors.find((error) => error.id === actionType + '-' + actionTarget)?.msg) {
       const currentQuay = newState.quays?.find((c, idx) => idx === actionTarget) as QuayInput;
       setValidationErrors(
         validationErrors
-          .filter((error) => error.id !== errorPrefix + '-' + actionTarget)
+          .filter((error) => error.id !== actionType + '-' + actionTarget)
           .concat({
-            id: errorPrefix + '-' + actionTarget,
+            id: actionType + '-' + actionTarget,
             msg: nullCheck(currentQuay) ? t(ErrorMessageKeys?.required) || '' : '',
           })
       );
     }
-  }
+  };
 
   if (actionType === 'quayName') {
-    validateMandatoryField(actionTarget, validationErrors, actionType, (quay) => isTextTranslationEmpty(quay?.name as TextInput));
+    validateMandatoryField((quay) => isTextTranslationEmpty(quay?.name as TextInput));
   } else if (actionType === 'quayExtraInfo') {
-    validateMandatoryField(actionTarget, validationErrors, actionType, (quay) => isTextTranslationEmpty(quay?.extraInfo as TextInput));
+    validateMandatoryField((quay) => isTextTranslationEmpty(quay?.extraInfo as TextInput));
   } else if (actionType === 'quayLat' && validationErrors.find((error) => error.id === 'quayLat-' + actionTarget)?.msg) {
-    validateMandatoryField(
-      actionTarget,
-      validationErrors,
-      actionType,
-      (quay) => quay?.geometry?.lat === null || (quay?.geometry?.lat as string).length < 1
-    );
+    validateMandatoryField((quay) => quay?.geometry?.lat === null || (quay?.geometry?.lat as string).length < 1);
   } else if (actionType === 'quayLon' && validationErrors.find((error) => error.id === 'quayLon-' + actionTarget)?.msg) {
-    validateMandatoryField(
-      actionTarget,
-      validationErrors,
-      actionType,
-      (quay) => quay?.geometry?.lon === null || (quay?.geometry?.lon as string).length < 1
-    );
+    validateMandatoryField((quay) => quay?.geometry?.lon === null || (quay?.geometry?.lon as string).length < 1);
   } else if ((actionType === 'quayLat' || actionType === 'quayLon') && actionTarget !== undefined) {
     const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionTarget);
     setValidationErrors(

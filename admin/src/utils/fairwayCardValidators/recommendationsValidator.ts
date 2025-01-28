@@ -8,29 +8,14 @@ export const recommendationsValidator = (
   validationErrors: ValidationType[],
   setValidationErrors: (validationErrors: ValidationType[]) => void
 ) => {
+  const validateMandatory = (input: TextInput) => {
+    validateMandatoryField(input, validationErrors, actionType, (v) => isTextTranslationEmpty(v as TextInput), setValidationErrors);
+  };
   if (actionType === 'windRecommendation') {
-    validateMandatoryField(
-      newState.windRecommendation as TextInput,
-      validationErrors,
-      'windRecommendation',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.windRecommendation as TextInput);
   } else if (actionType === 'vesselRecommendation') {
-    validateMandatoryField(
-      newState.vesselRecommendation as TextInput,
-      validationErrors,
-      'vesselRecommendation',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.vesselRecommendation as TextInput);
   } else if (actionType === 'visibility') {
-    validateMandatoryField(
-      newState.visibility as TextInput,
-      validationErrors,
-      'visibility',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.visibility as TextInput);
   }
 };

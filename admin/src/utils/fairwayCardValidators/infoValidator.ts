@@ -8,37 +8,16 @@ export const infoValidator = (
   validationErrors: ValidationType[],
   setValidationErrors: (validationErrors: ValidationType[]) => void
 ) => {
+  const validateMandatory = (input: TextInput) => {
+    validateMandatoryField(input, validationErrors, actionType, (v) => isTextTranslationEmpty(v as TextInput), setValidationErrors);
+  };
   if (actionType === 'line') {
-    validateMandatoryField(
-      newState.lineText as TextInput,
-      validationErrors,
-      'line',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.lineText as TextInput);
   } else if (actionType === 'designSpeed') {
-    validateMandatoryField(
-      newState.designSpeed as TextInput,
-      validationErrors,
-      'designSpeed',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.designSpeed as TextInput);
   } else if (actionType === 'speedLimit') {
-    validateMandatoryField(
-      newState.speedLimit as TextInput,
-      validationErrors,
-      'speedLimit',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.speedLimit as TextInput);
   } else if (actionType === 'anchorage') {
-    validateMandatoryField(
-      newState.anchorage as TextInput,
-      validationErrors,
-      'anchorage',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.anchorage as TextInput);
   }
 };

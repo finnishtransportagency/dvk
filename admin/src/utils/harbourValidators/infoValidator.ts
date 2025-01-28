@@ -12,6 +12,10 @@ export const infoValidator = (
   setValidationErrors: (validationErrors: ValidationType[]) => void,
   reservedIds?: string[]
 ) => {
+  const validateMandatory = (input: TextInput) => {
+    validateMandatoryField(input, validationErrors, actionType, (v) => isTextTranslationEmpty(v as TextInput), setValidationErrors);
+  };
+
   if (actionType === 'primaryId' && state.operation === Operation.Create) {
     let primaryIdErrorMsg = '';
     if (reservedIds?.includes(value as string)) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
@@ -20,28 +24,10 @@ export const infoValidator = (
   } else if (actionType === 'name') {
     validateMandatoryField(value, validationErrors, 'name', (v) => v === null || (v as string).length < 1, setValidationErrors);
   } else if (actionType === 'extraInfo') {
-    validateMandatoryField(
-      newState.extraInfo as TextInput,
-      validationErrors,
-      'extraInfo',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.extraInfo as TextInput);
   } else if (actionType === 'cargo') {
-    validateMandatoryField(
-      newState.cargo as TextInput,
-      validationErrors,
-      'cargo',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.cargo as TextInput);
   } else if (actionType === 'harbourBasin') {
-    validateMandatoryField(
-      newState.harborBasin as TextInput,
-      validationErrors,
-      'harbourBasin',
-      (v) => isTextTranslationEmpty(v as TextInput),
-      setValidationErrors
-    );
+    validateMandatory(newState.harborBasin as TextInput);
   }
 };

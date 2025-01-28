@@ -11,20 +11,25 @@ export const generalInfoValidator = (
   setValidationErrors: (validationErrors: ValidationType[]) => void,
   reservedIds?: string[]
 ) => {
-  if (actionType === 'primaryId' && state.operation === Operation.Create) {
-    let primaryIdErrorMsg = '';
-    if (reservedIds?.includes(value as string)) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
-    if ((value as string).length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required) || '';
-    setValidationErrors(validationErrors.filter((error) => error.id !== 'primaryId').concat({ id: 'primaryId', msg: primaryIdErrorMsg }));
-  } else if (actionType === 'name') {
-    validateMandatoryField(value, validationErrors, 'name', (v) => (v as string).length < 1, setValidationErrors);
-  } else if (actionType === 'fairwayIds') {
-    validateMandatoryField(value, validationErrors, 'fairwayIds', (v) => (v as number[]).length < 1, setValidationErrors);
-  } else if (actionType === 'fairwayPrimary') {
-    validateMandatoryField(value, validationErrors, 'fairwayPrimary', (v) => (v as number[]).length < 1, setValidationErrors);
-  } else if (actionType === 'fairwaySecondary') {
-    validateMandatoryField(value, validationErrors, 'fairwaySecondary', (v) => (v as number[]).length < 1, setValidationErrors);
-  } else if (actionType === 'group') {
-    validateMandatoryField(value, validationErrors, 'group', (v) => (v as string).length < 1, setValidationErrors);
+  switch (actionType) {
+    case 'primaryId':
+      if (state.operation === Operation.Create) {
+        let primaryIdErrorMsg = '';
+        if (reservedIds?.includes(value as string)) primaryIdErrorMsg = t(ErrorMessageKeys?.duplicateId) || '';
+        if ((value as string).length < 1) primaryIdErrorMsg = t(ErrorMessageKeys?.required) || '';
+        setValidationErrors(validationErrors.filter((error) => error.id !== 'primaryId').concat({ id: 'primaryId', msg: primaryIdErrorMsg }));
+      }
+      break;
+    case 'name':
+    case 'group':
+      validateMandatoryField(value, validationErrors, actionType, (v) => (v as string).length < 1, setValidationErrors);
+      break;
+    case 'fairwayIds':
+    case 'fairwayPrimary':
+    case 'fairwaySecondary':
+      validateMandatoryField(value, validationErrors, actionType, (v) => (v as number[]).length < 1, setValidationErrors);
+      break;
+    default:
+      break;
   }
 };

@@ -1,7 +1,7 @@
 import { FairwayCardInput } from '../graphql/generated';
 import { ActionType, Lang, ValidationType, ValueType } from './constants';
 import { squatCalculationReducer } from './fairwayCardReducers/squatCalculationReducer';
-import { squatCalculationValidator } from './fairwayCardReducers/squatCalculationValidator';
+import { squatCalculationValidator } from './fairwayCardValidators/squatCalculationValidator';
 import { tugReducer } from './fairwayCardReducers/tugReducer';
 import { vhfReducer } from './fairwayCardReducers/vhfReducer';
 import { vtsReducer } from './fairwayCardReducers/vtsReducer';
