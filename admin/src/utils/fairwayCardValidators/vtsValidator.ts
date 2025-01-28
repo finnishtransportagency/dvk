@@ -19,6 +19,7 @@ export const vtsValidator = (
     );
   }
 
+  //Refactor the whole of this validation module to a common place as it's used elsewhere
   if (actionType === 'vts' && actionTarget !== undefined) {
     const vtsFieldErrors: ValidationType[] = [];
     validationErrors

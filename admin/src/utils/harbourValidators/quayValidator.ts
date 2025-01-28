@@ -25,6 +25,7 @@ export const quayValidator = (
     }
   };
 
+  //Refactor the whole of this validation module to a common place as it's used elsewhere
   if (actionType === 'quayName') {
     validateMandatoryField((quay) => isTextTranslationEmpty(quay?.name as TextInput));
   } else if (actionType === 'quayExtraInfo') {

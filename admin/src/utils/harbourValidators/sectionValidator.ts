@@ -11,9 +11,10 @@ export const sectionValidator = (
   actionTarget?: string | number,
   actionOuterTarget?: string | number
 ) => {
-  const currentQuay = newState.quays?.find((quayItem, idx) => idx === actionOuterTarget);
-  const currentSection = currentQuay?.sections?.find((sectionItem, jdx) => jdx === actionTarget);
+  const currentQuay = newState.quays?.find((_quayItem, idx) => idx === actionOuterTarget);
+  const currentSection = currentQuay?.sections?.find((_sectionItem, jdx) => jdx === actionTarget);
 
+  //Refactor the whole of this validation module to a common place as it's used elsewhere
   if (actionType === 'section' && actionTarget !== undefined && actionOuterTarget !== undefined) {
     const sectionFieldErrors: ValidationType[] = [];
     validationErrors

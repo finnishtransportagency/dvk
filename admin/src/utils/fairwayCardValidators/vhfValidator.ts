@@ -10,6 +10,7 @@ export const vhfValidator = (
   actionTarget?: string | number,
   actionOuterTarget?: string | number
 ) => {
+  //Refactor the whole of this validation module to a common place as it's used elsewhere
   if (actionType === 'vhf' && actionTarget !== undefined && actionOuterTarget !== undefined) {
     const sectionFieldErrors: ValidationType[] = [];
     validationErrors

@@ -19,6 +19,7 @@ export const tugValidator = (
     );
   }
 
+  //Refactor the whole of this validation module to a common place as it's used elsewhere
   if (actionType === 'tug' && actionTarget !== undefined) {
     const tugFieldErrors: ValidationType[] = [];
     validationErrors
