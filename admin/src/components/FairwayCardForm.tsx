@@ -448,7 +448,13 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                 <PublishDetailsSection state={state} />
               </CollapsableWrapper>
 
-              <CollapsableWrapper title={t('fairwaycard.main-section-title')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+              <CollapsableWrapper
+                title={t('fairwaycard.main-section-title')}
+                infoHeader={t('fairwaycard.main-section-title')}
+                infoMessage={t('modal.fairway-card-basic-info-description')}
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
+              >
                 <MainSection
                   state={state}
                   updateState={updateState}

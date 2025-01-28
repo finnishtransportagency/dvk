@@ -189,7 +189,8 @@
     "adding-publish-details": "[sv] Julkaisutietojen lisääminen",
     "unsaved-changes": "[sv] Tallentamattomia muutoksia",
     "discard": "[sv] Hylkää",
-    "changing-version": "[sv] Versioiden välillä vaihtelu"
+    "changing-version": "[sv] Versioiden välillä vaihtelu",
+    "fairway-card-basic-info-description": "[sv] Väyläkortin perustiedot kattavat vähimmäistiedot, jotta väyläkortti on mahdollista tuoda näkyville Digitaalinen väyläkortti -palveluun"
   },
   "fairwaycard": {
     "publish-details": "[sv] Julkaisutiedot",

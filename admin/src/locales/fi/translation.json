@@ -199,7 +199,8 @@
     "adding-publish-details": "Julkaisutietojen lisääminen",
     "unsaved-changes": "Tallentamattomia muutoksia",
     "discard": "Hylkää",
-    "changing-version": "Versioiden välillä vaihtelu"
+    "changing-version": "Versioiden välillä vaihtelu",
+    "fairway-card-basic-info-description": "Väyläkortin perustiedot kattavat vähimmäistiedot, jotta väyläkortti on mahdollista tuoda näkyville Digitaalinen väyläkortti -palveluun"
   },
   "fairwaycard": {
     "publish-details": "Julkaisutiedot",
