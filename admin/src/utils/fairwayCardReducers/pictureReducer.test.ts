@@ -1,5 +1,5 @@
 import { fairwayCardReducer } from '../fairwayCardReducer';
-import { getTestState } from '../fairwayCardReducer.test';
+import { emptyValidationParameters, getTestState } from '../fairwayCardReducer.test';
 import { Orientation, PictureInput } from '../../graphql/generated';
 
 test('if pic updates correctly', () => {
@@ -19,17 +19,17 @@ test('if pic updates correctly', () => {
       text: 'pixtext',
     },
   ] as PictureInput[];
-  const newState = fairwayCardReducer(testState, newPic, 'picture', [], () => {}, 'fi', 0, '', []);
+  const newState = fairwayCardReducer(testState, newPic, 'picture', emptyValidationParameters, 'fi', 0, '');
   expect(newState.pictures ? newState.pictures[0].groupId : 0).toBe(2);
 });
 
 test('if pic text updates correctly', () => {
   const testState = getTestState();
-  const newState = fairwayCardReducer(testState, 'modtext', 'pictureDescription', [], () => {}, 'fi', 1, '', []);
+  const newState = fairwayCardReducer(testState, 'modtext', 'pictureDescription', emptyValidationParameters, 'fi', 1, '');
   expect(newState.pictures ? newState.pictures[0].text : '').toBe('modtext');
 });
 test('if pic legend position updates correctly', () => {
   const testState = getTestState();
-  const newState = fairwayCardReducer(testState, 'ne', 'pictureLegendPosition', [], () => {}, 'fi', 1, '', []);
+  const newState = fairwayCardReducer(testState, 'ne', 'pictureLegendPosition', emptyValidationParameters, 'fi', 1, '');
   expect(newState.pictures ? newState.pictures[0].legendPosition : '').toBe('ne');
 });

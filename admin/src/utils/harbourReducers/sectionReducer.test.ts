@@ -1,9 +1,9 @@
 import { harbourReducer } from '../harbourReducer';
-import { getTestState } from '../harbourReducer.test';
+import { emptyValidationParameters, getTestState } from '../harbourReducer.test';
 
 test('if section name updates correctly', () => {
   const testState = getTestState();
-  const newState = harbourReducer(testState, 'modsection1', 'sectionName', [], () => {}, 'fi', 0, 0, []);
+  const newState = harbourReducer(testState, 'modsection1', 'sectionName', emptyValidationParameters, 'fi', 0, 0);
   if (!newState.quays) {
     fail();
   } else if (!newState.quays[0]?.sections) {
@@ -15,7 +15,7 @@ test('if section name updates correctly', () => {
 
 test('if section depth updates correctly', () => {
   const testState = getTestState();
-  const newState = harbourReducer(testState, '101', 'sectionDepth', [], () => {}, 'fi', 0, 0, []);
+  const newState = harbourReducer(testState, '101', 'sectionDepth', emptyValidationParameters, 'fi', 0, 0);
   if (!newState.quays) {
     fail();
   } else if (!newState.quays[0]?.sections) {
@@ -27,7 +27,7 @@ test('if section depth updates correctly', () => {
 
 test('if section latitude updates correctly', () => {
   const testState = getTestState();
-  const newState = harbourReducer(testState, '21.2', 'sectionLat', [], () => {}, 'fi', 0, 0, []);
+  const newState = harbourReducer(testState, '21.2', 'sectionLat', emptyValidationParameters, 'fi', 0, 0);
   if (!newState.quays) {
     fail();
   } else if (!newState.quays[0]?.sections) {
@@ -40,7 +40,7 @@ test('if section latitude updates correctly', () => {
 
 test('if section longitude updates correctly', () => {
   const testState = getTestState();
-  const newState = harbourReducer(testState, '59.2', 'sectionLon', [], () => {}, 'fi', 0, 0, []);
+  const newState = harbourReducer(testState, '59.2', 'sectionLon', emptyValidationParameters, 'fi', 0, 0);
   if (!newState.quays) {
     fail();
   } else if (!newState.quays[0]?.sections) {
@@ -53,14 +53,14 @@ test('if section longitude updates correctly', () => {
 
 test('if section list updates correctly', () => {
   const testState = getTestState();
-  let newState = harbourReducer(testState, 'y', 'section', [], () => {}, 'fi', 0, 0, []);
+  let newState = harbourReducer(testState, 'y', 'section', emptyValidationParameters, 'fi', 0, 0);
   if (newState.quays) {
     expect(newState.quays[0]?.sections?.length).toBe(2);
   } else {
     fail();
   }
 
-  newState = harbourReducer(testState, '', 'section', [], () => {}, 'fi', 0, 0, []);
+  newState = harbourReducer(testState, '', 'section', emptyValidationParameters, 'fi', 0, 0);
   if (newState.quays) {
     expect(newState.quays[0]?.sections?.length).toBe(0);
   } else {

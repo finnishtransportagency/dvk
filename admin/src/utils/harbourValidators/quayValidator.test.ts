@@ -8,8 +8,6 @@ vi.mock('i18next', () => ({
   t: (s: string) => s,
 }));
 
-test('if quay validates correctly', () => {});
-
 test('if quay name validates correctly', () => {
   const testState = getTestState();
   if (testState.quays && testState.quays.length > 0 && testState.quays[0]) {
@@ -20,14 +18,16 @@ test('if quay name validates correctly', () => {
     testState,
     '',
     'quayName',
-    [{ id: 'quayName-0', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'quayName-0', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('quayName-0');
@@ -44,14 +44,16 @@ test('if quay extra info validates correctly', () => {
     testState,
     '',
     'quayExtraInfo',
-    [{ id: 'quayExtraInfo-0', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'quayExtraInfo-0', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('quayExtraInfo-0');
@@ -68,14 +70,16 @@ test('if quay latitude validates correctly', () => {
     testState,
     '',
     'quayLat',
-    [{ id: 'quayLat-0', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'quayLat-0', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('quayLat-0');
@@ -92,14 +96,16 @@ test('if quay longitude validates correctly', () => {
     testState,
     '',
     'quayLon',
-    [{ id: 'quayLon-0', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'quayLon-0', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('quayLon-0');
@@ -119,14 +125,16 @@ test('if quay location validates correctly', () => {
     testState,
     '20.1',
     'quayLat',
-    [],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     1,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('quayLocation-1');
@@ -146,18 +154,20 @@ test('if quay validates correctly', () => {
     testState,
     '',
     'quay',
-    [
-      { id: 'quayName-0', msg: '' },
-      { id: 'quayName-1', msg: '' },
-      { id: 'quayName-2', msg: '' },
-    ],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [
+        { id: 'quayName-0', msg: '' },
+        { id: 'quayName-1', msg: '' },
+        { id: 'quayName-2', msg: '' },
+      ],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     1,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(2);
   expect(errors[0].id).toEqual('quayName-0');

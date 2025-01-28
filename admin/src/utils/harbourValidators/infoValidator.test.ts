@@ -18,14 +18,16 @@ test('if duplicate id validates correctly', () => {
     testState,
     'create1',
     'primaryId',
-    [],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: ['create1', 'create2'],
     },
     'fi',
     0,
-    0,
-    ['create1', 'create2']
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('primaryId');
@@ -41,14 +43,16 @@ test('if empty string id validates correctly', () => {
     testState,
     '',
     'primaryId',
-    [],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('primaryId');
@@ -64,14 +68,16 @@ test('if new id validates correctly', () => {
     testState,
     'create3',
     'primaryId',
-    [],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: ['create1', 'create2'],
     },
     'fi',
     0,
-    0,
-    ['create1', 'create2']
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('primaryId');
@@ -84,14 +90,16 @@ test('if name validates correctly', () => {
     getTestState(),
     '',
     'name',
-    [{ id: 'name', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'name', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('name');
@@ -104,14 +112,16 @@ test('if latitude validates correctly', () => {
     getTestState(),
     '',
     'lat',
-    [{ id: 'lat', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'lat', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('lat');
@@ -124,14 +134,16 @@ test('if longitude validates correctly', () => {
     getTestState(),
     '',
     'lon',
-    [{ id: 'lon', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'lon', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('lon');
@@ -146,14 +158,16 @@ test('if cargo validates correctly', () => {
     testState,
     '',
     'cargo',
-    [{ id: 'cargo', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'cargo', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('cargo');
@@ -168,14 +182,16 @@ test('if harbour basin validates correctly', () => {
     testState,
     '',
     'harbourBasin',
-    [{ id: 'harbourBasin', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'harbourBasin', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('harbourBasin');
@@ -190,16 +206,18 @@ test('if extra info validates correctly', () => {
     testState,
     '',
     'extraInfo',
-    [{ id: 'extraInfo', msg: 'dummy' }],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [{ id: 'extraInfo', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     0,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('extraInfo');
-  expect(errors[0].msg).toEqual('general.required-field');
+  expect(errors[0].msg).toEqual(ErrorMessageKeys.required);
 });

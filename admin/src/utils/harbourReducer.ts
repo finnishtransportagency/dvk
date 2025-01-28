@@ -9,17 +9,22 @@ import { contactValidator } from './harbourValidators/contactValidator';
 import { quayValidator } from './harbourValidators/quayValidator';
 import { sectionValidator } from './harbourValidators/sectionValidator';
 
+export type ValidationParameters = {
+  validationErrors: ValidationType[];
+  setValidationErrors: (validationErrors: ValidationType[]) => void;
+  reservedIds?: string[];
+};
+
 export const harbourReducer = (
   state: HarborInput,
   value: ValueType,
   actionType: ActionType,
-  validationErrors: ValidationType[],
-  setValidationErrors: (validationErrors: ValidationType[]) => void,
+  validationParameters: ValidationParameters,
   actionLang?: Lang,
   actionTarget?: string | number,
-  actionOuterTarget?: string | number,
-  reservedIds?: string[]
+  actionOuterTarget?: string | number
 ) => {
+  const { validationErrors, setValidationErrors, reservedIds } = validationParameters;
   let newState;
   switch (actionType) {
     case 'primaryId':
@@ -50,7 +55,7 @@ export const harbourReducer = (
     case 'quayLon':
     case 'quayExtraInfo':
       newState = quayReducer(state, value, actionType, actionLang, actionTarget);
-      quayValidator(newState, value, actionType, validationErrors, setValidationErrors, actionTarget);
+      quayValidator(newState, actionType, validationErrors, setValidationErrors, actionTarget);
       break;
     case 'section':
     case 'sectionName':

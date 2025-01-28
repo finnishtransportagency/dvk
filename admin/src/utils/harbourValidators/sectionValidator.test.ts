@@ -23,18 +23,20 @@ test('if section validates correctly', () => {
     testState,
     '',
     'section',
-    [
-      { id: 'sectionGeometry-0-0', msg: '' },
-      { id: 'sectionGeometry-0-1', msg: '' },
-      { id: 'sectionGeometry-0-2', msg: '' },
-    ],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [
+        { id: 'sectionGeometry-0-0', msg: '' },
+        { id: 'sectionGeometry-0-1', msg: '' },
+        { id: 'sectionGeometry-0-2', msg: '' },
+      ],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     1,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(2);
   expect(errors[0].id).toEqual('sectionGeometry-0-0');
@@ -56,18 +58,20 @@ test('if section latitude/longitude validates correctly', () => {
     testState,
     '',
     'sectionLat',
-    [
-      { id: 'sectionGeometry-0-0', msg: 'dummy' },
-      { id: 'sectionGeometry-0-1', msg: 'dummy' },
-      { id: 'sectionGeometry-0-2', msg: 'dummy' },
-    ],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [
+        { id: 'sectionGeometry-0-0', msg: 'dummy' },
+        { id: 'sectionGeometry-0-1', msg: 'dummy' },
+        { id: 'sectionGeometry-0-2', msg: 'dummy' },
+      ],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     1,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(3);
   expect(errors[0].id).toEqual('sectionGeometry-0-0');
@@ -93,18 +97,20 @@ test('if section latitude/longitude validates correctly', () => {
     testState,
     '',
     'sectionLon',
-    [
-      { id: 'sectionGeometry-0-0', msg: 'dummy' },
-      { id: 'sectionGeometry-0-1', msg: 'dummy' },
-      { id: 'sectionGeometry-0-2', msg: 'dummy' },
-    ],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [
+        { id: 'sectionGeometry-0-0', msg: 'dummy' },
+        { id: 'sectionGeometry-0-1', msg: 'dummy' },
+        { id: 'sectionGeometry-0-2', msg: 'dummy' },
+      ],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     2,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(3);
   expect(errors[0].id).toEqual('sectionGeometry-0-0');
@@ -130,14 +136,16 @@ test('if section location validates correctly', () => {
     testState,
     '1',
     'sectionLat',
-    [],
-    (validationErrors: ValidationType[]) => {
-      validationErrors.forEach((e) => errors.push(e));
+    {
+      validationErrors: [],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
     },
     'fi',
     1,
-    0,
-    []
+    0
   );
   expect(errors).toHaveLength(1);
   expect(errors[0].id).toEqual('sectionLocation-0-1');

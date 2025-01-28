@@ -1,4 +1,5 @@
 import { HarborInput, Operation, Status } from '../graphql/generated';
+import { ValidationParameters } from './harbourReducer';
 
 export function getTestState(): HarborInput {
   return {
@@ -34,5 +35,11 @@ export function getTestState(): HarborInput {
     ],
   };
 }
+
+export const emptyValidationParameters: ValidationParameters = {
+  validationErrors: [],
+  setValidationErrors: () => {},
+  reservedIds: [],
+};
 
 test('dummy', () => {});

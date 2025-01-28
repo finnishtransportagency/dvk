@@ -111,7 +111,15 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     actionOuterTarget?: string | number
   ) => {
     setState(
-      harbourReducer(state, value, actionType, validationErrors, setValidationErrors, actionLang, actionTarget, actionOuterTarget, reservedHarbourIds)
+      harbourReducer(
+        state,
+        value,
+        actionType,
+        { validationErrors: validationErrors, setValidationErrors: setValidationErrors, reservedIds: reservedHarbourIds },
+        actionLang,
+        actionTarget,
+        actionOuterTarget
+      )
     );
   };
 

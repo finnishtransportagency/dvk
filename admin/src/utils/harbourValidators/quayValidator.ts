@@ -1,11 +1,11 @@
 import { t } from 'i18next';
 import { HarborInput, QuayInput, TextInput } from '../../graphql/generated';
-import { ActionType, ErrorMessageKeys, ValidationType, ValueType } from '../constants';
+import { ActionType, ErrorMessageKeys, ValidationType } from '../constants';
 import { locationError, QuayOrSection } from '../formValidations';
+import { isTextTranslationEmpty } from '../validatorUtils';
 
 export const quayValidator = (
   newState: HarborInput,
-  value: ValueType,
   actionType: ActionType,
   validationErrors: ValidationType[],
   setValidationErrors: (validationErrors: ValidationType[]) => void,
@@ -28,10 +28,6 @@ export const quayValidator = (
           })
       );
     }
-  }
-
-  function isTextTranslationEmpty(text: TextInput | undefined): boolean {
-    return text?.fi.trim().length === 0 || text?.sv.trim().length === 0 || text?.en.trim().length === 0;
   }
 
   if (actionType === 'quayName') {

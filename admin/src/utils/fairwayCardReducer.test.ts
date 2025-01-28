@@ -1,4 +1,5 @@
 import { FairwayCardInput, Operation, Orientation, Status } from '../graphql/generated';
+import { ValidationParameters } from './fairwayCardReducer';
 
 export function getTestState(): FairwayCardInput {
   return {
@@ -89,5 +90,11 @@ export function getTestState(): FairwayCardInput {
     ],
   };
 }
+
+export const emptyValidationParameters: ValidationParameters = {
+  validationErrors: [],
+  setValidationErrors: () => {},
+  reservedIds: [],
+};
 
 test('dummy', () => {});
