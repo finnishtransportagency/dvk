@@ -33,6 +33,16 @@ export function getTestState(): FairwayCardInput {
     vesselRecommendation: { fi: 'vesselrecommendationfi', sv: 'vesselrecommendationsv', en: 'vesselrecommendationen' },
     visibility: { fi: 'visibilityfi', sv: 'visibilitysv', en: 'visibilityen' },
     mareographs: [7, 8, 9],
+    squatCalculations: [
+      {
+        place: { fi: 'squat1placefi', sv: 'squat1placesv', en: 'squat1placeen' },
+        targetFairways: [1, 2],
+        suitableFairwayAreas: [10, 11],
+        depth: 10,
+        estimatedWaterDepth: '11',
+        fairwayForm: 0,
+      },
+    ],
     temporaryNotifications: [{ content: { fi: 'contentfi', sv: 'contentsv', en: 'contenten' }, startDate: '01012000', endDate: '12122001' }],
     trafficService: {
       pilot: {

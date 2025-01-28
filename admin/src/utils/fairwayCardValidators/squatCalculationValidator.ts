@@ -25,6 +25,17 @@ export const squatCalculationValidator = (
   };
 
   switch (actionType) {
+    case 'squatCalculations':
+      if (actionTarget) {
+        const squatFieldErrors: ValidationType[] = validationErrors
+          .filter((error) => error.id.startsWith('squatCalculations-'))
+          .filter((error) => error.id !== 'squatCalculations-' + actionTarget)
+          .map((error, index) => {
+            return { id: 'squatCalculations-' + index, msg: error.msg };
+          });
+        setValidationErrors(validationErrors.filter((error) => !error.id.startsWith('squatCalculations-')).concat(squatFieldErrors));
+      }
+      break;
     case 'squatCalculationPlace':
       validateMandatoryField((calc) => isTextTranslationEmpty(calc?.place));
       break;
