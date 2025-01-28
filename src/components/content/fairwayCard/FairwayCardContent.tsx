@@ -34,7 +34,7 @@ import {
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
-import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
+import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation, useWeatherLimits } from '../../../utils/dataLoader';
 import { TabSwiper } from './TabSwiper';
 import PilotRouteList from '../PilotRouteList';
 import { usePilotRouteFeatures } from '../../PilotRouteFeatureLoader';
@@ -56,6 +56,7 @@ import ForecastContainer from '../ForecastContainer';
 import SquatCalculationTemplateNotAvailable from './SquatCalculationTemplateNotAvailable';
 import SquatCalculationTemplate from './SquatCalculationTemplate';
 import { uniqueId } from 'lodash';
+import { asWeatherLimits, findWeatherLimitById } from '../../../utils/weatherUtils';
 
 export enum FairwayCardTab {
   Information = 1,
@@ -106,6 +107,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { observationFeatures, ready: observationsReady } = useObservationFeatures();
   const { mareographFeatures, ready: mareographsReady } = useMareographFeatures();
   const { forecastFeatures, ready: forecastsReady } = useForecastFeatures();
+  const { data: weatherLimits } = useWeatherLimits();
 
   useEffect(() => {
     if (fairwayCard && safetyEquipmentsReady && !faultIsPending && !faultIsFetching) {
@@ -378,7 +380,17 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
             {forecastsReady && forecasts ? (
               forecasts.map((f) => {
-                return <ForecastContainer forecast={f} key={f.getId()} multicontainer={forecasts.length > 1} />;
+                return (
+                  <ForecastContainer
+                    forecast={f}
+                    key={f.getId()}
+                    multicontainer={forecasts.length > 1}
+                    weatherLimits={findWeatherLimitById(
+                      asWeatherLimits(weatherLimits?.weatherLimits ?? []),
+                      f.getId() ? String(f.getId()) : undefined
+                    )}
+                  />
+                );
               })
             ) : (
               <Alert errorText={t('forecastNotFound')}></Alert>
