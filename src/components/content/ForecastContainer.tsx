@@ -10,10 +10,12 @@ import { Feature } from 'ol';
 import { Geometry, Point } from 'ol/geom';
 import './Forecast.css';
 import ForecastLegend from './ForecastLegend';
+import { WeatherLimitById } from '../../utils/weatherUtils';
 
 type ForecastContentProps = {
   forecast: Feature<Geometry>;
   multicontainer?: boolean;
+  weatherLimits?: WeatherLimitById;
 };
 
 export type ForecastProperties = {
@@ -21,7 +23,7 @@ export type ForecastProperties = {
   properties: ForecastFeatureProperties;
 };
 
-const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast, multicontainer = false }) => {
+const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast, multicontainer = false, weatherLimits }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const { dataUpdatedAt } = useFeatureData('forecast');
@@ -48,7 +50,7 @@ const ForecastContainer: React.FC<ForecastContentProps> = ({ forecast, multicont
       </IonRow>
       <ForecastLegend />
       <IonRow>
-        <ForecastTable forecastItems={properties.forecastItems} page={12} clear={true} multitable={multicontainer} />
+        <ForecastTable forecastItems={properties.forecastItems} page={12} clear={true} multitable={multicontainer} weatherLimits={weatherLimits} />
       </IonRow>
       <br />
     </IonGrid>
