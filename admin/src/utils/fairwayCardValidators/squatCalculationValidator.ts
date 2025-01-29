@@ -24,16 +24,45 @@ export const squatCalculationValidator = (
     }
   };
 
+  const squatAttributes = [
+    'squatCalculationAdditionalInformation',
+    'squatCalculationPlace',
+    'squatCalculationDepth',
+    'squatCalculationFairwayForm',
+    'squatCalculationEstimatedWaterDepth',
+    'squatCalculationFairwayWidth',
+    'squatCalculationSlopeScale',
+    'squatCalculationSlopeHeight',
+    'squatTargetFairwayIds',
+    'squatSuitableFairwayAreaIds',
+  ];
+
+  const isSquatCalculationAttribute = (attr: string): boolean => {
+    let ret = false;
+    squatAttributes.forEach((a) => {
+      if (attr.startsWith(a + '-')) ret = true;
+    });
+    return ret;
+  };
+
+  const isSquatCalculationAttributeForThisElement = (attr: string, id: string | number): boolean => {
+    return squatAttributes.map((s) => s + '-' + id).includes(attr);
+  };
+
+  const getIndex = (attr: string) => {
+    return attr.split('-')[1];
+  };
+
   switch (actionType) {
     case 'squatCalculations':
       if (actionTarget) {
         const squatFieldErrors: ValidationType[] = validationErrors
-          .filter((error) => error.id.startsWith('squatCalculations-'))
-          .filter((error) => error.id !== 'squatCalculations-' + actionTarget)
+          .filter((error) => isSquatCalculationAttribute(error.id))
+          .filter((error) => !isSquatCalculationAttributeForThisElement(error.id, actionTarget))
           .map((error, index) => {
-            return { id: 'squatCalculations-' + index, msg: error.msg };
+            return { id: error.id.replace(getIndex(error.id), index.toString()), msg: error.msg };
           });
-        setValidationErrors(validationErrors.filter((error) => !error.id.startsWith('squatCalculations-')).concat(squatFieldErrors));
+        setValidationErrors(validationErrors.filter((error) => !isSquatCalculationAttribute(error.id)).concat(squatFieldErrors));
       }
       break;
     case 'squatCalculationPlace':

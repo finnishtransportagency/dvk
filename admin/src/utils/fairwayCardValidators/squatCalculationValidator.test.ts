@@ -47,9 +47,10 @@ test('if squat calculation validates correctly', () => {
     'squatCalculations',
     {
       validationErrors: [
-        { id: 'squatCalculations-0', msg: 'dummy' },
-        { id: 'squatCalculations-1', msg: 'dummy' },
-        { id: 'squatCalculations-2', msg: 'dummy' },
+        { id: 'dummy-1', msg: 'dummy' },
+        { id: 'squatCalculationPlace-0', msg: 'dummy' },
+        { id: 'squatCalculationPlace-1', msg: 'dummy' },
+        { id: 'squatCalculationPlace-2', msg: 'dummy' },
       ],
       setValidationErrors: (validationErrors: ValidationType[]) => {
         validationErrors.forEach((e) => errors.push(e));
@@ -60,9 +61,10 @@ test('if squat calculation validates correctly', () => {
     1,
     0
   );
-  expect(errors).toHaveLength(2);
-  expect(errors[0].id).toEqual('squatCalculations-0');
-  expect(errors[1].id).toEqual('squatCalculations-1');
+  expect(errors).toHaveLength(3);
+  expect(errors[0].id).toEqual('dummy-1');
+  expect(errors[1].id).toEqual('squatCalculationPlace-0');
+  expect(errors[2].id).toEqual('squatCalculationPlace-1');
 });
 
 test('if squat fairway id list validates correctly', () => {
