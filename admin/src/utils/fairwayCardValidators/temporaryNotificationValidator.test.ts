@@ -31,6 +31,7 @@ test('if temporary notification start date validates correctly', () => {
   expect(errors[0].id).toEqual('temporaryNotificationStartDate-0');
   expect(errors[0].msg).toEqual(ErrorMessageKeys.required);
 });
+
 test('if temporary notification end date validates correctly', () => {
   const testState = getTestState();
   const errors: ValidationType[] = [];

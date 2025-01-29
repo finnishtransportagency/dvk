@@ -11,28 +11,31 @@ export const temporaryNotificationValidator = (
   setValidationErrors: (validationErrors: ValidationType[]) => void,
   actionTarget?: string | number
 ) => {
-  const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
-  const setErrors = (errorMsg: string) => {
+  // manual validations for temporary notifications (errors that shows before trying to save the whole card)
+  if (actionType === 'temporaryNotificationStartDate' && actionTarget !== undefined) {
+    const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
+    let errorMsg = '';
+
+    if (!notification?.startDate) {
+      errorMsg = t(ErrorMessageKeys?.required);
+    } else if (dateError(notification?.startDate)) {
+      errorMsg = t(ErrorMessageKeys?.invalid);
+    }
+
     setValidationErrors(
       validationErrors
-        .filter((error) => error.id !== actionType + '-' + actionTarget)
+        .filter((error) => error.id !== 'temporaryNotificationStartDate-' + actionTarget)
         .concat({
-          id: actionType + '-' + actionTarget,
+          id: 'temporaryNotificationStartDate-' + actionTarget,
           msg: errorMsg,
         })
     );
-  };
-
-  // manual validations for temporary notifications (errors that shows before trying to save the whole card)
-  if (actionType === 'temporaryNotificationStartDate' && actionTarget !== undefined) {
-    if (!notification?.startDate) {
-      setErrors(t(ErrorMessageKeys?.required));
-    } else if (dateError(notification?.startDate)) {
-      setErrors(t(ErrorMessageKeys?.invalid));
-    }
   } else if (actionType === 'temporaryNotificationEndDate' && actionTarget !== undefined) {
+    const notification = newState.temporaryNotifications?.find((_, idx) => idx === actionTarget);
+    let errorMsg = '';
+
     if (notification?.endDate && dateError(notification?.endDate)) {
-      setErrors(ErrorMessageKeys?.invalid);
+      errorMsg = t(ErrorMessageKeys?.invalid);
       // only if there's valid start date check if end date is same/after start date
     } else if (
       notification?.endDate &&
@@ -40,7 +43,15 @@ export const temporaryNotificationValidator = (
       !dateError(notification?.startDate) &&
       endDateError(notification?.startDate ?? '', notification?.endDate ?? '')
     ) {
-      setErrors(t(ErrorMessageKeys?.endDateError));
+      errorMsg = t(ErrorMessageKeys?.endDateError);
     }
+    setValidationErrors(
+      validationErrors
+        .filter((error) => error.id !== 'temporaryNotificationEndDate-' + actionTarget)
+        .concat({
+          id: 'temporaryNotificationEndDate-' + actionTarget,
+          msg: errorMsg,
+        })
+    );
   }
 };
