@@ -309,7 +309,7 @@
     "squat-calculation-cannot-remove-fairway": "Väylä on linkitetty alueeseen, jota käytetään squat-laskennassa.",
     "cannot-change-reference-level": "Väyläkortille on lisätty squat-laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin squat-laskennan sijainnit on poistettu.",
     "squat-calculation-area-orphaned_one": "Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan.",
-    "squat-calculation-area-orphaned_other": "Väyläalueete <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitykset sijainnin laskentaan."
+    "squat-calculation-area-orphaned_other": "Väyläalueet <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitykset sijainnin laskentaan."
   },
   "harbour": {
     "primary-id": "Sataman tunniste",
