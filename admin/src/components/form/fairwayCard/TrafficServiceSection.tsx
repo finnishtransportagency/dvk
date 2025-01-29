@@ -1,11 +1,12 @@
 import React from 'react';
-import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
-import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../../../utils/constants';
+import { IonCol, IonGrid, IonRow } from '@ionic/react';
+import { ActionType, Lang, MainSectionTitle, MainSectionOpenType, SelectOption, ValidationType, ValueType } from '../../../utils/constants';
 import { FairwayCardInput, PilotPlace, PilotPlaceInput, Status } from '../../../graphql/generated';
 import TextInputRow from '../TextInputRow';
 import { useTranslation } from 'react-i18next';
 import SelectInput from '../SelectInput';
 import TextInput from '../TextInput';
+import CollapsibleWrapper from '../CollapsibleWrapper';
 
 interface TrafficServiceSectionProps {
   state: FairwayCardInput;
@@ -18,6 +19,8 @@ interface TrafficServiceSectionProps {
   ) => void;
   validationErrors: ValidationType[];
   isLoadingPilotPlaces: boolean;
+  sectionsOpen: MainSectionOpenType[];
+  toggleSection: (id: MainSectionTitle, open: boolean) => void;
   pilotPlaceOptions?: SelectOption[];
   readonly?: boolean;
 }
@@ -27,6 +30,8 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
   updateState,
   validationErrors,
   isLoadingPilotPlaces,
+  sectionsOpen,
+  toggleSection,
   pilotPlaceOptions,
   readonly = false,
 }) => {
@@ -34,12 +39,14 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
   const lang = i18n.resolvedLanguage as Lang;
 
   return (
-    <>
-      <IonText>
-        <h2 data-testid="trafficServices">{t('fairwaycard.traffic-services')}</h2>
-        <h3 data-testid="pilotOrder">{t('fairwaycard.pilot-order')}</h3>
-      </IonText>
-      <IonGrid className="formGrid">
+    <CollapsibleWrapper
+      title={t('fairwaycard.pilot-order')}
+      dataTestId="pilotOrder"
+      subSection={true}
+      sectionsOpen={sectionsOpen}
+      toggleSection={toggleSection}
+    >
+      <IonGrid className="formGrid" style={{ overflow: 'visible' }}>
         <IonRow>
           <IonCol sizeMd="4">
             <TextInput
@@ -129,7 +136,7 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
           })}
         </IonRow>
       </IonGrid>
-    </>
+    </CollapsibleWrapper>
   );
 };
 

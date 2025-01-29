@@ -1,12 +1,15 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { IonContent, IonPage, IonText } from '@ionic/react';
+import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import {
   ActionType,
   AreaSelectOption,
   ConfirmationType,
   ErrorMessageKeys,
+  FairwayCardMainSections,
   Lang,
+  MainSectionOpenType,
+  MainSectionTitle,
   saveErrorTitle,
   ValidationType,
   ValueType,
@@ -46,7 +49,7 @@ import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
-import { isReadOnly, openPreview, featureCollectionToAreaSelectOptions } from '../utils/common';
+import { isReadOnly, openPreview, featureCollectionToAreaSelectOptions, openFairwayCardSectionsByValidationErrors } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
@@ -55,6 +58,8 @@ import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
 import SquatCalculationSection from './form/fairwayCard/SquatCalculationSection';
+import CollapsibleWrapper from './form/CollapsibleWrapper';
+import CollapsibleButtons from './form/CollapsibleButtons';
 
 interface FormProps {
   fairwayCard: FairwayCardInput;
@@ -83,8 +88,9 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [previewPending, setPreviewPending] = useState(false);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
-  // if confirmation modal comes up because of unsaved changing version,, handleConfirmationSubmit gets the value from this
+  // if confirmation modal comes up because of unsaved changing version, handleConfirmationSubmit gets the value from this
   const [versionToMoveTo, setVersionToMoveTo] = useState('');
+  const [sectionsOpen, setSectionsOpen] = useState<MainSectionOpenType[]>(FairwayCardMainSections);
 
   const { data: fairwayList, isLoading: isLoadingFairways } = useFairwaysQueryData();
   const { data: harbourList, isLoading: isLoadingHarbours } = useHarboursQueryData();
@@ -216,11 +222,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     [state, oldState, saveFairwayCard]
   );
 
-  const formValid = (): boolean => {
+  const getValidations = () => {
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
     const invalidErrorMsg = t(ErrorMessageKeys?.invalid);
     const endDateErrorMsg = t(ErrorMessageKeys.endDateError);
     const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
+    return validations;
+  };
+
+  const formValid = (): boolean => {
+    const validations = getValidations();
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -243,6 +254,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     } else {
       setSaveError(saveErrorTitle.MISSING);
       setPreviewPending(false);
+      toggleSectionsByValidations();
     }
   };
 
@@ -273,6 +285,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setConfirmationType('version');
     } else if (!saveError) {
       setSaveError(saveErrorTitle.BLOCKED);
+      toggleSectionsByValidations();
     }
   };
 
@@ -282,6 +295,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setPublishDetailsOpen(true);
     } else {
       setSaveError(saveErrorTitle.MISSING);
+      toggleSectionsByValidations();
     }
   };
 
@@ -349,6 +363,20 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     creator: savedCard?.creator ?? creator,
   };
   const readonly = isReadOnly(state);
+
+  const toggleAllSections = (open: boolean) => {
+    setSectionsOpen(sectionsOpen.map((s) => ({ ...s, open })));
+  };
+
+  const toggleSection = (id: MainSectionTitle, open: boolean) => {
+    const opened = sectionsOpen.map((s) => (s.id === id ? { ...s, open: open } : s));
+    setSectionsOpen(opened);
+  };
+
+  const toggleSectionsByValidations = () => {
+    const validations = getValidations();
+    openFairwayCardSectionsByValidationErrors(validations, sectionsOpen);
+  };
 
   return (
     <IonPage>
@@ -421,96 +449,161 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
-              <PublishDetailsSection state={state} />
-              <MainSection
-                state={state}
-                updateState={updateState}
-                validationErrors={validationErrors}
-                setValidity={setValidity}
-                isLoadingFairways={isLoadingFairways}
-                isLoadingHarbours={isLoadingHarbours}
-                fairwayOptions={fairwayList?.fairways}
-                fairwaySelection={fairwaySelection}
-                harbourOptions={harbourOptions}
-                isLoadingPilotRoutes={isLoadingPilotRoutes}
-                pilotRouteOptions={pilotRouteList}
-                readonly={readonly}
-              />
-              <NotificationSection
-                state={state}
-                sections={state.temporaryNotifications as TemporaryNotificationInput[]}
-                updateState={updateState}
-                sectionType="temporaryNotifications"
-                validationErrors={validationErrors}
-                readonly={readonly}
-              />
-              <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <RecommendationsSection
-                state={state}
-                updateState={updateState}
-                validationErrors={validationErrors}
-                isLoadingMareographs={isLoadingMareographs}
-                mareographOptions={mareographList?.mareographs}
-                readonly={readonly}
-              />
-              <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <TrafficServiceSection
-                state={state}
-                updateState={updateState}
-                validationErrors={validationErrors}
-                isLoadingPilotPlaces={isLoadingPilotPlaces}
-                pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
-                readonly={readonly}
-              />
+              <CollapsibleButtons toggleAllSections={toggleAllSections} sectionsOpen={sectionsOpen} />
 
-              <Section
-                title={t('fairwaycard.vts-heading')}
-                sections={state.trafficService?.vts as VtsInput[]}
-                updateState={updateState}
-                sectionType="vts"
-                validationErrors={validationErrors}
-                disabled={!readonly && state.status === Status.Removed}
-                readonly={readonly}
-              />
+              <CollapsibleWrapper
+                title={t('fairwaycard.publish-details')}
+                dataTestId="toggleOpenPublishDetails"
+                toggleSection={toggleSection}
+                sectionsOpen={sectionsOpen}
+                disabled={!state.publishDetails}
+              >
+                <PublishDetailsSection state={state} />
+              </CollapsibleWrapper>
 
-              <Section
-                title={t('fairwaycard.tug-heading')}
-                sections={state.trafficService?.tugs as TugInput[]}
-                updateState={updateState}
-                sectionType="tug"
-                validationErrors={validationErrors}
-                disabled={!readonly && state.status === Status.Removed}
-                readonly={readonly}
-              />
+              <CollapsibleWrapper
+                title={t('fairwaycard.main-section-title')}
+                infoHeader={t('fairwaycard.main-section-title')}
+                infoMessage={t('modal.fairway-card-basic-info-description')}
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
+              >
+                <MainSection
+                  state={state}
+                  updateState={updateState}
+                  validationErrors={validationErrors}
+                  setValidity={setValidity}
+                  isLoadingFairways={isLoadingFairways}
+                  isLoadingHarbours={isLoadingHarbours}
+                  fairwayOptions={fairwayList?.fairways}
+                  fairwaySelection={fairwaySelection}
+                  harbourOptions={harbourOptions}
+                  isLoadingPilotRoutes={isLoadingPilotRoutes}
+                  pilotRouteOptions={pilotRouteList}
+                  readonly={readonly}
+                />
+              </CollapsibleWrapper>
 
-              <SquatCalculationSection
-                sections={state.squatCalculations as SquatCalculationInput[]}
-                updateState={updateState}
-                sectionType="squatCalculations"
-                validationErrors={validationErrors}
-                showWarningLabel={!state.n2000HeightSystem}
-                disabled={!state.n2000HeightSystem}
-                readonly={readonly}
-                fairwaySelection={fairwaySelection}
-                fairwayAreas={filteredAreaOptions}
-                isLoadingAreas={isLoadingAreas}
-                isLoadingFairways={isLoadingFairways}
-              />
+              <CollapsibleWrapper
+                title={t('fairwaycard.temporary-notification-title')}
+                infoHeader={t('fairwaycard.temporary-notification-title')}
+                infoI18nKey="modal.temporary-notification-add"
+                infoMessage={t('general.markdown.description')}
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
+              >
+                <NotificationSection
+                  state={state}
+                  sections={state.temporaryNotifications as TemporaryNotificationInput[]}
+                  updateState={updateState}
+                  sectionType="temporaryNotifications"
+                  validationErrors={validationErrors}
+                  readonly={readonly}
+                />
+              </CollapsibleWrapper>
 
-              <IonText>
-                <h2>{t('fairwaycard.print-images')}</h2>
-              </IonText>
+              <CollapsibleWrapper title={t('fairwaycard.fairway-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+                <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              </CollapsibleWrapper>
 
-              <MapExportTool
-                fairwayCardInput={state}
-                readonly={readonly}
-                disabled={!readonly && state.status === Status.Removed}
-                validationErrors={validationErrors.concat(innerValidationErrors)}
-                setPicture={updateState}
-                fairways={fairwaySelection}
-                harbours={harbourSelection}
-              />
+              <CollapsibleWrapper title={t('fairwaycard.navigation')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+                <NavigationSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              </CollapsibleWrapper>
+
+              <CollapsibleWrapper title={t('fairwaycard.recommendation')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+                <RecommendationsSection
+                  state={state}
+                  updateState={updateState}
+                  validationErrors={validationErrors}
+                  isLoadingMareographs={isLoadingMareographs}
+                  mareographOptions={mareographList?.mareographs}
+                  readonly={readonly}
+                />
+              </CollapsibleWrapper>
+
+              <CollapsibleWrapper
+                title={t('fairwaycard.fairway-additional-info')}
+                infoHeader={t('fairwaycard.fairway-additional-info-notification-header')}
+                infoMessage={`${t('fairwaycard.fairway-additional-info-notification-body') ?? ''}\n${t('general.markdown.description')}`}
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
+              >
+                <AdditionalInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              </CollapsibleWrapper>
+
+              <CollapsibleWrapper
+                title={t('fairwaycard.traffic-services')}
+                titleDataTestId="trafficServices"
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
+              >
+                <TrafficServiceSection
+                  state={state}
+                  updateState={updateState}
+                  validationErrors={validationErrors}
+                  isLoadingPilotPlaces={isLoadingPilotPlaces}
+                  sectionsOpen={sectionsOpen}
+                  toggleSection={toggleSection}
+                  pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
+                  readonly={readonly}
+                />
+
+                <Section
+                  title={t('fairwaycard.vts-heading')}
+                  sections={state.trafficService?.vts as VtsInput[]}
+                  updateState={updateState}
+                  sectionType="vts"
+                  validationErrors={validationErrors}
+                  disabled={!readonly && state.status === Status.Removed}
+                  readonly={readonly}
+                />
+
+                <Section
+                  title={t('fairwaycard.tug-heading')}
+                  sections={state.trafficService?.tugs as TugInput[]}
+                  updateState={updateState}
+                  sectionType="tug"
+                  validationErrors={validationErrors}
+                  disabled={!readonly && state.status === Status.Removed}
+                  readonly={readonly}
+                />
+              </CollapsibleWrapper>
+
+              <CollapsibleWrapper
+                title={t('fairwaycard.squat-calculation-title')}
+                infoHeader={t('fairwaycard.squat-calculation-title')}
+                infoI18nKey={'modal.squat-calculation-add'}
+                infoMessage={t('general.squat-calculation-description')}
+                sectionsOpen={sectionsOpen}
+                toggleSection={toggleSection}
+                dataTestId="toggleOpenSquatCalculations"
+              >
+                <SquatCalculationSection
+                  sections={state.squatCalculations as SquatCalculationInput[]}
+                  updateState={updateState}
+                  sectionType="squatCalculations"
+                  validationErrors={validationErrors}
+                  showWarningLabel={!state.n2000HeightSystem}
+                  disabled={!state.n2000HeightSystem}
+                  readonly={readonly}
+                  fairwaySelection={fairwaySelection}
+                  fairwayAreas={filteredAreaOptions}
+                  isLoadingAreas={isLoadingAreas}
+                  isLoadingFairways={isLoadingFairways}
+                />
+              </CollapsibleWrapper>
+
+              <CollapsibleWrapper title={t('fairwaycard.print-images')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+                <MapExportTool
+                  fairwayCardInput={state}
+                  readonly={readonly}
+                  disabled={!readonly && state.status === Status.Removed}
+                  validationErrors={validationErrors.concat(innerValidationErrors)}
+                  setPicture={updateState}
+                  fairways={fairwaySelection}
+                  harbours={harbourSelection}
+                />
+              </CollapsibleWrapper>
             </form>
           </>
         )}

@@ -41,7 +41,7 @@ const VhfInputSection: React.FC<VhfInputSectionProps> = ({
   const { t } = useTranslation();
 
   return (
-    <IonGrid className={'formGrid ' + className}>
+    <IonGrid className={'formGrid ' + className + ' subSectionMargin'}>
       <TextInputRow
         labelKey="fairwaycard.vhf-name"
         value={section.name}

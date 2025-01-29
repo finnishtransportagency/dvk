@@ -15,7 +15,17 @@ import {
   TemporaryNotification,
   Text,
 } from '../graphql/generated';
-import { AreaSelectOption, FeatureDataId, FeatureDataSources, ItemType, Lang, SelectOption, VERSION } from './constants';
+import {
+  AreaSelectOption,
+  FeatureDataId,
+  FeatureDataSources,
+  ItemType,
+  Lang,
+  MainSectionOpenType,
+  SelectOption,
+  ValidationType,
+  VERSION,
+} from './constants';
 import { FeatureCollection } from 'geojson';
 import { compareAsc, format, isValid, parse, parseISO } from 'date-fns';
 
@@ -502,4 +512,65 @@ export function getSortedOptions(options: SelectOption[] | null, selected: Selec
     // if no sequence numbers to compare, just compare names
     return a.name?.fi?.localeCompare(b.name?.fi as string) ?? 0;
   });
+}
+
+export function openFairwayCardSectionsByValidationErrors(validationErrors: ValidationType[], sectionsOpen: MainSectionOpenType[]) {
+  const newSections = [...sectionsOpen];
+
+  validationErrors.forEach((v) => {
+    if (!v.msg) {
+      return;
+    }
+    if (v.id === 'name' || v.id === 'fairwayIds' || v.id === 'fairwayPrimary' || v.id === 'fairwaySecondary' || v.id === 'group') {
+      // Väyläkortin perustiedot
+      newSections[1].open = true;
+    }
+    if (v.id.includes('temporaryNotification')) {
+      // Väliaikaisen huomion lisääminen väyläkortille
+      newSections[2].open = true;
+    }
+    if (v.id === 'line' || v.id === 'designSpeed' || v.id === 'speedLimit' || v.id === 'anchorage') {
+      // Väylätiedot
+      newSections[3].open = true;
+    }
+    if (v.id === 'navigationCondition' || v.id === 'iceCondition') {
+      // Väylän navigoitavuus
+      newSections[4].open = true;
+    }
+    if (v.id === 'windRecommendation' || v.id === 'vesselRecommendation' || v.id === 'visibility') {
+      // Käyttösuositukset
+      newSections[5].open = true;
+    }
+    if (v.id === 'additionalInfo') {
+      // Lisätiedot
+      newSections[6].open = true;
+    }
+    if (v.id === 'pilotExtraInfo' || v.id.includes('tug') || v.id.includes('vts') || v.id.includes('vhf')) {
+      // Liikennepalvelut
+      newSections[7].open = true;
+      // Luotsintilaus
+      newSections[8].open = true;
+    }
+    if (v.id.includes('squat')) {
+      // Squat-laskennan sijainnin lisääminen
+      newSections[9].open = true;
+    }
+  });
+
+  return newSections;
+}
+
+export function openHarborSectionsByValidationErrors(validationErrors: ValidationType[], sectionsOpen: MainSectionOpenType[]) {
+  const newSections = [...sectionsOpen];
+  const validationTypes = ['name', 'extraInfo', 'cargo', 'harbourBasin', 'companyName', 'lat', 'lon'];
+
+  validationErrors.forEach((v) => {
+    if (!v.msg) {
+      return;
+    }
+    if (validationTypes.includes(v.id) || v.id.includes('quay')) {
+      newSections[2].open = true;
+    }
+  });
+  return newSections;
 }

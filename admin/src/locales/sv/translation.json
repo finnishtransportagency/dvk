@@ -125,7 +125,9 @@
     "version": "[sv] Versio",
     "add-section-squat-calculation": "[sv] Lisää laskennan sijainti",
     "cannot-add-section-squat-calculation": "[sv] Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
-    "squat-calculation-description": "[sv] Lorem ipsum..."
+    "squat-calculation-description": "[sv] Lorem ipsum...",
+    "expand-sections": "[sv] Laajenna osiot",
+    "collapse-sections": "[sv] Sulje kaikki osiot"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",
@@ -187,7 +189,8 @@
     "adding-publish-details": "[sv] Julkaisutietojen lisääminen",
     "unsaved-changes": "[sv] Tallentamattomia muutoksia",
     "discard": "[sv] Hylkää",
-    "changing-version": "[sv] Versioiden välillä vaihtelu"
+    "changing-version": "[sv] Versioiden välillä vaihtelu",
+    "fairway-card-basic-info-description": "[sv] Väyläkortin perustiedot kattavat vähimmäistiedot, jotta väyläkortti on mahdollista tuoda näkyville Digitaalinen väyläkortti -palveluun"
   },
   "fairwaycard": {
     "publish-details": "[sv] Julkaisutiedot",
@@ -295,13 +298,15 @@
     "squat-calculation-depth-warning": "[sv] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä.",
     "squat-calculation-cannot-remove-fairway-header": "[sv] Cannot remove fairway",
     "squat-calculation-cannot-remove-fairway": "[sv] The fairway is linked to an area that is in use in this squat calculation template.",
-    "cannot-change-reference-level": "[sv] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu."
+    "cannot-change-reference-level": "[sv] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu.",
+    "main-section-title": "[sv] Väyläkortin perustiedot"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
     "primary-id-help-text": "[sv] Sataman yksilöivä tunniste; sallitut merkit: (a-z) ja (0-9).",
     "error-duplicate-id": "[sv] Tunniste on jo käytössä",
     "harbour-info": "[sv] Satamatiedot",
+    "harbour-basic-info": "[sv] Sataman perustiedot",
     "name": "Portnamn",
     "extra-info": "Hamnens begränsningar",
     "cargo": "Lasthantering",

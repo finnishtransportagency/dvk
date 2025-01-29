@@ -125,7 +125,9 @@
     "version": "[en] Versio",
     "add-section-squat-calculation": "[en] Lisää laskennan sijainti",
     "cannot-add-section-squat-calculation": "[en] Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
-    "squat-calculation-description": "[en] Lorem ipsum..."
+    "squat-calculation-description": "[en] Lorem ipsum...",
+    "expand-sections": "[en] Laajenna osiot",
+    "collapse-sections": "[en] Sulje kaikki osiot"
   },
   "modal": {
     "title-new-CARD": "New fairway card",
@@ -294,13 +296,16 @@
     "squat-calculation-depth-warning": "[en] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä.",
     "squat-calculation-cannot-remove-fairway-header": "Cannot remove fairway",
     "squat-calculation-cannot-remove-fairway": "The fairway is linked to an area that is in use in this squat calculation template.",
-    "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat-laskennan sijainnit on poistettu."
+    "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat-laskennan sijainnit on poistettu.",
+    "main-section-title": "[en] Väyläkortin perustiedot",
+    "fairway-card-basic-info-description": "[en] Väyläkortin perustiedot kattavat vähimmäistiedot, jotta väyläkortti on mahdollista tuoda näkyville Digitaalinen väyläkortti -palveluun"
   },
   "harbour": {
     "primary-id": "Harbour ID",
     "primary-id-help-text": "Harbour unique identifier; valid characters: (a-z) and (0-9).",
     "error-duplicate-id": "[en] Tunniste on jo käytössä",
     "harbour-info": "[en] Satamatiedot",
+    "harbour-basic-info": "[en] Sataman perustiedot",
     "name": "Port name",
     "extra-info": "Harbour restrictions",
     "cargo": "Cargo handling",
