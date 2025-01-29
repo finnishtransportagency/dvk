@@ -285,6 +285,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setConfirmationType('version');
     } else if (!saveError) {
       setSaveError(saveErrorTitle.BLOCKED);
+      toggleSectionsByValidations();
     }
   };
 
@@ -294,6 +295,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
       setPublishDetailsOpen(true);
     } else {
       setSaveError(saveErrorTitle.MISSING);
+      toggleSectionsByValidations();
     }
   };
 

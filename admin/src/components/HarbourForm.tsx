@@ -33,7 +33,7 @@ import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
-import { isReadOnly, openPreview } from '../utils/common';
+import { isReadOnly, openHarborSectionsByValidationErrors, openPreview } from '../utils/common';
 import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
@@ -155,9 +155,14 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     [state, oldState, saveHarbourMutation]
   );
 
-  const formValid = (): boolean => {
+  const getValidations = () => {
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
     const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, t(ErrorMessageKeys?.duplicateLocation));
+    return validations;
+  };
+
+  const formValid = (): boolean => {
+    const validations = getValidations();
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -196,6 +201,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     } else {
       setSaveError(saveErrorTitle.MISSING);
       setPreviewPending(false);
+      toggleSectionsByValidations();
     }
   };
 
@@ -238,6 +244,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     } else if (!saveError && !saveErrorMsg) {
       setSaveError(saveErrorTitle.BLOCKED);
       setSaveErrorMsg(t('general.fix-errors-try-again'));
+      toggleSectionsByValidations();
     }
   };
 
@@ -247,6 +254,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       setPublishDetailsOpen(true);
     } else {
       setSaveError(saveErrorTitle.MISSING);
+      toggleSectionsByValidations();
     }
   };
 
@@ -347,6 +355,12 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const toggleSection = (id: MainSectionTitle, open: boolean) => {
     const opened = sectionsOpen.map((s) => (s.id === id ? { ...s, open: open } : s));
     setSectionsOpen(opened);
+  };
+
+  const toggleSectionsByValidations = () => {
+    const validations = getValidations();
+    console.log(validations);
+    openHarborSectionsByValidationErrors(validations, sectionsOpen);
   };
 
   return (
