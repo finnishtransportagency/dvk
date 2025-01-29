@@ -105,12 +105,12 @@ export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
 export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20240724.json.gz') },
-  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20240724.json.gz') },
-  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20240724.json.gz') },
-  { id: 'mml_jarvi_rantaviiva', url: new URL(staticUrl + '/mml-jarvi-rantaviiva-20240724.json.gz') },
-  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20240719.json.gz') },
-  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit-20240719.json.gz') },
+  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20250123.json.gz') },
+  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20250123.json.gz') },
+  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20250123.json.gz') },
+  { id: 'mml_jarvi_rantaviiva', url: new URL(staticUrl + '/mml-jarvi-rantaviiva-20250123.json.gz') },
+  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20250123.json.gz') },
+  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit-20250123.json.gz') },
 ];
 
 export type FeatureDataProjection = 'EPSG:3067' | 'EPSG:4326' | 'EPSG:3395' | 'EPSG:4258';
