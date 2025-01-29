@@ -273,7 +273,7 @@ test.describe('Modify operations for cards and harbors', () => {
   });
 });
 
-test.describe('Collapsable component tests', () => {
+test.describe('Collapsible component tests', () => {
   test.beforeEach(async () => {
     test.setTimeout(60000);
   });

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import NotificationModal from '../NotificationModal';
 import { MainSectionTitle, MainSectionOpenType } from '../../utils/constants';
 
-interface CollapsableWrapperProps {
+interface CollapsibleWrapperProps {
   title: string;
   children: React.ReactNode;
   sectionsOpen: MainSectionOpenType[];
@@ -20,7 +20,7 @@ interface CollapsableWrapperProps {
   disabled?: boolean;
 }
 
-const CollapsableWrapper: React.FC<CollapsableWrapperProps> = ({
+const CollapsibleWrapper: React.FC<CollapsibleWrapperProps> = ({
   title,
   children,
   toggleSection,
@@ -38,7 +38,7 @@ const CollapsableWrapper: React.FC<CollapsableWrapperProps> = ({
   const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
 
   const open = !disabled && sectionsOpen.find((s) => s.id === title)?.open;
-  const sectionOpen = 'collapsableContent ' + (open ? 'open' : 'closed');
+  const sectionOpen = 'collapsibleContent ' + (open ? 'open' : 'closed');
 
   // pilot order header has style exception
   const isPilotOrder = title.includes('Luotsintilaus');
@@ -99,4 +99,4 @@ const CollapsableWrapper: React.FC<CollapsableWrapperProps> = ({
   );
 };
 
-export default CollapsableWrapper;
+export default CollapsibleWrapper;
