@@ -49,7 +49,7 @@ import NavigationSection from './form/fairwayCard/NavigationSection';
 import RecommendationsSection from './form/fairwayCard/RecommendationsSection';
 import TrafficServiceSection from './form/fairwayCard/TrafficServiceSection';
 import Header from './form/Header';
-import { isReadOnly, openPreview, featureCollectionToAreaSelectOptions } from '../utils/common';
+import { isReadOnly, openPreview, featureCollectionToAreaSelectOptions, openFairwayCardSectionsByValidationErrors } from '../utils/common';
 import AdditionalInfoSection from './form/fairwayCard/AdditionalInfoSection';
 import { useFeatureData } from '../utils/dataLoader';
 import NotificationSection from './form/fairwayCard/NotificationSection';
@@ -222,11 +222,16 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     [state, oldState, saveFairwayCard]
   );
 
-  const formValid = (): boolean => {
+  const getValidations = () => {
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
     const invalidErrorMsg = t(ErrorMessageKeys?.invalid);
     const endDateErrorMsg = t(ErrorMessageKeys.endDateError);
     const validations: ValidationType[] = validateFairwayCardForm(state, requiredMsg, invalidErrorMsg, endDateErrorMsg);
+    return validations;
+  };
+
+  const formValid = (): boolean => {
+    const validations = getValidations();
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -249,6 +254,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
     } else {
       setSaveError(saveErrorTitle.MISSING);
       setPreviewPending(false);
+      toggleSectionsByValidations();
     }
   };
 
@@ -363,6 +369,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const toggleSection = (id: MainSectionTitle, open: boolean) => {
     const opened = sectionsOpen.map((s) => (s.id === id ? { ...s, open: open } : s));
     setSectionsOpen(opened);
+  };
+
+  const toggleSectionsByValidations = () => {
+    const validations = getValidations();
+    openFairwayCardSectionsByValidationErrors(validations, sectionsOpen);
   };
 
   return (
