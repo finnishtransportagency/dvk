@@ -265,7 +265,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'name', projection: 'EPSG:3067', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', projection: 'EPSG:3067', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', projection: 'EPSG:3067', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_satamat', projection: 'EPSG:3067', url: new URL(staticUrl + '/mml-satamat-20240719.json.gz') },
+  { id: 'mml_satamat', projection: 'EPSG:3067', url: new URL(staticUrl + '/mml-satamat-20250123.json.gz') },
   {
     id: 'boardline12',
     projection: 'EPSG:4326',
