@@ -130,8 +130,8 @@
     "add-section-squat-calculation": "Lisää laskennan sijainti",
     "cannot-add-section-squat-calculation": "Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
     "squat-calculation-description": "Haraussyvyytenä käytetään valittujen väyläalueiden matalinta haraussyvyyttä. Huomioithan, että jos väylän alueisiin tulee muutoksia, pitää laskentapisteet tarkistaa ja niihin tehdä tarvittavat muutokset. Mikäli jokin laskentapisteeseen liitetty väyläalue on poistettu VATU-tietokannasta, ei laskentapistettä näytetä DVK-sovelluksessa. Tällöin väyläkortista tulee julkaista uusi versio, jossa laskentapiste on päivitetty.",
-    "squat-calculation-section-area-orphaned_one": "Väyläalue <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy.",
-    "squat-calculation-section-area-orphaned_other": "Väyläalueet <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalueet laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy."
+    "squat-calculation-section-area-orphaned_one": "Väyläalue <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistettu alue poistetaan laskennan sijainnista automaattisesti",
+    "squat-calculation-section-area-orphaned_other": "Väyläalueet <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalueet laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistetut alueet poistetaan laskennan sijainnista automaattisesti"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
