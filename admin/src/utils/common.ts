@@ -562,21 +562,13 @@ export function openFairwayCardSectionsByValidationErrors(validationErrors: Vali
 
 export function openHarborSectionsByValidationErrors(validationErrors: ValidationType[], sectionsOpen: MainSectionOpenType[]) {
   const newSections = [...sectionsOpen];
+  const validationTypes = ['name', 'extraInfo', 'cargo', 'harbourBasin', 'companyName', 'lat', 'lon'];
 
   validationErrors.forEach((v) => {
     if (!v.msg) {
       return;
     }
-    if (
-      v.id === 'name' ||
-      v.id === 'extraInfo' ||
-      v.id === 'cargo' ||
-      v.id === 'harbourBasin' ||
-      v.id === 'companyName' ||
-      v.id === 'lat' ||
-      v.id === 'lon' ||
-      v.id.includes('quay')
-    ) {
+    if (validationTypes.includes(v.id) || v.id.includes('quay')) {
       newSections[2].open = true;
     }
   });
