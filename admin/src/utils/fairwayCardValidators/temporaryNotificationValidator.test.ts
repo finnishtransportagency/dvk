@@ -55,3 +55,27 @@ test('if temporary notification end date validates correctly', () => {
   expect(errors[0].id).toEqual('temporaryNotificationEndDate-0');
   expect(errors[0].msg).toEqual(ErrorMessageKeys.invalid);
 });
+
+test('if temporary notification reset value validates correctly', () => {
+  const testState = getTestState();
+  const errors: ValidationType[] = [];
+  fairwayCardReducer(
+    testState,
+    '01.01.2000',
+    'temporaryNotificationStartDate',
+    {
+      validationErrors: [{ id: 'temporaryNotificationStartDate-0', msg: 'dummy' }],
+      setValidationErrors: (validationErrors: ValidationType[]) => {
+        validationErrors.forEach((e) => errors.push(e));
+      },
+      reservedIds: [],
+    },
+    'fi',
+    0,
+    0
+  );
+
+  expect(errors).toHaveLength(1);
+  expect(errors[0].id).toEqual('temporaryNotificationStartDate-0');
+  expect(errors[0].msg).toEqual('');
+});
