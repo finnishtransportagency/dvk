@@ -126,8 +126,8 @@
     "add-section-squat-calculation": "[sv] Lisää laskennan sijainti",
     "cannot-add-section-squat-calculation": "[sv] Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
     "squat-calculation-description": "[sv] Haraussyvyytenä käytetään valittujen väyläalueiden matalinta haraussyvyyttä. Huomioithan, että jos väylän alueisiin tulee muutoksia, pitää laskentapisteet tarkistaa ja niihin tehdä tarvittavat muutokset. Mikäli jokin laskentapisteeseen liitetty väyläalue on poistettu VATU-tietokannasta, ei laskentapistettä näytetä DVK-sovelluksessa. Tällöin väyläkortista tulee julkaista uusi versio, jossa laskentapiste on päivitetty.",
-    "squat-calculation-section-area-orphaned_one": "[sv] Väyläalue <strong>{ids}</strong> on poistettu. Ole hyvä ja poista sijaintiin liitetty <strong>{ids}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy.",
-    "squat-calculation-section-area-orphaned_other": "[sv] [MULTIPLE] Väyläalue <strong>{ids}</strong> on poistettu. Ole hyvä ja poista sijaintiin liitetty <strong>{ids}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy."
+    "squat-calculation-section-area-orphaned_one": "[sv] Väyläalue <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy.",
+    "squat-calculation-section-area-orphaned_other": "[sv] Väyläalueet <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalueet laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy."
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",
@@ -299,7 +299,7 @@
     "squat-calculation-cannot-remove-fairway": "[sv] The fairway is linked to an area that is in use in this squat calculation template.",
     "cannot-change-reference-level": "[sv] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu.",
     "squat-calculation-area-orphaned_one": "[sv] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan.",
-    "squat-calculation-area-orphaned_other": "[sv] [MULTIPLE] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan."
+    "squat-calculation-area-orphaned_other": "[sv] Väyläalueet <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitykset sijainnin laskentaan."
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",

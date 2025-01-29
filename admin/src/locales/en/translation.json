@@ -298,7 +298,7 @@
     "squat-calculation-cannot-remove-fairway": "The fairway is linked to an area that is in use in this squat calculation template.",
     "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat-laskennan sijainnit on poistettu.",
     "squat-calculation-area-orphaned_one": "[en] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan.",
-    "squat-calculation-area-orphaned_other": "[en] [MULTIPLE] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan."
+    "squat-calculation-area-orphaned_other": "[en] Väyläalueet <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitykset sijainnin laskentaan."
   },
   "harbour": {
     "primary-id": "Harbour ID",
