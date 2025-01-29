@@ -312,7 +312,7 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
                 aria-label={t('closePane')}
                 onClick={() => backToHome()}
               >
-                <IonIcon className="otherIconLarge" src={closeIcon} />
+                <IonIcon className="otherIconLarge" src={closeIcon} aria-hidden="true" />
               </IonButton>
             </IonCol>
           </IonRow>

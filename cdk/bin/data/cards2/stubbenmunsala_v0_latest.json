@@ -20,12 +20,7 @@
     "sv": "Stubben-Munsala farled"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Pietarsaari Leppäluoto mareograph.",
-    "fi": "Merivedenkorkeus: Pietarsaari Leppäluoto mareograf.",
-    "sv": "Jakobstad mareograf."
-  },
-  "creationTimestamp": 1683095537481,
+  "creationTimestamp": 1732531574287,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The fairway is unsheltered from Stubben lighthouse to Jöusan, W-N winds create heavy seas.",
@@ -55,14 +50,23 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 565,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718862213866,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732531574287,
+  "pilotRoutes": [
+    {
+      "id": 290
+    },
+    {
+      "id": 292
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "In early winter, ice fields are in motion in the area W of Jöusan. Ice movement may cause spar buoys to be pressed under ice (surface). In cold winters, the fast ice edge extends far out to sea.",
     "fi": "Alkutalvella jääkentät liikkuvat Jöusan L-puolella, viitat saattavat olla jään alla. Kylminä talvina kiintojään alue ulottuu kauas avomerelle.",

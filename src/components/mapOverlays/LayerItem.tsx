@@ -132,7 +132,7 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
               aria-label={legendOpen ? t('common.close') : t('common.open')}
               onClick={() => toggleDetails()}
             >
-              <IonIcon icon={arrowDownIcon} />
+              <IonIcon icon={arrowDownIcon} aria-hidden="true" />
             </IonButton>
           )}
         </IonCol>

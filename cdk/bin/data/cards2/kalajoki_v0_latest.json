@@ -16,7 +16,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235727265
+      "modificationTimestamp": 1732531341299
     },
     {
       "scaleWidth": "101",
@@ -29,7 +29,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235728586
+      "modificationTimestamp": 1732531341299
     },
     {
       "scaleWidth": "101",
@@ -42,7 +42,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235729706
+      "modificationTimestamp": 1732531341300
     },
     {
       "scaleWidth": "107",
@@ -55,7 +55,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235762128
+      "modificationTimestamp": 1732531341300
     },
     {
       "scaleWidth": "107",
@@ -68,7 +68,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235763152
+      "modificationTimestamp": 1732531341300
     },
     {
       "scaleWidth": "107",
@@ -81,7 +81,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235764027
+      "modificationTimestamp": 1732531341300
     },
     {
       "scaleWidth": "95",
@@ -94,7 +94,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235793385
+      "modificationTimestamp": 1732531341300
     },
     {
       "scaleWidth": "95",
@@ -107,7 +107,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235794638
+      "modificationTimestamp": 1732531341300
     },
     {
       "scaleWidth": "95",
@@ -120,7 +120,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235795798
+      "modificationTimestamp": 1732531341301
     },
     {
       "scaleWidth": "106",
@@ -133,7 +133,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235821393
+      "modificationTimestamp": 1732531341301
     },
     {
       "scaleWidth": "106",
@@ -146,7 +146,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235822553
+      "modificationTimestamp": 1732531341301
     },
     {
       "scaleWidth": "106",
@@ -159,7 +159,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235823773
+      "modificationTimestamp": 1732531341301
     },
     {
       "scaleWidth": "112",
@@ -172,7 +172,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235848554
+      "modificationTimestamp": 1732531341301
     },
     {
       "scaleWidth": "112",
@@ -185,7 +185,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235850188
+      "modificationTimestamp": 1732531341301
     },
     {
       "scaleWidth": "112",
@@ -198,7 +198,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235851302
+      "modificationTimestamp": 1732531341306
     },
     {
       "scaleWidth": "75",
@@ -211,7 +211,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235870903
+      "modificationTimestamp": 1732531341306
     },
     {
       "scaleWidth": "75",
@@ -224,7 +224,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235872182
+      "modificationTimestamp": 1732531341306
     },
     {
       "scaleWidth": "75",
@@ -237,7 +237,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235873285
+      "modificationTimestamp": 1732531341306
     },
     {
       "scaleWidth": "86",
@@ -250,7 +250,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1697519214501
+      "modificationTimestamp": 1732531341306
     },
     {
       "scaleWidth": "86",
@@ -263,7 +263,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1697519215419
+      "modificationTimestamp": 1732531341306
     },
     {
       "scaleWidth": "86",
@@ -276,7 +276,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1697519216452
+      "modificationTimestamp": 1732531341306
     },
     {
       "scaleWidth": "101",
@@ -289,7 +289,7 @@
       "text": "Kalajoen satama",
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1697519251576
+      "modificationTimestamp": 1732531341307
     },
     {
       "scaleWidth": "101",
@@ -302,7 +302,7 @@
       "text": "Kalajoki hamn",
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1697519252647
+      "modificationTimestamp": 1732531341307
     },
     {
       "scaleWidth": "101",
@@ -315,7 +315,7 @@
       "text": "Port of Kalajoki",
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1697519253658
+      "modificationTimestamp": 1732531341307
     },
     {
       "scaleWidth": "70",
@@ -328,7 +328,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235557908
+      "modificationTimestamp": 1732531341307
     },
     {
       "scaleWidth": "70",
@@ -341,7 +341,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235558976
+      "modificationTimestamp": 1732531341307
     },
     {
       "scaleWidth": "70",
@@ -354,7 +354,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235560027
+      "modificationTimestamp": 1732531341326
     },
     {
       "scaleWidth": "112",
@@ -367,7 +367,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235591468
+      "modificationTimestamp": 1732531341327
     },
     {
       "scaleWidth": "112",
@@ -380,7 +380,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235592640
+      "modificationTimestamp": 1732531341327
     },
     {
       "scaleWidth": "112",
@@ -393,7 +393,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235593751
+      "modificationTimestamp": 1732531341327
     },
     {
       "scaleWidth": "133",
@@ -406,7 +406,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235622330
+      "modificationTimestamp": 1732531341327
     },
     {
       "scaleWidth": "133",
@@ -419,7 +419,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235623536
+      "modificationTimestamp": 1732531341327
     },
     {
       "scaleWidth": "133",
@@ -432,7 +432,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235624794
+      "modificationTimestamp": 1732531341327
     },
     {
       "scaleWidth": "97",
@@ -445,7 +445,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698235661819
+      "modificationTimestamp": 1732531341328
     },
     {
       "scaleWidth": "97",
@@ -458,7 +458,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698235663018
+      "modificationTimestamp": 1732531341328
     },
     {
       "scaleWidth": "97",
@@ -471,7 +471,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698235664139
+      "modificationTimestamp": 1732531341328
     }
   ],
   "group": "3",
@@ -490,12 +490,7 @@
     "sv": "Kalajoki Rahja farled"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Raahe mareograph.",
-    "fi": "Raahen mareografi.",
-    "sv": "Brahestad mareograf."
-  },
-  "creationTimestamp": 1683095536937,
+  "creationTimestamp": 1732531372628,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The fairway is open sea area and unsheltered against all winds from sea to the harbour. Strong wind affects the navigation on the entire fairway and in the harbour. The inner fairway (1,5 km) has been dredged and is unsheltered for N-NE winds. Especially N and NE winds can create waves also in the harbour basin. Narrow fairway, winds, harbour basin features and squat-effect can affect on navigation and maneuvering of the ship.",
@@ -525,14 +520,23 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 370,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718863006725,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732531372629,
+  "pilotRoutes": [
+    {
+      "id": 289
+    },
+    {
+      "id": 291
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "During normal winters, from mid of December to end of April the fast ice edge extends from harbour to edge mark Roima. Ice fields are in motion from Roima to Kaarlo buoy, layers of ice builds in the fairway. Ice movement may cause buoys and spar buoys to be pressed under ice (surface). During mild winters ice may be pressed outside of the harbour and even into the harbour basin and affecting maneuvering of the ship.",
     "fi": "Pysyvä jääpeite yleensä joulukuun puolivälistä huhtikuun lopulle sataman edustan merialueilla. Sataman suulla sydäntalvella on usein ahtaumia. Etelään liikkuva jää pääsee satama-altaaseen asti ja voi tukkia aallonmurtajan suun ja vaikeuttaa huomattavasti alusten operointia satama-altaassa. Sataman suulta RM Roima:lle jääkenttä pysyy normaalitalvena paikallaan ja on helppokulkuinen. RM Roima:lta poijulle Kaarlo jää on liikkeessä ja ahtautunutta. Jäiden liikkuessa poijut ja viitat ovat usein jään alla.",

@@ -292,6 +292,7 @@ const DvkIonApp: React.FC = () => {
             buffer={percentDone}
             type={(!!isFetching && initDone) || centering ? 'indeterminate' : 'determinate'}
             className={fetchError ? 'danger' : ''}
+            aria-hidden="true"
           />
         )}
         <IonContent id="MainContent">

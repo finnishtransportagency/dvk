@@ -1,0 +1,156 @@
+{
+  "anchorage": {
+    "en": "Anchorage close to Kyrönkari, N of the fairway, about 3 km before Vihreäsaari harbour (depth sc=-14.3 m, mud seabed) and west of Kotakari, is a wider area on right.",
+    "fi": "Ankkurointialue on Kyrönkarin kohdalla väylän pohjoispuolella n. 3 km ennen Vihreäsaaren satamaa (syvyys hs=-14,3 m, liejupohja) sekä levennysalue Kotakarin länsipuolella.",
+    "sv": "Ankringsplats vid Kyrönkari N om farleden ca 3 km före Vihreäsaari hamn, (djupet rd= -14,3, gyttjebotten) samt breddningsområde på högra farledskanten, väst om Kotakari."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Ships with a design draught of 8 m or over should make allowance for bottom suction between Liberta and Hammasmatala. Between Oulu 4 and Hammasmatala a max. speed of 9 knots is recommended.",
+    "fi": "Libertan ja Hammasmatalan välillä on mitoitussyväys yli 8 m alusten nopeudessa huomioitava pohjaimun vaikutus. Oulu 4:n ja Hammasmatalan välillä nopeussuositus 9 solmua.",
+    "sv": "Fartyg med ett dimensionerat djupgående som överstiger 8 m bör ta hänsyn till bottensuget mellan Liberta och Hammasmatala. Mellan Oulu 4 och Hammasmatala, där en fart på max. 9 knop rekommenderas."
+  },
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "3",
+  "modifier": "System",
+  "mareographs": [
+    {
+      "id": 100539
+    },
+    {
+      "id": 134248
+    }
+  ],
+  "name": {
+    "en": "Hailuoto approach - Oulu 1",
+    "fi": "Hailuodon edusta - Oulu 1",
+    "sv": "Karlö Angöring - Oulu 1"
+  },
+  "attention": null,
+  "creationTimestamp": 1732283602882,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The approach between Oulun portti and Kattilankalla consists of open sea; SW to NW winds create heavy seas. Sea state is reduced by shallows from Oulu 3 onwards. Between Kattilankalla and port the fairway is sheltered by some small islands and skerries. Between Oulu 5 and Hammasmatala there is a 1.4 km long and 170 m wide channel. The final, approximately 2.5 km long part, between Kyrönkari anchoring area and port, is a dredged, 116 m wide channel.",
+    "fi": "Väylän ulko-osa Oulun portilta Kattilankallaan on avomerta; SW - NW tuulilla merenkäynti on voimakasta. Oulu 3 lähtien matalikot vaimentavat merenkäyntiä. Kattilankallasta väylä jatkuu harvan saariston ja karien osittain suojaamana Ouluun. Oulu 5 ja Hammasmatalan välillä on 1,4 km pitkä ja 170 m leveä kapeikko. Väylän loppuosa Kyrönkarin ankkurointipaikalta satamaan n. 2,5 km matkalta on ruopattua kaivantoa, leveys 116 m.",
+    "sv": "Öppen sjö i angöringen mellan Oulun portti och Kattilankalla, vid SV - NV vind kraftig sjögång. Efter Oulu 3 dämpas sjögången av grund. Mellan Kattilankalla och hamnen skyddas farleden i viss mån av kobbar och skär. Mellan Oulu 5 och Hammasmatala finns en 1,4 km lång och 170 m bred passage. Den sista sträckan från Kyrönkari ankringsplats in till hamn består av en ca 2,5 km lång muddrad farled som är 116 m bred."
+  },
+  "generalInfo": null,
+  "id": "hailuoto",
+  "n2000HeightSystem": true,
+  "lineText": {
+    "en": "10 navigation lines, of which the outermost two marked by sector lights, the rest by boards.",
+    "fi": "Linjoja on 10 kpl, joista kaksi uloimmaista merkitty sektoriloistoilla ja muut linjatauluilla.",
+    "sv": "10 farledslinjer, av vilka de två yttersta utmärkta med sektorfyrar, de övriga med enstavlor."
+  },
+  "version": "v2",
+  "harbors": [
+    {
+      "id": "oulu"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": false,
+      "primarySequenceNumber": 1,
+      "id": 212,
+      "primary": true
+    },
+    {
+      "secondary": false,
+      "id": 215,
+      "primary": false
+    },
+    {
+      "secondary": true,
+      "id": 220,
+      "primary": false,
+      "secondarySequenceNumber": 1
+    }
+  ],
+  "speedLimit": {
+    "en": "Between Löyhänmutka - Kotakari a speed limit 22 km/h.",
+    "fi": "Välillä Löyhänmutka - Kotakari on 22 km/h nopeusrajoitus.",
+    "sv": "I avsnittet mellan Löyhänmutka och Kotakari gäller en 22 km/n fartbegränsning."
+  },
+  "modificationTimestamp": 1732283602882,
+  "pilotRoutes": [
+    {
+      "id": 150
+    },
+    {
+      "id": 153
+    }
+  ],
+  "iceCondition": {
+    "en": "In early winter there is drifting ice along the entire fairway; outside Oulu 3 the ice is usually also ridged. May cause buoys and spar buoys to be pressed under ice (surface) all the way to Kattilankalla. From January to April there is 50–80 cm thick fast ice between port and Oulu 3. Warm water effluents alleviate ice conditions in Oritkari harbour. If ice conditions require, the alignment W of Hailuoto and S of Merikallat can be used for winter navigation.",
+    "fi": "Alkutalvesta jää liikkuu koko väyläalueella. Oulu 3:lla merelle päin esiintyy yleensä ahtautunutta jäätä. Poijut ja viitat saattavat olla jään alla mereltä Kattilankallaan asti. Sataman ja Oulu 3:n välisellä väyläosuudella tammikuusta huhtikuuhun n. 50-80 cm paksua kiintojäätä. Lauhdevedet helpottavat Oritkarin sataman jääoloja. Jääolojen takia talviliikenteessä käytetään myös Hailuodon länsipuolella etelänpuolista Raahe-Oulu-Kemi 10,0 m sisääntuloa.",
+    "sv": "På förvintern är isen i rörelse i hela farledsområdet, vallar förekommer i regel ytter om Oulu 3. Bojar och prickar kan då vara tryckta under isen ända fram till Kattilankalla. Anm. Området mellan hamnen och Oulu 3 är täckt med ca 50-80 cm tjock fastis från januari till april. Varmvattenutsläpp underlättar isförhållandena i Oritkari hamn. Isförhålladena gör att även farledslinjen för Brahestad-Uleåborg-Kemi, V om Karlö, S om Merikallat används för vintertrafik."
+  },
+  "fairwayIds": "#212#215#220#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Bothnia VTS",
+          "fi": "Bothnia VTS",
+          "sv": "Bothnia VTS"
+        },
+        "phoneNumber": "+358204487356",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 67
+          }
+        ],
+        "email": [
+          "bothnia.vts@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 7711725400,
+          "pilotJourney": 31.3
+        },
+        {
+          "id": 7711825400,
+          "pilotJourney": 37.8
+        }
+      ],
+      "phoneNumber": "+358295253440",
+      "fax": null,
+      "email": "pilotdispatch.bothnia@finnpilot.fi",
+      "internet": null,
+      "extraInfo": {
+        "en": "NB. Pilot boarding position to be agreed upon in winter and in adverse weather conditions.",
+        "fi": "Huom. Talviaikana tai huonolla säällä luotsipaikka on sovittava erikseen.",
+        "sv": "Anm. Vintertid och vid dålig sikt bör platsen där lots möter överenskommas separat."
+      }
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Tug boat Tuura 3 x 883 kW. R-Towing Inc",
+          "fi": "Hinaaja Tuura 3 x 883 kW. R-Towing Oy.",
+          "sv": "Tuura, 3 x 883 kW. R-Towing Ab."
+        },
+        "phoneNumber": [
+          "+358400256517",
+          "+358400382652"
+        ],
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Design speed 12.0 knots (Sc= -11.8 m).",
+    "fi": "Mitoitusnopeus 12,0 solmua (Hs = 11,8 m).",
+    "sv": "Dimensionerande fart 12,0 knop (Rd = 11,8 m)."
+  }
+}

@@ -1,0 +1,218 @@
+{
+  "phoneNumber": [
+    "+358 40 356 3410"
+  ],
+  "version": "v2",
+  "creator": "System",
+  "expires": null,
+  "internet": null,
+  "status": "PUBLIC",
+  "harborBasin": {
+    "en": "Diameter of turning circle 400 m, use of anchor permitted. Use of anchor prohibited 10 m from quay.",
+    "fi": "Kääntöympyrän halkaisija 400 m, ankkurin käyttö sallittu. Ankkurin käyttö kielletty 10 m sisällä laiturin reunasta",
+    "sv": "Svängcirkelns diameter 400 m, tillåtet att använda ankare. Förbjudet att använda ankare 10 m från kaj."
+  },
+  "modifier": "System",
+  "email": "satamavalvojat@keminsatama.fi",
+  "name": {
+    "en": "Port of Kemi",
+    "fi": "Kemin satama",
+    "sv": "Kemi hamn"
+  },
+  "cargo": {
+    "en": "Oil terminal: Mobile crane 6-100 t. Quays I-IV: Mobile crane 6-100 t, ro-ro berth,",
+    "fi": "Öljylaituri: Autonosturi 6-100 t. Laiturit I-IV: Autonosturi 6-100 t, peräporttipaikka.",
+    "sv": "Oljekajen: Mobilkranar  6-100 t. Kajerna I-IV: Mobilkranar  6-100 t, kajplatser för ro-ro-fartyg."
+  },
+  "modificationTimestamp": 1729667448215,
+  "company": {
+    "en": "Kemi Port Ltd",
+    "fi": "Kemin Satama Oy",
+    "sv": "Kemi hamn Ab"
+  },
+  "quays": [
+    {
+      "length": null,
+      "name": {
+        "en": "Oil terminal",
+        "fi": "Öljylaituri",
+        "sv": "Oljekajen"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.51483,
+          65.65968
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 10.6
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 178,
+      "name": {
+        "en": "Quay 2",
+        "fi": "Laituri 2",
+        "sv": "Kaj 2"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.5155,
+          65.66786
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 11.2
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 178,
+      "name": {
+        "en": "Quay 3",
+        "fi": "Laituri 3",
+        "sv": "Kaj 3"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.5157,
+          65.6663
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 11.2
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 292,
+      "name": {
+        "en": "Quay 4",
+        "fi": "Laituri 4",
+        "sv": "Kaj 4"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.5172,
+          65.66493
+        ]
+      },
+      "sections": [
+        {
+          "name": "LP 1",
+          "geometry": null,
+          "depth": 9.1
+        },
+        {
+          "name": "LP 2",
+          "geometry": null,
+          "depth": 9.1
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 179,
+      "name": {
+        "en": "Quay 5",
+        "fi": "Laituri 5",
+        "sv": "Kaj 5"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.51877,
+          65.66449
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 9.1
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 160,
+      "name": {
+        "en": "Quay 6",
+        "fi": "Laituri 6",
+        "sv": "Kaj 6"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.51996,
+          65.66343
+        ]
+      },
+      "sections": [
+        {
+          "name": null,
+          "geometry": null,
+          "depth": 10.6
+        }
+      ],
+      "extraInfo": null
+    },
+    {
+      "length": 420,
+      "name": {
+        "en": "Quay 7",
+        "fi": "Laituri 7",
+        "sv": "Kaj 7"
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          24.52213,
+          65.66238
+        ]
+      },
+      "sections": [
+        {
+          "name": "LP 1",
+          "geometry": null,
+          "depth": 13.5
+        },
+        {
+          "name": "LP 2",
+          "geometry": null,
+          "depth": 13.5
+        }
+      ],
+      "extraInfo": null
+    }
+  ],
+  "extraInfo": null,
+  "creationTimestamp": 1687236433749,
+  "id": "kesat12",
+  "fax": null,
+  "n2000HeightSystem": true,
+  "geometry": {
+    "type": "Point",
+    "coordinates": [
+      24.51431,
+      65.66143
+    ]
+  }
+}
