@@ -15,12 +15,10 @@ const ADD_FAIRWAY_CARD = 'Lisää väyläkortti';
 const CREATE_FAIRWAY_CARD = 'Lisää väyläkortti';
 const DELETED = 'Poistettu';
 const DELETE = 'Poista';
-const CANCEL = 'Peruuta';
+const ADD_NEW = 'Lisää uusi';
 const CREATE_NEW_VERSION = 'Lisää uusi versio';
-const SAVE = 'Tallenna';
 const OK = 'Ok';
 const SEARCH_BY_NAME = 'Hae nimellä';
-const SEARCH_BY_NAME_OR_ID = 'Hae nimellä tai tunnisteella';
 const PUBLISHED = 'Julkaistu';
 const DRAFT = 'Luonnos';
 const HARBOR = 'Satama';
@@ -179,7 +177,7 @@ async function createNewVersionFromPublishedSave(page: Page, type: string, isN20
   await clickOnResultsByTypeAndState(page, type, PUBLISHED, isN2000);
   await page.getByRole('button', { name: CREATE_NEW_VERSION }).click();
   //Click save in the modal
-  await page.getByRole('button', { name: SAVE }).click();
+  await page.getByRole('button', { name: ADD_NEW }).click();
   await page.waitForTimeout(3000);
 }
 
