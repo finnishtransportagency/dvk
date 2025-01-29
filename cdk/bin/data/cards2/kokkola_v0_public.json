@@ -21,12 +21,7 @@
     "sv": "Karleby farled"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Pietarsaari mareograph.",
-    "fi": "Pietarsaaren mareografi.",
-    "sv": "Jakobstad mareograf."
-  },
-  "creationTimestamp": 1683095537101,
+  "creationTimestamp": 1732531460208,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "Open sea from Kokkola Lighthouse to Bergbådan, exposed to westerly and north-westerly winds. From Bergbådan the fairway (dredged almost in its entirety) passes in between shoals to the port.",
@@ -35,7 +30,7 @@
   },
   "generalInfo": null,
   "id": "kokkola",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": true,
   "lineText": {
     "en": "Five lines, marked with boards, edge marks, buoys, spar buoys in combined use.",
@@ -56,8 +51,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 427,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     },
     {
       "secondary": false,
@@ -66,8 +63,15 @@
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718864473194,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732531460208,
+  "pilotRoutes": [
+    {
+      "id": 281
+    },
+    {
+      "id": 282
+    }
+  ],
   "iceCondition": {
     "en": "The ice is in constant movement between Kokkola Lighthouse and Bergbådan virtually during the whole winter, between Bergbådan and Repskär in beginning of winter and spring, and it may cause buoys and spar buoys to be pressed under ice (surface). From Repskär to the port there is normally fast ice during the whole winter.",
     "fi": "Välillä Kokkolan majakka - Bergbådan jäät liikkuvat poikkeuksetta lähes koko talven. Bergbådanista Repskäriin jäät liikkuvat alkutalvesta ja keväisin, jolloin poijut ja viitat saattavat olla jään alla. Välillä Repskär - Kokkolan satama on talvella yleensä kiintojäätä.",

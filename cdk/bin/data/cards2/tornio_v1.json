@@ -10,7 +10,7 @@
     "fi": "Mitoitussyvyydessä olevien alusten tulee huomioida pohjaimun vaikutus. Mitoitusnopeus ulko-osalla 11 solmua ja sisäosalla 7 solmua.",
     "sv": "Fartyg i dimensionerat djupgående skall beakta squat-effekten. Dimensionerande fart i angöringen 11 knop och i inloppet 7 knop."
   },
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "visibility": {
     "en": "The visibility between Etukari and the harbour is at least 1 nautical miles. LNG carriers are piloted only daytime when the visibility is good.",
     "fi": "Osuudella Etukari - satama näkyvyys vähintään 1 mpk. Kaasulaivojen luotsaus vain päivävalolla näkyvyyden ollessa hyvä.",

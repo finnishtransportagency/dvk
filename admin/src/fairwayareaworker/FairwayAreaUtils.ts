@@ -6,6 +6,7 @@ import { lineString } from '@turf/helpers';
 import { lineSegment as turf_lineSegment } from '@turf/line-segment';
 import { lineOverlap as turf_lineOverlap } from '@turf/line-overlap';
 import { length as turf_length } from '@turf/length';
+import { cleanCoords as turf_cleanCoords } from '@turf/clean-coords';
 import {
   Position as turf_Position,
   LineString as turf_LineString,
@@ -65,10 +66,11 @@ export function getFairwayAreaBorderFeatures(areas: Feature<Geometry>[]) {
   const areaExtents: Array<Extent | undefined> = [];
 
   areas.forEach((area, i) => {
-    turfPolygons[i] = format.writeGeometryObject(area.getGeometry() as Geometry, {
+    const poly = format.writeGeometryObject(area.getGeometry() as Geometry, {
       dataProjection: 'EPSG:4326',
       featureProjection: MAP.EPSG,
     }) as turf_Polygon;
+    turfPolygons[i] = turf_cleanCoords(poly);
     areaExtents[i] = area.getGeometry()?.getExtent();
   });
 

@@ -28,8 +28,7 @@
     "sv": "Ingåleden"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095538800,
+  "creationTimestamp": 1732276535820,
   "temporaryNotifications": [],
   "navigationCondition": null,
   "generalInfo": null,
@@ -55,8 +54,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 4350,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": {
@@ -64,9 +65,16 @@
     "fi": "Varaveden takia suositeltavat nopeudet ruopatuilla alueilla ovat: Fagervikinlahdella alle 18,5 km/h ja Jakob Ramsjön saaren eteläkärjen kohdalla n. 15 km/h.",
     "sv": "På grund av djupmarginalen rekommenderas följande hastigheter inom de muddrade områdena: Max. 18,5 km/h i Fagerviken och ca 15 km/h vid Jakob Ramsjös sydspets."
   },
-  "modificationTimestamp": 1718775572339,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732276535820,
+  "pilotRoutes": [
+    {
+      "id": 56
+    },
+    {
+      "id": 57
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "The fairway is open almost throughout the year.",
     "fi": "Väylä on avoin lähes koko talven.",

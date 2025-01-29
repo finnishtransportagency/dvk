@@ -23,7 +23,7 @@ const Alert: React.FC<AlertProps> = ({ alertType, extraClass, text, children }) 
     <IonGrid className={'ion-no-padding alert ' + alertType + (extraClass ? ' ' + extraClass : '')}>
       <IonRow className="ion-align-items-center">
         <IonCol size="auto">
-          <IonIcon className={alertType} icon={iconByType()} />
+          <IonIcon className={alertType} icon={iconByType()} aria-hidden="true" />
         </IonCol>
         <IonCol>
           <IonText>{text}</IonText>

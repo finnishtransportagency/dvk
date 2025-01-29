@@ -10,7 +10,7 @@
     "fi": "Maksimikulkusyvyydessä kulkevien alusten tulee huomioida nopeuspainuma yli 11 solmun nopeuksissa Äspskärin edustan matalikolla.",
     "sv": "Fartyg i maximalt leddjupgående och en fart över 11 knop skall beakta squateffekten vid grundet Äspskär."
   },
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "visibility": null,
   "group": "2",
   "modifier": "System",

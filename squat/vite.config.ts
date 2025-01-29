@@ -71,7 +71,7 @@ export default defineConfig((env) => ({
     globals: true,
     environment: 'jsdom',
     setupFiles: 'src/setupTests.ts',
-    reporters: ['basic', 'junit', 'vitest-sonar-reporter'],
+    reporters: ['default', 'junit', 'vitest-sonar-reporter'],
     outputFile: {
       junit: './junit.xml',
       'vitest-sonar-reporter': './coverage/sonar-report.xml',

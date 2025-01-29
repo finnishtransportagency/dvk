@@ -14,18 +14,15 @@
   },
   "group": "3",
   "modifier": "System",
+  "mareographs": [],
   "name": {
     "en": "Veitsiluoto fairway",
     "fi": "Veitsiluodon väylä",
     "sv": "Veitsiluoto farled"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Kemi mareograph.",
-    "fi": "Kemi mareografi.",
-    "sv": "Kemi mareograf."
-  },
-  "creationTimestamp": 1683095537744,
+  "creationTimestamp": 1732283839072,
+  "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approach is open sea and unsheltered all the way to the edge mark Kraaseli and from there on the fairway is partially sheltered by shallows and the Ajoskrunni island. Fairway is exposed mostly to SE-S-W winds. The entrance is narrow (80-110 m) and winding and therefore hard to manoeuvre, especially in strong wind and if the navigation system of the ship is ineffective. Navigation on the fairway is challenging, vessel speed must be calculated based on the circumstances and a tug boat must be used in the bends if necessary. Must observe that navigation is affected by squat effect and leeway.",
     "fi": "Ulko-osa avomerta ja suojaton Kraaselin Rm asti, jonka jälkeen suojana matalikot ja Ajoskrunnin saari. Pahimmat tuulen suunnat KA - E - L. Väylän sisäosan kapeus (80-110 m) ja mutkat vaikeuttavat aluksen ohjailua kovalla tuulella, jos aluksen ohjailuominaisuudet ovat tehottomia. Navigointi väylällä on vaativaa, nopeus sovitettava tilanteen mukaan, käännöksissä tarvittaessa käytettävä hinaajaa ohjailuapuna. Huomioitava sorto sekä jyrkät käännökset ja pohjaimun vaikutus aluksen ohjailuun.",
@@ -33,7 +30,7 @@
   },
   "generalInfo": null,
   "id": "veitsiluoto",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": true,
   "lineText": {
     "en": " 6 lines, marking is based on the boards, edge mark, buoys and spar buoys in combined use.",
@@ -55,17 +52,22 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 20,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
-  "windGauge": {
-    "en": "Marine weather observations: Kemi 1 lighthouse.",
-    "fi": "Rannikkoasemat: Kemi 1 majakalla.",
-    "sv": "Vädret vid kuststationerna: fyren Kemi 1."
-  },
   "speedLimit": null,
-  "modificationTimestamp": 1698653618829,
+  "modificationTimestamp": 1732283839072,
+  "pilotRoutes": [
+    {
+      "id": 147
+    },
+    {
+      "id": 162
+    }
+  ],
   "iceCondition": {
     "en": "Between the approach and the edge mark Kraaseli there is ice movement in early winter and spring. Ice movement may cause buoys and spare buoys to be pressed under the ice (surface) also N of Ajoskrunni island. Fast ice is approx. 50-80 cm thick in wintertime. The narrowness and bends of the passage make the vessel's course in the icy fairway heavy. Warm water effluents alleviate ice conditions in the harbour.",
     "fi": "Välillä ulko-osa - Kraaselin Rm jää liikkuu alkutalvesta sekä keväällä. Jään liikkuessa poijut ja viitat voivat olla jään alla myös Ajoskrunnin saaren pohjoispuolella. Talvella kiintojään paksuus n. 50-80 cm. Väylän kapeus ja mutkaisuus tekevät aluksen kulun jääuomassa raskaaksi. Teollisuuden lauhdevedet helpottavat jääoloja satamassa.",
@@ -125,6 +127,7 @@
       }
     ]
   },
+  "additionalInfo": null,
   "designSpeed": {
     "en": "Design speed 6 knots between Koivuhauta and port of Veitsiluoto.",
     "fi": "Mitoitusnopeus 6 solmua välillä Koivuhauta-Veitsiluodon sataman edusta.",

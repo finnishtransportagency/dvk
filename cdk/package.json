@@ -43,6 +43,7 @@
     "picturemigration": "ts-node bin/picturemigration.ts",
     "dataexport:prod": "cross-env ENVIRONMENT=prod ts-node bin/export.ts",
     "dataimport": "ts-node bin/import.ts",
+    "dataimport:reset": "ts-node bin/import.ts --reset",
     "cleancache": "cross-env-shell aws s3 rm s3://featurecache-$ENVIRONMENT --recursive",
     "ecr:login": "cross-env-shell aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com",
     "lint": "eslint --max-warnings 0 --config .eslintrc.json --ext .js,.ts ."

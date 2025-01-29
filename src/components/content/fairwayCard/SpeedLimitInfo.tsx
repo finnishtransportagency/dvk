@@ -29,7 +29,7 @@ export const SpeedLimitInfo: React.FC<SpeedLimitInfoProps> = ({ data, speedLimit
         {speedLimits.map((area, idx) => (
           <span key={'limit-' + area?.id}>
             {(inlineLabel || idx > 0) && <br />}
-            {t('speedLimitAt')} {area?.location}: {area?.value} <dd aria-label={t('unit.kmhDesc', { count: area?.value ?? 0 })}>km/h</dd>
+            {t('speedLimitAt')} {area?.location}: {area?.value} <span aria-label={t('unit.kmhDesc', { count: area?.value ?? 0 })}>km/h</span>
           </span>
         ))}
       </p>

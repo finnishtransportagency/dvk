@@ -25,8 +25,7 @@
     "sv": "Helsingforsleden"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095538698,
+  "creationTimestamp": 1732276592153,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The Kustaanmiekka strait is a critical narrow passage. Larger vessels may be strongly affected by bank suction.",
@@ -35,7 +34,7 @@
   },
   "generalInfo": null,
   "id": "helsinki",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": false,
   "lineText": {
     "en": "Two lines, marked with boards.",
@@ -57,6 +56,7 @@
   "fairways": [
     {
       "secondary": false,
+      "primarySequenceNumber": 1,
       "id": 4730,
       "primary": true
     },
@@ -68,7 +68,8 @@
     {
       "secondary": true,
       "id": 4805,
-      "primary": false
+      "primary": false,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": {
@@ -76,8 +77,18 @@
     "fi": "Leveyspiiriltä 60° 08' N pohjoiseen nopeusrajoitus kaikille aluksille 30 km/h. Leveyspiirien 60° 06' N ja 60° 08' N välillä nopeusrajoitus 30 km/h kaikille aluksille paitsi huvialuksille ja virka- tai pelastustehtävissä oleville aluksille. Lisäksi Katajanokan edustalla nopeusrajoitus 10 km/h",
     "sv": "Från breddgraden 60° 08' N mot norr är farten begränsad till 30 km/h för alla fartyg. Mellan breddgraderna 60° 06' N och 60° 08' N gäller en fartbegränsning på 30 km/h för alla fartyg utom fritidsbåtar och fartyg med tjänste- eller räddningsuppdrag. Utanför Skatudden gäller dessutom en fartbegränsning på 10 km/h."
   },
-  "modificationTimestamp": 1718775402801,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732276592153,
+  "pilotRoutes": [
+    {
+      "id": 45
+    },
+    {
+      "id": 42
+    },
+    {
+      "id": 43
+    }
+  ],
   "iceCondition": {
     "en": "Ice usually only causes problems in the harbour basins where ice slush may make ship-handling difficult. Occasionally packed ice between Hramtsow and Gråskärsbådan.",
     "fi": "Jääongelmia esiintyy yleensä vain satama-altaissa, joissa jääsohjo saattaa vaikeuttaa aluksen käsittelyä. Ajoittain ahtautumista välillä Hramtsow Gråskärsbådan.",

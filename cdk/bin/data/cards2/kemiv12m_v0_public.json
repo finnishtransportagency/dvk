@@ -28,7 +28,7 @@
     "sv": "Kemi Ajos farled"
   },
   "attention": null,
-  "creationTimestamp": 1687234757727,
+  "creationTimestamp": 1732531140167,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "After Hebe the fairway narrows to 200 m and the rest of the fairway is dredged, its width being 200 m. Strong winds and heavy seas may impede navigation between Hebe and the harbour; heavy sea state all the way to the harbour. One-way traffic between Torneå - Röyttä fairway and the border of the harbor area.",
@@ -37,7 +37,7 @@
   },
   "generalInfo": null,
   "id": "kemiv12m",
-  "currentPublic": 1,
+  "currentPublic": 3,
   "n2000HeightSystem": true,
   "lineText": {
     "en": "Four lines, the innermost marked by boards.",
@@ -66,8 +66,21 @@
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1728638192271,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732531140167,
+  "pilotRoutes": [
+    {
+      "id": 142
+    },
+    {
+      "id": 155
+    },
+    {
+      "id": 141
+    },
+    {
+      "id": 145
+    }
+  ],
   "iceCondition": {
     "en": "In early winter the ice is in movement in the whole fairway and buoys and spar buoys may be pressed under ice (surface). Between Kemi 1 and Kemi 2 heavy ice ridges difficult to force. In midwinter 50-80 cm thick fast ice about 10-20 km off Ajos.",
     "fi": "Alkutalvesta jää liikkuu koko väyläalueella, poijut ja viitat saattavat olla jään alla. Kemi 1 ja Kemi 2 välisellä alueella on yleensä pahoja jääahtaumia. Keskitalvella on 50 - 80 cm kiintojäätä Ajoksesta 10 - 20 km etäisyydellä.",

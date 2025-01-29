@@ -1,57 +1,81 @@
 {
-  "version": "v0_latest",
-  "harbors": [
-    {
-      "id": "yara"
-    }
-  ],
   "anchorage": {
     "en": "Anchorage in the outer channel 5.5 km NE of Sandbäck Lighthouse and SW and SE of Isokari. In the inner channel, anchorage in the vicinity of the port off Ruuhikari. The area is also used as a swinging area.",
     "fi": "Väylän ulko-osalla voi ankkuroida alueelle, joka sijaitsee Sandbäckin loistosta 5,5 km koilliseen sekä Isokarin lounais- ja kaakkoispuolelle. Väylän sisäosalla voi ankkuroida lähellä satamaa Ruuhikarin edustalla kääntöaltaan alueella.",
     "sv": "I farledens yttre del finns det ankringsområden 5,5 km NO om Sandbäcks fyr samt SV och SO om Enskär. I den inre delen av farleden kan man ankra nära hamnen vid svängbassängen utanför Ruuhikari."
   },
-  "creator": "System",
+  "expires": null,
   "vesselRecommendation": {
     "en": "Vessels may arrive to the Port of Yara whenever weather conditions permit. Large vessels (DWT > 30,000 mt) are handled on a case-by-case basis, preferably during the hours of daylight.",
     "fi": "Yaran satamassa alus otetaan satamaan aina kun sääolosuhteet sen sallivat. Suurten alusten kanssa (DWT > 30.000 mt) toimitaan tapauskohtaisesti ja alus otetaan satamaan mahdollisesti päivänvalossa.",
     "sv": "I Yaras hamn tas fartyg alltid emot när väderleksförhållandena tillåter. Stora fartyg (DWT > 30.000 mt) tas emot från fall till fall och fartyg tas t.ex. helst emot i dagsljus."
   },
   "status": "PUBLIC",
-  "fairways": [
-    {
-      "secondary": true,
-      "id": 2345,
-      "primary": true
-    }
-  ],
+  "visibility": null,
   "group": "1",
-  "windGauge": {
-    "en": "Isokari",
-    "fi": "Isokarissa",
-    "sv": "Enskär"
-  },
   "modifier": "System",
+  "mareographs": [],
   "name": {
     "en": "Uusikaupunki channel",
     "fi": "Uudenkaupungin väylä",
     "sv": "Farleden till Nystad"
   },
-  "modificationTimestamp": 1683095538399,
-  "latest": 1,
-  "iceCondition": {
-    "en": "Ice movement in the outer channel. Especially NW winds temporarily cause ridges in the area S of Isokari and N of Kivikari. Ice movement may cause buoys to be pressed beneath the surface and the lighting devices of the light buoys may be damaged.",
-    "fi": "Väylän ulko-osalla jää liikkuu ja etenkin luoteistuulilla jää ahtautuu ajoittain Isokarin etelä- ja Kivikarin pohjoispuolisille alueille. Jäiden liikkuessa poijut voivat olla jään alla ja valopoijujen valolaitteet voivat olla vahingoittuneet.",
-    "sv": "Rörlig is i yttre delen av farleden och särskilt vid NV vind kan vallbildning tidvis förekomma S om Enskär och N om Kivikari. Bojarna kan då vara tryckta under ytan och lysbojarnas lysanordningar kan ha skadats."
-  },
-  "creationTimestamp": 1683095538399,
+  "attention": null,
+  "creationTimestamp": 1732532079851,
+  "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approach W of Isokari consists of open sea, SW-N winds can create heavy seas. From Isokari to Herneletto edge mark the fairway is fairly straight and easy to navigate. Between Herneletto and Suntinkari the channel is meandering and vessels with a large wind area require towing assistance. All vessels with a cargo of ammonia require towing assistance.",
     "fi": "Väylän ulko-osa Isokarin länsipuolella on avomerta, SW-N tuulilla merenkäynti voi olla voimakasta. Isokarista Herneleton reunamerkille väylä on melko suora ja helposti navigoitava. Herneletosta Suntinkarille väylällä on vaikeita mutkia ja tuulipinnaltaan isot alukset käyttävät tällä osuudella hinaaja-avustusta. Kaikissa ammoniakkilaivoissa käytetään hinaaja-avustusta.",
     "sv": "Öppen sjö i angöringen V om Enskär, vid SV-N vind kan sjögången vara kraftig. Från Enskär till Herneletto randmärke är farleden rätt så rak och det lätt att navigera i den. Farleden mellan Herneletto och Suntinkari är mycket krokig och på den här sträckan behöver fartyg med stor vindyta bogserhjälp. Alla fartyg lastade med ammoniak behöver bogserhjälp."
   },
-  "fairwayIds": "#2345#",
+  "generalInfo": null,
   "id": "uusikaupunki",
   "n2000HeightSystem": false,
+  "lineText": {
+    "en": "12 lines, marked with boards and sector lights.",
+    "fi": "Linjoja on 12 kpl, linjat on merkitty linjatauluin ja sektoriloistoin",
+    "sv": "12 farledslinjer utmärkta med enstavlor och sektorfyrar."
+  },
+  "version": "v0_latest",
+  "harbors": [
+    {
+      "id": "yara"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": true,
+      "primarySequenceNumber": 1,
+      "id": 2345,
+      "primary": true,
+      "secondarySequenceNumber": 1
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1732532079851,
+  "pilotRoutes": [
+    {
+      "id": 192
+    },
+    {
+      "id": 194
+    },
+    {
+      "id": 277
+    },
+    {
+      "id": 278
+    }
+  ],
+  "latest": 2,
+  "iceCondition": {
+    "en": "Ice movement in the outer channel. Especially NW winds temporarily cause ridges in the area S of Isokari and N of Kivikari. Ice movement may cause buoys to be pressed beneath the surface and the lighting devices of the light buoys may be damaged.",
+    "fi": "Väylän ulko-osalla jää liikkuu ja etenkin luoteistuulilla jää ahtautuu ajoittain Isokarin etelä- ja Kivikarin pohjoispuolisille alueille. Jäiden liikkuessa poijut voivat olla jään alla ja valopoijujen valolaitteet voivat olla vahingoittuneet.",
+    "sv": "Rörlig is i yttre delen av farleden och särskilt vid NV vind kan vallbildning tidvis förekomma S om Enskär och N om Kivikari. Bojarna kan då vara tryckta under ytan och lysbojarnas lysanordningar kan ha skadats."
+  },
+  "fairwayIds": "#2345#",
   "trafficService": {
     "vts": [
       {
@@ -63,6 +87,7 @@
         "phoneNumber": "+358204486521",
         "vhf": [
           {
+            "name": null,
             "channel": 71
           }
         ],
@@ -79,8 +104,9 @@
         }
       ],
       "phoneNumber": "+358295253460",
+      "fax": null,
       "email": "pilotdispatch.archipelago@finnpilot.fi",
-      "internet": "https://www.pilotorder.fi",
+      "internet": null,
       "extraInfo": {
         "en": "NB. Pilot boarding position to be agreed upon in strong W winds.",
         "fi": "Huom. kovilla lännenpuoleisilla tuulilla luotsipaikka on sovittava erikseen.",
@@ -96,7 +122,9 @@
         },
         "phoneNumber": [
           "+358400818814"
-        ]
+        ],
+        "fax": null,
+        "email": null
       },
       {
         "name": {
@@ -106,13 +134,12 @@
         },
         "phoneNumber": [
           "+358400818814"
-        ]
+        ],
+        "fax": null,
+        "email": null
       }
     ]
   },
-  "lineText": {
-    "en": "12 lines, marked with boards and sector lights.",
-    "fi": "Linjoja on 12 kpl, linjat on merkitty linjatauluin ja sektoriloistoin",
-    "sv": "12 farledslinjer utmärkta med enstavlor och sektorfyrar."
-  }
+  "additionalInfo": null,
+  "designSpeed": null
 }

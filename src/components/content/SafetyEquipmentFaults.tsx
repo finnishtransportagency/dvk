@@ -55,6 +55,22 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
     if (!isEquipmentUsed) groupedFaults.push(sortedFaults.filter((fault) => fault.equipmentId === value.equipmentId));
   });
   const equipmentSource = getMap().getVectorSource(layerId);
+
+  const parseIconString = (equip: EquipmentFeatureProperties): string => {
+    if (!equip) {
+      return '';
+    }
+    let str = '';
+    str = equip.typeName ? equip.typeName[lang]! : '';
+    if (equip.navigationCode != '99') {
+      str += equip.navigation ? `, ${equip.navigation[lang]}` : '';
+    }
+    if (equip.lightning) {
+      str += `, ${t('popup.equipment.lightning')}`;
+    }
+    return str;
+  };
+
   return (
     <>
       {loading && <IonSkeletonText animated={true} style={{ width: '100%', height: '50px' }}></IonSkeletonText>}
@@ -105,8 +121,14 @@ export const FaultGroup: React.FC<FaultGroupProps> = ({ data, loading, selectedF
             <IonGrid className="ion-no-padding">
               <IonRow>
                 <IonCol size="1.5">
-                  {/*eslint-disable-next-line  @typescript-eslint/no-explicit-any*/}
-                  <IonIcon className="equipmentListIcon" src={(symbol2Icon as any)[symbol].icon} />
+                  {/*eslint-disable @typescript-eslint/no-explicit-any*/}
+                  <IonIcon
+                    aria-hidden="true"
+                    aria-label={parseIconString(equipment!)}
+                    className="equipmentListIcon"
+                    src={(symbol2Icon as any)[symbol].icon}
+                  />
+                  {/*eslint-enable @typescript-eslint/no-explicit-any*/}
                 </IonCol>
                 <IonCol className="faultInfoCol">
                   {faultArray.map((fault, index) => (
@@ -236,7 +258,7 @@ const SafetyEquipmentFaults: React.FC<FaultsProps> = ({ widePane }) => {
               }}
               title={sortNewFirst ? t('common.sortOldToNew') : t('common.sortNewToOld')}
             >
-              <IonIcon slot="icon-only" className={'sortingIcon ' + (sortNewFirst ? 'flipped' : '')} src={sortArrow} />
+              <IonIcon slot="icon-only" className={'sortingIcon ' + (sortNewFirst ? 'flipped' : '')} src={sortArrow} aria-hidden="true" />
             </button>
           </IonCol>
         </IonRow>

@@ -24,9 +24,9 @@ function getSizingVesselsText(sizingVessels: SizingVessel[], t: TFunction) {
           <span key={uuid}>
             {t('designVessel')}:&nbsp;
             {t('vesselType' + vessel.typeCode)}, l = {vessel.length}&nbsp;
-            <dd aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</dd>, b = {vessel.width}&nbsp;
-            <dd aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</dd>, t = {vessel.draft}&nbsp;
-            <dd aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</dd>.&nbsp;
+            <span aria-label={t('unit.mDesc', { count: Number(vessel.length) })}>m</span>, b = {vessel.width}&nbsp;
+            <span aria-label={t('unit.mDesc', { count: Number(vessel.width) })}>m</span>, t = {vessel.draft}&nbsp;
+            <span aria-label={t('unit.mDesc', { count: Number(vessel.draft) })}>m</span>.&nbsp;
           </span>
         );
       })}
@@ -119,13 +119,13 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                     </>
                   )}
                   {t('designDraft', { count: designDraftValues2.length })}: {designDraftValues2.join(' / ')}&nbsp;
-                  <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>. {t('sweptDepth', { count: sweptDepthValues2.length })}:{' '}
+                  <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>. {t('sweptDepth', { count: sweptDepthValues2.length })}:{' '}
                   {sweptDepthValues2.join(' / ')}&nbsp;
-                  <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>.&nbsp;
+                  <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>.&nbsp;
                   {minimumWidth && (
                     <>
                       {t('minimumWidth', { count: 1 })}: {minimumWidth}&nbsp;
-                      <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
+                      <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>
                     </>
                   )}
                   {minimumTurningCircle && (
@@ -139,14 +139,14 @@ export const DimensionInfo: React.FC<DimensionInfoProps> = ({ data, designSpeedT
                         <>{t('minimumTurningCircle', { count: 1 })}</>
                       )}
                       : {minimumTurningCircle}&nbsp;
-                      <dd aria-label={t('unit.mDesc', { count: 0 })}>m</dd>
+                      <span aria-label={t('unit.mDesc', { count: 0 })}>m</span>
                     </>
                   )}
                   {minimumWidth && minimumTurningCircle && <>.&nbsp;</>}
                   {t('length')}: {((totalLength ?? 0) / 1000).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
-                  <dd aria-label={t('unit.kmDesc', { count: 3 })}>km</dd> /{' '}
+                  <span aria-label={t('unit.kmDesc', { count: 3 })}>km</span> /{' '}
                   {metresToNauticalMiles(totalLength).toLocaleString(lang, { maximumFractionDigits: 1 })}&nbsp;
-                  <dd aria-label={t('unit.nmDesc', { count: 2 })}>{t('unit.nm')}</dd>
+                  <span aria-label={t('unit.nmDesc', { count: 2 })}>{t('unit.nm')}</span>
                   .&nbsp;
                   {sizingVessels.length > 0 && getSizingVesselsText(sizingVessels, t)}
                   <br />

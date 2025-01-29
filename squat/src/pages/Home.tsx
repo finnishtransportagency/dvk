@@ -35,7 +35,7 @@ const Home: React.FC = () => {
   const { t } = useTranslation('', { keyPrefix: 'homePage' });
 
   return (
-    <IonPage>
+    <IonPage data-testid="squatPage">
       <IonContent className={isEmbedded() ? 'embedded' : undefined}>
         <Squat />
         <SquatChart wideChart={!isMobile()} />

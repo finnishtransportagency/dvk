@@ -25,8 +25,7 @@
     "sv": "Fredrikshamnsleden"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095538498,
+  "creationTimestamp": 1732276989533,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "Navigation in the approach may be hampered by the sea state and SW-S-E winds. From Rakin Kotka the channel is sheltered by mainland and islands. Meeting and overtaking is prohibited in the area between S of Rakin Kotka and N of Saukko (between the latitudes 60 26.2' N and 60 27.4' N), but elsewhere the channel width allows two shipping lanes. The above-mentioned area where meeting and overtaking is prohibited has partly been dredged through a rocky, narrow and shallow water area. In the dredged narrow waters (channel bottom width 180 m) the slope height is a maximum of 9 m and the angle of slope 1:2-1:3.",
@@ -52,8 +51,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 5507,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": {
@@ -61,9 +62,16 @@
     "fi": "Saukon kohdalle ruopatulla kapeikolla täyttä kulkusyvyyttä käyttävien alusten kulkunopeus ei saa ylittää yli 10 solmua (18,5 km/h).",
     "sv": "I det muddrade farvattnet vid Saukko får fartyg som använder maximalt leddjupgående inte överskrida farten 10 knop (18,5 km/h)."
   },
-  "modificationTimestamp": 1718774941697,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732276989533,
+  "pilotRoutes": [
+    {
+      "id": 27
+    },
+    {
+      "id": 30
+    }
+  ],
+  "latest": 2,
   "iceCondition": null,
   "fairwayIds": "#5507#",
   "trafficService": {
