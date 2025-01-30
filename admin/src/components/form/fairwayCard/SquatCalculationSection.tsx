@@ -131,6 +131,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
               deleteSection={deleteSection}
               toggleSection={toggleSection}
               open={sectionOpen}
+              readonly={readonly}
             />
             <div className={sectionClassName} key={'squatcalculation' + idx}>
               <SquatCalculationInput
