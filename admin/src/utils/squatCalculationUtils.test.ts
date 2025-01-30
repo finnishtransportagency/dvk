@@ -4,7 +4,7 @@ import {
   getOrphanedAreaIdsFromSquatSection,
   getPossibleAreas,
 } from './squatCalculationUtils';
-import { Area, SquatCalculationInput } from '../graphql/generated';
+import { SquatCalculationInput } from '../graphql/generated';
 import { AreaSelectOption } from './constants';
 
 test('should locate orphaned area in squat calculation', () => {
