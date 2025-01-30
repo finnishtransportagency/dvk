@@ -26,7 +26,7 @@ const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateS
   const { t } = useTranslation();
 
   return (
-    <IonGrid className="formGrid">
+    <IonGrid className="formGrid subSectionMargin">
       <TextInputRow
         labelKey="fairwaycard.vts-name"
         value={section.name}

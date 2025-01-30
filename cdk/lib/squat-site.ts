@@ -169,6 +169,11 @@ export class SquatSite extends Construct {
       });
     }
 
+    // key-value store for cloudfront functions, need to be js-2.0 runtime to use it
+    const kvStore = new cloudfront.KeyValueStore(this, 'DvkKeyValueStore' + props.env, {
+      keyValueStoreName: 'DvkKVStore' + props.env,
+    });
+
     // Cloudfront function suorittamaan basic autentikaatiota
     let authFunction;
     if (!Config.isProductionEnvironment()) {
@@ -275,9 +280,13 @@ export class SquatSite extends Construct {
       trustedKeyGroups: keyGroups,
     };
 
-    const dvkRouterSourceCode = fs.readFileSync(`${__dirname}/lambda/router/dvkRequestRouter.js`).toString('utf-8');
+    const dvkRouterSourceCode = fs
+      .readFileSync(`${__dirname}/lambda/router/dvkRequestRouter.js`, 'utf-8')
+      .replace('KEY_VALUE_STORE_ID_PLACEHOLDER', kvStore.keyValueStoreId);
     const dvkCfFunction = new cloudfront.Function(this, 'DvkRouterFunction' + props.env, {
       code: cloudfront.FunctionCode.fromInline(dvkRouterSourceCode),
+      runtime: cloudfront.FunctionRuntime.JS_2_0,
+      keyValueStore: kvStore,
     });
 
     const dvkBehavior = {

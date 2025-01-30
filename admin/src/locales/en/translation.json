@@ -127,7 +127,9 @@
     "cannot-add-section-squat-calculation": "[en] Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
     "squat-calculation-description": "[en] Haraussyvyytenä käytetään valittujen väyläalueiden matalinta haraussyvyyttä. Huomioithan, että jos väylän alueisiin tulee muutoksia, pitää laskentapisteet tarkistaa ja niihin tehdä tarvittavat muutokset. Mikäli jokin laskentapisteeseen liitetty väyläalue on poistettu VATU-tietokannasta, ei laskentapistettä näytetä DVK-sovelluksessa. Tällöin väyläkortista tulee julkaista uusi versio, jossa laskentapiste on päivitetty.",
     "squat-calculation-section-area-orphaned_one": "[en] Väyläalue <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistettu alue poistetaan laskennan sijainnista automaattisesti.",
-    "squat-calculation-section-area-orphaned_other": "[en] Väyläalueet <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalueet laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistetut alueet poistetaan laskennan sijainnista automaattisesti."
+    "squat-calculation-section-area-orphaned_other": "[en] Väyläalueet <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalueet laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistetut alueet poistetaan laskennan sijainnista automaattisesti.",
+    "expand-sections": "[en] Laajenna osiot",
+    "collapse-sections": "[en] Sulje kaikki osiot"
   },
   "modal": {
     "title-new-CARD": "New fairway card",
@@ -298,13 +300,16 @@
     "squat-calculation-cannot-remove-fairway": "The fairway is linked to an area that is in use in this squat calculation template.",
     "cannot-change-reference-level": "[en] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat-laskennan sijainnit on poistettu.",
     "squat-calculation-area-orphaned_one": "[en] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan.",
-    "squat-calculation-area-orphaned_other": "[en] Väyläalueet <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitykset sijainnin laskentaan."
+    "squat-calculation-area-orphaned_other": "[en] Väyläalueet <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitykset sijainnin laskentaan.",
+    "main-section-title": "[en] Väyläkortin perustiedot",
+    "fairway-card-basic-info-description": "[en] Väyläkortin perustiedot kattavat vähimmäistiedot, jotta väyläkortti on mahdollista tuoda näkyville Digitaalinen väyläkortti -palveluun"
   },
   "harbour": {
     "primary-id": "Harbour ID",
     "primary-id-help-text": "Harbour unique identifier; valid characters: (a-z) and (0-9).",
     "error-duplicate-id": "[en] Tunniste on jo käytössä",
     "harbour-info": "[en] Satamatiedot",
+    "harbour-basic-info": "[en] Sataman perustiedot",
     "name": "Port name",
     "extra-info": "Harbour restrictions",
     "cargo": "Cargo handling",

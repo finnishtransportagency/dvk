@@ -265,7 +265,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   { id: 'name', projection: 'EPSG:3067', url: new URL(staticUrl + '/names.json.gz') },
   { id: 'balticsea', projection: 'EPSG:3067', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', projection: 'EPSG:3067', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_satamat', projection: 'EPSG:3067', url: new URL(staticUrl + '/mml-satamat-20240719.json.gz') },
+  { id: 'mml_satamat', projection: 'EPSG:3067', url: new URL(staticUrl + '/mml-satamat-20250123.json.gz') },
   {
     id: 'boardline12',
     projection: 'EPSG:4326',
@@ -382,3 +382,43 @@ export const saveErrorTitle = {
   BLOCKED: 'OPERATION-BLOCKED',
   ARCHIVE: 'ARCHIVE-OPERATION-BLOCKED',
 };
+
+export type MainSectionTitle =
+  | 'Julkaisutiedot'
+  | 'Väyläkortin perustiedot'
+  | 'Sataman perustiedot'
+  | 'Satamatiedot'
+  | 'Väliaikaisen huomion lisääminen väyläkortille'
+  | 'Väylätiedot'
+  | 'Väylän navigoitavuus'
+  | 'Käyttösuositukset'
+  | 'Lisätiedot'
+  | 'Liikennepalvelut'
+  | 'Luotsintilaus'
+  | 'Squat-laskennan sijainnin lisääminen'
+  | 'Väyläkortin tuloste';
+
+export type MainSectionOpenType = {
+  id: MainSectionTitle;
+  open: boolean;
+};
+
+export const FairwayCardMainSections: MainSectionOpenType[] = [
+  { id: 'Julkaisutiedot', open: true },
+  { id: 'Väyläkortin perustiedot', open: true },
+  { id: 'Väliaikaisen huomion lisääminen väyläkortille', open: true },
+  { id: 'Väylätiedot', open: true },
+  { id: 'Väylän navigoitavuus', open: true },
+  { id: 'Käyttösuositukset', open: true },
+  { id: 'Lisätiedot', open: true },
+  { id: 'Liikennepalvelut', open: true },
+  { id: 'Luotsintilaus', open: true },
+  { id: 'Squat-laskennan sijainnin lisääminen', open: true },
+  { id: 'Väyläkortin tuloste', open: true },
+];
+
+export const HarborMainSections: MainSectionOpenType[] = [
+  { id: 'Julkaisutiedot', open: true },
+  { id: 'Sataman perustiedot', open: true },
+  { id: 'Satamatiedot', open: true },
+];

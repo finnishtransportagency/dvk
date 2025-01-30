@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FairwayCardInput, TemporaryNotificationInput } from '../../../graphql/generated';
 import { ValueType, ActionType, Lang, ValidationType } from '../../../utils/constants';
-import { IonButton, IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
+import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import HelpIcon from '../../../theme/img/help_icon.svg?react';
-import NotificationModal from '../../NotificationModal';
 import NotificationInput from '../NotificationInput';
 import SectionHeader from '../SectionHeader';
 
@@ -36,12 +34,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
   readonly = false,
 }) => {
   const { t } = useTranslation();
-  const [infoModalOpen, setInfoModalOpen] = useState<boolean>(false);
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
-
-  const showInfoModal = () => {
-    setInfoModalOpen(true);
-  };
 
   const toggleSection = (position: number) => {
     const opened = openSections.map((s, idx) => (idx === position ? !s : s));
@@ -70,20 +63,6 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
 
   return (
     <>
-      <IonText>
-        <h2>
-          {t('fairwaycard.temporary-notification-title')}
-          <IonButton
-            fill="clear"
-            className="icon-only xx-small labelButton"
-            onClick={() => showInfoModal()}
-            title={t('info') ?? ''}
-            aria-label={t('info') ?? ''}
-          >
-            <HelpIcon />
-          </IonButton>
-        </h2>
-      </IonText>
       {sections?.map((section, idx) => {
         const sectionOpen = !!openSections[idx];
         const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
@@ -111,14 +90,6 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
         );
       })}
 
-      <NotificationModal
-        isOpen={infoModalOpen}
-        closeAction={() => setInfoModalOpen(false)}
-        closeTitle={t('general.close')}
-        header={t('fairwaycard.temporary-notification-title')}
-        i18nkey="modal.temporary-notification-add"
-        message={t('general.markdown.description')}
-      />
       <IonGrid>
         <IonRow className="ion-justify-content-end">
           <IonCol size="auto">

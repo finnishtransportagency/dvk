@@ -77,7 +77,7 @@ const Section: React.FC<SectionProps> = ({
       {sections?.map((section, idx) => {
         const sectionOpen = !!openSections[idx];
         const isFocused = idx === sections.length - 1 ? focused : undefined;
-        const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
+        const sectionClassName = 'sectionContent subSectionMargin' + (sectionOpen ? ' open' : ' closed');
         const helperHeader = sectionType === 'quay' ? t('modal.help-title-quay') : undefined;
         const helperText = sectionType === 'quay' ? t('modal.help-description-quay') : undefined;
 

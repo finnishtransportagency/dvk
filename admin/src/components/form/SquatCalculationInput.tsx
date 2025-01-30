@@ -125,7 +125,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
 
   return (
     <>
-      <IonGrid className="formGrid">
+      <IonGrid className="formGrid subSectionMargin">
         <TextInputRow
           name="squatCalculationPlace"
           labelKey="fairwaycard.calculation-place"
