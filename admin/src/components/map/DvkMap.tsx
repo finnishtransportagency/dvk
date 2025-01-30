@@ -34,7 +34,7 @@ import { Stroke } from 'ol/style';
 type OrientationType = Orientation | '';
 type LangType = Lang | '';
 
-class DvkMap {
+export class DvkMap {
   public olMap: Map | null = null;
 
   private rotateControl: Rotate = new Rotate({
