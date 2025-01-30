@@ -144,7 +144,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
                 fairwayAreas={fairwayAreas}
                 isLoadingAreas={isLoadingAreas}
                 isLoadingFairways={isLoadingFairways}
-                areasLoaded={areasLoaded}
+                areasReady={orphanedAreaIdsInSquatSection && orphanedAreaIdsInSquatSection.length > 0}
               />
             </div>
           </div>

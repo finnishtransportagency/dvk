@@ -28,7 +28,7 @@ interface SquatCalculationInputProps {
   fairwayAreas?: AreaSelectOption[];
   isLoadingAreas?: boolean;
   isLoadingFairways?: boolean;
-  areasLoaded?: boolean;
+  areasReady?: boolean;
 }
 
 const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
@@ -42,14 +42,14 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   fairwayAreas,
   isLoadingAreas,
   isLoadingFairways,
-  areasLoaded = false,
+  areasReady = false,
 }) => {
   const [deleteWarningModalOpen, setDeleteWarningModalOpen] = useState<boolean>(false);
   const { t } = useTranslation();
   const [filteredAreaOptions, setFilteredAreaOptions] = useState<AreaSelectOption[]>([]);
   const [sortedAreas, setSortedAreas] = useState<AreaSelectOption[]>([]);
   const [sortedSelectedAreas, setSortedSelectedAreas] = useState<AreaSelectOption[]>([]);
-
+  const [orphanedAreasInSquatCalculation, setOrphanedAreasInSquatCalculation] = useState<number[] | undefined>(undefined);
   function updateStateAndDepth(
     value: ValueType,
     actionType: ActionType,
@@ -97,28 +97,32 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   }, [fairwayAreas, section.targetFairways]);
 
   useEffect(() => {
+    setOrphanedAreasInSquatCalculation(areasReady ? getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions) : undefined);
+  }, [areasReady, section, filteredAreaOptions]);
+
+  useEffect(() => {
     setSortedSelectedAreas(sortAreaSelectOptions(filteredAreaOptions.filter((a) => section.suitableFairwayAreas?.includes(a.id as number))));
-    const orphanedAreasInSquatCalculation = areasLoaded ? getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions) : undefined;
     let sa = sortAreaSelectOptions(filteredAreaOptions);
-    if (orphanedAreasInSquatCalculation) {
+    const orphans = areasReady ? getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions) : undefined;
+    if (orphans) {
       sa = sa.concat(
-        orphanedAreasInSquatCalculation.map((a) => {
+        orphans.map((a) => {
           return { id: a, subtext: '-' } as AreaSelectOption;
         })
       );
     }
     setSortedAreas(sa);
-  }, [areasLoaded, section, filteredAreaOptions]);
+  }, [areasReady, section, filteredAreaOptions]);
 
   const multipleDepths =
     sortedSelectedAreas &&
     sortedSelectedAreas.length > 1 &&
     sortedSelectedAreas[0].depth !== sortedSelectedAreas[sortedSelectedAreas.length - 1].depth;
-  const orphanedAreasInSquatCalculation = areasLoaded ? getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions) : [];
 
   const areaErrorText = multipleDepths
     ? t('fairwaycard.squat-calculation-depth-warning')
     : validationErrors.find((error) => error.id === 'squatSuitableFairwayAreaIds-' + idx)?.msg;
+
   return (
     <>
       <IonGrid className="formGrid">
@@ -174,17 +178,17 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               required
               disabled={!readonly && (disabled || (section.targetFairways?.length ?? 0) < 1)}
               readonly={readonly}
-              ignoreHelperText={multipleDepths || orphanedAreasInSquatCalculation.length > 0}
-              warning={orphanedAreasInSquatCalculation.length > 0}
-              error={orphanedAreasInSquatCalculation.length > 0 ? '' : areaErrorText}
+              ignoreHelperText={multipleDepths || (orphanedAreasInSquatCalculation ?? []).length > 0}
+              warning={(orphanedAreasInSquatCalculation ?? []).length > 0}
+              error={(orphanedAreasInSquatCalculation ?? []).length > 0 ? '' : areaErrorText}
             />
-            {areasLoaded && orphanedAreasInSquatCalculation.length > 0 && (
+            {(orphanedAreasInSquatCalculation ?? []).length > 0 && (
               <IonNote className="input-warning">
                 <Trans
                   t={t}
                   i18nKey={t('fairwaycard.squat-calculation-area-orphaned', {
                     count: orphanedAreasInSquatCalculation?.length,
-                    ids: orphanedAreasInSquatCalculation.join(', '),
+                    ids: orphanedAreasInSquatCalculation?.join(', '),
                   })}
                 />
               </IonNote>
