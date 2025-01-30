@@ -170,12 +170,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         state,
         value,
         actionType,
-        validationErrors,
-        setValidationErrors,
+        { validationErrors: validationErrors, setValidationErrors: setValidationErrors, reservedIds: reservedFairwayCardIds },
         actionLang,
         actionTarget,
-        actionOuterTarget,
-        reservedFairwayCardIds
+        actionOuterTarget
       )
     );
   };
