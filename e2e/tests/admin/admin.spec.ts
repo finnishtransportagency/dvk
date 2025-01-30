@@ -293,7 +293,7 @@ test.describe('Collapsible component tests', () => {
 
   test('when one of the sections is collapsed, expanding all expands collapsed section too', async ({ page }) => {
     await openPage(page);
-    await clickOnResultsByTypeAndState(page, FAIRWAY_CARD, DRAFT, true);
+    await clickOnResultsByTypeAndState(page, FAIRWAY_CARD, PUBLISHED, true);
     await page.getByTestId('toggleOpenSquatCalculations').click();
     await expect(page.getByTestId('addNewCalcSection')).toBeHidden();
     await page.getByTestId('expandAllSections').click();
@@ -302,7 +302,7 @@ test.describe('Collapsible component tests', () => {
 
   test('when one of the sections is expanded, collapsing all collapsed expanded section too', async ({ page }) => {
     await openPage(page);
-    await clickOnResultsByTypeAndState(page, FAIRWAY_CARD, DRAFT, true);
+    await clickOnResultsByTypeAndState(page, FAIRWAY_CARD, PUBLISHED, true);
     await page.getByTestId('collapseAllSections').click();
     await page.getByTestId('toggleOpenSquatCalculations').click();
     await expect(page.getByTestId('addNewCalcSection')).toBeVisible();
