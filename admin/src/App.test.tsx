@@ -16,7 +16,7 @@ vi.mock('react-i18next', () => ({
 
 vi.mock('./components/utils/dataLoader', () => ({
   useFeatureData: () => {
-    return { data: {} };
+    return { data: {}, isLoading: false };
   },
 }));
 

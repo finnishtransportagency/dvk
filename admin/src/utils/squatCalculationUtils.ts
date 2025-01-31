@@ -10,7 +10,7 @@ export const getOrphanedAreaString = (squatCalculations: SquatCalculation[], are
   return '';
 };
 
-export function hasFairwayCardGotAnyOrphanedAreaIds(squatCalculations: SquatCalculation[], areas: number[]) {
+function hasFairwayCardGotAnyOrphanedAreaIds(squatCalculations: SquatCalculation[], areas: number[]) {
   //for each squat calc
   if ((areas ?? []).length === 0 || (squatCalculations ?? []).length === 0) {
     return false;
@@ -24,7 +24,7 @@ export function hasFairwayCardGotAnyOrphanedAreaIds(squatCalculations: SquatCalc
   return foundOrphan;
 }
 
-export function hasSquatCalculationGotAnyOrphanedAreaIds(suitableFairwayAreas: number[], areas: number[]) {
+function hasSquatCalculationGotAnyOrphanedAreaIds(suitableFairwayAreas: number[], areas: number[]) {
   let foundOrphan = false;
   suitableFairwayAreas.forEach((squatAreaId) => {
     if (!foundOrphan && !areas.some((a) => a === squatAreaId)) {

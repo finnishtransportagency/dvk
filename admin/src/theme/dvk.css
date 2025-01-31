@@ -435,6 +435,11 @@ ion-popover.multiSelect::part(content) {
   overflow-y: auto;
 }
 
+.squat.list.warning {
+  color: var(--ion-color-warning);
+  font-size: 12px;
+}
+
 ion-popover.multiSelect.squatSuitableFairwayAreaIds {
   overflow-y: auto;
 }

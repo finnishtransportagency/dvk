@@ -14,6 +14,7 @@ import {
   IonSelect,
   IonSelectOption,
   IonSkeletonText,
+  IonText,
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ItemType, Lang } from '../utils/constants';
@@ -72,7 +73,7 @@ const MainPage: React.FC = () => {
         .filter((a) => a.areatype === 1)
         .map((a) => a.id as number)
     );
-  }, [isLoadingAreas, areaList, lang, t]);
+  }, [isLoadingAreas, areaList, lang]);
 
   const changeAction = (val?: string | number | null) => {
     setSearchQuery(String(val));
@@ -324,11 +325,8 @@ const MainPage: React.FC = () => {
             ))}
           {!isLoading &&
             filteredItemList.map((item) => {
-              const notificationString = getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[]);
-              const orphanedString =
-                (notificationString.length === 0 ? '' : ', ') +
-                getOrphanedAreaString(item.squatCalculations as SquatCalculation[], navigationAreaIds, t);
-              console.log(item.version + '-' + orphanedString);
+              const notificationString = getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[], t);
+              const orphanedString = getOrphanedAreaString(item.squatCalculations as SquatCalculation[], navigationAreaIds, t);
               return (
                 <IonRow
                   data-testid="resultrow"
@@ -356,7 +354,8 @@ const MainPage: React.FC = () => {
                   <IonCol size="1.25">{item.creator}</IonCol>
                   <IonCol size="1">
                     {notificationString.length === 0 && orphanedString.length === 0 ? '-' : notificationString}
-                    <strong>{orphanedString}</strong>
+                    {notificationString.length === 0 ? '' : ', '}
+                    <IonText className="squat list warning">{orphanedString}</IonText>
                   </IonCol>
                   <IonCol data-testid="resultversion" size="1">
                     {item.version.slice(1)}

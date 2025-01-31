@@ -1,4 +1,4 @@
-import { TFunction, t } from 'i18next';
+import { TFunction } from 'i18next';
 import {
   FairwayCardInput,
   FairwayCardOrHarbor,
@@ -350,7 +350,7 @@ export type NoticeListingTypes = {
   incoming: number;
 };
 
-export const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[]) => {
+export const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[], t: TFunction) => {
   if (!temporaryNotifications) {
     return '';
   }

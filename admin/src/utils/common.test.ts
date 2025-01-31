@@ -1,6 +1,13 @@
 import { getNotificationListingTypeString, getSelectedItemsAsText, isReadOnly } from './common';
 import { FairwayCardInput, HarborInput, Status, Operation, TemporaryNotification } from '../graphql/generated';
 import { SelectOption } from './constants';
+import { t } from 'i18next';
+
+vi.mock('i18next', () => ({
+  useTranslation: (s: string) => s,
+  Trans: (s: string) => s,
+  t: (s: string) => s,
+}));
 
 function getTestHarborWithStatus(status: Status) {
   const harbor: HarborInput = {
@@ -73,4 +80,38 @@ test('should generate input text for selected values', () => {
   expect(getSelectedItemsAsText([one, two], false, 'fi')).toBe('kaksi');
   expect(getSelectedItemsAsText([one, two], false, 'sv')).toBe('två');
   expect(getSelectedItemsAsText([one, two], false, 'en')).toBe('two');
+});
+
+test('should generate notification listing', () => {
+  const temporaryNotifications: TemporaryNotification[] = [
+    {
+      content: { fi: 'activefi', sv: 'activesv', en: 'activeen' },
+      startDate: '2020-01-01T00:00:00',
+      endDate: '2050-01-01T00:00:00',
+    },
+    {
+      content: { fi: 'comingfi', sv: 'comingsv', en: 'comingen' },
+      startDate: '2050-01-01T00:00:00',
+      endDate: '2051-01-01T00:00:00',
+    },
+  ];
+  const notificationString = getNotificationListingTypeString(temporaryNotifications, t);
+  expect(notificationString).toEqual('Active (1), incoming (1)');
+});
+
+test('should generate notification listing', () => {
+  const temporaryNotifications: TemporaryNotification[] = [
+    {
+      content: { fi: 'activefi', sv: 'activesv', en: 'activeen' },
+      startDate: '2050-01-01T00:00:00',
+      endDate: '2051-01-01T00:00:00',
+    },
+    {
+      content: { fi: 'comingfi', sv: 'comingsv', en: 'comingen' },
+      startDate: '2050-01-01T00:00:00',
+      endDate: '2051-01-01T00:00:00',
+    },
+  ];
+  const notificationString = getNotificationListingTypeString(temporaryNotifications, t);
+  expect(notificationString).toEqual('Incoming (2)');
 });
