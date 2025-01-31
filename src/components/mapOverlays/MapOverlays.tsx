@@ -45,6 +45,7 @@ export type PopupProperties = {
   section?: QuayProperties;
   area?: AreaProperties;
   specialarea2?: AreaProperties;
+  specialarea9?: AreaProperties;
   specialarea15?: ProhibitionAreaProperties;
   line?: LineProperties;
   safetyequipment?: EquipmentProperties;
@@ -172,6 +173,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.section && <QuayPopupContent quay={popupProperties.section} setPopupProperties={setPopupProperties} />}
         {popupProperties?.area && <AreaPopupContent area={popupProperties.area} setPopupProperties={setPopupProperties} />}
         {popupProperties?.specialarea2 && <AreaPopupContent area={popupProperties.specialarea2} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.specialarea9 && <AreaPopupContent area={popupProperties.specialarea9} setPopupProperties={setPopupProperties} />}
         {popupProperties?.specialarea15 && (
           <ProhibitionAreaPopupContent area={popupProperties.specialarea15} setPopupProperties={setPopupProperties} />
         )}
