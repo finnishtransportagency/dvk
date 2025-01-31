@@ -25,6 +25,7 @@ import {
   useVtsPointLayer,
   useCircleLayer,
   useSpecialArea2Layer,
+  useSpecialArea9Layer,
   useSpecialArea15Layer,
   useInitStaticDataLayer,
   useVaylaWaterAreaData,
@@ -133,6 +134,7 @@ const DvkIonApp: React.FC = () => {
   const line12Layer = useLine12Layer();
   const area12Layer = useArea12Layer();
   const specialArea2Layer = useSpecialArea2Layer();
+  const specialArea9Layer = useSpecialArea9Layer();
   const specialArea15Layer = useSpecialArea15Layer();
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
@@ -194,6 +196,7 @@ const DvkIonApp: React.FC = () => {
       line12Layer,
       area12Layer,
       specialArea2Layer,
+      specialArea9Layer,
       specialArea15Layer,
       pilotLayer,
       harborLayer,
@@ -232,6 +235,7 @@ const DvkIonApp: React.FC = () => {
     bgMmljarvirantaviivaLayer,
     circleLayer,
     specialArea2Layer,
+    specialArea9Layer,
     specialArea15Layer,
     mareographLayer,
     observationLayer,

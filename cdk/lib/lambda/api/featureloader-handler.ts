@@ -130,17 +130,22 @@ function mapAreaFeature(area: AlueFeature): Feature {
 }
 
 // 1 = Navigointialue, 3 = Ohitus- ja kohtaamisalue, 4 = Satama-allas, 5 = Kääntöallas, 11 = Varmistettu lisäalue
-// 2 = Ankkurointialue
+// 2 = Ankkurointialue, 9 = Erikoisalue
 const navigationAreaFilter = (area: AlueFeature) => {
   return filterArea(area, [1, 3, 4, 5, 11]);
 };
 const anchoringAreaFilter = (area: AlueFeature) => {
   return filterArea(area, [2]);
 };
+const specialArea9Filter = (area: AlueFeature) => {
+  return filterArea(area, [9]);
+};
 
-function getAreaFilter(type: 'area' | 'specialarea2') {
+function getAreaFilter(type: 'area' | 'specialarea2' | 'specialarea9') {
   if (type === 'area') {
     return navigationAreaFilter;
+  } else if (type === 'specialarea9') {
+    return specialArea9Filter;
   } else {
     return anchoringAreaFilter;
   }
@@ -601,6 +606,7 @@ async function addFeatures(type: string, features: FeaturesWithMaxFetchTime, eve
       return true;
     case 'area':
     case 'specialarea2':
+    case 'specialarea9' :
       await addAreaFeatures(features, event, type, getAreaFilter(type));
       return true;
     case 'specialarea15':

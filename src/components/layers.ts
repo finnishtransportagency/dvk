@@ -106,6 +106,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'area3456':
       return resolution <= 100 ? getAreaStyleBySource('area3456', highlighted, highlighted) : undefined;
     case 'specialarea2':
+    case 'specialarea9':
     case 'specialarea15':
       return getSpecialAreaStyle(feature);
     case 'boardline12':
@@ -463,6 +464,16 @@ export function addAPILayers(map: Map) {
     style: anchorageAreaIconStyle,
     declutter: true,
     zIndex: 350,
+  });
+
+  // Erikoisalue
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea9',
+    maxResolution: 75,
+    renderBuffer: 1,
+    style: getSpecialAreaPolygonStyle,
+    zIndex: 202,
   });
 
   // Kohtaamis- ja ohittamiskieltoalue
