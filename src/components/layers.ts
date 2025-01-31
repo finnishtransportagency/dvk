@@ -34,7 +34,13 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
-import { anchorageAreaIconStyle, meetAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
+import {
+  anchorageAreaIconStyle,
+  meetAreaIconStyle,
+  getSpecialAreaPolygonStyle,
+  getSpecialAreaStyle,
+  getSpecialArea9Style,
+} from './layerStyles/specialAreaStyles';
 import { getQuayStyle } from './layerStyles/quayStyles';
 import { getHarborStyle, getRestrictionStyle } from './layerStyles/harborStyles';
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
@@ -472,7 +478,7 @@ export function addAPILayers(map: Map) {
     id: 'specialarea9',
     maxResolution: 75,
     renderBuffer: 1,
-    style: getSpecialAreaPolygonStyle,
+    style: getSpecialArea9Style,
     zIndex: 202,
   });
 
