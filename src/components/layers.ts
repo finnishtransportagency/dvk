@@ -6,7 +6,7 @@ import { Fill } from 'ol/style';
 import Map from 'ol/Map';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
-import { FairwayCardPartsFragment, HarborPartsFragment, Maybe, Quay, Section } from '../graphql/generated';
+import { HarborPartsFragment, Maybe, Quay, Section } from '../graphql/generated';
 import { FeatureDataLayerId, FeatureLayerId, MAP } from '../utils/constants';
 import * as olExtent from 'ol/extent';
 import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
@@ -28,17 +28,8 @@ import TileWMS from 'ol/source/TileWMS';
 import { getVtsStyle } from './layerStyles/vtsStyles';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 import { getCircleStyle } from './layerStyles/circleStyles';
-import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 import { initialState } from '../hooks/dvkReducer';
 import { Geometry, LineString, Point, Polygon } from 'ol/geom';
-import {
-  getFairwayCardPilotRoutes,
-  getFairwayCardPilotageLimits,
-  getFairwayCardPilotPlaces,
-  getFairwayCardSafetyEquipmentFaults,
-  getFairwayCardObservations,
-  getFairwayCardMareographs,
-} from '../utils/fairwayCardUtils';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
@@ -737,79 +728,6 @@ export function addAPILayers(map: Map) {
   );
 }
 
-export function unsetSelectedFairwayCard() {
-  const dvkMap = getMap();
-  const line12Source = dvkMap.getVectorSource('line12');
-  const line3456Source = dvkMap.getVectorSource('line3456');
-  const area12Source = dvkMap.getVectorSource('area12');
-  const area3456Source = dvkMap.getVectorSource('area3456');
-  const quaySource = dvkMap.getVectorSource('quay');
-  const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  const depthSource = dvkMap.getVectorSource('depth12');
-  const specialArea2Source = dvkMap.getVectorSource('specialarea2');
-  const specialArea15Source = dvkMap.getVectorSource('specialarea15');
-  const boardLine12Source = dvkMap.getVectorSource('boardline12');
-  const harborSource = dvkMap.getVectorSource('harbor');
-  const circleSource = dvkMap.getVectorSource('circle');
-  const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
-  const pilotPlaceSource = dvkMap.getVectorSource('pilot');
-  const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
-  const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
-  const oldSelectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
-  for (const feature of oldSelectedFeatures) {
-    switch (feature.getProperties().dataSource) {
-      case 'line12':
-        line12Source.addFeature(feature);
-        feature.unset('n2000HeightSystem');
-        break;
-      case 'line3456':
-        line3456Source.addFeature(feature);
-        break;
-      case 'area12':
-        area12Source.addFeature(feature);
-        feature.unset('n2000HeightSystem');
-        (depthSource.getFeatureById(feature.getId() as number) as Feature<Geometry>)?.unset('n2000HeightSystem');
-        break;
-      case 'area3456':
-        area3456Source.addFeature(feature);
-        break;
-      case 'specialarea2':
-        specialArea2Source.addFeature(feature);
-        feature.unset('n2000HeightSystem');
-        break;
-      case 'specialarea15':
-        specialArea15Source.addFeature(feature);
-        feature.unset('n2000HeightSystem');
-        break;
-      case 'boardline12':
-        boardLine12Source.addFeature(feature);
-        break;
-      case 'harbor':
-        harborSource.addFeature(feature);
-        break;
-      case 'circle':
-        circleSource.addFeature(feature);
-        break;
-      case 'safetyequipmentfault':
-        safetyEquipmentFaultSource.addFeature(feature);
-        break;
-      case 'pilot':
-        pilotPlaceSource.addFeature(feature);
-        break;
-      case 'pilotagelimit':
-        pilotageLimitSource.addFeature(feature);
-        break;
-      case 'pilotroute':
-        pilotRouteSource.addFeature(feature);
-        break;
-    }
-  }
-  selectedFairwayCardSource.getFeatures().forEach((f) => f.set('selected', false));
-  selectedFairwayCardSource.clear();
-  quaySource.clear();
-  dvkMap.getFeatureLayer('selectedfairwaycard').setVisible(false);
-}
-
 function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorSource, format: GeoJSON, showDepth: boolean) {
   const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
@@ -849,7 +767,7 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
   source.addFeature(feature);
 }
 
-function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
+export function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
   const format = new GeoJSON();
   for (const quay of harbor.quays ?? []) {
     let sectionGeometryMissing = false;
@@ -890,163 +808,7 @@ function addHarborFeature(harbor: HarborPartsFragment, source: VectorSource): Fe
   return feature;
 }
 
-export function setSelectedFairwayCard(fairwayCard: FairwayCardPartsFragment | undefined) {
-  const dvkMap = getMap();
-  if (fairwayCard) {
-    const line12Source = dvkMap.getVectorSource('line12');
-    const line3456Source = dvkMap.getVectorSource('line3456');
-    const area12Source = dvkMap.getVectorSource('area12');
-    const area3456Source = dvkMap.getVectorSource('area3456');
-    const quaySource = dvkMap.getVectorSource('quay');
-    const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-    const depthSource = dvkMap.getVectorSource('depth12');
-    const specialArea2Source = dvkMap.getVectorSource('specialarea2');
-    const specialArea15Source = dvkMap.getVectorSource('specialarea15');
-    const boardLine12Source = dvkMap.getVectorSource('boardline12');
-    const harborSource = dvkMap.getVectorSource('harbor');
-    const circleSource = dvkMap.getVectorSource('circle');
-    const pilotPlaceSource = dvkMap.getVectorSource('pilot');
-    const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
-    const safetyEquipmentFaultSource = dvkMap.getVectorSource('safetyequipmentfault');
-    const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
-    const observationSource = dvkMap.getVectorSource('observation');
-    const mareographSource = dvkMap.getVectorSource('mareograph');
-    unsetSelectedFairwayCard();
-
-    const fairwayFeatures: Feature[] = [];
-
-    const observationFeatures = observationSource.getFeatures();
-    const observations = getFairwayCardObservations(fairwayCard, observationFeatures);
-    for (const observation of observations) {
-      fairwayFeatures.push(observation);
-    }
-
-    for (const fairway of fairwayCard?.fairways || []) {
-      for (const line of fairway.navigationLines ?? []) {
-        let feature = line12Source.getFeatureById(line.id) as Feature<Geometry>;
-        if (feature) {
-          line12Source.removeFeature(feature);
-          fairwayFeatures.push(feature);
-          feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-        } else {
-          feature = line3456Source.getFeatureById(line.id) as Feature<Geometry>;
-          if (feature) {
-            line3456Source.removeFeature(feature);
-            fairwayFeatures.push(feature);
-          }
-        }
-      }
-      for (const area of fairway.areas ?? []) {
-        let feature = area12Source.getFeatureById(area.id) as Feature<Geometry>;
-        if (feature) {
-          area12Source.removeFeature(feature);
-          fairwayFeatures.push(feature);
-          feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-          feature = depthSource.getFeatureById(area.id) as Feature<Geometry>;
-          feature?.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-        } else {
-          feature = area3456Source.getFeatureById(area.id) as Feature<Geometry>;
-          if (feature) {
-            area3456Source.removeFeature(feature);
-            fairwayFeatures.push(feature);
-          }
-        }
-        if (!feature) {
-          feature = specialArea2Source.getFeatureById(area.id) as Feature<Geometry>;
-          if (feature) {
-            specialArea2Source.removeFeature(feature);
-            fairwayFeatures.push(feature);
-            feature.set('n2000HeightSystem', fairwayCard?.n2000HeightSystem || false);
-          }
-        }
-      }
-      for (const prohibitionArea of fairway.prohibitionAreas ?? []) {
-        const feature = specialArea15Source.getFeatureById(prohibitionArea.id) as Feature<Geometry>;
-        if (feature) {
-          specialArea15Source.removeFeature(feature);
-          fairwayFeatures.push(feature);
-        }
-      }
-      for (const line of fairway.boardLines ?? []) {
-        const feature = boardLine12Source.getFeatureById(line.id) as Feature<Geometry>;
-        if (feature) {
-          boardLine12Source.removeFeature(feature);
-          fairwayFeatures.push(feature);
-        }
-      }
-      for (const circle of fairway.turningCircles ?? []) {
-        const feature = circleSource.getFeatureById(circle.id) as Feature<Geometry>;
-        if (feature) {
-          circleSource.removeFeature(feature);
-          fairwayFeatures.push(feature);
-        }
-      }
-    }
-
-    for (const harbor of fairwayCard?.harbors ?? []) {
-      const id = harbor.geometry?.coordinates?.join(';');
-      const feature = id ? (harborSource.getFeatureById(id) as Feature<Geometry>) : undefined;
-      if (feature) {
-        harborSource.removeFeature(feature);
-        fairwayFeatures.push(feature);
-      }
-      addQuay(harbor, quaySource);
-    }
-
-    const area12Features = fairwayFeatures.filter((f) => f.get('dataSource') === 'area12');
-    const borderLineFeatures = getFairwayAreaBorderFeatures(area12Features);
-    borderLineFeatures.forEach((f) => {
-      f.set('dataSource', 'area12Borderline', true);
-      fairwayFeatures.push(f);
-    });
-
-    const safetyEquipmentFaults = getFairwayCardSafetyEquipmentFaults(fairwayCard, safetyEquipmentFaultSource.getFeatures());
-    for (const fault of safetyEquipmentFaults) {
-      const feature = safetyEquipmentFaultSource.getFeatureById(fault.getId() as number) as Feature<Geometry>;
-      if (feature) {
-        safetyEquipmentFaultSource.removeFeature(feature);
-        fairwayFeatures.push(feature);
-      }
-    }
-
-    const pilotPlaces = getFairwayCardPilotPlaces(fairwayCard);
-    for (const feature of pilotPlaces) {
-      pilotPlaceSource.removeFeature(feature);
-      fairwayFeatures.push(feature);
-    }
-
-    const pilotageLimits = getFairwayCardPilotageLimits(fairwayCard, pilotageLimitSource.getFeatures());
-    for (const pilotageLimit of pilotageLimits) {
-      const feature = pilotageLimitSource.getFeatureById(pilotageLimit.getId() as number) as Feature<Geometry>;
-      if (feature) {
-        pilotageLimitSource.removeFeature(feature);
-        fairwayFeatures.push(feature);
-      }
-    }
-
-    const mareographFeatures = mareographSource.getFeatures();
-    const mareographs = getFairwayCardMareographs(fairwayCard, mareographFeatures);
-    for (const mareograph of mareographs) {
-      fairwayFeatures.push(mareograph);
-    }
-
-    const pilotRouteFeatures = pilotRouteSource.getFeatures();
-    const cardRoutes = getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures);
-    for (const cardRoute of cardRoutes) {
-      const feature = pilotRouteSource.getFeatureById(cardRoute.getProperties()?.id) as Feature<Geometry>;
-      if (feature) {
-        pilotRouteSource.removeFeature(feature);
-        fairwayFeatures.push(feature);
-      }
-    }
-
-    selectedFairwayCardSource.addFeatures(fairwayFeatures);
-    zoomToExtent(fairwayFeatures);
-  }
-  dvkMap.getFeatureLayer('selectedfairwaycard').setVisible(true);
-}
-
-function zoomToExtent(features: Feature<Geometry>[]) {
+export function zoomToExtent(features: Feature<Geometry>[]) {
   features.forEach((f) => f.set('selected', true, true));
 
   const extent = olExtent.createEmpty();
