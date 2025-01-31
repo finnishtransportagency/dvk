@@ -1,4 +1,4 @@
-import { TFunction } from 'i18next';
+import { TFunction, t } from 'i18next';
 import {
   FairwayCardInput,
   FairwayCardOrHarbor,
@@ -348,6 +348,27 @@ export function endDateError(startDate: string, endDate: string): boolean {
 export type NoticeListingTypes = {
   active: number;
   incoming: number;
+};
+
+export const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[]) => {
+  if (!temporaryNotifications) {
+    return '';
+  }
+  const listingTypes = getNotificationListingTypesCount(temporaryNotifications);
+
+  let typesString;
+
+  if (listingTypes.active > 0) {
+    typesString = t('active') + ` (${listingTypes.active})`;
+  }
+  if (listingTypes.incoming) {
+    typesString = typesString ? typesString + ', ' + t('incoming') : t('incoming');
+    typesString = typesString + ` (${listingTypes.incoming})`;
+  }
+
+  typesString = typesString?.toLocaleLowerCase();
+
+  return typesString ? typesString.charAt(0).toLocaleUpperCase() + typesString.slice(1) : '';
 };
 
 export function getNotificationListingTypesCount(notifications: TemporaryNotification[]): NoticeListingTypes {

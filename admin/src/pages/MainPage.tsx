@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   IonButton,
   IonCol,
@@ -17,13 +17,15 @@ import {
 } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { ItemType, Lang } from '../utils/constants';
-import { filterItemList, getNotificationListingTypesCount } from '../utils/common';
+import { featureCollectionToAreaSelectOptions, filterItemList, getNotificationListingTypeString } from '../utils/common';
 import { useHistory } from 'react-router-dom';
 import ArrowIcon from '../theme/img/arrow_back.svg?react';
 import CreationModal from '../components/CreationModal';
 import ClearSearchButton from '../components/ClearSearchButton';
-import { Status, TemporaryNotification } from '../graphql/generated';
+import { SquatCalculation, Status, TemporaryNotification } from '../graphql/generated';
 import { useFairwayCardsAndHarborsQueryData } from '../graphql/api';
+import { useFeatureData } from '../utils/dataLoader';
+import { getOrphanedAreaString } from '../utils/squatCalculationUtils';
 
 type HeaderButtonProps = {
   headername: string;
@@ -48,6 +50,8 @@ const MainPage: React.FC = () => {
   const history = useHistory();
 
   const { data, isLoading } = useFairwayCardsAndHarborsQueryData(true);
+  const { data: areaList, isLoading: isLoadingAreas } = useFeatureData('area12');
+
   const groups = ['-', t('archipelagoSea'), t('gulfOfFinland'), t('gulfOfBothnia')];
 
   const [searchQuery, setSearchQuery] = useState('');
@@ -58,10 +62,17 @@ const MainPage: React.FC = () => {
   const [sortBy, setSortBy] = useState('name');
   const [sortDescending, setSortDescending] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
-
   const searchRef = useRef<HTMLIonInputElement>(null);
-
   const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, itemStatus, sortBy, sortDescending, t);
+  const [navigationAreaIds, setNavigationAreaIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    setNavigationAreaIds(
+      featureCollectionToAreaSelectOptions(areaList, t('fairwaycard.calculation-depth'), lang)
+        .filter((a) => a.areatype === 1)
+        .map((a) => a.id as number)
+    );
+  }, [isLoadingAreas, areaList, lang, t]);
 
   const changeAction = (val?: string | number | null) => {
     setSearchQuery(String(val));
@@ -114,27 +125,6 @@ const MainPage: React.FC = () => {
 
   const compareStatusOptions = (o1: Status, o2: Status): boolean => {
     return o1 && o2 ? o1.valueOf() === o2.valueOf() : o1 === o2;
-  };
-
-  const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[]) => {
-    if (!temporaryNotifications) {
-      return '-';
-    }
-    const listingTypes = getNotificationListingTypesCount(temporaryNotifications);
-
-    let typesString;
-
-    if (listingTypes.active > 0) {
-      typesString = t('active') + ` (${listingTypes.active})`;
-    }
-    if (listingTypes.incoming) {
-      typesString = typesString ? typesString + ', ' + t('incoming') : t('incoming');
-      typesString = typesString + ` (${listingTypes.incoming})`;
-    }
-
-    typesString = typesString?.toLocaleLowerCase();
-
-    return typesString ? typesString.charAt(0).toLocaleUpperCase() + typesString.slice(1) : '-';
   };
 
   const searchHasInput = searchQuery.length > 0;
@@ -334,6 +324,11 @@ const MainPage: React.FC = () => {
             ))}
           {!isLoading &&
             filteredItemList.map((item) => {
+              const notificationString = getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[]);
+              const orphanedString =
+                (notificationString.length === 0 ? '' : ', ') +
+                getOrphanedAreaString(item.squatCalculations as SquatCalculation[], navigationAreaIds, t);
+              console.log(item.version + '-' + orphanedString);
               return (
                 <IonRow
                   data-testid="resultrow"
@@ -359,7 +354,10 @@ const MainPage: React.FC = () => {
                   <IonCol size="1">{t('datetimeFormat', { val: item.modificationTimestamp })}</IonCol>
                   <IonCol size="1.25">{item.modifier}</IonCol>
                   <IonCol size="1.25">{item.creator}</IonCol>
-                  <IonCol size="1">{getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[])}</IonCol>
+                  <IonCol size="1">
+                    {notificationString.length === 0 && orphanedString.length === 0 ? '-' : notificationString}
+                    <strong>{orphanedString}</strong>
+                  </IonCol>
                   <IonCol data-testid="resultversion" size="1">
                     {item.version.slice(1)}
                   </IonCol>

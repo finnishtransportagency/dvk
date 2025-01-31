@@ -1,6 +1,6 @@
 import {
   filterOrphanedAreas,
-  getOrphanedAreaIdsFromSquatCalculation,
+  getOrphanedAreaIdsFromSquatCalculationInput,
   getOrphanedAreaIdsFromSquatSection,
   getPossibleAreas,
 } from './squatCalculationUtils';
@@ -13,10 +13,10 @@ test('should locate orphaned area in squat calculation', () => {
     suitableFairwayAreas: [1, 2, 3],
   };
 
-  expect(getOrphanedAreaIdsFromSquatCalculation(input, [{ id: 4 }])).toEqual([1, 2, 3]);
-  expect(getOrphanedAreaIdsFromSquatCalculation(input, [{ id: 1 }])).toEqual([2, 3]);
-  expect(getOrphanedAreaIdsFromSquatCalculation(input, [{ id: 1 }, { id: 2 }])).toEqual([3]);
-  expect(getOrphanedAreaIdsFromSquatCalculation(input, [{ id: 1 }, { id: 2 }, { id: 3 }])).toEqual([]);
+  expect(getOrphanedAreaIdsFromSquatCalculationInput(input, [{ id: 4 }])).toEqual([1, 2, 3]);
+  expect(getOrphanedAreaIdsFromSquatCalculationInput(input, [{ id: 1 }])).toEqual([2, 3]);
+  expect(getOrphanedAreaIdsFromSquatCalculationInput(input, [{ id: 1 }, { id: 2 }])).toEqual([3]);
+  expect(getOrphanedAreaIdsFromSquatCalculationInput(input, [{ id: 1 }, { id: 2 }, { id: 3 }])).toEqual([]);
 });
 
 test('should locate orphaned area in array of squat calculations', () => {
