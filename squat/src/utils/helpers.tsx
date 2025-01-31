@@ -29,6 +29,11 @@ const getFieldParameters = (currentState: State) => {
   parameters.push(getQuerystringForField('blockCoefficient', currentState.vessel.general.blockCoefficient));
   parameters.push(getQuerystringForField('displacement', currentState.vessel.general.displacement));
 
+  // Vessel - Stability
+  parameters.push(getQuerystringForField('KG', currentState.vessel.stability.KG));
+  parameters.push(getQuerystringForField('GM', currentState.vessel.stability.GM));
+  parameters.push(getQuerystringForField('KB', currentState.vessel.stability.KB));
+
   if (!limitedView) {
     // Vessel - Detailed
     parameters.push(getQuerystringForField('windSurface', currentState.vessel.detailed.windSurface));
@@ -36,11 +41,6 @@ const getFieldParameters = (currentState: State) => {
     parameters.push(getQuerystringForField('bowThruster', currentState.vessel.detailed.bowThruster));
     parameters.push(getQuerystringForField('bowThrusterEfficiency', currentState.vessel.detailed.bowThrusterEfficiency));
     parameters.push(getQuerystringForField('profileSelected', currentState.vessel.detailed.profileSelected.id - 1));
-
-    // Vessel - Stability
-    parameters.push(getQuerystringForField('KG', currentState.vessel.stability.KG));
-    parameters.push(getQuerystringForField('GM', currentState.vessel.stability.GM));
-    parameters.push(getQuerystringForField('KB', currentState.vessel.stability.KB));
 
     // Environment - Weather
     parameters.push(getQuerystringForField('windSpeed', currentState.environment.weather.windSpeed));
