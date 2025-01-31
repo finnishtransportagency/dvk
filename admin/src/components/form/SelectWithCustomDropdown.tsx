@@ -25,6 +25,7 @@ interface SelectWithCustomDropdownProps {
   disabled?: boolean;
   readonly?: boolean;
   helperText?: string | null;
+  warning?: boolean;
   error?: string;
   isLoading?: boolean;
   infoTitle?: string;
@@ -46,6 +47,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
   disabled,
   readonly = false,
   helperText,
+  warning = false,
   error,
   isLoading,
   infoTitle,
@@ -91,11 +93,14 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
 
   const labelText = constructSelectDropdownLabel(dropdownType === 'sequence' ? selected : (selected as number[]), options, lang, showId);
   const disabledStyle = disabled ? ' disabled' : '';
-  const inputClassName = 'selectWrapper' + (isInputOk(isValid, error) ? '' : ' invalid' + disabledStyle);
+  const errorStyle = isInputOk(isValid, error) ? '' : ' invalid';
+  const validity = warning ? ' warning' : errorStyle;
+  const inputClassName = 'selectWrapper' + validity + disabledStyle;
 
   //For readability of tsx
   const readonlyAndNotLoading = readonly && !isLoading;
   const inputOrLoading = !readonlyAndNotLoading;
+
   return (
     <div className={inputClassName}>
       {readonlyAndNotLoading && (
@@ -109,7 +114,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
             rows={labelText.length}
             required={required}
           />
-          <IonNote className="helper">{getHelperText()}</IonNote>
+          {!ignoreHelperText && <IonNote className="helper">{getHelperText()}</IonNote>}
         </>
       )}
       {inputOrLoading && (
@@ -166,7 +171,7 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
                   color={expanded ? 'primary' : 'medium'}
                 />
               </IonItem>
-              {isInputOk(isValid, error) && getHelperText() && <IonNote className="helper">{getHelperText()}</IonNote>}
+              {isInputOk(isValid, error) && getHelperText() && !ignoreHelperText && <IonNote className="helper">{getHelperText()}</IonNote>}
               <IonNote className="input-error">{getCombinedErrorAndHelperText(getHelperText(), getErrorText(), ignoreHelperText)}</IonNote>
               {dropdownType === 'filter' && (
                 <SelectDropdownPopup
