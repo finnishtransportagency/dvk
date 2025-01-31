@@ -5,7 +5,11 @@ import { AreaSelectOption } from './constants';
 export function getOrphanedAreaIdsFromSquatSection(squatSections: SquatCalculationInput[], areas: AreaSelectOption[]): number[] {
   const allOrphanedIds: number[] = [];
   squatSections.forEach((s) => {
-    getOrphanedAreaIdsFromSquatCalculation(s, areas).forEach((id) => allOrphanedIds.push(id));
+    getOrphanedAreaIdsFromSquatCalculation(s, areas).forEach((id) => {
+      if (!allOrphanedIds.includes(id)) {
+        allOrphanedIds.push(id);
+      }
+    });
   });
   return allOrphanedIds;
 }
