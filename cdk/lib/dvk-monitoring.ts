@@ -117,7 +117,7 @@ export class MonitoringServices extends Construct {
         view: cloudwatch.LogQueryVisualizationType.TABLE,
         queryLines: [
           `fields Lukumaara, msg`,
-          ` filter tag = "DVK_BACKEND" and @message like /Fetching from (\\w+) api failed/`,
+          ` filter tag = "DVK_BACKEND" and @message like /(\\w+) api fetch failed/`,
           ` fields substr(msg, 0, 150) as short_msg`,
           ` stats count(*) as Lukumaara by short_msg`,
           ` sort Lukumaara desc`,
