@@ -20,7 +20,7 @@ export class MonitoringServices extends Construct {
       topicName: `DvkAlarmsTopic_${env}`,
     });
 
-    topic.addSubscription(new subscriptions.EmailSubscription('juhani.kettunen@cgi.com')); //'FI.SM.GEN.DVK@cgi.com'
+    topic.addSubscription(new subscriptions.EmailSubscription('FI.SM.GEN.DVK@cgi.com')); //'FI.SM.GEN.DVK@cgi.com'
 
     const action = new SnsAction(topic);
 
@@ -28,7 +28,11 @@ export class MonitoringServices extends Construct {
     for (const lambdaFunc of lambdaFunctions) {
       const functionName = this.getLambdaName(lambdaFunc.typeName, lambdaFunc.fieldName, env);
       const metricFilter = this.createLogGroupMetricFilter(functionName, env);
-      const logAlarm = this.createAlarmForMetric(metricFilter.metric(), env);
+      const logAlarm = this.createAlarmForMetric(
+        metricFilter.metric(),
+        env,
+        `Alert: GraphQL Handler ${functionName} errors have exceeded the threshold in the ' + env + ' environment.`
+      );
       logAlarm.addAlarmAction(action);
     }
     // ... and api functions
@@ -36,17 +40,29 @@ export class MonitoringServices extends Construct {
       if (lambdaFunc.useMonitoring) {
         const functionName = `${lambdaFunc.functionName}-${env}`.toLocaleLowerCase();
         const metricFilter = this.createLogGroupMetricFilter(functionName, env);
-        const logAlarm = this.createAlarmForMetric(metricFilter.metric({ statistic: 'Sum' }), env);
+        const logAlarm = this.createAlarmForMetric(
+          metricFilter.metric({ statistic: 'Sum' }),
+          env,
+          `Alert: API Lambda ${functionName} errors have exceeded the threshold in the ' + env + ' environment.`
+        );
         logAlarm.addAlarmAction(action);
       }
     }
 
     // create general alarms for lambdas...
-    const lambdaAlarms = this.createAlarmForMetric(this.createLambdaMetric(env, 'Errors', 'Sum'), env);
+    const lambdaAlarms = this.createAlarmForMetric(
+      this.createLambdaMetric(env, 'Errors', 'Sum'),
+      env,
+      'Alert: General Lambda Errors have exceeded the threshold in the ' + env + ' environment.'
+    );
     lambdaAlarms.addAlarmAction(action);
 
     // ... and appsync
-    const appSyncAlarm = this.createAlarmForMetric(this.createAppSyncMetric(env, '5XXError', 'Max'), env);
+    const appSyncAlarm = this.createAlarmForMetric(
+      this.createAppSyncMetric(env, '5XXError', 'Max'),
+      env,
+      'Alert: AppSync 5XX Errors have exceeded the threshold in the ' + env + ' environment.'
+    );
     appSyncAlarm.addAlarmAction(action);
 
     // dashboard
@@ -159,7 +175,9 @@ export class MonitoringServices extends Construct {
     return metricFilter;
   }
 
-  createAlarmForMetric(metric: Metric, env: string) {
+  createAlarmForMetric(metric: Metric, env: string, customMessage?: string): Alarm {
+    const defaultMessage = `Alert: ${metric.metricName} has exceeded the threshold of 1 in the ${env} environment.`;
+
     const alarm = new Alarm(this, 'DvkErrors-' + metric.metricName, {
       comparisonOperator: ComparisonOperator.GREATER_THAN_THRESHOLD,
       threshold: 1,
@@ -169,6 +187,7 @@ export class MonitoringServices extends Construct {
       alarmName: 'Dvk_' + metric.namespace.split('/').pop() + metric.metricName + `_alarm_${env}`,
       actionsEnabled: true,
       treatMissingData: TreatMissingData.MISSING,
+      alarmDescription: customMessage || defaultMessage,
     });
 
     return alarm;
