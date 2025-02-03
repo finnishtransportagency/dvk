@@ -3,11 +3,20 @@ import { FilterPattern, LogGroup, MetricFilter } from 'aws-cdk-lib/aws-logs';
 import { Alarm, ComparisonOperator, GraphWidget, Metric, TreatMissingData } from 'aws-cdk-lib/aws-cloudwatch';
 import lambdaFunctions from './lambda/graphql/lambdaFunctions';
 import apiLambdaFunctions from './lambda/api/apiLambdaFunctions';
-import { Duration, aws_cloudwatch as cloudwatch } from 'aws-cdk-lib';
+import {
+  Duration,
+  aws_cloudwatch as cloudwatch,
+  aws_lambda as lambda,
+  aws_iam as iam,
+  aws_events as events,
+  aws_events_targets as targets,
+} from 'aws-cdk-lib';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
 import Config from './config';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import * as path from 'path';
 
 type DvkMetric = { name: string; statistics: string };
 export class MonitoringServices extends Construct {
@@ -20,7 +29,7 @@ export class MonitoringServices extends Construct {
       topicName: `DvkAlarmsTopic_${env}`,
     });
 
-    topic.addSubscription(new subscriptions.EmailSubscription('FI.SM.GEN.DVK@cgi.com')); //'FI.SM.GEN.DVK@cgi.com'
+    topic.addSubscription(new subscriptions.EmailSubscription('juhani.kettunen@cgi.com')); //'FI.SM.GEN.DVK@cgi.com'
 
     const action = new SnsAction(topic);
 
@@ -31,7 +40,7 @@ export class MonitoringServices extends Construct {
       const logAlarm = this.createAlarmForMetric(
         metricFilter.metric(),
         env,
-        `Alert: GraphQL Handler ${functionName} errors have exceeded the threshold in the ' + env + ' environment.`
+        `Alert: GraphQL Handler ${functionName} errors have exceeded the threshold in the ${env} environment.`
       );
       logAlarm.addAlarmAction(action);
     }
@@ -43,11 +52,41 @@ export class MonitoringServices extends Construct {
         const logAlarm = this.createAlarmForMetric(
           metricFilter.metric({ statistic: 'Sum' }),
           env,
-          `Alert: API Lambda ${functionName} errors have exceeded the threshold in the ' + env + ' environment.`
+          `Alert: API Lambda ${functionName} errors have exceeded the threshold in the ${env} environment.`
         );
         logAlarm.addAlarmAction(action);
       }
     }
+
+    // Create Lambda function for log insights query to produce hourly reports of external API errors
+    const logInsightsLambda = new NodejsFunction(this, 'LogInsightsQueryLambda', {
+      functionName: 'LogInsightsQueryLambda-' + env,
+      runtime: lambda.Runtime.NODEJS_22_X,
+      entry: path.join(__dirname, 'lambda', 'monitoring', 'log-insights-query.ts'),
+      handler: 'handler',
+      timeout: Duration.seconds(60),
+      environment: {
+        SNS_TOPIC_ARN: topic.topicArn,
+        ENVIRONMENT: Config.getEnvironment(),
+      },
+    });
+
+    // Grant permissions to Lambda
+    logInsightsLambda.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['logs:StartQuery', 'logs:GetQueryResults'],
+        resources: ['*'],
+      })
+    );
+
+    topic.grantPublish(logInsightsLambda);
+
+    // Create CloudWatch Event Rule to trigger Lambda every hour
+    new events.Rule(this, 'HourlyLogInsightsRule', {
+      schedule: events.Schedule.rate(Duration.hours(1)),
+      targets: [new targets.LambdaFunction(logInsightsLambda)],
+    });
 
     // create general alarms for lambdas...
     const lambdaAlarms = this.createAlarmForMetric(
@@ -179,15 +218,15 @@ export class MonitoringServices extends Construct {
     const defaultMessage = `Alert: ${metric.metricName} has exceeded the threshold of 1 in the ${env} environment.`;
 
     const alarm = new Alarm(this, 'DvkErrors-' + metric.metricName, {
-      comparisonOperator: ComparisonOperator.GREATER_THAN_THRESHOLD,
-      threshold: 1,
+      comparisonOperator: ComparisonOperator.GREATER_THAN_OR_EQUAL_TO_THRESHOLD,
+      threshold: 3,
       datapointsToAlarm: 1,
-      evaluationPeriods: 1,
-      metric,
+      evaluationPeriods: 12, // 1 hour
+      metric: metric,
       alarmName: 'Dvk_' + metric.namespace.split('/').pop() + metric.metricName + `_alarm_${env}`,
       actionsEnabled: true,
       treatMissingData: TreatMissingData.MISSING,
-      alarmDescription: customMessage || defaultMessage,
+      alarmDescription: customMessage ?? defaultMessage,
     });
 
     return alarm;
