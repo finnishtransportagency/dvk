@@ -1,7 +1,6 @@
 import { getNotificationListingTypeString, getSelectedItemsAsText, isReadOnly } from './common';
 import { FairwayCardInput, HarborInput, Status, Operation, TemporaryNotification } from '../graphql/generated';
 import { SelectOption } from './constants';
-import { t } from 'i18next';
 
 vi.mock('i18next', () => ({
   useTranslation: (s: string) => s,
