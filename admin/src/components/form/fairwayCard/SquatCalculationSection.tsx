@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { SquatCalculationInput as GraphqlSquatCalculationInput } from '../../../graphql/generated';
-import { ValueType, ActionType, Lang, ValidationType, SelectOption } from '../../../utils/constants';
+import { ValueType, ActionType, Lang, ValidationType, SelectOption, AreaSelectOption } from '../../../utils/constants';
+import { Trans, useTranslation } from 'react-i18next';
 import { IonButton, IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
-import { useTranslation } from 'react-i18next';
 import SquatCalculationInput from '../SquatCalculationInput';
 import SectionHeader from '../SectionHeader';
 import alertIcon from '../../../theme/img/alert_icon.svg';
 import './SquatCalculationSection.css';
+import { getOrphanedAreaIdsFromSquatSection } from '../../../utils/squatCalculationUtils';
 
 interface SquatCalculationSectionProps {
   updateState: (
@@ -23,10 +24,11 @@ interface SquatCalculationSectionProps {
   disabled?: boolean;
   readonly?: boolean;
   fairwaySelection?: SelectOption[];
-  fairwayAreas?: SelectOption[];
+  fairwayAreas?: AreaSelectOption[];
   isLoadingAreas?: boolean;
   isLoadingFairways?: boolean;
   showWarningLabel?: boolean;
+  areasLoaded?: boolean;
 }
 
 const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
@@ -42,9 +44,11 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
   isLoadingAreas = false,
   isLoadingFairways = false,
   showWarningLabel = false,
+  areasLoaded = false,
 }) => {
   const { t } = useTranslation();
   const [openSections, setOpenSections] = useState<boolean[]>(new Array(sections?.length).fill(true));
+  const [orphanedAreaIdsInSquatSection, setOrphanedAreaIdsInSquatSection] = useState<number[]>();
 
   const toggleSection = (position: number) => {
     const opened = openSections.map((s, idx) => (idx === position ? !s : s));
@@ -71,8 +75,30 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
     }
   }, [sections, openSections.length]);
 
+  useEffect(() => {
+    setOrphanedAreaIdsInSquatSection(sections && fairwayAreas && areasLoaded ? getOrphanedAreaIdsFromSquatSection(sections, fairwayAreas) : []);
+  }, [sections, fairwayAreas, areasLoaded]);
+
   return (
     <>
+      {orphanedAreaIdsInSquatSection && orphanedAreaIdsInSquatSection.length > 0 && (
+        <IonGrid className={'squat info grid'}>
+          <IonRow className="squat info row">
+            <IonCol size="auto" className={'squat info icon'}>
+              <IonIcon aria-hidden src={alertIcon} color="warning" />
+            </IonCol>
+            <IonCol className={'squat info col'}>
+              <Trans
+                t={t}
+                i18nKey={t('general.squat-calculation-section-area-orphaned', {
+                  count: orphanedAreaIdsInSquatSection.length,
+                  ids: orphanedAreaIdsInSquatSection.join(', '),
+                })}
+              />
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      )}
       {sections?.map((section, idx) => {
         const sectionOpen = !!openSections[idx];
         const sectionClassName = 'sectionContent' + (sectionOpen ? ' open' : ' closed');
@@ -84,6 +110,7 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
               deleteSection={deleteSection}
               toggleSection={toggleSection}
               open={sectionOpen}
+              readonly={readonly}
             />
             <div className={sectionClassName} key={'squatcalculation' + idx}>
               <SquatCalculationInput
@@ -97,13 +124,13 @@ const SquatCalculationSection: React.FC<SquatCalculationSectionProps> = ({
                 fairwayAreas={fairwayAreas}
                 isLoadingAreas={isLoadingAreas}
                 isLoadingFairways={isLoadingFairways}
+                areasReady={orphanedAreaIdsInSquatSection && orphanedAreaIdsInSquatSection.length > 0}
               />
             </div>
           </div>
         );
       })}
-
-      {showWarningLabel && (
+      {showWarningLabel && !readonly && (
         <IonGrid className={'squat warning grid'}>
           <IonRow className="squat warning row">
             <IonCol size="auto" className={'squat warning icon'}>

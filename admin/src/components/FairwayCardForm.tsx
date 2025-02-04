@@ -142,7 +142,12 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
 
   //Filter the selectable areas for the squat calculations based on the fairway card selected fairways
   //They will also be filtered in the squat calculation section based on that fairway sub selection
-  const areaOptions = featureCollectionToAreaSelectOptions(areaList, t('fairwaycard.calculation-depth'), lang).filter((a) => a.areatype === 1);
+  const [areaOptions, setAreaOptions] = useState<AreaSelectOption[]>([]);
+
+  useEffect(() => {
+    setAreaOptions(featureCollectionToAreaSelectOptions(areaList, t('fairwaycard.calculation-depth'), lang).filter((a) => a.areatype === 1));
+  }, [areaList, lang, t]);
+
   const filteredAreaOptions: AreaSelectOption[] = [];
   fairwaySelection?.forEach((f) => {
     areaOptions.filter((item) => item.fairwayIds?.includes(f.id)).forEach((o) => filteredAreaOptions.push(o));
@@ -203,7 +208,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         saveFairwayCard({ card: mapTrafficService(state) as FairwayCardInput });
       } else if (operation === Operation.Createversion) {
         setIsSubmittingVersion(true);
-        const newVersion = mapNewFairwayCardVersion(state, !!state.pictures?.length);
+        const newVersion = mapNewFairwayCardVersion(state, !!state.pictures?.length, areaOptions);
         setState(newVersion);
         const newCard = mapTrafficService(newVersion) as FairwayCardInput;
         if (state.pictures?.length) {
@@ -217,7 +222,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         }
       }
     },
-    [state, oldState, saveFairwayCard]
+    [state, oldState, saveFairwayCard, areaOptions]
   );
 
   const getValidations = () => {
@@ -433,7 +438,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         versions={fairwayCardVersions}
         isError={isError}
       />
-
       <IonContent className="mainContent ion-no-padding" data-testid="fairwayCardEditPage">
         {isError && <p>{t('general.loading-error')}</p>}
 
@@ -499,7 +503,6 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                 />
               </CollapsibleWrapper>
-
               <CollapsibleWrapper title={t('fairwaycard.fairway-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
                 <FairwaySection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
               </CollapsibleWrapper>
@@ -588,6 +591,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   fairwayAreas={filteredAreaOptions}
                   isLoadingAreas={isLoadingAreas}
                   isLoadingFairways={isLoadingFairways}
+                  areasLoaded={areaOptions && areaOptions.length > 0}
                 />
               </CollapsibleWrapper>
 
