@@ -69,7 +69,7 @@ const MainPage: React.FC = () => {
 
   useEffect(() => {
     setNavigationAreaIds(
-      featureCollectionToAreaSelectOptions(areaList, t('fairwaycard.calculation-depth'), lang)
+      featureCollectionToAreaSelectOptions(areaList, 'fairwaycard.calculation-depth', lang)
         .filter((a) => a.areatype === 1)
         .map((a) => a.id as number)
     );
