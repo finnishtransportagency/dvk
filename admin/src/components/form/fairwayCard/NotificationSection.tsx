@@ -74,6 +74,7 @@ const NotificationSection: React.FC<NotificationSectionProps> = ({
               deleteSection={deleteSection}
               toggleSection={toggleSection}
               open={sectionOpen}
+              readonly={readonly}
             />
             <div className={sectionClassName} key={'notification' + idx}>
               <NotificationInput
