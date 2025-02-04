@@ -325,7 +325,7 @@ const MainPage: React.FC = () => {
             ))}
           {!isLoading &&
             filteredItemList.map((item) => {
-              const notificationString = getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[], t);
+              const notificationString = getNotificationListingTypeString(item.temporaryNotifications as TemporaryNotification[]);
               const orphanedString = getOrphanedAreaString(item.squatCalculations as SquatCalculation[], navigationAreaIds, t);
               return (
                 <IonRow

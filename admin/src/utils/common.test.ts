@@ -95,8 +95,8 @@ test('should generate notification listing', () => {
       endDate: '2051-01-01T00:00:00',
     },
   ];
-  const notificationString = getNotificationListingTypeString(temporaryNotifications, t);
-  expect(notificationString).toEqual('Active (1), incoming (1)');
+  const notificationString = getNotificationListingTypeString(temporaryNotifications);
+  expect(notificationString.toLowerCase()).toEqual('general.active (1), general.incoming (1)');
 });
 
 test('should generate notification listing', () => {
@@ -112,6 +112,6 @@ test('should generate notification listing', () => {
       endDate: '2051-01-01T00:00:00',
     },
   ];
-  const notificationString = getNotificationListingTypeString(temporaryNotifications, t);
-  expect(notificationString).toEqual('Incoming (2)');
+  const notificationString = getNotificationListingTypeString(temporaryNotifications);
+  expect(notificationString.toLowerCase()).toEqual('general.incoming (2)');
 });

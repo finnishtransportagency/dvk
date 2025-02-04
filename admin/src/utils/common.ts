@@ -351,7 +351,7 @@ export type NoticeListingTypes = {
   incoming: number;
 };
 
-export const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[], t: TFunction) => {
+export const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[]) => {
   if (!temporaryNotifications) {
     return '';
   }
@@ -360,10 +360,10 @@ export const getNotificationListingTypeString = (temporaryNotifications: Tempora
   let typesString;
 
   if (listingTypes.active > 0) {
-    typesString = t('active') + ` (${listingTypes.active})`;
+    typesString = t('general.active') + ` (${listingTypes.active})`;
   }
   if (listingTypes.incoming) {
-    typesString = typesString ? typesString + ', ' + t('incoming') : t('incoming');
+    typesString = typesString ? typesString + ', ' + t('general.incoming') : t('general.incoming');
     typesString = typesString + ` (${listingTypes.incoming})`;
   }
 
