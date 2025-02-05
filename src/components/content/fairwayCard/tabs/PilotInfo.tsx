@@ -1,10 +1,10 @@
 import React from 'react';
 import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Pilot } from '../../../graphql/generated';
-import { Lang, PILOTORDER_URL } from '../../../utils/constants';
+import { Pilot } from '../../../../graphql/generated';
+import { Lang, PILOTORDER_URL } from '../../../../utils/constants';
 import PhoneNumber from './PhoneNumber';
-import { useDvkContext } from '../../../hooks/dvkContext';
+import { useDvkContext } from '../../../../hooks/dvkContext';
 import { PilotPlaceInfo } from './PilotPlaceInfo';
 import { PilotageLimitInfo } from './PilotageLimitInfo';
 import { Geometry } from 'ol/geom';

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Quay } from '../../../graphql/generated';
-import { setSelectedQuay } from '../../layers';
-import { Lang } from '../../../utils/constants';
+import { Quay } from '../../../../graphql/generated';
+import { setSelectedQuay } from '../../../layers';
+import { Lang } from '../../../../utils/constants';
 import uniqueId from 'lodash/uniqueId';
 import { IonText } from '@ionic/react';
 

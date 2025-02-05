@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Fairway } from '../../../graphql/generated';
+import { Fairway } from '../../../../graphql/generated';
 
 export type ProhibitionInfoProps = {
   data?: Fairway[] | null;

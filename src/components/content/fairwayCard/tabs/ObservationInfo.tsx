@@ -2,17 +2,17 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { Geometry, Point } from 'ol/geom';
 import { Feature } from 'ol';
-import { setSelectedObservation } from '../../layers';
-import { ObservationFeatureProperties } from '../../features';
+import { setSelectedObservation } from '../../../layers';
+import { ObservationFeatureProperties } from '../../../features';
 import { IonIcon, IonLabel, IonRow, IonText } from '@ionic/react';
 import { Coordinate } from 'ol/coordinate';
 import { Link } from 'react-router-dom';
-import { getTimeDifference, goToFeature } from '../../../utils/common';
-import { coordinatesToStringHDM } from '../../../utils/coordinateUtils';
-import { hourInMilliseconds, MAP } from '../../../utils/constants';
-import { useDvkContext } from '../../../hooks/dvkContext';
-import alertIcon from '../../../theme/img/alert_icon.svg';
-import InfoIcon from '../../../theme/img/info.svg?react';
+import { getTimeDifference, goToFeature } from '../../../../utils/common';
+import { coordinatesToStringHDM } from '../../../../utils/coordinateUtils';
+import { hourInMilliseconds, MAP } from '../../../../utils/constants';
+import { useDvkContext } from '../../../../hooks/dvkContext';
+import alertIcon from '../../../../theme/img/alert_icon.svg';
+import InfoIcon from '../../../../theme/img/info.svg?react';
 
 interface ObservationInfoProps {
   observations: Feature<Geometry>[];
@@ -107,10 +107,10 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                   </IonRow>
                 </span>
                 <span className={isDataOutdated12Hours ? 'outdatedData no-print' : 'no-print'}>
-                  <IonRow>
-                    <IonText>{t('popup.observation.windSpeedAvgDir')}:&nbsp;</IonText>
-                    {!isDataOutdated12Hours ? (
-                      <>
+                  {isDataOutdated12Hours || (
+                    <>
+                      <IonRow>
+                        <IonText>{t('popup.observation.windSpeedAvgDir')}:&nbsp;</IonText>
                         {o.windSpeedAvg && o.windDirection && !isOffline ? (
                           <>
                             {Math.round(o.windSpeedAvg)}&nbsp;
@@ -124,18 +124,9 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                             {t('common.noData')}
                           </>
                         )}
-                      </>
-                    ) : (
-                      <>
-                        <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
-                        {t('popup.common.outdatedData')}
-                      </>
-                    )}
-                  </IonRow>
-                  <IonRow>
-                    <IonText>{t('popup.observation.windSpeedMax')}:&nbsp;</IonText>
-                    {!isDataOutdated12Hours ? (
-                      <>
+                      </IonRow>
+                      <IonRow>
+                        <IonText>{t('popup.observation.windSpeedMax')}:&nbsp;</IonText>
                         {o.windSpeedMax && !isOffline ? (
                           <>
                             {Math.round(o.windSpeedMax)}&nbsp;
@@ -147,18 +138,9 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                             {t('common.noData')}
                           </>
                         )}
-                      </>
-                    ) : (
-                      <>
-                        <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
-                        {t('popup.common.outdatedData')}
-                      </>
-                    )}
-                  </IonRow>
-                  <IonRow>
-                    <IonText>{t('popup.observation.temperature')}:&nbsp;</IonText>
-                    {!isDataOutdated12Hours ? (
-                      <>
+                      </IonRow>
+                      <IonRow>
+                        <IonText>{t('popup.observation.temperature')}:&nbsp;</IonText>
                         {o.temperature && !isOffline ? (
                           <>
                             {Math.round(o.temperature)}&nbsp;
@@ -170,18 +152,9 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                             {t('common.noData')}
                           </>
                         )}
-                      </>
-                    ) : (
-                      <>
-                        <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
-                        {t('popup.common.outdatedData')}
-                      </>
-                    )}
-                  </IonRow>
-                  <IonRow>
-                    <IonText>{t('popup.observation.visibility')}:&nbsp;</IonText>
-                    {!isDataOutdated12Hours ? (
-                      <>
+                      </IonRow>
+                      <IonRow>
+                        <IonText>{t('popup.observation.visibility')}:&nbsp;</IonText>
                         {o.visibility && !isOffline ? (
                           <>
                             {Math.round((o.visibility ?? 0) / 1000)}&nbsp;
@@ -193,14 +166,33 @@ export const ObservationInfo: React.FC<ObservationInfoProps> = ({ observations }
                             {t('common.noData')}
                           </>
                         )}
-                      </>
-                    ) : (
-                      <>
+                      </IonRow>
+                    </>
+                  )}
+                  {isDataOutdated12Hours && (
+                    <>
+                      <IonRow>
+                        <IonText>{t('popup.observation.windSpeedAvgDir')}:&nbsp;</IonText>
                         <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
                         {t('popup.common.outdatedData')}
-                      </>
-                    )}
-                  </IonRow>
+                      </IonRow>
+                      <IonRow>
+                        <IonText>{t('popup.observation.windSpeedMax')}:&nbsp;</IonText>
+                        <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
+                        {t('popup.common.outdatedData')}
+                      </IonRow>
+                      <IonRow>
+                        <IonText>{t('popup.observation.temperature')}:&nbsp;</IonText>
+                        <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
+                        {t('popup.common.outdatedData')}
+                      </IonRow>
+                      <IonRow>
+                        <IonText>{t('popup.observation.visibility')}:&nbsp;</IonText>
+                        <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
+                        {t('popup.common.outdatedData')}
+                      </IonRow>
+                    </>
+                  )}
                 </span>
               </IonLabel>
               <br />

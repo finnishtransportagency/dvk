@@ -1,10 +1,10 @@
 import React from 'react';
 import { uniqueId } from 'lodash';
-import { setSelectedFairwayAreas } from '../../layers';
-import { ProhibitionArea } from '../../../graphql/generated';
+import { setSelectedFairwayAreas } from '../../../layers';
+import { ProhibitionArea } from '../../../../graphql/generated';
 import { useTranslation } from 'react-i18next';
-import { Lang } from '../../../utils/constants';
-import InfoIcon from '../../../theme/img/info.svg?react';
+import { Lang } from '../../../../utils/constants';
+import InfoIcon from '../../../../theme/img/info.svg?react';
 
 type ProhibitionAreaInfoListItemProps = {
   area: ProhibitionArea;

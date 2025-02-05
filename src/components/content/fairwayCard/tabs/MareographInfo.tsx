@@ -1,17 +1,17 @@
 import React from 'react';
 import { Feature } from 'ol';
 import { Geometry, Point } from 'ol/geom';
-import { MareographFeatureProperties } from '../../features';
+import { MareographFeatureProperties } from '../../../features';
 import { IonIcon, IonLabel, IonRow, IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { getTimeDifference, goToFeature } from '../../../utils/common';
-import { coordinatesToStringHDM } from '../../../utils/coordinateUtils';
-import { setSelectedMareograph } from '../../layers';
-import { hourInMilliseconds } from '../../../utils/constants';
-import alertIcon from '../../../theme/img/alert_icon.svg';
-import InfoIcon from '../../../theme/img/info.svg?react';
-import { useDvkContext } from '../../../hooks/dvkContext';
+import { getTimeDifference, goToFeature } from '../../../../utils/common';
+import { coordinatesToStringHDM } from '../../../../utils/coordinateUtils';
+import { setSelectedMareograph } from '../../../layers';
+import { hourInMilliseconds } from '../../../../utils/constants';
+import alertIcon from '../../../../theme/img/alert_icon.svg';
+import InfoIcon from '../../../../theme/img/info.svg?react';
+import { useDvkContext } from '../../../../hooks/dvkContext';
 
 interface MareographInfoProps {
   mareographs: Feature<Geometry>[];
@@ -82,11 +82,11 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                     </IonRow>
                   </span>
                   <span className={isDataOutdated12Hours ? 'outdatedData no-print' : 'no-print'}>
-                    <IonRow>
-                      <IonText>
-                        {t('popup.mareograph.seaLevel')}:&nbsp;
-                        {!isDataOutdated12Hours ? (
-                          <>
+                    {!isDataOutdated12Hours ? (
+                      <>
+                        <IonRow>
+                          <IonText>
+                            {t('popup.mareograph.seaLevel')}:&nbsp;
                             {properties.waterLevel && !isOffline ? (
                               <>
                                 {properties.waterLevel >= 0 ? '+' : ''}
@@ -99,20 +99,11 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                                 {t('common.noData')}
                               </>
                             )}
-                          </>
-                        ) : (
-                          <>
-                            <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
-                            {t('popup.common.outdatedData')}
-                          </>
-                        )}
-                      </IonText>
-                    </IonRow>
-                    <IonRow>
-                      <IonText>
-                        {t('popup.mareograph.n2000SeaLevel')}:&nbsp;
-                        {!isDataOutdated12Hours ? (
-                          <>
+                          </IonText>
+                        </IonRow>
+                        <IonRow>
+                          <IonText>
+                            {t('popup.mareograph.n2000SeaLevel')}:&nbsp;
                             {properties.n2000WaterLevel && !isOffline ? (
                               <>
                                 {properties.n2000WaterLevel >= 0 ? '+' : ''}
@@ -127,15 +118,27 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                                 {t('common.noData')}
                               </>
                             )}
-                          </>
-                        ) : (
-                          <>
+                          </IonText>
+                        </IonRow>
+                      </>
+                    ) : (
+                      <>
+                        <IonRow>
+                          <IonText>
+                            {t('popup.mareograph.seaLevel')}:&nbsp;
                             <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
                             {t('popup.common.outdatedData')}
-                          </>
-                        )}
-                      </IonText>
-                    </IonRow>
+                          </IonText>
+                        </IonRow>
+                        <IonRow>
+                          <IonText>
+                            {t('popup.mareograph.n2000SeaLevel')}:&nbsp;
+                            <IonIcon className="outdatedDataIcon" icon={alertIcon} color="#EC0E0E" />
+                            {t('popup.common.outdatedData')}
+                          </IonText>
+                        </IonRow>
+                      </>
+                    )}
                   </span>
                 </IonLabel>
               </p>

@@ -1,12 +1,12 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Area, Fairway } from '../../../graphql/generated';
+import { Area, Fairway } from '../../../../graphql/generated';
 import { IonText } from '@ionic/react';
-import { Lang } from '../../../utils/constants';
+import { Lang } from '../../../../utils/constants';
 import uniqueId from 'lodash/uniqueId';
 import { AreaInfoListItem } from './AreaInfoListItem';
-import { fairwayAreaExcludeType2Filter } from '../../../utils/fairwayCardUtils';
-import { getFairwayName } from '../../../utils/common';
+import { fairwayAreaExcludeType2Filter } from '../../../../utils/fairwayCardUtils';
+import { getFairwayName } from '../../../../utils/common';
 
 type AreaInfoProps = {
   data?: Fairway[] | null;

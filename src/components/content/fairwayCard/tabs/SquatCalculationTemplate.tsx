@@ -1,12 +1,12 @@
 import { IonCol, IonGrid, IonRow, IonText } from '@ionic/react';
 import React from 'react';
-import { Area, Fairway, SquatCalculation } from '../../../graphql/generated';
+import { Area, Fairway, SquatCalculation } from '../../../../graphql/generated';
 import { useTranslation } from 'react-i18next';
-import { Lang } from '../../../utils/constants';
-import { FairwayForm, getAreaName, getFairwayFormText, getFairwayName } from '../../../utils/common';
+import { Lang } from '../../../../utils/constants';
+import { FairwayForm, getAreaName, getFairwayFormText, getFairwayName } from '../../../../utils/common';
 import { Link } from 'react-router-dom';
-import { setSelectedFairwayAreas, zoomToFairwayAreas } from '../../layers';
-import { fairwayAreaExcludeType2Filter } from '../../../utils/fairwayCardUtils';
+import { setSelectedFairwayAreas, zoomToFairwayAreas } from '../../../layers';
+import { fairwayAreaExcludeType2Filter } from '../../../../utils/fairwayCardUtils';
 
 export type SquatCalculationProps = {
   squatCalculation?: SquatCalculation | null;

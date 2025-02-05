@@ -1,9 +1,9 @@
 import React from 'react';
 import { uniqueId } from 'lodash';
-import { setSelectedFairwayAreas } from '../../layers';
-import { Area } from '../../../graphql/generated';
+import { setSelectedFairwayAreas } from '../../../layers';
+import { Area } from '../../../../graphql/generated';
 import { useTranslation } from 'react-i18next';
-import { getAreaName } from '../../../utils/common';
+import { getAreaName } from '../../../../utils/common';
 
 type AreaInfoListItemProps = {
   area: Area;

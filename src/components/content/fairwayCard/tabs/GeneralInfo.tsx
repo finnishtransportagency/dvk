@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { getCurrentDecimalSeparator } from '../../../utils/common';
-import { Fairway } from '../../../graphql/generated';
+import { getCurrentDecimalSeparator } from '../../../../utils/common';
+import { Fairway } from '../../../../graphql/generated';
 
 export type GeneralInfoProps = {
   data?: Fairway[] | null;
