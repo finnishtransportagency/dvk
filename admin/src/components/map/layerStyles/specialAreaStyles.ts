@@ -45,7 +45,7 @@ export function getSpecialAreaPolygonStyle(feature: FeatureLike, selected: boole
   });
 }
 
-export function getSpecialArea9Style(feature: FeatureLike) {
+export function getSpecialArea9Style(feature: FeatureLike, resolution: number) {
   const highlighted = !!feature.get('hoverStyle');
   const selectedCard = !!feature.get('selected');
   const canvas = document.createElement('canvas');
@@ -58,16 +58,36 @@ export function getSpecialArea9Style(feature: FeatureLike) {
   } else {
     gradient = context.createPattern(specialArea9Image, 'repeat');
   }
-  return new Style({
-    stroke: new Stroke({
-      color: '#ec0e0e',
-      width: 2,
-    }),
-    fill: new Fill({
-      color: gradient,
-    }),
-    zIndex: 2,
-  });
+  const styles: Array<Style> = [];
+
+  if (!selectedCard || resolution <= 100) {
+    const fillStyle = new Style({
+      fill: new Fill({
+        color: gradient,
+      }),
+    });
+    styles.push(fillStyle);
+  }
+
+  if (selectedCard && resolution <= 100) {
+    const borderStyle = new Style({
+      stroke: new Stroke({
+        color: '#ec0e0e',
+        width: 1,
+      }),
+    });
+    styles.push(borderStyle);
+  } else if (resolution <= 30) {
+    const borderStyle = new Style({
+      stroke: new Stroke({
+        color: '#ec0e0e',
+        width: resolution > 15 ? 0.5 : 1,
+      }),
+    });
+    styles.push(borderStyle);
+  }
+
+  return styles;
 }
 
 export const anchorageAreaIconStyle = new Style({

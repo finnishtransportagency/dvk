@@ -100,7 +100,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'specialarea15':
       return getSpecialAreaStyle(feature, true, highlighted);
     case 'specialarea9':
-      return getSpecialArea9Style(feature);
+      return getSpecialArea9Style(feature, resolution);
     case 'boardline12':
       return getBoardLineStyle(feature);
     case 'safetyequipment':
