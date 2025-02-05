@@ -520,7 +520,9 @@ export type FairwayWidthLayerId = 'fairwaywidth';
 
 export type UserLocationLayerId = 'userlocation';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId | UserLocationLayerId;
+export type CoordinatesLocationLayerId = 'coordinateslocation';
+
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId | UserLocationLayerId | CoordinatesLocationLayerId;
 
 export type UserLocationPermission = 'on' | 'off' | 'disabled';
 

@@ -233,6 +233,14 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
         showFeaturePopup(features, feature, evt.coordinate, setPopupProperties, overlay);
         // setting coordinates popup
       } else {
+        const coordinates = evt.coordinate;
+        const source = dvkMap.getVectorSource('coordinateslocation');
+        source.clear();
+        source.addFeature(
+          new Feature({
+            geometry: new Point([coordinates[0], coordinates[1]]),
+          })
+        );
         const coordinateString = dvkMap.getMapDetailsControl().getMousePositionElement().firstChild?.firstChild?.textContent;
         dispatch({
           type: 'setCoordinates',
