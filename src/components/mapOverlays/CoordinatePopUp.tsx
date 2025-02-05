@@ -4,6 +4,7 @@ import infoIcon from '../../theme/img/info.svg';
 import { IonCol } from '@ionic/react';
 import CustomPopup, { CustomPopupContainer } from './CustomPopup';
 import { useTranslation } from 'react-i18next';
+import dvkMap from '../DvkMap';
 
 const CoordinatePopUp: React.FC = () => {
   const { t } = useTranslation();
@@ -12,10 +13,10 @@ const CoordinatePopUp: React.FC = () => {
 
   const handlePopupClose = () => setVisible(false);
 
+  const coordinatesSource = dvkMap.getVectorSource('coordinateslocation');
+
   useEffect(() => {
-    if (state.coordinates) {
-      setVisible(true);
-    }
+    setVisible(!!state.coordinates);
   }, [state.coordinates]);
 
   useEffect(() => {
@@ -26,8 +27,9 @@ const CoordinatePopUp: React.FC = () => {
           value: '',
         },
       });
+      coordinatesSource.clear();
     }
-  }, [dispatch, visible]);
+  }, [dispatch, visible, coordinatesSource]);
 
   return (
     <CustomPopupContainer>

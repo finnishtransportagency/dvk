@@ -29,7 +29,7 @@ import {
   RestrictionPortFeatureProperties,
   VtsFeatureProperties,
 } from '../features';
-import { getMarineWarningDataLayerId } from '../../utils/common';
+import { getMarineWarningDataLayerId, setCoordinatesIconAndPopUp } from '../../utils/common';
 import { Dispatch } from 'react';
 import { Action } from '../../hooks/dvkReducer';
 
@@ -143,7 +143,12 @@ function singleNavigationLineOnArea(features: FeatureLike[]): boolean {
   return false;
 }
 
-export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void, dispatch: Dispatch<Action>) {
+export function addPopup(
+  map: Map,
+  setPopupProperties: (properties: PopupProperties) => void,
+  clearCoordinatesLayerAndPopUp: () => void,
+  dispatch: Dispatch<Action>
+) {
   const container = document.getElementById('popup') as HTMLElement;
   const overlay = new Overlay({
     id: 'popup',
@@ -201,6 +206,9 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     setPopupProperties({});
     clearClickSelectionFeatures();
 
+    const coordinatesSource = dvkMap.getVectorSource('coordinateslocation');
+    const coordinatesLayerIsEmpty = coordinatesSource.getFeatures().length < 1;
+
     const features: FeatureLike[] = [];
     map.forEachFeatureAtPixel(
       evt.pixel,
@@ -223,31 +231,22 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     if (singleNavigationLineOnArea(features)) {
       const feature = features.find((f) => f.get('featureType') === 'line');
       showFeaturePopup(features, feature as FeatureLike, evt.coordinate, setPopupProperties, overlay);
+      clearCoordinatesLayerAndPopUp();
     } else if (features.length > 1) {
       features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
       showFeatureListPopup(features, evt.coordinate, setPopupProperties, overlay);
+      clearCoordinatesLayerAndPopUp();
     } else {
       const feature = features[0];
       if (feature) {
         setClickSelectionFeature(feature);
         showFeaturePopup(features, feature, evt.coordinate, setPopupProperties, overlay);
+        clearCoordinatesLayerAndPopUp();
         // setting coordinates popup
+      } else if (coordinatesLayerIsEmpty) {
+        setCoordinatesIconAndPopUp(dispatch, evt.coordinate);
       } else {
-        const coordinates = evt.coordinate;
-        const source = dvkMap.getVectorSource('coordinateslocation');
-        source.clear();
-        source.addFeature(
-          new Feature({
-            geometry: new Point([coordinates[0], coordinates[1]]),
-          })
-        );
-        const coordinateString = dvkMap.getMapDetailsControl().getMousePositionElement().firstChild?.firstChild?.textContent;
-        dispatch({
-          type: 'setCoordinates',
-          payload: {
-            value: coordinateString ?? '',
-          },
-        });
+        clearCoordinatesLayerAndPopUp();
       }
     }
   });

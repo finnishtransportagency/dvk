@@ -6,7 +6,7 @@ import PilotPopupContent, { PilotProperties } from '../popup/PilotPopupContent';
 import { addPopup } from '../popup/popup';
 import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useTranslation } from 'react-i18next';
-import { filterFairways, updateIceLayerOpacity } from '../../utils/common';
+import { clearCoordinatesLayerAndPopUp, filterFairways, updateIceLayerOpacity } from '../../utils/common';
 import { Lang } from '../../utils/constants';
 import { CommonModal, SourceModal, FeedbackModal } from './CommonModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
@@ -108,7 +108,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
 
   useEffect(() => {
     if (dvkMap.olMap) {
-      addPopup(dvkMap.olMap, setPopupProperties, dispatch);
+      addPopup(dvkMap.olMap, setPopupProperties, () => clearCoordinatesLayerAndPopUp(dispatch), dispatch);
 
       dvkMap.olMap.getView().on('change:resolution', () => {
         if (dvkMap.getFeatureLayer('ice').isVisible()) {
