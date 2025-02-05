@@ -282,11 +282,13 @@ ion-text .hoverText:focus-visible {
   outline: 1px solid var(--ion-color-dark);
 }
 
-ion-text .inlineHoverText:hover {
+ion-text .inlineHoverText:hover,
+li.inlineHoverText:hover {
   background-color: var(--ion-color-light);
   cursor: default;
 }
-ion-text .inlineHoverText:focus-visible {
+ion-text .inlineHoverText:focus-visible,
+li.inlineHoverText:focus-visible {
   outline: 1px solid var(--ion-color-dark);
 }
 
