@@ -24,7 +24,13 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
-import { anchorageAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle, meetAreaIconStyle } from './layerStyles/specialAreaStyles';
+import {
+  anchorageAreaIconStyle,
+  getSpecialArea9Style,
+  getSpecialAreaPolygonStyle,
+  getSpecialAreaStyle,
+  meetAreaIconStyle,
+} from './layerStyles/specialAreaStyles';
 import { getHarborStyle } from './layerStyles/harborStyles';
 import { getQuayStyle } from './layerStyles/quayStyles';
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
@@ -93,6 +99,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'specialarea2':
     case 'specialarea15':
       return getSpecialAreaStyle(feature, true, highlighted);
+    case 'specialarea9':
+      return getSpecialArea9Style(feature);
     case 'boardline12':
       return getBoardLineStyle(feature);
     case 'safetyequipment':
@@ -250,6 +258,16 @@ export function addAPILayers(map: Map) {
     style: anchorageAreaIconStyle,
     declutter: true,
     zIndex: 305,
+  });
+
+  // Erikoisalueet
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea9',
+    maxResolution: 75,
+    renderBuffer: 2,
+    style: getSpecialArea9Style,
+    zIndex: 202,
   });
 
   // Kohtaamis- ja ohittamiskieltoalue

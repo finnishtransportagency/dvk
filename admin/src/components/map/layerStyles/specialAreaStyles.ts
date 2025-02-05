@@ -6,6 +6,9 @@ import meet from '../../../theme/img/kohtaamiskielto_ikoni.svg';
 import specialarea from '../../../theme/img/erityisalue_tausta.svg';
 import specialareaSelected from '../../../theme/img/erityisalue_tausta_active.svg';
 import specialareaSelected2 from '../../../theme/img/erityisalue_tausta_active2.svg';
+import specialarea9 from '../../../theme/img/erikoisalue_tausta.svg';
+import specialarea9Selected from '../../../theme/img/erikoisalue_tausta_active.svg';
+import specialarea9Selected2 from '../../../theme/img/erikoisalue_tausta_active2.svg';
 
 const specialAreaImage = new Image();
 specialAreaImage.src = specialarea;
@@ -13,6 +16,13 @@ const specialAreaSelectedImage = new Image();
 specialAreaSelectedImage.src = specialareaSelected;
 const specialAreaSelectedImage2 = new Image();
 specialAreaSelectedImage2.src = specialareaSelected2;
+
+const specialArea9Image = new Image();
+specialArea9Image.src = specialarea9;
+const specialArea9SelectedImage = new Image();
+specialArea9SelectedImage.src = specialarea9Selected;
+const specialArea9SelectedImage2 = new Image();
+specialArea9SelectedImage2.src = specialarea9Selected2;
 
 export function getSpecialAreaPolygonStyle(feature: FeatureLike, selected: boolean, selected2 = false) {
   const canvas = document.createElement('canvas');
@@ -26,6 +36,31 @@ export function getSpecialAreaPolygonStyle(feature: FeatureLike, selected: boole
   return new Style({
     stroke: new Stroke({
       color: '#C57A11',
+      width: 2,
+    }),
+    fill: new Fill({
+      color: gradient,
+    }),
+    zIndex: 2,
+  });
+}
+
+export function getSpecialArea9Style(feature: FeatureLike) {
+  const highlighted = !!feature.get('hoverStyle');
+  const selectedCard = !!feature.get('selected');
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d') as CanvasRenderingContext2D;
+  let gradient;
+  if (selectedCard && highlighted) {
+    gradient = context.createPattern(specialArea9SelectedImage2, 'repeat');
+  } else if (selectedCard || highlighted) {
+    gradient = context.createPattern(specialArea9SelectedImage, 'repeat');
+  } else {
+    gradient = context.createPattern(specialArea9Image, 'repeat');
+  }
+  return new Style({
+    stroke: new Stroke({
+      color: '#ec0e0e',
       width: 2,
     }),
     fill: new Fill({
