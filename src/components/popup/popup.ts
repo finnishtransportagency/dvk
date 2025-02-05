@@ -30,6 +30,8 @@ import {
   VtsFeatureProperties,
 } from '../features';
 import { getMarineWarningDataLayerId } from '../../utils/common';
+import { Dispatch } from 'react';
+import { Action } from '../../hooks/dvkReducer';
 
 const panOptions: PanIntoViewOptions = {
   animation: {
@@ -141,7 +143,7 @@ function singleNavigationLineOnArea(features: FeatureLike[]): boolean {
   return false;
 }
 
-export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
+export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void, dispatch: Dispatch<Action>) {
   const container = document.getElementById('popup') as HTMLElement;
   const overlay = new Overlay({
     id: 'popup',
@@ -229,6 +231,15 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       if (feature) {
         setClickSelectionFeature(feature);
         showFeaturePopup(features, feature, evt.coordinate, setPopupProperties, overlay);
+        // setting coordinates popup
+      } else {
+        const coordinateString = dvkMap.getMapDetailsControl().getMousePositionElement().firstChild?.firstChild?.textContent;
+        dispatch({
+          type: 'setCoordinates',
+          payload: {
+            value: coordinateString ?? '',
+          },
+        });
       }
     }
   });

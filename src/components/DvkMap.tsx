@@ -610,6 +610,10 @@ export class DvkMap {
     return this.openSidebarMenuControl;
   };
 
+  public getMapDetailsControl = () => {
+    return this.mapDetailsControl;
+  };
+
   public getFeatureLayer(layerId: FeatureLayerId | BackgroundLayerId) {
     return this.olMap?.getAllLayers().find((layerObj) => layerId === layerObj.getProperties().id) as Layer;
   }
