@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { LiningInfo } from './LiningInfo';
 import { DimensionInfo } from './DimensionInfo';
 import Paragraph from '../../Paragraph';
-import { ProhibitionInfo } from './ProhibitionInfo';
-import { SpeedLimitInfo } from './SpeedLimitInfo';
-import { AnchorageInfo } from './AnchorageInfo';
+import { ProhibitionInfo } from '../commonInformationTab/ProhibitionInfo';
+import { SpeedLimitInfo } from '../commonInformationTab/SpeedLimitInfo';
+import { AnchorageInfo } from '../commonInformationTab/AnchorageInfo';
 import { ObservationInfo } from './ObservationInfo';
 import MareographInfo from './MareographInfo';
 import MarkdownParagraph from '../../MarkdownParagraph';
@@ -22,11 +22,11 @@ import { useMareographFeatures } from '../../../MareographFeatureLoader';
 import { MAP } from '../../../../utils/constants';
 import { getFairwayCardMareographs, getFairwayCardObservations, getFairwayCardPilotageLimits } from '../../../../utils/fairwayCardUtils';
 
-interface FairwayCardInformationTabProps {
+interface InformationTabProps {
   fairwayCard: FairwayCardPartsFragment;
   isN2000HeightSystem: boolean;
 }
-export const FairwayCardInformationTab: React.FC<FairwayCardInformationTabProps> = ({ fairwayCard, isN2000HeightSystem }) => {
+export const InformationTab: React.FC<InformationTabProps> = ({ fairwayCard, isN2000HeightSystem }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const [pilotageLimits, setPilotageLimits] = useState<Feature<Geometry>[]>([]);
   const [observations, setObservations] = useState<Feature<Geometry>[]>([]);

@@ -8,11 +8,11 @@ import { getFairwayCardPilotRoutes } from '../../../../utils/fairwayCardUtils';
 import PilotRouteList from '../../PilotRouteList';
 import { InfoParagraph } from '../../Paragraph';
 
-interface FairwayCardPilotRoutesTabProps {
+interface PilotRouteTabProps {
   fairwayCard: FairwayCardPartsFragment;
   fairwayCardId: string;
 }
-export const FairwayCardPilotRoutesTab: React.FC<FairwayCardPilotRoutesTabProps> = ({ fairwayCard, fairwayCardId }) => {
+export const PilotRouteTab: React.FC<PilotRouteTabProps> = ({ fairwayCard, fairwayCardId }) => {
   const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
   const { pilotRouteFeatures, ready: pilotRoutesReady } = usePilotRouteFeatures();
   useEffect(() => {

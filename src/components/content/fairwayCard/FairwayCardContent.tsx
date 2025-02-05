@@ -18,12 +18,12 @@ import { useSafetyEquipmentAndFaultFeatures } from '../../SafetyEquipmentFeature
 import NotificationAlert from '../../Alert';
 import infoIcon from '../../../theme/img/info.svg';
 import { compareAsc } from 'date-fns';
-import { FairwayCardInformationTab } from './tabs/FairwayCardInformationTab';
-import { FairwayCardHarbourTab } from './tabs/FairwayCardHarbourTab';
-import { FairwayCardCommonInformationTab } from './tabs/FairwayCardCommonInformationTab';
-import { FairwayCardPilotRoutesTab } from './tabs/FairwayCardPilotRoutesTab';
-import { FairwayCardSquatCalculationTab } from './tabs/FairwayCardSquatCalculationTab';
-import { FairwayCardWeatherForecastTab } from './tabs/FairwayCardWeatherForecastTab';
+import { InformationTab } from './informationTab/InformationTab';
+import { HarbourTab } from './harbourTab/HarbourTab';
+import { CommonInformationTab } from './commonInformationTab/CommonInformationTab';
+import { PilotRouteTab } from './pilotRouteTab/PilotRouteTab';
+import { SquatCalculationTab } from './squatCalculationTab/SquatCalculationTab';
+import { WeatherForecastTab } from './weatherForecastTab/FairwayCardWeatherForecastTab';
 
 export enum FairwayCardTab {
   Information = 1,
@@ -175,27 +175,27 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           <TabSwiper tab={tab} setTab={setTab} widePane={widePane} />
 
           <div className={getTabClassName(FairwayCardTab.Information)}>
-            <FairwayCardInformationTab fairwayCard={fairwayCard} isN2000HeightSystem={isN2000HeightSystem} />
+            <InformationTab fairwayCard={fairwayCard} isN2000HeightSystem={isN2000HeightSystem} />
           </div>
 
           <div className={getTabClassName(FairwayCardTab.Harbours)}>
-            <FairwayCardHarbourTab fairwayCard={fairwayCard} />
+            <HarbourTab fairwayCard={fairwayCard} />
           </div>
 
           <div className={getTabClassName(FairwayCardTab.CommonInformation)}>
-            <FairwayCardCommonInformationTab fairwayCard={fairwayCard} />
+            <CommonInformationTab fairwayCard={fairwayCard} />
           </div>
 
           <div className={getTabClassName(FairwayCardTab.PilotRoutes)}>
-            <FairwayCardPilotRoutesTab fairwayCard={fairwayCard} fairwayCardId={fairwayCardId} />
+            <PilotRouteTab fairwayCard={fairwayCard} fairwayCardId={fairwayCardId} />
           </div>
 
           <div className={getTabClassName(FairwayCardTab.SquatCalculation) + ((validSquats ?? []).length > 0 ? '' : ' onecolumn')}>
-            <FairwayCardSquatCalculationTab fairwayCard={fairwayCard} validSquats={validSquats ?? []} />
+            <SquatCalculationTab fairwayCard={fairwayCard} validSquats={validSquats ?? []} />
           </div>
 
           <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
-            <FairwayCardWeatherForecastTab fairwayCard={fairwayCard} />
+            <WeatherForecastTab fairwayCard={fairwayCard} />
           </div>
 
           {!isMobile() && (

@@ -3,7 +3,7 @@ import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { Vts } from '../../../../graphql/generated';
 import { Lang } from '../../../../utils/constants';
-import PhoneNumber from './PhoneNumber';
+import PhoneNumber from '../PhoneNumber';
 import uniqueId from 'lodash/uniqueId';
 
 type VTSInfoProps = {

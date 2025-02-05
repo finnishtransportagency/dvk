@@ -2,7 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { HarborPartsFragment } from '../../../../graphql/generated';
 import { Lang } from '../../../../utils/constants';
-import PhoneNumber from './PhoneNumber';
+import PhoneNumber from '../PhoneNumber';
 import { useDvkContext } from '../../../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
 

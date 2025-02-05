@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useHarborPreviewData } from '../../utils/dataLoader';
 import Breadcrumb from './Breadcrumb';
 import { useDvkContext } from '../../hooks/dvkContext';
-import { HarbourInfo } from './fairwayCard/tabs/HarbourInfo';
+import { HarbourInfo } from './fairwayCard/harbourTab/HarbourInfo';
 import { InfoParagraph } from './Paragraph';
 import PendingPlaceholder from './fairwayCard/PendingPlaceholder';
 import { FairwayCardHeader } from './fairwayCard/FairwayCardHeader';

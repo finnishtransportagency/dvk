@@ -9,10 +9,10 @@ import { AnchorageInfo } from './AnchorageInfo';
 import { AreaInfo } from './AreaInfo';
 import { useTranslation } from 'react-i18next';
 
-interface FairwayCardCommonInformationTabProps {
+interface CommonInformationTabProps {
   fairwayCard: FairwayCardPartsFragment;
 }
-export const FairwayCardCommonInformationTab: React.FC<FairwayCardCommonInformationTabProps> = ({ fairwayCard }) => {
+export const CommonInformationTab: React.FC<CommonInformationTabProps> = ({ fairwayCard }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   return (
     <>

@@ -4,10 +4,10 @@ import { InfoParagraph } from '../../Paragraph';
 import { FairwayCardPartsFragment, HarborPartsFragment } from '../../../../graphql/generated';
 import { HarbourInfo } from './HarbourInfo';
 
-interface FairwayCardHarbourTabProps {
+interface HarbourTabProps {
   fairwayCard: FairwayCardPartsFragment;
 }
-export const FairwayCardHarbourTab: React.FC<FairwayCardHarbourTabProps> = ({ fairwayCard }) => {
+export const HarbourTab: React.FC<HarbourTabProps> = ({ fairwayCard }) => {
   return (
     <>
       {fairwayCard?.harbors?.map((harbour: HarborPartsFragment | null | undefined, idx: React.Key) => {

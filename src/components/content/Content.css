@@ -335,7 +335,7 @@ ion-grid.table {
   color: var(--ion-color-dark);
 }
 ion-grid.table ion-row {
-  font-size: .75rem;
+  font-size: 0.75rem;
   line-height: 1.5rem;
   border-bottom: 1px solid var(--ion-color-light);
 }

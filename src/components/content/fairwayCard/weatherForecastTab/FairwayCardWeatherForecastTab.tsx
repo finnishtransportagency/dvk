@@ -10,10 +10,10 @@ import { asWeatherLimits, findWeatherLimitById } from '../../../../utils/weather
 import { Alert } from '../Alert';
 import { useTranslation } from 'react-i18next';
 
-interface FairwayCardWeatherForecastTabProps {
+interface WeatherForecastTabProps {
   fairwayCard: FairwayCardPartsFragment;
 }
-export const FairwayCardWeatherForecastTab: React.FC<FairwayCardWeatherForecastTabProps> = ({ fairwayCard }) => {
+export const WeatherForecastTab: React.FC<WeatherForecastTabProps> = ({ fairwayCard }) => {
   const { t } = useTranslation(undefined, { keyPrefix: 'fairwayCards' });
   const [forecasts, setForecasts] = useState<Feature<Geometry>[]>([]);
   const { data: weatherLimits } = useWeatherLimits();

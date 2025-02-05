@@ -6,11 +6,11 @@ import SquatCalculationTemplateNotAvailable from './SquatCalculationTemplateNotA
 import { Lang } from '../../../../utils/constants';
 import { useTranslation } from 'react-i18next';
 
-interface FairwayCardSquatCalculationTabProps {
+interface SquatCalculationTabProps {
   fairwayCard: FairwayCardPartsFragment;
   validSquats: SquatCalculation[];
 }
-export const FairwayCardSquatCalculationTab: React.FC<FairwayCardSquatCalculationTabProps> = ({ fairwayCard, validSquats }) => {
+export const SquatCalculationTab: React.FC<SquatCalculationTabProps> = ({ fairwayCard, validSquats }) => {
   //Check validity of squat calculation templates
   //all Areas
   const { i18n } = useTranslation();
