@@ -1,7 +1,7 @@
 import { Point, Geometry } from 'ol/geom';
 import Feature, { FeatureLike } from 'ol/Feature';
 import { GeoJSON } from 'ol/format';
-import { lineString, bearingToAzimuth } from '@turf/helpers';
+import { lineString, bearingToAzimuth, Coord } from '@turf/helpers';
 import { along as turf_along } from '@turf/along';
 import { lineIntersect as turf_lineIntersect } from '@turf/line-intersect';
 import { nearestPointOnLine as turf_nearestPointOnLine } from '@turf/nearest-point-on-line';
@@ -10,7 +10,7 @@ import { transformTranslate as turf_transformTranslate } from '@turf/transform-t
 import { length as turf_length } from '@turf/length';
 import { distance as turf_distance } from '@turf/distance';
 import { bearing as turf_bearing } from '@turf/bearing';
-import { Point as turf_Point, LineString as turf_LineString, Polygon as turf_Polygon } from 'geojson';
+import { Point as turf_Point, LineString as turf_LineString, Polygon as turf_Polygon, Position } from 'geojson';
 import { Coordinate } from 'ol/coordinate';
 import { MAP } from '../../utils/constants';
 import dvkMap from '../DvkMap';
@@ -68,24 +68,9 @@ export function addFairwayWidthIndicator(feature: FeatureLike, areaFeatures: Fea
         return d.geometry.coordinates;
       });
       /* Find start and end intersection points nearest to the snap point */
-      let minDist = 5;
-      let startCoord = undefined;
-      for (const coord of startIntersectionPointsArray) {
-        const dist = turf_distance(turfSnapPoint, coord);
-        if (dist < minDist) {
-          startCoord = coord;
-          minDist = dist;
-        }
-      }
-      minDist = 5;
-      let endCoord = undefined;
-      for (const coord of endIntersectionPointsArray) {
-        const dist = turf_distance(turfSnapPoint, coord);
-        if (dist < minDist) {
-          endCoord = coord;
-          minDist = dist;
-        }
-      }
+
+      const startCoord = getNearestCoord(startIntersectionPointsArray, turfSnapPoint);
+      const endCoord = getNearestCoord(endIntersectionPointsArray, turfSnapPoint);
 
       if (startCoord && endCoord) {
         const turfFairwayWidthLine = lineString([startCoord, endCoord]);
@@ -105,4 +90,17 @@ export function addFairwayWidthIndicator(feature: FeatureLike, areaFeatures: Fea
     }
   }
   return fairwayWidthLineFeat;
+}
+
+function getNearestCoord(pointArray: Position[], snapPoint: Coord, minDistance: number = 5) {
+  let minDist = minDistance;
+  let coordFound = undefined;
+  for (const coord of pointArray) {
+    const dist = turf_distance(snapPoint, coord);
+    if (dist < minDist) {
+      coordFound = coord;
+      minDist = dist;
+    }
+  }
+  return coordFound;
 }

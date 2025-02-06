@@ -2,18 +2,13 @@ import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import './popup.css';
-import { Link } from 'react-router-dom';
-import { Lang } from '../../utils/constants';
 import { AreaFeatureProperties, isShowN2000HeightSystem } from '../features';
 import InfoIcon from '../../theme/img/info.svg?react';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
 import { clearClickSelectionFeatures } from './selectInteraction';
-import CloseButton from './CloseButton';
-import { useDvkContext } from '../../hooks/dvkContext';
 import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import { TFunction } from 'i18next';
-import { AreaFairway } from '../../graphql/generated';
 import AreaPopupFairway from './AreaPopupFairway';
 import AreaPopupLink from './AreaPopupLink';
 
@@ -56,9 +51,7 @@ const getSpeedLimits = (area: AreaProperties) => {
 };
 
 const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
-  const { t, i18n } = useTranslation();
-  const lang = i18n.resolvedLanguage as Lang;
-  const { state } = useDvkContext();
+  const { t } = useTranslation();
   const { data } = useFairwayCardListData();
   const sizingSpeeds = getSizingSpeeds(area);
   const speedLimits = getSpeedLimits(area);
