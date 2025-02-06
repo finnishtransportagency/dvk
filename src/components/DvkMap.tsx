@@ -470,7 +470,7 @@ export class DvkMap {
       new Style({
         image: new Icon({
           src: coordinatesIcon,
-          anchor: [0.5, 41],
+          anchor: [0.5, 32],
           anchorXUnits: 'fraction',
           anchorYUnits: 'pixels',
         }),

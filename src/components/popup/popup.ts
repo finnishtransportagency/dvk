@@ -2,7 +2,7 @@ import { Point, SimpleGeometry, Geometry, LineString } from 'ol/geom';
 import Map from 'ol/Map';
 import Overlay, { PanIntoViewOptions } from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { FeatureLayerId, Lang, MAP } from '../../utils/constants';
+import { FeatureLayerId, FEATURES_WITH_COORDINATES, Lang, MAP } from '../../utils/constants';
 import Feature, { FeatureLike } from 'ol/Feature';
 import dvkMap from '../DvkMap';
 import { Coordinate } from 'ol/coordinate';
@@ -199,6 +199,9 @@ export function addPopup(
   addPointerClickInteraction(map);
 
   map.on('singleclick', function (evt) {
+    // check if popup is open before setting position undefined, coordinates marker behaviour
+    // is slightly affected by this
+    const isPopUpOpen = !!overlay.getPosition();
     /* Remove fairway width features */
     dvkMap.getVectorSource('fairwaywidth').clear();
     /* Close popup */
@@ -228,26 +231,28 @@ export function addPopup(
       { hitTolerance: 3 }
     );
 
+    const feature = features.find((f) => f.get('featureType') === 'line') ?? features[0];
+    let clearCoordinates = true;
+
     if (singleNavigationLineOnArea(features)) {
-      const feature = features.find((f) => f.get('featureType') === 'line');
-      showFeaturePopup(features, feature as FeatureLike, evt.coordinate, setPopupProperties, overlay);
-      clearCoordinatesLayerAndPopUp();
+      showFeaturePopup(features, feature, evt.coordinate, setPopupProperties, overlay);
     } else if (features.length > 1) {
       features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
       showFeatureListPopup(features, evt.coordinate, setPopupProperties, overlay);
-      clearCoordinatesLayerAndPopUp();
-    } else {
-      const feature = features[0];
-      if (feature) {
-        setClickSelectionFeature(feature);
+    } else if (feature) {
+      setClickSelectionFeature(feature);
+      if (FEATURES_WITH_COORDINATES.includes(feature.get('featureType'))) {
         showFeaturePopup(features, feature, evt.coordinate, setPopupProperties, overlay);
-        clearCoordinatesLayerAndPopUp();
-        // setting coordinates popup
-      } else if (coordinatesLayerIsEmpty) {
-        setCoordinatesIconAndPopUp(dispatch, evt.coordinate);
       } else {
-        clearCoordinatesLayerAndPopUp();
+        showFeatureListPopup([feature], evt.coordinate, setPopupProperties, overlay);
       }
+    } else if (coordinatesLayerIsEmpty && !isPopUpOpen) {
+      setCoordinatesIconAndPopUp(dispatch, evt.coordinate);
+      clearCoordinates = false;
+    }
+
+    if (clearCoordinates) {
+      clearCoordinatesLayerAndPopUp();
     }
   });
 }
