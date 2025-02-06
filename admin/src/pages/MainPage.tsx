@@ -354,7 +354,7 @@ const MainPage: React.FC = () => {
                   <IonCol size="1.25">{item.creator}</IonCol>
                   <IonCol size="1">
                     {notificationString.length === 0 && orphanedString.length === 0 ? '-' : notificationString}
-                    {notificationString.length === 0 ? '' : ', '}
+                    {notificationString.length > 0 && orphanedString.length > 0 ? ', ' : ''}
                     <IonText className="squat list warning">{orphanedString}</IonText>
                   </IonCol>
                   <IonCol data-testid="resultversion" size="1">
