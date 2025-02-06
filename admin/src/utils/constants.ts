@@ -195,6 +195,7 @@ export type FeatureDataId =
   | 'vtspoint'
   | 'circle'
   | 'specialarea2'
+  | 'specialarea9'
   | 'specialarea15'
   | 'pilotroute'
   | 'pilotageareaborder'
@@ -241,6 +242,12 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea2.json.gz'),
+  },
+  {
+    id: 'specialarea9',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=specialarea9&vaylaluokka=1,2,3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/specialarea9.json.gz'),
   },
   {
     id: 'specialarea15',
@@ -309,6 +316,7 @@ export type FeatureDataLayerId =
   | 'vtspoint'
   | 'circle'
   | 'specialarea2'
+  | 'specialarea9'
   | 'specialarea15'
   | 'pilotroute'
   | 'pilotageareaborder'
@@ -351,6 +359,7 @@ export const MAP: MapType = {
     { id: 'line3456' },
     { id: 'speedlimit' },
     { id: 'specialarea2' },
+    { id: 'specialarea9' },
     { id: 'specialarea15' },
     { id: 'harbor' },
     { id: 'safetyequipment' },
@@ -382,3 +391,43 @@ export const saveErrorTitle = {
   BLOCKED: 'OPERATION-BLOCKED',
   ARCHIVE: 'ARCHIVE-OPERATION-BLOCKED',
 };
+
+export type MainSectionTitle =
+  | 'Julkaisutiedot'
+  | 'Väyläkortin perustiedot'
+  | 'Sataman perustiedot'
+  | 'Satamatiedot'
+  | 'Väliaikaisen huomion lisääminen väyläkortille'
+  | 'Väylätiedot'
+  | 'Väylän navigoitavuus'
+  | 'Käyttösuositukset'
+  | 'Lisätiedot'
+  | 'Liikennepalvelut'
+  | 'Luotsintilaus'
+  | 'Squat-laskennan sijainnin lisääminen'
+  | 'Väyläkortin tuloste';
+
+export type MainSectionOpenType = {
+  id: MainSectionTitle;
+  open: boolean;
+};
+
+export const FairwayCardMainSections: MainSectionOpenType[] = [
+  { id: 'Julkaisutiedot', open: true },
+  { id: 'Väyläkortin perustiedot', open: true },
+  { id: 'Väliaikaisen huomion lisääminen väyläkortille', open: true },
+  { id: 'Väylätiedot', open: true },
+  { id: 'Väylän navigoitavuus', open: true },
+  { id: 'Käyttösuositukset', open: true },
+  { id: 'Lisätiedot', open: true },
+  { id: 'Liikennepalvelut', open: true },
+  { id: 'Luotsintilaus', open: true },
+  { id: 'Squat-laskennan sijainnin lisääminen', open: true },
+  { id: 'Väyläkortin tuloste', open: true },
+];
+
+export const HarborMainSections: MainSectionOpenType[] = [
+  { id: 'Julkaisutiedot', open: true },
+  { id: 'Sataman perustiedot', open: true },
+  { id: 'Satamatiedot', open: true },
+];

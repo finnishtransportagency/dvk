@@ -15,20 +15,33 @@ const ADD_FAIRWAY_CARD = 'Lisää väyläkortti';
 const CREATE_FAIRWAY_CARD = 'Lisää väyläkortti';
 const DELETED = 'Poistettu';
 const DELETE = 'Poista';
-const CANCEL = 'Peruuta';
+const ADD_NEW = 'Lisää uusi';
 const CREATE_NEW_VERSION = 'Lisää uusi versio';
-const SAVE = 'Tallenna';
 const OK = 'Ok';
 const SEARCH_BY_NAME = 'Hae nimellä';
-const SEARCH_BY_NAME_OR_ID = 'Hae nimellä tai tunnisteella';
 const PUBLISHED = 'Julkaistu';
+const DRAFT = 'Luonnos';
 const HARBOR = 'Satama';
 const FAIRWAY_CARD = 'Väyläkortti';
 const E2E_TEST_PREFIX = 'e2etest';
 const NEW_HARBOR_FROM_SCRATCH_ID = E2E_TEST_PREFIX + 'nh' + generateRandomNumberAsString();
 const FAIRWAY_CARD_FROM_TEMPLATE = E2E_TEST_PREFIX + 'modfc' + generateRandomNumberAsString();
 const HARBOR_FROM_TEMPLATE = E2E_TEST_PREFIX + 'modh' + generateRandomNumberAsString();
-
+const FAIRWAYCARD_MAIN_SECTION_ELEMENTS = [
+  'Väyläkortin tunniste', // Väyläkortin perustiedot
+  'Lisää huomio', // Väliaikaisen huomion lisääminen väyläkortille
+  'Mitoitusnopeus (fi)', // Väylätiedot
+  'Jääolosuhteet (fi)', // Väylän navigoitavuus
+  'Tuulisuositukset (fi)', // Käyttösuositukset
+  'Ytterligare information (sv)', // Lisätiedot
+  'Luotsintilaus', // Liikennepalvelut
+  'Lisää laskennan sijainti', // Squat-laskennan sijainnin lisääminen
+  'Väyläkortin tulosteet, pysty', // Väyläkortin tuloste
+];
+const HARBOR_MAIN_SECTION_ELEMENTS = [
+  'Sataman tunniste', // Sataman perustiedot
+  'Sataman nimi (fi)', // Satamatiedot
+];
 const ID_INPUT_LAG = 3000;
 
 async function openPage(page: Page) {
@@ -164,7 +177,7 @@ async function createNewVersionFromPublishedSave(page: Page, type: string, isN20
   await clickOnResultsByTypeAndState(page, type, PUBLISHED, isN2000);
   await page.getByRole('button', { name: CREATE_NEW_VERSION }).click();
   //Click save in the modal
-  await page.getByRole('button', { name: SAVE }).click();
+  await page.getByRole('button', { name: ADD_NEW }).click();
   await page.waitForTimeout(3000);
 }
 
@@ -184,6 +197,19 @@ async function fillTemplate(page: Page, randomname: string, id: string) {
   await page.getByRole('radio').first().click();
   //Fill in random id
   await fillFieldWithValue(page, 'primaryId', id, ID_INPUT_LAG);
+}
+
+async function checkIfMainSectionsAreVisible(page: Page, visible: boolean, isFairwayCard: boolean) {
+  // one element from every section is checked if visible
+  const sectionElements = isFairwayCard ? FAIRWAYCARD_MAIN_SECTION_ELEMENTS : HARBOR_MAIN_SECTION_ELEMENTS;
+
+  for (const element of sectionElements) {
+    if (visible) {
+      await expect(page.getByText(element)).toBeVisible();
+    } else {
+      await expect(page.getByText(element)).toBeHidden();
+    }
+  }
 }
 
 test.describe('Modify operations for cards and harbors', () => {
@@ -244,3 +270,44 @@ test.describe('Modify operations for cards and harbors', () => {
     await deleteHarbour(page);
   });
 });
+
+test.describe('Collapsible component tests', () => {
+  test.beforeEach(async () => {
+    test.setTimeout(60000);
+  });
+  test('should close and open all main fairway card sections', async ({ page }) => {
+    await openPage(page);
+    await clickOnResultsByTypeAndState(page, FAIRWAY_CARD, PUBLISHED, true);
+    await checkIfMainSectionsAreVisible(page, true, true);
+    await page.getByTestId('collapseAllSections').click();
+    await checkIfMainSectionsAreVisible(page, false, true);
+  });
+
+  test('should close and open all main harbor sections', async ({ page }) => {
+    await openPage(page);
+    await clickOnResultsByTypeAndState(page, HARBOR, PUBLISHED, true);
+    await checkIfMainSectionsAreVisible(page, true, false);
+    await page.getByTestId('collapseAllSections').click();
+    await checkIfMainSectionsAreVisible(page, false, false);
+  });
+
+  test('when one of the sections is collapsed, expanding all expands collapsed section too', async ({ page }) => {
+    await openPage(page);
+    await clickOnResultsByTypeAndState(page, FAIRWAY_CARD, PUBLISHED, true);
+    await page.getByTestId('toggleOpenSquatCalculations').click();
+    await expect(page.getByTestId('addNewCalcSection')).toBeHidden();
+    await page.getByTestId('expandAllSections').click();
+    await checkIfMainSectionsAreVisible(page, true, true);
+  });
+
+  test('when one of the sections is expanded, collapsing all collapsed expanded section too', async ({ page }) => {
+    await openPage(page);
+    await clickOnResultsByTypeAndState(page, FAIRWAY_CARD, PUBLISHED, true);
+    await page.getByTestId('collapseAllSections').click();
+    await page.getByTestId('toggleOpenSquatCalculations').click();
+    await expect(page.getByTestId('addNewCalcSection')).toBeVisible();
+    await page.getByTestId('collapseAllSections').click();
+    await checkIfMainSectionsAreVisible(page, false, true);
+  });
+});
+

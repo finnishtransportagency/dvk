@@ -125,7 +125,12 @@
     "version": "[sv] Versio",
     "add-section-squat-calculation": "[sv] Lisää laskennan sijainti",
     "cannot-add-section-squat-calculation": "[sv] Squat-laskennan sijainnit ovat käytettävissä vain väyläkorteille, joiden vertaustaso on N2000.",
-    "squat-calculation-description": "[sv] Lorem ipsum..."
+    "squat-calculation-description": "[sv] Haraussyvyytenä käytetään valittujen väyläalueiden matalinta haraussyvyyttä. Huomioithan, että jos väylän alueisiin tulee muutoksia, pitää laskentapisteet tarkistaa ja niihin tehdä tarvittavat muutokset. Mikäli jokin laskentapisteeseen liitetty väyläalue on poistettu VATU-tietokannasta, ei laskentapistettä näytetä DVK-sovelluksessa. Tällöin väyläkortista tulee julkaista uusi versio, jossa laskentapiste on päivitetty.",
+    "squat-calculation-section-area-orphaned_one": "[en] Väyläalue <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistettu alue poistetaan laskennan sijainnista automaattisesti.",
+    "squat-calculation-section-area-orphaned_other": "[en] Väyläalueet <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalueet laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistetut alueet poistetaan laskennan sijainnista automaattisesti.",
+    "expand-sections": "[sv] Laajenna osiot",
+    "collapse-sections": "[sv] Sulje kaikki osiot",
+    "orphanedAreas": "[en] Väyläkortilla on poistettuja väyläalueita"
   },
   "modal": {
     "title-new-CARD": "Ny farledskort",
@@ -187,7 +192,8 @@
     "adding-publish-details": "[sv] Julkaisutietojen lisääminen",
     "unsaved-changes": "[sv] Tallentamattomia muutoksia",
     "discard": "[sv] Hylkää",
-    "changing-version": "[sv] Versioiden välillä vaihtelu"
+    "changing-version": "[sv] Versioiden välillä vaihtelu",
+    "fairway-card-basic-info-description": "[sv] Väyläkortin perustiedot kattavat vähimmäistiedot, jotta väyläkortti on mahdollista tuoda näkyville Digitaalinen väyläkortti -palveluun"
   },
   "fairwaycard": {
     "publish-details": "[sv] Julkaisutiedot",
@@ -295,13 +301,17 @@
     "squat-calculation-depth-warning": "[sv] Olet valinnut väyläalueita eriävillä haraussyvyyksillä. Laskennassa käytetään matalinta haraussyvyyttä.",
     "squat-calculation-cannot-remove-fairway-header": "[sv] Cannot remove fairway",
     "squat-calculation-cannot-remove-fairway": "[sv] The fairway is linked to an area that is in use in this squat calculation template.",
-    "cannot-change-reference-level": "[sv] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu."
+    "cannot-change-reference-level": "[sv] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu.",
+    "squat-calculation-area-orphaned_one": "[sv] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan.",
+    "squat-calculation-area-orphaned_other": "[sv] Väyläalueet <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitykset sijainnin laskentaan.",
+    "main-section-title": "[sv] Väyläkortin perustiedot"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",
     "primary-id-help-text": "[sv] Sataman yksilöivä tunniste; sallitut merkit: (a-z) ja (0-9).",
     "error-duplicate-id": "[sv] Tunniste on jo käytössä",
     "harbour-info": "[sv] Satamatiedot",
+    "harbour-basic-info": "[sv] Sataman perustiedot",
     "name": "Portnamn",
     "extra-info": "Hamnens begränsningar",
     "cargo": "Lasthantering",
@@ -358,6 +368,7 @@
           "general": "Allmänt",
           "name": "Kartnamn",
           "specialarea2": "Ankringsområden",
+          "specialarea9": "[sv] Erikoisalueet",
           "specialarea15": "Områden med mötes- och omkörningsförbud"
         },
         "mapDetails": {

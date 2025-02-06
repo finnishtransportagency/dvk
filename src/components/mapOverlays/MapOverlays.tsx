@@ -12,7 +12,7 @@ import { CommonModal, SourceModal, FeedbackModal } from './CommonModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
 import LinePopupContent, { LineProperties } from '../popup/LinePopupContent';
 import EquipmentPopupContent, { EquipmentProperties } from '../popup/EquipmentPopupContent';
-import { useFairwayCardListData, useSaveFeedback } from '../../utils/dataLoader';
+import { useFairwayCardListData, useSaveFeedback, useWeatherLimits } from '../../utils/dataLoader';
 import MarineWarningPopupContent, { MarineWarningProperties } from '../popup/MarineWarningPopupContent';
 import MareographPopupContent, { MareographProperties } from '../popup/MareographPopupContent';
 import ObservationPopupContent, { ObservationProperties } from '../popup/ObservationPopupContent';
@@ -35,6 +35,7 @@ import RestrictionPortPopupContent, { RestrictionPortProperties } from '../popup
 import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup/ProhibitionAreaPopupContent';
 import { IonCol, IonGrid, IonRow, IonText, IonToast } from '@ionic/react';
 import { FeedbackInput } from '../../graphql/generated';
+import { asWeatherLimits, findWeatherLimitById } from '../../utils/weatherUtils';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -44,6 +45,7 @@ export type PopupProperties = {
   section?: QuayProperties;
   area?: AreaProperties;
   specialarea2?: AreaProperties;
+  specialarea9?: AreaProperties;
   specialarea15?: ProhibitionAreaProperties;
   line?: LineProperties;
   safetyequipment?: EquipmentProperties;
@@ -85,6 +87,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
   const [popupProperties, setPopupProperties] = useState<PopupProperties>();
   const [infoModalOpen, setInfoModalOpen] = useState(false);
   const [isToastOpen, setIsToastOpen] = useState(false);
+  const { data: weatherLimits } = useWeatherLimits();
 
   const openMapLayersModal = () => {
     setIsOpen(true);
@@ -170,6 +173,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.section && <QuayPopupContent quay={popupProperties.section} setPopupProperties={setPopupProperties} />}
         {popupProperties?.area && <AreaPopupContent area={popupProperties.area} setPopupProperties={setPopupProperties} />}
         {popupProperties?.specialarea2 && <AreaPopupContent area={popupProperties.specialarea2} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.specialarea9 && <AreaPopupContent area={popupProperties.specialarea9} setPopupProperties={setPopupProperties} />}
         {popupProperties?.specialarea15 && (
           <ProhibitionAreaPopupContent area={popupProperties.specialarea15} setPopupProperties={setPopupProperties} />
         )}
@@ -187,7 +191,13 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         {popupProperties?.observation && (
           <ObservationPopupContent observation={popupProperties.observation} setPopupProperties={setPopupProperties} />
         )}
-        {popupProperties?.forecast && <ForecastPopupContent forecast={popupProperties.forecast} setPopupProperties={setPopupProperties} />}
+        {popupProperties?.forecast && (
+          <ForecastPopupContent
+            forecast={popupProperties.forecast}
+            setPopupProperties={setPopupProperties}
+            weatherLimits={findWeatherLimitById(asWeatherLimits(weatherLimits?.weatherLimits), popupProperties.forecast.properties.id)}
+          />
+        )}
         {popupProperties?.buoy && <BuoyPopupContent buoy={popupProperties.buoy} setPopupProperties={setPopupProperties} />}
         {popupProperties?.harbor && <HarborPopupContent harbor={popupProperties.harbor} setPopupProperties={setPopupProperties} />}
         {popupProperties?.vtspoint && <VtsPointPopupContent vts={popupProperties.vtspoint} setPopupProperties={setPopupProperties} />}

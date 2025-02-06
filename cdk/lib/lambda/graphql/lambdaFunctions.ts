@@ -110,6 +110,12 @@ const lambdaFunctions: BackendLambda[] = [
     useVpc: true,
   },
   {
+    entry: path.join(__dirname, 'query/weatherLimits-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'weatherLimits',
+    useVpc: false,
+  },
+  {
     entry: path.join(__dirname, 'mutation/saveFairwayCard-handler.ts'),
     typeName: 'Mutation',
     fieldName: 'saveFairwayCard',

@@ -17,6 +17,7 @@ type Query {
   fairways: [Fairway!]!
   fairwayCardsAndHarbors(getAllVersions: Boolean!): [FairwayCardOrHarbor!]!
   mareographs: [Mareograph!]!
+  weatherLimits: WeatherLimits!
 }
 
 type Mutation {
@@ -239,6 +240,7 @@ type FairwayCardOrHarbor {
   modifier: String
   modificationTimestamp: Float
   temporaryNotifications: [TemporaryNotification]
+  squatCalculations: [SquatCalculation]
 }
 
 enum ContentType {
@@ -639,4 +641,29 @@ type Mareograph {
   waterLevel: Float
   n2000WaterLevel: Float
   calculated: Boolean
+}
+
+enum LimitStatus {
+  GREEN
+  YELLOW
+  RED
+}
+
+type Limit {
+  lowerLimit: Float
+  upperLimit: Float
+  status: LimitStatus!
+}
+
+type WeatherLimit {
+  id: String!
+  type: String!
+  windLimits: [Limit!]!
+  windGustLimits: [Limit!]!
+  waveLimits: [Limit!]!
+  visibilityLimits: [Limit!]!
+}
+
+type WeatherLimits {
+  limits: [WeatherLimit!]!
 }

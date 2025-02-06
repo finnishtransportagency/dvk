@@ -1,7 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { IonContent, IonPage } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { ActionType, ConfirmationType, ErrorMessageKeys, Lang, saveErrorTitle, ValidationType, ValueType, VERSION } from '../utils/constants';
+import {
+  ActionType,
+  ConfirmationType,
+  ErrorMessageKeys,
+  HarborMainSections,
+  Lang,
+  MainSectionOpenType,
+  MainSectionTitle,
+  saveErrorTitle,
+  ValidationType,
+  ValueType,
+  VERSION,
+} from '../utils/constants';
 import { ContentType, HarborByIdFragment, HarborInput, Operation, QuayInput, Status } from '../graphql/generated';
 import {
   useHarbourLatestByIdQueryData,
@@ -21,11 +33,13 @@ import HarbourSection from './form/harbour/HarbourSection';
 import ContactInfoSection from './form/harbour/ContactInfoSection';
 import MainSection from './form/harbour/MainSection';
 import Header from './form/Header';
-import { isReadOnly, openPreview } from '../utils/common';
+import { isReadOnly, openHarborSectionsByValidationErrors, openPreview } from '../utils/common';
 import InfoHeader, { InfoHeaderProps } from './InfoHeader';
 import PublishModal from './PublishModal';
 import PublishDetailsSection from './form/PublishDetailsSection';
 import { IonSelectCustomEvent, SelectChangeEventDetail } from '@ionic/core/dist/types/components';
+import CollapsibleWrapper from './form/CollapsibleWrapper';
+import CollapsibleButtons from './form/CollapsibleButtons';
 
 interface FormProps {
   harbour: HarborInput;
@@ -57,6 +71,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
   // if confirmation modal comes up because of unsaved changes when changing version, handleConfirmationSubmit gets the value from this
   const [versionToMoveTo, setVersionToMoveTo] = useState('');
+  const [sectionsOpen, setSectionsOpen] = useState<MainSectionOpenType[]>(HarborMainSections);
 
   const queryClient = useQueryClient();
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
@@ -111,7 +126,15 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     actionOuterTarget?: string | number
   ) => {
     setState(
-      harbourReducer(state, value, actionType, validationErrors, setValidationErrors, actionLang, actionTarget, actionOuterTarget, reservedHarbourIds)
+      harbourReducer(
+        state,
+        value,
+        actionType,
+        { validationErrors: validationErrors, setValidationErrors: setValidationErrors, reservedIds: reservedHarbourIds },
+        actionLang,
+        actionTarget,
+        actionOuterTarget
+      )
     );
   };
 
@@ -140,9 +163,14 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     [state, oldState, saveHarbourMutation]
   );
 
-  const formValid = (): boolean => {
+  const getValidations = () => {
     const requiredMsg = t(ErrorMessageKeys?.required) ?? '';
     const validations: ValidationType[] = validateHarbourForm(state, requiredMsg, t(ErrorMessageKeys?.duplicateLocation));
+    return validations;
+  };
+
+  const formValid = (): boolean => {
+    const validations = getValidations();
     setValidationErrors(validations);
     return !!formRef.current?.checkValidity() && validations.filter((error) => error.msg.length > 0).length < 1;
   };
@@ -181,6 +209,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     } else {
       setSaveError(saveErrorTitle.MISSING);
       setPreviewPending(false);
+      toggleSectionsByValidations();
     }
   };
 
@@ -223,6 +252,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     } else if (!saveError && !saveErrorMsg) {
       setSaveError(saveErrorTitle.BLOCKED);
       setSaveErrorMsg(t('general.fix-errors-try-again'));
+      toggleSectionsByValidations();
     }
   };
 
@@ -232,6 +262,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
       setPublishDetailsOpen(true);
     } else {
       setSaveError(saveErrorTitle.MISSING);
+      toggleSectionsByValidations();
     }
   };
 
@@ -325,6 +356,20 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
 
   const readonly = isReadOnly(state);
 
+  const toggleAllSections = (open: boolean) => {
+    setSectionsOpen(sectionsOpen.map((s) => ({ ...s, open })));
+  };
+
+  const toggleSection = (id: MainSectionTitle, open: boolean) => {
+    const opened = sectionsOpen.map((s) => (s.id === id ? { ...s, open: open } : s));
+    setSectionsOpen(opened);
+  };
+
+  const toggleSectionsByValidations = () => {
+    const validations = getValidations();
+    openHarborSectionsByValidationErrors(validations, sectionsOpen);
+  };
+
   return (
     <IonPage>
       <PublishModal
@@ -394,19 +439,35 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
               created={getDateTimeInfo(false)}
             />
             <form ref={formRef}>
-              <PublishDetailsSection state={state} />
-              <MainSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
-              <Section
-                title={t('harbour.quay-heading')}
-                sections={state.quays as QuayInput[]}
-                updateState={updateState}
-                sectionType="quay"
-                validationErrors={validationErrors}
-                readonly={readonly}
-                disabled={!readonly && state.status === Status.Removed}
-              />
+              <CollapsibleButtons toggleAllSections={toggleAllSections} sectionsOpen={sectionsOpen} />
+
+              <CollapsibleWrapper
+                title={t('fairwaycard.publish-details')}
+                dataTestId="toggleOpenPublishDetails"
+                toggleSection={toggleSection}
+                sectionsOpen={sectionsOpen}
+                disabled={!state.publishDetails}
+              >
+                <PublishDetailsSection state={state} />
+              </CollapsibleWrapper>
+
+              <CollapsibleWrapper title={t('harbour.harbour-basic-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+                <MainSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+              </CollapsibleWrapper>
+
+              <CollapsibleWrapper title={t('harbour.harbour-info')} sectionsOpen={sectionsOpen} toggleSection={toggleSection}>
+                <HarbourSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+                <ContactInfoSection state={state} updateState={updateState} validationErrors={validationErrors} readonly={readonly} />
+                <Section
+                  title={t('harbour.quay-heading')}
+                  sections={state.quays as QuayInput[]}
+                  updateState={updateState}
+                  sectionType="quay"
+                  validationErrors={validationErrors}
+                  readonly={readonly}
+                  disabled={!readonly && state.status === Status.Removed}
+                />
+              </CollapsibleWrapper>
             </form>
           </>
         )}
