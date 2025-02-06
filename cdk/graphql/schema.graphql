@@ -240,6 +240,7 @@ type FairwayCardOrHarbor {
   modifier: String
   modificationTimestamp: Float
   temporaryNotifications: [TemporaryNotification]
+  squatCalculations: [SquatCalculation]
 }
 
 enum ContentType {

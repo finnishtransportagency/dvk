@@ -29,6 +29,7 @@ export const handler: AppSyncResolverHandler<QueryFairwayCardsAndHarborsArgs, Fa
       modifier: card.modifier,
       modificationTimestamp: card.modificationTimestamp,
       temporaryNotifications: card.temporaryNotifications,
+      squatCalculations: card.squatCalculations,
     };
   });
   const harbors: FairwayCardOrHarbor[] = harborModels.map((harbor) => {

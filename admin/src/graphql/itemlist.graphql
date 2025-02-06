@@ -2,7 +2,11 @@ query fairwayCardsAndHarbors($getAllVersions: Boolean!) {
   fairwayCardsAndHarbors(getAllVersions: $getAllVersions) {
     id
     version
-    name {fi sv en}
+    name {
+      fi
+      sv
+      en
+    }
     status
     type
     group
@@ -19,6 +23,9 @@ query fairwayCardsAndHarbors($getAllVersions: Boolean!) {
       }
       startDate
       endDate
+    }
+    squatCalculations {
+      suitableFairwayAreas
     }
   }
 }
