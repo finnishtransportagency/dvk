@@ -13,6 +13,9 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import { TFunction } from 'i18next';
+import { AreaFairway } from '../../graphql/generated';
+import AreaPopupFairway from './AreaPopupFairway';
+import AreaPopupLink from './AreaPopupLink';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
@@ -34,13 +37,8 @@ function getAreaName(area: AreaProperties, t: TFunction) {
   return name ?? type;
 }
 
-const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
-  const { t, i18n } = useTranslation();
-  const lang = i18n.resolvedLanguage as Lang;
-  const { state } = useDvkContext();
-  const { data } = useFairwayCardListData();
-
-  const sizingSpeeds = [
+const getSizingSpeeds = (area: AreaProperties) => {
+  return [
     ...Array.from(
       new Set(
         area?.properties.fairways
@@ -49,13 +47,32 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       )
     ),
   ];
-  const speedLimits = Array.from(
+};
+
+const getSpeedLimits = (area: AreaProperties) => {
+  return Array.from(
     new Set((Array.isArray(area.properties.speedLimit) ? area.properties.speedLimit : [area.properties.speedLimit ?? 0]).filter((val) => val > 0))
   ).sort((a, b) => a - b);
+};
+
+const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as Lang;
+  const { state } = useDvkContext();
+  const { data } = useFairwayCardListData();
+  const sizingSpeeds = getSizingSpeeds(area);
+  const speedLimits = getSpeedLimits(area);
   const showN2000HeightSystem = isShowN2000HeightSystem(area.properties);
-
   const fairwayCards = data ? getFairwayListFairwayCards(area.properties.fairways ?? [], data.fairwayCards) : [];
-
+  const showReferenceLevel = area.properties.depth ?? area.properties.draft ?? area.properties.n2000depth ?? area.properties.n2000draft;
+  const showAreaInfo =
+    area.properties.n2000draft ??
+    area.properties.draft ??
+    area.properties.n2000depth ??
+    area.properties.depth ??
+    (speedLimits.length > 0 || sizingSpeeds.length > 0);
+  const showDraft = area.properties.n2000draft ?? area.properties.draft;
+  const showDepth = area.properties.n2000depth ?? area.properties.depth;
   const closePopup = () => {
     if (setPopupProperties) setPopupProperties({});
     clearClickSelectionFeatures();
@@ -64,20 +81,9 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
   return (
     <IonGrid className="ion-no-padding">
       {area.properties.fairways?.map((fairway, index) => {
-        return (
-          <IonRow key={fairway.fairwayId} className="ion-justify-content-between">
-            <IonCol size="auto" className="header">
-              {fairway.name[lang] ?? fairway.name.fi} {fairway.fairwayId}
-            </IonCol>
-            {index === 0 && (
-              <IonCol size="auto">
-                <CloseButton close={closePopup} />
-              </IonCol>
-            )}
-          </IonRow>
-        );
+        return <AreaPopupFairway key={fairway.fairwayId} fairway={fairway} closePopup={closePopup} index={index} />;
       })}
-      {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
+      {showReferenceLevel && (
         <IonRow>
           <IonCol>
             <em>
@@ -89,17 +95,12 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       <IonRow>
         <IonCol size="auto">{getAreaName(area, t)}</IonCol>
       </IonRow>
-      {(area.properties.n2000draft ||
-        area.properties.draft ||
-        area.properties.n2000depth ||
-        area.properties.depth ||
-        speedLimits.length > 0 ||
-        sizingSpeeds.length > 0) && (
+      {showAreaInfo && (
         <IonRow>
           <IonCol className="header">{t('popup.area.info')}</IonCol>
         </IonRow>
       )}
-      {(area.properties.n2000draft || area.properties.draft) && (
+      {showDraft && (
         <IonRow>
           <IonCol>
             {t('popup.area.draft', { val: showN2000HeightSystem ? (area.properties.n2000draft ?? area.properties.draft) : area.properties.draft })}{' '}
@@ -113,7 +114,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
           </IonCol>
         </IonRow>
       )}
-      {(area.properties.n2000depth || area.properties.depth) && (
+      {showDepth && (
         <IonRow>
           <IonCol>
             {t('popup.area.depth', { val: showN2000HeightSystem ? (area.properties.n2000depth ?? area.properties.depth) : area.properties.depth })}{' '}
@@ -146,15 +147,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
       </IonRow>
       {fairwayCards.length > 0 ? (
         fairwayCards.map((card) => {
-          return (
-            <IonRow key={'cardlink' + card.id}>
-              <IonCol>
-                <Link to={`/kortit/${card.id}`} className={state.preview ? 'disableLink' : ''}>
-                  {card.name[lang]}
-                </Link>
-              </IonCol>
-            </IonRow>
-          );
+          return <AreaPopupLink card={card} key={card.id} />;
         })
       ) : (
         <IonRow>
