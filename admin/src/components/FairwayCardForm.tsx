@@ -145,8 +145,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [areaOptions, setAreaOptions] = useState<AreaSelectOption[]>([]);
 
   useEffect(() => {
-    setAreaOptions(featureCollectionToAreaSelectOptions(areaList, t('fairwaycard.calculation-depth'), lang).filter((a) => a.areatype === 1));
-  }, [areaList, lang, t]);
+    setAreaOptions(featureCollectionToAreaSelectOptions(areaList, 'fairwaycard.calculation-depth', lang).filter((a) => a.areatype === 1));
+  }, [areaList, lang]);
 
   const filteredAreaOptions: AreaSelectOption[] = [];
   fairwaySelection?.forEach((f) => {

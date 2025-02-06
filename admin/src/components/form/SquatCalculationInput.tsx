@@ -9,7 +9,7 @@ import TextInput from './TextInput';
 import SelectInput from './SelectInput';
 import { sortAreaSelectOptions } from '../../utils/common';
 import NotificationModal from '../NotificationModal';
-import { getPossibleAreas, getOrphanedAreaIdsFromSquatCalculation } from '../../utils/squatCalculationUtils';
+import { getPossibleAreas, getOrphanedAreaIdsFromSquatCalculationInput } from '../../utils/squatCalculationUtils';
 
 interface SquatCalculationInputProps {
   idx: number;
@@ -97,13 +97,13 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
   }, [fairwayAreas, section.targetFairways]);
 
   useEffect(() => {
-    setOrphanedAreasInSquatCalculation(areasReady ? getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions) : undefined);
+    setOrphanedAreasInSquatCalculation(areasReady ? getOrphanedAreaIdsFromSquatCalculationInput(section, filteredAreaOptions) : undefined);
   }, [areasReady, section, filteredAreaOptions]);
 
   useEffect(() => {
     setSortedSelectedAreas(sortAreaSelectOptions(filteredAreaOptions.filter((a) => section.suitableFairwayAreas?.includes(a.id as number))));
     let sa = sortAreaSelectOptions(filteredAreaOptions);
-    const orphans = areasReady ? getOrphanedAreaIdsFromSquatCalculation(section, filteredAreaOptions) : undefined;
+    const orphans = areasReady ? getOrphanedAreaIdsFromSquatCalculationInput(section, filteredAreaOptions) : undefined;
     if (orphans) {
       sa = sa.concat(
         orphans.map((a) => {

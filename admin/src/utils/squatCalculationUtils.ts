@@ -1,11 +1,43 @@
-import { SquatCalculationInput } from '../graphql/generated';
+import { TFunction } from 'i18next';
+import { SquatCalculation, SquatCalculationInput } from '../graphql/generated';
 import { sortAreaSelectOptions } from './common';
 import { AreaSelectOption } from './constants';
+
+export const getOrphanedAreaString = (squatCalculations: SquatCalculation[], areaIds: number[], t: TFunction) => {
+  if (hasFairwayCardGotAnyOrphanedAreaIds(squatCalculations, areaIds)) {
+    return t('orphanedAreas');
+  }
+  return '';
+};
+
+function hasFairwayCardGotAnyOrphanedAreaIds(squatCalculations: SquatCalculation[], areas: number[]) {
+  //for each squat calc
+  if ((areas ?? []).length === 0 || (squatCalculations ?? []).length === 0) {
+    return false;
+  }
+  let foundOrphan = false;
+  squatCalculations?.forEach((calc) => {
+    if (!foundOrphan && hasSquatCalculationGotAnyOrphanedAreaIds(calc?.suitableFairwayAreas as number[], areas ?? [])) {
+      foundOrphan = true;
+    }
+  });
+  return foundOrphan;
+}
+
+function hasSquatCalculationGotAnyOrphanedAreaIds(suitableFairwayAreas: number[], areas: number[]) {
+  let foundOrphan = false;
+  suitableFairwayAreas.forEach((squatAreaId) => {
+    if (!foundOrphan && !areas.some((a) => a === squatAreaId)) {
+      foundOrphan = true;
+    }
+  });
+  return foundOrphan;
+}
 
 export function getOrphanedAreaIdsFromSquatSection(squatSections: SquatCalculationInput[], areas: AreaSelectOption[]): number[] {
   const allOrphanedIds: number[] = [];
   squatSections.forEach((s) => {
-    getOrphanedAreaIdsFromSquatCalculation(s, areas).forEach((id) => {
+    getOrphanedAreaIdsFromSquatCalculationInput(s, areas).forEach((id) => {
       if (!allOrphanedIds.includes(id)) {
         allOrphanedIds.push(id);
       }
@@ -14,7 +46,7 @@ export function getOrphanedAreaIdsFromSquatSection(squatSections: SquatCalculati
   return allOrphanedIds;
 }
 
-export function getOrphanedAreaIdsFromSquatCalculation(squatSection: SquatCalculationInput, areas: AreaSelectOption[]): number[] {
+export function getOrphanedAreaIdsFromSquatCalculationInput(squatSection: SquatCalculationInput, areas: AreaSelectOption[]): number[] {
   return squatSection.suitableFairwayAreas?.filter((squatArea) => !areas.map((a) => a.id).includes(squatArea)) ?? [];
 }
 
