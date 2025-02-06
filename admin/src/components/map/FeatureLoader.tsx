@@ -271,6 +271,10 @@ export function useSpecialArea2Layer() {
   return useDataLayer('specialarea2', 'specialarea2');
 }
 
+export function useSpecialArea9Layer() {
+  return useDataLayer('specialarea9', 'specialarea9');
+}
+
 export function useSpecialArea15Layer() {
   return useDataLayer('specialarea15', 'specialarea15');
 }

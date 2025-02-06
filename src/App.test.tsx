@@ -116,6 +116,9 @@ vi.mock('./components/FeatureLoader', () => ({
   useSpecialArea2Layer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
+  useSpecialArea9Layer: () => {
+    return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
+  },
   useSpecialArea15Layer: () => {
     return { data: null, dataUpdatedAt: 1672728154989, errorUpdatedAt: 0, isPaused: true, isError: false };
   },
