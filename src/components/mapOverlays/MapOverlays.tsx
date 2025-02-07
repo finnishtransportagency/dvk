@@ -36,7 +36,7 @@ import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup
 import { IonCol, IonGrid, IonRow, IonText, IonToast } from '@ionic/react';
 import { FeedbackInput } from '../../graphql/generated';
 import { asWeatherLimits, findWeatherLimitById } from '../../utils/weatherUtils';
-import CoordinatePopUp from './CoordinatePopUp';
+import CoordinatesPopUp from './CoordinatesPopUp';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -255,7 +255,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       <div className="no-print">
         <MarineWarningNotifications showMarineWarnings={showMarineWarningNotification} />
         <LoadErrorNotifications />
-        <CoordinatePopUp />
+        <CoordinatesPopUp />
       </div>
     </>
   );

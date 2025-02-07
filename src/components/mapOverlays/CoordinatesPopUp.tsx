@@ -4,11 +4,11 @@ import infoIcon from '../../theme/img/info.svg';
 import { IonButton, IonCol, IonIcon, IonRow, IonToast } from '@ionic/react';
 import CustomPopup, { CustomPopupContainer } from './CustomPopup';
 import { useTranslation } from 'react-i18next';
-import dvkMap from '../DvkMap';
 import copyIcon from '../../theme/img/copy_to_clipboard.svg';
 import { checkmarkCircleOutline } from 'ionicons/icons';
+import { clearCoordinatesLayerAndPopUp } from '../../utils/common';
 
-const CoordinatePopUp: React.FC = () => {
+const CoordinatesPopUp: React.FC = () => {
   const { t } = useTranslation();
   const { dispatch, state } = useDvkContext();
   const [visible, setVisible] = useState(false);
@@ -21,29 +21,21 @@ const CoordinatePopUp: React.FC = () => {
     setShowCopyToast(true);
   };
 
-  const coordinatesSource = dvkMap.getVectorSource('coordinateslocation');
-
   useEffect(() => {
     setVisible(!!state.coordinates);
   }, [state.coordinates]);
 
   useEffect(() => {
     if (!visible) {
-      dispatch({
-        type: 'setCoordinates',
-        payload: {
-          value: '',
-        },
-      });
-      coordinatesSource.clear();
+      clearCoordinatesLayerAndPopUp(dispatch);
     }
-  }, [dispatch, visible, coordinatesSource]);
+  }, [dispatch, visible]);
 
   return (
     <CustomPopupContainer>
       <CustomPopup isOpen={visible} closePopup={handlePopupClose} icon={infoIcon}>
         <IonCol>
-          <IonRow>
+          <IonRow style={{ margin: '0px 0px 5px 0px' }}>
             <p id="textContent">
               <strong>{t('popup.common.locationCoordinates')}:&nbsp;</strong>
               {state.coordinates}
@@ -67,4 +59,4 @@ const CoordinatePopUp: React.FC = () => {
   );
 };
 
-export default CoordinatePopUp;
+export default CoordinatesPopUp;
