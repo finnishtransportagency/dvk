@@ -9,18 +9,16 @@ import { clearClickSelectionFeatures } from './selectInteraction';
 import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import { TFunction } from 'i18next';
-import AreaPopupFairway from './AreaPopupFairway';
 import AreaPopupLink from './AreaPopupLink';
+import CloseButton from './CloseButton';
+import { Lang } from '../../utils/constants';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
   setPopupProperties?: (properties: PopupProperties) => void;
 };
 
-export type AreaProperties = {
-  coordinates: number[];
-  properties: AreaFeatureProperties;
-};
+export type AreaProperties = { coordinates: number[]; properties: AreaFeatureProperties };
 
 function getAreaName(area: AreaProperties, t: TFunction) {
   const name = area.properties.name;
@@ -51,7 +49,8 @@ const getSpeedLimits = (area: AreaProperties) => {
 };
 
 const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const lang = i18n.resolvedLanguage as Lang;
   const { data } = useFairwayCardListData();
   const sizingSpeeds = getSizingSpeeds(area);
   const speedLimits = getSpeedLimits(area);
@@ -73,9 +72,21 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
 
   return (
     <IonGrid className="ion-no-padding">
-      {area.properties.fairways?.map((fairway, index) => {
-        return <AreaPopupFairway key={fairway.fairwayId} fairway={fairway} closePopup={closePopup} index={index} />;
-      })}
+      <IonRow className="ion-justify-content-between">
+        <IonCol size="auto" className="header">
+          {area.properties.fairways?.map((fairway) => {
+            return (
+              <>
+                {fairway.name[lang] ?? fairway.name.fi} {fairway.fairwayId}
+                <br />
+              </>
+            );
+          })}
+        </IonCol>
+        <IonCol size="auto">
+          <CloseButton close={closePopup} />
+        </IonCol>
+      </IonRow>{' '}
       {showReferenceLevel && (
         <IonRow>
           <IonCol>
