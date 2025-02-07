@@ -128,7 +128,7 @@
     "squat-calculation-description": "[sv] Haraussyvyytenä käytetään valittujen väyläalueiden matalinta haraussyvyyttä. Huomioithan, että jos väylän alueisiin tulee muutoksia, pitää laskentapisteet tarkistaa ja niihin tehdä tarvittavat muutokset. Mikäli jokin laskentapisteeseen liitetty väyläalue on poistettu VATU-tietokannasta, ei laskentapistettä näytetä DVK-sovelluksessa. Tällöin väyläkortista tulee julkaista uusi versio, jossa laskentapiste on päivitetty.",
     "squat-calculation-section-area-orphaned_one": "[en] Väyläalue <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistettu alue poistetaan laskennan sijainnista automaattisesti.",
     "squat-calculation-section-area-orphaned_other": "[en] Väyläalueet <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalueet laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistetut alueet poistetaan laskennan sijainnista automaattisesti.",
-    "expand-sections": "[sv] Laajenna osiot",
+    "expand-sections": "[sv] Laajenna kaikki osiot",
     "collapse-sections": "[sv] Sulje kaikki osiot"
   },
   "modal": {
