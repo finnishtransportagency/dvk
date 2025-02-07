@@ -10,8 +10,7 @@ import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import { TFunction } from 'i18next';
 import AreaPopupLink from './AreaPopupLink';
-import CloseButton from './CloseButton';
-import { Lang } from '../../utils/constants';
+import AreaPopupFairways from './AreaPopupFairways';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
@@ -49,8 +48,7 @@ const getSpeedLimits = (area: AreaProperties) => {
 };
 
 const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupProperties }) => {
-  const { t, i18n } = useTranslation();
-  const lang = i18n.resolvedLanguage as Lang;
+  const { t } = useTranslation();
   const { data } = useFairwayCardListData();
   const sizingSpeeds = getSizingSpeeds(area);
   const speedLimits = getSpeedLimits(area);
@@ -72,21 +70,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
 
   return (
     <IonGrid className="ion-no-padding">
-      <IonRow className="ion-justify-content-between">
-        <IonCol size="auto" className="header">
-          {area.properties.fairways?.map((fairway) => {
-            return (
-              <>
-                {fairway.name[lang] ?? fairway.name.fi} {fairway.fairwayId}
-                <br />
-              </>
-            );
-          })}
-        </IonCol>
-        <IonCol size="auto">
-          <CloseButton close={closePopup} />
-        </IonCol>
-      </IonRow>{' '}
+      <AreaPopupFairways fairways={area.properties.fairways ?? []} closePopup={closePopup} />
       {showReferenceLevel && (
         <IonRow>
           <IonCol>
