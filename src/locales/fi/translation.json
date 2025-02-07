@@ -71,6 +71,7 @@
           "depthcontour": "Käyrät",
           "deptharea": "Alueet",
           "specialarea2": "Ankkurointialueet",
+          "specialarea9": "Erikoisalueet",
           "specialarea15": "Kohtaamis- ja ohittamiskieltoalueet",
           "ais": "Liikennetilanne",
           "aisVesselCargo": "Rahtialukset",
@@ -554,6 +555,7 @@
         "safetyequipmentfault": "Turvalaitevika",
         "section": "Laituripaikka",
         "specialarea15": "Kohtaamis- ja ohittamiskieltoalue",
+        "specialarea9": "Erikoisalue",
         "specialarea2": "Ankkurointialue",
         "vtsline": "VTS-alue",
         "vtspoint": "VTS-ilmoituspiste"

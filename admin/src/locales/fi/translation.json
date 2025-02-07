@@ -133,7 +133,8 @@
     "squat-calculation-section-area-orphaned_one": "Väyläalue <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistettu alue poistetaan laskennan sijainnista automaattisesti.",
     "squat-calculation-section-area-orphaned_other": "Väyläalueet <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalueet laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistetut alueet poistetaan laskennan sijainnista automaattisesti.",
     "expand-sections": "Laajenna kaikki osiot",
-    "collapse-sections": "Sulje kaikki osiot"
+    "collapse-sections": "Sulje kaikki osiot",
+    "orphanedAreas": "Väyläkortilla on poistettuja väyläalueita"
   },
   "modal": {
     "title-new-CARD": "Uusi väyläkortti",
@@ -377,6 +378,7 @@
           "general": "Yleiset",
           "name": "Karttanimistö",
           "specialarea2": "Ankkurointialueet",
+          "specialarea9": "Erikoisalueet",
           "specialarea15": "Kohtaamis- ja ohittamiskieltoalueet"
         },
         "mapDetails": {

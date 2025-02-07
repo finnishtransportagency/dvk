@@ -34,7 +34,13 @@ import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
 import { getNavigationLine3456Style } from './layerStyles/navigationLine3456Styles';
-import { anchorageAreaIconStyle, meetAreaIconStyle, getSpecialAreaPolygonStyle, getSpecialAreaStyle } from './layerStyles/specialAreaStyles';
+import {
+  anchorageAreaIconStyle,
+  meetAreaIconStyle,
+  getSpecialAreaPolygonStyle,
+  getSpecialAreaStyle,
+  getSpecialArea9Style,
+} from './layerStyles/specialAreaStyles';
 import { getQuayStyle } from './layerStyles/quayStyles';
 import { getHarborStyle, getRestrictionStyle } from './layerStyles/harborStyles';
 import { getBoardLineStyle } from './layerStyles/boardLineStyles';
@@ -108,6 +114,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
     case 'specialarea2':
     case 'specialarea15':
       return getSpecialAreaStyle(feature);
+    case 'specialarea9':
+      return getSpecialArea9Style(feature, resolution);
     case 'boardline12':
       return getBoardLineStyle(feature);
     case 'safetyequipmentfault':
@@ -463,6 +471,16 @@ export function addAPILayers(map: Map) {
     style: anchorageAreaIconStyle,
     declutter: true,
     zIndex: 350,
+  });
+
+  // Erikoisalue
+  addFeatureVectorLayer({
+    map: map,
+    id: 'specialarea9',
+    maxResolution: 75,
+    renderBuffer: 1,
+    style: getSpecialArea9Style,
+    zIndex: 202,
   });
 
   // Kohtaamis- ja ohittamiskieltoalue
@@ -855,7 +873,8 @@ export function setSelectedFairwayAreas(ids?: (number | string)[]) {
   const dvkMap = getMap();
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   for (const f of selectedFairwayCardSource.getFeatures()) {
-    f.set('hoverStyle', ids && ['area', 'specialarea2', 'specialarea15'].includes(f.get('featureType')) && ids.includes(f.getId() ?? -1));
+    const areaTypes = ['area', 'specialarea2', 'specialarea9', 'specialarea15'];
+    f.set('hoverStyle', ids && areaTypes.includes(f.get('featureType')) && ids.includes(f.getId() ?? -1));
   }
   selectedFairwayCardSource.dispatchEvent('change');
 }

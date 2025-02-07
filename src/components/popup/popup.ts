@@ -171,6 +171,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'vtsline',
     'line',
     'specialarea2',
+    'specialarea9',
     'specialarea15',
     'area',
     'forecast',
@@ -364,6 +365,12 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       return {
         header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
         featureType: t('featureList.featureType.specialarea15'),
+        className: type,
+      };
+    case 'specialarea9':
+      return {
+        header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.specialarea9'),
         className: type,
       };
     case 'specialarea2':

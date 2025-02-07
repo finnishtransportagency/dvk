@@ -129,7 +129,8 @@
     "squat-calculation-section-area-orphaned_one": "[en] Väyläalue <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalue laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistettu alue poistetaan laskennan sijainnista automaattisesti.",
     "squat-calculation-section-area-orphaned_other": "[en] Väyläalueet <strong>{{ids}}</strong> on poistettu järjestelmästä. Ole hyvä ja poista sijaintiin liitetty <strong>{{ids}}</strong> väyläalueet laskennan tiedoista ja tarkista että laskennan haraussyvyystieto päivittyy. Lisätessäsi uuden version väyläkortista poistetut alueet poistetaan laskennan sijainnista automaattisesti.",
     "expand-sections": "[en] Laajenna kaikki osiot",
-    "collapse-sections": "[en] Sulje kaikki osiot"
+    "collapse-sections": "[en] Sulje kaikki osiot",
+    "orphanedAreas": "[en] Väyläkortilla on poistettuja väyläalueita"
   },
   "modal": {
     "title-new-CARD": "New fairway card",
@@ -366,6 +367,7 @@
           "general": "General",
           "name": "Map names",
           "specialarea2": "Anchoring areas",
+          "specialarea9": "[en] Erikoisalueet",
           "specialarea15": "Meeting and overtaking prohibition areas"
         },
         "mapDetails": {
