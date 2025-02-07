@@ -9,18 +9,15 @@ import { clearClickSelectionFeatures } from './selectInteraction';
 import { getFairwayListFairwayCards } from '../../utils/fairwayCardUtils';
 import { useFairwayCardListData } from '../../utils/dataLoader';
 import { TFunction } from 'i18next';
-import AreaPopupFairway from './AreaPopupFairway';
 import AreaPopupLink from './AreaPopupLink';
+import AreaPopupFairways from './AreaPopupFairways';
 
 type AreaPopupContentProps = {
   area: AreaProperties;
   setPopupProperties?: (properties: PopupProperties) => void;
 };
 
-export type AreaProperties = {
-  coordinates: number[];
-  properties: AreaFeatureProperties;
-};
+export type AreaProperties = { coordinates: number[]; properties: AreaFeatureProperties };
 
 function getAreaName(area: AreaProperties, t: TFunction) {
   const name = area.properties.name;
@@ -73,9 +70,7 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
 
   return (
     <IonGrid className="ion-no-padding">
-      {area.properties.fairways?.map((fairway, index) => {
-        return <AreaPopupFairway key={fairway.fairwayId} fairway={fairway} closePopup={closePopup} index={index} />;
-      })}
+      <AreaPopupFairways fairways={area.properties.fairways ?? []} closePopup={closePopup} />
       {showReferenceLevel && (
         <IonRow>
           <IonCol>
