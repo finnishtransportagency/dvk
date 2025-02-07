@@ -199,9 +199,8 @@ export function addPopup(
   addPointerClickInteraction(map);
 
   map.on('singleclick', function (evt) {
-    // check if popup is open before setting position undefined, coordinates marker behaviour
-    // is slightly affected by this
-    const isPopUpOpen = !!overlay.getPosition();
+    // coordinates marker behaviour is slightly affected by this
+    const isPopUpOpen = !!overlay.getElement()?.firstChild;
     /* Remove fairway width features */
     dvkMap.getVectorSource('fairwaywidth').clear();
     /* Close popup */

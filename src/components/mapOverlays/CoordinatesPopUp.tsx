@@ -35,7 +35,7 @@ const CoordinatesPopUp: React.FC = () => {
     <CustomPopupContainer>
       <CustomPopup isOpen={visible} closePopup={handlePopupClose} icon={infoIcon}>
         <IonCol>
-          <IonRow style={{ margin: '0px 0px 5px 0px' }}>
+          <IonRow>
             <p id="textContent">
               <strong>{t('popup.common.locationCoordinates')}:&nbsp;</strong>
               {state.coordinates}
