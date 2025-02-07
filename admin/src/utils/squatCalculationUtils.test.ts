@@ -1,11 +1,19 @@
 import {
   filterOrphanedAreas,
-  getOrphanedAreaIdsFromSquatCalculation,
+  getOrphanedAreaIdsFromSquatCalculationInput,
   getOrphanedAreaIdsFromSquatSection,
+  getOrphanedAreaString,
   getPossibleAreas,
 } from './squatCalculationUtils';
-import { SquatCalculationInput } from '../graphql/generated';
+import { SquatCalculation, SquatCalculationInput } from '../graphql/generated';
 import { AreaSelectOption } from './constants';
+import { t } from 'i18next';
+
+vi.mock('i18next', () => ({
+  useTranslation: (s: string) => s,
+  Trans: (s: string) => s,
+  t: (s: string) => s,
+}));
 
 test('should locate orphaned area in squat calculation', () => {
   const input: SquatCalculationInput = {
@@ -13,10 +21,10 @@ test('should locate orphaned area in squat calculation', () => {
     suitableFairwayAreas: [1, 2, 3],
   };
 
-  expect(getOrphanedAreaIdsFromSquatCalculation(input, [{ id: 4 }])).toEqual([1, 2, 3]);
-  expect(getOrphanedAreaIdsFromSquatCalculation(input, [{ id: 1 }])).toEqual([2, 3]);
-  expect(getOrphanedAreaIdsFromSquatCalculation(input, [{ id: 1 }, { id: 2 }])).toEqual([3]);
-  expect(getOrphanedAreaIdsFromSquatCalculation(input, [{ id: 1 }, { id: 2 }, { id: 3 }])).toEqual([]);
+  expect(getOrphanedAreaIdsFromSquatCalculationInput(input, [{ id: 4 }])).toEqual([1, 2, 3]);
+  expect(getOrphanedAreaIdsFromSquatCalculationInput(input, [{ id: 1 }])).toEqual([2, 3]);
+  expect(getOrphanedAreaIdsFromSquatCalculationInput(input, [{ id: 1 }, { id: 2 }])).toEqual([3]);
+  expect(getOrphanedAreaIdsFromSquatCalculationInput(input, [{ id: 1 }, { id: 2 }, { id: 3 }])).toEqual([]);
 });
 
 test('should locate orphaned area in array of squat calculations', () => {
@@ -114,4 +122,16 @@ test('should filter correct area options based on fairway ids', () => {
         return a - b;
       })
   ).toEqual([1, 3]);
+});
+
+test('should give text based on orphaned areas', () => {
+  const squatCalculations: SquatCalculation[] = [{ suitableFairwayAreas: [10] }, { suitableFairwayAreas: [20] }, { suitableFairwayAreas: [10, 20] }];
+  const output = getOrphanedAreaString(squatCalculations, [10], t);
+  expect(output).toEqual('orphanedAreas');
+});
+
+test('should return empty string when no orphaned areas', () => {
+  const squatCalculations: SquatCalculation[] = [{ suitableFairwayAreas: [10] }, { suitableFairwayAreas: [20] }, { suitableFairwayAreas: [10, 20] }];
+  const output = getOrphanedAreaString(squatCalculations, [10, 20], t);
+  expect(output).toEqual('');
 });

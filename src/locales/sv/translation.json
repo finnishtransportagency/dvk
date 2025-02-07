@@ -71,6 +71,7 @@
           "depthcontour": "Kurvor",
           "deptharea": "Zoner",
           "specialarea2": "Ankringsområden",
+          "specialarea9": "[sv] Erikoisalueet",
           "specialarea15": "Områden med mötes- och omkörningsförbud",
           "ais": "Trafikläge",
           "aisVesselCargo": "Fraktfartyg",
@@ -557,6 +558,7 @@
         "safetyequipmentfault": "Säkerhetsanordningsfel",
         "section": "Kajplats",
         "specialarea15": "Område med mötes- och omkörningsförbud",
+        "specialarea9": "[sv] Erikoisalue",
         "specialarea2": "Ankringsområde",
         "vtsline": "VTS-område",
         "vtspoint": "VTS-trafikrapporteringspunkt"

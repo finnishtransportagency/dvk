@@ -23,6 +23,7 @@ export function unsetSelectedFairwayCard() {
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   const depthSource = dvkMap.getVectorSource('depth12');
   const specialArea2Source = dvkMap.getVectorSource('specialarea2');
+  const specialArea9Source = dvkMap.getVectorSource('specialarea9');
   const specialArea15Source = dvkMap.getVectorSource('specialarea15');
   const boardLine12Source = dvkMap.getVectorSource('boardline12');
   const harborSource = dvkMap.getVectorSource('harbor');
@@ -51,6 +52,10 @@ export function unsetSelectedFairwayCard() {
         break;
       case 'specialarea2':
         specialArea2Source.addFeature(feature);
+        feature.unset('n2000HeightSystem');
+        break;
+      case 'specialarea9':
+        specialArea9Source.addFeature(feature);
         feature.unset('n2000HeightSystem');
         break;
       case 'specialarea15':
@@ -129,6 +134,7 @@ function setFairwayAreas(fairway: Fairway, isN2000HeightSystem: boolean, selecte
   const area3456Source = dvkMap.getVectorSource('area3456');
   const depthSource = dvkMap.getVectorSource('depth12');
   const specialArea2Source = dvkMap.getVectorSource('specialarea2');
+  const specialArea9Source = dvkMap.getVectorSource('specialarea9');
   const specialArea15Source = dvkMap.getVectorSource('specialarea15');
 
   for (const area of fairway.areas ?? []) {
@@ -150,6 +156,14 @@ function setFairwayAreas(fairway: Fairway, isN2000HeightSystem: boolean, selecte
       feature = specialArea2Source.getFeatureById(area.id) as Feature<Geometry>;
       if (feature) {
         specialArea2Source.removeFeature(feature);
+        selectedFeatures.push(feature);
+        feature.set('n2000HeightSystem', isN2000HeightSystem);
+      }
+    }
+    if (!feature) {
+      feature = specialArea9Source.getFeatureById(area.id) as Feature<Geometry>;
+      if (feature) {
+        specialArea9Source.removeFeature(feature);
         selectedFeatures.push(feature);
         feature.set('n2000HeightSystem', isN2000HeightSystem);
       }

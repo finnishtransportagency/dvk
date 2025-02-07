@@ -88,6 +88,7 @@ export type FeatureDataId =
   | 'circle'
   | 'soundingpoint'
   | 'specialarea2'
+  | 'specialarea9'
   | 'specialarea15'
   | 'aislocation'
   | 'aisvessel'
@@ -188,6 +189,17 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea2.json.gz'),
+    persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
+  },
+  {
+    id: 'specialarea9',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=specialarea9&vaylaluokka=1,2,3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/specialarea9.json.gz'),
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
@@ -499,6 +511,7 @@ export type FeatureDataLayerId =
   | 'deptharea'
   | 'circle'
   | 'specialarea2'
+  | 'specialarea9'
   | 'specialarea15'
   | 'aisvesselcargo'
   | 'aisvesseltanker'
@@ -552,6 +565,7 @@ export const MAP: MapType = {
     { id: 'line3456', offlineSupport: true, localizedStyle: false },
     { id: 'speedlimit', offlineSupport: true, localizedStyle: false },
     { id: 'specialarea2', offlineSupport: true, localizedStyle: false },
+    { id: 'specialarea9', offlineSupport: true, localizedStyle: false },
     { id: 'specialarea15', offlineSupport: true, localizedStyle: false },
     { id: 'harbor', offlineSupport: true, localizedStyle: true },
     { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },

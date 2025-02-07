@@ -1,4 +1,4 @@
-import { TFunction } from 'i18next';
+import { TFunction, t } from 'i18next';
 import {
   FairwayCardInput,
   FairwayCardOrHarbor,
@@ -278,6 +278,7 @@ export function featureCollectionToSelectOptions(collection: FeatureCollection |
 
 export function featureCollectionToAreaSelectOptions(collection: FeatureCollection | undefined, subtextPrefix: string, lang: Lang) {
   const propertyArray: AreaSelectOption[] = [];
+  const subtext = t(subtextPrefix);
   collection?.features?.map((feature) => {
     const properties = feature.properties;
     const depth = properties?.referenceLevel === 'N2000' ? properties?.depth : properties?.n2000depth;
@@ -287,7 +288,7 @@ export function featureCollectionToAreaSelectOptions(collection: FeatureCollecti
         name: { fi: properties?.name },
         fairwayIds: properties?.fairways?.map((f: { fairwayId: number }) => f.fairwayId),
         depth: depth,
-        subtext: subtextPrefix + ' ' + depth.toLocaleString(lang) + ' m',
+        subtext: subtext + ' ' + depth.toLocaleString(lang) + ' m',
         areatype: properties?.typeCode,
       };
       propertyArray.push(selectOption);
@@ -348,6 +349,27 @@ export function endDateError(startDate: string, endDate: string): boolean {
 export type NoticeListingTypes = {
   active: number;
   incoming: number;
+};
+
+export const getNotificationListingTypeString = (temporaryNotifications: TemporaryNotification[]) => {
+  if (!temporaryNotifications) {
+    return '';
+  }
+  const listingTypes = getNotificationListingTypesCount(temporaryNotifications);
+
+  let typesString;
+
+  if (listingTypes.active > 0) {
+    typesString = t('general.active') + ` (${listingTypes.active})`;
+  }
+  if (listingTypes.incoming) {
+    typesString = typesString ? typesString + ', ' + t('general.incoming') : t('general.incoming');
+    typesString = typesString + ` (${listingTypes.incoming})`;
+  }
+
+  typesString = typesString?.toLocaleLowerCase();
+
+  return typesString ? typesString.charAt(0).toLocaleUpperCase() + typesString.slice(1) : '';
 };
 
 export function getNotificationListingTypesCount(notifications: TemporaryNotification[]): NoticeListingTypes {
