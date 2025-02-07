@@ -63,20 +63,21 @@ const AreaPopupContent: React.FC<AreaPopupContentProps> = ({ area, setPopupPrope
 
   return (
     <IonGrid className="ion-no-padding">
-      {area.properties.fairways?.map((fairway, index) => {
-        return (
-          <IonRow key={fairway.fairwayId} className="ion-justify-content-between">
-            <IonCol size="auto" className="header">
-              {fairway.name[lang] ?? fairway.name.fi} {fairway.fairwayId}
-            </IonCol>
-            {index === 0 && (
-              <IonCol size="auto">
-                <CloseButton close={closePopup} />
-              </IonCol>
-            )}
-          </IonRow>
-        );
-      })}
+      <IonRow className="ion-justify-content-between">
+        <IonCol size="auto" className="header">
+          {area.properties.fairways?.map((fairway) => {
+            return (
+              <>
+                {fairway.name[lang] ?? fairway.name.fi} {fairway.fairwayId}
+                <br />
+              </>
+            );
+          })}
+        </IonCol>
+        <IonCol size="auto">
+          <CloseButton close={closePopup} />
+        </IonCol>
+      </IonRow>
       {(area.properties.depth || area.properties.draft || area.properties.n2000depth || area.properties.n2000draft) && (
         <IonRow>
           <IonCol>
