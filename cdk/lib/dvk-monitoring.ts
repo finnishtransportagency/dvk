@@ -10,12 +10,14 @@ import {
   aws_iam as iam,
   aws_events as events,
   aws_events_targets as targets,
+  aws_sns as sns,
 } from 'aws-cdk-lib';
 import { Topic } from 'aws-cdk-lib/aws-sns';
 import * as subscriptions from 'aws-cdk-lib/aws-sns-subscriptions';
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
 import Config from './config';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { LayerVersion } from 'aws-cdk-lib/aws-lambda';
 import * as path from 'path';
 
 type DvkMetric = { name: string; statistics: string };
@@ -30,6 +32,36 @@ export class MonitoringServices extends Construct {
     });
 
     topic.addSubscription(new subscriptions.EmailSubscription('juhani.kettunen@cgi.com')); //'FI.SM.GEN.DVK@cgi.com'
+
+    // create a lambda subscriber for topic
+    const ssmlayer = LayerVersion.fromLayerVersionArn(
+      this,
+      'ParameterLayer',
+      'arn:aws:lambda:eu-west-1:015030872274:layer:AWS-Parameters-and-Secrets-Lambda-Extension:11'
+    );
+    const alertMessageHandlerLambda = new NodejsFunction(this, 'AlertMessageHandlerLambda', {
+      functionName: 'AlertMessageHandlerLambda-' + env,
+      runtime: lambda.Runtime.NODEJS_22_X,
+      entry: path.join(__dirname, 'lambda', 'monitoring', 'alert-message-handler.ts'),
+      handler: 'handler',
+      layers: [ssmlayer],
+      timeout: Duration.seconds(60),
+      environment: {
+        PARAMETERS_SECRETS_EXTENSION_HTTP_PORT: '2773',
+        PARAMETERS_SECRETS_EXTENSION_LOG_LEVEL: 'DEBUG',
+        SSM_PARAMETER_STORE_TTL: '300',
+      },
+    });
+
+    alertMessageHandlerLambda.addToRolePolicy(new iam.PolicyStatement({ effect: iam.Effect.ALLOW, actions: ['ssm:GetParameter'], resources: ['*'] }));
+
+    topic.addSubscription(
+      new subscriptions.LambdaSubscription(alertMessageHandlerLambda, {
+        filterPolicy: {
+          Severity: sns.SubscriptionFilter.existsFilter(), // forward messages with "severity" attribute only
+        },
+      })
+    );
 
     const action = new SnsAction(topic);
 
