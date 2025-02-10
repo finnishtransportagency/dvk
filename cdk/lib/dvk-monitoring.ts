@@ -114,9 +114,9 @@ export class MonitoringServices extends Construct {
 
     topic.grantPublish(logInsightsLambda);
 
-    // Create CloudWatch Event Rule to trigger Lambda every hour
+    // Create CloudWatch Event Rule to trigger Lambda day 07:00 UTC
     new events.Rule(this, 'HourlyLogInsightsRule', {
-      schedule: events.Schedule.rate(Duration.hours(1)),
+      schedule: events.Schedule.cron({ minute: '0', hour: '7' }),
       targets: [new targets.LambdaFunction(logInsightsLambda)],
     });
 
