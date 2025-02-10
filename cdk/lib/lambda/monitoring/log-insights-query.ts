@@ -5,7 +5,7 @@ import Config from '../../config';
 export const handler = async (event: any) => {
   const cloudwatchLogs = new CloudWatchLogs();
   const snsTopicArn = process.env.SNS_TOPIC_ARN;
-  const hoursSince = Number(process.env.HOURS_SINCE) ?? 1;
+  const hoursSince = process.env.HOURS_SINCE ? Number(process.env.HOURS_SINCE) : 24;
   const env = Config.getEnvironment();
 
   if (!snsTopicArn) {
@@ -83,13 +83,33 @@ export const handler = async (event: any) => {
     })
     .join('\n');
 
+  // Count the total number of errors
+  const totalErrors = queryResults.results.reduce((acc, result) => {
+    const lukumaara = result.find((field) => field.field === 'Lukumaara')?.value ?? '0';
+    return acc + Number(lukumaara);
+  }, 0);
+
   // Send to SNS
   const sns = new SNS();
   await sns
     .publish({
       TopicArn: snsTopicArn,
       Subject: 'DVK External API Fetch Failures Report',
-      Message: `API Fetch Failures in the last hour:\n\n${formattedResults}`,
+      Message: `API Fetch Failures in the last ${hoursSince} hours:\n\n${formattedResults}`,
+      MessageAttributes: {
+        'Environment': {
+          DataType: 'String',
+          StringValue: env,
+        },
+        'ErrorCount': {
+          DataType: 'Number',
+          StringValue: totalErrors.toString(),
+        },
+        'Severity': {
+          DataType: 'String',
+          StringValue: totalErrors > 0 ? 'High' : 'Low',
+        },
+      },
     })
     .promise();
 };
