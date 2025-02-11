@@ -11,6 +11,8 @@ import { getFeatureDetails, showFeaturePopup } from './popup';
 import { Geometry } from 'ol/geom';
 import { Lang } from '../../utils/constants';
 import CloseButton from './CloseButton';
+import { useDvkContext } from '../../hooks/dvkContext';
+import { setCoordinatesIconAndPopUp } from '../../utils/common';
 
 export type FeatureListProperties = {
   features: FeatureLike[];
@@ -26,6 +28,7 @@ const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featu
   const { t, i18n } = useTranslation(undefined, { keyPrefix: 'popup' });
   const lang = i18n.resolvedLanguage as Lang;
   const { features, coordinate } = featureList;
+  const { dispatch } = useDvkContext();
 
   const selectFeature = (feature: FeatureLike) => {
     highlightFeature(feature, false);
@@ -84,6 +87,19 @@ const FeatureListPopupContent: React.FC<FeatureListPopupContentProps> = ({ featu
             </IonItem>
           );
         })}
+        <IonItem
+          lines="none"
+          button
+          onClick={() => {
+            setCoordinatesIconAndPopUp(dispatch, featureList.coordinate);
+            closePopup();
+          }}
+        >
+          <IonLabel>
+            <p className="headerText">{t('common.locationCoordinates')}</p>
+          </IonLabel>
+          <IonText slot="end" className={'layer locationCoordinates'} />
+        </IonItem>
       </IonList>
     </div>
   );

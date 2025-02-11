@@ -6,7 +6,7 @@ import PilotPopupContent, { PilotProperties } from '../popup/PilotPopupContent';
 import { addPopup } from '../popup/popup';
 import QuayPopupContent, { QuayProperties } from '../popup/QuayPopupContent';
 import { useTranslation } from 'react-i18next';
-import { filterFairways, updateIceLayerOpacity } from '../../utils/common';
+import { clearCoordinatesLayerAndPopUp, filterFairways, updateIceLayerOpacity } from '../../utils/common';
 import { Lang } from '../../utils/constants';
 import { CommonModal, SourceModal, FeedbackModal } from './CommonModal';
 import AreaPopupContent, { AreaProperties } from '../popup/AreaPopupContent';
@@ -36,6 +36,7 @@ import ProhibitionAreaPopupContent, { ProhibitionAreaProperties } from '../popup
 import { IonCol, IonGrid, IonRow, IonText, IonToast } from '@ionic/react';
 import { FeedbackInput } from '../../graphql/generated';
 import { asWeatherLimits, findWeatherLimitById } from '../../utils/weatherUtils';
+import CoordinatesPopUp from './CoordinatesPopUp';
 
 export type PopupProperties = {
   pilot?: PilotProperties;
@@ -108,7 +109,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
 
   useEffect(() => {
     if (dvkMap.olMap) {
-      addPopup(dvkMap.olMap, setPopupProperties);
+      addPopup(dvkMap.olMap, setPopupProperties, () => clearCoordinatesLayerAndPopUp(dispatch), dispatch);
 
       dvkMap.olMap.getView().on('change:resolution', () => {
         if (dvkMap.getFeatureLayer('ice').isVisible()) {
@@ -116,7 +117,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
         }
       });
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     initUserLocation(dispatch);
@@ -256,6 +257,7 @@ const MapOverlays: React.FC<MapOverlaysProps> = ({ isOpen: isSourceOpen, setIsOp
       <div className="no-print">
         <MarineWarningNotifications showMarineWarnings={showMarineWarningNotification} />
         <LoadErrorNotifications />
+        <CoordinatesPopUp />
       </div>
     </>
   );

@@ -40,6 +40,7 @@ import { Dispatch } from 'react';
 import { Action } from '../hooks/dvkReducer';
 import { FeatureLike } from 'ol/Feature';
 import { Cluster } from 'ol/source';
+import coordinatesIcon from '../theme/img/coordinates_location_indicator.svg';
 
 export type BackgroundMapType = 'sea' | 'land';
 
@@ -259,6 +260,16 @@ export class DvkMap {
     });
     this.olMap.addLayer(userLocationLayer);
 
+    const coordinatesLocationLayer = new VectorLayer({
+      properties: { id: 'coordinateslocation' },
+      source: new VectorSource<FeatureLike>({
+        features: [],
+        overlaps: false,
+      }),
+      zIndex: 301,
+    });
+    this.olMap.addLayer(coordinatesLocationLayer);
+
     this.setBackgroundMapType(this.backgroundMapType);
     this.translate();
     this.initialized = true;
@@ -453,6 +464,18 @@ export class DvkMap {
         }),
       })
     );
+
+    const coordinatesLocationLayer = this.getFeatureLayer('coordinateslocation') as VectorLayer;
+    coordinatesLocationLayer.setStyle(
+      new Style({
+        image: new Icon({
+          src: coordinatesIcon,
+          anchor: [0.5, 32],
+          anchorXUnits: 'fraction',
+          anchorYUnits: 'pixels',
+        }),
+      })
+    );
     olMap
       .getLayers()
       .getArray()
@@ -608,6 +631,10 @@ export class DvkMap {
 
   public getOpenSidebarMenuControl = () => {
     return this.openSidebarMenuControl;
+  };
+
+  public getMapDetailsControl = () => {
+    return this.mapDetailsControl;
   };
 
   public getFeatureLayer(layerId: FeatureLayerId | BackgroundLayerId) {

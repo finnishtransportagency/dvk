@@ -371,7 +371,10 @@
   "popup": {
     "common": {
       "noFairwayCards": "Inget farledskort",
-      "outdatedData": "Informationen är mer än 12 timmar gammal"
+      "outdatedData": "Informationen är mer än 12 timmar gammal",
+      "locationCoordinates": "[sv] Sijainnin koordinaatit",
+      "copyToClipboard": "Kopiera till Urklipp/Clipboard",
+      "copiedToClipboard": "Kopierat till Urklipp/Clipboard!"
     },
     "pilotPlace": {
       "header": "Lotsplats {{val}}",
