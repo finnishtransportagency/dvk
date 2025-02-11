@@ -371,7 +371,10 @@
   "popup": {
     "common": {
       "noFairwayCards": "Ei väyläkorttia",
-      "outdatedData": "Tieto on yli 12h vanhaa"
+      "outdatedData": "Tieto on yli 12h vanhaa",
+      "locationCoordinates": "Sijainnin koordinaatit",
+      "copyToClipboard": "Kopioi leikepöydälle",
+      "copiedToClipboard": "Kopioitu leikepöydälle"
     },
     "pilotPlace": {
       "header": "Luotsipaikka {{val}}",

@@ -371,7 +371,10 @@
   "popup": {
     "common": {
       "noFairwayCards": "No fairway cards",
-      "outdatedData": "The data is more than 12 hours old"
+      "outdatedData": "The data is more than 12 hours old",
+      "locationCoordinates": "[en] Sijainnin koordinaatit",
+      "copyToClipboard": "Copy to clipboard",
+      "copiedToClipboard": "Copied to clipboard!"
     },
     "pilotPlace": {
       "header": "Pilot boarding position {{val}}",

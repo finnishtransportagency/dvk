@@ -533,7 +533,9 @@ export type FairwayWidthLayerId = 'fairwaywidth';
 
 export type UserLocationLayerId = 'userlocation';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId | UserLocationLayerId;
+export type CoordinatesLocationLayerId = 'coordinateslocation';
+
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId | UserLocationLayerId | CoordinatesLocationLayerId;
 
 export type UserLocationPermission = 'on' | 'off' | 'disabled';
 
@@ -716,3 +718,19 @@ export const hourInMilliseconds = 3600000;
 export const LAYER_IDB_KEY = 'layer-selection';
 
 export const PUBLIC_VERSION = 'v0_public';
+
+// Features with coordinates info in their pop up
+export const FEATURES_WITH_COORDINATES: FeatureDataId[] = [
+  'safetyequipment',
+  'safetyequipmentfault',
+  'mareograph',
+  'observation',
+  'forecast',
+  'buoy',
+  'vtspoint',
+  'pilot',
+  'pilotagelimit',
+  'aisvessel',
+  'dirway',
+  'harbor',
+];
