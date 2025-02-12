@@ -113,7 +113,7 @@ export const fairwayCardReducer = (
     case 'temporaryNotificationStartDate':
     case 'temporaryNotificationEndDate':
       newState = temporaryNotificationReducer(state, value, actionType, actionLang, actionTarget);
-      temporaryNotificationValidator(newState, value, actionType, validationErrors, setValidationErrors, actionTarget);
+      temporaryNotificationValidator(newState, actionType, validationErrors, setValidationErrors, actionTarget);
       break;
     case 'squatCalculations':
     case 'squatCalculationAdditionalInformation':
