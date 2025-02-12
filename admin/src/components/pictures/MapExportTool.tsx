@@ -1,31 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { IonCol, IonGrid, IonProgressBar, IonRow, useIonViewWillEnter } from '@ionic/react';
-import { InitDvkMap, getMap } from '../map/DvkMap';
-import {
-  DvkLayerState,
-  useArea12Layer,
-  useArea3456Layer,
-  useBackgroundBalticseaLayer,
-  useBackgroundFinlandLayer,
-  useBackgroundMmlSatamatLayer,
-  useBoardLine12Layer,
-  useCircleLayer,
-  useDepth12Layer,
-  useHarborLayer,
-  useLine12Layer,
-  useLine3456Layer,
-  useNameLayer,
-  usePilotLayer,
-  usePilotageLimitLayer,
-  usePilotageAreaBorderLayer,
-  useSafetyEquipmentLayer,
-  useSpecialArea15Layer,
-  useSpecialArea9Layer,
-  useSpecialArea2Layer,
-  useSpeedLimitLayer,
-  useVtsLineLayer,
-  useVtsPointLayer,
-} from '../map/FeatureLoader';
+import React, { useEffect, useState } from 'react';
+import { IonCol, IonGrid, IonProgressBar, IonRow } from '@ionic/react';
+import { getMap } from '../map/DvkMap';
 import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput } from '../../graphql/generated';
 import { setSelectedFairwayCard } from '../map/fairwayCardSetter';
 import { useIsFetching } from '@tanstack/react-query';
@@ -44,9 +19,9 @@ import {
   setMapProperties,
   useUploadMapPictureMutation,
 } from '../../utils/mapExportToolUtils';
-import { usePilotRouteLayer } from '../map/PilotRouteFeatureLoader';
 import { ExtMapControls } from './ExtMapControls';
 import { PrintImages } from './PrintImages';
+import MapElement from './MapElement';
 
 interface MapExportToolProps {
   fairwayCardInput: FairwayCardInput;
@@ -80,93 +55,11 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
 
   const { uploadMapPictureMutation, isLoadingMutation } = useUploadMapPictureMutation(newPicture, setPicture, setNewPicture, fairwayCardInput);
 
-  InitDvkMap();
-
-  /* Start initializing layers that are required at ap start first */
-  const line12Layer = useLine12Layer();
-  const area12Layer = useArea12Layer();
-  const specialArea2Layer = useSpecialArea2Layer();
-  const specialArea9Layer = useSpecialArea9Layer();
-  const specialArea15Layer = useSpecialArea15Layer();
-  const pilotLayer = usePilotLayer();
-  const harborLayer = useHarborLayer();
-  const boardLine12Layer = useBoardLine12Layer();
-  const bgFinlandLayer = useBackgroundFinlandLayer();
-  const bgMmlSatamatLayer = useBackgroundMmlSatamatLayer();
-  const circleLayer = useCircleLayer();
-  const pilotRouteLayer = usePilotRouteLayer();
-  const pilotageLimitLayer = usePilotageLimitLayer();
-  const pilotageAreaBorderLayer = usePilotageAreaBorderLayer();
-  /* Start initializing other layers */
-  useDepth12Layer();
-  useSpeedLimitLayer();
-  useSafetyEquipmentLayer();
-  useNameLayer();
-  useVtsLineLayer();
-  useVtsPointLayer();
-  useLine3456Layer();
-  useArea3456Layer();
-  useBackgroundBalticseaLayer();
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
   const [fetchError, setFetchError] = useState(false);
 
-  useEffect(() => {
-    const allLayers: DvkLayerState[] = [
-      line12Layer,
-      area12Layer,
-      specialArea2Layer,
-      specialArea9Layer,
-      specialArea15Layer,
-      pilotLayer,
-      harborLayer,
-      boardLine12Layer,
-      bgFinlandLayer,
-      bgMmlSatamatLayer,
-      circleLayer,
-      pilotRouteLayer,
-      pilotageLimitLayer,
-      pilotageAreaBorderLayer,
-    ];
-
-    let percent = 0;
-    const resourcePercentage = 1 / allLayers.length;
-
-    allLayers.forEach(function (layer) {
-      if (layer.ready) percent += resourcePercentage;
-    });
-
-    setPercentDone(Math.round(percent * 100) / 100);
-
-    setFetchError(allLayers.some((layer) => layer.isError));
-
-    setInitDone(allLayers.every((layer) => layer.ready));
-  }, [
-    line12Layer,
-    area12Layer,
-    pilotLayer,
-    harborLayer,
-    boardLine12Layer,
-    bgFinlandLayer,
-    bgMmlSatamatLayer,
-    circleLayer,
-    specialArea2Layer,
-    specialArea9Layer,
-    specialArea15Layer,
-    pilotRouteLayer,
-    pilotageLimitLayer,
-    pilotageAreaBorderLayer,
-  ]);
-
   const dvkMap = getMap();
-
-  const mapElement = useRef<HTMLDivElement | null>(null);
-  useIonViewWillEnter(() => {
-    if (mapElement?.current) {
-      dvkMap.addRotationControl();
-      dvkMap.setTarget(mapElement.current);
-    }
-  });
 
   useEffect(() => {
     const fairwayCard = {
@@ -326,7 +219,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
               importExternalImage={importExternalImage}
               setErrors={setPicUploadErrors}
             />
-            <div className="mainMapWrapper" ref={mapElement} data-testid="mapElement"></div>
+            <MapElement setInitDone={setInitDone} setPercentDone={setPercentDone} setFetchError={setFetchError} />
           </IonCol>
           <IonCol>
             <PrintImages
