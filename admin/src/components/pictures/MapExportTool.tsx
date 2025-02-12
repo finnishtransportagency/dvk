@@ -20,13 +20,14 @@ import {
   usePilotageAreaBorderLayer,
   useSafetyEquipmentLayer,
   useSpecialArea15Layer,
+  useSpecialArea9Layer,
   useSpecialArea2Layer,
   useSpeedLimitLayer,
   useVtsLineLayer,
   useVtsPointLayer,
 } from '../map/FeatureLoader';
 import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput } from '../../graphql/generated';
-import { setSelectedFairwayCard } from '../map/layers';
+import { setSelectedFairwayCard } from '../map/fairwayCardSetter';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useTranslation } from 'react-i18next';
@@ -85,6 +86,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
   const line12Layer = useLine12Layer();
   const area12Layer = useArea12Layer();
   const specialArea2Layer = useSpecialArea2Layer();
+  const specialArea9Layer = useSpecialArea9Layer();
   const specialArea15Layer = useSpecialArea15Layer();
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
@@ -114,6 +116,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
       line12Layer,
       area12Layer,
       specialArea2Layer,
+      specialArea9Layer,
       specialArea15Layer,
       pilotLayer,
       harborLayer,
@@ -148,6 +151,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
     bgMmlSatamatLayer,
     circleLayer,
     specialArea2Layer,
+    specialArea9Layer,
     specialArea15Layer,
     pilotRouteLayer,
     pilotageLimitLayer,
@@ -310,6 +314,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
                 buffer={percentDone}
                 type={!!isFetching && initDone ? 'indeterminate' : 'determinate'}
                 className={fetchError ? 'danger' : ''}
+                aria-hidden="true"
               />
             )}
             <ExtMapControls

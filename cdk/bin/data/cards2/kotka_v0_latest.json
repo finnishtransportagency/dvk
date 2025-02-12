@@ -24,8 +24,7 @@
     "sv": "Farleden Orrengrund-Kotka"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095538898,
+  "creationTimestamp": 1732887676733,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approach as far as the entrance to Mussalo Harbour is unsheltered against S winds. Navigation may be hampered by strong winds and rough sea. The approach is at its narrowest, i.e. 527 m wide, N of Lålättan. The narrowest part of the entrance, 182 m, is off Mussalo (the fairway width in the secured supplementary area (Sc -12 m) is 172 m).",
@@ -54,17 +53,28 @@
   "fairways": [
     {
       "secondary": false,
+      "primarySequenceNumber": 1,
       "id": 5385,
       "primary": true
     },
     {
       "secondary": false,
-      "id": 5615,
+      "id": 5532,
       "primary": false
     },
     {
-      "secondary": true,
-      "id": 5690,
+      "secondary": false,
+      "id": 5533,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5535,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5570,
       "primary": false
     },
     {
@@ -76,14 +86,38 @@
       "secondary": false,
       "id": 5605,
       "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5615,
+      "primary": false
+    },
+    {
+      "secondary": true,
+      "id": 5690,
+      "primary": false,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718775876243,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732887676733,
+  "pilotRoutes": [
+    {
+      "id": 40
+    },
+    {
+      "id": 34
+    },
+    {
+      "id": 29
+    },
+    {
+      "id": 35
+    }
+  ],
+  "latest": 3,
   "iceCondition": null,
-  "fairwayIds": "#5385#5615#5690#5590#5605#",
+  "fairwayIds": "#5385#5532#5533#5535#5570#5590#5605#5615#5690#",
   "trafficService": {
     "vts": [
       {

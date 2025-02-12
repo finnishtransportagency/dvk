@@ -3,17 +3,23 @@ import { useTranslation } from 'react-i18next';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
 import { ForecastItem } from './features';
 import './ForecastTable.css';
+import { determineWeatherStatus, WeatherLimitById } from '../utils/weatherUtils';
 
 type ForecastTableProps = {
   forecastItems: ForecastItem[];
   page?: number;
   clear?: boolean;
   multitable?: boolean;
+  weatherLimits?: WeatherLimitById;
 };
 
 type ForecastRowProps = {
   forecastItem: ForecastItem;
   visible?: boolean;
+};
+
+type ForecastWeatherLimitRowProps = ForecastRowProps & {
+  weatherLimits?: WeatherLimitById;
 };
 
 const timezoneOffsetMinutesToString = (date: Date) => {
@@ -29,6 +35,53 @@ const timezoneOffsetMinutesToString = (date: Date) => {
   }
 };
 
+// Fallback and backwards compatibility constants for forecast threshold values
+const THRESHOLDS = {
+  wind: {
+    yellow: 14,
+    red: 20,
+  },
+  windGust: {
+    yellow: 17,
+  },
+  wave: {
+    yellow: 2.2,
+    red: 2.6,
+  },
+  visibility: {
+    yellow: 4,
+  },
+};
+
+// Helper function to determine forecast column class
+const getColumnClass = (status: string | undefined, value: number, thresholds: { yellow?: number; red?: number }, inverse?: boolean): string => {
+  const baseClass = 'ForecastCol';
+
+  if (status) {
+    return baseClass + status;
+  }
+
+  if (inverse) {
+    // For inverse thresholds (like visibility)
+    if (thresholds.red && value <= thresholds.red) {
+      return baseClass + 'Red';
+    }
+    if (thresholds.yellow && value <= thresholds.yellow) {
+      return baseClass + 'Yellow';
+    }
+  } else {
+    // For normal thresholds (like wind and waves)
+    if (thresholds.red && value > thresholds.red) {
+      return baseClass + 'Red';
+    }
+    if (thresholds.yellow && value >= thresholds.yellow) {
+      return baseClass + 'Yellow';
+    }
+  }
+
+  return baseClass + 'Green';
+};
+
 const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem, visible = true }) => {
   const { t } = useTranslation();
 
@@ -42,34 +95,19 @@ const ForecastTableDateRow: React.FC<ForecastRowProps> = ({ forecastItem, visibl
   );
 };
 
-const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem, visible }) => {
+const ForecastTableRow: React.FC<ForecastWeatherLimitRowProps> = ({ forecastItem, visible, weatherLimits }) => {
   const { i18n } = useTranslation();
   const lang = i18n.language;
-  let windColClass = 'ForecastColGreen';
-  if (forecastItem.windSpeed >= 14) {
-    windColClass = 'ForecastColYellow';
-  }
-  if (forecastItem.windSpeed > 20) {
-    windColClass = 'ForecastColRed';
-  }
 
-  let windGustColClass = 'ForecastColGreen';
-  if (forecastItem.windGust >= 17) {
-    windGustColClass = 'ForecastColYellow';
-  }
+  const windStatus = determineWeatherStatus(forecastItem.windSpeed, weatherLimits?.windLimits);
+  const waveStatus = determineWeatherStatus(forecastItem.waveHeight, weatherLimits?.waveLimits);
+  const visibilityStatus = determineWeatherStatus(forecastItem.visibility, weatherLimits?.visibilityLimits);
+  const windGustStatus = determineWeatherStatus(forecastItem.windGust, weatherLimits?.windGustLimits);
 
-  let waveColClass = 'ForecastColGreen';
-  if (forecastItem.waveHeight > 2.2) {
-    waveColClass = 'ForecastColYellow';
-  }
-  if (forecastItem.waveHeight > 2.6) {
-    waveColClass = 'ForecastColRed';
-  }
-
-  let visibilityColClass = 'ForecastColGreen';
-  if (forecastItem.visibility < 4) {
-    visibilityColClass = 'ForecastColYellow';
-  }
+  const windColClass = getColumnClass(windStatus, forecastItem.windSpeed, THRESHOLDS.wind);
+  const windGustColClass = getColumnClass(windGustStatus, forecastItem.windGust, THRESHOLDS.windGust);
+  const waveColClass = getColumnClass(waveStatus, forecastItem.waveHeight, THRESHOLDS.wave);
+  const visibilityColClass = getColumnClass(visibilityStatus, forecastItem.visibility, THRESHOLDS.visibility, true);
 
   function getTimeString(date: Date) {
     const hours = date.getHours();
@@ -107,7 +145,7 @@ const ForecastTableRow: React.FC<ForecastRowProps> = ({ forecastItem, visible })
   );
 };
 
-const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clear = false, multitable = false }) => {
+const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clear = false, multitable = false, weatherLimits }) => {
   const { t } = useTranslation();
   const [startIndex, setStartIndex] = useState<number>(0);
   const pageSize = page ?? 8;
@@ -165,7 +203,7 @@ const ForecastTable: React.FC<ForecastTableProps> = ({ forecastItems, page, clea
           return (
             <div key={item.dateTime}>
               {showDateRow && <ForecastTableDateRow forecastItem={item} visible={showDateRow} />}
-              <ForecastTableRow forecastItem={item} visible={isOnThisPage} />
+              <ForecastTableRow forecastItem={item} visible={isOnThisPage} weatherLimits={weatherLimits} />
             </div>
           );
         })

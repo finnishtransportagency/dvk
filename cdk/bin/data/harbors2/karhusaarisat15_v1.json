@@ -6,7 +6,7 @@
   "creator": "System",
   "expires": null,
   "internet": null,
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "harborBasin": {
     "en": "Swinging area, diameter 500 m, use of anchor permitted.",
     "fi": "Kääntöaltaan halkaisija 500 m, ankkurin käyttö sallittu.",
@@ -24,7 +24,7 @@
     "fi": "Mobiililaitteet.",
     "sv": "Mobila enheter."
   },
-  "modificationTimestamp": 1702358917147,
+  "modificationTimestamp": 1735629924716,
   "company": {
     "en": "Blomberg Stevedoring, part of KWH LOGISTICS",
     "fi": "Blomberg Stevedoring, osa KWH LOGISTICS",
@@ -89,5 +89,6 @@
       21.31824,
       62.25926
     ]
-  }
+  },
+  "publishDetails": ""
 }

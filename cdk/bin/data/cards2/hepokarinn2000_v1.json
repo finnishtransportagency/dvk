@@ -10,7 +10,7 @@
     "fi": "Maksimikulkusyvyydessä kulkevien alusten tulee huomioida nopeuspainuma (mitoitusnopeus 9 solmua).",
     "sv": "Fartyg i maximalt leddjupgående skall beakta squateffekten (dimensionerande fart 9 knop)."
   },
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "visibility": null,
   "group": "1",
   "modifier": "System",

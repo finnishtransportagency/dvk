@@ -200,7 +200,12 @@ const CustomSelectDropdown: React.FC<CustomSelectDropdownProps> = ({ triggerId, 
       ) : (
         <IonLabel className="halfOpacity">{t('common.filter')}</IonLabel>
       )}
-      <IonIcon className="customSelectIcon" icon={expanded ? caretUpSharp : caretDownSharp} color={expanded ? 'primary' : 'medium'} />
+      <IonIcon
+        className="customSelectIcon"
+        icon={expanded ? caretUpSharp : caretDownSharp}
+        color={expanded ? 'primary' : 'medium'}
+        aria-hidden="true"
+      />
       <SelectDropdownPopup
         triggerRef={triggerRef}
         trigger={triggerId}

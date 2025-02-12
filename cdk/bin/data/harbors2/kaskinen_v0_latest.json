@@ -4,20 +4,23 @@
   ],
   "version": "v0_latest",
   "creator": "System",
+  "expires": null,
   "internet": "https//www.portofkaskinen.fi",
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "harborBasin": {
     "en": "Deep harbour: diameter of turning circle 270 m, use of anchors permitted.",
     "fi": "Syväsatama: kääntöympyrän halkaisija 270 m, ankkurin käyttö sallittu.",
     "sv": "Djuphamnen: svängcirkelns diameter 270 m, tillåtet att använda ankare."
   },
   "modifier": "System",
+  "email": null,
   "name": {
     "en": "Port of Kaskinen deep port",
     "fi": "Kaskisten syväsatama",
     "sv": "Kaskö djuphamn"
   },
-  "modificationTimestamp": 1683095539299,
+  "cargo": null,
+  "modificationTimestamp": 1735820260037,
   "company": {
     "en": "Port of Kaskinen",
     "fi": "Kaskisten satama",
@@ -25,12 +28,12 @@
   },
   "quays": [
     {
+      "length": 500,
       "name": {
         "en": "quay 1-5",
         "fi": "laituri 1-5",
         "sv": "kaj 1-5"
       },
-      "length": 500,
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -40,17 +43,20 @@
       },
       "sections": [
         {
+          "name": null,
+          "geometry": null,
           "depth": 10.2
         }
-      ]
+      ],
+      "extraInfo": null
     },
     {
+      "length": 160,
       "name": {
         "en": "Dolphin berth 6",
         "fi": "Tihtaalilaituri 6",
         "sv": "Dykdalbskajen 6"
       },
-      "length": 160,
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -60,6 +66,8 @@
       },
       "sections": [
         {
+          "name": null,
+          "geometry": null,
           "depth": 8.8
         }
       ],
@@ -70,12 +78,12 @@
       }
     },
     {
+      "length": 165,
       "name": {
         "en": "Quay 7",
         "fi": "Laituri 7",
         "sv": "Kaj 7"
       },
-      "length": 165,
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -85,17 +93,20 @@
       },
       "sections": [
         {
+          "name": null,
+          "geometry": null,
           "depth": 10.2
         }
-      ]
+      ],
+      "extraInfo": null
     },
     {
+      "length": 125,
       "name": {
         "en": "Ro-Ro, Chemical quay: quay",
         "fi": "Ro-Ro, kemikaalilaituri: laituri 8",
         "sv": "Ro-Ro, kemikaliekaj: kaj 8"
       },
-      "length": 125,
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -105,6 +116,8 @@
       },
       "sections": [
         {
+          "name": null,
+          "geometry": null,
           "depth": 10.2
         }
       ],
@@ -115,12 +128,12 @@
       }
     },
     {
+      "length": 170,
       "name": {
         "en": "Outer port: outer quay",
         "fi": "Ulkosatama: laituri",
         "sv": "Yttre hamnen: yttre kaj"
       },
-      "length": 170,
       "geometry": {
         "type": "Point",
         "coordinates": [
@@ -130,12 +143,16 @@
       },
       "sections": [
         {
+          "name": null,
+          "geometry": null,
           "depth": 8
         }
-      ]
+      ],
+      "extraInfo": null
     }
   ],
   "latest": 1,
+  "extraInfo": null,
   "creationTimestamp": 1683095539299,
   "id": "kaskinen",
   "fax": "+35862207300",
@@ -146,5 +163,6 @@
       21.21676,
       62.35417
     ]
-  }
+  },
+  "publishDetails": ""
 }

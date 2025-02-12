@@ -6,7 +6,7 @@
   },
   "expires": null,
   "vesselRecommendation": null,
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "visibility": {
     "en": "Minimum visibility for all vessels 300 m. For vessels over 200 m in length the minimum visibility should be at least 1.0 M (approx. 2 km).",
     "fi": "Näkyvyyden tulisi olla vähintään 300 m kaikilla aluksilla. Lisäksi yli 200 m:n pituisilla aluksilla näkyvyyden tulisi olla vähintään 1,0 M (n.2 km).",

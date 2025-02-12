@@ -7,6 +7,7 @@
   "expires": null,
   "internet": "https//www.portofkaskinen.fi",
   "status": "PUBLIC",
+  "latestVersionUsed": 2,
   "harborBasin": {
     "en": "Deep harbour: diameter of turning circle 270 m, use of anchors permitted.",
     "fi": "Syväsatama: kääntöympyrän halkaisija 270 m, ankkurin käyttö sallittu.",

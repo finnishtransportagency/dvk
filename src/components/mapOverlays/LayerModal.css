@@ -23,9 +23,9 @@ ion-app:not(.mobile) ion-modal#layerModalContainer {
 }
 
 ion-modal#layerModalContainer ion-button.icon-only.small {
-  height: 18px;
-  width: 18px;
-  min-height: 18px;
+  height: 20px;
+  width: 20px;
+  min-height: 20px;
   margin: 6px 0 0 8px;
 }
 
@@ -170,22 +170,22 @@ ion-modal#layerModalContainer::part(content) {
 
 #layerModalContainer ion-item .deptharea {
   background: #d3eae7;
-  border: 1px solid #757575;
+  border: 1px solid var(--ion-color-medium);
 }
 
 #layerModalContainer ion-grid.legend.deptharea .def.area1 {
   background: #91caf3;
-  border: 1px solid #757575;
+  border: 1px solid var(--ion-color-medium);
 }
 
 #layerModalContainer ion-grid.legend.deptharea .def.area2 {
   background: #b5daf7;
-  border: 1px solid #757575;
+  border: 1px solid var(--ion-color-medium);
 }
 
 #layerModalContainer ion-grid.legend.deptharea .def.area3 {
   background: #d3eae7;
-  border: 1px solid #757575;
+  border: 1px solid var(--ion-color-medium);
 }
 
 #layerModalContainer ion-item .speedlimit {
@@ -212,6 +212,16 @@ ion-modal#layerModalContainer::part(content) {
   background-size: cover;
   margin-top: 4px;
   margin-right: 2px;
+}
+
+#layerModalContainer ion-item .specialarea9 {
+  border: 1px solid var(--ion-color-danger);
+  background: linear-gradient(
+    45deg,
+    rgba(var(--ion-color-danger-rgb), 0.125) 33.3%,
+    rgba(var(--ion-color-danger-rgb), 0.345) 33.3% 66.6%,
+    rgba(var(--ion-color-danger-rgb), 0.125) 66.6%
+  );
 }
 
 #layerModalContainer ion-item .specialarea15 {

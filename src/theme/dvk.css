@@ -82,7 +82,6 @@ a[target='_blank'] {
 }
 a.fileDownload {
   color: var(--ion-color-primary);
-  white-space: nowrap;
 }
 a:hover {
   background-color: var(--ion-color-light);

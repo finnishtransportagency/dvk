@@ -49,7 +49,7 @@ export const SafetyEquipmentFaultAlert: React.FC<SafetyEquipmentFaultAlertProps>
         <IonGrid ref={gridRef} className="equipmentAlertGrid alert danger">
           <IonAccordion className="equipmentAlert" toggleIcon={arrow_down} value="third">
             <IonItem ref={headerRef} lines="none" slot="header" color="dangerbg">
-              <IonIcon className="equipmentAlertIcon" icon={alertIcon} color="danger" />
+              <IonIcon className="equipmentAlertIcon" icon={alertIcon} color="danger" aria-hidden="true" />
               <IonLabel className="equipmentAlertLabel">
                 {t('warnings.faultsOnFairway')} ({faultCount})
                 <br />

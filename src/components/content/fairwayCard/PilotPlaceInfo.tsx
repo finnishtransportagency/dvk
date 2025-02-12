@@ -60,7 +60,7 @@ export const PilotPlaceInfo: React.FC<PilotPlaceInfoProps> = ({ pilotPlaces }) =
                     <>
                       {' '}
                       {t('pilotageDistance')}: {place.pilotJourney.toLocaleString()}&nbsp;
-                      <dd aria-label={t('unit.nmDesc', { count: place.pilotJourney })}>{t('unit.nm')}</dd>
+                      <span aria-label={t('unit.nmDesc', { count: place.pilotJourney })}>{t('unit.nm')}</span>
                     </>
                   )}
                 </>

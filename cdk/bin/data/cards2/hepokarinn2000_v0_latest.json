@@ -25,8 +25,7 @@
     "sv": "Hepokarileden i Nystad N2000"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1715931694493,
+  "creationTimestamp": 1732532015506,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The channel is sheltered, but difficult to navigate when exposed to northerly winds. Use of tugs to be considered separately in each individual case.",
@@ -52,14 +51,29 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 2360,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718777899046,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732532015506,
+  "pilotRoutes": [
+    {
+      "id": 187
+    },
+    {
+      "id": 188
+    },
+    {
+      "id": 191
+    },
+    {
+      "id": 193
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "There may be fast ice in the channel. The channel is kept in navigable condition by tugs.",
     "fi": "Väylällä esiintyy kiintojäätä. Väylä pidetään liikennöitävänä hinaajien avustuksella.",

@@ -10,7 +10,7 @@
     "fi": "Ilman tehokkaita ohjailuominaisuuksia olevilla aluksilla on hinaajan käyttö satamassa tarpeellista yli 10 m/s tuulilla.",
     "sv": "Fartyg utan effektiva manöveregenskaper bör anlita bogserhjälp när vindstyrkan överstiger 10 m/s."
   },
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "visibility": null,
   "group": "3",
   "modifier": "System",

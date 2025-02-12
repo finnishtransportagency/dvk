@@ -346,6 +346,11 @@ ion-select.selectInput.ion-focused {
   border-color: var(--ion-color-danger);
 }
 
+.selectWrapper.warning ion-select.selectInput,
+.selectWrapper.warning ion-item.selectInput {
+  border-color: var(--ion-color-warning);
+}
+
 .selectWrapper.readonly ion-item.selectInput {
   border: none;
 }
@@ -401,6 +406,14 @@ ion-select.selectInput.ion-focused {
   background-size: 14px;
   padding-left: 18px;
 }
+ion-note.input-warning {
+  color: var(--ion-color-warning);
+  font-size: 12px;
+  line-height: 1rem;
+  background: url('./img/warning_icon.svg') no-repeat 1px center;
+  background-size: 14px;
+  padding-left: 18px;
+}
 .selectWrapper.invalid ion-note.input-error {
   display: block;
 }
@@ -420,6 +433,11 @@ ion-popover.multiSelect::part(content) {
 
 .multiSelect ion-select-popover {
   overflow-y: auto;
+}
+
+.squat.list.warning {
+  color: var(--ion-color-warning);
+  font-size: 12px;
 }
 
 ion-popover.multiSelect.squatSuitableFairwayAreaIds {
@@ -822,6 +840,22 @@ ion-grid.formGrid ion-col:first-of-type {
   border-left: none;
   padding-left: 0;
 }
+
+ion-grid.formGrid.subSectionMargin ion-row {
+  border-left: 1px solid var(--ion-color-lighter);
+  padding: 0px 0px 0px 25px;
+}
+ion-grid.formGrid.subSectionMargin {
+  margin-left: 25px;
+}
+.formSection.subSectionMargin {
+  margin-left: 25px;
+}
+ion-grid .plainButton.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 ion-grid.formGrid ion-col:last-of-type {
   padding-right: 0;
 }
@@ -830,8 +864,7 @@ ion-grid.formGrid ion-col:last-of-type {
   line-height: 1.5rem;
   font-weight: bold;
   text-transform: uppercase;
-  margin: 10px 5px 0;
-  border-bottom: 1px solid var(--ion-color-light);
+  margin: 10px 0px 0px 0px;
 }
 .mainContent form ion-text h3 {
   font-size: 14px;
@@ -880,15 +913,24 @@ ion-grid.formGrid ion-col:last-of-type {
 .mainContent .sectionContent {
   transition: all 150ms;
   max-height: 199vh;
-  overflow: auto;
 }
 .mainContent .sectionContent.closed {
   max-height: 0;
   overflow: hidden;
+  /* This is mostly because of playwright tests, since max-height counts as visible when testing "expect().toBeHidden()"*/
+  display: none;
 }
 .mainContent .sectionContent p {
   margin: 10px 5px 0;
   font-size: 14px;
+}
+
+/* had to give to CollapsibleWrapper children own class, since weird clipping or odd overflow scrolling was happening when using sectionContent*/
+.collapsibleContent.closed {
+  max-height: 0;
+  overflow: hidden;
+  /* This is mostly because of playwright tests, since max-height counts as visible when testing "expect().toBeHidden()"*/
+  visibility: hidden;
 }
 
 /* Footer */
@@ -1384,4 +1426,8 @@ ion-header.infoHeader .infoHeaderDivider {
   color: var(--ion-color-medium);
   font-style: italic;
   font-size: 14px;
+}
+
+ion-row.align-items {
+  align-items: center;
 }

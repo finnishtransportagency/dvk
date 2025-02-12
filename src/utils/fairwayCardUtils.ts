@@ -1,5 +1,13 @@
 import { TFunction } from 'i18next';
-import { Area, FairwayCardPartsFragment, FairwayCardPreviewQuery, FindAllFairwayCardsQuery, ProhibitionFairway } from '../graphql/generated';
+import {
+  Area,
+  Fairway,
+  FairwayCardPartsFragment,
+  FairwayCardPreviewQuery,
+  FindAllFairwayCardsQuery,
+  ProhibitionFairway,
+  SquatCalculation,
+} from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
 import { Geometry, Point, Polygon } from 'ol/geom';
 import { Feature } from 'ol';
@@ -208,6 +216,34 @@ export function getFairwayListFairwayCards(
   return fairwayCards.filter((card) => card.fairways?.some((fairway) => fairwayIds.includes(fairway.id)));
 }
 
-export const fairwayAreaExludeType2Filter = (area: Area) => {
+export const fairwayAreaExcludeType2Filter = (area: Area) => {
   return area.typeCode && area.typeCode !== 2;
+};
+
+export function getAreaIdsFromFairwayArray(fairways: Fairway[] | null | undefined) {
+  const areaIds: number[] = [];
+  fairways?.forEach((f) => {
+    areaIds.push(...(f.areas?.filter(fairwayAreaExcludeType2Filter).map((a) => a.id) ?? []));
+  });
+  return areaIds;
+}
+
+export function getValidSquatCalculations(fairwayCard: FairwayCardPartsFragment) {
+  return fairwayCard.squatCalculations?.filter((s) => !isSquatAreaOrphaned(s, fairwayCard));
+}
+
+function getOrphanedAreas(calc: SquatCalculation, fairwayCard: FairwayCardPartsFragment) {
+  const validAreaIds = getAreaIdsFromFairwayArray(fairwayCard.fairways?.filter((f) => calc.targetFairways?.includes(f.id)));
+  return (calc.suitableFairwayAreas ?? []).filter((a) => !validAreaIds.includes(a as number));
+}
+
+const isSquatAreaOrphaned = (calc: SquatCalculation, fairwayCard: FairwayCardPartsFragment) => {
+  if (!calc.suitableFairwayAreas) return true;
+  if (!fairwayCard.fairways) return false;
+  return getOrphanedAreas(calc, fairwayCard).length > 0;
+};
+
+export const _testInternals = {
+  getOrphanedAreas,
+  isSquatAreaOrphaned,
 };

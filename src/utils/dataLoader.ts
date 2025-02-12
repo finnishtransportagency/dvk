@@ -11,6 +11,7 @@ import {
   useFindAllSafetyEquipmentFaultsQuery,
   useHarborPreviewQuery,
   useSaveFeedbackMutation,
+  useWeatherLimitsQuery,
 } from '../graphql/generated';
 import { useEffect } from 'react';
 
@@ -113,4 +114,8 @@ export function useSaveFeedback<TError = unknown, TContext = unknown>(
   options?: UseMutationOptions<SaveFeedbackMutation, TError, SaveFeedbackMutationVariables, TContext>
 ) {
   return useSaveFeedbackMutation(datasourceClient, options);
+}
+
+export function useWeatherLimits() {
+  return useWeatherLimitsQuery(datasourceClient);
 }

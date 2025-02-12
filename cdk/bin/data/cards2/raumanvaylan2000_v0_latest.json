@@ -29,8 +29,7 @@
     "sv": "Raumo farled N2000"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1701170730056,
+  "creationTimestamp": 1732283041985,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The outer channel until Rihtniemi consists of open sea and is unsheltered against S-W-N winds. From Rihtniemi, the channel continues sheltered by skerries, islands and mainland and densely marked with edge marks to the Port of Rauma. On the Urmluoto line, in the Kovankivet passage, the manoeuvrability of large vessels may be restricted by cross currents. Strong side winds increase drift.",
@@ -60,14 +59,23 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 2295,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718777817344,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732283041985,
+  "pilotRoutes": [
+    {
+      "id": 118
+    },
+    {
+      "id": 119
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "In winter, there may be moving ice fields in the area off Hylkikarta. Moving ice may cause buoys to be pressed beneath the surface and their lighting devices may be damaged.",
     "fi": "Talvella jääkentät liikkuvat väylällä Hylkikartan ulkopuolisella alueella. Jäiden liikkuessa poijut voivat olla painuneina jään alle ja niiden valolaitteet voivat olla vahingoittuneet.",

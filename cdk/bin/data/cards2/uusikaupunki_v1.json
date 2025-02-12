@@ -16,7 +16,7 @@
     "fi": "Yaran satamassa alus otetaan satamaan aina kun sääolosuhteet sen sallivat. Suurten alusten kanssa (DWT > 30.000 mt) toimitaan tapauskohtaisesti ja alus otetaan satamaan mahdollisesti päivänvalossa.",
     "sv": "I Yaras hamn tas fartyg alltid emot när väderleksförhållandena tillåter. Stora fartyg (DWT > 30.000 mt) tas emot från fall till fall och fartyg tas t.ex. helst emot i dagsljus."
   },
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "fairways": [
     {
       "secondary": true,

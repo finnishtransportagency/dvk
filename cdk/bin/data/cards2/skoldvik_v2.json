@@ -1,0 +1,170 @@
+{
+  "anchorage": {
+    "en": " In the outer channel there is an anchorage area NW of Kalbådagrund, in the inner channel a sheltered anchorage area N of Kalvön, approx. 4.5 km before arrival into port. Anchorage area also in the harbour. The following areas have been designated for ship-to-ship transfers of oil cargo between oil tankers (STS transfers): a separately defined area inside Kalbådagrund anchorage area and an area inside the anchorage area on the northern side of Kalvö.",
+    "fi": "Väylän ulko-osalla on ankkurointialue Kalbådagrundin luoteispuolella. Sisäosalla on suojaisa ankkurointialue Kalvön saaren pohjoispuolella n. 4,5 km ennen satamaa. Myös satama-alueella on ankkurointialue. Öljysäiliöalusten välisiin öljylastin siirtoihin (STS-siirto) on nimetty Kalbådagrundin ankkurointialueen sisällä erillinen rajattu alue sekä Kalvön pohjoispuolen ankkurointialueen mukainen alue.",
+    "sv": "Ankringsområde i farledens yttre del, NV om Kalbådagrund. I den inre delen finns ett skyddat ankringsområde N om Kalvön, ca 4,5 km före hamn. Ett ankringsområde finns också i hamnområdet. För överföring av oljelast mellan oljetankfartyg (STS-operation) har utsetts ett separat avgränsat område inom Kalbådagrunds ankringsområde samt området som motsvarar ankringsområdet norr om Kalvön."
+  },
+  "expires": null,
+  "vesselRecommendation": {
+    "en": "Sköldvik's 9.0m fairway is used for vessels of max 30,000 dwt.",
+    "fi": "Sköldvikin 9.0m väylää käytetään max 30 000 dwt aluksille.",
+    "sv": "Sköldviks 9,0 m farled används för fartyg på max 30 000 dwt."
+  },
+  "status": "PUBLIC",
+  "visibility": null,
+  "group": "2",
+  "modifier": "System",
+  "mareographs": [],
+  "name": {
+    "en": "Sköldvik channel",
+    "fi": "Sköldvikin väylä",
+    "sv": "Sköldviksleden"
+  },
+  "attention": null,
+  "creationTimestamp": 1732276424411,
+  "temporaryNotifications": [],
+  "navigationCondition": {
+    "en": "The outer channel, from the pilot boarding position to the S edge of Emäsalo is unsheltered and open to E-S-W winds. Further on the channel is sheltered by isles and mainland. The narrowest passage, with a width of 270 m, is located W of Prästudden. Vessels with a draught close or equal to the maximum authorised draught are warned to beware of the impact of suction on the steering of the vessel",
+    "fi": "Väylän ulko-osa luotsipaikalta Emäsalon eteläkärkeen on avomerta ja suojaton ES-W tuulille. Emäsalon eteläkärjestä väylä jatkuu mantereen ja saariston suojaamana Sköldvikin satamaan. Väylän kapein kohta, leveydeltään 270 m, sijaitsee Prästuddenin länsipuolella. Maksimikulkusyvyydellä kulkevien alusten on ohjailussa huomioitava mahdollinen imuvaikutus.",
+    "sv": "Farledens yttre del från lotsplatsen ända till Emsalö sydspets består av öppet hav och är oskyddat för O-S-V vindar. Avsnittet från sydspetsen av Emsalö till hamnen skyddas av fastlandet och skärgården. Det smalaste stället är 270 m brett och beläget V om Prästudden. Fartyg med maximalt djupgående bör beakta sugeffekten."
+  },
+  "generalInfo": null,
+  "id": "skoldvik",
+  "n2000HeightSystem": false,
+  "lineText": {
+    "en": "Seven lines marked with boards.",
+    "fi": "Linjoja 7, merkitty linjatauluin.",
+    "sv": "Sju linjer utmärkta med enstavlor."
+  },
+  "version": "v2",
+  "harbors": [
+    {
+      "id": "skoldvik"
+    }
+  ],
+  "windRecommendation": null,
+  "creator": "System",
+  "fairways": [
+    {
+      "secondary": false,
+      "id": 5125,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5128,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5131,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5136,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5137,
+      "primary": false
+    },
+    {
+      "secondary": false,
+      "id": 5138,
+      "primary": false
+    },
+    {
+      "secondary": true,
+      "primarySequenceNumber": 1,
+      "id": 5150,
+      "primary": true,
+      "secondarySequenceNumber": 1
+    },
+    {
+      "secondary": false,
+      "id": 5155,
+      "primary": false
+    }
+  ],
+  "speedLimit": null,
+  "modificationTimestamp": 1732276424411,
+  "pilotRoutes": [
+    {
+      "id": 50
+    },
+    {
+      "id": 51
+    },
+    {
+      "id": 52
+    },
+    {
+      "id": 53
+    }
+  ],
+  "iceCondition": null,
+  "fairwayIds": "#5125#5128#5131#5136#5137#5138#5150#5155#",
+  "trafficService": {
+    "vts": [
+      {
+        "name": {
+          "en": "Helsinki VTS, sector 2",
+          "fi": "Helsinki VTS, sektori 2",
+          "sv": "Helsingfors VTS, sektor 2"
+        },
+        "phoneNumber": "+358204485385",
+        "vhf": [
+          {
+            "name": null,
+            "channel": 9
+          }
+        ],
+        "email": [
+          "helsinki.vts@fintraffic.fi",
+          "supervisors.hki@fintraffic.fi"
+        ]
+      }
+    ],
+    "pilot": {
+      "places": [
+        {
+          "id": 7762322400,
+          "pilotJourney": 21
+        },
+        {
+          "id": 35911900403,
+          "pilotJourney": 18
+        },
+        {
+          "id": 177227955000,
+          "pilotJourney": 10.5
+        }
+      ],
+      "phoneNumber": "+358295253470",
+      "fax": null,
+      "email": "pilotdispatch.emasalo@finnpilot.fi",
+      "internet": null,
+      "extraInfo": null
+    },
+    "tugs": [
+      {
+        "name": {
+          "en": "Mandatory use of tug(s) in port under current Port Ordinance. Tugboat escort to all over 40 0000 DWT tankers from pilot boarding position to port.",
+          "fi": "Satamassa hinaajan/hinaajien käyttöpakko voimassa olevan satamajärjestyksen mukaan. Kaikki yli 40 000 DWT tankkerit lasti päällä saattohinaus luotsipaikalta satamaan",
+          "sv": "Enligt gällande hamnordning är anlitande av bogserhjälp obligatoriskt. Alla över 40 000 DWT tankers m.fl. eskortbogseras från lotsplatsen till hamn."
+        },
+        "phoneNumber": null,
+        "fax": null,
+        "email": null
+      }
+    ]
+  },
+  "additionalInfo": null,
+  "designSpeed": {
+    "en": "Vessel speed 12 knots in the inner channel.",
+    "fi": "Mitoitusnopeus väylän sisäosalla 12 solmua.",
+    "sv": "Dimensionerande fart i den inre delen av farleden 12 knop."
+  }
+}

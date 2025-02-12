@@ -44,7 +44,7 @@
           "safetyEquipments": "Turvalaitteet",
           "safetyEquipmentFaults": "Turvalaiteviat",
           "speedLimits": "Nopeusrajoitukset",
-          "specialAreas": "Erityisalueet",
+          "specificAreas": "Erityisalueet",
           "marineWarnings": "Merivaroitukset",
           "coastalWarning": "Coastal warning",
           "localWarning": "Local warning",
@@ -71,6 +71,7 @@
           "depthcontour": "Käyrät",
           "deptharea": "Alueet",
           "specialarea2": "Ankkurointialueet",
+          "specialarea9": "Erikoisalueet",
           "specialarea15": "Kohtaamis- ja ohittamiskieltoalueet",
           "ais": "Liikennetilanne",
           "aisVesselCargo": "Rahtialukset",
@@ -370,7 +371,10 @@
   "popup": {
     "common": {
       "noFairwayCards": "Ei väyläkorttia",
-      "outdatedData": "Tieto on yli 12h vanhaa"
+      "outdatedData": "Tieto on yli 12h vanhaa",
+      "locationCoordinates": "Sijainnin koordinaatit",
+      "copyToClipboard": "Kopioi leikepöydälle",
+      "copiedToClipboard": "Kopioitu leikepöydälle"
     },
     "pilotPlace": {
       "header": "Luotsipaikka {{val}}",
@@ -554,6 +558,7 @@
         "safetyequipmentfault": "Turvalaitevika",
         "section": "Laituripaikka",
         "specialarea15": "Kohtaamis- ja ohittamiskieltoalue",
+        "specialarea9": "Erikoisalue",
         "specialarea2": "Ankkurointialue",
         "vtsline": "VTS-alue",
         "vtspoint": "VTS-ilmoituspiste"

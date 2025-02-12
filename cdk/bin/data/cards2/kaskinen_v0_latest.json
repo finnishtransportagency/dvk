@@ -6,22 +6,19 @@
   },
   "expires": null,
   "vesselRecommendation": null,
-  "status": "PUBLIC",
+  "status": "ARCHIVED",
   "visibility": null,
   "group": "3",
   "modifier": "System",
+  "mareographs": [],
   "name": {
     "en": "Kaskinen channel",
     "fi": "Kaskisten väylä",
     "sv": "Kasköleden"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Kaskinen mareograph.",
-    "fi": "Kaskinen mareografi.",
-    "sv": "Kaskö mareograf."
-  },
-  "creationTimestamp": 1683095536992,
+  "creationTimestamp": 1735628769166,
+  "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The outer part of the channel, from the pilot boarding position to the southern edge of Sälgrund, consists of open water and is exposed to southerly, westerly and northerly winds. Heavy southerly and westerly winds in particular may impede navigation. From Sälgrund on, the channel is sheltered by shoals, isles and mainland.",
     "fi": "Väylän ulko-osa luotsipaikalta Sälgrundin eteläkärkeen on avomerta ja suojaton E - L - P tuulilla, erityisesti voimakkaat etelä- ja länsituulet vaikeuttavat navigointia. Sälgrundista väylä jatkuu karien, saarien ja mantereen suojaamana satamaan.",
@@ -35,6 +32,7 @@
     "fi": "Linjoja on 4, jotka merkitty linjatauluin.",
     "sv": "4 linjer utmärkta med enstavlor."
   },
+  "publishDetails": "",
   "version": "v0_latest",
   "harbors": [
     {
@@ -50,8 +48,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 1030,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     },
     {
       "secondary": false,
@@ -59,13 +59,9 @@
       "primary": false
     }
   ],
-  "windGauge": {
-    "en": "Marine weather observations: Kristiinankaupungin lighthouse.",
-    "fi": "Rannikkoasemat: Kristiinankaupungin majakka.",
-    "sv": "Vädret vid kuststationerna: Kristinestads fyr."
-  },
   "speedLimit": null,
-  "modificationTimestamp": 1697521703180,
+  "modificationTimestamp": 1735628769166,
+  "pilotRoutes": [],
   "latest": 1,
   "iceCondition": {
     "en": "The outer part of the channel, from the pilot boarding position to the southern edge of Sälgrund, consists of open water and is exposed to southerly, westerly and northerly winds. Heavy southerly and westerly winds in particular may impede navigation. From Sälgrund on, the channel is sheltered by shoals, isles and mainland.",
@@ -125,6 +121,7 @@
       }
     ]
   },
+  "additionalInfo": null,
   "designSpeed": {
     "en": "Vessel speed when passing shoals in the outer part 12 knots, on the harbour line in the inner part 9 knots.",
     "fi": "Mitoitusnopeus ulko-osalla matalien kohdalla 12 solmua, sisäosalla sataman linjalla 9 solmua.",

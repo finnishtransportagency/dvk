@@ -187,10 +187,10 @@ function validateSquatCalculations(state: FairwayCardInput, requiredMsg: string,
     requiredError(calc.place) ? i : null
   );
   const squatTargetFairwaysErrors = validateMandatorySquatField(state, 'squatTargetFairwayIds', requiredMsg, (calc, i) =>
-    !calc.targetFairways ? i : null
+    !calc.targetFairways || calc.targetFairways.length === 0 ? i : null
   );
   const squatAreasErrors = validateMandatorySquatField(state, 'squatSuitableFairwayAreaIds', requiredMsg, (calc, i) =>
-    !calc.suitableFairwayAreas ? i : null
+    !calc.suitableFairwayAreas || calc.suitableFairwayAreas.length === 0 ? i : null
   );
   const squatEstimatedWaterDepthErrors = validateMandatorySquatField(state, 'squatCalculationEstimatedWaterDepth', requiredMsg, (calc, i) =>
     !calc.estimatedWaterDepth ? i : null

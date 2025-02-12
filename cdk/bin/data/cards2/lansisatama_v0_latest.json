@@ -24,7 +24,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698218514862
+      "modificationTimestamp": 1732274013255
     },
     {
       "scaleWidth": "68",
@@ -37,7 +37,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698218515684
+      "modificationTimestamp": 1732274013267
     },
     {
       "scaleWidth": "68",
@@ -50,7 +50,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698218516648
+      "modificationTimestamp": 1732274013267
     },
     {
       "scaleWidth": "102",
@@ -63,7 +63,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698218573634
+      "modificationTimestamp": 1732274013267
     },
     {
       "scaleWidth": "102",
@@ -76,7 +76,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698218574648
+      "modificationTimestamp": 1732274013267
     },
     {
       "scaleWidth": "102",
@@ -89,7 +89,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698218575930
+      "modificationTimestamp": 1732274013267
     },
     {
       "scaleWidth": "80",
@@ -102,7 +102,7 @@
       "text": "Länsisatama",
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698305853440
+      "modificationTimestamp": 1732274013267
     },
     {
       "scaleWidth": "80",
@@ -115,7 +115,7 @@
       "text": "Västra hamnbassängerna",
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698305854822
+      "modificationTimestamp": 1732274013268
     },
     {
       "scaleWidth": "80",
@@ -128,7 +128,7 @@
       "text": "Helsinki West harbour",
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698305855828
+      "modificationTimestamp": 1732274013268
     },
     {
       "scaleWidth": "126",
@@ -141,7 +141,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698218838153
+      "modificationTimestamp": 1732274013268
     },
     {
       "scaleWidth": "126",
@@ -154,7 +154,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698218839617
+      "modificationTimestamp": 1732274013268
     },
     {
       "scaleWidth": "126",
@@ -167,7 +167,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698218840381
+      "modificationTimestamp": 1732274013268
     },
     {
       "scaleWidth": "86",
@@ -180,7 +180,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698218892538
+      "modificationTimestamp": 1732274013268
     },
     {
       "scaleWidth": "86",
@@ -193,7 +193,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698218893448
+      "modificationTimestamp": 1732274013268
     },
     {
       "scaleWidth": "86",
@@ -206,7 +206,7 @@
       "text": null,
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698218894367
+      "modificationTimestamp": 1732274013269
     },
     {
       "scaleWidth": "87",
@@ -219,7 +219,7 @@
       "text": "Länsisatama",
       "legendPosition": "bottomLeft",
       "lang": "fi",
-      "modificationTimestamp": 1698218960130
+      "modificationTimestamp": 1732274013269
     },
     {
       "scaleWidth": "87",
@@ -232,7 +232,7 @@
       "text": "Västra hamnbassängerna",
       "legendPosition": "bottomLeft",
       "lang": "sv",
-      "modificationTimestamp": 1698218961104
+      "modificationTimestamp": 1732274013270
     },
     {
       "scaleWidth": "87",
@@ -245,7 +245,7 @@
       "text": "Helsinki West Harbour",
       "legendPosition": "bottomLeft",
       "lang": "en",
-      "modificationTimestamp": 1698218962041
+      "modificationTimestamp": 1732274013270
     }
   ],
   "group": "2",
@@ -261,12 +261,7 @@
     "sv": "Farleden till Västra hamnen i Helsingfors"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "The reference level used in depth information is the theoretical mean sea level MSL / mean sea level MW.",
-    "fi": "Vertaustaso on teoreettinen keskivesi MSL (Mean Sea Level) / MW (Mean Water).",
-    "sv": "Som referensnivå för djupuppgifter är teoretisk medelvattenstånd MSL (Mean Sea Level) / MW (Mean Water)."
-  },
-  "creationTimestamp": 1683095538947,
+  "creationTimestamp": 1732275705118,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approach is in the open sea and unsheltered from E-S-W winds. From Katajaluoto to the harbour, the channel is protected by islands and skerries.",
@@ -301,8 +296,10 @@
     },
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 4710,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     },
     {
       "secondary": false,
@@ -315,9 +312,16 @@
     "fi": "Leveyspiiriltä 60°06' P (Koirasaaren kohdalta) pohjoiseen nopeusrajoitus kaikille kauppa-aluksille 30 km/h. Hernesaaren länsipuolella satama-altaassa nopeusrajoitus 10 km/h.",
     "sv": "Från latitud 60°06'N (Koirasaari) mot norr 30 km/h för alla handelsfartyg. Den västra sidan av Ärtholmen i hamnen 10 km/h."
   },
-  "modificationTimestamp": 1718775329919,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732275705118,
+  "pilotRoutes": [
+    {
+      "id": 46
+    },
+    {
+      "id": 47
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "Ice usually causes problems only in the harbour basins, where slush may make manoeuvring difficult. Occasionally ice ridges between Hramtsow and Gråskärsbådan.",
     "fi": "Jääongelmia esiintyy yleensä vain satama-altaissa, joissa jääsohjo saattaa vaikeuttaa aluksen käsittelyä. Ajoittain ahtautumista välillä Hramtsow Gråskärsbådan.",

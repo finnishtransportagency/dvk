@@ -19,6 +19,7 @@ const OfflineSupport: React.FC = () => {
   const depth12Layer = useFeatureData('depth12');
   const speedLimitLayer = useFeatureData('restrictionarea');
   const specialArea2Layer = useFeatureData('specialarea2');
+  const specialArea9Layer = useFeatureData('specialarea9');
   const specialArea15Layer = useFeatureData('specialarea15');
   const pilotLayer = useFeatureData('pilot');
   const harborLayer = useFeatureData('harbor');
@@ -51,6 +52,7 @@ const OfflineSupport: React.FC = () => {
     depth12Layer.dataUpdatedAt,
     speedLimitLayer.dataUpdatedAt,
     specialArea2Layer.dataUpdatedAt,
+    specialArea9Layer.dataUpdatedAt,
     specialArea15Layer.dataUpdatedAt,
     pilotLayer.dataUpdatedAt,
     harborLayer.dataUpdatedAt,
@@ -83,6 +85,7 @@ const OfflineSupport: React.FC = () => {
     depth12Layer.isError ? depth12Layer.errorUpdatedAt : 0,
     speedLimitLayer.isError ? speedLimitLayer.errorUpdatedAt : 0,
     specialArea2Layer.isError ? specialArea2Layer.errorUpdatedAt : 0,
+    specialArea9Layer.isError ? specialArea9Layer.errorUpdatedAt : 0,
     specialArea15Layer.isError ? specialArea15Layer.errorUpdatedAt : 0,
     pilotLayer.isError ? pilotLayer.errorUpdatedAt : 0,
     harborLayer.isError ? harborLayer.errorUpdatedAt : 0,

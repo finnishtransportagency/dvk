@@ -252,61 +252,58 @@ const Vessel: React.FC = () => {
             </IonGrid>
           </>
         )}
-
-        {!limitedView && (
-          <>
-            <SectionTitle title={t('stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
-            <IonGrid className="no-padding">
-              <IonRow className="input-row">
-                <IonCol size="6">
-                  <InputField
-                    title={t('KG')}
-                    description={t('KG-description')}
-                    name="KG"
-                    value={state.vessel.stability.KG ? state.vessel.stability.KG : null}
-                    placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    min={fieldParams.KG.min}
-                    max={fieldParams.KG.max}
-                    step={fieldParams.KG.step}
-                    fieldClass={setFieldClass('KG')}
-                    actionType="vessel-stability"
-                  />
-                </IonCol>
-                <IonCol size="6">
-                  <InputField
-                    title={t('GM')}
-                    description={t('GM-description')}
-                    name="GM"
-                    value={state.vessel.stability.GM ? state.vessel.stability.GM : null}
-                    placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    min={fieldParams.GM.min}
-                    max={fieldParams.GM.max}
-                    step={fieldParams.GM.step}
-                    fieldClass={setFieldClass('GM')}
-                    actionType="vessel-stability"
-                  />
-                </IonCol>
-                <IonCol size="6">
-                  <InputField
-                    title={t('KB')}
-                    description={t('KB-description')}
-                    name="KB"
-                    value={state.vessel.stability.KB ? Number(state.vessel.stability.KB.toFixed(2)) : null}
-                    placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-                    min={fieldParams.KB.min}
-                    max={fieldParams.KB.max}
-                    step={fieldParams.KB.step}
-                    fieldClass={setFieldClass('KB')}
-                    actionType="vessel-stability"
-                  />
-                </IonCol>
-                <IonCol size="6" />
-                <IonCol size="6" className="hide-portrait" />
-                <IonCol size="6" className="hide-portrait" />
-              </IonRow>
-            </IonGrid>
-          </>
-        )}
+        <>
+          <SectionTitle title={t('stability')} valid={isFieldValid('KG') && isFieldValid('GM') && isFieldValid('KB')} />
+          <IonGrid className="no-padding">
+            <IonRow className="input-row">
+              <IonCol size={defaultColumnSize}>
+                <InputField
+                  title={t('KG')}
+                  description={t('KG-description')}
+                  name="KG"
+                  value={state.vessel.stability.KG ? state.vessel.stability.KG : null}
+                  placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  min={fieldParams.KG.min}
+                  max={fieldParams.KG.max}
+                  step={fieldParams.KG.step}
+                  fieldClass={setFieldClass('KG')}
+                  actionType="vessel-stability"
+                />
+              </IonCol>
+              <IonCol size={defaultColumnSize}>
+                <InputField
+                  title={t('GM')}
+                  description={t('GM-description')}
+                  name="GM"
+                  value={state.vessel.stability.GM ? state.vessel.stability.GM : null}
+                  placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  min={fieldParams.GM.min}
+                  max={fieldParams.GM.max}
+                  step={fieldParams.GM.step}
+                  fieldClass={setFieldClass('GM')}
+                  actionType="vessel-stability"
+                />
+              </IonCol>
+              <IonCol size={defaultColumnSize}>
+                <InputField
+                  title={t('KB')}
+                  description={t('KB-description')}
+                  name="KB"
+                  value={state.vessel.stability.KB ? Number(state.vessel.stability.KB.toFixed(2)) : null}
+                  placeholder={zero.toLocaleString(i18n.language, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  min={fieldParams.KB.min}
+                  max={fieldParams.KB.max}
+                  step={fieldParams.KB.step}
+                  fieldClass={setFieldClass('KB')}
+                  actionType="vessel-stability"
+                />
+              </IonCol>
+              <IonCol size="6" />
+              <IonCol size="6" className="hide-portrait" />
+              <IonCol size="6" className="hide-portrait" />
+            </IonRow>
+          </IonGrid>
+        </>
       </>
     </>
   );
