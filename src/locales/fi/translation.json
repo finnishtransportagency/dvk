@@ -44,7 +44,7 @@
           "safetyEquipments": "Turvalaitteet",
           "safetyEquipmentFaults": "Turvalaiteviat",
           "speedLimits": "Nopeusrajoitukset",
-          "specialAreas": "Erityisalueet",
+          "specificAreas": "Erityisalueet",
           "marineWarnings": "Merivaroitukset",
           "coastalWarning": "Coastal warning",
           "localWarning": "Local warning",
