@@ -107,6 +107,7 @@ function mergeCanvasesToImage() {
     mapContext.setTransform(1, 0, 0, 1, 0, 0);
   }
   const img = new Image();
+  img.crossOrigin = ''; //Empty string is same as Anonymous
   img.src = mapCanvas.toDataURL('image/png');
   return img;
 }
