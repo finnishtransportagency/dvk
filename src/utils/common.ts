@@ -107,8 +107,13 @@ function mergeCanvasesToImage() {
     mapContext.setTransform(1, 0, 0, 1, 0, 0);
   }
   const img = new Image();
-  img.crossOrigin = ''; //Empty string is same as Anonymous
-  img.src = mapCanvas.toDataURL('image/png');
+  try {
+    img.src = mapCanvas.toDataURL('image/png');
+  } catch {
+    //Safari throws an error with toDataURL, try setting cross origin
+    img.crossOrigin = ''; //Empty string is same as Anonymous : https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
+    img.src = mapCanvas.toDataURL('image/png');
+  }
   return img;
 }
 
