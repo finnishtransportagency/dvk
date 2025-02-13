@@ -96,6 +96,7 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, version, name, modified, isN
                         alt=""
                         id={'compassNeedle' + picture.id}
                         style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
+                        crossOrigin={''}
                       />
                     </div>
                   )}
