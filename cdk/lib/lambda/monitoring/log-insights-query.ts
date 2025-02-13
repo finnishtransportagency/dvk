@@ -1,9 +1,10 @@
-import { CloudWatchLogs, SNS } from 'aws-sdk';
+import { CloudWatchLogsClient, StartQueryCommand, GetQueryResultsCommand } from '@aws-sdk/client-cloudwatch-logs';
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 import apiLambdaFunctions from '../../lambda/api/apiLambdaFunctions';
 import Config from '../../config';
 
 export const handler = async (event: any) => {
-  const cloudwatchLogs = new CloudWatchLogs();
+  const cloudwatchLogs = new CloudWatchLogsClient({});
   const snsTopicArn = process.env.SNS_TOPIC_ARN;
   const hoursSince = process.env.HOURS_SINCE ? Number(process.env.HOURS_SINCE) : 24;
   const env = Config.getEnvironment();
@@ -34,14 +35,14 @@ export const handler = async (event: any) => {
   const startTime = new Date();
   startTime.setHours(startTime.getHours() - hoursSince); // Look back 1 hour
 
-  const startQuery = await cloudwatchLogs
-    .startQuery({
-      logGroupNames,
-      startTime: startTime.getTime(),
-      endTime: new Date().getTime(),
-      queryString: query,
-    })
-    .promise();
+  const startQueryCommand = new StartQueryCommand({
+    logGroupNames,
+    startTime: startTime.getTime(),
+    endTime: new Date().getTime(),
+    queryString: query,
+  });
+
+  const startQuery = await cloudwatchLogs.send(startQueryCommand);
 
   // Wait for query to complete
   const maxAttempts = 10;
@@ -50,11 +51,11 @@ export const handler = async (event: any) => {
 
   while (attempts < maxAttempts) {
     console.log('Attempt:', attempts);
-    const results = await cloudwatchLogs
-      .getQueryResults({
-        queryId: startQuery.queryId!,
-      })
-      .promise();
+    const getQueryResultsCommand = new GetQueryResultsCommand({
+      queryId: startQuery.queryId,
+    });
+
+    const results = await cloudwatchLogs.send(getQueryResultsCommand);
 
     if (results.status === 'Complete') {
       queryResults = results;
@@ -67,7 +68,7 @@ export const handler = async (event: any) => {
 
   console.log('Query results:', queryResults);
 
-  if (!queryResults || !queryResults.results || queryResults.results.length === 0) {
+  if (!queryResults?.results?.length) {
     console.log('No results found');
     return;
   }
@@ -89,27 +90,29 @@ export const handler = async (event: any) => {
     return acc + Number(lukumaara);
   }, 0);
 
-  // Send to SNS
-  const sns = new SNS();
-  await sns
-    .publish({
-      TopicArn: snsTopicArn,
-      Subject: 'DVK External API Fetch Failures Report',
-      Message: `API Fetch Failures in the last ${hoursSince} hours:\n\n${formattedResults}`,
-      MessageAttributes: {
-        'Environment': {
-          DataType: 'String',
-          StringValue: env,
-        },
-        'ErrorCount': {
-          DataType: 'Number',
-          StringValue: totalErrors.toString(),
-        },
-        'Severity': {
-          DataType: 'String',
-          StringValue: totalErrors > 0 ? 'High' : 'Low',
-        },
+  // Initialize the SNS client
+  const sns = new SNSClient({});
+
+  // Create and send the publish command
+  const publishCommand = new PublishCommand({
+    TopicArn: snsTopicArn,
+    Subject: 'DVK External API Fetch Failures Report',
+    Message: `API Fetch Failures in the last ${hoursSince} hours:\n\n${formattedResults}`,
+    MessageAttributes: {
+      Environment: {
+        DataType: 'String',
+        StringValue: env,
       },
-    })
-    .promise();
+      ErrorCount: {
+        DataType: 'Number',
+        StringValue: totalErrors.toString(),
+      },
+      Severity: {
+        DataType: 'String',
+        StringValue: totalErrors > 0 ? 'High' : 'Low',
+      },
+    },
+  });
+
+  await sns.send(publishCommand);
 };

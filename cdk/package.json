@@ -60,7 +60,6 @@
     "@typescript-eslint/parser": "^8.24.1",
     "aws-cdk": "^2.1000.2",
     "aws-sdk-client-mock": "^4.1.0",
-    "@types/nodemailer": "^6.4.17",
     "cdk-sso-sync": "0.0.6",
     "cross-env": "7.0.3",
     "esbuild": "^0.25.0",
