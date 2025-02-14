@@ -230,8 +230,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
         const mapCanvas = getMapCanvas(mapSize);
         const canvasSizeCropped = dvkMap.getCanvasDimensions();
 
-        setMapProperties(viewResolution, mapSize, lang);
-        dvkMap.olMap?.getView().setCenter(center);
+        setMapProperties(viewResolution, mapSize, lang, center);
 
         dvkMap.olMap.once('rendercomplete', async function () {
           const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
@@ -243,8 +242,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
           const orientation = dvkMap.getOrientationType() || Orientation.Portrait;
 
           // Reset original map properties
-          resetMapProperties(viewResolution, mapSize);
-          dvkMap.olMap?.getView().setCenter(center);
+          resetMapProperties(viewResolution, mapSize, center);
 
           await uploadPicture(base64Data, orientation, picGroupId, lang, rotation, mapScaleWidth, mapScale?.innerHTML);
 
