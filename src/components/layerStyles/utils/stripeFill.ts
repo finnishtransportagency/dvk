@@ -19,10 +19,7 @@ export function getStripeFill(color1: string, color2: string): Fill {
   context.fillStyle = gradient;
   context.fillRect(0, 0, 50, 50);
 
-  const canvas2 = document.createElement('canvas');
-  const context2 = canvas2.getContext('2d') as CanvasRenderingContext2D;
-
   return new Fill({
-    color: context2.createPattern(canvas, 'repeat'),
+    color: context.createPattern(canvas, 'repeat'),
   });
 }
