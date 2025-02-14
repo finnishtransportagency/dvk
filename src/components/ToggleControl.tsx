@@ -13,6 +13,7 @@ interface ToggleControlProps {
 const ToggleControl: React.FC<ToggleControlProps> = ({ checked, disabled, labelTitle, labelText, handleToggle }) => {
   return (
     <IonToggle
+      className="toggleControl"
       aria-label={labelTitle}
       checked={checked}
       disabled={disabled}
