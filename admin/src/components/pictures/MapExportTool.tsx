@@ -47,6 +47,7 @@ import {
 import { usePilotRouteLayer } from '../map/PilotRouteFeatureLoader';
 import { ExtMapControls } from './ExtMapControls';
 import { PrintImages } from './PrintImages';
+import { Coordinate } from 'ol/coordinate';
 
 interface MapExportToolProps {
   fairwayCardInput: FairwayCardInput;
@@ -216,14 +217,20 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
     });
   };
 
-  const exportMapByLang = (viewResolution: number, rotation: number, lang: Lang, picGroupId: number): Promise<string> => {
+  const exportMapByLang = async (
+    center: Coordinate | undefined,
+    viewResolution: number,
+    rotation: number,
+    lang: Lang,
+    picGroupId: number
+  ): Promise<string> => {
     return new Promise((resolve) => {
       if (dvkMap.olMap && dvkMap.getOrientationType()) {
         const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
         const mapCanvas = getMapCanvas(mapSize);
         const canvasSizeCropped = dvkMap.getCanvasDimensions();
 
-        setMapProperties(viewResolution, mapSize, lang);
+        setMapProperties(viewResolution, mapSize, lang, center);
 
         dvkMap.olMap.once('rendercomplete', async function () {
           const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
@@ -232,22 +239,19 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
           processCanvasElements(mapCanvas);
 
           const base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize);
+          const orientation = dvkMap.getOrientationType() || Orientation.Portrait;
 
-          await uploadPicture(
-            base64Data,
-            dvkMap.getOrientationType() || Orientation.Portrait,
-            picGroupId,
-            lang,
-            rotation,
-            mapScaleWidth,
-            mapScale?.innerHTML
-          );
           // Reset original map properties
-          resetMapProperties(viewResolution, mapSize);
+          resetMapProperties(viewResolution, mapSize, center);
+
+          await uploadPicture(base64Data, orientation, picGroupId, lang, rotation, mapScaleWidth, mapScale?.innerHTML);
+
           dvkMap.olMap?.once('rendercomplete', function () {
             resolve(`Map export for locale ${lang} done.`);
           });
+          dvkMap.olMap?.renderSync();
         });
+        dvkMap.olMap?.renderSync();
       } else {
         Promise.reject(new Error(`Map export for locale ${lang} failed.`));
       }
@@ -262,11 +266,12 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
 
       const rotation = dvkMap.olMap.getView().getRotation();
       const viewResolution = dvkMap.olMap.getView().getResolution() ?? 1;
+      const center = dvkMap.olMap.getView().getCenter();
       const picGroupId = Date.now();
 
       for (const locale of locales) {
         if (locale !== curLang) setIsProcessingCurLang(false);
-        await exportMapByLang(viewResolution, rotation, locale as Lang, picGroupId);
+        await exportMapByLang(center, viewResolution, rotation, locale as Lang, picGroupId);
       }
 
       setIsMapDisabled(false);
