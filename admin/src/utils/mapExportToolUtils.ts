@@ -1,7 +1,8 @@
-import { DvkMap, getMap } from '../components/map/DvkMap';
+import dvkMap, { DvkMap, getMap } from '../components/map/DvkMap';
+import { CurrentMapViewProps } from '../components/pictures/MapExportTool';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { FairwayCardInput, Orientation, PictureInput, PictureUploadInput, UploadMapPictureMutation } from '../graphql/generated';
-import { ActionType, Lang, MAP, POSITION, ValueType } from './constants';
+import { ActionType, Lang, locales, MAP, POSITION, ValueType } from './constants';
 
 export function useUploadMapPictureMutation(
   newPicture: (PictureInput & PictureUploadInput) | undefined,
@@ -136,10 +137,11 @@ export const uploadPicture = async (
   orientation: Orientation,
   groupId: number,
   lang?: string,
-  rotation?: number,
   scaleWidth?: string,
   scaleLabel?: string
 ) => {
+  const rotation = dvkMap.olMap?.getView().getRotation();
+
   const picUploadObject = {
     base64Data: base64Data.replace('data:image/png;base64,', ''),
     cardId: fairwayCardInput.id,
@@ -168,7 +170,6 @@ export const exportMapByLang = (
   setNewPicture: (pictureInput: (PictureInput & PictureUploadInput) | undefined) => void,
   dvkMap: DvkMap,
   viewResolution: number,
-  rotation: number,
   lang: Lang,
   picGroupId: number
 ): Promise<string> => {
@@ -196,7 +197,6 @@ export const exportMapByLang = (
           dvkMap.getOrientationType() || Orientation.Portrait,
           picGroupId,
           lang,
-          rotation,
           mapScaleWidth,
           mapScale?.innerHTML
         );
@@ -210,4 +210,70 @@ export const exportMapByLang = (
       Promise.reject(new Error(`Map export for locale ${lang} failed.`));
     }
   });
+};
+
+export const printCurrentMapView = async (props: CurrentMapViewProps) => {
+  const dvkMap = props.dvkMap;
+
+  console.time('Export pictures');
+  if (dvkMap.olMap && dvkMap.getOrientationType()) {
+    props.setIsMapDisabled(true);
+    props.setIsProcessingCurLang(true);
+
+    const viewResolution = dvkMap.olMap.getView().getResolution() ?? 1;
+    const picGroupId = Date.now();
+
+    for (const locale of locales) {
+      if (locale !== props.curLang) {
+        props.setIsProcessingCurLang(false);
+      }
+      await exportMapByLang(
+        props.fairwayCardInput,
+        props.uploadMapPictureMutation,
+        props.setNewPicture,
+        dvkMap,
+        viewResolution,
+        locale as Lang,
+        picGroupId
+      );
+    }
+
+    props.setIsMapDisabled(false);
+  }
+  console.timeEnd('Export pictures');
+};
+
+export const importExternalImage = async (props: CurrentMapViewProps) => {
+  console.time('Import pictures');
+  if (props.dvkMap.getOrientationType()) {
+    props.setIsMapDisabled(true);
+    props.setIsProcessingCurLang(true);
+
+    try {
+      const picGroupId = Date.now();
+      const base64Data = await props.fileUploader?.getPictureBase64Data();
+
+      if (base64Data) {
+        for (const locale of locales) {
+          if (locale !== props.curLang) props.setIsProcessingCurLang(false);
+          await uploadPicture(
+            props.fairwayCardInput,
+            props.uploadMapPictureMutation,
+            props.setNewPicture,
+            base64Data as string,
+            props.dvkMap.getOrientationType() || Orientation.Portrait,
+            picGroupId,
+            locale as Lang
+          );
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      props?.setPicUploadErrors?.([...(props.picUploadErrors ?? []), error as string]);
+    }
+    props.setIsMapDisabled(false);
+    props.setIsProcessingCurLang(false);
+    props.fileUploader?.deleteFiles();
+  }
+  console.timeEnd('Import pictures');
 };

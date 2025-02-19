@@ -1,20 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { IonCol, IonGrid, IonProgressBar, IonRow } from '@ionic/react';
-import { getMap } from '../map/DvkMap';
-import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput } from '../../graphql/generated';
+import { DvkMap, getMap } from '../map/DvkMap';
+import { Fairway, FairwayCardInput, Harbor, PictureInput, PictureUploadInput, UploadMapPictureMutation } from '../../graphql/generated';
 import { setSelectedFairwayCard } from '../map/fairwayCardSetter';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';
 import { useTranslation } from 'react-i18next';
-import { ActionType, Lang, ValidationType, ValueType, locales } from '../../utils/constants';
+import { ActionType, Lang, ValidationType, ValueType } from '../../utils/constants';
 import LayerModal from '../map/mapOverlays/LayerModal';
 import Alert from '../Alert';
 import FileUploader from '../../utils/FileUploader';
 import NotificationModal from '../NotificationModal';
-import { exportMapByLang, uploadPicture, useUploadMapPictureMutation } from '../../utils/mapExportToolUtils';
+import { useUploadMapPictureMutation } from '../../utils/mapExportToolUtils';
 import { ExtMapControls } from './ExtMapControls';
 import { PrintImages } from './PrintImages';
 import MapElement from './MapElement';
+
+export interface CurrentMapViewProps {
+  fairwayCardInput: FairwayCardInput;
+  uploadMapPictureMutation: (picture: { picture: PictureUploadInput }) => Promise<UploadMapPictureMutation>;
+  setNewPicture: (pictureInput: (PictureInput & PictureUploadInput) | undefined) => void;
+  dvkMap: DvkMap;
+  setIsMapDisabled: (disabled: boolean) => void;
+  setIsProcessingCurLang: (processing: boolean) => void;
+  curLang: string;
+  fileUploader?: FileUploader;
+  setPicUploadErrors?: (errors: string[]) => void;
+  picUploadErrors?: string[];
+}
 
 interface MapExportToolProps {
   fairwayCardInput: FairwayCardInput;
@@ -71,70 +84,6 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
     setSelectedFairwayCard(fairwayCard);
   }, [fairwayCardInput, fairways, harbours, initDone]);
 
-  const printCurrentMapView = async () => {
-    console.time('Export pictures');
-    if (dvkMap.olMap && dvkMap.getOrientationType()) {
-      setIsMapDisabled(true);
-      setIsProcessingCurLang(true);
-
-      const rotation = dvkMap.olMap.getView().getRotation();
-      const viewResolution = dvkMap.olMap.getView().getResolution() ?? 1;
-      const picGroupId = Date.now();
-
-      for (const locale of locales) {
-        if (locale !== curLang) setIsProcessingCurLang(false);
-        await exportMapByLang(
-          fairwayCardInput,
-          uploadMapPictureMutation,
-          setNewPicture,
-          dvkMap,
-          viewResolution,
-          rotation,
-          locale as Lang,
-          picGroupId
-        );
-      }
-
-      setIsMapDisabled(false);
-    }
-    console.timeEnd('Export pictures');
-  };
-
-  const importExternalImage = async () => {
-    console.time('Import pictures');
-    if (dvkMap.getOrientationType()) {
-      setIsMapDisabled(true);
-      setIsProcessingCurLang(true);
-
-      try {
-        const picGroupId = Date.now();
-        const base64Data = await fileUploader.getPictureBase64Data();
-
-        if (base64Data) {
-          for (const locale of locales) {
-            if (locale !== curLang) setIsProcessingCurLang(false);
-            await uploadPicture(
-              fairwayCardInput,
-              uploadMapPictureMutation,
-              setNewPicture,
-              base64Data as string,
-              dvkMap.getOrientationType() || Orientation.Portrait,
-              picGroupId,
-              locale as Lang
-            );
-          }
-        }
-      } catch (error) {
-        console.log(error);
-        setPicUploadErrors([...picUploadErrors, error as string]);
-      }
-      setIsMapDisabled(false);
-      setIsProcessingCurLang(false);
-      fileUploader.deleteFiles();
-    }
-    console.timeEnd('Import pictures');
-  };
-
   return (
     <>
       <IonGrid className={'mapExportTool' + (isMapDisabled ? ' disabled' : '')}>
@@ -152,12 +101,19 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
               />
             )}
             <ExtMapControls
-              printCurrentMapView={printCurrentMapView}
+              propsForCurrentMapView={{
+                fairwayCardInput: fairwayCardInput,
+                uploadMapPictureMutation: uploadMapPictureMutation,
+                setNewPicture: setNewPicture,
+                dvkMap: dvkMap,
+                setIsMapDisabled: setIsMapDisabled,
+                setIsProcessingCurLang: setIsProcessingCurLang,
+                curLang: curLang,
+              }}
               isOpen={isOpen}
               setIsOpen={setIsOpen}
               printDisabled={readonly || isLoadingMutation || isMapDisabled}
               fileUploader={fileUploader}
-              importExternalImage={importExternalImage}
               setErrors={setPicUploadErrors}
             />
             <MapElement setInitDone={setInitDone} setPercentDone={setPercentDone} setFetchError={setFetchError} />
