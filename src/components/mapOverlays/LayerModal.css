@@ -77,6 +77,10 @@ ion-modal#layerModalContainer::part(content) {
   --min-height: 34px;
 }
 
+#layerModalContainer ion-item .labelText {
+  white-space: normal;
+}
+
 #layerModalContainer ion-item .layer {
   width: 14px;
   height: 14px;
