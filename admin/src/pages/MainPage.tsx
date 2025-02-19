@@ -64,7 +64,7 @@ const MainPage: React.FC = () => {
   const [sortDescending, setSortDescending] = useState(false);
   const [isCreating, setIsCreating] = useState(false);
   const searchRef = useRef<HTMLIonInputElement>(null);
-  const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, itemStatus, sortBy, sortDescending, t);
+  const filteredItemList = filterItemList(data?.fairwayCardsAndHarbors, lang, searchQuery, itemTypes, itemStatus, { sortBy, sortDescending }, t);
   const [navigationAreaIds, setNavigationAreaIds] = useState<number[]>([]);
 
   useEffect(() => {
