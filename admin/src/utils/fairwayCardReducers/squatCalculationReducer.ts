@@ -1,12 +1,10 @@
 import { FairwayCardInput } from '../../graphql/generated';
-import { ActionType, Lang, ValidationType, ValueType } from '../constants';
+import { ActionType, Lang, ValueType } from '../constants';
 
-export const fairwayCardSquatCalculationReducer = (
+export const squatCalculationReducer = (
   state: FairwayCardInput,
   value: ValueType,
   actionType: ActionType,
-  validationErrors: ValidationType[],
-  setValidationErrors: (validationErrors: ValidationType[]) => void,
   actionLang?: Lang,
   actionTarget?: string | number
 ): FairwayCardInput => {

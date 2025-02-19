@@ -23,6 +23,7 @@ const OfflineStatus: React.FC = () => {
   const depth12Layer = useFeatureData('depth12');
   const speedLimitLayer = useFeatureData('restrictionarea');
   const specialArea2Layer = useFeatureData('specialarea2');
+  const specialArea9Layer = useFeatureData('specialarea9');
   const specialArea15Layer = useFeatureData('specialarea15');
   const pilotLayer = useFeatureData('pilot');
   const harborLayer = useFeatureData('harbor');
@@ -56,6 +57,7 @@ const OfflineStatus: React.FC = () => {
     depth12Layer,
     speedLimitLayer,
     specialArea2Layer,
+    specialArea9Layer,
     specialArea15Layer,
     pilotLayer,
     harborLayer,

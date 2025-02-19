@@ -4,6 +4,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { vi } from 'vitest';
 import { Status } from './graphql/generated';
+
 beforeEach(() => {
   vi.resetAllMocks();
   vi.useFakeTimers();
@@ -11,6 +12,12 @@ beforeEach(() => {
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (key: string) => key, i18n: { changeLanguage: () => new Promise(() => {}), on: () => {} } }),
+}));
+
+vi.mock('./components/utils/dataLoader', () => ({
+  useFeatureData: () => {
+    return { data: {}, isLoading: false };
+  },
 }));
 
 vi.mock('./components/map/FeatureLoader', () => ({

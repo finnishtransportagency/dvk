@@ -1,12 +1,19 @@
 .ol-popup {
   min-width: 200px;
-  max-width: fit-content;
+  max-width: 600px;
   touch-action: none;
 }
 
 .ol-popup .header {
   font-weight: bold;
   letter-spacing: 0;
+  margin-top: 8px;
+  padding-top: 0.1875rem;
+  padding-bottom: 0.1875rem;
+  line-height: 1.125rem;
+}
+
+.ol-popup ion-row:first-child .header {
   margin-top: 4px;
 }
 

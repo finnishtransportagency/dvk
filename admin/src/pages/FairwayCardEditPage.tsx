@@ -18,7 +18,7 @@ const FairwayCardEditPage: React.FC = () => {
 
   return (
     <>
-      {isLoading && <IonProgressBar type="indeterminate" />}
+      {isLoading && <IonProgressBar type="indeterminate" aria-hidden="true" />}
       {!isLoading && (
         <FairwayCardForm
           fairwayCard={{ ...fairwayCard }}

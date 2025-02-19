@@ -67,7 +67,7 @@ export class DvkBuildImageStack extends Stack {
         },
       ],
     });
-    const playwrightBuildProject = this.buildProject(account, playwrightImageRepoName, '1.0.0', 'e2e', 'PlaywrightImageBuild');
+    const playwrightBuildProject = this.buildProject(account, playwrightImageRepoName, '1.0.1', 'e2e', 'PlaywrightImageBuild');
     actions.push(
       new cdk.aws_codepipeline_actions.CodeBuildAction({
         actionName: 'BuildPlaywrightImage',

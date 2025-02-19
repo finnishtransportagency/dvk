@@ -2,7 +2,7 @@ import { Point, SimpleGeometry, Geometry, LineString } from 'ol/geom';
 import Map from 'ol/Map';
 import Overlay, { PanIntoViewOptions } from 'ol/Overlay';
 import { PopupProperties } from '../mapOverlays/MapOverlays';
-import { FeatureLayerId, Lang, MAP } from '../../utils/constants';
+import { FeatureLayerId, FEATURES_WITH_COORDINATES, Lang, MAP } from '../../utils/constants';
 import Feature, { FeatureLike } from 'ol/Feature';
 import dvkMap from '../DvkMap';
 import { Coordinate } from 'ol/coordinate';
@@ -29,7 +29,9 @@ import {
   RestrictionPortFeatureProperties,
   VtsFeatureProperties,
 } from '../features';
-import { getMarineWarningDataLayerId } from '../../utils/common';
+import { getMarineWarningDataLayerId, setCoordinatesIconAndPopUp } from '../../utils/common';
+import { Dispatch } from 'react';
+import { Action } from '../../hooks/dvkReducer';
 
 const panOptions: PanIntoViewOptions = {
   animation: {
@@ -141,7 +143,12 @@ function singleNavigationLineOnArea(features: FeatureLike[]): boolean {
   return false;
 }
 
-export function addPopup(map: Map, setPopupProperties: (properties: PopupProperties) => void) {
+export function addPopup(
+  map: Map,
+  setPopupProperties: (properties: PopupProperties) => void,
+  clearCoordinatesLayerAndPopUp: () => void,
+  dispatch: Dispatch<Action>
+) {
   const container = document.getElementById('popup') as HTMLElement;
   const overlay = new Overlay({
     id: 'popup',
@@ -171,6 +178,7 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
     'vtsline',
     'line',
     'specialarea2',
+    'specialarea9',
     'specialarea15',
     'area',
     'forecast',
@@ -192,12 +200,17 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
   addPointerClickInteraction(map);
 
   map.on('singleclick', function (evt) {
+    // coordinates marker behaviour is slightly affected by this
+    const isPopUpOpen = !!overlay.getElement()?.firstChild;
     /* Remove fairway width features */
     dvkMap.getVectorSource('fairwaywidth').clear();
     /* Close popup */
     overlay.setPosition(undefined);
     setPopupProperties({});
     clearClickSelectionFeatures();
+
+    const coordinatesSource = dvkMap.getVectorSource('coordinateslocation');
+    const coordinatesLayerIsEmpty = coordinatesSource.getFeatures().length < 1;
 
     const features: FeatureLike[] = [];
     map.forEachFeatureAtPixel(
@@ -218,18 +231,28 @@ export function addPopup(map: Map, setPopupProperties: (properties: PopupPropert
       { hitTolerance: 3 }
     );
 
+    const feature = features.find((f) => f.get('featureType') === 'line') ?? features[0];
+    let clearCoordinates = true;
+
     if (singleNavigationLineOnArea(features)) {
-      const feature = features.find((f) => f.get('featureType') === 'line');
-      showFeaturePopup(features, feature as FeatureLike, evt.coordinate, setPopupProperties, overlay);
+      showFeaturePopup(features, feature, evt.coordinate, setPopupProperties, overlay);
     } else if (features.length > 1) {
       features.sort((a, b) => types.indexOf(a.getProperties().featureType) - types.indexOf(b.getProperties().featureType));
       showFeatureListPopup(features, evt.coordinate, setPopupProperties, overlay);
-    } else {
-      const feature = features[0];
-      if (feature) {
-        setClickSelectionFeature(feature);
+    } else if (feature) {
+      setClickSelectionFeature(feature);
+      if (FEATURES_WITH_COORDINATES.includes(feature.get('featureType'))) {
         showFeaturePopup(features, feature, evt.coordinate, setPopupProperties, overlay);
+      } else {
+        showFeatureListPopup([feature], evt.coordinate, setPopupProperties, overlay);
       }
+    } else if (coordinatesLayerIsEmpty && !isPopUpOpen) {
+      setCoordinatesIconAndPopUp(dispatch, evt.coordinate);
+      clearCoordinates = false;
+    }
+
+    if (clearCoordinates) {
+      clearCoordinatesLayerAndPopUp();
     }
   });
 }
@@ -364,6 +387,12 @@ export function getFeatureDetails(t: TFunction, lang: Lang, feature: FeatureLike
       return {
         header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
         featureType: t('featureList.featureType.specialarea15'),
+        className: type,
+      };
+    case 'specialarea9':
+      return {
+        header: (props as AreaFeatureProperties).fairways?.map((fairway) => `${fairway.name[lang] ?? fairway.name.fi} ${fairway.fairwayId}`),
+        featureType: t('featureList.featureType.specialarea9'),
         className: type,
       };
     case 'specialarea2':

@@ -24,8 +24,7 @@
     "sv": "Loviisaleden"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095538997,
+  "creationTimestamp": 1732275741811,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The approach is unsheltered against SE-S-SW winds as far as the ramark Lodgrund, after which the channel continues, sheltered by islands and the mainland, to port. There is a narrow passage, 120 m wide, E of Hudö and another one, 100 m wide, E of Trollholmen, with increased risk of bank suction. In the passage E of Trollholmen, the gross underkeel clearance of mere 1.5 m and the small water crosssection may affect the navigability of vessels sailing at max. draught. In these passages, part-loaded oversized vessels in particular should take prevailing wind directions into account and use tugs for assistance, if necessary. In the entrance and the port there is practically no swell.",
@@ -34,7 +33,7 @@
   },
   "generalInfo": null,
   "id": "loviisa",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": false,
   "lineText": {
     "en": "Seven navigation lines, marked by boards and sector lights.",
@@ -52,13 +51,22 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 5345,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718775723401,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732275741811,
+  "pilotRoutes": [
+    {
+      "id": 32
+    },
+    {
+      "id": 39
+    }
+  ],
   "iceCondition": {
     "en": "There is a bubbling device in the harbour basin; as a rule, ice difficulties do not arise.",
     "fi": "Satama-altaassa on ilmapulputuslaitteisto, jäävaikeuksia ei yleensä esiinny.",

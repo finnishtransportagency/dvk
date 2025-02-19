@@ -72,7 +72,12 @@ export const WarningList: React.FC<WarningListProps> = ({ data, loading, sortNew
                 <IonCol size="6" className="no-padding">
                   <IonRow>
                     <IonCol size="auto">
-                      <IonIcon className="listIcon" src={getWarningImgSource(warning.type[lang] ?? '')} />
+                      <IonIcon
+                        aria-hidden="true"
+                        aria-label={capitalizedType as string}
+                        className="listIcon"
+                        src={getWarningImgSource(warning.type[lang] ?? '')}
+                      />
                     </IonCol>
                     <IonCol>
                       <IonText className="no-margin-top">

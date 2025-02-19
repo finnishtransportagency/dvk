@@ -48,9 +48,10 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
     { id: 'speedlimit', title: t('homePage.map.controls.layer.speedLimits') },
     {
       id: 'specialarea',
-      title: t('homePage.map.controls.layer.specialAreas'),
+      title: t('homePage.map.controls.layer.specificAreas'),
       childLayers: [
         { id: 'specialarea2', title: t('homePage.map.controls.layer.specialarea2') },
+        { id: 'specialarea9', title: t('homePage.map.controls.layer.specialarea9') },
         { id: 'specialarea15', title: t('homePage.map.controls.layer.specialarea15') },
       ],
     },
@@ -111,7 +112,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
                 title={t('common.close') || ''}
                 aria-label={t('common.close') || ''}
               >
-                <IonIcon className="otherIconLarge" src={closeIcon} />
+                <IonIcon className="otherIconLarge" src={closeIcon} aria-hidden="true" />
               </IonButton>
             </IonCol>
           </IonRow>

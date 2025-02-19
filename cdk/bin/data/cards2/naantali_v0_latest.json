@@ -28,8 +28,7 @@
     "sv": "Farleden Nådendal"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095538097,
+  "creationTimestamp": 1732532543057,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The outer section of the channel between Utö and Kalkskärskobb is poorly sheltered, which can hamper radar navigation and navigation in rough seas. From Kalkskärskobb to Smörgrund the channel is clear and navigation easy; from Smörgrund to the harbour it is sheltered and well marked. But navigation in the narrow passages at Smörgrund and Lövskär as well as near the seat of the ice ferry at Riskholmen require special attention and caution.",
@@ -58,8 +57,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 3255,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     },
     {
       "secondary": false,
@@ -72,9 +73,16 @@
     "fi": "Välillä Smörgrund - Finnön pohjoispuoli on nopeusrajoitus 28 km/h ja välillä Finnön pohjoispuoli Lilla Björnholm 32 km/h. Välillä Rajakari - Ajonpää nopeusrajoitus on 22 km/h. Myös Riskholmenin railolossipaikalla on nopeusrajoitus railolossin ollessa käytössä.",
     "sv": "Mellan Smörgrund och Finnö är hastighetsbegränsningen 28 km/h och mellan Finnö - Lilla Björnholm 32 km/h. Mellan Rajakari och Ajonpää är hastighetsbegränsningen 22 km/h. Vid Riskholmens isfärjeplats råder en hastighetsbegränsning då isfärjan är i användning."
   },
-  "modificationTimestamp": 1718782020659,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732532543057,
+  "pilotRoutes": [
+    {
+      "id": 219
+    },
+    {
+      "id": 260
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "In the outer section of the channel between Utö and Smörgrund ice conditions vary: sometimes there is hardly any ice formation and at other times the ice moves and the buoys can be under the ice. In the inner section of the channel between Smörgrund and the harbour there is usually 10 – 60 cm thick fast ice, which, owing to the busy ferry traffic, remains quite passable during the winter season.",
     "fi": "Väylän ulko-osalla Utöstä Smörgrundiin jääolosuhteet ovat vaihtelevia: joskus jäätä ei muodostu lainkaan, välillä jäät liikkuvat ja poijut voivat olla jään alla. Väylän sisäosalla Smörgrundista satamaan muodostuu yleensä 10 - 60 cm paksuinen kiintojää, joka vilkkaan lauttaliikenteen takia pysyy helppokulkuisena koko talven.",

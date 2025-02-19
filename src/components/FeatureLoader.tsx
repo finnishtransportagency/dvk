@@ -333,6 +333,7 @@ export function useArea12Layer(): DvkLayerState {
           const faWorker: Worker = new Worker(new URL('../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
           faWorker.onmessage = (e) => {
             const borderlineFeatures = format.readFeatures(e.data as string);
+            faWorker.terminate();
             borderlineFeatures.forEach((f) => f.set('dataSource', 'area12Borderline', true));
             source.addFeatures(borderlineFeatures);
           };
@@ -373,6 +374,7 @@ export function useArea3456Layer() {
           const faWorker: Worker = new Worker(new URL('../fairwayareaworker/FairwayAreaWorker.ts', import.meta.url), { type: 'module' });
           faWorker.onmessage = (e) => {
             const borderlineFeatures = format.readFeatures(e.data as string);
+            faWorker.terminate();
             borderlineFeatures.forEach((f) => f.set('dataSource', 'area3456Borderline', true));
             source.addFeatures(borderlineFeatures);
           };
@@ -414,6 +416,7 @@ export function useSpeedLimitLayer(): DvkLayerState {
           const slWorker: Worker = new Worker(new URL('../speedlimitworker/SpeedlimitWorker.ts', import.meta.url), { type: 'module' });
           slWorker.onmessage = (e) => {
             const features = format.readFeatures(e.data as string);
+            slWorker.terminate();
             const source = dvkMap.getVectorSource('speedlimit');
             source.clear();
             source.addFeatures(features);
@@ -436,6 +439,10 @@ export function useSpeedLimitLayer(): DvkLayerState {
 
 export function useSpecialArea2Layer() {
   return useDataLayer('specialarea2', 'specialarea2');
+}
+
+export function useSpecialArea9Layer() {
+  return useDataLayer('specialarea9', 'specialarea9');
 }
 
 export function useSpecialArea15Layer() {

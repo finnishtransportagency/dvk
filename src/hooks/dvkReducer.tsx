@@ -12,6 +12,7 @@ export type State = {
   preview: boolean;
   harborId: string;
   version: string;
+  coordinates: string;
 };
 
 // Set initial state
@@ -26,6 +27,7 @@ export const initialState: State = {
   preview: VITE_APP_CONFIG === APP_CONFIG_PREVIEW,
   harborId: '',
   version: '',
+  coordinates: '',
 };
 
 export type Action =
@@ -83,6 +85,12 @@ export type Action =
         value: string;
       };
     }
+  | {
+      type: 'setCoordinates';
+      payload: {
+        value: string;
+      };
+    }
   | { type: 'reset' };
 
 export const DvkReducer = (state: State, action: Action) => {
@@ -118,6 +126,9 @@ export const DvkReducer = (state: State, action: Action) => {
       break;
     case 'version':
       newState = { ...state, version: action.payload.value };
+      break;
+    case 'setCoordinates':
+      newState = { ...state, coordinates: action.payload.value };
       break;
     case 'reset':
       return initialState;

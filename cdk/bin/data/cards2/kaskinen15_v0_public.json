@@ -21,12 +21,7 @@
     "sv": "Kaskö farled"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Kaskinen mareograph.",
-    "fi": "Kaskinen mareografi.",
-    "sv": "Kaskö mareograf."
-  },
-  "creationTimestamp": 1694760093765,
+  "creationTimestamp": 1735630347095,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The outer part of the channel, from the pilot boarding position to the southern edge of Sälgrund, consists of open water and is exposed to southerly, westerly and northerly winds. Heavy southerly and westerly winds in particular may impede navigation. From Sälgrund on, the channel is sheltered by shoals, isles and mainland.",
@@ -35,15 +30,20 @@
   },
   "generalInfo": null,
   "id": "kaskinen15",
-  "currentPublic": 1,
+  "currentPublic": 3,
   "n2000HeightSystem": true,
   "lineText": {
     "en": "4 lines marked by boards.",
     "fi": "Linjoja on 4, jotka merkitty linjatauluin.",
     "sv": "4 linjer utmärkta med enstavlor."
   },
+  "publishDetails": "Linkitetty N2000 satama",
   "version": "v0_public",
-  "harbors": [],
+  "harbors": [
+    {
+      "id": "kaskistensat15"
+    }
+  ],
   "windRecommendation": {
     "en": "Wind speeds of about 10 m/s are critical for design ships in open water.",
     "fi": "Kriittinen tuulennopeus mitoitusaluksella on n. 10 m/s avovedessä.",
@@ -53,8 +53,10 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 1030,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     },
     {
       "secondary": false,
@@ -63,8 +65,15 @@
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718864241594,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1735630347095,
+  "pilotRoutes": [
+    {
+      "id": 106
+    },
+    {
+      "id": 107
+    }
+  ],
   "iceCondition": {
     "en": "The outer part of the channel, from the pilot boarding position to the southern edge of Sälgrund, consists of open water and is exposed to southerly, westerly and northerly winds. Heavy southerly and westerly winds in particular may impede navigation. From Sälgrund on, the channel is sheltered by shoals, isles and mainland.",
     "fi": " Väylän ulko-osalla jää liikkuu. Kylminä talvina kiintojään alue ulottuu kauas avomerelle. Etenkin etelän- ja lännenpuoleisilla tuulilla jää ahtautuu Orionin ja Raskenin valopoijujen väliselle alueelle vaikeaksi jäävalliksi. Jäiden liikkuessa poijut ja viitat saattavat olla jään alla.",

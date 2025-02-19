@@ -24,8 +24,7 @@
     "sv": "Helsingfors-Orrengrund"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1683095538749,
+  "creationTimestamp": 1732532803111,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": " The section from Helsinki to S of Emäsalo is very well sheltered. The rest of the fairway is dotted by a few islands only and periodically fairly open to southerly winds.",
@@ -34,7 +33,7 @@
   },
   "generalInfo": null,
   "id": "helsinkiorrengrund",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": false,
   "lineText": {
     "en": "The fairway is marked by boards.",
@@ -48,13 +47,22 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 4865,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718775507841,
-  "pilotRoutes": [],
+  "modificationTimestamp": 1732532803111,
+  "pilotRoutes": [
+    {
+      "id": 41
+    },
+    {
+      "id": 49
+    }
+  ],
   "iceCondition": {
     "en": "Southerly winds may cause ridging in the fairway.",
     "fi": "Väylällä voi etelänpuoleisilla tuulilla esiintyä ajoittain jääahtaumia.",

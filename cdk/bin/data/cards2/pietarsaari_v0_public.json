@@ -10,18 +10,15 @@
   "visibility": null,
   "group": "3",
   "modifier": "System",
+  "mareographs": [],
   "name": {
     "en": "Pietarsaari fairway",
     "fi": "Pietarsaaren väylä",
     "sv": "Jakobstad farled"
   },
   "attention": null,
-  "seaLevel": {
-    "en": "Pietarsaari mareograph.",
-    "fi": "Pietarsaaren mareografi.",
-    "sv": "Jakobstad mareograf."
-  },
-  "creationTimestamp": 1683095537320,
+  "creationTimestamp": 1732531513026,
+  "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The outer fairway from Kallan to Mässkär is open and unsheltered from N-W-E winds. The inner part of the fairway a length of 3 km has been dredged and forms a 120 m wide canal. No heavy swell is created but due to the narrowness of the channel winds and squat effect might affect the navigation of the vessel.",
     "fi": "Väylän ulko-osa Kallanista Mässkäriin on avointa ja suojatonta P - L - I tuulille. Väylä on sisäosaltaan ruopattu 120 m kanavamaiseksi väyläksi noin 3 kilometrin matkalta ennen satamaa. Sisäosalla ei aallokkoa pääse syntymään, mutta väylän kapeuden vuoksi tuuli ja squat-effekt imuvaikutus saattavat vaikeuttaa aluksen ohjailua.",
@@ -29,7 +26,7 @@
   },
   "generalInfo": null,
   "id": "pietarsaari",
-  "currentPublic": 1,
+  "currentPublic": 2,
   "n2000HeightSystem": true,
   "lineText": {
     "en": "Three lines in the channel, all marked with boards.",
@@ -51,17 +48,22 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 495,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
-  "windGauge": {
-    "en": "Marine weather observations: Pietarsaari Kallan.",
-    "fi": "Rannikkoasemat: Pietarsaari Kallan.",
-    "sv": "Vädret vid kuststationerna: Jakobstad Kallan."
-  },
   "speedLimit": null,
-  "modificationTimestamp": 1698235149602,
+  "modificationTimestamp": 1732531513026,
+  "pilotRoutes": [
+    {
+      "id": 283
+    },
+    {
+      "id": 284
+    }
+  ],
   "iceCondition": {
     "en": "The area is normally ice-covered from December to April. During ice formation winds and currents may create a heavy brash ice barrier between Pietarsaari edge mark and Mässkär. Later on ice ridges may occur off Pietarsaari edge mark. Ice movement may cause buoys and spar buoys to be pressed under ice (surface) over the whole length of the fairway.",
     "fi": "Jäätä esiintyy alueella tavallisesti joulukuusta huhtikuuhun. Jäiden muodostumisaikana tuulet ja merivirrat voivat muodostaa vaikean sohjojäävyöhykkeen Pietarsaari reunamerkin ja Mässkärin väliselle alueelle. Talvikautena saattaa Pietarsaari reunamerkin edustalla esiintyä jääahtaumia. Jäiden liikkuessa poijut ja viitat saattavat olla jään alla koko väylän mitalta satamaan asti.",
@@ -120,6 +122,7 @@
       }
     ]
   },
+  "additionalInfo": null,
   "designSpeed": {
     "en": "Design speed in the outer fairway 11 knots, in the inner fairway 9 knots, in the harbour area 6 knots.",
     "fi": "Mitoitusnopeus ulko-osalla 11 solmua ja sisäosalla 9 solmua, satamassa 6 solmua.",

@@ -88,6 +88,7 @@ export type FeatureDataId =
   | 'circle'
   | 'soundingpoint'
   | 'specialarea2'
+  | 'specialarea9'
   | 'specialarea15'
   | 'aislocation'
   | 'aisvessel'
@@ -105,12 +106,12 @@ export type StaticFeatureDataSource = { id: StaticFeatureDataId; url: URL };
 export const StaticFeatureDataSources: Array<StaticFeatureDataSource> = [
   { id: 'balticsea', url: new URL(staticUrl + '/balticsea.json.gz') },
   { id: 'finland', url: new URL(staticUrl + '/finland.json.gz') },
-  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20240724.json.gz') },
-  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20240724.json.gz') },
-  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20240724.json.gz') },
-  { id: 'mml_jarvi_rantaviiva', url: new URL(staticUrl + '/mml-jarvi-rantaviiva-20240724.json.gz') },
-  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20240719.json.gz') },
-  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit-20240719.json.gz') },
+  { id: 'mml_meri', url: new URL(staticUrl + '/mml-meri-20250123.json.gz') },
+  { id: 'mml_meri_rantaviiva', url: new URL(staticUrl + '/mml-meri-rantaviiva-20250123.json.gz') },
+  { id: 'mml_jarvi', url: new URL(staticUrl + '/mml-jarvi-20250123.json.gz') },
+  { id: 'mml_jarvi_rantaviiva', url: new URL(staticUrl + '/mml-jarvi-rantaviiva-20250123.json.gz') },
+  { id: 'mml_satamat', url: new URL(staticUrl + '/mml-satamat-20250123.json.gz') },
+  { id: 'mml_laiturit', url: new URL(staticUrl + '/mml-laiturit-20250123.json.gz') },
 ];
 
 export type FeatureDataProjection = 'EPSG:3067' | 'EPSG:4326' | 'EPSG:3395' | 'EPSG:4258';
@@ -188,6 +189,17 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     projection: 'EPSG:4326',
     url: new URL(featureLoaderUrl + '?type=specialarea2&vaylaluokka=1,2,3,4,5,6'),
     staticUrl: new URL(staticUrl + '/specialarea2.json.gz'),
+    persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchOnMount: true,
+  },
+  {
+    id: 'specialarea9',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=specialarea9&vaylaluokka=1,2,3,4,5,6'),
+    staticUrl: new URL(staticUrl + '/specialarea9.json.gz'),
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
@@ -499,6 +511,7 @@ export type FeatureDataLayerId =
   | 'deptharea'
   | 'circle'
   | 'specialarea2'
+  | 'specialarea9'
   | 'specialarea15'
   | 'aisvesselcargo'
   | 'aisvesseltanker'
@@ -520,7 +533,9 @@ export type FairwayWidthLayerId = 'fairwaywidth';
 
 export type UserLocationLayerId = 'userlocation';
 
-export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId | UserLocationLayerId;
+export type CoordinatesLocationLayerId = 'coordinateslocation';
+
+export type FeatureLayerId = FeatureDataLayerId | SelectedFairwayCardLayerId | FairwayWidthLayerId | UserLocationLayerId | CoordinatesLocationLayerId;
 
 export type UserLocationPermission = 'on' | 'off' | 'disabled';
 
@@ -550,6 +565,7 @@ export const MAP: MapType = {
     { id: 'line3456', offlineSupport: true, localizedStyle: false },
     { id: 'speedlimit', offlineSupport: true, localizedStyle: false },
     { id: 'specialarea2', offlineSupport: true, localizedStyle: false },
+    { id: 'specialarea9', offlineSupport: true, localizedStyle: false },
     { id: 'specialarea15', offlineSupport: true, localizedStyle: false },
     { id: 'harbor', offlineSupport: true, localizedStyle: true },
     { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },
@@ -702,3 +718,19 @@ export const hourInMilliseconds = 3600000;
 export const LAYER_IDB_KEY = 'layer-selection';
 
 export const PUBLIC_VERSION = 'v0_public';
+
+// Features with coordinates info in their pop up
+export const FEATURES_WITH_COORDINATES: FeatureDataId[] = [
+  'safetyequipment',
+  'safetyequipmentfault',
+  'mareograph',
+  'observation',
+  'forecast',
+  'buoy',
+  'vtspoint',
+  'pilot',
+  'pilotagelimit',
+  'aisvessel',
+  'dirway',
+  'harbor',
+];

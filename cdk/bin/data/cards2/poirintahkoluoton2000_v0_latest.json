@@ -21,8 +21,7 @@
     "sv": "Tahkoluoto farled, Björneborg N2000"
   },
   "attention": null,
-  "seaLevel": null,
-  "creationTimestamp": 1701169636467,
+  "creationTimestamp": 1732283234583,
   "temporaryNotifications": [],
   "navigationCondition": {
     "en": "The channel consists of open sea and is unsheltered all the way to port. Strong especially SW and N winds create heavy seas. Attention is to be paid to the shallow waters E and S of Pori lighthouse. A bottom-mounted breakwater of dredged spoils has been built off the port. Its highest point reaches about 3 m below sea level.",
@@ -48,14 +47,23 @@
   "fairways": [
     {
       "secondary": true,
+      "primarySequenceNumber": 1,
       "id": 2100,
-      "primary": true
+      "primary": true,
+      "secondarySequenceNumber": 1
     }
   ],
   "speedLimit": null,
-  "modificationTimestamp": 1718777686266,
-  "pilotRoutes": [],
-  "latest": 1,
+  "modificationTimestamp": 1732283234583,
+  "pilotRoutes": [
+    {
+      "id": 122
+    },
+    {
+      "id": 123
+    }
+  ],
+  "latest": 2,
   "iceCondition": {
     "en": "Fast ice in the channel only during very cold winters. In normal winters there is ice movement in the fairway all winter. Westerly winds cause ridges at the channel entrance. Ice movement may cause buoys to be pressed beneath the surface and their lighting devices of the light buoys may be damaged.",
     "fi": "Väylällä esiintyy kiintojäätä vain erittäin kovina talvina. Normaali talvina jäät liikkuvat väyläalueella koko talven. Länsituulilla jää ahtautuu väylälle; itätuulilla väylä saattaa olla jäästä vapaa. Jäiden liikkuessa poijut voivat olla ajoittain jään alla ja valopoijujen valolaitteet voivat olla vahingoittuneet.",

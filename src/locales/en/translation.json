@@ -44,7 +44,7 @@
           "safetyEquipments": "Navigational aids",
           "safetyEquipmentFaults": "Defective navigation aids",
           "speedLimits": "Speed limits",
-          "specialAreas": "Special areas",
+          "specificAreas": "Specific areas",
           "marineWarnings": "Navigational warnings",
           "coastalWarning": "Coastal warning",
           "localWarning": "Local warning",
@@ -71,6 +71,7 @@
           "depthcontour": "Contours",
           "deptharea": "Areas",
           "specialarea2": "Anchoring areas",
+          "specialarea9": "Special areas",
           "specialarea15": "Meeting and overtaking prohibition areas",
           "ais": "Traffic situation",
           "aisVesselCargo": "Cargo vessels",
@@ -370,7 +371,10 @@
   "popup": {
     "common": {
       "noFairwayCards": "No fairway cards",
-      "outdatedData": "The data is more than 12 hours old"
+      "outdatedData": "The data is more than 12 hours old",
+      "locationCoordinates": "Location coordinates",
+      "copyToClipboard": "Copy to clipboard",
+      "copiedToClipboard": "Copied to clipboard!"
     },
     "pilotPlace": {
       "header": "Pilot boarding position {{val}}",
@@ -554,6 +558,7 @@
         "safetyequipmentfault": "Defective navigation aid",
         "section": "Berth position",
         "specialarea15": "Meeting and overtaking prohibition area",
+        "specialarea9": "Special area",
         "specialarea2": "Anchoring area",
         "vtsline": "VTS area",
         "vtspoint": "VTS reporting point"

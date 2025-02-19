@@ -231,3 +231,9 @@
   height: 19px;
   background: url('../../theme/img/quay_section.svg') no-repeat center / cover;
 }
+
+.featureList ion-item .locationCoordinates {
+  width: 14.4px;
+  height: 18px;
+  background: url('../../theme/img/coordinates_location_indicator.svg') no-repeat center / cover;
+}

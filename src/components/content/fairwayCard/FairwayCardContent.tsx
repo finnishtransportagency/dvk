@@ -3,7 +3,7 @@ import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
 import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
-import { setSelectedFairwayCard } from '../../layers';
+import { setSelectedFairwayCard } from '../../fairwayCardSetter';
 import { Lang, MAP } from '../../../utils/constants';
 import PrintMap from '../../PrintMap';
 import Breadcrumb from '../Breadcrumb';
@@ -29,11 +29,12 @@ import {
   getFairwayCardObservations,
   getFairwayCardMareographs,
   getFairwayCardForecasts,
+  getValidSquatCalculations,
 } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
-import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
+import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation, useWeatherLimits } from '../../../utils/dataLoader';
 import { TabSwiper } from './TabSwiper';
 import PilotRouteList from '../PilotRouteList';
 import { usePilotRouteFeatures } from '../../PilotRouteFeatureLoader';
@@ -55,6 +56,7 @@ import ForecastContainer from '../ForecastContainer';
 import SquatCalculationTemplateNotAvailable from './SquatCalculationTemplateNotAvailable';
 import SquatCalculationTemplate from './SquatCalculationTemplate';
 import { uniqueId } from 'lodash';
+import { asWeatherLimits, findWeatherLimitById } from '../../../utils/weatherUtils';
 
 export enum FairwayCardTab {
   Information = 1,
@@ -105,6 +107,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { observationFeatures, ready: observationsReady } = useObservationFeatures();
   const { mareographFeatures, ready: mareographsReady } = useMareographFeatures();
   const { forecastFeatures, ready: forecastsReady } = useForecastFeatures();
+  const { data: weatherLimits } = useWeatherLimits();
 
   useEffect(() => {
     if (fairwayCard && safetyEquipmentsReady && !faultIsPending && !faultIsFetching) {
@@ -207,6 +210,10 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
       title: getTabLabel(t, tab),
     },
   ];
+
+  //Check validity of squat calculation templates
+  //all Areas
+  const validSquats = fairwayCard ? getValidSquatCalculations(fairwayCard) : [];
 
   return (
     <>
@@ -356,14 +363,9 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
             )}
           </div>
 
-          <div
-            className={
-              getTabClassName(FairwayCardTab.SquatCalculation) +
-              (fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? '' : ' onecolumn')
-            }
-          >
-            {fairwayCard?.squatCalculations && fairwayCard?.squatCalculations.length > 0 ? (
-              fairwayCard?.squatCalculations
+          <div className={getTabClassName(FairwayCardTab.SquatCalculation) + ((validSquats ?? []).length > 0 ? '' : ' onecolumn')}>
+            {validSquats && validSquats.length > 0 ? (
+              validSquats
                 .toSorted((a, b) => {
                   if (!a.place || !b.place || !a.place[lang] || !b.place[lang]) return 0;
                   return a.place[lang].localeCompare(b.place[lang]);
@@ -378,7 +380,17 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
             {forecastsReady && forecasts ? (
               forecasts.map((f) => {
-                return <ForecastContainer forecast={f} key={f.getId()} multicontainer={forecasts.length > 1} />;
+                return (
+                  <ForecastContainer
+                    forecast={f}
+                    key={f.getId()}
+                    multicontainer={forecasts.length > 1}
+                    weatherLimits={findWeatherLimitById(
+                      asWeatherLimits(weatherLimits?.weatherLimits ?? []),
+                      f.getId() ? String(f.getId()) : undefined
+                    )}
+                  />
+                );
               })
             ) : (
               <Alert errorText={t('forecastNotFound')}></Alert>

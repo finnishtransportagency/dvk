@@ -18,7 +18,7 @@ const HarbourEditPage: React.FC = () => {
 
   return (
     <>
-      {isLoading && <IonProgressBar type="indeterminate" />}
+      {isLoading && <IonProgressBar type="indeterminate" aria-hidden="true" />}
       {!isLoading && (
         <HarbourForm
           harbour={harbour}

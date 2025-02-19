@@ -1,3 +1,4 @@
+import { Coordinate } from 'ol/coordinate';
 import { getMap } from '../components/map/DvkMap';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { FairwayCardInput, Orientation, PictureInput, PictureUploadInput } from '../graphql/generated';
@@ -114,16 +115,18 @@ export function getMapCanvas(mapSize: number[]) {
   return mapCanvas;
 }
 
-export function setMapProperties(viewResolution: number, mapSize: number[], lang: Lang) {
+export function setMapProperties(viewResolution: number, mapSize: number[], lang: Lang, center: Coordinate | undefined) {
   const dvkMap = getMap();
   dvkMap?.olMap?.getView().setResolution(viewResolution / MAP.PRINT.SCALE);
   dvkMap?.olMap?.setSize([mapSize[0] * MAP.PRINT.SCALE, mapSize[1] * MAP.PRINT.SCALE]);
   dvkMap.setMapLanguage(lang);
+  dvkMap.olMap?.getView().setCenter(center);
 }
 
-export function resetMapProperties(viewResolution: number, mapSize: number[]) {
+export function resetMapProperties(viewResolution: number, mapSize: number[], center: Coordinate | undefined) {
   const dvkMap = getMap();
   dvkMap.setMapLanguage('');
   dvkMap.olMap?.setSize(mapSize);
   dvkMap.olMap?.getView().setResolution(viewResolution);
+  dvkMap.olMap?.getView().setCenter(center);
 }

@@ -91,7 +91,7 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                               <>
                                 {properties.waterLevel >= 0 ? '+' : ''}
                                 {Math.round(properties.waterLevel / 10)}{' '}
-                                <dd aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((properties.waterLevel || 0) / 10) })}>cm</dd>
+                                <span aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((properties.waterLevel || 0) / 10) })}>cm</span>
                               </>
                             ) : (
                               <>
@@ -117,7 +117,9 @@ const MareographInfo: React.FC<MareographInfoProps> = ({ mareographs }) => {
                               <>
                                 {properties.n2000WaterLevel >= 0 ? '+' : ''}
                                 {Math.round(properties.n2000WaterLevel / 10)}{' '}
-                                <dd aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((properties.n2000WaterLevel || 0) / 10) })}>cm</dd>
+                                <span aria-label={t('fairwayCards.unit.cmDesc', { count: Math.round((properties.n2000WaterLevel || 0) / 10) })}>
+                                  cm
+                                </span>
                               </>
                             ) : (
                               <>
