@@ -23,7 +23,7 @@ export type LayerType = {
 
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
-  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
+  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'quay', 'name']);
   const dvkMap = getMap();
 
   const layerStructure: LayerType[] = [

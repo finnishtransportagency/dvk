@@ -3,7 +3,7 @@ import { getHeaders, getWeatherResponseHeaders } from '../environment';
 import { log } from '../logger';
 import { Feature, FeatureCollection, Geometry, GeoJsonProperties } from 'geojson';
 import { fetchVATUByFairwayClass } from '../graphql/query/vatu';
-import HarborDBModel from '../db/harborDBModel';
+import HarborDBModel, { Quay, Section } from '../db/harborDBModel';
 import { parseDateTimes } from './pooki';
 import { fetchBuoys, fetchMareoGraphs, fetchWeatherObservations, fetchWeatherWaveForecast } from './weather';
 import { fetchN2000MapAreas, fetchPilotPoints, fetchProhibitionAreas, fetchVTSLines, fetchVTSPoints } from './traficom';
@@ -28,57 +28,125 @@ import {
 import { booleanWithin as turf_booleanWithin } from '@turf/boolean-within';
 import { cacheResponse, getFromCache } from '../s3Cache';
 import { CloudFrontCacheKey, getCloudFrontCacheControlHeaders, getFeatureCacheControlHeaders, isCloudFrontCacheKey } from '../../cache';
+import { GeometryPoint, Maybe } from '../../../graphql/generated';
 
 interface FeaturesWithMaxFetchTime {
   featureArray: Feature<Geometry, GeoJsonProperties>[];
   fetchedDate?: string;
 }
 
-async function addHarborFeatures(features: FeaturesWithMaxFetchTime) {
-  const harbors = await HarborDBModel.getAllPublic();
-  const harborMap = new Map<string, HarborDBModel>();
+function getGeometryAsId(geometry: Maybe<GeometryPoint> | undefined): string {
+  return geometry?.coordinates?.join(';') ?? '';
+}
 
-  for (const harbor of harbors) {
-    harborMap.set(harbor.id, { ...harbor });
-  }
+function isGeometryOK(geometry: Maybe<GeometryPoint> | undefined): boolean {
+  return geometry?.coordinates?.length === 2;
+}
 
+async function getUniquePublicHarborFeatures(): Promise<HarborDBModel[]> {
+  const traficomN2000MapAreas = await fetchN2000MapAreas();
+  const uniquePublicHarbors: HarborDBModel[] = [];
+  const harbors = (await HarborDBModel.getAllPublic()).filter((h) => h && isGeometryOK(h.geometry));
   const ids: string[] = [];
-  for (const harbor of harborMap.values()) {
-    const cardHarbor = harborMap.get(harbor.id);
-    if (harbor?.geometry?.coordinates?.length === 2 && cardHarbor) {
-      const id = harbor.geometry.coordinates.join(';');
-      // MW/N2000 Harbors should have same location
-      if (!ids.includes(id)) {
-        ids.push(id);
-        features.featureArray.push({
-          type: 'Feature',
-          id,
-          geometry: harbor.geometry as Geometry,
-          properties: {
-            featureType: 'harbor',
-            id,
-            harborId: harbor.id,
-            name: harbor.name ?? harbor.company,
-            email: harbor.email,
-            phoneNumber: harbor.phoneNumber,
-            fax: harbor.fax,
-            internet: harbor.internet,
-            quays: harbor.quays?.length ?? 0,
-            extraInfo: harbor.extraInfo,
-          },
-        });
+  harbors
+    .filter((h) => h.n2000HeightSystem)
+    .concat(harbors.filter((h) => !h.n2000HeightSystem))
+    .forEach((harbor) => {
+      if (!harbor.n2000HeightSystem || (harbor.n2000HeightSystem && inOfficialN2000Area(harbor.geometry as Geometry, traficomN2000MapAreas))) {
+        const id = getGeometryAsId(harbor.geometry);
+        if (!ids.includes(id)) {
+          ids.push(id);
+          uniquePublicHarbors.push(harbor);
+        }
       }
-    }
-  }
+    });
+  return uniquePublicHarbors;
+}
+
+async function addHarborFeatures(features: FeaturesWithMaxFetchTime) {
+  (await getUniquePublicHarborFeatures()).forEach((harbor) => {
+    const id = getGeometryAsId(harbor.geometry);
+    features.featureArray.push({
+      type: 'Feature',
+      id: id,
+      geometry: harbor.geometry as Geometry,
+      properties: {
+        featureType: 'harbor',
+        id: id,
+        harborId: harbor.id,
+        name: harbor.name ?? harbor.company,
+        email: harbor.email,
+        phoneNumber: harbor.phoneNumber,
+        fax: harbor.fax,
+        internet: harbor.internet,
+        quays: harbor.quays?.length ?? 0,
+        extraInfo: harbor.extraInfo,
+      },
+    });
+  });
+}
+
+async function addQuayFeatures(features: FeaturesWithMaxFetchTime) {
+  (await getUniquePublicHarborFeatures()).forEach((h) => {
+    h.quays
+      ?.filter((q) => q)
+      .forEach((q: Quay) => {
+        if (isGeometryOK(q.geometry)) {
+          const id = getGeometryAsId(q.geometry);
+          features.featureArray.push({
+            type: 'Feature',
+            id: id,
+            geometry: q.geometry as Geometry,
+            properties: {
+              featureType: 'quay',
+              harbor: h.id,
+              quay: q.name,
+              extraInfo: q.extraInfo,
+              length: q.length,
+              depth: q.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0),
+              showDepth: !q.sections?.some((s) => !s.geometry),
+              email: h.email,
+              phoneNumber: h.phoneNumber,
+              fax: h.fax,
+              internet: h.internet,
+            },
+          });
+        }
+        q.sections
+          ?.filter((s) => s)
+          .forEach((s: Section) => {
+            if (isGeometryOK(s.geometry)) {
+              features.featureArray.push({
+                type: 'Feature',
+                id: getGeometryAsId(s.geometry),
+                geometry: s.geometry as Geometry,
+                properties: {
+                  featureType: 'section',
+                  harbor: h.id,
+                  quay: q.name,
+                  extraInfo: q.extraInfo,
+                  length: q.length,
+                  name: s.name,
+                  depth: s.depth ? [s.depth] : undefined,
+                  email: h.email,
+                  phoneNumber: h.phoneNumber,
+                  fax: h.fax,
+                  internet: h.internet,
+                },
+              });
+            }
+          });
+      });
+  });
 }
 
 async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
   const pilotCacheKey = 'pilotplaces';
-  
+
   try {
     // pilot points are not saved to s3 like prohibition areas are, since pilot places are
     // saved in many other cases (fairwayCard-handler, fairwayCards-handler, saveFairwayCard-handler)
-    log.info(`Fetching ${pilotCacheKey} from traficom api`)
+    log.info(`Fetching ${pilotCacheKey} from traficom api`);
     const data = await fetchPilotPoints();
     const pilotPlaces = mapPilotFeatures(data) as Feature[];
     features.featureArray.push(...pilotPlaces);
@@ -94,7 +162,7 @@ async function addPilotFeatures(features: FeaturesWithMaxFetchTime) {
       features.featureArray.push(...pilotPlaces);
     }
 
-    log.info(`Fetching ${pilotCacheKey} from cache succesful!`)
+    log.info(`Fetching ${pilotCacheKey} from cache succesful!`);
   }
 }
 
@@ -152,11 +220,7 @@ function getAreaFilter(type: 'area' | 'specialarea2' | 'specialarea9') {
 }
 
 async function addAreaFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent, featureType: string, areaFilter: (a: AlueFeature) => boolean) {
-
-  const [areaData, traficomN2000MapAreas] = await Promise.all([
-    fetchVATUByFairwayClass<AlueFeature>('vaylaalueet', event),
-    fetchN2000MapAreas()
-  ]);
+  const [areaData, traficomN2000MapAreas] = await Promise.all([fetchVATUByFairwayClass<AlueFeature>('vaylaalueet', event), fetchN2000MapAreas()]);
   const areas = areaData.data as AlueFeatureCollection;
   log.debug('areas: %d', areas.features.length);
 
@@ -201,7 +265,7 @@ async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
   const prohibitionCacheKey = 'prohibitionareas';
 
   try {
-    log.info(`Fetching ${prohibitionCacheKey} from traficom api`)
+    log.info(`Fetching ${prohibitionCacheKey} from traficom api`);
     const areas = await fetchProhibitionAreas();
     if (areas) {
       log.info('Saving response to S3');
@@ -223,7 +287,7 @@ async function addProhibitionAreaFeatures(features: FeaturesWithMaxFetchTime) {
       log.debug('prohibition areas: %d', areas.length);
       features.featureArray.push(...areas);
 
-      log.info(`Fetching ${prohibitionCacheKey} from cache succesful!`)
+      log.info(`Fetching ${prohibitionCacheKey} from cache succesful!`);
     }
   }
 }
@@ -296,7 +360,7 @@ async function addBoardLineFeatures(features: FeaturesWithMaxFetchTime, event: A
 async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEvent) {
   const [lineData, traficomN2000MapAreas] = await Promise.all([
     fetchVATUByFairwayClass<NavigointiLinjaFeature>('navigointilinjat', event),
-    fetchN2000MapAreas()
+    fetchN2000MapAreas(),
   ]);
 
   const lines = lineData.data as NavigointiLinjaFeatureCollection;
@@ -306,7 +370,6 @@ async function addLineFeatures(features: FeaturesWithMaxFetchTime, event: ALBEve
     features.featureArray.push(mapLineFeature(line, traficomN2000MapAreas));
   }
 }
-
 
 function inOfficialN2000Area(geom: Geometry, traficomN2000MapAreas: Geometry | undefined): boolean | undefined {
   if (traficomN2000MapAreas !== undefined) {
@@ -601,12 +664,15 @@ async function addFeatures(type: string, features: FeaturesWithMaxFetchTime, eve
     case 'pilot':
       await addPilotFeatures(features);
       return true;
+    case 'quay':
+      await addQuayFeatures(features);
+      return true;
     case 'harbor':
       await addHarborFeatures(features);
       return true;
     case 'area':
     case 'specialarea2':
-    case 'specialarea9' :
+    case 'specialarea9':
       await addAreaFeatures(features, event, type, getAreaFilter(type));
       return true;
     case 'specialarea15':

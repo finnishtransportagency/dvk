@@ -12,6 +12,7 @@ import { setSelectedHarborPreview, unsetSelectedHarborPreview } from '../layers'
 import { HarborPreviewAlert } from './HarborPreviewAlert';
 import { TabSwiper } from './fairwayCard/TabSwiper';
 import { useHarborLayer } from '../HarborFeatureLoader';
+import { useQuayLayer } from '../QuayFeatureLoader';
 
 interface HarborPreviewProps {
   widePane?: boolean;
@@ -23,17 +24,17 @@ const HarborPreview: React.FC<HarborPreviewProps> = ({ widePane }) => {
   const [tab, setTab] = useState(2);
   const { data, isPending, isFetching } = useHarborPreviewData(state.harborId, state.version);
   const { ready: layerReady } = useHarborLayer();
+  const { ready: quayLayerReady } = useQuayLayer();
 
   const path = [{ title: t('title', { count: 0 }), route: '/kortit/' }, { title: '-' }, { title: t('harboursTitle') }];
-
   useEffect(() => {
-    if (data?.harborPreview && layerReady) {
+    if (data?.harborPreview && layerReady && quayLayerReady) {
       setSelectedHarborPreview(data.harborPreview);
     }
     return () => {
       unsetSelectedHarborPreview();
     };
-  }, [data?.harborPreview, layerReady]);
+  }, [data?.harborPreview, layerReady, quayLayerReady]);
 
   return (
     <>

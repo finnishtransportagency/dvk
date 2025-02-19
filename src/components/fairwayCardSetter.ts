@@ -10,7 +10,7 @@ import {
   getFairwayCardPilotRoutes,
   getFairwayCardSafetyEquipmentFaults,
 } from '../utils/fairwayCardUtils';
-import { addQuay, zoomToExtent } from './layers';
+import { zoomToExtent } from './layers';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
 
 export function unsetSelectedFairwayCard() {
@@ -32,7 +32,7 @@ export function unsetSelectedFairwayCard() {
   const pilotPlaceSource = dvkMap.getVectorSource('pilot');
   const pilotageLimitSource = dvkMap.getVectorSource('pilotagelimit');
   const pilotRouteSource = dvkMap.getVectorSource('pilotroute');
-  const oldSelectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
+  const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
   for (const feature of oldSelectedFeatures) {
     switch (feature.getProperties().dataSource) {
       case 'line12':
@@ -68,6 +68,9 @@ export function unsetSelectedFairwayCard() {
       case 'harbor':
         harborSource.addFeature(feature);
         break;
+      case 'quay':
+        quaySource.addFeature(feature);
+        break;
       case 'circle':
         circleSource.addFeature(feature);
         break;
@@ -87,7 +90,6 @@ export function unsetSelectedFairwayCard() {
   }
   selectedFairwayCardSource.getFeatures().forEach((f) => f.set('selected', false));
   selectedFairwayCardSource.clear();
-  quaySource.clear();
   dvkMap.getFeatureLayer('selectedfairwaycard').setVisible(false);
 }
 
@@ -201,7 +203,6 @@ function setFairwayFeatures(fairwayCard: FairwayCardPartsFragment, selectedFeatu
 }
 
 function setHarbors(harbors: Harbor[] | undefined | null, selectedFeatures: Feature[], dvkMap: DvkMap) {
-  const quaySource = dvkMap.getVectorSource('quay');
   const harborSource = dvkMap.getVectorSource('harbor');
 
   for (const harbor of harbors ?? []) {
@@ -211,7 +212,27 @@ function setHarbors(harbors: Harbor[] | undefined | null, selectedFeatures: Feat
       harborSource.removeFeature(feature);
       selectedFeatures.push(feature);
     }
-    addQuay(harbor, quaySource);
+    setQuaysAndSections(harbor, selectedFeatures, dvkMap);
+  }
+}
+
+function setQuaysAndSections(h: Harbor | undefined | null, selectedFeatures: Feature[], dvkMap: DvkMap) {
+  const quaySource = dvkMap.getVectorSource('quay');
+  for (const quay of h?.quays ?? []) {
+    const id = quay?.geometry?.coordinates?.join(';');
+    const feature = id ? (quaySource.getFeatureById(id) as Feature<Geometry>) : undefined;
+    if (feature) {
+      quaySource.removeFeature(feature);
+      selectedFeatures.push(feature);
+    }
+    for (const section of quay?.sections ?? []) {
+      const id = section?.geometry?.coordinates?.join(';');
+      const feature = id ? (quaySource.getFeatureById(id) as Feature<Geometry>) : undefined;
+      if (feature) {
+        quaySource.removeFeature(feature);
+        selectedFeatures.push(feature);
+      }
+    }
   }
 }
 

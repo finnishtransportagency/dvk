@@ -484,6 +484,44 @@ const harbor2: HarborDBModel = {
   geometry: { coordinates: [3, 4] },
 };
 
+const harborN2000: HarborDBModel = {
+  id: 'harborN2000',
+  version: 'v1',
+  n2000HeightSystem: true,
+  name: { fi: 'HarborfiN2000', sv: 'HarborfiN2000', en: 'HarborfiN2000' },
+  geometry: { coordinates: [20, 60] },
+  quays: [
+    {
+      geometry: { coordinates: [20.01, 60] },
+      sections: [
+        {
+          depth: 1,
+          geometry: { coordinates: [20.02, 60] },
+        },
+      ],
+    },
+  ],
+};
+
+const harborMW: HarborDBModel = {
+  id: 'harborMW',
+  version: 'v1',
+  n2000HeightSystem: false,
+  name: { fi: 'HarborfiMW', sv: 'HarborfiMW', en: 'HarborfiMW' },
+  geometry: { coordinates: [20, 60] },
+  quays: [
+    {
+      geometry: { coordinates: [20.01, 60] },
+      sections: [
+        {
+          depth: 2,
+          geometry: { coordinates: [20.02, 60] },
+        },
+      ],
+    },
+  ],
+};
+
 const points = {
   features: [
     {
@@ -741,4 +779,12 @@ it('should return same cache headers for various features of non buoy/mareograph
 
   const observationFeatureHeaders = getCloudFrontCacheControlHeaders('observation')?.['Cache-Control'];
   expect(featureCacheHeaders).not.toEqual(observationFeatureHeaders);
+});
+
+it('should get harbor info api, prioritising N2000', async () => {
+  ddbMock.on(ScanCommand, { TableName: 'Harbor-mock' }).resolves({ Items: [harborMW, harborN2000] });
+  const response = await handler(mockFeaturesALBEvent('harbor'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(1);
 });

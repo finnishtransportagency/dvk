@@ -39,12 +39,23 @@ export const accessibilityUrl = {
   en: 'https://vayla.fi/en/about/contact-information/accessibility/digital-fairway-card',
 };
 
+const ONE_SECOND = 1000;
+const TEN_SECONDS = 10 * ONE_SECOND;
+const ONE_MINUTE = 60 * ONE_SECOND;
+const FIVE_MINUTES = 5 * ONE_MINUTE;
+const TEN_MINUTES = 10 * ONE_MINUTE;
+const FIFTEEN_MINUTES = 15 * ONE_MINUTE;
+const ONE_HOUR = 60 * ONE_MINUTE;
+const TWO_HOURS = 2 * ONE_HOUR;
+const SIX_HOURS = 6 * ONE_HOUR;
+const ONE_DAY = 24 * ONE_HOUR;
+
 export const OFFLINE_STORAGE = {
-  gcTime: 30 * 1000, // 30 seconds to clean from memory
-  staleTime: 2 * 60 * 60 * 1000, // 2 hours before data is stale
-  cacheTime: 24 * 24 * 60 * 60 * 1000, // 24 days between local cache (IndexedDB) carbage collection
-  staleTimeStatic: 50 * 24 * 60 * 60 * 1000, // 50 days for static s3 resources
-  cacheTimeStatic: 60 * 24 * 60 * 60 * 1000, // 60 days for static s3 resources
+  gcTime: 30 * ONE_SECOND, // 30 seconds to clean from memory
+  staleTime: TWO_HOURS, // 2 hours before data is stale
+  cacheTime: 24 * ONE_DAY, // 24 days between local cache (IndexedDB) garbage collection
+  staleTimeStatic: 50 * ONE_DAY, // 50 days for static s3 resources
+  cacheTimeStatic: 60 * ONE_DAY, // 60 days for static s3 resources
 };
 
 export type BackgroundLayerId =
@@ -74,6 +85,7 @@ export type FeatureDataId =
   | 'line3456'
   | 'restrictionarea'
   | 'harbor'
+  | 'quay'
   | 'safetyequipment'
   | 'depth12'
   | 'safetyequipmentfault'
@@ -137,7 +149,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -148,7 +160,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
+    refetchInterval: SIX_HOURS,
     refetchOnMount: true,
   },
   {
@@ -159,7 +171,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -170,7 +182,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
+    refetchInterval: SIX_HOURS,
     refetchOnMount: true,
   },
   {
@@ -181,7 +193,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -192,7 +204,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -203,7 +215,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -214,7 +226,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -225,7 +237,18 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
+    refetchOnMount: true,
+  },
+  {
+    id: 'quay',
+    projection: 'EPSG:4326',
+    url: new URL(featureLoaderUrl + '?type=quay'),
+    staticUrl: new URL(staticUrl + '/quay.json.gz'),
+    persist: true,
+    staleTime: OFFLINE_STORAGE.staleTime,
+    gcTime: OFFLINE_STORAGE.gcTime,
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -236,7 +259,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -247,7 +270,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -258,7 +281,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 1000 * 60 * 15, // 15 minutes
+    refetchInterval: FIFTEEN_MINUTES,
     refetchOnMount: true,
   },
   {
@@ -267,9 +290,9 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=marinewarning'),
     staticUrl: new URL(staticUrl + '/marinewarning.json.gz'),
     persist: true,
-    staleTime: 1000 * 60 * 10, // 10 minutes
+    staleTime: TEN_MINUTES,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 1000 * 60 * 15, // 15 minutes
+    refetchInterval: FIFTEEN_MINUTES,
     refetchOnMount: 'always',
   },
   {
@@ -280,7 +303,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -289,9 +312,9 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=mareograph'),
     staticUrl: new URL(staticUrl + '/mareograph.json.gz'),
     persist: false,
-    staleTime: 60 * 1000, // 1 minute
-    gcTime: 60 * 1000, // 1 minute
-    refetchInterval: 1000 * 60 * 5, // 5 minutes
+    staleTime: ONE_MINUTE,
+    gcTime: ONE_MINUTE,
+    refetchInterval: FIVE_MINUTES,
     refetchOnMount: 'always',
   },
   {
@@ -300,9 +323,9 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=forecast'),
     staticUrl: new URL(staticUrl + '/forecast.json.gz'),
     persist: false,
-    staleTime: 60 * 60 * 1000, // 1 hour
-    gcTime: 60 * 60 * 1000, // 1 hour
-    refetchInterval: 1000 * 60 * 60, // 1 hour
+    staleTime: ONE_HOUR,
+    gcTime: ONE_HOUR,
+    refetchInterval: ONE_HOUR,
     refetchOnMount: true,
   },
   {
@@ -311,9 +334,9 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=observation'),
     staticUrl: new URL(staticUrl + '/observation.json.gz'),
     persist: true,
-    staleTime: 60 * 1000, // 1 minute
-    gcTime: 60 * 1000, // 1 minute
-    refetchInterval: 1000 * 60 * 5, // 5 minutes
+    staleTime: ONE_MINUTE,
+    gcTime: ONE_MINUTE,
+    refetchInterval: FIVE_MINUTES,
     refetchOnMount: 'always',
   },
   {
@@ -322,9 +345,9 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(featureLoaderUrl + '?type=buoy'),
     staticUrl: new URL(staticUrl + '/buoy.json.gz'),
     persist: false,
-    staleTime: 60 * 1000, // 1 minute
-    gcTime: 60 * 1000, // 1 minute
-    refetchInterval: 5 * 60 * 1000, // 5 minutes
+    staleTime: ONE_MINUTE,
+    gcTime: ONE_MINUTE,
+    refetchInterval: FIVE_MINUTES,
     refetchOnMount: 'always',
   },
   {
@@ -335,7 +358,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -346,7 +369,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -357,7 +380,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -366,9 +389,9 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(aisLocationsUrl),
     staticUrl: new URL(staticUrl + '/aislocations.json.gz'),
     persist: false,
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 5 * 60 * 1000, // 5 minutes
-    refetchInterval: 10 * 1000, // 10 seconds
+    staleTime: FIVE_MINUTES,
+    gcTime: FIVE_MINUTES,
+    refetchInterval: TEN_SECONDS,
     refetchOnMount: true,
   },
   {
@@ -377,9 +400,9 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     url: new URL(aisVesselsUrl),
     staticUrl: new URL(staticUrl + '/aisvessels.json.gz'),
     persist: false,
-    staleTime: 2 * 60 * 60 * 1000, // 2 hours
-    gcTime: 2 * 60 * 60 * 1000, // 2 hours
-    refetchInterval: 10 * 60 * 1000, // 10 minutes
+    staleTime: TWO_HOURS,
+    gcTime: TWO_HOURS,
+    refetchInterval: TEN_MINUTES,
     refetchOnMount: true,
   },
   {
@@ -390,7 +413,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
+    refetchInterval: SIX_HOURS,
     refetchOnMount: true,
   },
   {
@@ -401,7 +424,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -412,7 +435,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 60 * 60 * 1000, // 1 hour
+    refetchInterval: ONE_HOUR,
     refetchOnMount: true,
   },
   {
@@ -423,7 +446,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -434,7 +457,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -445,7 +468,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -456,7 +479,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 2 * 60 * 60 * 1000, // 2 hours
+    refetchInterval: TWO_HOURS,
     refetchOnMount: true,
   },
   {
@@ -467,7 +490,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
     persist: true,
     staleTime: OFFLINE_STORAGE.staleTime,
     gcTime: OFFLINE_STORAGE.gcTime,
-    refetchInterval: 6 * 60 * 60 * 1000, // 6 hours
+    refetchInterval: SIX_HOURS,
     refetchOnMount: true,
   },
 ];
@@ -568,6 +591,7 @@ export const MAP: MapType = {
     { id: 'specialarea9', offlineSupport: true, localizedStyle: false },
     { id: 'specialarea15', offlineSupport: true, localizedStyle: false },
     { id: 'harbor', offlineSupport: true, localizedStyle: true },
+    { id: 'quay', offlineSupport: true, localizedStyle: true },
     { id: 'safetyequipment', offlineSupport: true, localizedStyle: false },
     { id: 'safetyequipmentfault', offlineSupport: true, localizedStyle: false },
     { id: 'depth12', offlineSupport: true, localizedStyle: true },

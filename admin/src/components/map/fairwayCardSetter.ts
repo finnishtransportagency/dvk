@@ -3,7 +3,7 @@ import { DvkMap, getMap } from './DvkMap';
 import { Geometry } from 'ol/geom';
 import { Fairway, FairwayCardPartsFragment, Harbor } from '../../graphql/generated';
 import { getFairwayAreaBorderFeatures } from '../../fairwayareaworker/FairwayAreaUtils';
-import { addQuay, getFittingPadding } from './layers';
+import { getFittingPadding } from './layers';
 import * as olExtent from 'ol/extent';
 
 export function unsetSelectedFairwayCard() {
@@ -21,7 +21,7 @@ export function unsetSelectedFairwayCard() {
   const boardLine12Source = dvkMap.getVectorSource('boardline12');
   const harborSource = dvkMap.getVectorSource('harbor');
   const circleSource = dvkMap.getVectorSource('circle');
-  const oldSelectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
+  const oldSelectedFeatures = selectedFairwayCardSource.getFeatures();
   for (const feature of oldSelectedFeatures) {
     switch (feature.getProperties().dataSource) {
       case 'line12':
@@ -57,6 +57,9 @@ export function unsetSelectedFairwayCard() {
       case 'harbor':
         harborSource.addFeature(feature);
         break;
+      case 'quay':
+        quaySource.addFeature(feature);
+        break;
       case 'circle':
         circleSource.addFeature(feature);
         break;
@@ -64,7 +67,6 @@ export function unsetSelectedFairwayCard() {
   }
   selectedFairwayCardSource.getFeatures().forEach((f) => f.set('selected', false, true));
   selectedFairwayCardSource.clear();
-  quaySource.clear();
 }
 
 function setFairwayLines(fairway: Fairway, isN2000HeightSystem: boolean, selectedFeatures: Feature[], dvkMap: DvkMap) {
@@ -167,7 +169,6 @@ function setFairwayFeatures(fairwayCard: FairwayCardPartsFragment, selectedFeatu
 }
 
 function setHarbors(harbors: Harbor[] | undefined | null, selectedFeatures: Feature[], dvkMap: DvkMap) {
-  const quaySource = dvkMap.getVectorSource('quay');
   const harborSource = dvkMap.getVectorSource('harbor');
 
   for (const harbor of harbors ?? []) {
@@ -177,7 +178,27 @@ function setHarbors(harbors: Harbor[] | undefined | null, selectedFeatures: Feat
       harborSource.removeFeature(feature);
       selectedFeatures.push(feature);
     }
-    addQuay(harbor, quaySource);
+    setQuaysAndSections(harbor, selectedFeatures, dvkMap);
+  }
+}
+
+function setQuaysAndSections(h: Harbor | undefined | null, selectedFeatures: Feature[], dvkMap: DvkMap) {
+  const quaySource = dvkMap.getVectorSource('quay');
+  for (const quay of h?.quays ?? []) {
+    const id = quay?.geometry?.coordinates?.join(';');
+    const feature = id ? (quaySource.getFeatureById(id) as Feature<Geometry>) : undefined;
+    if (feature) {
+      quaySource.removeFeature(feature);
+      selectedFeatures.push(feature);
+    }
+    for (const section of quay?.sections ?? []) {
+      const id = section?.geometry?.coordinates?.join(';');
+      const feature = id ? (quaySource.getFeatureById(id) as Feature<Geometry>) : undefined;
+      if (feature) {
+        quaySource.removeFeature(feature);
+        selectedFeatures.push(feature);
+      }
+    }
   }
 }
 

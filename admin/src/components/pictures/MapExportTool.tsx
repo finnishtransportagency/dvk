@@ -25,6 +25,7 @@ import {
   useSpeedLimitLayer,
   useVtsLineLayer,
   useVtsPointLayer,
+  useQuayLayer,
 } from '../map/FeatureLoader';
 import { Fairway, FairwayCardInput, Harbor, Orientation, PictureInput, PictureUploadInput } from '../../graphql/generated';
 import { setSelectedFairwayCard } from '../map/fairwayCardSetter';
@@ -90,6 +91,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
   const specialArea15Layer = useSpecialArea15Layer();
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
+  const quayLayer = useQuayLayer();
   const boardLine12Layer = useBoardLine12Layer();
   const bgFinlandLayer = useBackgroundFinlandLayer();
   const bgMmlSatamatLayer = useBackgroundMmlSatamatLayer();
@@ -120,6 +122,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
       specialArea15Layer,
       pilotLayer,
       harborLayer,
+      quayLayer,
       boardLine12Layer,
       bgFinlandLayer,
       bgMmlSatamatLayer,
@@ -146,6 +149,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
     area12Layer,
     pilotLayer,
     harborLayer,
+    quayLayer,
     boardLine12Layer,
     bgFinlandLayer,
     bgMmlSatamatLayer,
