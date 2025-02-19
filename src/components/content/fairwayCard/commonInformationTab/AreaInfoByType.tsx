@@ -1,5 +1,5 @@
 import React from 'react';
-import { Area, Fairway } from '../../../graphql/generated';
+import { Area, Fairway } from '../../../../graphql/generated';
 import uniqueId from 'lodash/uniqueId';
 import { AreaInfoListItem } from './AreaInfoListItem';
 import { ProhibitionAreaInfoListItem } from './ProhibitionAreaInfoListItem';

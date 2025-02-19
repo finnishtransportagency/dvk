@@ -1,13 +1,13 @@
 import React from 'react';
 import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Lang, N2000_URLS } from '../../../utils/constants';
-import { useDvkContext } from '../../../hooks/dvkContext';
+import { Lang, N2000_URLS } from '../../../../utils/constants';
+import { useDvkContext } from '../../../../hooks/dvkContext';
 import uniqueId from 'lodash/uniqueId';
-import { Fairway, SizingVessel, Text } from '../../../graphql/generated';
-import { metresToNauticalMiles } from '../../../utils/conversions';
+import { Fairway, SizingVessel, Text } from '../../../../graphql/generated';
+import { metresToNauticalMiles } from '../../../../utils/conversions';
 import { TFunction } from 'i18next';
-import { getFairwayName } from '../../../utils/common';
+import { getFairwayName } from '../../../../utils/common';
 
 export type DimensionInfoProps = {
   data?: Fairway[] | null;

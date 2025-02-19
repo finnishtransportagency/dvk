@@ -1,9 +1,9 @@
 import React from 'react';
 import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { Tug } from '../../../graphql/generated';
-import { Lang } from '../../../utils/constants';
-import PhoneNumber from './PhoneNumber';
+import { Tug } from '../../../../graphql/generated';
+import { Lang } from '../../../../utils/constants';
+import PhoneNumber from '../PhoneNumber';
 import uniqueId from 'lodash/uniqueId';
 
 type TugInfoProps = {

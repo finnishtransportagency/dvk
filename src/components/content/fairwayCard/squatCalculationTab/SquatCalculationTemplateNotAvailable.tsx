@@ -1,7 +1,7 @@
 import React from 'react';
 import { IonCol, IonGrid, IonIcon, IonRow } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import alertIcon from '../../../theme/img/alert_icon.svg';
+import alertIcon from '../../../../theme/img/alert_icon.svg';
 import { Link } from 'react-router-dom';
 import './SquatCalculationTemplate.css';
 

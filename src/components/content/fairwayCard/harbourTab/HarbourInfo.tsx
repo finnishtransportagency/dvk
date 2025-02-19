@@ -1,10 +1,10 @@
 import React from 'react';
 import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { HarborPartsFragment } from '../../../graphql/generated';
-import { setSelectedHarbor } from '../../layers';
-import { Lang } from '../../../utils/constants';
-import { InfoParagraph } from '../Paragraph';
+import { HarborPartsFragment } from '../../../../graphql/generated';
+import { setSelectedHarbor } from '../../../layers';
+import { Lang } from '../../../../utils/constants';
+import { InfoParagraph } from '../../Paragraph';
 import { QuayInfo } from './QuayInfo';
 import { ContactInfo } from './ContactInfo';
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import { Lang } from '../../../utils/constants';
+import { Lang } from '../../../../utils/constants';
 import { useTranslation } from 'react-i18next';
 import { IonLabel } from '@ionic/react';
-import { coordinatesToStringHDM } from '../../../utils/coordinateUtils';
+import { coordinatesToStringHDM } from '../../../../utils/coordinateUtils';
 import { Geometry, LineString } from 'ol/geom';
-import { setSelectedPilotageLimit } from '../../layers';
+import { setSelectedPilotageLimit } from '../../../layers';
 import { Link } from 'react-router-dom';
-import { goToFeature } from '../../../utils/common';
+import { goToFeature } from '../../../../utils/common';
 import { Feature } from 'ol';
-import { PilotageLimitFeatureProperties } from '../../features';
+import { PilotageLimitFeatureProperties } from '../../../features';
 
 interface PilotageLimitInfoProps {
   pilotLimits: Feature<Geometry>[];

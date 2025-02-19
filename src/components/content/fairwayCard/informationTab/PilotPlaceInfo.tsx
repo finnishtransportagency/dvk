@@ -1,12 +1,12 @@
 import React from 'react';
 import { IonLabel } from '@ionic/react';
-import { coordinatesToStringHDM } from '../../../utils/coordinateUtils';
+import { coordinatesToStringHDM } from '../../../../utils/coordinateUtils';
 import { useTranslation } from 'react-i18next';
-import { setSelectedPilotPlace } from '../../layers';
-import { PilotPlace } from '../../../graphql/generated';
-import { Lang } from '../../../utils/constants';
+import { setSelectedPilotPlace } from '../../../layers';
+import { PilotPlace } from '../../../../graphql/generated';
+import { Lang } from '../../../../utils/constants';
 import { Link } from 'react-router-dom';
-import { goToFeature } from '../../../utils/common';
+import { goToFeature } from '../../../../utils/common';
 
 interface PilotPlaceInfoProps {
   pilotPlaces: PilotPlace[] | undefined | null;

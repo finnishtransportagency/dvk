@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Paragraph from '../Paragraph';
-import { Fairway, Text } from '../../../graphql/generated';
+import Paragraph from '../../Paragraph';
+import { Fairway, Text } from '../../../../graphql/generated';
 
 type AnchorageInfoProps = {
   data?: Fairway[] | null;

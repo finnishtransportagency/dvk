@@ -169,27 +169,40 @@ export const ContentModal: React.FC<ModalContentProps> = ({ modal, modalOpen, mo
   };
 
   const keyDownAction = (event: React.KeyboardEvent<HTMLIonInputElement>) => {
-    if (event.key === 'Escape') closeDropdown();
-    if (event.key === 'Tab' && isSearchbarOpen && searchQuery.trim().length >= MINIMUM_QUERYLENGTH) {
-      event.preventDefault();
-      setIsSearchbarOpen(false);
+    switch (event.key) {
+      case 'Escape':
+        closeDropdown();
+        break;
+      case 'Tab':
+        if (isSearchbarOpen && searchQuery.trim().length >= MINIMUM_QUERYLENGTH) {
+          event.preventDefault();
+          setIsSearchbarOpen(false);
+        }
+        break;
+      case 'ArrowDown':
+        event.preventDefault();
+        handleArrowDownKeyDown((event.target as HTMLInputElement).type);
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        setActiveSelection(activeSelection < 2 ? filteredFairways.length : activeSelection - 1);
+        break;
+      case 'Enter':
+        if (isSearchbarOpen && activeSelection) {
+          closeDropdown();
+          const targetPath = '/kortit/' + filteredFairways[activeSelection - 1].id;
+          if (curPath !== targetPath) history.push('/kortit/' + filteredFairways[activeSelection - 1].id);
+        }
+        break;
+      default:
     }
-    if (event.key === 'ArrowDown') {
-      event.preventDefault();
-      if (!isSearchbarOpen && (event.target as HTMLInputElement).type !== 'button') {
-        setIsSearchbarOpen(true);
-      } else if (isSearchbarOpen && filteredFairways.length > 0) {
-        setActiveSelection(activeSelection >= filteredFairways.length ? 1 : activeSelection + 1);
-      }
-    }
-    if (event.key === 'ArrowUp') {
-      event.preventDefault();
-      setActiveSelection(activeSelection < 2 ? filteredFairways.length : activeSelection - 1);
-    }
-    if (event.key === 'Enter' && isSearchbarOpen && activeSelection) {
-      closeDropdown();
-      const targetPath = '/kortit/' + filteredFairways[activeSelection - 1].id;
-      if (curPath !== targetPath) history.push('/kortit/' + filteredFairways[activeSelection - 1].id);
+  };
+
+  const handleArrowDownKeyDown = (eventTargetType: string) => {
+    if (!isSearchbarOpen && eventTargetType !== 'button') {
+      setIsSearchbarOpen(true);
+    } else if (isSearchbarOpen && filteredFairways.length > 0) {
+      setActiveSelection(activeSelection >= filteredFairways.length ? 1 : activeSelection + 1);
     }
   };
 
