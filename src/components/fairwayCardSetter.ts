@@ -1,7 +1,7 @@
 import Feature from 'ol/Feature';
 import { DvkMap, getMap } from './DvkMap';
 import { Geometry } from 'ol/geom';
-import { Fairway, FairwayCardPartsFragment, Harbor } from '../graphql/generated';
+import { Area, Fairway, FairwayCardPartsFragment, Harbor } from '../graphql/generated';
 import {
   getFairwayCardMareographs,
   getFairwayCardObservations,
@@ -12,6 +12,7 @@ import {
 } from '../utils/fairwayCardUtils';
 import { zoomToExtent } from './layers';
 import { getFairwayAreaBorderFeatures } from '../fairwayareaworker/FairwayAreaUtils';
+import VectorSource from 'ol/source/Vector';
 
 export function unsetSelectedFairwayCard() {
   const dvkMap = getMap();
@@ -131,6 +132,17 @@ function setFairwayLines(fairway: Fairway, isN2000HeightSystem: boolean, selecte
   }
 }
 
+function addAreaToSelectedFeatures(source: VectorSource<Feature<Geometry>>, area: Area, selectedFeatures: Feature<Geometry>[], isN2000?: boolean) {
+  const feature = source.getFeatureById(area.id) as Feature<Geometry>;
+  if (feature) {
+    source.removeFeature(feature);
+    selectedFeatures.push(feature);
+    if (isN2000 !== undefined) {
+      feature.set('n2000HeightSystem', isN2000);
+    }
+  }
+}
+
 function setFairwayAreas(fairway: Fairway, isN2000HeightSystem: boolean, selectedFeatures: Feature[], dvkMap: DvkMap) {
   const area12Source = dvkMap.getVectorSource('area12');
   const area3456Source = dvkMap.getVectorSource('area3456');
@@ -148,27 +160,13 @@ function setFairwayAreas(fairway: Fairway, isN2000HeightSystem: boolean, selecte
       feature = depthSource.getFeatureById(area.id) as Feature<Geometry>;
       feature?.set('n2000HeightSystem', isN2000HeightSystem);
     } else {
-      feature = area3456Source.getFeatureById(area.id) as Feature<Geometry>;
-      if (feature) {
-        area3456Source.removeFeature(feature);
-        selectedFeatures.push(feature);
-      }
+      addAreaToSelectedFeatures(area3456Source, area, selectedFeatures);
     }
     if (!feature) {
-      feature = specialArea2Source.getFeatureById(area.id) as Feature<Geometry>;
-      if (feature) {
-        specialArea2Source.removeFeature(feature);
-        selectedFeatures.push(feature);
-        feature.set('n2000HeightSystem', isN2000HeightSystem);
-      }
+      addAreaToSelectedFeatures(specialArea2Source, area, selectedFeatures, isN2000HeightSystem);
     }
     if (!feature) {
-      feature = specialArea9Source.getFeatureById(area.id) as Feature<Geometry>;
-      if (feature) {
-        specialArea9Source.removeFeature(feature);
-        selectedFeatures.push(feature);
-        feature.set('n2000HeightSystem', isN2000HeightSystem);
-      }
+      addAreaToSelectedFeatures(specialArea9Source, area, selectedFeatures, isN2000HeightSystem);
     }
   }
   for (const prohibitionArea of fairway.prohibitionAreas ?? []) {

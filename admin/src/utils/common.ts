@@ -43,7 +43,8 @@ const sortByString = (a: Maybe<string> | undefined, b: Maybe<string> | undefined
 };
 
 const sortByNumber = (a: number, b: number, sortDescending: boolean) => {
-  return sortDescending ? b - a : a - b;
+  if (sortDescending) return b - a;
+  return a - b;
 };
 
 function searchQueryMatches(searchQuery: string, lang: Lang, name: Text, id: string) {
@@ -59,8 +60,7 @@ export const filterItemList = (
   searchQuery: string,
   itemTypes: ItemType[],
   itemStatus: Status[],
-  sortBy: string,
-  sortDescending: boolean,
+  sort: { sortBy: string; sortDescending: boolean },
   t?: TFunction
 ) => {
   const groups = t ? ['-', t('archipelagoSea'), t('gulfOfFinland'), t('gulfOfBothnia')] : [];
@@ -75,31 +75,31 @@ export const filterItemList = (
           (itemStatus.length > 0 ? itemStatus.indexOf(item.status) > -1 : true)
       )
       .sort((a, b) => {
-        switch (sortBy) {
+        switch (sort.sortBy) {
           case 'name':
-            return sortByString(a.name[lang], b.name[lang], sortDescending);
+            return sortByString(a.name[lang], b.name[lang], sort.sortDescending);
           case 'type':
-            return sortByString(t!(`item-type-${a.type}`), t!(`item-type-${b.type}`), sortDescending);
+            return sortByString(t!(`item-type-${a.type}`), t!(`item-type-${b.type}`), sort.sortDescending);
           case 'area':
-            return sortByString(groups[Number(a.group ?? 0)], groups[Number(b.group ?? 0)], sortDescending);
+            return sortByString(groups[Number(a.group ?? 0)], groups[Number(b.group ?? 0)], sort.sortDescending);
           case 'referencelevel':
-            return sortByNumber(Number(a.n2000HeightSystem), Number(b.n2000HeightSystem), sortDescending);
+            return sortByNumber(Number(a.n2000HeightSystem), Number(b.n2000HeightSystem), sort.sortDescending);
           case 'status':
-            return sortByString(t!(`item-status-${a.status}`), t!(`item-status-${b.status}`), sortDescending);
+            return sortByString(t!(`item-status-${a.status}`), t!(`item-status-${b.status}`), sort.sortDescending);
           case 'creator':
-            return sortByString(a.creator, b.creator, sortDescending);
+            return sortByString(a.creator, b.creator, sort.sortDescending);
           case 'modifier':
-            return sortByString(a.modifier, b.modifier, sortDescending);
+            return sortByString(a.modifier, b.modifier, sort.sortDescending);
           case 'modified':
             // should be newest first when arrow down hence "!sortDescending"
-            return sortByNumber(Number(a.modificationTimestamp), Number(b.modificationTimestamp), !sortDescending);
+            return sortByNumber(Number(a.modificationTimestamp), Number(b.modificationTimestamp), !sort.sortDescending);
           case 'notice':
-            return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sortDescending);
+            return sortByString(a.temporaryNotifications?.[0]?.content?.[lang], b.temporaryNotifications?.[0]?.content?.[lang], !sort.sortDescending);
           case 'identifier':
-            return sortByString(a.id, b.id, sortDescending);
+            return sortByString(a.id, b.id, sort.sortDescending);
           case 'version':
             // should be newest first when arrow down hence "!sortDescending"
-            return sortByNumber(Number(a.version.slice(1)), Number(b.version.slice(1)), !sortDescending);
+            return sortByNumber(Number(a.version.slice(1)), Number(b.version.slice(1)), !sort.sortDescending);
           default:
             return 1;
         }

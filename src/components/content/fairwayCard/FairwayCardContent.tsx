@@ -1,62 +1,29 @@
 import React, { useEffect, useState } from 'react';
-import { IonText } from '@ionic/react';
 import { useTranslation } from 'react-i18next';
-import { FairwayCardPartsFragment, HarborPartsFragment, SafetyEquipmentFault } from '../../../graphql/generated';
+import { FairwayCardPartsFragment, SafetyEquipmentFault, SquatCalculation } from '../../../graphql/generated';
 import { isMobile } from '../../../utils/common';
 import { setSelectedFairwayCard } from '../../fairwayCardSetter';
-import { Lang, MAP } from '../../../utils/constants';
+import { Lang } from '../../../utils/constants';
 import PrintMap from '../../PrintMap';
 import Breadcrumb from '../Breadcrumb';
-import Paragraph, { InfoParagraph } from '../Paragraph';
 import { useDvkContext } from '../../../hooks/dvkContext';
-import { VTSInfo } from './VTSInfo';
-import { GeneralInfo } from './GeneralInfo';
-import { AnchorageInfo } from './AnchorageInfo';
-import { SpeedLimitInfo } from './SpeedLimitInfo';
-import { ProhibitionInfo } from './ProhibitionInfo';
-import { DimensionInfo } from './DimensionInfo';
-import { LiningInfo } from './LiningInfo';
-import { AreaInfo } from './AreaInfo';
-import { PilotInfo } from './PilotInfo';
-import { TugInfo } from './TugInfo';
-import { HarbourInfo } from './HarbourInfo';
 import { Alert } from './Alert';
-import {
-  getFairwayCardPilotRoutes,
-  getTabLabel,
-  getFairwayCardPilotageLimits,
-  getFairwayCardSafetyEquipmentFaults,
-  getFairwayCardObservations,
-  getFairwayCardMareographs,
-  getFairwayCardForecasts,
-  getValidSquatCalculations,
-} from '../../../utils/fairwayCardUtils';
+import { getTabLabel, getFairwayCardSafetyEquipmentFaults, getValidSquatCalculations } from '../../../utils/fairwayCardUtils';
 import PendingPlaceholder from './PendingPlaceholder';
 import { FairwayCardHeader } from './FairwayCardHeader';
 import { SafetyEquipmentFaultAlert } from './SafetyEquipmentFaultAlert';
-import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation, useWeatherLimits } from '../../../utils/dataLoader';
+import { useSafetyEquipmentFaultDataWithRelatedDataInvalidation } from '../../../utils/dataLoader';
 import { TabSwiper } from './TabSwiper';
-import PilotRouteList from '../PilotRouteList';
-import { usePilotRouteFeatures } from '../../PilotRouteFeatureLoader';
-import { Feature } from 'ol';
-import { Geometry, LineString } from 'ol/geom';
-import { usePilotageLimitFeatures } from '../../PilotageLimitFeatureLoader';
 import { useSafetyEquipmentAndFaultFeatures } from '../../SafetyEquipmentFeatureLoader';
 import NotificationAlert from '../../Alert';
 import infoIcon from '../../../theme/img/info.svg';
 import { compareAsc } from 'date-fns';
-import { useObservationFeatures } from '../../ObservationFeatureLoader';
-import { ObservationInfo } from './ObservationInfo';
-import MarkdownParagraph from '../MarkdownParagraph';
-import { AreaInfoByType } from './AreaInfoByType';
-import MareographInfo from './MareographInfo';
-import { useMareographFeatures } from '../../MareographFeatureLoader';
-import { useForecastFeatures } from '../../ForecastLoader';
-import ForecastContainer from '../ForecastContainer';
-import SquatCalculationTemplateNotAvailable from './SquatCalculationTemplateNotAvailable';
-import SquatCalculationTemplate from './SquatCalculationTemplate';
-import { uniqueId } from 'lodash';
-import { asWeatherLimits, findWeatherLimitById } from '../../../utils/weatherUtils';
+import { InformationTab } from './informationTab/InformationTab';
+import { HarbourTab } from './harbourTab/HarbourTab';
+import { CommonInformationTab } from './commonInformationTab/CommonInformationTab';
+import { PilotRouteTab } from './pilotRouteTab/PilotRouteTab';
+import { SquatCalculationTab } from './squatCalculationTab/SquatCalculationTab';
+import { WeatherForecastTab } from './weatherForecastTab/FairwayCardWeatherForecastTab';
 
 export enum FairwayCardTab {
   Information = 1,
@@ -89,11 +56,6 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
   const { state } = useDvkContext();
   const [tab, setTab] = useState<FairwayCardTab>(FairwayCardTab.Information);
   const [safetyEquipmentFaults, setSafetyEquipmentFaults] = useState<SafetyEquipmentFault[]>([]);
-  const [pilotageLimits, setPilotageLimits] = useState<Feature<Geometry>[]>([]);
-  const [pilotRoutes, setPilotRoutes] = useState<Feature<Geometry>[]>([]);
-  const [observations, setObservations] = useState<Feature<Geometry>[]>([]);
-  const [mareographs, setMareographs] = useState<Feature<Geometry>[]>([]);
-  const [forecasts, setForecasts] = useState<Feature<Geometry>[]>([]);
 
   const {
     data: safetyEquipmentData,
@@ -102,12 +64,6 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
     isFetching: faultIsFetching,
   } = useSafetyEquipmentFaultDataWithRelatedDataInvalidation();
   const { safetyEquipmentFaultFeatures, ready: safetyEquipmentsReady } = useSafetyEquipmentAndFaultFeatures();
-  const { pilotageLimitFeatures, ready: pilotageLimitsReady } = usePilotageLimitFeatures();
-  const { pilotRouteFeatures, ready: pilotRoutesReady } = usePilotRouteFeatures();
-  const { observationFeatures, ready: observationsReady } = useObservationFeatures();
-  const { mareographFeatures, ready: mareographsReady } = useMareographFeatures();
-  const { forecastFeatures, ready: forecastsReady } = useForecastFeatures();
-  const { data: weatherLimits } = useWeatherLimits();
 
   useEffect(() => {
     if (fairwayCard && safetyEquipmentsReady && !faultIsPending && !faultIsFetching) {
@@ -117,47 +73,6 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
       setSafetyEquipmentFaults(equipmentFaults);
     }
   }, [fairwayCard, safetyEquipmentsReady, safetyEquipmentFaultFeatures, safetyEquipmentData, faultIsPending, faultIsFetching]);
-
-  useEffect(() => {
-    if (fairwayCard && pilotageLimitsReady) {
-      const features = getFairwayCardPilotageLimits(fairwayCard, pilotageLimitFeatures);
-      const limits: Feature<Geometry>[] = features
-        .map((l) => {
-          // Feature.clone(): Feature geometry is cloned, but properties and style are original. Id is not set.
-          const f = l.clone();
-          const geometry = f.getGeometry() as Geometry;
-          f.setGeometry(geometry.transform(MAP.EPSG, 'EPSG:4326') as LineString);
-          f.setId(l.getId());
-          return f;
-        })
-        .sort((a, b) => a.getProperties().numero - b.getProperties().numero);
-      setPilotageLimits(limits);
-    }
-  }, [pilotageLimitsReady, pilotageLimitFeatures, fairwayCard]);
-
-  useEffect(() => {
-    if (fairwayCard && pilotRoutesReady) {
-      setPilotRoutes(getFairwayCardPilotRoutes(fairwayCard, pilotRouteFeatures));
-    }
-  }, [fairwayCard, pilotRouteFeatures, pilotRoutesReady]);
-
-  useEffect(() => {
-    if (fairwayCard && observationsReady) {
-      setObservations(getFairwayCardObservations(fairwayCard, observationFeatures));
-    }
-  }, [observationsReady, observationFeatures, fairwayCard]);
-
-  useEffect(() => {
-    if (fairwayCard && mareographsReady) {
-      setMareographs(getFairwayCardMareographs(fairwayCard, mareographFeatures));
-    }
-  }, [mareographsReady, mareographFeatures, fairwayCard]);
-
-  useEffect(() => {
-    if (fairwayCard && forecastsReady) {
-      setForecasts(getFairwayCardForecasts(fairwayCard, forecastFeatures));
-    }
-  }, [forecastsReady, forecastFeatures, fairwayCard]);
 
   const isN2000HeightSystem = !!fairwayCard?.n2000HeightSystem;
   const lang = i18n.resolvedLanguage as Lang;
@@ -213,7 +128,7 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
 
   //Check validity of squat calculation templates
   //all Areas
-  const validSquats = fairwayCard ? getValidSquatCalculations(fairwayCard) : [];
+  const validSquats: SquatCalculation[] | undefined = fairwayCard ? getValidSquatCalculations(fairwayCard) : [];
 
   return (
     <>
@@ -260,141 +175,27 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           <TabSwiper tab={tab} setTab={setTab} widePane={widePane} />
 
           <div className={getTabClassName(FairwayCardTab.Information)}>
-            <IonText className="no-margin-top">
-              <h4>
-                <strong>{t('information')}</strong>
-              </h4>
-            </IonText>
-            <LiningInfo data={fairwayCard?.fairways} lineText={fairwayCard?.lineText} />
-            <DimensionInfo data={fairwayCard?.fairways} designSpeedText={fairwayCard?.designSpeed} isN2000HeightSystem={isN2000HeightSystem} />
-            <IonText>
-              <Paragraph title={t('attention')} bodyText={fairwayCard?.attention ?? undefined} />
-              <ProhibitionInfo data={fairwayCard?.fairways} inlineLabel data-testid="prohibitionAreas" />
-              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} inlineLabel data-testid="speedLimit" />
-              <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} inlineLabel />
-            </IonText>
-
-            <IonText data-testid="navigation">
-              <h4>
-                <strong>{t('navigation')}</strong>
-              </h4>
-              <Paragraph bodyText={fairwayCard?.generalInfo ?? undefined} />
-              <Paragraph title={t('navigationCondition')} bodyText={fairwayCard?.navigationCondition ?? undefined} showNoData />
-              <Paragraph title={t('iceCondition')} bodyText={fairwayCard?.iceCondition ?? undefined} showNoData />
-            </IonText>
-
-            <IonText>
-              <h4>
-                <strong>
-                  {t('recommendations')} <span>({t('fairwayAndHarbour').toLocaleLowerCase()})</span>
-                </strong>
-              </h4>
-              <Paragraph title={t('windRecommendation')} bodyText={fairwayCard?.windRecommendation ?? undefined} showNoData />
-              <Paragraph title={t('vesselRecommendation')} bodyText={fairwayCard?.vesselRecommendation ?? undefined} showNoData />
-              <Paragraph title={t('visibilityRecommendation')} bodyText={fairwayCard?.visibility ?? undefined} showNoData />
-              <ObservationInfo observations={observations} />
-              <MareographInfo mareographs={mareographs} />
-            </IonText>
-
-            {fairwayCard?.additionalInfo && (
-              <IonText>
-                <h4>
-                  <strong>{t('additionalInfo')}</strong>
-                </h4>
-                <MarkdownParagraph markdownText={fairwayCard?.additionalInfo} />
-              </IonText>
-            )}
-            <IonText>
-              <h4>
-                <strong>{t('trafficServices')}</strong>
-              </h4>
-            </IonText>
-            <PilotInfo pilotageLimits={pilotageLimits} pilot={fairwayCard?.trafficService?.pilot} />
-            <VTSInfo data={fairwayCard?.trafficService?.vts} />
-            <TugInfo data={fairwayCard?.trafficService?.tugs} />
+            <InformationTab fairwayCard={fairwayCard} isN2000HeightSystem={isN2000HeightSystem} />
           </div>
 
           <div className={getTabClassName(FairwayCardTab.Harbours)}>
-            {fairwayCard?.harbors?.map((harbour: HarborPartsFragment | null | undefined, idx: React.Key) => {
-              return <HarbourInfo data={harbour} key={harbour?.id} isLast={fairwayCard.harbors?.length === Number(idx) + 1} />;
-            })}
-            {(!fairwayCard?.harbors || fairwayCard?.harbors?.length === 0) && (
-              <IonText className="no-print">
-                <InfoParagraph />
-              </IonText>
-            )}
+            <HarbourTab fairwayCard={fairwayCard} />
           </div>
 
           <div className={getTabClassName(FairwayCardTab.CommonInformation)}>
-            <IonText className="no-margin-top">
-              <h5>{t('commonInformation')}</h5>
-              <GeneralInfo data={fairwayCard?.fairways} />
-              <ProhibitionInfo data={fairwayCard?.fairways} />
-              {/* 15 === prohibition area typecode*/}
-              <AreaInfoByType data={fairwayCard?.fairways ?? []} typeCode={15} />
-            </IonText>
-            <IonText>
-              <h5>{t('speedLimit')}</h5>
-              <SpeedLimitInfo data={fairwayCard?.fairways} speedLimitText={fairwayCard?.speedLimit} />
-            </IonText>
-            <IonText>
-              <h5>{t('anchorage')}</h5>
-              <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} />
-              {/* 2 === special area typecode*/}
-              <AreaInfoByType data={fairwayCard?.fairways ?? []} typeCode={2} />
-            </IonText>
-            <IonText>
-              <h5>{t('fairwayAreas')}</h5>
-            </IonText>
-            <AreaInfo data={fairwayCard?.fairways} />
+            <CommonInformationTab fairwayCard={fairwayCard} />
           </div>
 
           <div className={getTabClassName(FairwayCardTab.PilotRoutes)}>
-            {pilotRoutesReady && (
-              <>
-                {pilotRoutes.length > 0 ? (
-                  <PilotRouteList pilotRoutes={pilotRoutes} featureLink={'/kortit/' + fairwayCardId} layerId="selectedfairwaycard" />
-                ) : (
-                  <IonText className="no-print">
-                    <InfoParagraph />
-                  </IonText>
-                )}
-              </>
-            )}
+            <PilotRouteTab fairwayCard={fairwayCard} fairwayCardId={fairwayCardId} />
           </div>
 
           <div className={getTabClassName(FairwayCardTab.SquatCalculation) + ((validSquats ?? []).length > 0 ? '' : ' onecolumn')}>
-            {validSquats && validSquats.length > 0 ? (
-              validSquats
-                .toSorted((a, b) => {
-                  if (!a.place || !b.place || !a.place[lang] || !b.place[lang]) return 0;
-                  return a.place[lang].localeCompare(b.place[lang]);
-                })
-                .map((calc) => {
-                  return <SquatCalculationTemplate squatCalculation={calc} key={uniqueId()} fairways={fairwayCard.fairways} />;
-                })
-            ) : (
-              <SquatCalculationTemplateNotAvailable />
-            )}
+            <SquatCalculationTab fairwayCard={fairwayCard} validSquats={validSquats ?? []} />
           </div>
+
           <div className={getTabClassName(FairwayCardTab.WeatherForecasts)}>
-            {forecastsReady && forecasts ? (
-              forecasts.map((f) => {
-                return (
-                  <ForecastContainer
-                    forecast={f}
-                    key={f.getId()}
-                    multicontainer={forecasts.length > 1}
-                    weatherLimits={findWeatherLimitById(
-                      asWeatherLimits(weatherLimits?.weatherLimits ?? []),
-                      f.getId() ? String(f.getId()) : undefined
-                    )}
-                  />
-                );
-              })
-            ) : (
-              <Alert errorText={t('forecastNotFound')}></Alert>
-            )}
+            <WeatherForecastTab fairwayCard={fairwayCard} />
           </div>
 
           {!isMobile() && (
