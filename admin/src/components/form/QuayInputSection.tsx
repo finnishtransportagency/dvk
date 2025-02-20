@@ -33,7 +33,7 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
         actionType="quayName"
         updateState={updateState}
         actionTarget={idx}
-        required={!!(section.name?.fi || section.name?.sv || section.name?.en)}
+        required={!!(section.name?.fi ?? section.name?.sv ?? section.name?.en)}
         error={
           section.name?.fi || section.name?.sv || section.name?.en
             ? validationErrors?.find((error) => error.id === 'quayName-' + idx)?.msg
@@ -49,7 +49,7 @@ const QuayInputSection: React.FC<QuayInputSectionProps> = ({ section, idx, updat
         actionType="quayExtraInfo"
         updateState={updateState}
         actionTarget={idx}
-        required={!!(section.extraInfo?.fi || section.extraInfo?.sv || section.extraInfo?.en)}
+        required={!!(section.extraInfo?.fi ?? section.extraInfo?.sv ?? section.extraInfo?.en)}
         error={
           section.extraInfo?.fi || section.extraInfo?.sv || section.extraInfo?.en
             ? validationErrors?.find((error) => error.id === 'quayExtraInfo-' + idx)?.msg

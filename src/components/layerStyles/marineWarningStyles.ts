@@ -1,35 +1,30 @@
 import Feature, { FeatureLike } from 'ol/Feature';
 import { Style, Icon, Fill, Stroke, Text } from 'ol/style';
 import { Geometry, LineString, Point, Polygon } from 'ol/geom';
-import marinearea from '../../theme/img/merivaroitus_tausta.svg';
-import marineareaSelected from '../../theme/img/merivaroitus_tausta_valittu.svg';
 import { isGeneralMarineWarning, getWarningImgSource } from '../../utils/common';
 import { MarineWarningFeatureProperties } from '../features';
 import CircleStyle from 'ol/style/Circle';
+import { getStripeFill } from './utils/stripeFill';
 
-const marineAreaImage = new Image();
-marineAreaImage.src = marinearea;
 let areaStyle: Style | undefined = undefined;
-
-const marineAreaSelectedImage = new Image();
-marineAreaSelectedImage.src = marineareaSelected;
 let selectedAreaStyle: Style | undefined = undefined;
 
 function getAreaStyle(feature: FeatureLike) {
   const selected = feature.get('hoverStyle');
   let s = selected ? selectedAreaStyle : areaStyle;
   if (!s) {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-    const gradient = context.createPattern(selected ? marineAreaSelectedImage : marineAreaImage, 'repeat');
+    let stripeFill;
+    if (selected) {
+      stripeFill = getStripeFill('rgba(236, 14, 14, 0.65)', 'rgba(236, 14, 14, 0.4)');
+    } else {
+      stripeFill = getStripeFill('rgba(236, 14, 14, 0.5)', 'rgba(236, 14, 14, 0.25)');
+    }
     s = new Style({
       stroke: new Stroke({
         color: '#EC0E0E',
         width: 2,
       }),
-      fill: new Fill({
-        color: gradient,
-      }),
+      fill: stripeFill,
       zIndex: 1,
     });
     if (selected) {

@@ -1,14 +1,20 @@
 import { diff } from 'deep-object-diff';
-import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, InputMaybe, SquatCalculationInput } from '../graphql/generated';
+import { FairwayCardInput, GeometryInput, HarborInput, TextInput, Text, InputMaybe, SquatCalculationInput, QuayInput } from '../graphql/generated';
 import { FairwayForm, PictureGroup, ValidationType } from './constants';
 import { dateError, endDateError } from './common';
 
-function requiredError(input?: TextInput | Text | null): boolean {
+type inputText = TextInput | Text | null;
+
+function requiredError(input?: inputText): boolean {
   return !input?.fi?.trim() || !input?.sv?.trim() || !input?.en?.trim();
 }
 
-export function translationError(input?: TextInput | Text | null): boolean {
+export function translationError(input?: inputText): boolean {
   return (!!input?.fi?.trim() || !!input?.sv?.trim() || !!input?.en?.trim()) && requiredError(input);
+}
+
+export function translationErrorOrEmptyString(input?: inputText, error?: string): string {
+  return translationError(input) ? (error ?? '') : '';
 }
 
 export function geometryError(input?: GeometryInput | null): boolean {
@@ -252,47 +258,47 @@ export function validateFairwayCardForm(
     { id: 'group', msg: state.group.trim().length < 1 ? requiredMsg : '' },
     {
       id: 'additionalInfo',
-      msg: translationError(state.additionalInfo) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.additionalInfo, requiredMsg),
     },
     {
       id: 'line',
-      msg: translationError(state.lineText) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.lineText, requiredMsg),
     },
     {
       id: 'designSpeed',
-      msg: translationError(state.designSpeed) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.designSpeed, requiredMsg),
     },
     {
       id: 'speedLimit',
-      msg: translationError(state.speedLimit) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.speedLimit, requiredMsg),
     },
     {
       id: 'anchorage',
-      msg: translationError(state.anchorage) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.anchorage, requiredMsg),
     },
     {
       id: 'navigationCondition',
-      msg: translationError(state.navigationCondition) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.navigationCondition, requiredMsg),
     },
     {
       id: 'iceCondition',
-      msg: translationError(state.iceCondition) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.iceCondition, requiredMsg),
     },
     {
       id: 'windRecommendation',
-      msg: translationError(state.windRecommendation) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.windRecommendation, requiredMsg),
     },
     {
       id: 'vesselRecommendation',
-      msg: translationError(state.vesselRecommendation) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.vesselRecommendation, requiredMsg),
     },
     {
       id: 'visibility',
-      msg: translationError(state.visibility) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.visibility, requiredMsg),
     },
     {
       id: 'pilotExtraInfo',
-      msg: translationError(state.trafficService?.pilot?.extraInfo) ? requiredMsg : '',
+      msg: translationErrorOrEmptyString(state.trafficService?.pilot?.extraInfo, requiredMsg),
     },
   ];
 
@@ -370,6 +376,9 @@ function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocation
         };
       }) ?? [];
   let sectionFirstMatchFound = false;
+
+  const geometrySectionMapper = (q: InputMaybe<QuayInput>, qIdx: number) =>
+    q?.sections?.map((s, sIdx) => ({ geometry: s?.geometry, actionTarget: qIdx + '-' + sIdx }) as QuayOrSection) ?? [];
   const sectionLocationErrors =
     state.quays
       ?.map((quay, i) =>
@@ -378,9 +387,7 @@ function validateQuay(state: HarborInput, requiredMsg: string, duplicateLocation
             const target = i + '-' + j;
             const hasError = locationError(
               { actionTarget: target, geometry: section?.geometry } as QuayOrSection,
-              state?.quays?.flatMap(
-                (q, qIdx) => q?.sections?.map((s, sIdx) => ({ geometry: s?.geometry, actionTarget: qIdx + '-' + sIdx }) as QuayOrSection) ?? []
-              )
+              state?.quays?.flatMap(geometrySectionMapper)
             );
             if (hasError) {
               if (!sectionFirstMatchFound) {

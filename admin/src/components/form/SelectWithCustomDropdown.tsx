@@ -135,9 +135,8 @@ const SelectWithCustomDropdown: React.FC<SelectWithCustomDropdownProps> = ({
               </IonButton>
             )}
           </IonLabel>
-          {isLoading ? (
-            <IonSkeletonText animated={true} className="select-skeleton" />
-          ) : (
+          {isLoading && <IonSkeletonText animated={true} className="select-skeleton" />}
+          {isLoading || (
             <>
               <IonItem
                 data-testid={name + 'Select'}
