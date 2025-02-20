@@ -16,6 +16,7 @@ export type HarborFeatureProperties = {
   quays: number;
   fairwayCards: Card[];
   extraInfo?: Text;
+  n2000HeightSystem: boolean;
 };
 
 export type QuayFeatureProperties = {
@@ -30,6 +31,7 @@ export type QuayFeatureProperties = {
   phoneNumber?: string[];
   fax?: string;
   internet?: string;
+  n2000HeightSystem: boolean;
 };
 
 export type PilotFeatureProperties = {

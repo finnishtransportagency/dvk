@@ -88,6 +88,7 @@ import HarborPreviewPage from './pages/HarborPreviewPage';
 import PilotRoutePage from './pages/PilotRoutePage';
 import { useHarborLayer } from './components/HarborFeatureLoader';
 import { useMareographFeatures, useMareographLayer } from './components/MareographFeatureLoader';
+import { useQuayLayer } from './components/QuayFeatureLoader';
 
 setupIonicReact({
   mode: 'md',
@@ -138,6 +139,7 @@ const DvkIonApp: React.FC = () => {
   const specialArea15Layer = useSpecialArea15Layer();
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
+  const quayLayer = useQuayLayer();
   const boardLine12Layer = useBoardLine12Layer();
   const circleLayer = useCircleLayer();
   /* Start initializing other layers */
@@ -200,6 +202,7 @@ const DvkIonApp: React.FC = () => {
       specialArea15Layer,
       pilotLayer,
       harborLayer,
+      quayLayer,
       boardLine12Layer,
       circleLayer,
     ];
@@ -227,6 +230,7 @@ const DvkIonApp: React.FC = () => {
     area12Layer,
     pilotLayer,
     harborLayer,
+    quayLayer,
     boardLine12Layer,
     bgFinlandLayer,
     bgMmlmeriLayer,
