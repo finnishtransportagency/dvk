@@ -20,8 +20,8 @@ export class PreviewPipeline extends Construct {
 
     const pipeline = new codepipeline.Pipeline(this, 'PreviewPipeline', {
       crossAccountKeys: false,
-      pipelineType: codepipeline.PipelineType.V1,
-      executionMode: codepipeline.ExecutionMode.SUPERSEDED,
+      pipelineType: codepipeline.PipelineType.V2,
+      executionMode: codepipeline.ExecutionMode.QUEUED,
     });
     const sourceOutput = new codepipeline.Artifact();
     const sourceAction = new cdk.aws_codepipeline_actions.GitHubSourceAction({
