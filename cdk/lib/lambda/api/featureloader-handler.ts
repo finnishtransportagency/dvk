@@ -48,16 +48,22 @@ async function getUniquePublicHarborFeatures(): Promise<HarborDBModel[]> {
   const uniquePublicHarbors: HarborDBModel[] = [];
   const harbors = (await HarborDBModel.getAllPublic()).filter((h) => h && isGeometryOK(h.geometry));
   const ids: string[] = [];
+
+  //Prioritise harbors for N2000, but only if they are in the official N2000 areas, otherwise ignore them.
+  //Users have been told to keep coordinates the same for N2000 harbor versions, this ensures that both versions cannot be added here
   harbors
     .filter((h) => h.n2000HeightSystem)
     .concat(harbors.filter((h) => !h.n2000HeightSystem))
+    .filter(
+      (h) =>
+        !h.n2000HeightSystem ||
+        (h.n2000HeightSystem && inOfficialN2000Area({ type: 'Point', coordinates: h.geometry?.coordinates as number[] }, traficomN2000MapAreas))
+    )
     .forEach((harbor) => {
-      if (!harbor.n2000HeightSystem || (harbor.n2000HeightSystem && inOfficialN2000Area(harbor.geometry as Geometry, traficomN2000MapAreas))) {
-        const id = getGeometryAsId(harbor.geometry);
-        if (!ids.includes(id)) {
-          ids.push(id);
-          uniquePublicHarbors.push(harbor);
-        }
+      const id = getGeometryAsId(harbor.geometry);
+      if (!ids.includes(id)) {
+        ids.push(id);
+        uniquePublicHarbors.push(harbor);
       }
     });
   return uniquePublicHarbors;
@@ -81,6 +87,7 @@ async function addHarborFeatures(features: FeaturesWithMaxFetchTime) {
         internet: harbor.internet,
         quays: harbor.quays?.length ?? 0,
         extraInfo: harbor.extraInfo,
+        n2000HeightSystem: harbor.n2000HeightSystem,
       },
     });
   });
@@ -109,6 +116,7 @@ async function addQuayFeatures(features: FeaturesWithMaxFetchTime) {
               phoneNumber: h.phoneNumber,
               fax: h.fax,
               internet: h.internet,
+              n2000HeightSystem: h.n2000HeightSystem,
             },
           });
         }
@@ -132,6 +140,7 @@ async function addQuayFeatures(features: FeaturesWithMaxFetchTime) {
                   phoneNumber: h.phoneNumber,
                   fax: h.fax,
                   internet: h.internet,
+                  n2000HeightSystem: h.n2000HeightSystem,
                 },
               });
             }
