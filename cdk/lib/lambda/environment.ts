@@ -150,6 +150,10 @@ export async function getRocketChatCredentials() {
   }));
 }
 
+export async function getRocketChatUrl() {
+  return await readParameterForEnv(ParamStore.ROCKETCHAT_URL);
+}
+
 export async function getPookiParameters() {
   return await Promise.all([
     readParameterForEnv(ParamStore.POOKI_URL),
