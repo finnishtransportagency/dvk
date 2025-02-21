@@ -55,7 +55,7 @@ function useDataLayer(
         const format = new GeoJSON();
         const features = format.readFeatures(data, { dataProjection: getFeatureDataSourceProjection(featureDataId), featureProjection: MAP.EPSG });
         const source = dvkMap.getVectorSource(featureLayerId);
-        source.clear();
+        source.clear(true);
         features.forEach((f) => f.set('dataSource', featureLayerId, true));
         source.addFeatures(filterMethod !== undefined ? filterMethod(features) : features);
         layer.set('dataUpdatedAt', dataUpdatedAt);
@@ -319,14 +319,14 @@ export function useArea12Layer(): DvkLayerState {
     const raData = raQuery.data;
     if (aData && raData) {
       const layer = dvkMap.getFeatureLayer('area12');
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      if (!layer.get('dataUpdatedAt') || dataUpdatedAt > layer.get('dataUpdatedAt')) {
         const format = new GeoJSON();
         const afs = format.readFeatures(aData, { dataProjection: getFeatureDataSourceProjection('area12'), featureProjection: MAP.EPSG });
         const rafs = format.readFeatures(raData, { dataProjection: getFeatureDataSourceProjection('restrictionarea'), featureProjection: MAP.EPSG });
         addSpeedLimits(afs, rafs);
         afs.forEach((f) => f.set('dataSource', 'area12', true));
         const source = dvkMap.getVectorSource('area12');
-        source.clear();
+        source.clear(true);
         source.addFeatures(afs);
         layer.set('dataUpdatedAt', dataUpdatedAt);
         if (window.Worker) {
@@ -362,12 +362,12 @@ export function useArea3456Layer() {
     const aData = aQuery.data;
     if (aData) {
       const layer = dvkMap.getFeatureLayer('area3456');
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      if (!layer.get('dataUpdatedAt') || dataUpdatedAt > layer.get('dataUpdatedAt')) {
         const format = new GeoJSON();
         const afs = format.readFeatures(aData, { dataProjection: getFeatureDataSourceProjection('area3456'), featureProjection: MAP.EPSG });
         afs.forEach((f) => f.set('dataSource', 'area3456', true));
         const source = dvkMap.getVectorSource('area3456');
-        source.clear();
+        source.clear(true);
         source.addFeatures(afs);
         layer.set('dataUpdatedAt', dataUpdatedAt);
         if (window.Worker) {
@@ -410,7 +410,7 @@ export function useSpeedLimitLayer(): DvkLayerState {
     if (aData && raData) {
       const format = new GeoJSON();
       const layer = dvkMap.getFeatureLayer('speedlimit');
-      if (layer.get('dataUpdatedAt') !== dataUpdatedAt) {
+      if (!layer.get('dataUpdatedAt') || dataUpdatedAt > layer.get('dataUpdatedAt')) {
         layer.set('dataUpdatedAt', dataUpdatedAt);
         if (window.Worker) {
           const slWorker: Worker = new Worker(new URL('../speedlimitworker/SpeedlimitWorker.ts', import.meta.url), { type: 'module' });
@@ -418,7 +418,7 @@ export function useSpeedLimitLayer(): DvkLayerState {
             const features = format.readFeatures(e.data as string);
             slWorker.terminate();
             const source = dvkMap.getVectorSource('speedlimit');
-            source.clear();
+            source.clear(true);
             source.addFeatures(features);
           };
           slWorker.postMessage({ raData: JSON.stringify(raData), aData: JSON.stringify(aData) });
@@ -427,7 +427,7 @@ export function useSpeedLimitLayer(): DvkLayerState {
           const rafs = format.readFeatures(raData);
           const speedLimitFeatures = getSpeedLimitFeatures(rafs, afs);
           const source = dvkMap.getVectorSource('speedlimit');
-          source.clear();
+          source.clear(true);
           source.addFeatures(speedLimitFeatures);
         }
       }
