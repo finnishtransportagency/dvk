@@ -7,7 +7,7 @@
       "en": "West Coast VTS"
     },
     "phoneNumber": "0401234567",
-    "email": "westcoastvts@sposti.fi",
+    "email": ["westcoastvts@sposti.fi"],
     "vhfChannel": "1"
   },
   {
@@ -18,7 +18,7 @@
       "en": "Helsinki VTS"
     },
     "phoneNumber": "0401234567",
-    "email": "helsinkivts@sposti.fi",
+    "email": ["helsinkivts@sposti.fi"],
     "vhfChannel": "1"
   }
 ]

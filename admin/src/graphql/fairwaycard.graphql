@@ -110,6 +110,7 @@ fragment FairwayCardById on FairwayCard {
         pilotJourney
       }
     }
+    vtsId
     vts {
       name {
         fi

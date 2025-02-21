@@ -21,6 +21,7 @@ export type FairwayDBModel = {
 
 export type TrafficServiceDBModel = {
   pilot?: Maybe<Pilot>;
+  vtsId?: Maybe<string[]>;
   vts?: Maybe<VTS[]>;
   tugs?: Maybe<Tug[]>;
 };
