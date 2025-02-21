@@ -161,6 +161,7 @@ export function mapToFairwayCardInput(sourceCard: string | undefined, data: Fair
           }),
         };
       }),
+      vtsIds: data?.fairwayCard?.trafficService?.vtsIds,
       tugs: data?.fairwayCard?.trafficService?.tugs?.map((tug) => {
         return {
           email: tug?.email,
@@ -290,6 +291,7 @@ export function mapNewFairwayCardVersion(card: FairwayCardInput | undefined, cop
         },
         places: card?.trafficService?.pilot?.places,
       },
+      vtsIds: card?.trafficService?.vtsIds,
       vts: card?.trafficService?.vts,
       tugs: card?.trafficService?.tugs,
     },

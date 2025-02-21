@@ -15,7 +15,7 @@ export const vtsReducer = (
         ...state,
         trafficService: {
           ...state.trafficService,
-          vtsId: value as string[],
+          vtsIds: value as string[],
         },
       };
       break;

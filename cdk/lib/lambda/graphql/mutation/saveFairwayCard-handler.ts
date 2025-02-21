@@ -22,7 +22,6 @@ import {
   mapIds,
   mapInternetAddress,
   mapMandatoryText,
-  mapNumber,
   mapPhoneNumber,
   mapPhoneNumbers,
   mapPilotJourney,
@@ -108,6 +107,7 @@ export function mapFairwayCardToModel(
             phoneNumber: mapPhoneNumbers(t?.phoneNumber),
           };
         }) ?? null,
+      vtsIds: card.trafficService?.vtsIds,
       vts:
         card.trafficService?.vts?.map((v) => {
           return {

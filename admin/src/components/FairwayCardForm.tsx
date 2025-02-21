@@ -101,9 +101,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: fairwaysAndHarbours } = useFairwayCardsAndHarborsQueryData(true);
   // this is for checking the latest version number, so in case creating a new version we get the right url
   const { data: latestFairwayCard } = useFairwayCardLatestByIdQueryData(fairwayCard.id);
-  const { data: vtsAreas } = useVtsAreasQueryData();
+  const { data: vtsAreas, isLoading: isLoadingVtsAreas } = useVtsAreasQueryData();
 
-  console.log(vtsAreas);
   // these are derived straight from featureData unlike others through graphQL
   // the graphQL approach's motives are a bit unclear so possible refactor in the future
   const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
@@ -546,9 +545,11 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   updateState={updateState}
                   validationErrors={validationErrors}
                   isLoadingPilotPlaces={isLoadingPilotPlaces}
+                  isLoadingVtsAreas={isLoadingVtsAreas}
                   sectionsOpen={sectionsOpen}
                   toggleSection={toggleSection}
                   pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
+                  vtsAreaOptions={vtsAreas?.vtsAreas.areas}
                   readonly={readonly}
                 />
 

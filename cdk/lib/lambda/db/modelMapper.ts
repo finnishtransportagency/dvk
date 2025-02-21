@@ -260,6 +260,7 @@ function mapTrafficService(service: TrafficServiceDBModel | undefined | null, pi
     },
     tugs: service?.tugs ?? null,
     vts: service?.vts ?? null,
+    vtsIds: service?.vtsIds ?? null,
   };
 }
 

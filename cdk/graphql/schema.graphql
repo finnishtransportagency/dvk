@@ -128,7 +128,7 @@ enum Orientation {
 
 input TrafficServiceInput {
   pilot: PilotInput
-  vtsId: [String!]
+  vtsIds: [String!]
   vts: [VTSInput]
   tugs: [TugInput]
 }
@@ -310,7 +310,7 @@ type Picture {
 
 type TrafficService {
   pilot: Pilot
-  vtsId: [String]
+  vtsIds: [String!]
   vts: [VTS]
   tugs: [Tug]
 }

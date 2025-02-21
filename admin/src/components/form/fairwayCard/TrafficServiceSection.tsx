@@ -19,9 +19,11 @@ interface TrafficServiceSectionProps {
   ) => void;
   validationErrors: ValidationType[];
   isLoadingPilotPlaces: boolean;
+  isLoadingVtsAreas: boolean;
   sectionsOpen: MainSectionOpenType[];
   toggleSection: (id: MainSectionTitle, open: boolean) => void;
   pilotPlaceOptions?: SelectOption[];
+  vtsAreaOptions?: SelectOption[];
   readonly?: boolean;
 }
 
@@ -30,9 +32,11 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
   updateState,
   validationErrors,
   isLoadingPilotPlaces,
+  isLoadingVtsAreas,
   sectionsOpen,
   toggleSection,
   pilotPlaceOptions,
+  vtsAreaOptions,
   readonly = false,
 }) => {
   const { t, i18n } = useTranslation();
@@ -134,6 +138,19 @@ const TrafficServiceSection: React.FC<TrafficServiceSectionProps> = ({
               </IonCol>
             );
           })}
+        </IonRow>
+        <IonRow>
+          <SelectInput
+            label="vts-alueet"
+            selected={state.trafficService?.vtsIds ?? []}
+            options={vtsAreaOptions ?? []}
+            setSelected={updateState}
+            actionType="vtsIds"
+            multiple
+            isLoading={isLoadingVtsAreas}
+            disabled={!readonly && state.status === Status.Removed}
+            readonly={readonly}
+          />
         </IonRow>
       </IonGrid>
     </CollapsibleWrapper>
