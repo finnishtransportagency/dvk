@@ -116,6 +116,12 @@ const lambdaFunctions: BackendLambda[] = [
     useVpc: false,
   },
   {
+    entry: path.join(__dirname, 'query/vtsAreas-handler.ts'),
+    typeName: 'Query',
+    fieldName: 'vtsAreas',
+    useVpc: false,
+  },
+  {
     entry: path.join(__dirname, 'mutation/saveFairwayCard-handler.ts'),
     typeName: 'Mutation',
     fieldName: 'saveFairwayCard',

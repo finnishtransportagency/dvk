@@ -21,6 +21,7 @@ import {
   useSaveFairwayCardMutation,
   useSaveHarborMutation,
   useUploadMapPictureMutation,
+  useVtsAreasQuery,
 } from './generated';
 
 const datasourceClient = {
@@ -75,6 +76,10 @@ export function usePilotPlacesQueryData() {
 
 export function useMareographQueryData() {
   return useMareographsQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
+}
+
+export function useVtsAreasQueryData() {
+  return useVtsAreasQuery(datasourceClient, undefined, { refetchOnWindowFocus: false });
 }
 
 export function useSaveFairwayCardMutationQuery<TError = unknown, TContext = unknown>(

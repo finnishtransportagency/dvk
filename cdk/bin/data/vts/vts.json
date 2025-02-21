@@ -1,0 +1,24 @@
+[
+  {
+    "id": "westcoast",
+    "name": {
+      "fi": "West Coast VTS",
+      "sv": "West Coast VTS",
+      "en": "West Coast VTS"
+    },
+    "phoneNumber": "0401234567",
+    "email": "westcoastvts@sposti.fi",
+    "vhfChannel": "1"
+  },
+  {
+    "id": "helsinki",
+    "name": {
+      "fi": "Helsinki VTS",
+      "sv": "Helsingfors VTS",
+      "en": "Helsinki VTS"
+    },
+    "phoneNumber": "0401234567",
+    "email": "helsinkivts@sposti.fi",
+    "vhfChannel": "1"
+  }
+]
