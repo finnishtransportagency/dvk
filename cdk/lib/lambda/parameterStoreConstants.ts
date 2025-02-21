@@ -5,6 +5,7 @@ export const VATU_V2_APIS = 'VatuV2Apis';
 export const VATU_PILOT_ROUTE_URL = 'VatuPilotRouteUrl';
 export const ROCKETCHAT_USER = 'RocketchatUser';
 export const ROCKETCHAT_PASSWORD = 'RocketchatPassword';
+export const ROCKETCHAT_URL = 'RocketchatUrl';
 export const POOKI_USERNAME = 'PookiUsername';
 export const POOKI_PASSWORD = 'PookiPassword';
 export const POOKI_URL = 'PookiUrl';
