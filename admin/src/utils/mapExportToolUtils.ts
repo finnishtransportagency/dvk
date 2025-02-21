@@ -47,17 +47,21 @@ export function useUploadMapPictureMutation(
   return { uploadMapPictureMutation, isLoadingMutation };
 }
 
-export function getExportMapBase64Data(canvasSizeCropped: number[], mapCanvas: HTMLCanvasElement, mapSize: number[]) {
+export function getExportMapBase64Data(canvasSizeCropped: number[], mapCanvas: HTMLCanvasElement, mapSize: number[], scale: number) {
   // Crop the canvas and create image
   const mapCanvasCropped = document.createElement('canvas');
   mapCanvasCropped.width = canvasSizeCropped[0];
   mapCanvasCropped.height = canvasSizeCropped[1];
   const mapContextCropped = mapCanvasCropped.getContext('2d');
+
+  console.log('X-clip:' + (mapSize[0] * scale - mapCanvasCropped.width) / 2);
+  console.log('Y-clip:' + (mapSize[1] * scale - mapCanvasCropped.height) / 2);
+
   if (mapContextCropped) {
     mapContextCropped.drawImage(
       mapCanvas,
-      (mapSize[0] * MAP.PRINT.SCALE - mapCanvasCropped.width) / 2,
-      (mapSize[1] * MAP.PRINT.SCALE - mapCanvasCropped.height) / 2,
+      (mapSize[0] * scale - mapCanvasCropped.width) / 2,
+      (mapSize[1] * scale - mapCanvasCropped.height) / 2,
       mapCanvasCropped.width,
       mapCanvasCropped.height,
       0,
@@ -115,12 +119,20 @@ export function getMapCanvas(mapSize: number[]) {
   return mapCanvas;
 }
 
-export function setMapProperties(viewResolution: number, mapSize: number[], lang: Lang, center: Coordinate | undefined) {
+export function setMapProperties(viewResolution: number, mapSize: number[], lang: Lang, center: Coordinate | undefined): number {
   const dvkMap = getMap();
   dvkMap?.olMap?.getView().setResolution(viewResolution / MAP.PRINT.SCALE);
-  dvkMap?.olMap?.setSize([mapSize[0] * MAP.PRINT.SCALE, mapSize[1] * MAP.PRINT.SCALE]);
+
+  //Check the resolution, to find out what the actual "scale" is
+  //If we are zoomed in to resolution 0.5 => the resolution of the map will not change, so reverse calculate the zoom factor
+  const resolutionScaling = viewResolution / (dvkMap?.olMap?.getView().getResolution() ?? 1);
+
+  //Make the map bigger than the actual print canvas which is fitted for A4 at 90dpi
+  //This is clipped later
+  dvkMap?.olMap?.setSize([mapSize[0] * resolutionScaling, mapSize[1] * resolutionScaling]);
   dvkMap.setMapLanguage(lang);
   dvkMap.olMap?.getView().setCenter(center);
+  return resolutionScaling;
 }
 
 export function resetMapProperties(viewResolution: number, mapSize: number[], center: Coordinate | undefined) {
