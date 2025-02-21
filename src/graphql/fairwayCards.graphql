@@ -269,6 +269,7 @@ fragment FairwayCardParts on FairwayCard {
         }
       }
     }
+    vtsIds
     vts {
       name {
         fi

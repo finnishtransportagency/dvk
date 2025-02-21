@@ -1,0 +1,15 @@
+query vtsAreas {
+  vtsAreas {
+    areas {
+      id
+      name {
+        fi
+        sv
+        en
+      }
+      phoneNumber
+      email
+      vhfChannel
+    }
+  }
+}

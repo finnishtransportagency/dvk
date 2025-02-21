@@ -20,7 +20,13 @@ import { usePilotageLimitFeatures } from '../../../PilotageLimitFeatureLoader';
 import { useObservationFeatures } from '../../../ObservationFeatureLoader';
 import { useMareographFeatures } from '../../../MareographFeatureLoader';
 import { MAP } from '../../../../utils/constants';
-import { getFairwayCardMareographs, getFairwayCardObservations, getFairwayCardPilotageLimits } from '../../../../utils/fairwayCardUtils';
+import {
+  getFairwayCardMareographs,
+  getFairwayCardObservations,
+  getFairwayCardPilotageLimits,
+  getFairwayCardVtsAreaInfo,
+} from '../../../../utils/fairwayCardUtils';
+import { useVtsAreasData } from '../../../../utils/dataLoader';
 
 interface InformationTabProps {
   fairwayCard: FairwayCardPartsFragment;
@@ -34,6 +40,9 @@ export const InformationTab: React.FC<InformationTabProps> = ({ fairwayCard, isN
   const { pilotageLimitFeatures, ready: pilotageLimitsReady } = usePilotageLimitFeatures();
   const { observationFeatures, ready: observationsReady } = useObservationFeatures();
   const { mareographFeatures, ready: mareographsReady } = useMareographFeatures();
+  const { data: vtsAreaData } = useVtsAreasData();
+
+  getFairwayCardVtsAreaInfo(fairwayCard, vtsAreaData?.vtsAreas);
 
   useEffect(() => {
     if (fairwayCard && pilotageLimitsReady) {
@@ -112,7 +121,7 @@ export const InformationTab: React.FC<InformationTabProps> = ({ fairwayCard, isN
         </h4>
       </IonText>
       <PilotInfo pilotageLimits={pilotageLimits} pilot={fairwayCard?.trafficService?.pilot} />
-      <VTSInfo data={fairwayCard?.trafficService?.vts} />
+      <VTSInfo data={getFairwayCardVtsAreaInfo(fairwayCard, vtsAreaData?.vtsAreas)} />
       <TugInfo data={fairwayCard?.trafficService?.tugs} />
     </>
   );

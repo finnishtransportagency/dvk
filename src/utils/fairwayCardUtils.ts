@@ -7,6 +7,9 @@ import {
   FindAllFairwayCardsQuery,
   ProhibitionFairway,
   SquatCalculation,
+  Vhf,
+  Vts,
+  VtsAreas,
 } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
 import { Geometry, Point, Polygon } from 'ol/geom';
@@ -247,3 +250,26 @@ export const _testInternals = {
   getOrphanedAreas,
   isSquatAreaOrphaned,
 };
+
+export function getFairwayCardVtsAreaInfo(fairwayCard: FairwayCardPartsFragment, vtsAreas?: VtsAreas) {
+  const vtsIds = fairwayCard.trafficService?.vtsIds;
+  const areas: Vts[] = [];
+
+  if (vtsIds && vtsIds?.length > 0) {
+    vtsIds.forEach((id) => {
+      vtsAreas?.areas.find((area) => {
+        if (id === area.id) {
+          areas.push({
+            email: area.email,
+            name: area.name,
+            phoneNumber: area.phoneNumber,
+            vhf: {
+              channel: Number(area.vhfChannel),
+            } as Vhf,
+          } as Vts);
+        }
+      });
+    });
+  }
+  return areas && areas.length > 0 ? areas : fairwayCard.trafficService?.vts;
+}
