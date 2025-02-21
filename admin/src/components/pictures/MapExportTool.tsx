@@ -228,17 +228,25 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
       if (dvkMap.olMap && dvkMap.getOrientationType()) {
         const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
         const mapCanvas = getMapCanvas(mapSize);
-        const canvasSizeCropped = dvkMap.getCanvasDimensions();
 
-        setMapProperties(viewResolution, mapSize, lang, center);
+        //When resolution is less than 0.5*1.7, the desired resolution is not achievable
+        //The code tries to make a bigger map (*1.7 in X,Y directions) and then zoom in so the same extent is used
+        //If the resollution is < 0.5*1.7, this is not possible since 0.5 is teh hard limit
+        //In this case return the ratio of resolutions and use it to crop the canvas
+        const scale = setMapProperties(viewResolution, mapSize, lang, center);
+        const canvasSizeCropped = dvkMap.getCanvasDimensions(scale);
 
         dvkMap.olMap.once('rendercomplete', async function () {
           const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
           const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
 
+          //Draw the map onto a canvas
           processCanvasElements(mapCanvas);
+          const base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize, scale);
 
-          const base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize);
+          // This line can be added to help debugging
+          // Create a target window : const canvasDebug = window.open('', 'canvasDebug');
+          // Write the image to the window: canvasDebug?.document.write('<img src="' + base64Data + '"/>');
           const orientation = dvkMap.getOrientationType() || Orientation.Portrait;
 
           // Reset original map properties
