@@ -54,9 +54,9 @@ export function getExportMapBase64Data(canvasSizeCropped: number[], mapCanvas: H
   mapCanvasCropped.height = canvasSizeCropped[1];
   const mapContextCropped = mapCanvasCropped.getContext('2d');
 
-  console.log('X-clip:' + (mapSize[0] * scale - mapCanvasCropped.width) / 2);
-  console.log('Y-clip:' + (mapSize[1] * scale - mapCanvasCropped.height) / 2);
-
+  //The map canvas is bigger than the cropped canvas by an amount that equals the margin in the UI.
+  //By calculating the difference and dividing by 2, this is the clipping amount
+  //See the documentation here https://www.w3schools.com/jsref/canvas_drawimage.asp
   if (mapContextCropped) {
     mapContextCropped.drawImage(
       mapCanvas,
