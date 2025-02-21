@@ -31,3 +31,15 @@ test('if vts list updates correctly', () => {
   newState = fairwayCardReducer(testState, '', 'vts', emptyValidationParameters, 'fi', 0, '');
   expect(newState.trafficService?.vts?.length).toBe(0);
 });
+
+test('if vts ids list updates correctly', () => {
+  const testState = getTestState();
+
+  let newState = fairwayCardReducer(testState, ['Helsinki VTS'], 'vtsIds', emptyValidationParameters);
+  expect(newState.trafficService?.vtsId?.length).toBe(1);
+  expect(newState.trafficService?.vtsId).toEqual(['Helsinki VTS']);
+
+  newState = fairwayCardReducer(newState, ['Helsinki VTS', 'West coast VTS'], 'vtsIds', emptyValidationParameters);
+  expect(newState.trafficService?.vtsId?.length).toBe(2); 
+  expect(newState.trafficService?.vtsId).toEqual(['Helsinki VTS', 'West coast VTS']);
+})

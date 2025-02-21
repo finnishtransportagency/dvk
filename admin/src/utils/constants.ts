@@ -129,7 +129,8 @@ export type FairwayCardActionTypeSelect =
   | 'status'
   | 'referenceLevel'
   | 'group'
-  | 'pilotPlaces';
+  | 'pilotPlaces'
+  | 'vtsIds';
 
 export type EmptyActionTypeSelect = 'empty';
 

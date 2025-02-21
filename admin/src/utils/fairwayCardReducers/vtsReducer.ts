@@ -10,6 +10,15 @@ export const vtsReducer = (
 ): FairwayCardInput => {
   let newState;
   switch (actionType) {
+    case 'vtsIds':
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          vtsId: value as string[],
+        },
+      };
+      break;
     case 'vts':
       // Add and delete
       if (value && !actionTarget) {

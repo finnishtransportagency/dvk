@@ -61,6 +61,7 @@ export function getTestState(): FairwayCardInput {
           },
         ],
       },
+      vtsId: [],
       vts: [
         {
           name: { fi: 'vts1fi', sv: 'vts1sv', en: 'vts1en' },

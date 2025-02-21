@@ -40,6 +40,5 @@ test('if pilot places update correctly', () => {
   expect(newState.trafficService?.pilot?.places?.length).toBe(3);
 
   newState = fairwayCardReducer(testState, '13', 'pilotJourney', emptyValidationParameters, 'fi', 1, '');
-  console.log(newState.trafficService?.pilot?.places);
   expect(newState.trafficService?.pilot?.places ? newState.trafficService?.pilot?.places[0].pilotJourney : '0').toBe('13');
 });
