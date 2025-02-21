@@ -43,6 +43,11 @@ const HarborPopupContent: React.FC<HarborPopupContentProps> = ({ harbor, setPopu
         </IonCol>
       </IonRow>
       <IonRow>
+        <IonCol>
+          <em>{harbor.properties.n2000HeightSystem ? 'N2000' : 'MW'}</em>
+        </IonCol>
+      </IonRow>
+      <IonRow>
         <IonCol className="header">{t('popup.harbor.coordinates')}</IonCol>
       </IonRow>
       {harbor.coordinates && (

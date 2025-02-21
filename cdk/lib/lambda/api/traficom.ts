@@ -72,7 +72,7 @@ export async function fetchN2000MapAreas(): Promise<Polygon | MultiPolygon | und
   let data = undefined;
   try {
     data = await fetchTraficomApi<FeatureCollection>(path);
-  } catch(error) {
+  } catch (error) {
     return undefined;
   }
   const turfAreas: Feature<Polygon>[] = [];
@@ -82,13 +82,20 @@ export async function fetchN2000MapAreas(): Promise<Polygon | MultiPolygon | und
       type: 'Feature',
       geometry: f.geometry,
       properties: {},
-    }
+    };
     turfAreas.push(feat as Feature<Polygon>);
   });
 
-  if (turfAreas.length < 1){
+  if (turfAreas.length < 1) {
     return undefined;
   }
-  const union = turf_union(turf_helpers.featureCollection(turfAreas));
-  return union === null ? undefined : union?.geometry;
+  if (turfAreas.length === 1) {
+    return turfAreas[0].geometry;
+  }
+  try {
+    const union = turf_union(turf_helpers.featureCollection(turfAreas));
+    return union === null ? undefined : union?.geometry;
+  } catch (error) {
+    return undefined;
+  }
 }

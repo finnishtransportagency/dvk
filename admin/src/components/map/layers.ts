@@ -4,9 +4,9 @@ import Style, { StyleLike } from 'ol/style/Style';
 import Stroke from 'ol/style/Stroke';
 import { Fill } from 'ol/style';
 import Map from 'ol/Map';
-import Feature, { FeatureLike } from 'ol/Feature';
+import { FeatureLike } from 'ol/Feature';
 import { getMap } from './DvkMap';
-import { HarborPartsFragment, Orientation, Quay, Section } from '../../graphql/generated';
+import { Orientation } from '../../graphql/generated';
 import { FeatureDataLayerId, FeatureLayerId, MAP } from '../../utils/constants';
 import * as olExtent from 'ol/extent';
 import { getFairwayArea12Style } from './layerStyles/fairwayArea12Styles';
@@ -16,10 +16,8 @@ import { getDepthStyle } from './layerStyles/depthStyles';
 import { getSpeedLimitIconStyle, getSpeedLimitPolygonStyle } from './layerStyles/speedLimitStyles';
 import { getNameStyle } from './layerStyles/nameStyles';
 import { getSafetyEquipmentStyle } from './layerStyles/safetyEquipmentStyles';
-import { GeoJSON } from 'ol/format';
 import { getVtsStyle } from './layerStyles/vtsStyles';
 import { getCircleStyle } from './layerStyles/circleStyles';
-import { Geometry } from 'ol/geom';
 import { getPilotRouteStyle } from './layerStyles/pilotRouteStyles';
 import { getPilotageLimitStyle } from './layerStyles/pilotageLimitStyles';
 import { getNavigationLine12Style } from './layerStyles/navigationLine12Styles';
@@ -107,6 +105,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getSafetyEquipmentStyle(feature, 1, false);
     case 'harbor':
       return getHarborStyle(feature, resolution, false, 3);
+    case 'quay':
+      return getQuayStyle(feature, resolution, false);
     case 'circle':
       return getCircleStyle(feature, resolution);
     default:
@@ -323,14 +323,17 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'quay',
+    maxResolution: 3,
     renderBuffer: 50,
     style: getSelectedStyle,
+    declutter: true,
     zIndex: 304,
   });
   // Satamat
   addFeatureVectorLayer({
     map: map,
     id: 'harbor',
+    minResolution: 3,
     maxResolution: 300,
     renderBuffer: 50,
     style: getHarborStyle,
@@ -420,8 +423,7 @@ export function getFittingPadding() {
 export function fitSelectedFairwayCardOnMap() {
   const dvkMap = getMap();
   const selectedFairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
-  const quaySource = dvkMap.getVectorSource('quay');
-  const selectedFeatures = selectedFairwayCardSource.getFeatures().concat(quaySource.getFeatures());
+  const selectedFeatures = selectedFairwayCardSource.getFeatures();
 
   const extent = olExtent.createEmpty();
   for (const feature of selectedFeatures) {
@@ -432,63 +434,5 @@ export function fitSelectedFairwayCardOnMap() {
   }
   if (!olExtent.isEmpty(extent)) {
     dvkMap.olMap?.getView().fit(extent, { padding: getFittingPadding(), duration: 1000 });
-  }
-}
-
-function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, features: VectorSource, format: GeoJSON, showDepth: boolean) {
-  const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
-  const feature = format.readFeature(quay.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
-  feature.setId(quay.geometry?.coordinates?.join(';'));
-  feature.setProperties({
-    featureType: 'quay',
-    harbor: harbor.id,
-    quay: quay.name,
-    extraInfo: quay.extraInfo,
-    length: quay.length,
-    depth,
-    showDepth,
-    email: harbor.email,
-    phoneNumber: harbor.phoneNumber,
-    fax: harbor.fax,
-    internet: harbor.internet,
-  });
-  features.addFeature(feature);
-}
-
-function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Section, features: VectorSource, format: GeoJSON) {
-  const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
-  feature.setId(section.geometry?.coordinates?.join(';'));
-  feature.setProperties({
-    featureType: 'section',
-    harbor: harbor.id,
-    quay: quay.name,
-    extraInfo: quay.extraInfo,
-    length: quay.length,
-    name: section.name,
-    depth: section.depth ? [section.depth] : undefined,
-    email: harbor.email,
-    phoneNumber: harbor.phoneNumber,
-    fax: harbor.fax,
-    internet: harbor.internet,
-  });
-  features.addFeature(feature);
-}
-
-export function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
-  const format = new GeoJSON();
-  for (const quay of harbor.quays ?? []) {
-    let sectionGeometryMissing = false;
-    quay?.sections?.forEach((section) => {
-      if (section) {
-        if (section.geometry) {
-          addSectionFeature(harbor, quay, section, source, format);
-        } else {
-          sectionGeometryMissing = true;
-        }
-      }
-    });
-    if (quay?.geometry) {
-      addQuayFeature(harbor, quay, source, format, sectionGeometryMissing);
-    }
   }
 }

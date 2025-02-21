@@ -184,6 +184,7 @@ export type FeatureDataId =
   | 'restrictionarea'
   | 'pilot'
   | 'harbor'
+  | 'quay'
   | 'safetyequipment'
   | 'depth12'
   | 'name'
@@ -257,6 +258,7 @@ export const FeatureDataSources: Array<FeatureDataSource> = [
   },
   { id: 'pilot', projection: 'EPSG:4258', url: new URL(featureLoaderUrl + '?type=pilot'), staticUrl: new URL(staticUrl + '/pilot.json.gz') },
   { id: 'harbor', projection: 'EPSG:4326', url: new URL(featureLoaderUrl + '?type=harbor'), staticUrl: new URL(staticUrl + '/harbor.json.gz') },
+  { id: 'quay', projection: 'EPSG:4326', url: new URL(featureLoaderUrl + '?type=quay'), staticUrl: new URL(staticUrl + '/quay.json.gz') },
   {
     id: 'safetyequipment',
     projection: 'EPSG:4326',
@@ -362,6 +364,7 @@ export const MAP: MapType = {
     { id: 'specialarea9' },
     { id: 'specialarea15' },
     { id: 'harbor' },
+    { id: 'quay' },
     { id: 'safetyequipment' },
     { id: 'depth12' },
     { id: 'boardline12' },
