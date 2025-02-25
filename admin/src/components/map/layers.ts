@@ -116,7 +116,7 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
 
 function getSelectedStyle(feature: FeatureLike, resolution: number) {
   return ['quay', 'section'].includes(feature.getProperties().featureType)
-    ? getQuayStyle(feature, resolution, false)
+    ? getQuayStyle(feature, resolution, false, false)
     : getSafetyEquipmentStyle(feature, 1, false);
 }
 

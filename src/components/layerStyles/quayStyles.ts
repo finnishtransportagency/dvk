@@ -52,9 +52,9 @@ const sectionSelectedStyle = new Style({
   }),
 });
 
-function getSectionStyle(selected: boolean, props: QuayFeatureProperties) {
+function getSectionStyle(selected: boolean, props: QuayFeatureProperties, includeText: boolean = true) {
   const s = selected ? sectionSelectedStyle : sectionStyle;
-  s.getText()?.setText(props.depth ? `${props.depth[0]} m` : '');
+  s.getText()?.setText(includeText && props.depth ? `${props.depth[0]} m` : '');
   return s;
 }
 
@@ -138,7 +138,7 @@ const depthSelectedStyle = new Style({
   zIndex: 10,
 });
 
-export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
+export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean, includeSectionText: boolean = true) {
   if (resolution > 3) {
     return undefined;
   }
@@ -146,7 +146,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   const featureType = feature.get('featureType');
   const props = feature.getProperties() as QuayFeatureProperties;
   if (featureType === 'section') {
-    return getSectionStyle(selected, props);
+    return getSectionStyle(selected, props, includeSectionText);
   }
 
   const dvkMap = getMap();

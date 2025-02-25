@@ -68,7 +68,8 @@ const selectStyle = function (feature: FeatureLike, resolution: number) {
   switch (type) {
     case 'quay':
     case 'section':
-      return getQuayStyle(feature, resolution, true);
+      console.log(selectedFairwayCard);
+      return getQuayStyle(feature, resolution, true, selectedFairwayCard ?? false);
     case 'harbor':
       return getHarborStyle(feature, resolution, true, 0);
     case 'pilot':

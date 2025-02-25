@@ -644,7 +644,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'quay',
     renderBuffer: 100,
-    style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle')),
+    style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle'), false),
     zIndex: 330,
   });
 
