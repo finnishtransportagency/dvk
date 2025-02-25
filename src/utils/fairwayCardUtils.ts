@@ -9,7 +9,6 @@ import {
   SquatCalculation,
   Vhf,
   Vts,
-  VtsAreas,
 } from '../graphql/generated';
 import dvkMap from '../components/DvkMap';
 import { Geometry, Point, Polygon } from 'ol/geom';
@@ -251,22 +250,20 @@ export const _testInternals = {
   isSquatAreaOrphaned,
 };
 
-export function getFairwayCardVtsAreaInfo(fairwayCard: FairwayCardPartsFragment, vtsAreas?: VtsAreas) {
+export function getFairwayCardVtsAreaInfo(fairwayCard: FairwayCardPartsFragment, vtsAreas?: Vts[]) {
   const vtsIds = fairwayCard.trafficService?.vtsIds;
   const areas: Vts[] = [];
 
   if (vtsIds && vtsIds?.length > 0) {
     vtsIds.forEach((id) => {
-      vtsAreas?.areas.find((area) => {
+      vtsAreas?.find((area) => {
         if (id === area.id) {
           areas.push({
             email: area.email,
             name: area.name,
             phoneNumber: area.phoneNumber,
-            vhf: {
-              channel: Number(area.vhfChannel),
-            } as Vhf,
-          } as Vts);
+            vhf: area.vhf,
+          });
         }
       });
     });

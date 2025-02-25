@@ -35,10 +35,11 @@ export type Tug = {
 
 export type VHF = {
   name?: Maybe<Text>;
-  channel?: Maybe<number>;
+  channel?: Maybe<string>;
 };
 
 export type VTS = {
+  id?: Maybe<string>;
   name?: Maybe<Text>;
   phoneNumber?: Maybe<string>;
   email?: Maybe<string[]>;

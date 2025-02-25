@@ -1,7 +1,7 @@
-import { Handler } from "aws-lambda";
-import { getNewStaticBucketName } from "../../environment";
-import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
-import { VtsAreas } from "../../../../graphql/generated";
+import { Handler } from 'aws-lambda';
+import { getNewStaticBucketName } from '../../environment';
+import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { VTS } from '../../db/fairwayCardDBModel';
 
 const s3Client = new S3Client({});
 const BUCKET_NAME = getNewStaticBucketName();
@@ -16,15 +16,11 @@ export const handler: Handler = async () => {
 
     const response = await s3Client.send(command);
     const bodyContents = await response.Body?.transformToString();
-    const vtsAreas: VtsAreas = JSON.parse(bodyContents ?? '{"vtsAreas": []}');
+    const vtsAreas: VTS[] = JSON.parse(bodyContents ?? '[]');
 
-    return {
-      areas: vtsAreas ?? [],
-    };
+    return vtsAreas ?? [];
   } catch (error) {
     console.error('Error fetching VTS areas: ', error);
-    return {
-      areas: [],
-    }
+    return [];
   }
 }

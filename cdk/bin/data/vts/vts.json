@@ -1,24 +1,106 @@
 [
   {
+    "id": "archipelago",
+    "name": {
+      "fi": "Archipelago VTS",
+      "sv": "Archipelago VTS",
+      "en": "Archipelago VTS"
+    },
+    "phoneNumber": "+358 20 448 6521",
+    "email": ["archipelago.vts@fintraffic.fi"],
+    "vhf": [{
+      "channel": "VHF 71"
+    }]
+  },
+  {
+    "id": "bothnia",
+    "name": {
+      "fi": "Bothnia VTS",
+      "sv": "Bothnia VTS",
+      "en": "Bothnia VTS"
+    },
+    "phoneNumber": "+358 20 448 7356",
+    "email": ["bothnia.vts@fintraffic.fi"],
+    "vhf": [{
+      "channel": "VHF 67"
+    }]
+  },
+  {
+    "id": "hanko",
+    "name": {
+      "fi": "Hanko VTS",
+      "sv": "Hanko VTS",
+      "en": "Hanko VTS"
+    },
+    "phoneNumber": "+358 20 448 5388",
+    "email": ["hanko.vts@fintraffic.fi"],
+    "vhf": [{
+      "channel": "VHF 67"
+    }]
+  },
+  {
+    "id": "helsinki1",
+    "name": {
+      "fi": "Helsinki VTS, sektori 1 (Helsinki)",
+      "sv": "Helsinki VTS, sektor 1 (Helsinki)",
+      "en": "Helsinki VTS, sector 1 (Helsinki)"
+    },
+    "phoneNumber": "+358 20 448 5385",
+    "email": ["helsinki.vts@fintraffic.fi"],
+    "vhf": [{
+      "channel": "VHF 71"
+    }]
+  },
+  {
+    "id": "helsinki2",
+    "name": {
+      "fi": "Helsinki VTS, sektori 2 (Emäsalo, Porkkala)",
+      "sv": "Helsinki VTS, sektor 2 (Emsalö, Porkala)",
+      "en": "Helsinki VTS, sektori 2 (Emäsalo, Porkkala)"
+    },
+    "phoneNumber": "+358 20 448 5389",
+    "email": ["helsinki.vts@fintraffic.fi"],
+    "vhf": [{
+      "channel": "VHF 09"
+    }]
+  },
+  {
+    "id": "kotka",
+    "name": {
+      "fi": "Kotka VTS",
+      "sv": "Kotka VTS",
+      "en": "Kotka VTS"
+    },
+    "phoneNumber": "+358 20 448 5660",
+    "email": ["kotka.vts@fintraffic.fi"],
+    "vhf": [{
+      "channel": "VHF 67"
+    }]
+  },
+  {
+    "id": "saimaa",
+    "name": {
+      "fi": "Saimaa VTS",
+      "sv": "Saimaa VTS",
+      "en": "Saimaa VTS"
+    },
+    "phoneNumber": "+358 20 637 3745",
+    "email": ["saimaa.vts@fintraffic.fi"],
+    "vhf": [{
+      "channel": "VHF 09"
+    }]
+  },
+  {
     "id": "westcoast",
     "name": {
       "fi": "West Coast VTS",
       "sv": "West Coast VTS",
       "en": "West Coast VTS"
     },
-    "phoneNumber": "0401234567",
-    "email": ["westcoastvts@sposti.fi"],
-    "vhfChannel": "1"
-  },
-  {
-    "id": "helsinki",
-    "name": {
-      "fi": "Helsinki VTS",
-      "sv": "Helsingfors VTS",
-      "en": "Helsinki VTS"
-    },
-    "phoneNumber": "0401234567",
-    "email": ["helsinkivts@sposti.fi"],
-    "vhfChannel": "1"
+    "phoneNumber": "+358 20 448 6645",
+    "email": ["westcoast.vts@fintraffic.fi"],
+    "vhf": [{
+      "channel": "VHF 09"
+    }]
   }
 ]

@@ -11,6 +11,7 @@ import {
   MainSectionOpenType,
   MainSectionTitle,
   saveErrorTitle,
+  SelectOption,
   ValidationType,
   ValueType,
   VERSION,
@@ -107,7 +108,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
   const { data: areaList, isLoading: isLoadingAreas } = useFeatureData('area12');
   const { data: vtsAreas, isLoading: isLoadingVtsAreas } = useVtsAreasQueryData();
-
+  console.log(vtsAreas?.vtsAreas);
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
@@ -549,7 +550,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   sectionsOpen={sectionsOpen}
                   toggleSection={toggleSection}
                   pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
-                  vtsAreaOptions={vtsAreas?.vtsAreas.areas}
+                  vtsAreaOptions={vtsAreas?.vtsAreas as SelectOption[]}
                   readonly={readonly}
                 />
 

@@ -20,11 +20,11 @@ async function uploadToS3(dir: string) {
   const command = new PutObjectCommand(params);
 
   try {
-    console.log('uploading file');
+    console.log('Uploading VTS areas to S3...');
     await s3Client.send(command);
-    console.log('You did good!');
+    console.log('Uploading successful!');
   } catch (error) {
-    console.error('Oh shit!');
+    console.error('Error while uploading VTS areas: ', error);
   }
 }
 

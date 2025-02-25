@@ -1,15 +1,15 @@
 query vtsAreas {
   vtsAreas {
-    areas {
-      id
-      name {
-        fi
-        sv
-        en
-      }
-      phoneNumber
-      email
-      vhfChannel
+    id
+    name {
+      fi
+      sv
+      en
+    }
+    phoneNumber
+    email
+    vhf {
+      channel
     }
   }
 }

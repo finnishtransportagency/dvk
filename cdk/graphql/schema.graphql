@@ -18,7 +18,7 @@ type Query {
   fairwayCardsAndHarbors(getAllVersions: Boolean!): [FairwayCardOrHarbor!]!
   mareographs: [Mareograph!]!
   weatherLimits: WeatherLimits!
-  vtsAreas: VtsAreas!
+  vtsAreas: [VTS!]!
 }
 
 type Mutation {
@@ -324,10 +324,11 @@ type Tug {
 
 type VHF {
   name: Text
-  channel: Int
+  channel: String
 }
 
 type VTS {
+  id: String
   name: Text
   phoneNumber: String
   email: [String]
@@ -669,16 +670,4 @@ type WeatherLimit {
 
 type WeatherLimits {
   limits: [WeatherLimit!]!
-}
-
-type VtsAreas {
-  areas: [VtsArea!]!
-}
-
-type VtsArea {
-  id: String!
-  name: Text
-  phoneNumber: String
-  email: [String]
-  vhfChannel: String!
 }

@@ -179,7 +179,7 @@ export function mapPilotJourney(text: Maybe<string> | undefined) {
 }
 
 export function mapVhfChannel(text: Maybe<string> | undefined) {
-  return mapNumberAndMax(text, /^\d{1,3}$/, 999);
+  return mapString(text);
 }
 
 export function mapQuayLength(text: Maybe<string> | undefined) {

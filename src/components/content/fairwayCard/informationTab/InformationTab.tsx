@@ -13,7 +13,7 @@ import { PilotInfo } from './PilotInfo';
 import { VTSInfo } from './VTSInfo';
 import { TugInfo } from './TugInfo';
 import { useTranslation } from 'react-i18next';
-import { FairwayCardPartsFragment } from '../../../../graphql/generated';
+import { FairwayCardPartsFragment, Vts } from '../../../../graphql/generated';
 import { Feature } from 'ol';
 import { Geometry, LineString } from 'ol/geom';
 import { usePilotageLimitFeatures } from '../../../PilotageLimitFeatureLoader';
@@ -42,7 +42,7 @@ export const InformationTab: React.FC<InformationTabProps> = ({ fairwayCard, isN
   const { mareographFeatures, ready: mareographsReady } = useMareographFeatures();
   const { data: vtsAreaData } = useVtsAreasData();
 
-  getFairwayCardVtsAreaInfo(fairwayCard, vtsAreaData?.vtsAreas);
+  getFairwayCardVtsAreaInfo(fairwayCard, vtsAreaData?.vtsAreas as Vts[]);
 
   useEffect(() => {
     if (fairwayCard && pilotageLimitsReady) {
@@ -121,7 +121,7 @@ export const InformationTab: React.FC<InformationTabProps> = ({ fairwayCard, isN
         </h4>
       </IonText>
       <PilotInfo pilotageLimits={pilotageLimits} pilot={fairwayCard?.trafficService?.pilot} />
-      <VTSInfo data={getFairwayCardVtsAreaInfo(fairwayCard, vtsAreaData?.vtsAreas)} />
+      <VTSInfo data={getFairwayCardVtsAreaInfo(fairwayCard, vtsAreaData?.vtsAreas as Vts[])} />
       <TugInfo data={fairwayCard?.trafficService?.tugs} />
     </>
   );
