@@ -23,7 +23,7 @@ const HarborPreviewPage: React.FC<ModalProps> = ({ setModalContent }) => {
   const { dispatch } = useDvkContext();
   const title = t('common.documentTitle') + ' - ' + t('fairwayCards.harboursTitle');
   const [, setDocumentTitle] = useDocumentTitle(title);
-
+  console.log('pre');
   useEffect(() => {
     setDocumentTitle(title);
   }, [setDocumentTitle, title]);

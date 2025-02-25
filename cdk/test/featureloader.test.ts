@@ -484,6 +484,63 @@ const harbor2: HarborDBModel = {
   geometry: { coordinates: [3, 4] },
 };
 
+const harborN2000: HarborDBModel = {
+  id: 'harborN2000',
+  version: 'v1',
+  n2000HeightSystem: true,
+  name: { fi: 'HarborfiN2000', sv: 'HarborfiN2000', en: 'HarborfiN2000' },
+  geometry: { coordinates: [20, 60] },
+  quays: [
+    {
+      geometry: { coordinates: [20.01, 60] },
+      sections: [
+        {
+          depth: 1,
+          geometry: { coordinates: [20.02, 60] },
+        },
+      ],
+    },
+  ],
+};
+
+const harborN2000NotInN2000Area: HarborDBModel = {
+  id: 'harborN2000',
+  version: 'v1',
+  n2000HeightSystem: true,
+  name: { fi: 'HarborfiN2000', sv: 'HarborfiN2000', en: 'HarborfiN2000' },
+  geometry: { coordinates: [22, 60] },
+  quays: [
+    {
+      geometry: { coordinates: [22.01, 60] },
+      sections: [
+        {
+          depth: 1,
+          geometry: { coordinates: [22.02, 60] },
+        },
+      ],
+    },
+  ],
+};
+
+const harborMW: HarborDBModel = {
+  id: 'harborMW',
+  version: 'v1',
+  n2000HeightSystem: false,
+  name: { fi: 'HarborfiMW', sv: 'HarborfiMW', en: 'HarborfiMW' },
+  geometry: { coordinates: [20, 60] },
+  quays: [
+    {
+      geometry: { coordinates: [20.01, 60] },
+      sections: [
+        {
+          depth: 2,
+          geometry: { coordinates: [20.02, 60] },
+        },
+      ],
+    },
+  ],
+};
+
 const points = {
   features: [
     {
@@ -500,7 +557,25 @@ const points = {
 
 const traficomN2000MapAreas = {
   type: 'FeatureCollection',
-  features: [],
+  features: [
+    {
+      id: 1,
+      type: 'Feature',
+      geometry: {
+        type: 'Polygon',
+        coordinates: [
+          [
+            [19.9, 59.9],
+            [20.1, 59.9],
+            [20.1, 60.1],
+            [19.9, 60.1],
+            [19.9, 59.1],
+          ],
+        ],
+      },
+      properties: { name: 'n2000Area' },
+    },
+  ],
 };
 
 async function parseResponse(body: string): Promise<FeatureCollection> {
@@ -741,4 +816,52 @@ it('should return same cache headers for various features of non buoy/mareograph
 
   const observationFeatureHeaders = getCloudFrontCacheControlHeaders('observation')?.['Cache-Control'];
   expect(featureCacheHeaders).not.toEqual(observationFeatureHeaders);
+});
+
+it('should get harbor info api, prioritising N2000', async () => {
+  ddbMock.on(ScanCommand, { TableName: 'Harbor-mock' }).resolves({ Items: [harborMW, harborN2000] });
+  const response = await handler(mockFeaturesALBEvent('harbor'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(1);
+  const feature = responseObj.features[0];
+  expect(feature.properties?.n2000HeightSystem).toBeTruthy();
+});
+
+it('should get harbor info api, prioritising MW', async () => {
+  ddbMock.on(ScanCommand, { TableName: 'Harbor-mock' }).resolves({ Items: [harborMW, harborN2000NotInN2000Area] });
+  const response = await handler(mockFeaturesALBEvent('harbor'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(1);
+  const feature = responseObj.features[0];
+  expect(feature.properties?.n2000HeightSystem).toBeFalsy();
+});
+
+it('should get quay info api', async () => {
+  ddbMock.on(ScanCommand, { TableName: 'Harbor-mock' }).resolves({ Items: [harborMW] });
+  const response = await handler(mockFeaturesALBEvent('quay'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(2);
+  const quays = responseObj.features.filter((f) => f.properties?.featureType === 'quay');
+  const sections = responseObj.features.filter((f) => f.properties?.featureType === 'section');
+  expect(quays).toHaveLength(1);
+  expect(quays[0].properties?.n2000HeightSystem).toBeFalsy;
+  expect(sections).toHaveLength(1);
+  expect(sections[0].properties?.n2000HeightSystem).toBeFalsy;
+});
+
+it('should get quay info api, prioritising N2000', async () => {
+  ddbMock.on(ScanCommand, { TableName: 'Harbor-mock' }).resolves({ Items: [harborMW, harborN2000] });
+  const response = await handler(mockFeaturesALBEvent('quay'));
+  assert(response.body);
+  const responseObj = await parseResponse(response.body);
+  expect(responseObj.features.length).toBe(2);
+  const quays = responseObj.features.filter((f) => f.properties?.featureType === 'quay');
+  const sections = responseObj.features.filter((f) => f.properties?.featureType === 'section');
+  expect(quays).toHaveLength(1);
+  expect(quays[0].properties?.n2000HeightSystem).toBeTruthy;
+  expect(sections).toHaveLength(1);
+  expect(sections[0].properties?.n2000HeightSystem).toBeTruthy;
 });
