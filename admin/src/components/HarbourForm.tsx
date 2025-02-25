@@ -48,14 +48,16 @@ interface FormProps {
   creator?: string;
   created?: number;
   isError?: boolean;
+  newElement?: boolean;
 }
 
-const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator, created, isError }) => {
+const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator, created, isError, newElement = false }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
   const formRef = useRef<HTMLFormElement>(null);
 
+  const [touched, setTouched] = useState<boolean>(!newElement);
   const [state, setState] = useState<HarborInput>(harbour);
   const [oldState, setOldState] = useState<HarborInput>(harbour);
   const [validationErrors, setValidationErrors] = useState<ValidationType[]>([]);
@@ -206,6 +208,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
   const handleSave = () => {
     if (formValid()) {
       saveHarbour(state.operation);
+      setTouched(true);
     } else {
       setSaveError(saveErrorTitle.MISSING);
       setPreviewPending(false);
@@ -345,6 +348,10 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
     setOldState(harbour);
   }, [harbour]);
 
+  useEffect(() => {
+    setTouched(!newElement);
+  }, [newElement]);
+
   const infoHeader: InfoHeaderProps = {
     status: state.status,
     modified: getDateTimeInfo(true),
@@ -424,6 +431,7 @@ const HarbourForm: React.FC<FormProps> = ({ harbour, modified, modifier, creator
         type={'harbor'}
         isError={isError}
         versions={harbourVersions}
+        touched={touched}
       />
 
       <IonContent className="mainContent ion-no-padding" data-testid="harbourEditPage">

@@ -68,9 +68,10 @@ interface FormProps {
   creator?: string;
   created?: number;
   isError?: boolean;
+  newElement?: boolean;
 }
 
-const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, isError }) => {
+const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier, creator, created, isError, newElement = false }) => {
   const { t, i18n } = useTranslation();
   const lang = i18n.resolvedLanguage as Lang;
   const history = useHistory();
@@ -86,6 +87,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const [confirmationType, setConfirmationType] = useState<ConfirmationType>(''); // Confirmation modal
   const [previewConfirmation, setPreviewConfirmation] = useState<ConfirmationType>(''); // Preview confirmation modal
   const [previewPending, setPreviewPending] = useState(false);
+  const [touched, setTouched] = useState(!newElement);
   const [isSubmittingVersion, setIsSubmittingVersion] = useState(false);
   const [publishDetailsOpen, setPublishDetailsOpen] = useState(false);
   // if confirmation modal comes up because of unsaved changing version, handleConfirmationSubmit gets the value from this
@@ -254,6 +256,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   const handleSave = () => {
     if (formValid()) {
       saveCard(state.operation);
+      setTouched(true);
     } else {
       setSaveError(saveErrorTitle.MISSING);
       setPreviewPending(false);
@@ -353,6 +356,10 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   };
 
   useEffect(() => {
+    setTouched(!newElement);
+  }, [newElement]);
+
+  useEffect(() => {
     setState(fairwayCard);
     setOldState(structuredClone(fairwayCard));
   }, [fairwayCard]);
@@ -437,6 +444,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
         type={'fairwaycard'}
         versions={fairwayCardVersions}
         isError={isError}
+        touched={touched}
       />
       <IonContent className="mainContent ion-no-padding" data-testid="fairwayCardEditPage">
         {isError && <p>{t('general.loading-error')}</p>}

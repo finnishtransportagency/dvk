@@ -23,6 +23,7 @@ interface HeaderProps {
   type: SaveType;
   isError?: boolean;
   versions?: FairwayCardOrHarbor[];
+  touched?: boolean;
 }
 
 const Header: React.FC<HeaderProps> = ({
@@ -40,9 +41,9 @@ const Header: React.FC<HeaderProps> = ({
   isError,
   versions,
   type,
+  touched = true,
 }) => {
   const { t } = useTranslation();
-
   const unsavedChanges = useMemo(() => {
     return hasUnsavedChanges(oldState, currentState);
   }, [oldState, currentState]);
@@ -109,7 +110,12 @@ const Header: React.FC<HeaderProps> = ({
                 </IonButton>
               </IonCol>
               <IonCol size="auto" className="ion-no-padding">
-                <IonButton id="publishVersion" shape="round" disabled={isError || isLoading || unsavedChanges} onClick={() => handlePublish()}>
+                <IonButton
+                  id="publishVersion"
+                  shape="round"
+                  disabled={isError || isLoading || unsavedChanges || !touched}
+                  onClick={() => handlePublish()}
+                >
                   {t('general.publish')}
                 </IonButton>
               </IonCol>

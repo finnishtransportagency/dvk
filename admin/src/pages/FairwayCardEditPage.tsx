@@ -4,6 +4,7 @@ import { useFairwayCardByIdQueryData } from '../graphql/api';
 import FairwayCardForm from '../components/FairwayCardForm';
 import { IonProgressBar } from '@ionic/react';
 import { mapToFairwayCardInput } from '../utils/dataMapper';
+import { isObjectUntouched } from '../utils/common';
 
 interface FairwayCardProps {
   fairwayCardId?: string;
@@ -15,6 +16,7 @@ const FairwayCardEditPage: React.FC = () => {
   const { data, isLoading, isError } = useFairwayCardByIdQueryData(fairwayCardId ?? '', fairwayCardVersion, false);
 
   const fairwayCard = mapToFairwayCardInput(undefined, data);
+  console.log(data?.fairwayCard?.creationTimestamp, data?.fairwayCard?.modificationTimestamp, data?.fairwayCard?.version);
 
   return (
     <>
@@ -27,6 +29,7 @@ const FairwayCardEditPage: React.FC = () => {
           creator={data?.fairwayCard?.creator ?? undefined}
           created={data?.fairwayCard?.creationTimestamp ?? undefined}
           isError={isError}
+          newElement={isObjectUntouched(data?.fairwayCard)}
         />
       )}
     </>
