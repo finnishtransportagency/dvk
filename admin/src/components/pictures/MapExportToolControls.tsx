@@ -5,10 +5,10 @@ import { getMap } from '../map/DvkMap';
 import { Orientation } from '../../graphql/generated';
 import { easeOut } from 'ol/easing';
 import { fitSelectedFairwayCardOnMap } from '../map/layers';
-import { importExternalImage, MapImageUploader, createMapImages } from '../../utils/mapExportToolUtils';
+import { importExternalImage, MapControlUploader, createMapImages } from '../../utils/mapExportToolUtils';
 
-interface ExtMapControlProps {
-  mapImageUploader: MapImageUploader;
+interface ExportMapControlProperties {
+  mapControlUploader: MapControlUploader;
   printDisabled?: boolean;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -16,8 +16,15 @@ interface ExtMapControlProps {
   setErrors: Dispatch<SetStateAction<string[]>>;
 }
 
-export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader, printDisabled, setIsOpen, isOpen, fileUploader, setErrors }) => {
-  const { t } = useTranslation();
+export const MapExportToolControls: React.FC<ExportMapControlProperties> = ({
+  mapControlUploader,
+  printDisabled,
+  setIsOpen,
+  isOpen,
+  fileUploader,
+  setErrors,
+}) => {
+  const { t } = useTranslation(undefined, { keyPrefix: 'homePage.map.controls' });
   const dvkMap = getMap();
   const [orientationType, setOrientationType] = useState<Orientation | ''>(dvkMap.getOrientationType());
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -28,7 +35,7 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader,
       setErrors(fileErrors);
     }
 
-    importExternalImage(mapImageUploader);
+    importExternalImage({ ...mapControlUploader, fileUploader });
     //so duplicates can be added
     (event.target as HTMLInputElement).value = '';
   };
@@ -77,8 +84,8 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader,
             ev.preventDefault();
             handleOrientationChange(Orientation.Portrait);
           }}
-          title={t('homePage.map.controls.orientation.selectPortrait')}
-          aria-label={t('homePage.map.controls.orientation.selectPortrait')}
+          title={t('orientation.selectPortrait')}
+          aria-label={t('orientation.selectPortrait')}
         />
       </div>
       <div className="extControl selectLandscapeControlContainer">
@@ -88,8 +95,8 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader,
             ev.preventDefault();
             handleOrientationChange(Orientation.Landscape);
           }}
-          title={t('homePage.map.controls.orientation.selectLandscape')}
-          aria-label={t('homePage.map.controls.orientation.selectLandscape')}
+          title={t('orientation.selectLandscape')}
+          aria-label={t('orientation.selectLandscape')}
         />
       </div>
       <div className="extControl takeScreenshotControlContainer">
@@ -98,10 +105,10 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader,
           disabled={disableModifyingControls}
           onClick={(ev) => {
             ev.preventDefault();
-            createMapImages(mapImageUploader);
+            createMapImages(mapControlUploader);
           }}
-          title={t('homePage.map.controls.screenshot.tipLabel')}
-          aria-label={t('homePage.map.controls.screenshot.tipLabel')}
+          title={t('screenshot.tipLabel')}
+          aria-label={t('screenshot.tipLabel')}
         />
       </div>
       <div className="extControl uploadPictureControlContainer">
@@ -112,8 +119,8 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader,
           onClick={() => {
             fileInputRef.current?.click();
           }}
-          title={t('homePage.map.controls.upload.uploadPicture')}
-          aria-label={t('homePage.map.controls.upload.uploadPicture')}
+          title={t('upload.uploadPicture')}
+          aria-label={t('upload.uploadPicture')}
         >
           <input
             id="fileInput"
@@ -133,8 +140,8 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader,
             ev.preventDefault();
             setIsOpen(true);
           }}
-          title={t('homePage.map.controls.layer.tipLabel')}
-          aria-label={t('homePage.map.controls.layer.tipLabel')}
+          title={t('layer.tipLabel')}
+          aria-label={t('layer.tipLabel')}
         />
       </div>
       <div className="extControl centerToOwnLocationControlContainer">
@@ -144,8 +151,8 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader,
             ev.preventDefault();
             fitSelectedFairwayCardOnMap();
           }}
-          title={t('homePage.map.controls.features.tipLabel')}
-          aria-label={t('homePage.map.controls.features.tipLabel')}
+          title={t('features.tipLabel')}
+          aria-label={t('features.tipLabel')}
         />
       </div>
       <div className="extControl zoomInControlContainer">
@@ -155,8 +162,8 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader,
             ev.preventDefault();
             zoomByDelta(1);
           }}
-          title={t('homePage.map.controls.zoom.zoomInTipLabel')}
-          aria-label={t('homePage.map.controls.zoom.zoomInTipLabel')}
+          title={t('zoom.zoomInTipLabel')}
+          aria-label={t('zoom.zoomInTipLabel')}
         />
       </div>
       <div className="extControl zoomOutControlContainer">
@@ -166,8 +173,8 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader,
             ev.preventDefault();
             zoomByDelta(-1);
           }}
-          title={t('homePage.map.controls.zoom.zoomOutTipLabel')}
-          aria-label={t('homePage.map.controls.zoom.zoomOutTipLabel')}
+          title={t('zoom.zoomOutTipLabel')}
+          aria-label={t('zoom.zoomOutTipLabel')}
         />
       </div>
     </div>

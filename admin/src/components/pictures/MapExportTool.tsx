@@ -12,7 +12,7 @@ import Alert from '../Alert';
 import FileUploader from '../../utils/FileUploader';
 import NotificationModal from '../NotificationModal';
 import { useUploadMapPictureMutation } from '../../utils/mapExportToolUtils';
-import { ExtMapControls } from './ExtMapControls';
+import { MapExportToolControls } from './MapExportToolControls';
 import { PrintImages } from './PrintImages';
 import MapElement from './MapElement';
 
@@ -37,13 +37,11 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
   const curLang = i18n.resolvedLanguage as Lang;
   const [fileUploader] = useState<FileUploader>(() => new FileUploader());
   const [picUploadErrors, setPicUploadErrors] = useState<string[]>([]);
-  // Picture with input data waiting for upload
   const [newPicture, setNewPicture] = useState<(PictureInput & PictureUploadInput) | undefined>();
   const [isOpen, setIsOpen] = useState(false);
   const isFetching = useIsFetching();
   const hasPrimaryIdError = !fairwayCardInput.id || (validationErrors?.filter((error) => error.id === 'primaryId' && error.msg) ?? []).length > 0;
   const [isMapDisabled, setIsMapDisabled] = useState(hasPrimaryIdError || disabled);
-  // Create uploadable images with every locale
   const [isProcessingCurLang, setIsProcessingCurLang] = useState(false);
 
   const { uploadMapPictureMutation, isLoadingMutation } = useUploadMapPictureMutation(newPicture, updateState, setNewPicture, fairwayCardInput);
@@ -87,8 +85,8 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
                 aria-hidden="true"
               />
             )}
-            <ExtMapControls
-              mapImageUploader={{
+            <MapExportToolControls
+              mapControlUploader={{
                 cardId: fairwayCardInput.id,
                 cardVersion: fairwayCardInput.version,
                 uploadMapPictureMutation: uploadMapPictureMutation,

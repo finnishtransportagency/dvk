@@ -21,15 +21,18 @@ type ImageUploader = {
   scaleLabel?: string;
 } & CardImage;
 
-export type MapImageUploader = {
-  dvkMap: DvkMap;
+export type MapControlUploader = {
   setIsMapDisabled: (disabled: boolean) => void;
   setIsProcessingCurLang: (processing: boolean) => void;
   curLang: string;
-  fileUploader?: FileUploader;
   setPicUploadErrors?: (errors: string[]) => void;
   picUploadErrors?: string[];
+  dvkMap: DvkMap;
 } & CardImage;
+
+export type MapControlExternalPictureUploader = {
+  fileUploader?: FileUploader;
+} & MapControlUploader;
 
 export function useUploadMapPictureMutation(
   newPicture: (PictureInput & PictureUploadInput) | undefined,
@@ -111,8 +114,7 @@ export function getMatrix(canvas: HTMLCanvasElement) {
   return matrix as DOMMatrix2DInit;
 }
 
-export function processCanvasElements(mapCanvas: HTMLCanvasElement) {
-  const dvkMap = getMap();
+export function processCanvasElements(mapCanvas: HTMLCanvasElement, dvkMap: DvkMap) {
   const mapContext = mapCanvas.getContext('2d');
   Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
     if (canvas.width > 0) {
@@ -171,8 +173,6 @@ export function resetMapProperties(viewResolution: number, mapSize: number[], ce
 }
 
 export const uploadPicture = async (imageUploader: ImageUploader) => {
-  const rotation = dvkMap.olMap?.getView().getRotation();
-
   const picUploadObject = {
     base64Data: imageUploader.base64Data.replace('data:image/png;base64,', ''),
     cardId: imageUploader.cardId,
@@ -182,7 +182,7 @@ export const uploadPicture = async (imageUploader: ImageUploader) => {
   };
   const picInputObject = {
     orientation: imageUploader.orientation,
-    rotation,
+    rotation: dvkMap.olMap?.getView().getRotation(),
     scaleWidth: imageUploader.scaleWidth,
     scaleLabel: imageUploader.scaleLabel,
     lang: imageUploader.lang,
@@ -195,7 +195,7 @@ export const uploadPicture = async (imageUploader: ImageUploader) => {
   });
 };
 
-export const createMapByLang = (
+export const createMapImageByLang = (
   cardImage: CardImage,
   dvkMap: DvkMap,
   center: Coordinate | undefined,
@@ -227,7 +227,7 @@ export const createMapByLang = (
         imageUploader.scaleLabel = mapScale?.innerHTML;
 
         //Draw the map onto a canvas
-        processCanvasElements(mapCanvas);
+        processCanvasElements(mapCanvas, dvkMap);
         imageUploader.base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize, scale);
 
         // This line can be added to help debugging
@@ -251,14 +251,21 @@ export const createMapByLang = (
   });
 };
 
-export const createMapImages = async (mapImageUploader: MapImageUploader) => {
-  const dvkMap = mapImageUploader.dvkMap;
+const setUploadState = (uploader: MapControlUploader | MapControlExternalPictureUploader, mapDisabled?: boolean, isCurrentLang?: boolean) => {
+  if (mapDisabled) {
+    uploader.setIsMapDisabled(mapDisabled);
+  }
+  if (isCurrentLang) {
+    uploader.setIsProcessingCurLang(isCurrentLang);
+  }
+};
+
+export const createMapImages = async (snapshotUploader: MapControlUploader) => {
+  const dvkMap = snapshotUploader.dvkMap;
 
   console.time('Export pictures');
   if (dvkMap.olMap && dvkMap.getOrientationType()) {
-    mapImageUploader.setIsMapDisabled(true);
-    mapImageUploader.setIsProcessingCurLang(true);
-
+    setUploadState(snapshotUploader, true, true);
     const timestamp = Date.now();
 
     //Get center and resolution of map and pass them to export map function as the map needs to be reset afterwards
@@ -266,47 +273,41 @@ export const createMapImages = async (mapImageUploader: MapImageUploader) => {
     const center = dvkMap.olMap.getView().getCenter();
 
     for (const locale of locales) {
-      if (locale !== mapImageUploader.curLang) {
-        mapImageUploader.setIsProcessingCurLang(false);
-      }
-      await createMapByLang(mapImageUploader as CardImage, dvkMap, center, viewResolution, locale as Lang, timestamp);
+      setUploadState(snapshotUploader, true, locale !== snapshotUploader.curLang);
+      await createMapImageByLang(snapshotUploader as CardImage, dvkMap, center, viewResolution, locale as Lang, timestamp);
     }
-
-    mapImageUploader.setIsMapDisabled(false);
+    setUploadState(snapshotUploader, false, false);
   }
   console.timeEnd('Export pictures');
 };
 
-export const importExternalImage = async (mapImageUploader: MapImageUploader) => {
+export const importExternalImage = async (fileImageUploader: MapControlExternalPictureUploader) => {
   console.time('Import pictures');
-  if (mapImageUploader.dvkMap.getOrientationType()) {
-    mapImageUploader.setIsMapDisabled(true);
-    mapImageUploader.setIsProcessingCurLang(true);
-
+  if (fileImageUploader.dvkMap.getOrientationType()) {
+    setUploadState(fileImageUploader, true, true);
     try {
       const timestamp = Date.now();
-      const base64Data = await mapImageUploader.fileUploader?.getPictureBase64Data();
+      const base64Data = await fileImageUploader.fileUploader?.getPictureBase64Data();
 
       if (base64Data) {
         for (const locale of locales) {
-          if (locale !== mapImageUploader.curLang) mapImageUploader.setIsProcessingCurLang(false);
+          setUploadState(fileImageUploader, true, locale !== fileImageUploader.curLang);
           const imageUploader: ImageUploader = {
-            ...(mapImageUploader as CardImage),
+            ...(fileImageUploader as CardImage),
             lang: locale,
             base64Data: base64Data as string,
             timestamp,
-            orientation: mapImageUploader.dvkMap.getOrientationType() || Orientation.Portrait,
+            orientation: fileImageUploader.dvkMap.getOrientationType() || Orientation.Portrait,
           };
           await uploadPicture(imageUploader);
         }
       }
     } catch (error) {
       console.log(error);
-      mapImageUploader?.setPicUploadErrors?.([...(mapImageUploader.picUploadErrors ?? []), error as string]);
+      fileImageUploader?.setPicUploadErrors?.([...(fileImageUploader.picUploadErrors ?? []), error as string]);
     }
-    mapImageUploader.setIsMapDisabled(false);
-    mapImageUploader.setIsProcessingCurLang(false);
-    mapImageUploader.fileUploader?.deleteFiles();
+    setUploadState(fileImageUploader, false, false);
+    fileImageUploader.fileUploader?.deleteFiles();
   }
   console.timeEnd('Import pictures');
 };

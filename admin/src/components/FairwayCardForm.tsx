@@ -601,7 +601,7 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   readonly={readonly}
                   disabled={!readonly && state.status === Status.Removed}
                   validationErrors={validationErrors.concat(innerValidationErrors)}
-                  setPicture={updateState}
+                  updateState={updateState}
                   fairways={fairwaySelection}
                   harbours={harbourSelection}
                 />
