@@ -4,6 +4,7 @@ import { useHarbourByIdQueryData } from '../graphql/api';
 import HarbourForm from '../components/HarbourForm';
 import { IonProgressBar } from '@ionic/react';
 import { mapToHarborInput } from '../utils/dataMapper';
+import { isObjectUntouched } from '../utils/common';
 
 interface HarbourProps {
   harbourId?: string;
@@ -15,6 +16,7 @@ const HarbourEditPage: React.FC = () => {
   const { data, isLoading, isError } = useHarbourByIdQueryData(harbourId ?? '', harbourVersion, false);
 
   const harbour = mapToHarborInput(false, data);
+  console.log(data?.harbor?.creationTimestamp, data?.harbor?.modificationTimestamp, data?.harbor?.version);
 
   return (
     <>
@@ -27,6 +29,7 @@ const HarbourEditPage: React.FC = () => {
           creator={data?.harbor?.creator ?? undefined}
           created={data?.harbor?.creationTimestamp ?? undefined}
           isError={isError}
+          newElement={isObjectUntouched(data?.harbor)}
         />
       )}
     </>

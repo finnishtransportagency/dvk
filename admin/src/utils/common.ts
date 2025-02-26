@@ -596,3 +596,16 @@ export function openHarborSectionsByValidationErrors(validationErrors: Validatio
   });
   return newSections;
 }
+
+export function isObjectUntouched(
+  element:
+    | {
+        creationTimestamp?: number | null | undefined;
+        modificationTimestamp?: number | null | undefined;
+        version?: string | null | undefined;
+      }
+    | null
+    | undefined
+): boolean {
+  return element?.creationTimestamp === element?.modificationTimestamp && element?.version === 'v1';
+}

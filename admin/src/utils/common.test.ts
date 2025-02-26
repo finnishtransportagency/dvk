@@ -1,4 +1,4 @@
-import { getNotificationListingTypeString, getSelectedItemsAsText, isReadOnly } from './common';
+import { getNotificationListingTypeString, getSelectedItemsAsText, isObjectUntouched, isReadOnly } from './common';
 import { FairwayCardInput, HarborInput, Status, Operation, TemporaryNotification } from '../graphql/generated';
 import { SelectOption } from './constants';
 
@@ -113,4 +113,13 @@ test('should generate notification listing', () => {
   ];
   const notificationString = getNotificationListingTypeString(temporaryNotifications);
   expect(notificationString.toLowerCase()).toEqual('general.incoming (2)');
+});
+
+test('should return if element is new', () => {
+  let harbor = { creationTimestamp: 1, modificationTimestamp: 1, version: 'v1' };
+  expect(isObjectUntouched(harbor)).toBeTruthy();
+  harbor = { creationTimestamp: 1, modificationTimestamp: 1, version: 'v2' };
+  expect(isObjectUntouched(harbor)).toBeFalsy();
+  harbor = { creationTimestamp: 1, modificationTimestamp: 2, version: 'v1' };
+  expect(isObjectUntouched(harbor)).toBeFalsy();
 });
