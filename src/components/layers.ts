@@ -923,19 +923,18 @@ function highlightFeatures(source: VectorSource, featureTypes: string[], id: str
 export function setSelectedHarbor(id: string, selected: boolean) {
   const dvkMap = getMap();
   const resolution = dvkMap.olMap?.getView().getResolution() ?? 0;
+  const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
   if (resolution < minResolutionHarbor) {
     // Harbor not visible, highlight quays
-    const quaySource = dvkMap.getVectorSource('quay');
-    highlightFeatures(quaySource, ['quay', 'section'], id, 'harbor', selected);
+    highlightFeatures(fairwayCardSource, ['quay', 'section'], id, 'harbor', selected);
   } else {
-    const fairwayCardSource = dvkMap.getVectorSource('selectedfairwaycard');
     highlightFeatures(fairwayCardSource, ['harbor'], id, 'harborId', selected);
   }
 }
 
 export function setSelectedQuay(quay: Maybe<Quay>) {
   const dvkMap = getMap();
-  const quaySource = dvkMap.getVectorSource('quay');
+  const quaySource = dvkMap.getVectorSource('selectedfairwaycard');
   const ids = [];
   if (quay?.geometry?.coordinates) {
     ids.push(quay.geometry.coordinates.join(';'));
