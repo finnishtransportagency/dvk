@@ -80,47 +80,44 @@ const PrintMap: React.FC<FairwayCardProps> = ({ id, version, name, modified, isN
       {picturesByLang?.map((picture, index) => {
         const mapLegendClass = picture.legendPosition ? `mapLegend ${picture.legendPosition}` : 'mapLegend bottomLeft';
         return (
-          <div className={'imageWrapper ' + (picture.orientation === Orientation.Portrait ? 'hide-landscape' : 'hide-portrait')} key={picture.id}>
-            <div className="pagebreak"></div>
-            <div className="mapWrapper">
-              <div className="mapContent">
-                <div className="mapExport" id={`mapExport${index}`}>
-                  <img src={`${imageUrl}${id}/${version}/${picture.id}`} alt={picture.id} />
-                </div>
-                <div className={mapLegendClass}>
-                  <div className="bg"></div>
-                  {picture.rotation !== null && (
-                    <div className="compassInfo" id={'compassInfo' + picture.id}>
-                      <img
-                        src={north_arrow}
-                        alt=""
-                        id={'compassNeedle' + picture.id}
-                        style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
-                        crossOrigin={''}
-                      />
+          <div className={'mapWrapper ' + (picture.orientation === Orientation.Portrait ? 'hide-landscape' : 'hide-portrait')} key={picture.id}>
+            <div className="mapContent">
+              <div className="mapExport" id={`mapExport${index}`}>
+                <img src={`${imageUrl}${id}/${version}/${picture.id}`} alt={picture.id} />
+              </div>
+              <div className={mapLegendClass}>
+                <div className="bg"></div>
+                {picture.rotation !== null && (
+                  <div className="compassInfo" id={'compassInfo' + picture.id}>
+                    <img
+                      src={north_arrow}
+                      alt=""
+                      id={'compassNeedle' + picture.id}
+                      style={{ transform: 'rotate(' + picture.rotation?.toPrecision(2) + 'rad)' }}
+                      crossOrigin={''}
+                    />
+                  </div>
+                )}
+                <div className="cardInfo">
+                  <IonText>
+                    <h3>{getPictureTitle(picture)}</h3>
+                  </IonText>
+                  {picture.modificationTimestamp && (
+                    <em>
+                      {t('modified')}{' '}
+                      {t('modifiedDate', {
+                        val: picture.modificationTimestamp ?? '-',
+                      })}
+                      {/* external pictures don't have rotation/scaleLabel/scaleWidth so these are used to determine if it's printed or external*/}
+                      {picture.rotation !== undefined && picture.scaleLabel && picture.scaleWidth && (isN2000 ? ' - N2000 (BSCD2000)' : ' - MW')}
+                    </em>
+                  )}
+                  <em className="danger">{t('notForNavigation')}</em>
+                  {picture.scaleLabel && (
+                    <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
+                      {picture.scaleLabel}
                     </div>
                   )}
-                  <div className="cardInfo">
-                    <IonText>
-                      <h3>{getPictureTitle(picture)}</h3>
-                    </IonText>
-                    {picture.modificationTimestamp && (
-                      <em>
-                        {t('modified')}{' '}
-                        {t('modifiedDate', {
-                          val: picture.modificationTimestamp ?? '-',
-                        })}
-                        {/* external pictures don't have rotation/scaleLabel/scaleWidth so these are used to determine if it's printed or external*/}
-                        {picture.rotation !== undefined && picture.scaleLabel && picture.scaleWidth && (isN2000 ? ' - N2000 (BSCD2000)' : ' - MW')}
-                      </em>
-                    )}
-                    <em className="danger">{t('notForNavigation')}</em>
-                    {picture.scaleLabel && (
-                      <div className="mapScale" style={{ width: (picture.scaleWidth ?? 100) + 'px' }}>
-                        {picture.scaleLabel}
-                      </div>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
