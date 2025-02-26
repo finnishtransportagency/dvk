@@ -48,6 +48,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   const previewDisabled = !fairwayCardInput.id;
 
   const mainPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && (pic.lang === curLang || !pic.lang));
+
   const secondaryPictures = fairwayCardInput.pictures?.filter((pic) => pic.orientation === orientation && pic.lang !== curLang);
   const groupedPicTexts: PictureGroup[] = [];
   fairwayCardInput.pictures?.map((pic) => {

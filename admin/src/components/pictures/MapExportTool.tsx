@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { IonCol, IonGrid, IonProgressBar, IonRow } from '@ionic/react';
-import { DvkMap, getMap } from '../map/DvkMap';
-import { Fairway, FairwayCardInput, Harbor, PictureInput, PictureUploadInput, UploadMapPictureMutation } from '../../graphql/generated';
+import { getMap } from '../map/DvkMap';
+import { Fairway, FairwayCardInput, Harbor, PictureInput, PictureUploadInput } from '../../graphql/generated';
 import { setSelectedFairwayCard } from '../map/fairwayCardSetter';
 import { useIsFetching } from '@tanstack/react-query';
 import './MapExportTool.css';

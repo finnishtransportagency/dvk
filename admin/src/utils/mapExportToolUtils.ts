@@ -77,30 +77,52 @@ export function useUploadMapPictureMutation(
   return { uploadMapPictureMutation, isLoadingMutation };
 }
 
-export function getExportMapBase64Data(canvasSizeCropped: number[], mapCanvas: HTMLCanvasElement, mapSize: number[], scale: number) {
+export function getExportMapBase64Data(
+  exportImageCanvasDimensions: number[],
+  mapCanvas: HTMLCanvasElement,
+  sizeOfMapControl: number[],
+  resolutionScaling: number
+) {
   // Crop the canvas and create image
-  const mapCanvasCropped = document.createElement('canvas');
-  mapCanvasCropped.width = canvasSizeCropped[0];
-  mapCanvasCropped.height = canvasSizeCropped[1];
-  const mapContextCropped = mapCanvasCropped.getContext('2d');
+  const exportImageCanvas = document.createElement('canvas');
+  exportImageCanvas.width = exportImageCanvasDimensions[0];
+  exportImageCanvas.height = exportImageCanvasDimensions[1];
+  const exportImageContext = exportImageCanvas.getContext('2d');
 
   //The map canvas is bigger than the cropped canvas by an amount that equals the margin in the UI.
   //By calculating the difference and dividing by 2, this is the clipping amount
-  //See the documentation here https://www.w3schools.com/jsref/canvas_drawimage.asp
-  if (mapContextCropped) {
-    mapContextCropped.drawImage(
+  //
+  //        ---------------------------------------
+  //        |         ^                           |
+  //        |       m |    MapControl             |
+  //        |         v     canvas                |
+  //        |<------>---------------------        |
+  //        |    l   |                   |        |  l = (sizeOfMapControl[0] * resolutionScaling - exportImageCanvas.width) / 2
+  //        |        |   Export image    |        |  m = (sizeOfMapControl[1] * resolutionScaling - exportImageCanvas.height) / 2,
+  //        |        |   canvas          |        |
+  //        |        ---------------------        |
+  //        |                                     |
+  //        |                                     |
+  //        |                                     |
+  //        ---------------------------------------
+  // This ensures that the top left on the image canvas is the top left from the selected area on the map
+  // (since the margin will fit in the overlapping recatangle)
+  //
+  //  See the documentation here https://www.w3schools.com/jsref/canvas_drawimage.asp
+  if (exportImageContext) {
+    exportImageContext.drawImage(
       mapCanvas,
-      (mapSize[0] * scale - mapCanvasCropped.width) / 2,
-      (mapSize[1] * scale - mapCanvasCropped.height) / 2,
-      mapCanvasCropped.width,
-      mapCanvasCropped.height,
+      (sizeOfMapControl[0] * resolutionScaling - exportImageCanvas.width) / 2,
+      (sizeOfMapControl[1] * resolutionScaling - exportImageCanvas.height) / 2,
+      exportImageCanvas.width,
+      exportImageCanvas.height,
       0,
       0,
-      mapCanvasCropped.width,
-      mapCanvasCropped.height
+      exportImageCanvas.width,
+      exportImageCanvas.height
     );
   }
-  return mapCanvasCropped.toDataURL('image/png');
+  return exportImageCanvas.toDataURL('image/png');
 }
 
 export function getMatrix(canvas: HTMLCanvasElement) {
@@ -114,26 +136,27 @@ export function getMatrix(canvas: HTMLCanvasElement) {
   return matrix as DOMMatrix2DInit;
 }
 
-export function processCanvasElements(mapCanvas: HTMLCanvasElement, dvkMap: DvkMap) {
-  const mapContext = mapCanvas.getContext('2d');
-  Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (canvas) {
-    if (canvas.width > 0) {
-      const opacity = canvas.parentNode.style.opacity || canvas.style.opacity;
-      if (mapContext) {
-        mapContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
+export function processCanvasElements(mapDrawingCanvas: HTMLCanvasElement, dvkMap: DvkMap) {
+  //Get the canvas context - here we are using the 2d drawing context
+  const mapDrawingContext = mapDrawingCanvas.getContext('2d');
+  Array.prototype.forEach.call(dvkMap.olMap?.getViewport().querySelectorAll('.ol-layer canvas'), function (layerCanvas) {
+    if (layerCanvas.width > 0) {
+      const opacity = layerCanvas.parentNode.style.opacity || layerCanvas.style.opacity;
+      if (mapDrawingContext) {
+        mapDrawingContext.globalAlpha = opacity === '' ? 1 : Number(opacity);
       }
-      const matrix = getMatrix(canvas);
+      const matrix = getMatrix(layerCanvas);
       // Apply the transform to the export map context
-      CanvasRenderingContext2D.prototype.setTransform.apply(mapContext, [matrix]);
-      const backgroundColor = canvas.parentNode.style.backgroundColor;
-      if (backgroundColor && mapContext) {
-        mapContext.fillStyle = backgroundColor;
-        mapContext.fillRect(0, 0, canvas.width, canvas.height);
+      CanvasRenderingContext2D.prototype.setTransform.apply(mapDrawingContext, [matrix]);
+      const backgroundColor = layerCanvas.parentNode.style.backgroundColor;
+      if (backgroundColor && mapDrawingContext) {
+        mapDrawingContext.fillStyle = backgroundColor;
+        mapDrawingContext.fillRect(0, 0, layerCanvas.width, layerCanvas.height);
       }
-      if (mapContext) {
-        mapContext.drawImage(canvas, 0, 0);
-        mapContext.globalAlpha = 1;
-        mapContext.setTransform(1, 0, 0, 1, 0, 0);
+      if (mapDrawingContext) {
+        mapDrawingContext.drawImage(layerCanvas, 0, 0);
+        mapDrawingContext.globalAlpha = 1;
+        mapDrawingContext.setTransform(1, 0, 0, 1, 0, 0);
       }
     }
   });
@@ -186,7 +209,7 @@ export const uploadPicture = async (imageUploader: ImageUploader) => {
     scaleWidth: imageUploader.scaleWidth,
     scaleLabel: imageUploader.scaleLabel,
     lang: imageUploader.lang,
-    timestamp: imageUploader.timestamp,
+    groupId: imageUploader.timestamp,
     legendPosition: POSITION.bottomLeft,
   };
   imageUploader.setNewPicture({ ...picUploadObject, ...picInputObject });
@@ -205,30 +228,34 @@ export const createMapImageByLang = (
 ): Promise<string> => {
   return new Promise((resolve) => {
     if (dvkMap.olMap && dvkMap.getOrientationType()) {
-      const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
-      const mapCanvas = getMapCanvas(mapSize);
+      const sizeOfMapControl = dvkMap.olMap?.getSize() ?? [0, 0];
+      const mapDrawingCanvas = getMapCanvas(sizeOfMapControl);
 
       //When resolution is less than 0.5*1.7, the desired resolution is not achievable
       //The code tries to make a bigger map (*1.7 in X,Y directions) and then zoom in so the same extent is used
       //If the resollution is < 0.5*1.7, this is not possible since 0.5 is teh hard limit
       //In this case return the ratio of resolutions and use it to crop the canvas
-      const scale = setMapProperties(viewResolution, mapSize, lang, center);
-      const canvasSizeCropped = dvkMap.getCanvasDimensions(scale);
+      const resolutionScaling = setMapProperties(viewResolution, sizeOfMapControl, lang, center);
+      const exportImageCanvasDimensions = dvkMap.getExportImageCanvasDimensions(resolutionScaling);
 
       dvkMap.olMap.once('rendercomplete', async function () {
         const imageUploader: ImageUploader = {
           ...cardImage,
-          timestamp: timestamp,
+          timestamp,
           orientation: dvkMap.getOrientationType() || Orientation.Portrait,
+          lang,
           base64Data: '',
         };
+
         const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
         imageUploader.scaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
         imageUploader.scaleLabel = mapScale?.innerHTML;
 
-        //Draw the map onto a canvas
-        processCanvasElements(mapCanvas, dvkMap);
-        imageUploader.base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize, scale);
+        //Draw the map and layers onto a canvas
+        processCanvasElements(mapDrawingCanvas, dvkMap);
+
+        //Centre the enlarged map on the export image canvas and convert to Base 64
+        imageUploader.base64Data = getExportMapBase64Data(exportImageCanvasDimensions, mapDrawingCanvas, sizeOfMapControl, resolutionScaling);
 
         // This line can be added to help debugging
         // Create a target window : const canvasDebug = window.open('', 'canvasDebug');
@@ -236,7 +263,9 @@ export const createMapImageByLang = (
         imageUploader.orientation = dvkMap.getOrientationType() || Orientation.Portrait;
 
         // Reset original map properties
-        resetMapProperties(viewResolution, mapSize, center);
+        resetMapProperties(viewResolution, sizeOfMapControl, center);
+
+        //Upload the image to S3
         await uploadPicture(imageUploader);
 
         dvkMap.olMap?.once('rendercomplete', function () {
@@ -251,13 +280,9 @@ export const createMapImageByLang = (
   });
 };
 
-const setUploadState = (uploader: MapControlUploader | MapControlExternalPictureUploader, mapDisabled?: boolean, isCurrentLang?: boolean) => {
-  if (mapDisabled) {
-    uploader.setIsMapDisabled(mapDisabled);
-  }
-  if (isCurrentLang) {
-    uploader.setIsProcessingCurLang(isCurrentLang);
-  }
+const setUploadState = (uploader: MapControlUploader | MapControlExternalPictureUploader, mapDisabled: boolean, isCurrentLang: boolean) => {
+  uploader.setIsMapDisabled(mapDisabled);
+  uploader.setIsProcessingCurLang(isCurrentLang);
 };
 
 export const createMapImages = async (snapshotUploader: MapControlUploader) => {

@@ -278,22 +278,22 @@ export class DvkMap {
     this.mapLanguage = lang;
   };
 
-  public getCanvasDimensions = (scale: number) => {
-    let canvasSize = [0, 0];
+  public getExportImageCanvasDimensions = (scale: number) => {
+    let exportImageCanvasSize = [0, 0];
 
     //Calculate the real scaling factor - the resolution tries to be divided by the map scale,
     //but settting the value does not necessarily work, so the canvas size should reflect that
-    const scalingFactor = scale / MAP.PRINT.SCALE;
+    const canvasReductionFactor = scale / MAP.PRINT.SCALE;
     if (this.olMap) {
       const orientationType = this.getOrientationType();
       if (orientationType === Orientation.Portrait) {
-        canvasSize = [MAP.PRINT.EXPORT_WIDTH * scalingFactor, MAP.PRINT.EXPORT_HEIGHT * scalingFactor];
+        exportImageCanvasSize = [MAP.PRINT.EXPORT_WIDTH * canvasReductionFactor, MAP.PRINT.EXPORT_HEIGHT * canvasReductionFactor];
       }
       if (orientationType === Orientation.Landscape) {
-        canvasSize = [MAP.PRINT.EXPORT_HEIGHT * scalingFactor, MAP.PRINT.EXPORT_WIDTH * scalingFactor];
+        exportImageCanvasSize = [MAP.PRINT.EXPORT_HEIGHT * canvasReductionFactor, MAP.PRINT.EXPORT_WIDTH * canvasReductionFactor];
       }
     }
-    return canvasSize;
+    return exportImageCanvasSize;
   };
 
   public translate = () => {
