@@ -62,7 +62,7 @@ button.icon:focus-visible:hover {
 #fairwayCardsContainer {
   --padding-top: 48px;
   --padding-start: 48px;
-  --padding-end: 33px; /* scrollbar width (~15px on average) subtracted */
+  --padding-end: 48px;
   --padding-bottom: 48px;
   --background: var(--ion-color-lightest);
 }
@@ -235,8 +235,8 @@ ion-text p {
   line-height: 1.125rem;
   margin-top: 0;
 }
-ion-text h4,
-ion-text .h4 {
+ion-text h4 {
+  font-weight: bold;
   font-size: 12px;
   text-transform: uppercase;
   margin-top: 24px;
@@ -244,8 +244,7 @@ ion-text .h4 {
   break-after: avoid;
   margin-bottom: 0.5rem;
 }
-ion-text h4 span,
-ion-text .h4 span {
+ion-text h4 span {
   text-transform: none;
 }
 ion-text h5,

@@ -199,19 +199,16 @@ export const FairwayCardContent: React.FC<FairwayCardContentProps> = ({
           </div>
 
           {!isMobile() && (
-            <>
-              <div className="pagebreak" />
-              <PrintMap
-                id={fairwayCard?.id}
-                version={fairwayCard?.currentPublic ? `v${fairwayCard?.currentPublic}` : fairwayCard?.version}
-                pictures={fairwayCard?.pictures
-                  ?.filter((p) => p.sequenceNumber !== null && p.sequenceNumber !== undefined)
-                  .sort((a, b) => (a.sequenceNumber as number) - (b.sequenceNumber as number))}
-                name={fairwayCard?.name ?? undefined}
-                modified={fairwayCard?.modificationTimestamp ?? undefined}
-                isN2000={isN2000HeightSystem}
-              />
-            </>
+            <PrintMap
+              id={fairwayCard?.id}
+              version={fairwayCard?.currentPublic ? `v${fairwayCard?.currentPublic}` : fairwayCard?.version}
+              pictures={fairwayCard?.pictures
+                ?.filter((p) => p.sequenceNumber !== null && p.sequenceNumber !== undefined)
+                .sort((a, b) => (a.sequenceNumber as number) - (b.sequenceNumber as number))}
+              name={fairwayCard?.name ?? undefined}
+              modified={fairwayCard?.modificationTimestamp ?? undefined}
+              isN2000={isN2000HeightSystem}
+            />
           )}
         </>
       )}

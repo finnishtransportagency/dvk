@@ -153,6 +153,8 @@
     display: flex;
     justify-content: center;
     visibility: visible !important;
+    page-break-before: always;
+    break-before: page;
   }
   .mapWrapper .mapContent {
     position: relative;
@@ -259,11 +261,6 @@
   }
   .no-print {
     display: none !important;
-  }
-
-  .pagebreak {
-    page-break-after: always;
-    break-after: page;
   }
 
   @media (orientation: portrait) {
