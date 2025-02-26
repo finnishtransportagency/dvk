@@ -23,7 +23,7 @@ export type LayerType = {
 
 const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
   const { t } = useTranslation();
-  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'name']);
+  const [layers, setLayers] = useState<string[]>(['pilot', 'line12', 'harbor', 'quay', 'name']);
   const dvkMap = getMap();
 
   const layerStructure: LayerType[] = [
@@ -48,7 +48,7 @@ const LayerModal: React.FC<ModalProps> = ({ isOpen, setIsOpen }) => {
     { id: 'speedlimit', title: t('homePage.map.controls.layer.speedLimits') },
     {
       id: 'specialarea',
-      title: t('homePage.map.controls.layer.specialAreas'),
+      title: t('homePage.map.controls.layer.specificAreas'),
       childLayers: [
         { id: 'specialarea2', title: t('homePage.map.controls.layer.specialarea2') },
         { id: 'specialarea9', title: t('homePage.map.controls.layer.specialarea9') },

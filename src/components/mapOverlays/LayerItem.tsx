@@ -8,7 +8,7 @@ import { useDvkContext } from '../../hooks/dvkContext';
 import arrowDownIcon from '../../theme/img/arrow_down.svg';
 import { LayerAlert } from '../Alert';
 import alertIcon from '../../theme/img/alert_icon.svg';
-import { FeatureDataLayerId, LAYER_IDB_KEY } from '../../utils/constants';
+import { FeatureDataLayerId, Lang, LAYER_IDB_KEY } from '../../utils/constants';
 import type { CheckboxCustomEvent } from '@ionic/react';
 import { LegendSpeedlimits, LegendIce, LegendDepth, LegendArea, LegendContour } from './LayerLegends';
 import { set as setIdbVal } from 'idb-keyval';
@@ -20,11 +20,13 @@ interface LayerItemProps {
 }
 
 const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { state, dispatch } = useDvkContext();
   const { isOffline, layers } = state;
   const [legendOpen, setLegendOpen] = useState(false);
   const dvkMap = getMap();
+
+  const lang = i18n.resolvedLanguage as Lang;
 
   const toggleDetails = () => {
     setLegendOpen(!legendOpen);
@@ -113,7 +115,12 @@ const LayerItem: React.FC<LayerItemProps> = ({ id, title, mainLegendOpen }) => {
             >
               <IonRow className="ion-align-items-center ion-justify-content-between">
                 <IonCol>
-                  <IonText id={`${title}-label`} className={disabled ? 'labelText disabled' : 'labelText'}>
+                  {/*Specialarea15 in swedish is an exception because part of character 'g' disappears without little bit extra styling*/}
+                  <IonText
+                    id={`${title}-label`}
+                    className={disabled ? 'labelText disabled' : 'labelText'}
+                    style={lang === 'sv' && id === 'specialarea15' ? { display: 'block', lineHeight: '16px', marginBottom: '1px' } : {}}
+                  >
                     {title}
                   </IonText>
                 </IonCol>

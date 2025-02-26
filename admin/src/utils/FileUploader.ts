@@ -3,7 +3,7 @@ import FileInput from '@uppy/file-input';
 import { ChangeEvent } from 'react';
 
 class FileUploader {
-  private uppy = new Uppy({
+  private readonly uppy = new Uppy({
     restrictions: {
       allowedFileTypes: ['.png'],
       // this equals ~2MB

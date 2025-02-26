@@ -64,9 +64,22 @@
   --background-focused: unset;
 }
 
+.sidebarMenu ion-row.locationPermission ion-col ion-toggle {
+  border: 1px solid transparent;
+}
+
+.sidebarMenu ion-row.locationPermission ion-col ion-toggle:focus {
+  border: 1px solid black;
+}
+
 .sidebarMenu ion-button.feedbackButton {
+  border: 1px solid transparent;
   margin: .5rem 0 0;
   --padding-start: 0;
+}
+
+.sidebarMenu ion-button.feedbackButton:focus {
+  border: 1px solid black;
 }
 
 .dvkFooter ion-button.sourceText {

@@ -13,7 +13,7 @@ import {
   MINIMUM_QUERYLENGTH,
 } from './constants';
 import { Feature } from 'ol';
-import { Geometry } from 'ol/geom';
+import { Geometry, Point } from 'ol/geom';
 import { MarineWarningFeatureProperties } from '../components/features';
 import coastal from '../theme/img/coastal_warning_icon.svg';
 import local from '../theme/img/local_warning_icon.svg';
@@ -23,6 +23,7 @@ import { set as setIdbVal, get as getIdbVal } from 'idb-keyval';
 import { Action } from '../hooks/dvkReducer';
 import { Dispatch } from 'react';
 import { TFunction } from 'i18next';
+import { Coordinate } from 'ol/coordinate';
 
 export const isMobile = () => {
   return isPlatform('iphone') || (isPlatform('android') && !isPlatform('tablet'));
@@ -106,7 +107,13 @@ function mergeCanvasesToImage() {
     mapContext.setTransform(1, 0, 0, 1, 0, 0);
   }
   const img = new Image();
-  img.src = mapCanvas.toDataURL('image/png');
+  try {
+    img.src = mapCanvas.toDataURL('image/png');
+  } catch {
+    //Safari throws an error with toDataURL, try setting cross origin
+    img.crossOrigin = ''; //Empty string is same as Anonymous : https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/crossorigin
+    img.src = mapCanvas.toDataURL('image/png');
+  }
   return img;
 }
 
@@ -348,4 +355,32 @@ export function getAreaName(area: Area, t: TFunction) {
     return name ? type + ' ' + name : type;
   }
   return name ?? type;
+}
+
+export function setCoordinatesIconAndPopUp(dispatch: Dispatch<Action>, coordinates: Coordinate) {
+  const source = dvkMap.getVectorSource('coordinateslocation');
+  source.clear();
+  source.addFeature(
+    new Feature({
+      geometry: new Point([coordinates[0], coordinates[1]]),
+    })
+  );
+  const coordinateString = dvkMap.getMapDetailsControl().getMousePositionElement().firstChild?.firstChild?.textContent;
+  dispatch({
+    type: 'setCoordinates',
+    payload: {
+      value: coordinateString ?? '',
+    },
+  });
+}
+
+export function clearCoordinatesLayerAndPopUp(dispatch: Dispatch<Action>) {
+  const coordinatesSource = dvkMap.getVectorSource('coordinateslocation');
+  coordinatesSource.clear();
+  dispatch({
+    type: 'setCoordinates',
+    payload: {
+      value: '',
+    },
+  });
 }

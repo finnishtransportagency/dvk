@@ -3,7 +3,6 @@ import { Style, Text, Fill, Stroke, Icon } from 'ol/style';
 import { getMap } from '../DvkMap';
 import { Lang } from '../../../utils/constants';
 import { QuayFeatureProperties } from '../features';
-import CircleStyle from 'ol/style/Circle';
 import quayIcon from '../../../theme/img/dock_icon.svg';
 import quayIconActive from '../../../theme/img/dock_icon_active.svg';
 import quaySectionIcon from '../../../theme/img/quay_section.svg';
@@ -53,9 +52,9 @@ const sectionSelectedStyle = new Style({
   }),
 });
 
-function getSectionStyle(selected: boolean, props: QuayFeatureProperties) {
+function getSectionStyle(selected: boolean, props: QuayFeatureProperties, includeText: boolean = true) {
   const s = selected ? sectionSelectedStyle : sectionStyle;
-  s.getText()?.setText(props.depth ? `${props.depth[0]} m` : '');
+  s.getText()?.setText(includeText && props.depth ? `${props.depth[0]} m` : '');
   return s;
 }
 
@@ -105,17 +104,6 @@ const quaySelectedStyle = new Style({
   zIndex: 10,
 });
 
-const circleStyle = new Style({
-  image: new CircleStyle({
-    radius: 20,
-    displacement: [0, 20],
-    fill: new Fill({
-      color: 'rgba(0,0,0,0)',
-    }),
-  }),
-  zIndex: 2,
-});
-
 const depthStyle = new Style({
   text: new Text({
     font: '12px "Exo2"',
@@ -150,7 +138,7 @@ const depthSelectedStyle = new Style({
   zIndex: 10,
 });
 
-export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean) {
+export function getQuayStyle(feature: FeatureLike, resolution: number, selected: boolean, includeSectionText: boolean = true) {
   if (resolution > 3) {
     return undefined;
   }
@@ -158,7 +146,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   const featureType = feature.get('featureType');
   const props = feature.getProperties() as QuayFeatureProperties;
   if (featureType === 'section') {
-    return getSectionStyle(selected, props);
+    return getSectionStyle(selected, props, includeSectionText);
   }
 
   const dvkMap = getMap();
@@ -169,9 +157,7 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
   s.getText()?.setOffsetY(-55);
   s.getText()?.setText(quayName);
 
-  circleStyle.setZIndex(selected ? 11 : 2);
-
-  const styles = [s, circleStyle];
+  const styles = [s];
 
   if (props.showDepth && resolution < 2) {
     const depthText =
@@ -181,6 +167,5 @@ export function getQuayStyle(feature: FeatureLike, resolution: number, selected:
     ds.getText()?.setText(depthText);
     styles.push(ds);
   }
-
   return styles;
 }

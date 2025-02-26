@@ -126,6 +126,8 @@ function getSelectedFairwayCardStyle(feature: FeatureLike, resolution: number) {
       return getMarineWarningStyle(feature);
     case 'harbor':
       return getHarborStyle(feature, resolution, highlighted, minResolutionHarbor);
+    case 'quay':
+      return getQuayStyle(feature, resolution, highlighted);
     case 'circle':
       return getCircleStyle(feature, resolution);
     case 'pilot':
@@ -527,6 +529,7 @@ export function addAPILayers(map: Map) {
   addFeatureVectorLayer({
     map: map,
     id: 'harbor',
+    minResolution: 3,
     maxResolution: 300,
     renderBuffer: 100,
     style: (feature, resolution) => getHarborStyle(feature, resolution, !!feature.get('hoverStyle')),
@@ -641,7 +644,7 @@ export function addAPILayers(map: Map) {
     map: map,
     id: 'quay',
     renderBuffer: 100,
-    style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle')),
+    style: (feature, resolution) => getQuayStyle(feature, resolution, !!feature.get('hoverStyle'), false),
     zIndex: 330,
   });
 
@@ -751,6 +754,7 @@ function addQuayFeature(harbor: HarborPartsFragment, quay: Quay, source: VectorS
   const depth = quay.sections?.map((s) => s?.depth ?? 0).filter((v) => v !== undefined && v > 0);
   feature.setId(quay.geometry?.coordinates?.join(';'));
   feature.setProperties({
+    dataSource: 'quay',
     featureType: 'quay',
     harbor: harbor.id,
     quay: quay.name,
@@ -770,6 +774,7 @@ function addSectionFeature(harbor: HarborPartsFragment, quay: Quay, section: Sec
   const feature = format.readFeature(section.geometry, { dataProjection: 'EPSG:4326', featureProjection: MAP.EPSG }) as Feature<Geometry>;
   feature.setId(section.geometry?.coordinates?.join(';'));
   feature.setProperties({
+    dataSource: 'quay',
     featureType: 'section',
     harbor: harbor.id,
     quay: quay.name,
@@ -799,6 +804,7 @@ export function addQuay(harbor: HarborPartsFragment, source: VectorSource) {
       }
     });
     if (quay?.geometry) {
+      console.log(quay.geometry);
       addQuayFeature(harbor, quay, source, format, sectionGeometryMissing);
     }
   }
@@ -977,14 +983,14 @@ export function setSelectedPilotRoute(id: number, selected: boolean) {
 export function setSelectedHarborPreview(harbor: HarborPartsFragment) {
   const dvkMap = getMap();
   const harborLayer = dvkMap.getFeatureLayer('harbor');
+  const quayLayer = dvkMap.getFeatureLayer('quay');
   const fairwayCardLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
-  const quaySource = dvkMap.getVectorSource('quay');
 
   fairwayCardLayer.setVisible(true);
   const harborFeature = addHarborFeature(harbor, fairwayCardLayer.getSource() as VectorSource);
-  addQuay(harbor, quaySource);
+  addQuay(harbor, fairwayCardLayer.getSource() as VectorSource);
   harborLayer.setVisible(false);
-
+  quayLayer.setVisible(false);
   dvkMap.olMap?.getView().animate({ center: (harborFeature.getGeometry() as Point).getCoordinates() }, { resolution: 2 });
 }
 
@@ -992,12 +998,12 @@ export function unsetSelectedHarborPreview() {
   const dvkMap = getMap();
   const harborLayer = dvkMap.getFeatureLayer('harbor');
   const fairwayCardLayer = dvkMap.getFeatureLayer('selectedfairwaycard');
-  const quaySource = dvkMap.getVectorSource('quay');
+  const quayLayer = dvkMap.getFeatureLayer('quay');
 
-  quaySource.clear();
   (fairwayCardLayer.getSource() as VectorSource).clear();
   fairwayCardLayer.setVisible(false);
   harborLayer.setVisible(true);
+  quayLayer.setVisible(true);
 }
 
 export function setSelectedMarineWarning(id: number, selected: boolean, marineWarningDataLayerId: FeatureDataLayerId) {

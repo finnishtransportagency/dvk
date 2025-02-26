@@ -41,11 +41,11 @@ export async function fetchTraficomApi<T>(path: string) {
     })
     .catch(function (error) {
       if (error.code === 'ECONNABORTED') {
-        log.fatal(`${ExternalAPI.TRAFICOM} api %s fetch timeout: message=%s`, path, error.message);
+        log.fatal(`${ExternalAPI.TRAFICOM} api fetch timeout: path=%s message=%s`, path, error.message);
       } else {
         const errorObj = error.toJSON();
         log.fatal(
-          `${ExternalAPI.TRAFICOM} api %s fetch failed: status=%d code=%s message=%s`,
+          `${ExternalAPI.TRAFICOM} api fetch failed: path=%s status=%d code=%s message=%s`,
           path,
           errorObj.status,
           errorObj.code,
@@ -68,7 +68,7 @@ export async function fetchPilotRoutesApi() {
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`${ExternalAPI.PILOTROUTE} api %s fetch failed: status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
+      log.fatal(`${ExternalAPI.PILOTROUTE} api fetch failed: path=%s status=%d code=%s message=%s`, errorObj.status, errorObj.code, errorObj.message);
       throw new Error(getFetchErrorMessage(ExternalAPI.PILOTROUTE));
     });
   const duration = Date.now() - start;
@@ -88,7 +88,7 @@ async function fetchAISApi(path: string, params: Record<string, string>) {
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`${ExternalAPI.AIS} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      log.fatal(`${ExternalAPI.AIS} api fetch failed: path=%s status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
       throw new Error(getFetchErrorMessage(ExternalAPI.AIS));
     });
   const duration = Date.now() - start;
@@ -124,7 +124,7 @@ export async function fetchVATUByApi<T extends VaylaGeojsonFeature | VaylaFeatur
     .catch(function (error) {
       const errorObj = error.toJSON();
       log.fatal(
-        `${ExternalAPI.VATU} api /${api} fetch failed: params=%o status=%d code=%s message=%s`,
+        `${ExternalAPI.VATU} api fetch failed: path=${api} params=%o status=%d code=%s message=%s`,
         params,
         errorObj.status,
         errorObj.code,
@@ -181,7 +181,7 @@ export async function fetchWeatherApiResponse(path: string) {
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`${ExternalAPI.WEATHER} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      log.fatal(`${ExternalAPI.WEATHER} api fetch failed: path=%s status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
       throw new Error(getFetchErrorMessage(ExternalAPI.WEATHER));
     });
   const duration = Date.now() - start;
@@ -224,7 +224,7 @@ export async function fetchIBNetApi<T>(path?: string, params?: Record<string, st
     })
     .catch(function (error) {
       const errorObj = error.toJSON();
-      log.fatal(`${ExternalAPI.IBNET} api %s fetch failed: status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
+      log.fatal(`${ExternalAPI.IBNET} api fetch failed: path=%s status=%d code=%s message=%s`, path, errorObj.status, errorObj.code, errorObj.message);
       throw new Error(getFetchErrorMessage(ExternalAPI.IBNET));
     });
   const duration = Date.now() - start;

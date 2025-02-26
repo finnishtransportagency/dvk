@@ -44,6 +44,11 @@ const QuayPopupContent: React.FC<QuayPopupContentProps> = ({ quay, setPopupPrope
           <CloseButton close={closePopup} />
         </IonCol>
       </IonRow>
+      <IonRow>
+        <IonCol>
+          <em>{quay.properties.n2000HeightSystem ? 'N2000' : 'MW'}</em>
+        </IonCol>
+      </IonRow>
       {quay.properties.depth && (
         <>
           <IonRow>
