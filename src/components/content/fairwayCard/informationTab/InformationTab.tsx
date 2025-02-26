@@ -66,9 +66,7 @@ export const InformationTab: React.FC<InformationTabProps> = ({ fairwayCard, isN
   return (
     <>
       <IonText className="no-margin-top">
-        <h4>
-          <strong>{t('information')}</strong>
-        </h4>
+        <h4>{t('information')}</h4>
       </IonText>
       <LiningInfo data={fairwayCard?.fairways} lineText={fairwayCard?.lineText} />
       <DimensionInfo data={fairwayCard?.fairways} designSpeedText={fairwayCard?.designSpeed} isN2000HeightSystem={isN2000HeightSystem} />
@@ -79,18 +77,14 @@ export const InformationTab: React.FC<InformationTabProps> = ({ fairwayCard, isN
         <AnchorageInfo data={fairwayCard?.fairways} anchorageText={fairwayCard?.anchorage} inlineLabel />
       </IonText>
       <IonText data-testid="navigation">
-        <h4>
-          <strong>{t('navigation')}</strong>
-        </h4>
+        <h4>{t('navigation')}</h4>
         <Paragraph bodyText={fairwayCard?.generalInfo ?? undefined} />
         <Paragraph title={t('navigationCondition')} bodyText={fairwayCard?.navigationCondition ?? undefined} showNoData />
         <Paragraph title={t('iceCondition')} bodyText={fairwayCard?.iceCondition ?? undefined} showNoData />
       </IonText>
       <IonText>
         <h4>
-          <strong>
-            {t('recommendations')} <span>({t('fairwayAndHarbour').toLocaleLowerCase()})</span>
-          </strong>
+          {t('recommendations')} <span>({t('fairwayAndHarbour').toLocaleLowerCase()})</span>
         </h4>
         <Paragraph title={t('windRecommendation')} bodyText={fairwayCard?.windRecommendation ?? undefined} showNoData />
         <Paragraph title={t('vesselRecommendation')} bodyText={fairwayCard?.vesselRecommendation ?? undefined} showNoData />
@@ -100,16 +94,12 @@ export const InformationTab: React.FC<InformationTabProps> = ({ fairwayCard, isN
       </IonText>
       {fairwayCard?.additionalInfo && (
         <IonText>
-          <h4>
-            <strong>{t('additionalInfo')}</strong>
-          </h4>
+          <h4>{t('additionalInfo')}</h4>
           <MarkdownParagraph markdownText={fairwayCard?.additionalInfo} />
         </IonText>
       )}
       <IonText>
-        <h4>
-          <strong>{t('trafficServices')}</strong>
-        </h4>
+        <h4>{t('trafficServices')}</h4>
       </IonText>
       <PilotInfo pilotageLimits={pilotageLimits} pilot={fairwayCard?.trafficService?.pilot} />
       <VTSInfo data={fairwayCard?.trafficService?.vts} />

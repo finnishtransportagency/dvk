@@ -33,9 +33,7 @@ export const HarbourInfo: React.FC<HarbourInfoProps> = ({ data, isLast }) => {
             onBlur={() => highlightHarbor(data.id, false)}
             data-testid="restrictions"
           >
-            <h4>
-              <strong>{data.name?.[lang]}</strong>
-            </h4>
+            <h4>{data.name?.[lang]}</h4>
             <h5>{t('restrictions')}</h5>
             {(data.extraInfo && <p>{data.extraInfo[lang]}</p>) || <InfoParagraph title={t('noRestrictions')} />}
           </IonText>
