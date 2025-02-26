@@ -87,7 +87,7 @@ export const fairwayCardReducer = (
     case 'vtsEmail':
     case 'vtsPhone':
     case 'vtsIds':
-      newState = vtsReducer(state, value, actionType, actionLang, actionTarget);
+      newState = vtsReducer(state, value, actionType, actionTarget);
       vtsValidator(newState, value, actionType, validationErrors, setValidationErrors, actionTarget);
       break;
     case 'vhf':
