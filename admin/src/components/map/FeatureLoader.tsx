@@ -290,6 +290,10 @@ export function useHarborLayer() {
   return useDataLayer('harbor', 'harbor');
 }
 
+export function useQuayLayer() {
+  return useDataLayer('quay', 'quay');
+}
+
 export function useSafetyEquipmentLayer(): DvkLayerState {
   return useDataLayer('safetyequipment', 'safetyequipment');
 }

@@ -17,6 +17,7 @@ import {
   usePilotageAreaBorderLayer,
   usePilotageLimitLayer,
   usePilotLayer,
+  useQuayLayer,
   useSafetyEquipmentLayer,
   useSpecialArea15Layer,
   useSpecialArea2Layer,
@@ -45,6 +46,7 @@ const MapElement: React.FC<MapElementProps> = ({ setInitDone, setPercentDone, se
   const specialArea15Layer = useSpecialArea15Layer();
   const pilotLayer = usePilotLayer();
   const harborLayer = useHarborLayer();
+  const quayLayer = useQuayLayer();
   const boardLine12Layer = useBoardLine12Layer();
   const bgFinlandLayer = useBackgroundFinlandLayer();
   const bgMmlSatamatLayer = useBackgroundMmlSatamatLayer();
@@ -72,6 +74,7 @@ const MapElement: React.FC<MapElementProps> = ({ setInitDone, setPercentDone, se
       specialArea15Layer,
       pilotLayer,
       harborLayer,
+      quayLayer,
       boardLine12Layer,
       bgFinlandLayer,
       bgMmlSatamatLayer,
@@ -98,6 +101,7 @@ const MapElement: React.FC<MapElementProps> = ({ setInitDone, setPercentDone, se
     area12Layer,
     pilotLayer,
     harborLayer,
+    quayLayer,
     boardLine12Layer,
     bgFinlandLayer,
     bgMmlSatamatLayer,
