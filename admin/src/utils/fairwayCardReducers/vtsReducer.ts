@@ -11,13 +11,23 @@ export const vtsReducer = (
   let newState;
   switch (actionType) {
     case 'vtsIds':
-      newState = {
-        ...state,
-        trafficService: {
-          ...state.trafficService,
-          vtsIds: value as string[],
-        },
-      };
+      if (value && !actionTarget) {
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vtsIds: state.trafficService?.vtsIds?.concat([' ']),
+          },
+        };
+      } else {
+        newState = {
+          ...state,
+          trafficService: {
+            ...state.trafficService,
+            vtsIds: state.trafficService?.vtsIds?.map((id) => (id === actionTarget ? String(value) : id)),
+          },
+        };
+      }
       break;
     case 'vts':
       // Add and delete

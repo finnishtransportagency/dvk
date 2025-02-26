@@ -11,7 +11,7 @@ import {
   MainSectionOpenType,
   MainSectionTitle,
   saveErrorTitle,
-  SelectOption,
+  //SelectOption,
   ValidationType,
   ValueType,
   VERSION,
@@ -36,6 +36,7 @@ import {
   usePilotPlacesQueryData,
   useSaveFairwayCardMutationQuery,
   useVtsAreasQueryData,
+  //useVtsAreasQueryData,
 } from '../graphql/api';
 import Section from './form/Section';
 import { fairwayCardReducer } from '../utils/fairwayCardReducer';
@@ -107,8 +108,8 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
   // the graphQL approach's motives are a bit unclear so possible refactor in the future
   const { data: pilotRouteList, isLoading: isLoadingPilotRoutes } = useFeatureData('pilotroute');
   const { data: areaList, isLoading: isLoadingAreas } = useFeatureData('area12');
-  const { data: vtsAreas, isLoading: isLoadingVtsAreas } = useVtsAreasQueryData();
-  console.log(vtsAreas?.vtsAreas);
+  const { data: vtsAreaList, isLoading: isLoadingVtsAreas } = useVtsAreasQueryData();
+
   const { mutate: saveFairwayCard, isPending: isLoadingMutation } = useSaveFairwayCardMutationQuery({
     onSuccess(data) {
       setSavedCard(data.saveFairwayCard);
@@ -546,19 +547,24 @@ const FairwayCardForm: React.FC<FormProps> = ({ fairwayCard, modified, modifier,
                   updateState={updateState}
                   validationErrors={validationErrors}
                   isLoadingPilotPlaces={isLoadingPilotPlaces}
-                  isLoadingVtsAreas={isLoadingVtsAreas}
                   sectionsOpen={sectionsOpen}
                   toggleSection={toggleSection}
                   pilotPlaceOptions={pilotPlaceList?.pilotPlaces}
-                  vtsAreaOptions={vtsAreas?.vtsAreas as SelectOption[]}
                   readonly={readonly}
                 />
 
                 <Section
                   title={t('fairwaycard.vts-heading')}
-                  sections={state.trafficService?.vts as VtsInput[]}
+                  sections={state.trafficService?.vtsIds?.map((id) => {
+                    return {
+                      id: id,
+                    } as VtsInput;
+                  })}
                   updateState={updateState}
-                  sectionType="vts"
+                  sectionType="vtsIds"
+                  state={state}
+                  vtsAreas={vtsAreaList?.vtsAreas}
+                  isLoadingVtsAreas={isLoadingVtsAreas}
                   validationErrors={validationErrors}
                   disabled={!readonly && state.status === Status.Removed}
                   readonly={readonly}

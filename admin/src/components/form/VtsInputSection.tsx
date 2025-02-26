@@ -1,48 +1,58 @@
 import React from 'react';
 import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import { ActionType, Lang, ValidationType } from '../../utils/constants';
+import { ActionType, Lang, SelectOption, ValidationType, ValueType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
 import TextInput from './TextInput';
-import { VtsInput } from '../../graphql/generated';
-import TextInputRow from './TextInputRow';
+import { FairwayCardInput, Status, Vts, VtsInput } from '../../graphql/generated';
+//import TextInputRow from './TextInputRow';
+import SelectInput from './SelectInput';
 
 interface VtsInputSectionProps {
   section: VtsInput;
   idx: number;
   updateState: (
-    value: string | boolean,
+    value: ValueType,
     actionType: ActionType,
     actionLang?: Lang,
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => void;
+  state?: FairwayCardInput;
+  vtsAreas?: Vts[];
+  isLoadingVtsAreas?: boolean;
   focused?: boolean;
   validationErrors?: ValidationType[];
   disabled?: boolean;
   readonly?: boolean;
 }
 
-const VtsInputSection: React.FC<VtsInputSectionProps> = ({ section, idx, updateState, focused, validationErrors, disabled, readonly = false }) => {
+const VtsInputSection: React.FC<VtsInputSectionProps> = ({
+  section,
+  idx,
+  updateState,
+  state,
+  vtsAreas,
+  isLoadingVtsAreas,
+  disabled,
+  readonly = false,
+}) => {
   const { t } = useTranslation();
 
   return (
     <IonGrid className="formGrid subSectionMargin">
-      <TextInputRow
-        labelKey="fairwaycard.vts-name"
-        value={section.name}
-        actionType="vtsName"
-        updateState={updateState}
-        actionTarget={idx}
-        required
-        error={
-          !section.name?.fi || !section.name.sv || !section.name.en
-            ? validationErrors?.find((error) => error.id === 'vtsName-' + idx)?.msg
-            : undefined
-        }
-        readonly={readonly}
-        disabled={!readonly && disabled}
-        focused={focused}
-      />
+      <IonRow>
+        <SelectInput
+          label={t('fairwaycard.vts-label')}
+          selected={state?.trafficService?.vtsIds?.[idx]}
+          options={(vtsAreas as SelectOption[]) ?? []}
+          setSelected={updateState}
+          actionType="vtsIds"
+          actionTarget={String(section.id)}
+          isLoading={isLoadingVtsAreas}
+          disabled={!readonly && state?.status === Status.Removed}
+          readonly={readonly}
+        />
+      </IonRow>
       <IonRow>
         <IonCol sizeMd="6">
           <TextInput

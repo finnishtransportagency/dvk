@@ -41,7 +41,7 @@ const SectionHeader: React.FC<SectionHeaderProps> = ({
       <IonItem className="sectionHeader">
         <IonText>
           <h3>
-            {title} {idx + 1}
+            {title} {title.includes('VTS') ? '' : idx + 1}
           </h3>
         </IonText>
         {infoTitle && infoDescription && (

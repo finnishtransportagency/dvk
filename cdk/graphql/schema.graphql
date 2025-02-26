@@ -146,7 +146,8 @@ input VHFInput {
 }
 
 input VTSInput {
-  name: TextInput!
+  id: String
+  name: TextInput
   phoneNumber: String
   email: [String]
   vhf: [VHFInput]

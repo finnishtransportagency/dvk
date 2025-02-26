@@ -77,7 +77,7 @@
     "error-OPERATION-BLOCKED": "[sv] Toiminto estetty",
     "fix-errors-try-again": "[sv] Korjaa virheet ja yritä uudelleen.",
     "button-ok": "Ok",
-    "add-section-vts": "[sv] Lisää alusliikennepalvelija",
+    "add-section-vtsIds": "[sv] Lisää alusliikennepalvelija",
     "add-section-vhf": "[sv] Lisää VHF-kanava",
     "add-section-tug": "[sv] Lisää hinaaja",
     "add-section-quay": "[sv] Lisää laituri",
@@ -226,7 +226,7 @@
     "pilot-order": "Lotsbeställning",
     "linked-pilot-places": "[sv] Linkitetyt luotsipaikat",
     "pilotage-distance-from": "Lotsled från",
-    "vts-heading": "[sv] VTS (alusliikennepalvelija)",
+    "vts-heading": "[sv] VTS",
     "vts-name": "Namn",
     "vhf-name": "VHF-kanalens namn",
     "vhf-channel": "[sv] VHF-kanavan numero",
@@ -304,7 +304,8 @@
     "cannot-change-reference-level": "[sv] Väyläkortille on lisätty Squat laskennan sijainteja. Vertaustasoa ei voi vaihtaa ennen kuin Squat laskennan sijainnit on poistettu.",
     "squat-calculation-area-orphaned_one": "[sv] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan.",
     "squat-calculation-area-orphaned_other": "[sv] Väyläalueet <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitykset sijainnin laskentaan.",
-    "main-section-title": "[sv] Väyläkortin perustiedot"
+    "main-section-title": "[sv] Väyläkortin perustiedot",
+    "vts-label": "[sv] Linkitetty VTS-alusliikennepalvelija"
   },
   "harbour": {
     "primary-id": "[sv] Sataman tunniste",

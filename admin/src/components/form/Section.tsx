@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { IonButton, IonCol, IonGrid, IonRow } from '@ionic/react';
-import { ActionType, Lang, ValidationType } from '../../utils/constants';
+import { ActionType, Lang, ValidationType, ValueType } from '../../utils/constants';
 import { useTranslation } from 'react-i18next';
-import { QuayInput, SectionInput, TugInput, VhfInput, VtsInput } from '../../graphql/generated';
+import { FairwayCardInput, QuayInput, SectionInput, TugInput, VhfInput, Vts, VtsInput } from '../../graphql/generated';
 import VtsInputSection from './VtsInputSection';
-import VhfInputSection from './VhfInputSection';
 import TugInputSection from './TugInputSection';
 import QuayInputSection from './QuayInputSection';
 import SectionInputSection from './SectionInputSection';
@@ -14,13 +13,16 @@ interface SectionProps {
   title: string;
   sections?: VtsInput[] | TugInput[] | VhfInput[] | QuayInput[] | SectionInput[] | null;
   updateState: (
-    value: string | boolean,
+    value: ValueType,
     actionType: ActionType,
     actionLang?: Lang,
     actionTarget?: string | number,
     actionOuterTarget?: string | number
   ) => void;
-  sectionType: 'vts' | 'tug' | 'vhf' | 'quay' | 'section';
+  sectionType: 'vtsIds' | 'tug' | 'quay' | 'section';
+  state?: FairwayCardInput;
+  vtsAreas?: Vts[];
+  isLoadingVtsAreas?: boolean;
   actionOuterTarget?: string | number;
   validationErrors?: ValidationType[];
   disabled?: boolean;
@@ -32,6 +34,9 @@ const Section: React.FC<SectionProps> = ({
   sections,
   updateState,
   sectionType,
+  state,
+  vtsAreas,
+  isLoadingVtsAreas,
   actionOuterTarget,
   validationErrors,
   disabled,
@@ -83,7 +88,7 @@ const Section: React.FC<SectionProps> = ({
 
         return (
           <div className="formSection" key={title + idx}>
-            {actionOuterTarget === undefined && (
+            {((actionOuterTarget === undefined && sectionType !== 'vtsIds') || (sectionType === 'vtsIds' && idx === 0)) && (
               <SectionHeader
                 title={title}
                 idx={idx}
@@ -98,43 +103,21 @@ const Section: React.FC<SectionProps> = ({
             )}
             {actionOuterTarget !== undefined && <hr />}
 
-            {sectionType === 'vts' && (
+            {sectionType === 'vtsIds' && (
               <div className={sectionClassName}>
                 <VtsInputSection
                   section={section as VtsInput}
                   idx={idx}
                   updateState={updateState}
+                  state={state}
+                  vtsAreas={vtsAreas}
+                  isLoadingVtsAreas={isLoadingVtsAreas}
                   focused={isFocused}
                   validationErrors={validationErrors}
                   readonly={readonly}
                   disabled={!readonly && disabled}
                 />
-                <Section
-                  title={''}
-                  sections={(section as VtsInput).vhf as VhfInput[]}
-                  updateState={updateState}
-                  sectionType="vhf"
-                  actionOuterTarget={idx}
-                  validationErrors={validationErrors}
-                  readonly={readonly}
-                  disabled={!readonly && disabled}
-                />
               </div>
-            )}
-
-            {sectionType === 'vhf' && (
-              <VhfInputSection
-                className={sectionClassName}
-                section={section as VhfInput}
-                idx={idx}
-                updateState={updateState}
-                deleteSection={deleteSection}
-                focused={isFocused}
-                validationErrors={validationErrors}
-                readonly={readonly}
-                disabled={!readonly && disabled}
-                actionOuterTarget={actionOuterTarget}
-              />
             )}
 
             {sectionType === 'tug' && (

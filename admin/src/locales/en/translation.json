@@ -77,7 +77,7 @@
     "error-OPERATION-BLOCKED": "Operation blocked",
     "fix-errors-try-again": "Fix errors and try again.",
     "button-ok": "Ok",
-    "add-section-vts": "[en] Lisää alusliikennepalvelija",
+    "add-section-vtsIds": "[en] Lisää alusliikennepalvelija",
     "add-section-vhf": "Add VHF channel",
     "add-section-tug": "Add tug",
     "add-section-quay": "Add quay",
@@ -224,7 +224,7 @@
     "pilot-order": "Pilotage",
     "linked-pilot-places": "Linked pilot boarding positions",
     "pilotage-distance-from": "Pilotage distance from",
-    "vts-heading": "[en] VTS (alusliikennepalvelija)",
+    "vts-heading": "[en] VTS",
     "vts-name": "Name",
     "vhf-name": "VHF channel name",
     "vhf-channel": "VHF channel number",
@@ -303,7 +303,8 @@
     "squat-calculation-area-orphaned_one": "[en] Väyläalue <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitys sijainnin laskentaan.",
     "squat-calculation-area-orphaned_other": "[en] Väyläalueet <strong>{{ids}}</strong> on poistettu palvelusta, poista linkitykset sijainnin laskentaan.",
     "main-section-title": "[en] Väyläkortin perustiedot",
-    "fairway-card-basic-info-description": "[en] Väyläkortin perustiedot kattavat vähimmäistiedot, jotta väyläkortti on mahdollista tuoda näkyville Digitaalinen väyläkortti -palveluun"
+    "fairway-card-basic-info-description": "[en] Väyläkortin perustiedot kattavat vähimmäistiedot, jotta väyläkortti on mahdollista tuoda näkyville Digitaalinen väyläkortti -palveluun",
+    "vts-label": "[en] Linkitetty VTS-alusliikennepalvelija"
   },
   "harbour": {
     "primary-id": "Harbour ID",
