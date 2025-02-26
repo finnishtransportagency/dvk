@@ -37,6 +37,10 @@ const VtsInputSection: React.FC<VtsInputSectionProps> = ({
   readonly = false,
 }) => {
   const { t } = useTranslation();
+  // filter out options that are selected in other sectionss
+  const selectOptions = vtsAreas?.filter((area) => {
+    return !state?.trafficService?.vtsIds?.some((id) => area.id === id && section.id !== id);
+  }) as SelectOption[];
 
   return (
     <IonGrid className="formGrid subSectionMargin">
@@ -44,10 +48,10 @@ const VtsInputSection: React.FC<VtsInputSectionProps> = ({
         <SelectInput
           label={t('fairwaycard.vts-label')}
           selected={state?.trafficService?.vtsIds?.[idx]}
-          options={(vtsAreas as SelectOption[]) ?? []}
+          options={selectOptions ?? []}
           setSelected={updateState}
           actionType="vtsIds"
-          actionTarget={String(section.id)}
+          actionTarget={idx}
           isLoading={isLoadingVtsAreas}
           disabled={!readonly && state?.status === Status.Removed}
           readonly={readonly}

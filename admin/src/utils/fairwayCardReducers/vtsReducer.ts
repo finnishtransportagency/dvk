@@ -1,117 +1,29 @@
 import { FairwayCardInput } from '../../graphql/generated';
-import { ActionType, Lang, ValueType } from '../constants';
+import { ActionType, ValueType } from '../constants';
 
-export const vtsReducer = (
-  state: FairwayCardInput,
-  value: ValueType,
-  actionType: ActionType,
-  actionLang?: Lang,
-  actionTarget?: string | number
-): FairwayCardInput => {
+export const vtsReducer = (state: FairwayCardInput, value: ValueType, actionType: ActionType, actionTarget?: string | number): FairwayCardInput => {
   let newState;
-  switch (actionType) {
-    case 'vtsIds':
-      if (value && !actionTarget) {
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            vtsIds: state.trafficService?.vtsIds?.concat([' ']),
-          },
-        };
-      } else {
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            vtsIds: state.trafficService?.vtsIds?.map((id) => (id === actionTarget ? String(value) : id)),
-          },
-        };
-      }
-      break;
-    case 'vts':
-      // Add and delete
-      if (value && !actionTarget) {
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            vts: state.trafficService?.vts?.concat([
-              {
-                email: [],
-                name: { fi: '', sv: '', en: '' },
-                phoneNumber: '',
-                vhf: [],
-              },
-            ]),
-          },
-        };
-      } else {
-        newState = {
-          ...state,
-          trafficService: {
-            ...state.trafficService,
-            vts: state.trafficService?.vts?.filter((vtsItem, idx) => idx !== actionTarget),
-          },
-        };
-      }
-      break;
-    case 'vtsName':
+  if (actionType === 'vtsIds') {
+    if (value && actionTarget === undefined) {
       newState = {
         ...state,
         trafficService: {
           ...state.trafficService,
-          vts: state.trafficService?.vts?.map((vtsItem, idx) =>
-            idx === actionTarget
-              ? {
-                  ...vtsItem,
-                  name: {
-                    ...(vtsItem?.name ?? { fi: '', sv: '', en: '' }),
-                    [actionLang as string]: value as string,
-                  },
-                }
-              : vtsItem
-          ),
+          vtsIds: state.trafficService?.vtsIds?.concat(['']),
         },
       };
-      break;
-    case 'vtsEmail':
+    } else {
       newState = {
         ...state,
         trafficService: {
           ...state.trafficService,
-          vts: state.trafficService?.vts?.map((vtsItem, idx) =>
-            idx === actionTarget
-              ? {
-                  ...vtsItem,
-                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
-                  email: (value as string).split(',').map((item) => item.trim()),
-                }
-              : vtsItem
-          ),
+          vtsIds: state.trafficService?.vtsIds?.map((id, idx) => (idx === actionTarget ? String(value) : id)),
         },
       };
-      break;
-    case 'vtsPhone':
-      newState = {
-        ...state,
-        trafficService: {
-          ...state.trafficService,
-          vts: state.trafficService?.vts?.map((vtsItem, idx) =>
-            idx === actionTarget
-              ? {
-                  ...vtsItem,
-                  name: vtsItem?.name ?? { fi: '', sv: '', en: '' },
-                  phoneNumber: ((value as string) || '').trim(),
-                }
-              : vtsItem
-          ),
-        },
-      };
-      break;
-    default:
-      console.warn(`Unknown action type, state not updated.`);
-      return state;
+    }
+  } else {
+    console.warn('Unknown action type, state not updated.');
+    return state;
   }
   return newState;
 };
