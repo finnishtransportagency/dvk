@@ -17,7 +17,7 @@
   #splitPane > ion-row {
     flex-direction: column;
     flex: none;
-    height: auto;
+    height: auto !important;
   }
 
   #fairwayContent {
