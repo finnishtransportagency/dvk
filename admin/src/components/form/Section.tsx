@@ -109,13 +109,11 @@ const Section: React.FC<SectionProps> = ({
                   section={section as VtsInput}
                   idx={idx}
                   updateState={updateState}
+                  deleteSection={deleteSection}
                   state={state}
                   vtsAreas={vtsAreas}
                   isLoadingVtsAreas={isLoadingVtsAreas}
-                  focused={isFocused}
-                  validationErrors={validationErrors}
                   readonly={readonly}
-                  disabled={!readonly && disabled}
                 />
               </div>
             )}

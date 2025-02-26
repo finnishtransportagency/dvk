@@ -12,12 +12,20 @@ export const vtsReducer = (state: FairwayCardInput, value: ValueType, actionType
           vtsIds: state.trafficService?.vtsIds?.concat(['']),
         },
       };
-    } else {
+    } else if (value && actionTarget !== undefined) {
       newState = {
         ...state,
         trafficService: {
           ...state.trafficService,
           vtsIds: state.trafficService?.vtsIds?.map((id, idx) => (idx === actionTarget ? String(value) : id)),
+        },
+      };
+    } else {
+      newState = {
+        ...state,
+        trafficService: {
+          ...state.trafficService,
+          vtsIds: state.trafficService?.vtsIds?.filter((_, idx) => idx !== actionTarget),
         },
       };
     }
