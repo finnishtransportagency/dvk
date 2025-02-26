@@ -353,7 +353,7 @@
           "depths": "Djupen",
           "safetyEquipments": "Säkerhetsanordningar",
           "speedLimits": "Hastighetsbegränsningar",
-          "specialAreas": "Specialområden",
+          "specificAreas": "Specifika områden",
           "pilotPlaces": "Lotsplatser",
           "boardLines": "Enslinjer",
           "circles": "Vändcirklar",
@@ -368,7 +368,7 @@
           "general": "Allmänt",
           "name": "Kartnamn",
           "specialarea2": "Ankringsområden",
-          "specialarea9": "[sv] Erikoisalueet",
+          "specialarea9": "Specialområden",
           "specialarea15": "Områden med mötes- och omkörningsförbud"
         },
         "mapDetails": {

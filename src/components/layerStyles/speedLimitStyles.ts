@@ -3,7 +3,6 @@ import Feature, { FeatureLike } from 'ol/Feature';
 import { getMap } from '../DvkMap';
 import speedLimitIcon from '../../theme/img/rajoitus_pohja.svg';
 import speedLimitMultiIcon from '../../theme/img/rajoitus_multi_pohja.svg';
-import specialarea from '../../theme/img/erityisalue_tausta.svg';
 import { Geometry, MultiPolygon, Polygon } from 'ol/geom';
 import { intersect as turf_intersect } from '@turf/intersect';
 import { flatten as turf_flatten } from '@turf/flatten';
@@ -11,13 +10,11 @@ import { featureCollection, polygon } from '@turf/helpers';
 import { Polygon as turf_Polygon, Feature as turf_Feature, FeatureCollection as turf_FeatureCollection } from 'geojson';
 import { getTopLeft, getBottomRight } from 'ol/extent';
 import { GeoJSON } from 'ol/format';
+import { getStripeFill } from './utils/stripeFill';
 
 const speedLimitImage = new Image();
 speedLimitImage.src = speedLimitIcon;
 const format = new GeoJSON();
-
-const specialAreaImage = new Image();
-specialAreaImage.src = specialarea;
 
 const fillStyle = new Style({
   fill: new Fill({
@@ -82,14 +79,8 @@ export function getSpeedLimitPolygonStyle(feature: FeatureLike) {
     }
     fillStyle.getFill()?.setColor(fillColor);
   } else {
-    const canvas = document.createElement('canvas');
-    const context = canvas.getContext('2d') as CanvasRenderingContext2D;
-    const gradient = context.createPattern(specialAreaImage, 'repeat');
-
     return new Style({
-      fill: new Fill({
-        color: gradient,
-      }),
+      fill: getStripeFill('rgba(255, 195, 0, 0.5)', 'rgba(255, 195, 0, 0.25)'),
     });
   }
   return fillStyle;

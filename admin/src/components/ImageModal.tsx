@@ -27,7 +27,7 @@ interface ModalProps {
   picture: PictureInput | '';
   fairwayCardInput: FairwayCardInput;
   setIsOpen: (picture: PictureInput | '') => void;
-  setPicture: (
+  updateState: (
     val: ValueType,
     actionType: ActionType,
     actionLang?: Lang,
@@ -44,7 +44,7 @@ const ImageModal: React.FC<ModalProps> = ({
   picture,
   fairwayCardInput,
   setIsOpen,
-  setPicture,
+  updateState,
   disabled,
   sourceCardId,
   sourceCardVersion,
@@ -106,7 +106,7 @@ const ImageModal: React.FC<ModalProps> = ({
     modal.current?.dismiss().catch((err) => console.error(err));
     const pictureGroupId = (picture as PictureInput)?.groupId;
     if (pictureGroupId) {
-      setPicture(legendPosition, 'pictureLegendPosition', undefined, pictureGroupId);
+      updateState(legendPosition, 'pictureLegendPosition', undefined, pictureGroupId);
     }
     setTimeout(() => {
       setIsOpen('');

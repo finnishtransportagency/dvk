@@ -5,11 +5,10 @@ import { getMap } from '../map/DvkMap';
 import { Orientation } from '../../graphql/generated';
 import { easeOut } from 'ol/easing';
 import { fitSelectedFairwayCardOnMap } from '../map/layers';
-import { importExternalImage, printCurrentMapView } from '../../utils/mapExportToolUtils';
-import { CurrentMapViewProps } from './MapExportTool';
+import { importExternalImage, MapImageUploader, createMapImages } from '../../utils/mapExportToolUtils';
 
 interface ExtMapControlProps {
-  propsForCurrentMapView: CurrentMapViewProps;
+  mapImageUploader: MapImageUploader;
   printDisabled?: boolean;
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -17,14 +16,7 @@ interface ExtMapControlProps {
   setErrors: Dispatch<SetStateAction<string[]>>;
 }
 
-export const ExtMapControls: React.FC<ExtMapControlProps> = ({
-  propsForCurrentMapView,
-  printDisabled,
-  setIsOpen,
-  isOpen,
-  fileUploader,
-  setErrors,
-}) => {
+export const ExtMapControls: React.FC<ExtMapControlProps> = ({ mapImageUploader, printDisabled, setIsOpen, isOpen, fileUploader, setErrors }) => {
   const { t } = useTranslation();
   const dvkMap = getMap();
   const [orientationType, setOrientationType] = useState<Orientation | ''>(dvkMap.getOrientationType());
@@ -36,7 +28,7 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({
       setErrors(fileErrors);
     }
 
-    importExternalImage(propsForCurrentMapView);
+    importExternalImage(mapImageUploader);
     //so duplicates can be added
     (event.target as HTMLInputElement).value = '';
   };
@@ -106,7 +98,7 @@ export const ExtMapControls: React.FC<ExtMapControlProps> = ({
           disabled={disableModifyingControls}
           onClick={(ev) => {
             ev.preventDefault();
-            printCurrentMapView(propsForCurrentMapView);
+            createMapImages(mapImageUploader);
           }}
           title={t('homePage.map.controls.screenshot.tipLabel')}
           aria-label={t('homePage.map.controls.screenshot.tipLabel')}

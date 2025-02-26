@@ -16,25 +16,12 @@ import { ExtMapControls } from './ExtMapControls';
 import { PrintImages } from './PrintImages';
 import MapElement from './MapElement';
 
-export interface CurrentMapViewProps {
-  fairwayCardInput: FairwayCardInput;
-  uploadMapPictureMutation: (picture: { picture: PictureUploadInput }) => Promise<UploadMapPictureMutation>;
-  setNewPicture: (pictureInput: (PictureInput & PictureUploadInput) | undefined) => void;
-  dvkMap: DvkMap;
-  setIsMapDisabled: (disabled: boolean) => void;
-  setIsProcessingCurLang: (processing: boolean) => void;
-  curLang: string;
-  fileUploader?: FileUploader;
-  setPicUploadErrors?: (errors: string[]) => void;
-  picUploadErrors?: string[];
-}
-
 interface MapExportToolProps {
   fairwayCardInput: FairwayCardInput;
   disabled: boolean;
   fairways?: Fairway[];
   harbours?: Harbor[];
-  setPicture: (
+  updateState: (
     val: ValueType,
     actionType: ActionType,
     actionLang?: Lang,
@@ -45,7 +32,7 @@ interface MapExportToolProps {
   readonly?: boolean;
 }
 
-const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairways, harbours, setPicture, validationErrors, disabled, readonly }) => {
+const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairways, harbours, updateState, validationErrors, disabled, readonly }) => {
   const { t, i18n } = useTranslation();
   const curLang = i18n.resolvedLanguage as Lang;
   const [fileUploader] = useState<FileUploader>(() => new FileUploader());
@@ -59,7 +46,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
   // Create uploadable images with every locale
   const [isProcessingCurLang, setIsProcessingCurLang] = useState(false);
 
-  const { uploadMapPictureMutation, isLoadingMutation } = useUploadMapPictureMutation(newPicture, setPicture, setNewPicture, fairwayCardInput);
+  const { uploadMapPictureMutation, isLoadingMutation } = useUploadMapPictureMutation(newPicture, updateState, setNewPicture, fairwayCardInput);
 
   const [initDone, setInitDone] = useState(false);
   const [percentDone, setPercentDone] = useState(0);
@@ -101,8 +88,9 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
               />
             )}
             <ExtMapControls
-              propsForCurrentMapView={{
-                fairwayCardInput: fairwayCardInput,
+              mapImageUploader={{
+                cardId: fairwayCardInput.id,
+                cardVersion: fairwayCardInput.version,
                 uploadMapPictureMutation: uploadMapPictureMutation,
                 setNewPicture: setNewPicture,
                 dvkMap: dvkMap,
@@ -121,7 +109,7 @@ const MapExportTool: React.FC<MapExportToolProps> = ({ fairwayCardInput, fairway
           <IonCol>
             <PrintImages
               fairwayCardInput={fairwayCardInput}
-              setPicture={setPicture}
+              updateState={updateState}
               isLoading={isLoadingMutation}
               isProcessingCurLang={isProcessingCurLang}
               readonly={readonly}

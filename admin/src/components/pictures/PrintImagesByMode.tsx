@@ -14,7 +14,7 @@ import back_arrow from '../../theme/img/back_arrow-1.svg';
 
 interface PrintImagesByModeProps {
   fairwayCardInput: FairwayCardInput;
-  setPicture: (
+  updateState: (
     val: ValueType,
     actionType: ActionType,
     actionLang?: Lang,
@@ -32,7 +32,7 @@ interface PrintImagesByModeProps {
 
 export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
   fairwayCardInput,
-  setPicture,
+  updateState,
   orientation,
   disabled,
   readonly = false,
@@ -72,7 +72,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
     const newSequencedPictures = currentSequenceNumber
       ? removeSequence(picture, currentPicturesByOrientation, currentSequenceNumber)
       : addSequence(picture, currentPicturesByOrientation);
-    setPicture([...newSequencedPictures, ...currentOtherPictures] as PictureInput[], 'picture');
+    updateState([...newSequencedPictures, ...currentOtherPictures] as PictureInput[], 'picture');
   };
 
   const deletePicture = (picture: PictureInput) => {
@@ -93,9 +93,9 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
           }
           return pic;
         }) ?? [];
-      setPicture(newSequencedPictures, 'picture');
+      updateState(newSequencedPictures, 'picture');
     } else {
-      setPicture(picturesExcludingSelected, 'picture');
+      updateState(picturesExcludingSelected, 'picture');
     }
   };
 
@@ -220,7 +220,7 @@ export const PrintImagesByMode: React.FC<PrintImagesByModeProps> = ({
                         <TextInputRow
                           labelKey="fairwaycard.print-images-description"
                           value={groupedPicTexts?.find((gPic) => gPic.groupId === pic.groupId)?.text}
-                          updateState={setPicture}
+                          updateState={updateState}
                           actionType="pictureDescription"
                           actionTarget={pic.groupId ?? ''}
                           required={!!pic.text || !!groupedPics?.filter((gPic) => gPic.text).length}

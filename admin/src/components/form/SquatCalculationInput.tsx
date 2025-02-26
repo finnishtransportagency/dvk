@@ -119,9 +119,11 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
     sortedSelectedAreas.length > 1 &&
     sortedSelectedAreas[0].depth !== sortedSelectedAreas[sortedSelectedAreas.length - 1].depth;
 
-  const areaErrorText = multipleDepths
-    ? t('fairwaycard.squat-calculation-depth-warning')
-    : validationErrors.find((error) => error.id === 'squatSuitableFairwayAreaIds-' + idx)?.msg;
+  const getErrorText = (control: string) => {
+    return validationErrors.find((error) => error.id === control + '-' + idx)?.msg;
+  };
+  const areaErrorText = multipleDepths ? t('fairwaycard.squat-calculation-depth-warning') : getErrorText('squatSuitableFairwayAreaIds');
+  const placeErrorText = !section.place?.fi || !section.place?.sv || !section.place?.en ? getErrorText('squatCalculationPlace') : undefined;
 
   return (
     <>
@@ -134,11 +136,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
           updateState={updateState}
           actionTarget={idx}
           required
-          error={
-            !section.place?.fi || !section.place?.sv || !section.place?.en
-              ? validationErrors?.find((error) => error.id === 'squatCalculationPlace-' + idx)?.msg
-              : undefined
-          }
+          error={placeErrorText}
           readonly={readonly}
           disabled={!readonly && disabled}
           helperText={t('fairwaycard.squat-calculation-place-help-text')}
@@ -160,7 +158,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               showId
               disabled={!readonly && disabled}
               readonly={readonly}
-              error={validationErrors.find((error) => error.id === 'squatTargetFairwayIds-' + idx)?.msg}
+              error={getErrorText('squatTargetFairwayIds')}
             />
           </IonCol>
           <IonCol sizeMd="3">
@@ -225,7 +223,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               unit="m"
               disabled={!readonly && disabled}
               readonly={readonly}
-              error={validationErrors.find((error) => error.id === 'squatCalculationEstimatedWaterDepth-' + idx)?.msg}
+              error={getErrorText('squatCalculationEstimatedWaterDepth')}
               helperText={t('fairwaycard.squat-calculation-estimated-water-depth-help-text')}
             />
           </IonCol>
@@ -248,7 +246,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               required
               disabled={!readonly && disabled}
               readonly={readonly}
-              error={validationErrors.find((error) => error.id === 'squatCalculationFairwayForm-' + idx)?.msg}
+              error={getErrorText('squatCalculationFairwayForm')}
               helperText={t('fairwaycard.squat-calculation-fairway-form-help-text')}
             />
           </IonCol>
@@ -269,7 +267,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               required
               disabled={!readonly && (disabled || !section.fairwayForm || section.fairwayForm === 1)}
               readonly={readonly}
-              error={validationErrors.find((error) => error.id === 'squatCalculationFairwayWidth-' + idx)?.msg}
+              error={getErrorText('squatCalculationFairwayWidth')}
             />
           </IonCol>
           <IonCol>
@@ -288,7 +286,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               required
               disabled={!readonly && (disabled || !section.fairwayForm || section.fairwayForm !== 3)}
               readonly={readonly}
-              error={validationErrors.find((error) => error.id === 'squatCalculationSlopeScale-' + idx)?.msg}
+              error={getErrorText('squatCalculationSlopeScale')}
             />
           </IonCol>
           <IonCol>
@@ -308,7 +306,7 @@ const SquatCalculationInput: React.FC<SquatCalculationInputProps> = ({
               required
               disabled={!readonly && (disabled || !section.fairwayForm || section.fairwayForm !== 3)}
               readonly={readonly}
-              error={validationErrors.find((error) => error.id === 'squatCalculationSlopeHeight-' + idx)?.msg}
+              error={getErrorText('squatCalculationSlopeHeight')}
             />
           </IonCol>
         </IonRow>

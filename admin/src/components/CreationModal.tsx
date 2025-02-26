@@ -99,43 +99,51 @@ const CreationModal: React.FC<ModalProps> = ({ itemList, itemType, isOpen, setIs
     });
   };
 
+  const createCard = () => {
+    if (version && fairwayCardData) {
+      const filledCard = mapTrafficService({
+        ...mapToFairwayCardInput(version.id, fairwayCardData),
+        id: identifier,
+        version: 'v1',
+        pictures: copyPics ? fairwayCardData.fairwayCard?.pictures : [],
+      } as FairwayCardInput);
+      const sourceFairwayCard = fairwayCardData.fairwayCard;
+      if (copyPics && !!sourceFairwayCard?.pictures?.length) {
+        saveFairwayCard({
+          card: filledCard,
+          pictureSourceId: sourceFairwayCard?.id,
+          pictureSourceVersion: sourceFairwayCard?.version,
+        });
+      } else {
+        saveFairwayCard({ card: filledCard });
+      }
+    } else if (!version) {
+      const emptyCard = getEmptyFairwayCardInput(identifier);
+      saveFairwayCard({ card: emptyCard });
+    }
+  };
+
+  const createHarbour = () => {
+    if (version && harborData) {
+      const filledHarbor = {
+        ...mapToHarborInput(true, harborData),
+        id: identifier,
+        version: 'v1',
+      };
+      saveHarbor({ harbor: filledHarbor });
+    } else if (!version) {
+      const emptyHarbor = getEmptyHarborInput(identifier);
+      saveHarbor({ harbor: emptyHarbor });
+    }
+  };
+
   const createNewItem = () => {
     setIsCreating(true);
     if (itemType === 'CARD') {
-      if (version && fairwayCardData) {
-        const filledCard = mapTrafficService({
-          ...mapToFairwayCardInput(version.id, fairwayCardData),
-          id: identifier,
-          version: 'v1',
-          pictures: copyPics ? fairwayCardData.fairwayCard?.pictures : [],
-        } as FairwayCardInput);
-        const sourceFairwayCard = fairwayCardData.fairwayCard;
-        if (copyPics && !!sourceFairwayCard?.pictures?.length) {
-          saveFairwayCard({
-            card: filledCard,
-            pictureSourceId: sourceFairwayCard?.id,
-            pictureSourceVersion: sourceFairwayCard?.version,
-          });
-        } else {
-          saveFairwayCard({ card: filledCard });
-        }
-      } else if (!version) {
-        const emptyCard = getEmptyFairwayCardInput(identifier);
-        saveFairwayCard({ card: emptyCard });
-      }
+      createCard();
     }
     if (itemType === 'HARBOR') {
-      if (version && harborData) {
-        const filledHarbor = {
-          ...mapToHarborInput(true, harborData),
-          id: identifier,
-          version: 'v1',
-        };
-        saveHarbor({ harbor: filledHarbor });
-      } else if (!version) {
-        const emptyHarbor = getEmptyHarborInput(identifier);
-        saveHarbor({ harbor: emptyHarbor });
-      }
+      createHarbour();
     }
   };
 

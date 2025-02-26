@@ -1,12 +1,39 @@
+import { Coordinate } from 'ol/coordinate';
 import dvkMap, { DvkMap, getMap } from '../components/map/DvkMap';
-import { CurrentMapViewProps } from '../components/pictures/MapExportTool';
 import { useUploadMapPictureMutationQuery } from '../graphql/api';
 import { FairwayCardInput, Orientation, PictureInput, PictureUploadInput, UploadMapPictureMutation } from '../graphql/generated';
 import { ActionType, Lang, locales, MAP, POSITION, ValueType } from './constants';
+import FileUploader from './FileUploader';
+
+type CardImage = {
+  cardId: string;
+  cardVersion: string;
+  uploadMapPictureMutation: (picture: { picture: PictureUploadInput }) => Promise<UploadMapPictureMutation>;
+  setNewPicture: (pictureInput: (PictureInput & PictureUploadInput) | undefined) => void;
+};
+
+type ImageUploader = {
+  base64Data: string;
+  orientation: Orientation;
+  timestamp: number;
+  lang?: string;
+  scaleWidth?: string;
+  scaleLabel?: string;
+} & CardImage;
+
+export type MapImageUploader = {
+  dvkMap: DvkMap;
+  setIsMapDisabled: (disabled: boolean) => void;
+  setIsProcessingCurLang: (processing: boolean) => void;
+  curLang: string;
+  fileUploader?: FileUploader;
+  setPicUploadErrors?: (errors: string[]) => void;
+  picUploadErrors?: string[];
+} & CardImage;
 
 export function useUploadMapPictureMutation(
   newPicture: (PictureInput & PictureUploadInput) | undefined,
-  setPicture: (
+  updateState: (
     val: ValueType,
     actionType: ActionType,
     actionLang?: Lang,
@@ -34,7 +61,7 @@ export function useUploadMapPictureMutation(
           legendPosition: newPicture.legendPosition,
         };
         // Update fairwayCard state with uploaded picture data
-        setPicture(fairwayCardInput.pictures?.concat([pictureInput]) ?? [], 'picture');
+        updateState(fairwayCardInput.pictures?.concat([pictureInput]) ?? [], 'picture');
       }
     },
     onError: (error: Error) => {
@@ -47,17 +74,21 @@ export function useUploadMapPictureMutation(
   return { uploadMapPictureMutation, isLoadingMutation };
 }
 
-export function getExportMapBase64Data(canvasSizeCropped: number[], mapCanvas: HTMLCanvasElement, mapSize: number[]) {
+export function getExportMapBase64Data(canvasSizeCropped: number[], mapCanvas: HTMLCanvasElement, mapSize: number[], scale: number) {
   // Crop the canvas and create image
   const mapCanvasCropped = document.createElement('canvas');
   mapCanvasCropped.width = canvasSizeCropped[0];
   mapCanvasCropped.height = canvasSizeCropped[1];
   const mapContextCropped = mapCanvasCropped.getContext('2d');
+
+  //The map canvas is bigger than the cropped canvas by an amount that equals the margin in the UI.
+  //By calculating the difference and dividing by 2, this is the clipping amount
+  //See the documentation here https://www.w3schools.com/jsref/canvas_drawimage.asp
   if (mapContextCropped) {
     mapContextCropped.drawImage(
       mapCanvas,
-      (mapSize[0] * MAP.PRINT.SCALE - mapCanvasCropped.width) / 2,
-      (mapSize[1] * MAP.PRINT.SCALE - mapCanvasCropped.height) / 2,
+      (mapSize[0] * scale - mapCanvasCropped.width) / 2,
+      (mapSize[1] * scale - mapCanvasCropped.height) / 2,
       mapCanvasCropped.width,
       mapCanvasCropped.height,
       0,
@@ -115,165 +146,167 @@ export function getMapCanvas(mapSize: number[]) {
   return mapCanvas;
 }
 
-export function setMapProperties(viewResolution: number, mapSize: number[], lang: Lang) {
+export function setMapProperties(viewResolution: number, mapSize: number[], lang: Lang, center: Coordinate | undefined): number {
   const dvkMap = getMap();
   dvkMap?.olMap?.getView().setResolution(viewResolution / MAP.PRINT.SCALE);
-  dvkMap?.olMap?.setSize([mapSize[0] * MAP.PRINT.SCALE, mapSize[1] * MAP.PRINT.SCALE]);
+
+  //Check the resolution, to find out what the actual "scale" is
+  //If we are zoomed in to resolution 0.5 => the resolution of the map will not change, so reverse calculate the zoom factor
+  const resolutionScaling = viewResolution / (dvkMap?.olMap?.getView().getResolution() ?? 1);
+
+  //Make the map bigger than the actual print canvas which is fitted for A4 at 90dpi
+  //This is clipped later
+  dvkMap?.olMap?.setSize([mapSize[0] * resolutionScaling, mapSize[1] * resolutionScaling]);
   dvkMap.setMapLanguage(lang);
+  dvkMap.olMap?.getView().setCenter(center);
+  return resolutionScaling;
 }
 
-export function resetMapProperties(viewResolution: number, mapSize: number[]) {
+export function resetMapProperties(viewResolution: number, mapSize: number[], center: Coordinate | undefined) {
   const dvkMap = getMap();
   dvkMap.setMapLanguage('');
   dvkMap.olMap?.setSize(mapSize);
   dvkMap.olMap?.getView().setResolution(viewResolution);
+  dvkMap.olMap?.getView().setCenter(center);
 }
 
-export const uploadPicture = async (
-  fairwayCardInput: FairwayCardInput,
-  uploadMapPictureMutation: (picture: { picture: PictureUploadInput }) => Promise<UploadMapPictureMutation>,
-  setNewPicture: (pictureInput: (PictureInput & PictureUploadInput) | undefined) => void,
-  base64Data: string,
-  orientation: Orientation,
-  groupId: number,
-  lang?: string,
-  scaleWidth?: string,
-  scaleLabel?: string
-) => {
+export const uploadPicture = async (imageUploader: ImageUploader) => {
   const rotation = dvkMap.olMap?.getView().getRotation();
 
   const picUploadObject = {
-    base64Data: base64Data.replace('data:image/png;base64,', ''),
-    cardId: fairwayCardInput.id,
-    cardVersion: fairwayCardInput.version,
+    base64Data: imageUploader.base64Data.replace('data:image/png;base64,', ''),
+    cardId: imageUploader.cardId,
+    cardVersion: imageUploader.cardVersion,
     contentType: 'image/png',
-    id: `${fairwayCardInput.id}-${groupId}-${lang}`,
+    id: `${imageUploader.cardId}-${imageUploader.timestamp}-${imageUploader.lang}`,
   };
   const picInputObject = {
-    orientation,
+    orientation: imageUploader.orientation,
     rotation,
-    scaleWidth,
-    scaleLabel,
-    lang,
-    groupId,
+    scaleWidth: imageUploader.scaleWidth,
+    scaleLabel: imageUploader.scaleLabel,
+    lang: imageUploader.lang,
+    timestamp: imageUploader.timestamp,
     legendPosition: POSITION.bottomLeft,
   };
-  setNewPicture({ ...picUploadObject, ...picInputObject });
-  await uploadMapPictureMutation({
+  imageUploader.setNewPicture({ ...picUploadObject, ...picInputObject });
+  await imageUploader.uploadMapPictureMutation({
     picture: picUploadObject,
   });
 };
 
-export const exportMapByLang = (
-  fairwayCardInput: FairwayCardInput,
-  uploadMapPictureMutation: (picture: { picture: PictureUploadInput }) => Promise<UploadMapPictureMutation>,
-  setNewPicture: (pictureInput: (PictureInput & PictureUploadInput) | undefined) => void,
+export const createMapByLang = (
+  cardImage: CardImage,
   dvkMap: DvkMap,
+  center: Coordinate | undefined,
   viewResolution: number,
   lang: Lang,
-  picGroupId: number
+  timestamp: number
 ): Promise<string> => {
   return new Promise((resolve) => {
     if (dvkMap.olMap && dvkMap.getOrientationType()) {
       const mapSize = dvkMap.olMap?.getSize() ?? [0, 0];
       const mapCanvas = getMapCanvas(mapSize);
-      const canvasSizeCropped = dvkMap.getCanvasDimensions();
 
-      setMapProperties(viewResolution, mapSize, lang);
+      //When resolution is less than 0.5*1.7, the desired resolution is not achievable
+      //The code tries to make a bigger map (*1.7 in X,Y directions) and then zoom in so the same extent is used
+      //If the resollution is < 0.5*1.7, this is not possible since 0.5 is teh hard limit
+      //In this case return the ratio of resolutions and use it to crop the canvas
+      const scale = setMapProperties(viewResolution, mapSize, lang, center);
+      const canvasSizeCropped = dvkMap.getCanvasDimensions(scale);
 
       dvkMap.olMap.once('rendercomplete', async function () {
+        const imageUploader: ImageUploader = {
+          ...cardImage,
+          timestamp: timestamp,
+          orientation: dvkMap.getOrientationType() || Orientation.Portrait,
+          base64Data: '',
+        };
         const mapScale = dvkMap.olMap?.getViewport().querySelector('.ol-scale-line-inner');
-        const mapScaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
+        imageUploader.scaleWidth = mapScale?.getAttribute('style')?.replace(/\D/g, '');
+        imageUploader.scaleLabel = mapScale?.innerHTML;
 
+        //Draw the map onto a canvas
         processCanvasElements(mapCanvas);
+        imageUploader.base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize, scale);
 
-        const base64Data = getExportMapBase64Data(canvasSizeCropped, mapCanvas, mapSize);
+        // This line can be added to help debugging
+        // Create a target window : const canvasDebug = window.open('', 'canvasDebug');
+        // Write the image to the window: canvasDebug?.document.write('<img src="' + base64Data + '"/>');
+        imageUploader.orientation = dvkMap.getOrientationType() || Orientation.Portrait;
 
-        await uploadPicture(
-          fairwayCardInput,
-          uploadMapPictureMutation,
-          setNewPicture,
-          base64Data,
-          dvkMap.getOrientationType() || Orientation.Portrait,
-          picGroupId,
-          lang,
-          mapScaleWidth,
-          mapScale?.innerHTML
-        );
         // Reset original map properties
-        resetMapProperties(viewResolution, mapSize);
+        resetMapProperties(viewResolution, mapSize, center);
+        await uploadPicture(imageUploader);
+
         dvkMap.olMap?.once('rendercomplete', function () {
           resolve(`Map export for locale ${lang} done.`);
         });
+        dvkMap.olMap?.renderSync();
       });
+      dvkMap.olMap?.renderSync();
     } else {
       Promise.reject(new Error(`Map export for locale ${lang} failed.`));
     }
   });
 };
 
-export const printCurrentMapView = async (props: CurrentMapViewProps) => {
-  const dvkMap = props.dvkMap;
+export const createMapImages = async (mapImageUploader: MapImageUploader) => {
+  const dvkMap = mapImageUploader.dvkMap;
 
   console.time('Export pictures');
   if (dvkMap.olMap && dvkMap.getOrientationType()) {
-    props.setIsMapDisabled(true);
-    props.setIsProcessingCurLang(true);
+    mapImageUploader.setIsMapDisabled(true);
+    mapImageUploader.setIsProcessingCurLang(true);
 
+    const timestamp = Date.now();
+
+    //Get center and resolution of map and pass them to export map function as the map needs to be reset afterwards
     const viewResolution = dvkMap.olMap.getView().getResolution() ?? 1;
-    const picGroupId = Date.now();
+    const center = dvkMap.olMap.getView().getCenter();
 
     for (const locale of locales) {
-      if (locale !== props.curLang) {
-        props.setIsProcessingCurLang(false);
+      if (locale !== mapImageUploader.curLang) {
+        mapImageUploader.setIsProcessingCurLang(false);
       }
-      await exportMapByLang(
-        props.fairwayCardInput,
-        props.uploadMapPictureMutation,
-        props.setNewPicture,
-        dvkMap,
-        viewResolution,
-        locale as Lang,
-        picGroupId
-      );
+      await createMapByLang(mapImageUploader as CardImage, dvkMap, center, viewResolution, locale as Lang, timestamp);
     }
 
-    props.setIsMapDisabled(false);
+    mapImageUploader.setIsMapDisabled(false);
   }
   console.timeEnd('Export pictures');
 };
 
-export const importExternalImage = async (props: CurrentMapViewProps) => {
+export const importExternalImage = async (mapImageUploader: MapImageUploader) => {
   console.time('Import pictures');
-  if (props.dvkMap.getOrientationType()) {
-    props.setIsMapDisabled(true);
-    props.setIsProcessingCurLang(true);
+  if (mapImageUploader.dvkMap.getOrientationType()) {
+    mapImageUploader.setIsMapDisabled(true);
+    mapImageUploader.setIsProcessingCurLang(true);
 
     try {
-      const picGroupId = Date.now();
-      const base64Data = await props.fileUploader?.getPictureBase64Data();
+      const timestamp = Date.now();
+      const base64Data = await mapImageUploader.fileUploader?.getPictureBase64Data();
 
       if (base64Data) {
         for (const locale of locales) {
-          if (locale !== props.curLang) props.setIsProcessingCurLang(false);
-          await uploadPicture(
-            props.fairwayCardInput,
-            props.uploadMapPictureMutation,
-            props.setNewPicture,
-            base64Data as string,
-            props.dvkMap.getOrientationType() || Orientation.Portrait,
-            picGroupId,
-            locale as Lang
-          );
+          if (locale !== mapImageUploader.curLang) mapImageUploader.setIsProcessingCurLang(false);
+          const imageUploader: ImageUploader = {
+            ...(mapImageUploader as CardImage),
+            lang: locale,
+            base64Data: base64Data as string,
+            timestamp,
+            orientation: mapImageUploader.dvkMap.getOrientationType() || Orientation.Portrait,
+          };
+          await uploadPicture(imageUploader);
         }
       }
     } catch (error) {
       console.log(error);
-      props?.setPicUploadErrors?.([...(props.picUploadErrors ?? []), error as string]);
+      mapImageUploader?.setPicUploadErrors?.([...(mapImageUploader.picUploadErrors ?? []), error as string]);
     }
-    props.setIsMapDisabled(false);
-    props.setIsProcessingCurLang(false);
-    props.fileUploader?.deleteFiles();
+    mapImageUploader.setIsMapDisabled(false);
+    mapImageUploader.setIsProcessingCurLang(false);
+    mapImageUploader.fileUploader?.deleteFiles();
   }
   console.timeEnd('Import pictures');
 };

@@ -12,7 +12,7 @@ import helpIcon from '../../theme/img/help_icon.svg';
 interface PrintImageProps {
   fairwayCardInput: FairwayCardInput;
   disabled: boolean;
-  setPicture: (
+  updateState: (
     val: ValueType,
     actionType: ActionType,
     actionLang?: Lang,
@@ -27,7 +27,7 @@ interface PrintImageProps {
 
 export const PrintImages: React.FC<PrintImageProps> = ({
   fairwayCardInput,
-  setPicture,
+  updateState,
   isLoading,
   disabled,
   readonly = false,
@@ -54,7 +54,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
         fairwayCardInput={fairwayCardInput}
         picture={showPicture}
         setIsOpen={setShowPicture}
-        setPicture={setPicture}
+        updateState={updateState}
         disabled={disabled}
         readonly={readonly}
       />
@@ -80,7 +80,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
       </IonText>
       <PrintImagesByMode
         fairwayCardInput={fairwayCardInput}
-        setPicture={setPicture}
+        updateState={updateState}
         orientation={Orientation.Portrait}
         readonly={readonly}
         disabled={readonly || disabled}
@@ -111,7 +111,7 @@ export const PrintImages: React.FC<PrintImageProps> = ({
       </IonText>
       <PrintImagesByMode
         fairwayCardInput={fairwayCardInput}
-        setPicture={setPicture}
+        updateState={updateState}
         orientation={Orientation.Landscape}
         readonly={readonly}
         disabled={readonly || disabled}
